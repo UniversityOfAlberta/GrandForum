@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL EPIC Summer Institute, 2022 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2022" disabled="false">
+<Report name="AGE-WELL's 6th Annual EPIC Summer Institute" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2023" disabled="false">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="description" permissions="rw" />
@@ -20,25 +20,27 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="AGE-WELL EPIC Summer Institute, 2022" name="Program Description" type="ReportSection" title="AGE-WELL EPIC Summer Institute, 2022&lt;br /&gt;
-&lt;small>Co-Creating Possibilities: Health Care &amp; Health Service Delivery&lt;/small>">
+    <ReportSection id="description" tooltip="AGE-WELL's 6th Annual EPIC Summer Institute" name="Program Description" type="ReportSection" title="AGE-WELL's 6th Annual EPIC Summer Institute">
         <Static>
             <![CDATA[
-                <p>Older adults and caregivers want access to quality and equitable health care that is proactive in addressing their needs and enhances their ability to live an active and healthy life. However, Canada’s health-care system is complex, and older adults and caregivers often face challenges such as getting to doctor’s appointments, obtaining health records, navigating the system and affording new technologies that improve quality of care. These challenges are only compounded when faced in a remote or rural setting.</p>
+                <p>Canada’s older adult population overwhelmingly prefers to age in place – in the homes and communities that they know and in which they are comfortable. Aging in place is about being able to live independently in one’s own home and community through appropriate supports and services, including the design of physical spaces and the use of technology within the environment.</p>
+                
+                <p>There is immense potential for smart home systems, socially assistive robots, and age-friendly communities to enable aging in place. As an older adult walks around their smart home, floor tiles could collect vital signs such as heart rate and blood pressure. Motion sensors could detect falls and connect the older adult to a caregiver or emergency services. Technology-enabled homeshare programs could provide older adults with in-person assistance, the financial means to remain and at home and provide distant caregivers with peace of mind.</p>
+                
+                <p>Technology-based solutions and services can help older adults to live independently and improve their quality of life, while also supporting caregivers and importantly, providing a cost-effective alternative to long-term care.</p>
+                
+                <p>#epicSI2023 participants will work directly with older adults, caregivers and other stakeholders to co-create innovative solutions – technologies, policies, and services – that will empower older adults to age with independence and dignity at home.</p>
+                
+                <p>The 2023 AGE-WELL Summer Institute will take place in Toronto, Ontario (June 19-23, 2023).</p>
 
-                <p>From virtual care platforms to wearable health technologies, there is an unprecedented opportunity for disruptive technology to improve the health and quality of life of rural and remote seniors, create more sustainable or integrated health-care solutions, and open up new possibilities for businesses and government.</p>
+                <h3>Eligibility:</h3>
+                <p>Applicants must be current AGE-WELL network HQP or EPIC-AT Fellows in good standing (e.g. have completed reporting requirements, returned all signed documents etc.) who have not attended a previous AGE-WELL Summer Institute.</p>
+                
+                <p>Preference will be given to AGE-WELL HQP who have made measurable progress towards completing, or have completed, the Innovators of Tomorrow Certificate Program and to EPIC-AT Fellows who are on track to complete their courses.</p>
 
-                <p>#epicSI2022 participants will work directly with older adult, caregiver, and healthcare provider stakeholders to co-create innovative solutions – technologies, policies, and services – that will empower older adults to play an active role in their own health management and provide caregivers with peace of mind.</p>
-
-                <p>The 2022 AGE-WELL Summer Institute is co-hosted by the Centre for Technology Adoption for Aging in the North and will take place in Prince George, British Columbia (June 20-24, 2022).</p>
-
-                Eligibility:
-                <ul>
-                    <li>Applicants must be current network HQP in good standing (e.g. have completed reporting requirements, returned all signed documents etc.) who have not attended a previous AGE-WELL Summer Institute</li>
-                    <li>Preference will be given to HQP who have made measurable progress towards completing, or have completed, the EPIC (Early Professionals, Inspired Careers) training program</li>
-                </ul>
-
-                <p>AGE-WELL will cover the cost of economy travel, accommodation, breakfasts and lunches for all Canadian-based applicants. Those requiring international flights will be asked to cover the cost of their travel to the Prince George Airport.</p>
+                <p>AGE-WELL and/or EPIC-AT will cover the cost of economy travel, breakfasts and lunches for successful applicants. Accommodation will also be covered for those who are not based in Toronto. Successful applicants requiring international flights will be asked to cover the cost of their travel to Pearson International Airport.</p>
+                
+                <p>Application Deadline: April 15, 2023 (via Forum)</p>
                 
                 <p>Contact: <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a></p>
 
@@ -131,7 +133,7 @@
         </ReportItem>
         <ReportItem id="capacity" type="TextareaReportItem" blobItem="CAPACITY">
             <![CDATA[
-                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Health Care & Health Service Delivery” in rural or remote populations. (250 words)</b></p>
+                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Supportive Homes and Communities.” (250 words)</b></p>
                 {$item}
             ]]>
         </ReportItem>
@@ -143,7 +145,7 @@
         </ReportItem>
         <ReportItem id="transdisciplinary" type="TextareaReportItem" blobItem="TRANSDISCIPLINARY">
             <![CDATA[
-                <p><b>What would you bring to a transdisciplinary team trying to create a solution that supports health care and health service delivery? Please include any special skills or experience with stakeholder-driven research, business plans, knowledge mobilization activities, engagement with policy, intellectual property, prototyping, programming languages etc. (250 words)</b></p>
+                <p><b>What would you bring to a transdisciplinary team trying to create a solution that supports aging in place? Please include any special skills or experience with stakeholder-driven research, business plans, knowledge mobilization activities, engagement with policy, intellectual property, prototyping, programming languages etc. (250 words)</b></p>
                 {$item}
             ]]>
         </ReportItem>
