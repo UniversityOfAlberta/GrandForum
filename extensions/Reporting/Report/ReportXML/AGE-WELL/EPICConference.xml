@@ -162,8 +162,7 @@
         <ReportItem id="requirements" type="Checkbox" blobType="BLOB_ARRAY" blobItem="REQUIREMENTS" options="I agree that I have access to the devices, Twitter account and internet connection required for my presentation|I agree to join the AGE-WELL-HQP Slack Channel, if I have not already done so">
             <![CDATA[
                 <h3>Technology Requirements</h3>
-                <p>As a virtual event, this conference will require all presenters for the Oral Presentation Stream must have access to a computer, high-speed internet connection, webcam/camera, and a microphone headset (or on-device microphone and speaker).</p>
-                <p>Those presenting in the Twitter Stream must have a Twitter account and/or agree to create one for this purpose.</p>
+                <p>As a virtual event, this conference will require all presenters to have access to a computer, high-speed internet connection, webcam/camera, and a microphone headset (or on-device microphone and speaker).</p>
                 {$item}
             ]]>
         </ReportItem>
