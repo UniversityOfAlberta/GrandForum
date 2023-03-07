@@ -426,6 +426,14 @@ class AddMember extends SpecialPage{
             }
         }
         
+        $relLabel = new Label("rel_label", "Main {$config->getValue('networkName')} relationship of New User", "", VALIDATE_NOTHING);
+        $relLabel->colon = "";
+        $relLabel->colspan = 2;
+        $relLabel->attr('style', 'text-align:left;max-width:400px;');
+        $relRow = new FormTableRow("rel_row");
+        $relRow->append($relLabel);
+        $relRow->attr('id', "rel_row");
+        
         $relUserLabel = new Label("reluser_label", "Relation User", "The name of the user in the relation", VALIDATE_NOTHING);
         $relUserField = new SelectBox("reluser_field", "Relation User", "", $people, VALIDATE_NOTHING);
         $relUserField->attr("style", "width: 250px;");
@@ -440,10 +448,15 @@ class AddMember extends SpecialPage{
         $relTypeRow->append($relTypeLabel)->append($relTypeField);
         $relTypeRow->attr('id', "reltype_row");
         
+        $relHelpLabel1 = new TextLabel("rel_label1", "", "", VALIDATE_NOTHING);
+        $relHelpLabel2 = new TextLabel("rel_label2", "<b>Legend:</b> (Relation User) &#8594; (".implode("/", $config->getValue('relationTypes')).") &#8594; (New User)", "", VALIDATE_NOTHING);
+        $relHelpLabel2->attr('style', 'text-align:left;');
+        $relHelpRow = new FormTableRow("rel_row");
+        $relHelpRow->append($relHelpLabel1)->append($relHelpLabel2);
+        $relHelpRow->attr('id', "rel_row");
+        
         $formTable->append($projectsRow)
-                  ->append($nationalityRow)
-                  ->append($relUserRow)
-                  ->append($relTypeRow);
+                  ->append($nationalityRow);
         for($i = 0; $i < 3; $i++){
             $extraText = "";
             $validation = ($i == 0) ? VALIDATE_NOT_NULL : VALIDATE_NOTHING;
@@ -539,7 +552,11 @@ class AddMember extends SpecialPage{
                       ->append($endRow);
         }
         
-        $formTable->append($recruitmentRow)
+        $formTable->append($relRow)
+                  ->append($relUserRow)
+                  ->append($relTypeRow)
+                  ->append($relHelpRow)
+                  ->append($recruitmentRow)
                   ->append($recRow)
                   ->append($recCountryRow);
         if($config->getValue('networkName') == "FES"){
