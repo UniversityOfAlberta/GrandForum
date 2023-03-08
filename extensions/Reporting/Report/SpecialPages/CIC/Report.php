@@ -5,9 +5,10 @@ $wgSpecialPages['Report'] = 'Report'; # Let MediaWiki know about the special pag
 $wgExtensionMessagesFiles['Report'] = $dir . 'Report.i18n.php';
 $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
+require_once("LOITable.php");
+
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
-$wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
 
 class Report extends AbstractReport{
     
@@ -46,14 +47,14 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOI") && ($_GET['project'] == $projectId)) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("[+]", "{$url}LOI&project=$projectId", $selected);
         }
+        
+        if($person->isRoleAtLeast(STAFF)){
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "ProjectTable") ? "selected" : false;
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Project Table", "{$url}ProjectTable", $selected);
+        }
         return true;
     }
     
-    static function createToolboxLinks(&$toolbox){
-        global $wgServer, $wgScriptPath, $config;
-
-        return true;
-    }
 }
 
 ?>

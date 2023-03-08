@@ -1040,6 +1040,12 @@ abstract class AbstractReport extends SpecialPage {
         }
     }
     
+    // Checks whether or not this report has a pdf generated
+    function isGenerated(){
+        $check = $this->getPDF();
+        return (isset($check[0]));
+    }
+    
     // Checks whether or not this report has been submitted or not
     function isSubmitted(){
         $check = $this->getPDF();
