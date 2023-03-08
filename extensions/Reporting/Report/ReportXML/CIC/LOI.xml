@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Construction Innovation Centre (CIC) LETTER OF INTENT (LOI) for Proposed Research Project" reportType="RP_LOI" pdfType="RP_LOI" pdfFiles="LOIPDF" year="0" ajax="true">
+<Report name="Construction Innovation Centre (CIC) LETTER OF INTENT (LOI) for Proposed Research Project" reportType="RP_LOI" pdfType="RP_LOI" pdfFiles="LOIPDF" year="0" allowIdProjects="true" ajax="true">
     <Permissions>
         <Role role="INACTIVE+">
             <SectionPermission id="intent" permissions="rw" />
@@ -101,22 +101,18 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="budget" type="Textarea" blobItem="BUDGET" rich="true">
+        <!-- Budget -->
+        <Static>
             <![CDATA[
-                <h3>Project Budget and Cost Items</h3>
-                (Please itemize each cost in the total project budget; the CIC will provide up to a maximum of 50% of the required funding with the expectation that matching from other sources is obtained)
-                {$item}
+                <h2>Budget</h2>
             ]]>
-        </ReportItem>
-        <ReportItem id="matched_funds" type="Textarea" blobItem="MATCHED_FUNDS" rich="true">
+        </Static>
+        <ReportItem type="MultiText" blobType="BLOB_ARRAY" blobItem="BUDGET" multiple="true"
+                    indices="partner|year1|year2|year3|year4|year5|comments" 
+                    labels="Partner/Source|Year 1|Year 2|Year 3|Year 4|Year 5|Comments" 
+                    types="Text|Text|Text|Text|Text|Text|Textarea"
+                    sizes="250|50|50|50|50|50|250">
             <![CDATA[
-                <h3>Planned Sources for Matching Funds, Including Industry Funds and Other Programs (e.g., NSERC, Mitacs) (note 30% overhead on industry funds prior to matching)</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="requested_funds" type="Textarea" blobItem="REQUESTED_FUNDS" rich="true">
-            <![CDATA[
-                <h3>Requested Funds from CIC (note that CIC endowments can only be matched if industry partner providing endowment is involved in project) and Ratio of Matching Funds to CIC Funds from Planned Sources</h3>
                 {$item}
             ]]>
         </ReportItem>

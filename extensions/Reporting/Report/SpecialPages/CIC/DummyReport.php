@@ -25,6 +25,9 @@ class DummyReport extends AbstractReport{
             else if($project instanceof Theme){
                 $projectName = $project->getAcronym();
             }
+            else if(is_numeric($project)){
+                $projectName = $project;
+            }
         }
         $topProjectOnly = false;
         /*if($projectName != null){

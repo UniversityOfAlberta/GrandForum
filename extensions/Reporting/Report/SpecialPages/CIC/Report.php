@@ -24,7 +24,7 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Reports");
-        $tabs["Applications"] = TabUtils::createTab("HQP Application");
+        $tabs["Proposals"] = TabUtils::createTab("LOI");
         return true;
     }
     
@@ -33,9 +33,18 @@ class Report extends AbstractReport{
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
-        if($person->isRole(HQP."-Candidate")){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplication")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("HQP Application", "{$url}HQPApplication", $selected);
+        if($person->isLoggedIn()){
+            $projectId = 0;
+            do{
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOI") && ($_GET['project'] == $projectId || (!isset($_GET['project']) && $projectId == 0))) ? "selected" : false;
+                $tabName = ($projectId > 0) ? "[".($projectId+1)."]" : "LOI&nbsp;&nbsp;&nbsp;[".($projectId+1)."]";
+                $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab($tabName, "{$url}LOI&project=$projectId", $selected);
+                
+                $report = new DummyReport("LOI", $person, ++$projectId, 0, true);
+            } while($report->hasStarted());
+
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOI") && ($_GET['project'] == $projectId)) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("[+]", "{$url}LOI&project=$projectId", $selected);
         }
         return true;
     }

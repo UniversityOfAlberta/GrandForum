@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- This file is also used in the BDTab of the Project Table Special Page -->
 <Report name="Projects Table" reportType="RP_PROJECT_TABLE" personId="0" year="0" ajax="true">
     <Permissions>
         <Role role="STAFF+">
