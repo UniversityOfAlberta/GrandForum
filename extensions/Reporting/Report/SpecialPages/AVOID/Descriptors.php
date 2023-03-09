@@ -480,7 +480,7 @@ class Descriptors extends SpecialPage {
 	                    <td>0.45+</td>
 	                    <td>Severely Frail (≥45%)</td>
 	                    <td>{$frailty[3]} (".number_format($frailty[3]/max(1, $nIntake)*100, 1).")</td>
-	                    <td>{$frailty6[3]} (".number_format($frailty6[3]/max(1, $n6month)*100, 1).")</td>
+	                    <td>{$frailty6[3]} (".number_format($frailty6[3]/max(1, $n6Month)*100, 1).")</td>
                     </tr>
                 </tbody>
             </table>
