@@ -232,7 +232,18 @@ class IndexTable {
             }
             $wgOut->addHTML("</tr>");
         }
-        $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth':false});</script>");
+        $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({
+                                                                            'aLengthMenu': [[100,-1], [100,'All']], 
+                                                                            'iDisplayLength': -1, 
+                                                                            'autoWidth': false,
+                                                                            'dom': 'Blfrtip',
+                                                                            columnDefs: [
+                                                                               {type: 'natural', targets: 0}
+                                                                            ],
+                                                                            'buttons': [
+                                                                                'excel', 'pdf'
+                                                                            ]
+                                                                         });</script>");
 
         return true;
     }

@@ -147,7 +147,8 @@ class QACVDepartmentTab extends AbstractTab {
 	        exit;
 	    }
 	    
-        foreach(Person::getAllPeopleDuring(NI, ($year-6).CYCLE_START_MONTH, "2100-01-01") as $person){
+        foreach(array_merge(Person::getAllPeopleDuring(NI, ($year-6).CYCLE_START_MONTH, "2100-01-01"), 
+                            Person::getAllPeopleDuring("ATS", ($year-6).CYCLE_START_MONTH, "2100-01-01")) as $person){
             foreach($person->getUniversitiesDuring(($year-6).CYCLE_START_MONTH, "2100-01-01") as $uni){
                 if($uni['department'] == $this->department && 
                    $uni['university'] == "University of Alberta"){
@@ -162,7 +163,7 @@ class QACVDepartmentTab extends AbstractTab {
             $command = "zip -9 /tmp/{$this->id}.zip";
             foreach($people as $person){
                 $sto = new ReportStorage($person);
-                $report = new DummyReport("QACV", $person, null, $year);
+                $report = new DummyReport("QACV2", $person, null, $year);
                 $report->year = $year;
                 $check = $report->getLatestPDF();
                 if(count($check) > 0){
@@ -192,7 +193,7 @@ class QACVDepartmentTab extends AbstractTab {
 	        exit;
 	    }
         
-        $url = "$wgServer$wgScriptPath/index.php/Special:QACVGenerator?showTab={$this->id}&report=QACV&person=' + id + '&generatePDF=true";
+        $url = "$wgServer$wgScriptPath/index.php/Special:QACVGenerator?showTab={$this->id}&report=QACV2&person=' + id + '&generatePDF=true";
         
         $html = $this->showScript($names, array_keys($people), $url);
         $html .= "<iframe name='downloadIframe{$this->id}' id='downloadIframe{$this->id}' style='display:none;'></iframe>";
@@ -200,7 +201,7 @@ class QACVDepartmentTab extends AbstractTab {
 	    <table class='wikitable sortable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
 	        <tr><th>Name</th><th>PDF Download</th><th>Generate PDF</th><th>Generation Status</th></tr>";
 	    foreach($people as $person){
-	        $report = new DummyReport("QACV", $person);
+	        $report = new DummyReport("QACV2", $person);
 	        $report->year = $year;
 	        $check = $report->getLatestPDF();
 	        $tok = "";
