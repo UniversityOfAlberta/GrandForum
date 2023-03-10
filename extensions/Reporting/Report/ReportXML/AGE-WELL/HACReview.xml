@@ -104,11 +104,11 @@
                             <tr>
                                 <td>
                                     <b>Background and Rationale (Section B. 1.)</b>
-                                    <ul style='line-height: 1.25em;'>
+                                    <ul style='line-height: 1.25em;list-style-type:square'>
                                         <li>Proposed research is significant in terms of the need(s) or gap(s) addressed and in relation to the state-of-the art in the field.</li>
                                     </ul>
                                     <b>Objectives, Methods and Deliverables (Section B. 2.)</b>
-                                    <ul style='line-height: 1.25em;'>
+                                    <ul style='line-height: 1.25em;list-style-type:square'>
                                         <li>Clarity and coherence of short and longer-term objectives.</li>
                                         <li>Methodology is well described and justified.</li>
                                         <li>Feasibility of the research plan with respect to milestones, timelines and deliverables.</li>
@@ -134,7 +134,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <ul style='line-height: 1.25em;'>
+                                    <ul style='line-height: 1.25em;list-style-type:square'>
                                         <li>Potential positive impact on the lives of older adults or care partners is obvious and well described.</li>
                                         <li>Scientific outputs for this project will meaningfully impact the current state of knowledge.</li>
                                         <li>Novelty and originality of the proposed project i.e. participant population, technology, methods, knowledge translation.</li>
@@ -159,7 +159,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <ul style='line-height: 1.25em;'>
+                                    <ul style='line-height: 1.25em;list-style-type:square'>
                                         <li>Expertise and qualifications of Project Lead(s) to complete the project as described.</li>
                                         <li>Appropriateness of the team (where more than one team member identified)  to carry out the proposed research in terms of complementarity of expertise and synergistic potential.</li>
                                         <li>Identification of an appropriate Knowledge User (KU) with relevant lived experience or expertise, or well described plan to identify a KU (Section 2: Team and Partnerships).</li>
