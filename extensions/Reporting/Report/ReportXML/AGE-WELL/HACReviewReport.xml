@@ -150,7 +150,11 @@
                         </table>
                         </div>
                         <script type='text/javascript'>
-                            $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
+                            $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false,
+                                                                        'dom': 'Blfrtip',
+                                                                        'buttons': [
+                                                                            'excel'
+                                                                        ]});
                         </script>
                     ]]>
                 </Static>
@@ -221,7 +225,12 @@
                 <script type='text/javascript'>
                     $("#eval_table").dataTable({'autoWidth': false,
                                                 'iDisplayLength': -1,
-                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
+                                                'dom': 'Blfrtip',
+                                                'buttons': [
+                                                    'excel'
+                                                ]
+                                                });
                 </script>
             ]]>
         </Static>
