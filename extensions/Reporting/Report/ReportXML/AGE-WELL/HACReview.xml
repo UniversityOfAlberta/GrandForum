@@ -212,27 +212,14 @@
                             </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ex_spec1a" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC1A" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No" inline="true" optional="true">
-                    <![CDATA[
-                            <tr>
-                                <td>Alignment to funding stream coherent, compelling and well described.</td>
-                                <td>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="ex_spec1a_comments" type="Textarea" blobItem="REVIEW_SPEC1A_COMMENTS" blobSubItem="{$user_id}" height="64px">
-                    <![CDATA[
-                                <td>{$item}</td>
-                            </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="ex_spec1b" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC1B" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No|NA" inline="true" optional="true">
+                <ReportItem id="ex_spec1a" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC1A" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No|NA" inline="true" optional="true">
                     <![CDATA[
                             <tr>
                                 <td>For projects involving indigenous populations, research team composition requirements are met or there is clear and compelling evidence that the team has a track record of meaningful and culturally safe involvement with indigenous peoples</td>
                                 <td>{$item}</td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ex_spec1b_comments" type="Textarea" blobItem="REVIEW_SPEC1B_COMMENTS" blobSubItem="{$user_id}" height="64px" optional="true">
+                <ReportItem id="ex_spec1a_comments" type="Textarea" blobItem="REVIEW_SPEC1A_COMMENTS" blobSubItem="{$user_id}" height="64px" optional="true">
                     <![CDATA[
                                 <td>{$item}</td>
                             </tr>
@@ -250,7 +237,7 @@
                 <ReportItem id="ex_spec2a" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC2A" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No" inline="true" optional="true">
                     <![CDATA[
                             <tr>
-                                <td>Alignment to funding stream is coherent, compelling and well described.</td>
+                                <td>Project meaningfully integrates those living with frailty and/or their families and caregivers in planning, designing and executing the study, and interpreting study findings.</td>
                                 <td>{$item}</td>
                     ]]>
                 </ReportItem>
@@ -263,24 +250,11 @@
                 <ReportItem id="ex_spec2b" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC2B" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No" inline="true" optional="true">
                     <![CDATA[
                             <tr>
-                                <td>Project meaningfully integrates those living with frailty and/or their families and caregivers in planning, designing and executing the study, and interpreting study findings.</td>
-                                <td>{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="ex_spec2b_comments" type="Textarea" blobItem="REVIEW_SPEC2B_COMMENTS" blobSubItem="{$user_id}" height="64px" optional="true">
-                    <![CDATA[
-                                <td>{$item}</td>
-                            </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="ex_spec2c" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC2C" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No" inline="true" optional="true">
-                    <![CDATA[
-                            <tr>
                                 <td><b>IF APPROPRIATE:</b> frailty assessment utilizes a published and validated instrument appropriate for the care setting(s).</td>
                                 <td>{$item}</td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="ex_spec2c_comments" type="Textarea" blobItem="REVIEW_SPEC2C_COMMENTS" blobSubItem="{$user_id}" height="64px" optional="true">
+                <ReportItem id="ex_spec2b_comments" type="Textarea" blobItem="REVIEW_SPEC2B_COMMENTS" blobSubItem="{$user_id}" height="64px" optional="true">
                     <![CDATA[
                                 <td>{$item}</td>
                             </tr>

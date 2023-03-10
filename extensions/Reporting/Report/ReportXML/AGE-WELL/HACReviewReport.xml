@@ -36,7 +36,7 @@
                                     <th></th>
                                     <th colspan='3'>ALIGNMENT TO THE CALL FOR PROPOSALS</th>
                                     <th colspan='5'>REVIEW</th>
-                                    <th colspan='7'>SPECIAL FUNDING STREAMS</th>
+                                    <th colspan='5'>SPECIAL FUNDING STREAMS</th>
                                     <th></th>
                                 </tr>
                                 <tr>
@@ -51,11 +51,9 @@
                                     <th>Total</th>
                                     <th>Q1</th>
                                     <th>Q1A</th>
-                                    <th>Q1B</th>
                                     <th>Q2</th>
                                     <th>Q2A</th>
                                     <th>Q2B</th>
-                                    <th>Q2C</th>
                                     <th width='60%'>Comments</th>
                                 </tr>
                             </thead>
@@ -100,9 +98,6 @@
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1A_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1A,{$parent_id},{$user_id},0)}
                             </td>
-                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1B_COMMENTS,{$parent_id},{$user_id},0)})}'>
-                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1B,{$parent_id},{$user_id},0)}
-                            </td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2,{$parent_id},{$user_id},0)}
                             </td>
@@ -111,9 +106,6 @@
                             </td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2B_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2B,{$parent_id},{$user_id},0)}
-                            </td>
-                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2C_COMMENTS,{$parent_id},{$user_id},0)})}'>
-                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2C,{$parent_id},{$user_id},0)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -146,7 +138,6 @@
                                         )}
                                         {round({divide({get(total)},{get(nReviewers)})},2)}
                                     </th>
-                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
