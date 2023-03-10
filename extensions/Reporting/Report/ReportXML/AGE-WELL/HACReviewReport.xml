@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Review Report" ajax="true" disabled="false" personId="0" year="2023">
+    <Permissions>
+        <Role role="STAFF+"></Role>
+    </Permissions>
+    <!-- HAC -->
+    <ReportSection id="hac_review" name="HAC Review" tooltip="Review of HAC Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="HAC">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_HAC,APPLICATION_FORM,TITLE,0,{$user_id},0)} - {$user_name}">
+                <Static>
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(nReviewers, 0)}
+                    ]]>
+                </Static>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="HAC" includeSelf="true">
+                    <If id="script" if="{and({!=({getText(RP_HAC_REVIEW,REVIEW,REVIEW_1,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_HAC_REVIEW,REVIEW,REVIEW_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_HAC_REVIEW,REVIEW,REVIEW_3,{$parent_id},{$user_id},0)},)})}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_3,{$parent_id},{$user_id},0)})})}
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </If>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        <table class='wikitable' id="{$user_id}_table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th colspan='3'>ALIGNMENT TO THE CALL FOR PROPOSALS</th>
+                                    <th colspan='5'>REVIEW</th>
+                                    <th colspan='7'>SPECIAL FUNDING STREAMS</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q0A</th>
+                                    <th>Q0B</th>
+                                    <th>Q0C</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Budget</th>
+                                    <th>Total</th>
+                                    <th>Q1</th>
+                                    <th>Q1A</th>
+                                    <th>Q1B</th>
+                                    <th>Q2</th>
+                                    <th>Q2A</th>
+                                    <th>Q2B</th>
+                                    <th>Q2C</th>
+                                    <th width='60%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </Static>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="HAC" includeSelf="true">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_0A_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_0A,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_0B_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_0B,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_0C_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_0C,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_1_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_1,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_2_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_2,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_3_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_3,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_BUDGET_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_BUDGET,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right'>
+                                {divide({add({multiply({getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_1,{$parent_id},{$user_id},0)},6)},
+                                             {multiply({getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_2,{$parent_id},{$user_id},0)},3)},
+                                             {multiply({getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_3,{$parent_id},{$user_id},0)},1)}
+                                )},10)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1A_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1A,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1B_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1B,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2A_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2A,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2B_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2B,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2C_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                                {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2C,{$parent_id},{$user_id},0)}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_HAC_REVIEW,REVIEW,REVIEW_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>{round({divide({get(q1)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q2)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q3)},{get(nReviewers)})},2)}</th>
+                                    <th></th>
+                                    <th>
+                                        {set(total, 
+                                            {divide({add({multiply({get(q1)},6)}, 
+                                                         {multiply({get(q2)},3)},
+                                                         {multiply({get(q3)},1)}
+                                            )},10)}
+                                        )}
+                                        {round({divide({get(total)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="hac_review_summary" name="HAC Summary" tooltip="HAC Summary" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <table class='wikitable' id="eval_table">
+                    <thead>
+                        <tr>
+                            <th>HAC</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="HAC">
+            <Static>
+                <![CDATA[
+                    {set(q1,0)}
+                    {set(q2,0)}
+                    {set(q3,0)}
+                    {set(nReviewers,0)}
+                ]]>
+            </Static>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="HAC" includeSelf="true">
+                <If id="script" if="{and({!=({getText(RP_HAC_REVIEW,REVIEW,REVIEW_1,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_HAC_REVIEW,REVIEW,REVIEW_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_HAC_REVIEW,REVIEW,REVIEW_3,{$parent_id},{$user_id},0)},)})}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_3,{$parent_id},{$user_id},0)})})}
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </If>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_HAC,APPLICATION_FORM,TITLE,0,{$user_id},0)} - {$user_name}</b></td>
+                        <td align='right'>{round({divide({get(q1)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q2)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q3)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>
+                            {set(total, 
+                                {divide({add({multiply({get(q1)},6)}, 
+                                             {multiply({get(q2)},3)},
+                                             {multiply({get(q3)},1)}
+                                )},10)}
+                            )}
+                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                        </td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

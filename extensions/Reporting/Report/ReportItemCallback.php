@@ -167,6 +167,7 @@ class ReportItemCallback {
             "getProjectTitles" => "getProjectTitles",
             "getNProducts" => "getNProducts",
             "getBlobMD5" => "getBlobMD5",
+            "getRawText" => "getRawText",
             "getText" => "getText",
             "getNumber" => "getNumber",
             "getHTML" => "getHTML",
@@ -1896,6 +1897,14 @@ class ReportItemCallback {
             }
             return $value;
         }
+    }
+    
+    function getRawText($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+        $year = ($year == null) ? $this->reportItem->getReport()->year : $year;
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
+        $result = $blb->load($addr);
+        return @str_replace(")", "&#41;", str_replace("(", "&#40;", $blb->getData()));
     }
     
     function getText($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){

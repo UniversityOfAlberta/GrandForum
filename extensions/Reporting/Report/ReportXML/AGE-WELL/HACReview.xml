@@ -24,7 +24,7 @@
 
                 <p><b>Budget and Budget Justification:</b> Applicants were was asked to submit a brief budget justification in the body of the proposal (Section B. 4.) and a separate budget spreadsheet. Please indicate Yes or No (from dropdown menu) whether the budget and proposed expenditures are appropriate for the project as described.</p>
 
-                <p><b>Special Funding Streams:</b> Two special funding streams are part of this funding call, 1) proposals that focus on novel and innovative ways to  mitigate frailty and 2) another for proposals involving underrepresented groups with specific requirements where the proposal involves Indigenous populations. Special funding streams are not mutually exclusive. Applications not funded through a special stream will be considered for funding in the general pool of applications. The special funding streams serve to earmark minimum funding available in each category. If an application checked a special funding stream under A. Administrative Information, please complete the appropriate section(s) under the evaluation form.  (MAY ADD ADDITIONAL TEXT HERE AFTER PILOTING)</p>
+                <p><b>Special Funding Streams:</b> Two special funding streams are part of this funding call, 1) proposals that focus on novel and innovative ways to  mitigate frailty and 2) another for proposals involving underrepresented groups with specific requirements where the proposal involves Indigenous populations. Special funding streams are not mutually exclusive. Applications not funded through a special stream will be considered for funding in the general pool of applications. The special funding streams serve to earmark minimum funding available in each category. If an application checked a special funding stream under A. Administrative Information, please complete the appropriate section(s) under the evaluation form.</p>
  
             ]]>
         </Instructions>
@@ -103,13 +103,17 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <b>Background and Rationale (Section B. 1.)</b><br />
-                                    Proposed research is significant in terms of the need(s) or gap(s) addressed and in relation to the state-of-the art in the field.<br />
-                                    <b>Objectives, Methods and Deliverables (Section B. 2.)</b><br />
-                                    Clarity and coherence of short and longer-term objectives.<br /> 
-                                    Methodology is well described and justified.<br />
-                                    Feasibility of the research plan with respect to milestones, timelines and deliverables.<br />
-                                    The extent to which project clearly addresses one or more priority areas identified for this call (applicants were instructed to select one or more priority area in Section A. and describe how the priority area will be met in Section B.2.)
+                                    <b>Background and Rationale (Section B. 1.)</b>
+                                    <ul style='line-height: 1.25em;'>
+                                        <li>Proposed research is significant in terms of the need(s) or gap(s) addressed and in relation to the state-of-the art in the field.</li>
+                                    </ul>
+                                    <b>Objectives, Methods and Deliverables (Section B. 2.)</b>
+                                    <ul style='line-height: 1.25em;'>
+                                        <li>Clarity and coherence of short and longer-term objectives.</li>
+                                        <li>Methodology is well described and justified.</li>
+                                        <li>Feasibility of the research plan with respect to milestones, timelines and deliverables.</li>
+                                        <li>The extent to which project clearly addresses one or more priority areas identified for this call (applicants were instructed to select one or more priority area in Section A. and describe how the priority area will be met in Section B.2.)</li>
+                                    </ul>
                                 </td>
                                 <td></td>
                     ]]>
@@ -130,9 +134,11 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Potential positive impact on the lives of older adults or care partners is obvious and well described.<br />
-                                    Scientific outputs for this project will meaningfully impact the current state of knowledge.<br />
-                                    Novelty and originality of the proposed project i.e. participant population, technology, methods, knowledge translation.
+                                    <ul style='line-height: 1.25em;'>
+                                        <li>Potential positive impact on the lives of older adults or care partners is obvious and well described.</li>
+                                        <li>Scientific outputs for this project will meaningfully impact the current state of knowledge.</li>
+                                        <li>Novelty and originality of the proposed project i.e. participant population, technology, methods, knowledge translation.</li>
+                                    </ul>
                                 </td>
                                 <td></td>
                     ]]>
@@ -153,9 +159,11 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Expertise and qualifications of Project Lead(s) to complete the project as described.<br />
-                                    Appropriateness of the team (where more than one team member identified)  to carry out the proposed research in terms of complementarity of expertise and synergistic potential.<br />
-                                    Identification of an appropriate Knowledge User (KU) with relevant lived experience or expertise, or well described plan to identify a KU (Section 2: Team and Partnerships).   
+                                    <ul style='line-height: 1.25em;'>
+                                        <li>Expertise and qualifications of Project Lead(s) to complete the project as described.</li>
+                                        <li>Appropriateness of the team (where more than one team member identified)  to carry out the proposed research in terms of complementarity of expertise and synergistic potential.</li>
+                                        <li>Identification of an appropriate Knowledge User (KU) with relevant lived experience or expertise, or well described plan to identify a KU (Section 2: Team and Partnerships).</li>
+                                    </ul>
                                 </td>
                                 <td></td>
                     ]]>
@@ -198,7 +206,7 @@
                                 <th></th>  
                             </tr>
                             <tr>
-                                <th style="text-align:left;">Under-represented Groups</th>
+                                <th style="text-align:left;">Under-represented Groups<p style='margin-bottom:0;font-weight:normal;'>Alignment to special funding stream is coherent, compelling and well described throughout Section B of the application. This rating will be used to help funders decide whether the submission should be considered as part of a special funding stream or within the general pool of applications</p></th>
                                 <th>{$item}</th>
                                 <th>Comments</th>
                             </tr>
@@ -233,7 +241,7 @@
                 <ReportItem id="ex_spec2" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC2" blobSubItem="{$user_id}" type="SelectReportItem" options="|1|2|3|4|5|6|7|8|9|10" inline="true" optional="true">
                     <![CDATA[
                             <tr>
-                                <th style="text-align:left;">Frailty</th>
+                                <th style="text-align:left;">Frailty<p style='margin-bottom:0;font-weight:normal;'>Alignment to special funding stream is coherent, compelling and well described throughout Section B of the application. This rating will be used to help funders decide whether the submission should be considered as part of a special funding stream or within the general pool of applications</p></th>
                                 <th>{$item}</th>
                                 <th>Comments</th>
                             </tr>
