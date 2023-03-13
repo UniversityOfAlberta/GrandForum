@@ -1,0 +1,46 @@
+<div id="dialogMessages"></div>
+<% if(!this.isDialog){ %>
+    <a class="button backButton" href="#">Back to Contacts</a>
+<% } %>
+<div style="display:flex;">
+    <div style="margin-right:15px;">
+        <h3>Contact Details</h3>
+        <table>
+            <tr>
+                <td class="label">First Name:</td>
+                <td><%= HTML.TextBox(this, 'details.firstName', {size: '20'}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Last Name:</td>
+                <td><%= HTML.TextBox(this, 'details.lastName', {size: '20'}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Email:</td>
+                <td><%= HTML.TextBox(this, 'details.email', {size: '30'}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Institution:</td>
+                <td><%= HTML.TextBox(this, 'details.institution', {size: '30'}) %></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <h3>Related Projects</h3>
+        <%= HTML.ProjectSelector(this, 'projects', {inlineOther: true}) %>
+    </div>
+</div>
+<h3>Opportunities</h3>
+<div id="opportunities"></div>
+<button id="addOpportunity">Add Opportunity</button>
+<br />
+<br />
+<% if(!this.isDialog){ %>
+    <div style="width:180px;display:inline-block;">
+        <button id="save">
+            <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Contact
+        </button><span class="throbber" style="display:none;"></span>
+    </div>
+    <div style="width:180px;display:inline-block;">
+        <button id="cancel">Cancel</button>
+    </div>
+<% } %>

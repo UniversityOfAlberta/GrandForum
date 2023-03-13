@@ -1,0 +1,32 @@
+<% if(this.model.opportunity.get('isAllowedToEdit')){ %>
+    <td valign="top"><span id="deleteTask" class="delete-icon" style="margin: 7px 5px 0 5px;" title="Delete Task"></span></td>
+    <td valign="top"><%= HTML.TextBox(this, 'task', {placeholder: 'Enter Task...', style: "width:100%;box-sizing:border-box;margin:0;"}) %></td>
+    <td valign="top"><%= HTML.Select(this, 'assignee.id', {style: 'width:200px;', options: _.union([{option: assignee.name, value: assignee.id}], _.filter(_.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != assignee.id; }))}) %></td>
+    <td valign="top" style="white-space:nowrap;"><%= HTML.DatePicker(this, 'dueDate', {format: 'yy-mm-dd', style: 'width:5em'}) %></td>
+    <td valign="top" style="white-space:nowrap;"><%= HTML.Select(this, 'status', {options: ['Active', 'Completed', 'Delayed', 'Aborted']}) %></td>
+<% } else { %>
+    <td><%= task %></td>
+    <td><a href="<%= assignee.url %>"><%= assignee.name %></td>
+    <td align="center"><%= dueDate %></td>
+    <td><%= status %></td>
+<% } %>
+<% if(isAllowedToEdit){ %>
+    <td valign="top" style="white-space:nowrap;">
+        <div id="transactions">
+            
+        </div>
+        <button type="button" id="addTransaction">+</button>
+    </td>
+<% } else { %>
+    <td>
+        <table id="transactions" cellspacing="0" cellpadding="0">
+            <% _.each(transactions, function(transaction){ %>
+                <tr>
+                    <td style="padding-right:15px;"><%= transaction.type %></td>
+                    <td><%= transaction.date %></td>
+                </tr>
+            <% }) %>
+        </table>
+    </td>
+<% } %>
+

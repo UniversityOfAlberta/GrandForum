@@ -48,6 +48,7 @@
     }
     if(isExtensionEnabled("CRM")){
         require_once("CRM/CRM.php");
+        require_once("LIMS/LIMS.php");
     }
     //require_once("AddMultimediaPage.php");
     

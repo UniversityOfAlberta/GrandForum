@@ -34,6 +34,7 @@ autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Journal');
 autoload_register('GrandObjects/API/Posting');
 autoload_register('GrandObjects/API/CRM');
+autoload_register('GrandObjects/API/LIMS');
 
 global $apiRequest;
 // Person
@@ -205,6 +206,15 @@ $apiRequest->addAction('Hidden','crmopportunity/:id', 'CRMOpportunityAPI');
 $apiRequest->addAction('Hidden','crmopportunity/:opportunity_id/tasks', 'CRMTaskAPI');
 $apiRequest->addAction('Hidden','crmtask', 'CRMTaskAPI');
 $apiRequest->addAction('Hidden','crmtask/:id', 'CRMTaskAPI');
+// LIMS
+$apiRequest->addAction('Hidden','limscontact', 'LIMSContactAPI');
+$apiRequest->addAction('Hidden','limscontact/:id', 'LIMSContactAPI');
+$apiRequest->addAction('Hidden','limscontact/:contact_id/limsopportunities', 'LIMSOpportunityAPI');
+$apiRequest->addAction('Hidden','limsopportunity', 'LIMSOpportunityAPI');
+$apiRequest->addAction('Hidden','limsopportunity/:id', 'LIMSOpportunityAPI');
+$apiRequest->addAction('Hidden','limsopportunity/:opportunity_id/tasks', 'LIMSTaskAPI');
+$apiRequest->addAction('Hidden','limstask', 'LIMSTaskAPI');
+$apiRequest->addAction('Hidden','limstask/:id', 'LIMSTaskAPI');
 
 function createModels(){
 
@@ -242,6 +252,9 @@ function createModels(){
     addScript("CRMContact");
     addScript("CRMOpportunity");
     addScript("CRMTask");
+    addScript("LIMSContact");
+    addScript("LIMSOpportunity");
+    addScript("LIMSTask");
     
     return true;
 }

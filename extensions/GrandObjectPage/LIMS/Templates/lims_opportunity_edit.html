@@ -1,0 +1,29 @@
+<span id="deleteOpportunity" class="delete-icon" style="float: right;margin-top:8px;" title="Delete Opportunity"></span>
+<div style="display:flex;margin-bottom:13px;">
+    <div style="margin-right:30px;">
+        <b>Category:</b>
+        <%= HTML.Select(this, 'category', {style: 'vertical-align:middle;', value: category, options: ['Industry', 'Government', 'Not-for-Profit', 'NIs/Board/Committees', 'Media']}) %>
+    </div>
+    <div>
+        <b>Owner:</b>
+        <%= HTML.Select(this, 'owner.id', {style: 'width:200px;vertical-align:middle;', options: _.union([{option: owner.name, value: owner.id}], _.filter(_.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != owner.id; }))}) %>
+    </div>
+</div>
+<%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:100%; margin-left:0;margi-right:0;'}) %>
+<h4>Tasks</h4>
+<table id="tasks" class="wikitable" style="width:100%;">
+    <thead>
+        <tr>
+            <th style="width:25px;"></th>
+            <th>Task</th>
+            <th style="width:200px;">Assignee</th>
+            <th style="width:100px;">Due&nbsp;Date</th>
+            <th style="width:100px;">Status</th>
+            <th style="width:230px;">Transactions</th>
+        </tr>
+    </thead>
+    <tbody>
+    
+    </tbody>
+</table>
+<button id="addTask" style="margin-top:15px;">Add Task</button>
