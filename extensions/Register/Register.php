@@ -121,7 +121,12 @@ class Register extends SpecialPage{
         $password2Row = new FormTableRow("password2_row");
         $password2Row->append($password2Label)->append($password2Field);
         
-        // These next 5 fields for are for AVOID
+        // These next fields for are for AVOID
+        $phoneLabel = new Label("phone_label", "Phone Number", "Phone Number", VALIDATE_NOT_NULL);
+        $phoneField = new TextField("phone_field", "Phone Number", "", VALIDATE_NOT_NULL);
+        $phoneRow = new FormTableRow("phone_row");
+        $phoneRow->append($phoneLabel)->append($phoneField->attr('size', 10));
+        
         $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "or Age of loved one", "The age of the loved one", VALIDATE_NOTHING);
         $ageOfLovedOneField = new TextField("age_of_loved_one_field", "Age of loved one", "", VALIDATE_NOTHING);
         $ageOfLovedOneRow = new FormTableRow("age_of_loved_one_row");
@@ -149,7 +154,9 @@ class Register extends SpecialPage{
         $hearField = new SelectBox("hear_field", "Hear", "", array("", "Canadian Frailty Network website","Poster, flyer, or pamphlet at community venue","Newspaper","Magazine or Newsletter","Healthcare practitioner","Social media","Word of mouth","Other"), VALIDATE_NOT_NULL);
         $hearRow2 = new FormTableRow("hear_row2");
         $hearRow2->append(new EmptyElement())->append($hearField);
-
+        
+        // End AVOID Fields
+        
         $typeLabel = new Label("type_label", "<span class='en'>Please select your role</span><span class='fr'>Veuillez sélectionner votre rôle</span>", "The role of user", VALIDATE_NOT_NULL);
         $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "<span class='en'>Candidate (ELITE Program Intern, PhD Fellowship Candidate)</span>
                                                                                    <span class='fr'>Candidat-e (Stagiaire du Programme ELITE, Candidat-e de bourse doctorale)</span>", 
@@ -180,6 +187,7 @@ class Register extends SpecialPage{
             $formTable->append($typeRow);
         }
         if($config->getValue('networkName') == 'AVOID'){
+            $formTable->append($phoneRow);
             if(isset($_GET['role']) && $_GET['role'] == "Partner"){
                 $formTable->append($ageRow);
                 $formTable->append($ageOfLovedOneRow);
@@ -358,7 +366,8 @@ class Register extends SpecialPage{
             }
             else{
                 $_POST['wpExtra'] = array();
-                if($config->getValue("networkName") == "AVOID"){                    
+                if($config->getValue("networkName") == "AVOID"){
+                    $_POST['wpExtra']['phone'] = @$_POST['phone_field'];
                     $_POST['wpExtra']['ageOfLovedOne'] = @$_POST['age_of_loved_one_field'];
                     $_POST['wpExtra']['ageField'] = @$_POST['age_field'];
                     $_POST['wpExtra']['practiceField'] = @$_POST['practice_field'];

@@ -122,6 +122,7 @@ class AdminDataCollection extends SpecialPage{
                     }
                 }
 
+                $phone = $person->getExtra('phone', '');
                 //grab clinician data
                 $age_lovedone = $person->getExtra('ageOfLovedOne', '');
                 $age = $person->getExtra('ageField', '');
@@ -129,6 +130,9 @@ class AdminDataCollection extends SpecialPage{
                 $rolefield = $person->getExtra('roleField', '');
                 
                 $wgOut->addHTML("<td style='white-space:nowrap;'>");
+                if($phone != ''){
+                    $wgOut->addHTML("<b>Phone:</b> $phone<br />");
+                }
                 if($age_lovedone != ''){
                     $wgOut->addHTML("<b>AgeOfLovedOne:</b> $age_lovedone<br />");
                 }
