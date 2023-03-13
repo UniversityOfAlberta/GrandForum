@@ -42,18 +42,28 @@
                                 <tr>
                                     <th>Reviewer</th>
                                     <th>Q0A</th>
+                                    <th style='display:none;'>Q0A Comments</th>
                                     <th>Q0B</th>
+                                    <th style='display:none;'>Q0B Comments</th>
                                     <th>Q0C</th>
+                                    <th style='display:none;'>Q0B Comments</th>
                                     <th>Q1</th>
+                                    <th style='display:none;'>Q1 Comments</th>
                                     <th>Q2</th>
+                                    <th style='display:none;'>Q2 Comments</th>
                                     <th>Q3</th>
+                                    <th style='display:none;'>Q3 Comments</th>
                                     <th>Budget</th>
+                                    <th style='display:none;'>Budget Comments</th>
                                     <th>Total</th>
                                     <th>Q1</th>
                                     <th>Q1A</th>
+                                    <th style='display:none;'>Q1A Comments</th>
                                     <th>Q2</th>
                                     <th>Q2A</th>
+                                    <th style='display:none;'>Q2A Comments</th>
                                     <th>Q2B</th>
+                                    <th style='display:none;'>Q2B Comments</th>
                                     <th width='60%'>Comments</th>
                                 </tr>
                             </thead>
@@ -68,24 +78,31 @@
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_0A_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_0A,{$parent_id},{$user_id},0)}
                             </td>
+                            <td align='right' style='display:none;'>{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_0A_COMMENTS,{$parent_id},{$user_id},0)}</td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_0B_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_0B,{$parent_id},{$user_id},0)}
                             </td>
+                            <td align='right' style='display:none;'>{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_0B_COMMENTS,{$parent_id},{$user_id},0)}</td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_0C_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_0C,{$parent_id},{$user_id},0)}
                             </td>
+                            <td align='right' style='display:none;'>{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_0C_COMMENTS,{$parent_id},{$user_id},0)}</td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_1_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_1,{$parent_id},{$user_id},0)}
                             </td>
+                            <td align='right' style='display:none;'>{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_1_COMMENTS,{$parent_id},{$user_id},0)}</td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_2_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_2,{$parent_id},{$user_id},0)}
                             </td>
+                            <td align='right' style='display:none;'>{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_2_COMMENTS,{$parent_id},{$user_id},0)}</td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_3_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_3,{$parent_id},{$user_id},0)}
                             </td>
+                            <td align='right' style='display:none;'>{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_3_COMMENTS,{$parent_id},{$user_id},0)}</td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_BUDGET_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_BUDGET,{$parent_id},{$user_id},0)}
                             </td>
+                            <td align='right' style='display:none;'>{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_BUDGET_COMMENTS,{$parent_id},{$user_id},0)}</td>
                             <td align='right'>
                                 {divide({add({multiply({getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_1,{$parent_id},{$user_id},0)},6)},
                                              {multiply({getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_2,{$parent_id},{$user_id},0)},3)},
@@ -98,15 +115,18 @@
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1A_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1A,{$parent_id},{$user_id},0)}
                             </td>
+                            <td align='right' style='display:none;'>{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC1A_COMMENTS,{$parent_id},{$user_id},0)}</td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2,{$parent_id},{$user_id},0)}
                             </td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2A_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2A,{$parent_id},{$user_id},0)}
                             </td>
+                            <td align='right' style='display:none;'>{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2A_COMMENTS,{$parent_id},{$user_id},0)}</td>
                             <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2B_COMMENTS,{$parent_id},{$user_id},0)})}'>
                                 {getText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2B,{$parent_id},{$user_id},0)}
                             </td>
+                            <td align='right' style='display:none;'>{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_SPEC2B_COMMENTS,{$parent_id},{$user_id},0)}</td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
                                     {getText(RP_HAC_REVIEW,REVIEW,REVIEW_COMMENTS,{$parent_id},{$user_id},0)}
@@ -123,11 +143,17 @@
                                 <tr>
                                     <th style='white-space:nowrap;'>Average Scores:</th>
                                     <th></th>
+                                    <th style='display:none;'></th>
                                     <th></th>
+                                    <th style='display:none;'></th>
                                     <th></th>
+                                    <th style='display:none;'></th>
                                     <th>{round({divide({get(q1)},{get(nReviewers)})},2)}</th>
+                                    <th style='display:none;'></th>
                                     <th>{round({divide({get(q2)},{get(nReviewers)})},2)}</th>
+                                    <th style='display:none;'></th>
                                     <th>{round({divide({get(q3)},{get(nReviewers)})},2)}</th>
+                                    <th style='display:none;'></th>
                                     <th></th>
                                     <th>
                                         {set(total, 
@@ -140,9 +166,12 @@
                                     </th>
                                     <th></th>
                                     <th></th>
+                                    <th style='display:none;'></th>
                                     <th></th>
                                     <th></th>
+                                    <th style='display:none;'></th>
                                     <th></th>
+                                    <th style='display:none;'></th>
                                     <th></th>
                                 </tr>
                             </tfoot>
