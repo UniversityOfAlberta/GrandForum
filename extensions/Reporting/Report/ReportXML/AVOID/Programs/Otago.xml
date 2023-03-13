@@ -100,7 +100,6 @@
                     </div>
                     <div style='width: 100%; text-align: center;'>
                         In Partnership with: <img src='{$wgServer}{$wgScriptPath}/skins/KFLA.png' style='height: 6em;' />
-                                             <img src='{$wgServer}{$wgScriptPath}/skins/YMCA.png' style='height: 6em; margin-right: 2em;' />
                     </div>
                 </div>
                 <script type='text/javascript'>
