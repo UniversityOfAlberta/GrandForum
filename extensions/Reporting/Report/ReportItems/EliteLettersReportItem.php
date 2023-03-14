@@ -30,6 +30,9 @@ class EliteLettersReportItem extends MultiTextReportItem {
                 else if($report->reportType == "RP_SCI_PHD_ELITE"){
                     $url = "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ScienceReferenceLetter&candidate={$tok}&id={$id}";
                 }
+                else{
+                    $url = "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=".str_replace("PDF", "", $report->xmlName)."-ReferenceLetter&candidate={$tok}&id={$id}";
+                }
                 $headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "Content-type:text/html;charset=UTF-8\r\n" .

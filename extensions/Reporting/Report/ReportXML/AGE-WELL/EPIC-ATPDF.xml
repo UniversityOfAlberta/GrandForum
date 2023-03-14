@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC-AT Award 2022" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT" pdfType="RPTP_EPIC_AT" ajax="true" disabled="false" year="2022">
+<Report name="EPIC-AT Award 2023" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT2" pdfType="RPTP_EPIC_AT2" ajax="true" disabled="false" year="2023">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
         <Static>
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>EPIC-AT Award 2022</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>EPIC-AT Award 2023</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -49,9 +49,9 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="memberships" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MEMBERSHIPS" orientation="vertical" delimiter="&lt;br />" options="AGE-WELL NCE|Centre de recherche Institut universitaire de gériatrie de Montréal (CRIUGM)|Reseau provincial de recherche en adaptation-réadaptation (REPAR)|Réseau Québécois de recherche sur le viellissement (RQRV)" optional="true">
+        <ReportItem id="memberships" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MEMBERSHIPS" orientation="vertical" delimiter="&lt;br />" options="AGE-WELL NCE|Bruyère Continuing Care|Centre for Aging + Brain Health Innovation (CABHI)|Centre de recherche Institut universitaire de gériatrie de Montréal (CRIUGM)|Faculty of Applied Science and Engineering, University of Toronto|Faculty of Health, Dalhousie University|Faculty of Medicine and Health Sciences, McGill University|Faculty of Social Sciences, University of Victoria|McMaster Institute for Research on Aging (MIRA)|Reseau provincial de recherche en adaptation-réadaptation (REPAR)|Réseau Québécois de recherche sur le viellissement (RQRV)|Rotman Research Institute, Baycrest|Temerty Faculty of Medicine, University of Toronto" optional="true">
             <![CDATA[
-                    <tr><td align='right' valign='top'><b>Memberships:</b></td><td valign="top">{$item}</td></tr>
+                    <tr><td align='right' valign='top'><b>Memberships and Affiliations:</b></td><td valign="top">{$item}</td></tr>
             ]]>
         </ReportItem>
         
@@ -147,6 +147,7 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="letters" type="EliteLetters" blobItem="LETTERS" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2" />
     </ReportSection>
     
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">

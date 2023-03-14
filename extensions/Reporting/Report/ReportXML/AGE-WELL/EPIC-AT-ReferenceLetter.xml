@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Reference Letter" reportType="EPIC-AT" year="2023" ajax="true" encrypt="true">
+    <Permissions>
+        <Role role="LoggedOut">
+            <SectionPermission id="letter" permissions="rw" />
+        </Role>
+    </Permissions>
+    <!-- Personal Information -->
+    <ReportSection id="letter" type="EditableReportSection" blobSection="PROFILE" name="Letter" title="Reference Letter" showProgress="false">
+        <If if="{or({==({GET(candidate)},)},{==({GET(id)},)},{==({getPDFUserId({GET(candidate)})},)})}">
+            <![CDATA[
+                You must specify a valid id
+            ]]>
+        </If>
+        <Else>
+            <ReportItemSet type="PersonReportItemSet" userId="{getPDFUserId({GET(candidate)})}">
+                <ReportItem id="letter" type="Upload" blobItem="LETTER" personId="{$user_id}" blobSubItem="{GET(id)}" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+                    <![CDATA[
+                        <b>Candidate:</b> {$user_name}<br />
+                        <h3>Reference Letter</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </Else>
+    </ReportSection>
+</Report>
