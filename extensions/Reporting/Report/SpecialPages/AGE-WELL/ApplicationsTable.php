@@ -738,6 +738,12 @@ class ApplicationsTable extends SpecialPage{
         $postsecondary->setBlobSection(HQP_APPLICATION_FORM);
         $postsecondary->setId("postsecondary");
         
+        $refs = new EliteUploadedLettersReportItem();
+        $refs->setBlobType(BLOB_ARRAY);
+        $refs->setBlobItem("LETTERS");
+        $refs->setBlobSection(HQP_APPLICATION_DOCS);
+        $refs->setId("letters");
+        
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT2', null, 2023, "2023", array("Academic Status" => $stat,
                                                                                         "Institution" => $uni,
@@ -750,7 +756,8 @@ class ApplicationsTable extends SpecialPage{
                                                                                         "Ethnicities" => $ethnicities,
                                                                                         "Ethnicities (Other)" => $ethnicities_other,
                                                                                         "Disability" => $disability,
-                                                                                        "Post-Secondary" => $postsecondary
+                                                                                        "Post-Secondary" => $postsecondary,
+                                                                                        "References" => $refs
                                                                                        )));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT', null, 2023, "2023-special", array("Academic Status" => $stat,
                                                                                        "Institution" => $uni,

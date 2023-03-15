@@ -2094,8 +2094,14 @@ class ReportItemCallback {
         $tok = decrypt($tok, true);
         $data = DBFunctions::execSQL("SELECT user_id
                                       FROM grand_pdf_report
-                                      WHERE ((encrypted = 0 AND token = '{$tok}') OR 
-                                             (encrypted = 1 AND token = '".decrypt($tok, true)."'))");
+                                      WHERE ((encrypted = 0 AND token = '".DBFunctions::escape($tok)."') OR 
+                                             (encrypted = 1 AND token = '".DBFunctions::escape(decrypt($tok, true))."'))");
+        if(!count($data) > 0){
+            // PDF not found, check report blobs instead 
+            $data = DBFunctions::execSQL("SELECT user_id
+                                          FROM grand_report_blobs
+                                          WHERE (md5 = '".DBFunctions::escape($tok)."')");
+        }
         return @$data[0]['user_id'];
     }
     

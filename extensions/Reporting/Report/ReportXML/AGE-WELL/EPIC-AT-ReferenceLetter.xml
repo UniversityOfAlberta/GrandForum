@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Reference Letter" reportType="EPIC-AT" year="2023" ajax="true" encrypt="true">
+<Report name="Reference Letter" reportType="RP_EPIC_AT2" year="2023" ajax="true" encrypt="true">
     <Permissions>
         <Role role="LoggedOut">
             <SectionPermission id="letter" permissions="rw" />
@@ -7,7 +7,10 @@
     </Permissions>
     <!-- Personal Information -->
     <ReportSection id="letter" type="EditableReportSection" blobSection="PROFILE" name="Letter" title="Reference Letter" showProgress="false">
-        <If if="{or({==({GET(candidate)},)},{==({GET(id)},)},{==({getPDFUserId({GET(candidate)})},)})}">
+        <If if="{or({==({GET(candidate)},)},
+                    {==({GET(id)},)},
+                    {==({getPDFUserId({GET(candidate)})},)}
+                )}">
             <![CDATA[
                 You must specify a valid id
             ]]>

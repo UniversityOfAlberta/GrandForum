@@ -11,9 +11,9 @@
                 <h3>A. Instructions</h3>
                 <ol>
                     <li>The application is comprised of an online application form and supporting documents detailed below. Late or incomplete applications will not be reviewed. Please note that this includes letters of reference which must be uploaded by your referees into the Forum system.</li>
-                    <li>Applicants are strongly recommended to complete the EPIC-AT HRTP Fellowship application (Section C of this package in either English or French) using preferred word processing software.</li>
+                    <li>Applicants are strongly recommended to complete the EPIC-AT HRTP Fellowship application (in either English or French) using preferred word processing software.</li>
                     <li>If you have not already done so, you must register with the AGE-WELL Forum Research Portal at https://forum.agewell-nce.ca/index.php/Special:HQPRegister (the form will ask for your name and email). After you submit the registration form, the system will create an account and send your credentials to the email address you provided. Once you login, you will have to reset your temporary password.</li>
-                    <li>The “My Applications” link is in the top right of the page you will reach after resetting your password. Please select “EPIC-AT Award 2023” and enter your referee names and email addresses. Letters of support must be uploaded to the Forum Research Portal by you referees by 5pm ET May 12, 2023.</li>
+                    <li>The “My Applications” link is in the top right of the page you will reach after resetting your password. Please select “EPIC-AT Award 2023” navigate to the "Documents" section and enter your referee names and email addresses. Letters of support must be uploaded to the Forum Research Portal by you referees by 5pm ET May 12, 2023.</li>
                     <li>Once you are ready to submit your application, copy your application material and upload supporting documents to the AGE-WELL Forum Research Portal website by 5pm ET May 12, 2023.</li>
                     <li>Notice of Admissions will be received in August 2023. Expected start date of fellowship is 1 September, 2023.</li>
                 </ol>
@@ -494,9 +494,27 @@ This is defined as an individual whose parents did not complete postsecondary ed
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letters" type="EliteLetters" blobItem="LETTERS" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2">
+        <ReportItem id="letters" type="EliteLetters" blobItem="LETTERS" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2" showSendEmails="true" optional="true">
             <![CDATA[
                 <h2>Reference Letters</h2>
+                {$item}
+                <p><input id='sendReferenceEmails' type='button' value='Send Notification Emails' />&nbsp;<span id='referenceThrobber' style='display:none;' class='throbber'></span></p>
+                <div id='referenceMessages'></div>
+                <script type='text/javascript'>
+                    $('#sendReferenceEmails').click(function(){
+                        clearSuccess('#referenceMessages');
+                        $('#referenceThrobber').show();
+                        $.get(wgServer + wgScriptPath + '/index.php/Special:Report?report=EPIC-AT&section=Documents&sendEmails', function(){
+                            $('#referenceThrobber').hide();
+                            addSuccess('Emails sent', false, '#referenceMessages');
+                        });
+                    });
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem arrayId="letters" type="EliteUploadedLetters" blobItem="LETTERS" blobType="BLOB_ARRAY" showStatus="true" optional="true">
+            <![CDATA[
+                <h3>Reference Status</h3>
                 {$item}
             ]]>
         </ReportItem>

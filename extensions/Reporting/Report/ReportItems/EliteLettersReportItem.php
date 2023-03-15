@@ -2,7 +2,15 @@
 
 class EliteLettersReportItem extends MultiTextReportItem {
     
-    function sendEmail($sto){
+    function render(){
+        if(isset($_GET['sendEmails'])){
+            $this->sendEmail();
+            exit;
+        }
+        parent::render();
+    }
+    
+    function sendEmail($sto=null){
         global $wgServer, $wgScriptPath, $config;
         $data = $this->getBlobValue();
         $report = $this->getReport();
@@ -23,7 +31,12 @@ class EliteLettersReportItem extends MultiTextReportItem {
 	            }
 	            
 	            // Continue if not yet uploaded
-                $tok = urlencode(encrypt(urldecode($sto->metadata('token')), true));
+	            if($sto != null){
+                    $tok = urlencode(encrypt(urldecode($sto->metadata('token')), true));
+                }
+                else{
+                    $tok = urlencode(encrypt(urldecode($this->getMD5())));
+                }
                 if($report->reportType == "RP_PHD_ELITE"){
                     $url = "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ReferenceLetter&candidate={$tok}&id={$id}";
                 }

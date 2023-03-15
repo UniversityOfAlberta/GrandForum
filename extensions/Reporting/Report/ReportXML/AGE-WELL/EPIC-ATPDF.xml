@@ -147,7 +147,6 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letters" type="EliteLetters" blobItem="LETTERS" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2" />
     </ReportSection>
     
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
