@@ -714,10 +714,14 @@ abstract class AbstractReport extends SpecialPage {
             foreach($perms as $perm){
                 switch($type){
                     case "Role":
-                        if($perm['perm']['role'] != "LoggedOut" && !$me->isLoggedIn()){
+                        if($perm['perm']['role'] != "LoggedOut" && 
+                           $perm['perm']['role'] != "LoggedOut+" && !$me->isLoggedIn()){
                             return false;
                         }
-                        if($perm['perm']['role'] == "LoggedOut" && !$me->isLoggedIn()){
+                        else if($perm['perm']['role'] == "LoggedOut+"){
+                            $rResult = true;
+                        }
+                        else if($perm['perm']['role'] == "LoggedOut" && !$me->isLoggedIn()){
                             $rResult = true;
                         }
                         else if($perm['perm']['role'] == INACTIVE && !$me->isActive()){

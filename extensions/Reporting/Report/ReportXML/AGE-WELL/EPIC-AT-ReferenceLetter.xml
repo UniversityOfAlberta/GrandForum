@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Reference Letter" reportType="RP_EPIC_AT2" year="2023" ajax="true" encrypt="true">
     <Permissions>
-        <Role role="LoggedOut">
+        <Role role="LoggedOut+">
             <SectionPermission id="letter" permissions="rw" />
         </Role>
     </Permissions>
