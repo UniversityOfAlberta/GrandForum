@@ -718,7 +718,7 @@ abstract class AbstractReport extends SpecialPage {
                            $perm['perm']['role'] != "LoggedOut+" && !$me->isLoggedIn()){
                             return false;
                         }
-                        else if($perm['perm']['role'] == "LoggedOut+"){
+                        if($perm['perm']['role'] == "LoggedOut+"){
                             $rResult = true;
                         }
                         else if($perm['perm']['role'] == "LoggedOut" && !$me->isLoggedIn()){
