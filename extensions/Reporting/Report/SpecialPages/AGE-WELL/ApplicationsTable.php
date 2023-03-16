@@ -557,6 +557,29 @@ class ApplicationsTable extends SpecialPage{
         $uofc->setBlobSection(HQP_APPLICATION_FORM);
         $uofc->setId("UOFC");
         
+        $refs = new EliteUploadedLettersReportItem();
+        $refs->setBlobType(BLOB_ARRAY);
+        $refs->setBlobItem("LETTERS");
+        $refs->setBlobSection(HQP_APPLICATION_DOCS);
+        $refs->setId("letters");
+        
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2023, "2023", array("Level" => $level,
+                                                                                             "Michael F. Harcourt" => $michael,
+                                                                                             "Indigenous" => $ind,
+                                                                                             "Kobayashi" => $kob,
+                                                                                             "MIRA" => $mira,
+                                                                                             "UofT" => $uoft,
+                                                                                             "UBC" => $ubc,
+                                                                                             "SHRF" => $shrf,
+                                                                                             "UW" => $uw,
+                                                                                             "UOFC" => $uofc,
+                                                                                             "Supervisor" => $sup,
+                                                                                             "Institution" => $uni,
+                                                                                             "Status/Department" => $dept,
+                                                                                             "Project Title" => $title,
+                                                                                             "Keywords" => $keywords,
+                                                                                             "References" => $refs)));
+        
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2022, "2022", array("Level" => $level,
                                                                                              "Michael F. Harcourt" => $michael,
                                                                                              "Indigenous" => $ind,

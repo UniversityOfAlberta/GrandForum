@@ -3,7 +3,7 @@
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <div style="margin-top:20px;"><h4 style='font-size:1.5em;'>AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging (2022)</h4></div>
+                <div style="margin-top:20px;"><h4 style='font-size:1.5em;'>AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging (2023)</h4></div>
                 <div class='logo_div' style="height:20px;margin-top:30px;">
                     <img class='logo' style="position:static; float:right;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 </div>
@@ -62,25 +62,6 @@
             </ReportItem>
         </If>
         
-        <ReportItem id="KOBAYASHI" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_KOBAYASHI" orientation="vertical" options="Master's ($15,000)|PhD ($25,000)|Postdoctoral ($30,000)" optional="true">
-            <![CDATA[
-                <h4>Karen Kobayashi Memorial Award in Technology and Aging</h4>
-                <p>{$item}</p><br />
-                
-            ]]>
-        </ReportItem>
-        
-        <If id="if_kobayashi" if="{!=({getArray(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_KOBAYASHI, 0, {$user_id}, 0, KOBAYASHI)},)}">
-            <ReportItem id="KOBAYASHI_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_KOBAYASHI_DESC" optional="true" rich="true" limit="750">
-                <![CDATA[
-                    <div style='margin-left:4em;'>
-                        <b>Description</b>
-                        <p>{$item}</p><br />
-                    </div>
-                ]]>
-            </ReportItem>
-        </If>
-        
         <ReportItem id="INDIGENOUS" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_INDIGENOUS" orientation="vertical" options="Master's ($15,000)|PhD ($25,000)|Postdoctoral ($30,000)" optional="true">
             <![CDATA[
                 <h4>Indigenous Graduate Student or Postdoctoral Award</h4>
@@ -100,6 +81,25 @@
             </ReportItem>
         </If>
         
+        <ReportItem id="KOBAYASHI" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_KOBAYASHI" orientation="vertical" options="Master's ($15,000)|PhD ($25,000)|Postdoctoral ($30,000)" optional="true">
+            <![CDATA[
+                <h4>Karen Kobayashi Memorial Award in Technology and Aging</h4>
+                <p>{$item}</p><br />
+                
+            ]]>
+        </ReportItem>
+        
+        <If id="if_kobayashi" if="{!=({getArray(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_KOBAYASHI, 0, {$user_id}, 0, KOBAYASHI)},)}">
+            <ReportItem id="KOBAYASHI_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_KOBAYASHI_DESC" optional="true" rich="true" limit="750">
+                <![CDATA[
+                    <div style='margin-left:4em;'>
+                        <b>Description</b>
+                        <p>{$item}</p><br />
+                    </div>
+                ]]>
+            </ReportItem>
+        </If>
+        
         <ReportItem id="MIRA" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MIRA" orientation="vertical" options="Master's ($15,000)|PhD ($20,000)|Postdoctoral ($50,000)" optional="true">
             <![CDATA[
                 <h4>AGE-WELL-MIRA Awards</h4>
@@ -107,14 +107,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500)" optional="true">
-            <![CDATA[
-                <h4>AGE-WELL-NBHRF Awards</h4>
-                <p>{$item}</p><br />
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="SHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_SHRF" orientation="vertical" options="Postdoctoral ($45,000)" optional="true">
+        <ReportItem id="SHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_SHRF" orientation="vertical" options="Master's ($15,000)|PhD ($20,000)|Postdoctoral ($45,000)" optional="true">
             <![CDATA[
                 <h4>AGE-WELL-SHRF</h4>
                 <p>{$item}</p><br />
@@ -124,6 +117,13 @@
         <ReportItem id="UBC" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_UBC" orientation="vertical" options="Master's ($10,000)|PhD ($20,000)|Postdoctoral ($25,000)" optional="true">
             <![CDATA[
                 <h4>AGE-WELL-UBC Award</h4>
+                <p>{$item}</p><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="UOFC" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_UOFC" orientation="vertical" options="Master's ($15,000)|PhD ($20,000)" optional="true">
+            <![CDATA[
+                <h4>AGE-WELL-UCalgary Awards</h4>
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
@@ -138,13 +138,6 @@
         <ReportItem id="UW" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_UW" orientation="vertical" options="Master's ($10,000)|PhD ($20,000)|Postdoctoral ($25,000)" optional="true">
             <![CDATA[
                 <h4>AGE-WELL-UW Faculty of Health</h4>
-                <p>{$item}</p><br />
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="UOFC" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_UOFC" orientation="vertical" options="Master's ($15,000)|PhD ($20,000)|Postdoctoral ($50,000)" optional="true">
-            <![CDATA[
-                <h4>AGE-WELL-UCalgary Awards</h4>
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
@@ -252,10 +245,6 @@
         <ReportItem id="evidence" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_EVIDENCE" mimeType="application/pdf" fileSize="2">
         </ReportItem>
         <ReportItem id="cv" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
-        </ReportItem>
-        <ReportItem id="kt" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_KT" mimeType="application/pdf" fileSize="2">
-        </ReportItem>
-        <ReportItem id="michael" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_MICHAEL" mimeType="application/pdf" fileSize="2">
         </ReportItem>
     </ReportSection>
 </Report>

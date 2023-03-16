@@ -14,6 +14,9 @@ class EliteLettersReportItem extends MultiTextReportItem {
         global $wgServer, $wgScriptPath, $config;
         $data = $this->getBlobValue();
         $report = $this->getReport();
+        if(!is_array($data)){
+            return true;
+        }
         foreach($data as $row){
             $name = @trim($row['name']);
             $email = @trim($row['email']);
