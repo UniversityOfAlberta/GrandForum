@@ -139,6 +139,42 @@ HTML.Value = function(model, attr){
     }
 }
 
+HTML.Hidden = function(view, attr, options){
+    var el = HTML.Element("input", "hidden", options);
+    el.setAttribute('type', 'hidden');
+    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('value', HTML.Value(view, attr));
+    view.events['change input[name=' + HTML.Name(attr) + '][type=hidden]'] = function(e){
+        if(attr.indexOf('.') != -1){
+            var elems = attr.split(".");
+            var recurse = function(data, depth) {
+                if (depth < elems.length) {
+                    if((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                        data = {};
+                        data[elems[depth]] = {};
+                    }
+                    data[elems[depth]] = recurse(data[elems[depth]], depth+1);
+                    return data;
+                } else {
+                    return $(e.target).val();
+                }
+            }
+            
+            var data = view.model.get(elems[0]);
+            data = recurse(data, 1);
+            view.model.set(elems[0], _.clone(data));
+            view.model.trigger('change', view.model);
+            view.model.trigger('change:' + elems[0], view.model);
+        }
+        else{
+            view.model.set(attr, $(e.target).val());
+        }
+    };
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + '][type=hidden]');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + '][type=hidden]', view.events['change input[name=' + HTML.Name(attr) + '][type=hidden]']);
+    return el.outerHTML;
+}
+
 HTML.TextBox = function(view, attr, options){
     var el = HTML.Element("input", "text", options);
     el.setAttribute('type', 'text');

@@ -1,5 +1,5 @@
-<span id="deleteOpportunity" class="delete-icon" style="float: right;margin-top:8px;" title="Delete Opportunity"></span>
-<div style="display:flex;margin-bottom:13px;">
+<span id="deleteOpportunity" class="delete-icon" style="float: right; margin-top: 5px;" title="Delete Opportunity"></span>
+<div style="display:flex;margin-bottom:13px;margin-right:32px;">
     <div style="margin-right:30px;">
         <b>Category:</b>
         <%= HTML.Select(this, 'category', {style: 'vertical-align:middle;', value: category, options: ['Synthesis',
@@ -14,9 +14,12 @@
         <b>Owner:</b>
         <%= HTML.Select(this, 'owner.id', {style: 'width:200px;vertical-align:middle;', options: _.union([{option: owner.name, value: owner.id}], _.filter(_.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != owner.id; }))}) %>
     </div>
-    <div>
+    <div style="margin-right:30px;">
         <b>User Type:</b>
         <%= HTML.Select(this, 'owner.userType', {style: 'width:200px;vertical-align:middle;', options: ['On site', 'Remote', 'Data']}) %>
+    </div>
+    <div style="line-height: 28px;">
+        <%= date %>
     </div>
 </div>
 <%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:100%; margin-left:0;margin-right:0;'}) %>

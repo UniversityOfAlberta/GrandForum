@@ -12,6 +12,7 @@ class LIMSOpportunity extends BackboneModel {
     var $userType;
     var $description;
     var $category;
+    var $date;
 	
 	static function newFromId($id){
 	    $data = DBFunctions::select(array('grand_lims_opportunity'),
@@ -43,6 +44,7 @@ class LIMSOpportunity extends BackboneModel {
 		    $this->userType = $data[0]['user_type'];
 		    $this->description = $data[0]['description'];
 		    $this->category = $data[0]['category'];
+		    $this->date = $data[0]['date'];
 		}
 	}
 	
@@ -74,6 +76,10 @@ class LIMSOpportunity extends BackboneModel {
 	    return $this->category;
 	}
 	
+	function getDate(){
+	    return $this->date;
+	}
+	
 	function getTasks(){
 	    return LIMSTask::getTasks($this->getId());
 	}
@@ -102,6 +108,7 @@ class LIMSOpportunity extends BackboneModel {
 	                      'userType' => $this->getUserType(),
 	                      'description' => $this->getDescription(),
 	                      'category' => $this->getCategory(),
+	                      'date' => $this->getDate(),
 	                      'isAllowedToEdit' => $this->isAllowedToEdit());
 	        return $json;
 	    }
@@ -115,7 +122,8 @@ class LIMSOpportunity extends BackboneModel {
 	                                  'owner' => $this->owner,
 	                                  'user_type' => $this->userType,
 	                                  'description' => $this->description,
-	                                  'category' => $this->category));
+	                                  'category' => $this->category,
+	                                  'date' => COL('CURRENT_TIMESTAMP')));
 	        $this->id = DBFunctions::insertId();
 	    }
 	}
