@@ -20,7 +20,7 @@ LIMSTask = Backbone.Model.extend({
                        url: ""},
             task: "",
             dueDate: "",
-            transactions: new Array(),
+            comments: "",
             status: "",
             isAllowedToEdit: true
         };

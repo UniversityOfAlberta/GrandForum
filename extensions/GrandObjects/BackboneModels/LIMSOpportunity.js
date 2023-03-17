@@ -30,6 +30,7 @@ LIMSOpportunity = Backbone.Model.extend({
             owner: {id: "",
                     name: "",
                     url: ""},
+            userType: "",
             description: "",
             category: "",
             isAllowedToEdit: true

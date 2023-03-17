@@ -19,8 +19,33 @@
                 <td><%= HTML.TextBox(this, 'details.email', {size: '30'}) %></td>
             </tr>
             <tr>
-                <td class="label">Institution:</td>
+                <td class="label left-align">Sector:</td>
+                <td><%= HTML.Select(this, 'details.sector', {options: ['University, college, research hospital',
+                                                                       'Other public',
+                                                                       'Private',
+                                                                       'Not-for-profit']}) %></td>
+            </tr>
+            <tr>
+                <td class="label left-align">Institution/Company:</td>
                 <td><%= HTML.TextBox(this, 'details.institution', {size: '30'}) %></td>
+            </tr>
+            <tr>
+                <td class="label left-align">Geographic:</td>
+                <td><%= HTML.Select(this, 'details.institution', {options: ['British Columbia',
+                                                                            'Alberta',
+                                                                            'Saskatchewan',
+                                                                            'Manitoba',
+                                                                            'Ontario',
+                                                                            'Quebec',
+                                                                            'New Brunswick',
+                                                                            'Nova Scotia',
+                                                                            'Prince Edward Island',
+                                                                            'Newfoundland and Labrador',
+                                                                            'Yukon',
+                                                                            'Northwest Territories',
+                                                                            'Nunavut',
+                                                                            'Outside Canada: United States',
+                                                                            'Outside Canada: other than United States']}) %></td>
             </tr>
         </table>
     </div>
@@ -29,9 +54,9 @@
         <%= HTML.ProjectSelector(this, 'projects', {inlineOther: true}) %>
     </div>
 </div>
-<h3>Opportunities</h3>
+<h3>Requests</h3>
 <div id="opportunities"></div>
-<button id="addOpportunity">Add Opportunity</button>
+<button id="addOpportunity">Add Request</button>
 <br />
 <br />
 <% if(!this.isDialog){ %>

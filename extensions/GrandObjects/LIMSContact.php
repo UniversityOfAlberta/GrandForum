@@ -16,7 +16,7 @@ class LIMSContact extends BackboneModel {
 	
 	static function newFromId($id){
 	    if(!isset(self::$cache[$id])){
-	        $data = DBFunctions::select(array('grand_crm_contact'),
+	        $data = DBFunctions::select(array('grand_lims_contact'),
 	                                    array('*'),
 	                                    array('id' => $id));
 	        self::$cache[$id] = new LIMSContact($data);
@@ -27,14 +27,14 @@ class LIMSContact extends BackboneModel {
 	static function getAllContacts($project=null){
 	    if($project == null){
 	        // Get All
-	        $data = DBFunctions::select(array('grand_crm_contact'),
+	        $data = DBFunctions::select(array('grand_lims_contact'),
 	                                    array('id'),
 	                                    array());
 	    }
 	    else{
 	        // Get only the contacts which belong to $project
-	        $data = DBFunctions::select(array('grand_crm_contact' => 'c', 
-	                                          'grand_crm_projects' => 'p'),
+	        $data = DBFunctions::select(array('grand_lims_contact' => 'c', 
+	                                          'grand_lims_projects' => 'p'),
 	                                    array('c.id'),
 	                                    array('c.id' => EQ(COL('p.contact_id')),
 	                                          'p.project_id' => $project->getId()));
@@ -84,7 +84,7 @@ class LIMSContact extends BackboneModel {
 	function getProjects(){
 	    if($this->projects === null){
 	        $this->projects = array();
-	        $data = DBFunctions::select(array('grand_crm_projects'),
+	        $data = DBFunctions::select(array('grand_lims_projects'),
 	                                    array('project_id'),
 	                                    array('contact_id' => $this->getId()));
 	        foreach($data as $row){
@@ -123,7 +123,7 @@ class LIMSContact extends BackboneModel {
      */
     function validate(){
         $details = $this->getDetails();
-        $data = DBFunctions::select(array('grand_crm_contact'),
+        $data = DBFunctions::select(array('grand_lims_contact'),
                                     array('id'),
                                     array('details' => LIKE('%"firstName":"'.DBFunctions::like($details->firstName).'"%'),
                                           WHERE_AND('details') => LIKE('%"lastName":"'.DBFunctions::like($details->lastName).'"%'),
@@ -183,14 +183,14 @@ class LIMSContact extends BackboneModel {
 	    if(self::isAllowedToCreate()){
 	        $me = Person::newFromWgUser();
 	        $this->owner = $me->getId();
-	        DBFunctions::insert('grand_crm_contact',
+	        DBFunctions::insert('grand_lims_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
 	                                  'details' => json_encode($this->details)));
 	        $this->id = DBFunctions::insertId();
 	        // Now add projects
 	        foreach($this->projects as $project){
-                DBFunctions::insert("grand_crm_projects", 
+                DBFunctions::insert("grand_lims_projects", 
                                     array('contact_id' => $this->id,
                                           'project_id' => $project->id),
                                     true);
@@ -204,7 +204,7 @@ class LIMSContact extends BackboneModel {
 	    if($this->isAllowedToEdit()){
 	        $me = Person::newFromWgUser();
 	        $this->owner = $me->getId();
-	        DBFunctions::update('grand_crm_contact',
+	        DBFunctions::update('grand_lims_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
 	                                  'details' => json_encode($this->details)),
@@ -218,10 +218,10 @@ class LIMSContact extends BackboneModel {
                 }
             }
             
-	        DBFunctions::delete('grand_crm_projects',
+	        DBFunctions::delete('grand_lims_projects',
 	                            array('contact_id' => $this->id));
 	        foreach($this->projects as $project){
-                DBFunctions::insert("grand_crm_projects", 
+                DBFunctions::insert("grand_lims_projects", 
                                     array('contact_id' => $this->id,
                                           'project_id' => $project->id),
                                     true);
@@ -236,9 +236,9 @@ class LIMSContact extends BackboneModel {
 	        foreach($this->getOpportunities() as $opportunity){
 	            $opportunity->delete();
 	        }
-	        DBFunctions::delete('grand_crm_projects',
+	        DBFunctions::delete('grand_liims_projects',
 	                            array('contact_id' => $this->id));
-	        DBFunctions::delete('grand_crm_contact',
+	        DBFunctions::delete('grand_lims_contact',
 	                            array('id' => $this->id));
 	        $this->id = "";
 	    }

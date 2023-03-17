@@ -2,14 +2,24 @@
 <div style="display:flex;margin-bottom:13px;">
     <div style="margin-right:30px;">
         <b>Category:</b>
-        <%= HTML.Select(this, 'category', {style: 'vertical-align:middle;', value: category, options: ['Industry', 'Government', 'Not-for-Profit', 'NIs/Board/Committees', 'Media']}) %>
+        <%= HTML.Select(this, 'category', {style: 'vertical-align:middle;', value: category, options: ['Synthesis',
+                                                                                                       'Glycan-Analysis',
+                                                                                                       'Glycan-Ligand screening',
+                                                                                                       'Glycan-Ligand discovery',
+                                                                                                       'Glyco-engineering',
+                                                                                                       'Molecular biology',
+                                                                                                       'Other']}) %>
     </div>
-    <div>
+    <div style="margin-right:30px;">
         <b>Owner:</b>
         <%= HTML.Select(this, 'owner.id', {style: 'width:200px;vertical-align:middle;', options: _.union([{option: owner.name, value: owner.id}], _.filter(_.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != owner.id; }))}) %>
     </div>
+    <div>
+        <b>User Type:</b>
+        <%= HTML.Select(this, 'owner.userType', {style: 'width:200px;vertical-align:middle;', options: ['On site', 'Remote', 'Data']}) %>
+    </div>
 </div>
-<%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:100%; margin-left:0;margi-right:0;'}) %>
+<%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:100%; margin-left:0;margin-right:0;'}) %>
 <h4>Tasks</h4>
 <table id="tasks" class="wikitable" style="width:100%;">
     <thead>
@@ -19,7 +29,7 @@
             <th style="width:200px;">Assignee</th>
             <th style="width:100px;">Due&nbsp;Date</th>
             <th style="width:100px;">Status</th>
-            <th style="width:230px;">Transactions</th>
+            <th style="width:230px;">Comments</th>
         </tr>
     </thead>
     <tbody>

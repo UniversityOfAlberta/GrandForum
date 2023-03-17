@@ -11,11 +11,11 @@ class LIMSTask extends BackboneModel {
     var $assignee;
     var $task;
     var $dueDate;
-    var $transactions;
+    var $comments;
     var $status;
 	
 	static function newFromId($id){
-	    $data = DBFunctions::select(array('grand_crm_task'),
+	    $data = DBFunctions::select(array('grand_lims_task'),
 	                                array('*'),
 	                                array('id' => $id));
 	    $opportunity = new LIMSTask($data);
@@ -23,7 +23,7 @@ class LIMSTask extends BackboneModel {
 	}
 	
 	static function getTasks($opportunity_id){
-	    $data = DBFunctions::select(array('grand_crm_task'),
+	    $data = DBFunctions::select(array('grand_lims_task'),
 	                                array('*'),
 	                                array('opportunity' => $opportunity_id));
 	    $tasks = array();
@@ -43,7 +43,7 @@ class LIMSTask extends BackboneModel {
 		    $this->assignee = $data[0]['assignee'];
 		    $this->task = $data[0]['task'];
 		    $this->dueDate = $data[0]['due_date'];
-		    $this->transactions = json_decode($data[0]['transactions']);
+		    $this->comments = $data[0]['comments']);
 		    $this->status = $data[0]['status'];
 		}
 	}
@@ -72,8 +72,8 @@ class LIMSTask extends BackboneModel {
 	    return substr($this->dueDate, 0, 10);
 	}
 	
-	function getTransactions(){
-	    return $this->transactions;
+	function getComments(){
+	    return $this->comments;
 	}
 	
 	function getStatus(){
@@ -147,7 +147,7 @@ class LIMSTask extends BackboneModel {
 	                      'assignee' => $assignee,
 	                      'task' => $this->getTask(),
 	                      'dueDate' => $this->getDueDate(),
-	                      'transactions' => $this->getTransactions(),
+	                      'comments' => $this->getComments(),
 	                      'status' => $this->getStatus(),
 	                      'isAllowedToEdit' => $this->isAllowedToEdit());
 	        return $json;
@@ -157,12 +157,12 @@ class LIMSTask extends BackboneModel {
 	
 	function create(){
 	    if(self::isAllowedToCreate()){
-	        DBFunctions::insert('grand_crm_task',
+	        DBFunctions::insert('grand_lims_task',
 	                            array('opportunity' => $this->opportunity,
 	                                  'assignee' => $this->assignee,
 	                                  'task' => $this->task,
 	                                  'due_date' => $this->dueDate,
-	                                  'transactions' => json_encode($this->transactions),
+	                                  'comments' => $this->comments,
 	                                  'status' => $this->status));
 	        $this->id = DBFunctions::insertId();
 	        // Send mail to assignee
@@ -173,7 +173,7 @@ class LIMSTask extends BackboneModel {
 	
 	function update(){
 	    if($this->isAllowedToEdit()){
-	        $data = DBFunctions::select(array('grand_crm_task'),
+	        $data = DBFunctions::select(array('grand_lims_task'),
 	                                    array('*'),
 	                                    array('id' => $this->id));
 	        if(@$data[0]['assignee'] != $this->assignee){
@@ -186,12 +186,12 @@ class LIMSTask extends BackboneModel {
 	            $assignee = Person::newFromId($this->assignee);
 	            $this->sendMail($assignee, 'due_date');
 	        }
-	        DBFunctions::update('grand_crm_task',
+	        DBFunctions::update('grand_lims_task',
 	                            array('opportunity' => $this->opportunity,
 	                                  'assignee' => $this->assignee,
 	                                  'task' => $this->task,
 	                                  'due_date' => $this->dueDate,
-	                                  'transactions' => json_encode($this->transactions),
+	                                  'comments' => $this->comments,
 	                                  'status' => $this->status),
 	                            array('id' => $this->id));
 	    }
@@ -199,7 +199,7 @@ class LIMSTask extends BackboneModel {
 	
 	function delete(){
 	    if($this->isAllowedToEdit()){
-	        DBFunctions::delete('grand_crm_task',
+	        DBFunctions::delete('grand_lims_task',
 	                            array('id' => $this->id));
 	        $this->id = "";
 	    }

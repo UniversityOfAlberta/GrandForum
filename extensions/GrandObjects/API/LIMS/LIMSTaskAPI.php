@@ -22,7 +22,7 @@ class LIMSTaskAPI extends RESTAPI {
             $task->assignee = $this->POST('assignee')->id;
             $task->task = $this->POST('task');
             $task->dueDate = $this->POST('dueDate');
-            $task->transactions = $this->POST('transactions');
+            $task->comments = $this->POST('comments');
             $task->status = $this->POST('status');
             $task->create();
             return $task->toJSON();
@@ -38,7 +38,7 @@ class LIMSTaskAPI extends RESTAPI {
             $task->assignee = $this->POST('assignee')->id;
             $task->task = $this->POST('task');
             $task->dueDate = $this->POST('dueDate');
-            $task->transactions = $this->POST('transactions');
+            $task->comments = $this->POST('comments');
             $task->status = $this->POST('status');
             $task->update();
             return $task->toJSON();

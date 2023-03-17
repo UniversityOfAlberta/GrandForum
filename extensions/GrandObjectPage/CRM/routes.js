@@ -35,7 +35,7 @@ allPeople.roles = [STAFF,MANAGER,ADMIN];
 allPeopleXHR = allPeople.fetch();
 
 pageRouter.on('route:showCRMContactsTable', function(){
-    main.set('title', "Contacts");
+    main.set('title', "Manage CRM");
     $.when(allPeopleXHR).done(function(){
         // Get All CRMContacts
         var contacts = new CRMContacts();
