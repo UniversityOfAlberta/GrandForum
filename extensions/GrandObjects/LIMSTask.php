@@ -43,7 +43,7 @@ class LIMSTask extends BackboneModel {
 		    $this->assignee = $data[0]['assignee'];
 		    $this->task = $data[0]['task'];
 		    $this->dueDate = $data[0]['due_date'];
-		    $this->comments = $data[0]['comments']);
+		    $this->comments = $data[0]['comments'];
 		    $this->status = $data[0]['status'];
 		}
 	}
