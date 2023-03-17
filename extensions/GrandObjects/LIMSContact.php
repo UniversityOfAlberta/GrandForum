@@ -236,7 +236,7 @@ class LIMSContact extends BackboneModel {
 	        foreach($this->getOpportunities() as $opportunity){
 	            $opportunity->delete();
 	        }
-	        DBFunctions::delete('grand_liims_projects',
+	        DBFunctions::delete('grand_lims_projects',
 	                            array('contact_id' => $this->id));
 	        DBFunctions::delete('grand_lims_contact',
 	                            array('id' => $this->id));
