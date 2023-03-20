@@ -15,7 +15,7 @@
         <ReportItem id="summary" limit="2000">
             <![CDATA[
                 <h3>Report Description</h3>
-                <p>This report is designed to capture the progress over the initial pilot year as well as information for AGE-WELL’s Annual Report to NCE due each spring. Content is adapted from the NCE Program Guide. It is understood and expected that Innovation Hubs receive funding from a variety of sources and engage in activities in support of organizational goals that may diverge, in some cases, from those of AGE-WELL. <b>Not all components of this report will be relevant to all programs; please answer the questions to the best of your ability.</b></p>
+                <p>This report is designed to capture the progress over the past year as well as information for AGE-WELL’s Annual Report to NCE due each spring. We will also use the content to assist in our plans to position Innovation Hubs within new AGE-WELL initiatives such as envisAGE and Healty Aging Canada (e.g. forward looking plans in 3.c). Content is adapted from the NCE Program Guide. It is understood and expected that Innovation Hubs receive funding from a variety of sources and engage in activities in support of organizational goals that may diverge, in some cases, from those of AGE-WELL. <b>Not all components of this report will be relevant to all programs; please answer the questions to the best of your ability.</b></p>
                 
                 <h3>Executive Summary (2000 characters / ½ pg)</h3>
                 <p>Describe the top three achievements, contributions and/or success stories from your Innovation Hub as they relate to the realization of your Hub’s overarching goals and to AGE-WELL’s <a href="http://agewell-nce.ca/about-us" target="_blank">mission and vision</a></p>
@@ -95,7 +95,7 @@
         <ReportItem id="priorities" type="TextareaReportItem" blobItem="PRIORITIES">
             <![CDATA[
                 <h3>c) Innovation Hub Objectives and Priorities</h3>
-                <p>Please provide a brief update on overall IH plans for 2022-2023, including objectives and priorities across NCE Program Criteria, as appropriate (headings from Section 2 a) – d)).</p>
+                <p>Please provide a brief update on overall IH plans for 2023-24, including objectives and priorities across NCE Program Criteria, as appropriate (headings from Section 2 a) – d)).</p>
                 {$item}
             ]]>
         </ReportItem>

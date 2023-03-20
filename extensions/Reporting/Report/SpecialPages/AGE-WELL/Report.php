@@ -111,7 +111,7 @@ class Report extends AbstractReport {
         
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HACReviewReport")) ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("HAC Review Report", "{$url}HACReviewReport", $selected);
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("HAC Review Table", "{$url}HACReviewReport", $selected);
         }
         
         if($person->isRoleAtLeast(STAFF)){
