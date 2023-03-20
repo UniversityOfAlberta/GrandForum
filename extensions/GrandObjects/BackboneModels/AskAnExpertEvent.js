@@ -22,6 +22,7 @@ AskAnExpertEvent = Backbone.Model.extend({
 	description: "",
 	evnt: "",
 	details: "",
+	locate: "",
     }
 });
 

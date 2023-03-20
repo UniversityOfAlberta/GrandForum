@@ -24,6 +24,7 @@ class AskAnExpertEvent extends BackboneModel {
     var $theme;
     var $desc;
     var $details;
+    var $location;
 
     static function newFromId($id){
         if(isset($cache[$id])){
@@ -80,6 +81,8 @@ class AskAnExpertEvent extends BackboneModel {
 	    $this->desc = $row["description"];
 	    $this->event = $row["event"];
 	    $this->details = $row["details"];
+            $this->location = $row["location"];
+
         }
     }
     
@@ -101,6 +104,7 @@ class AskAnExpertEvent extends BackboneModel {
 		    'description' => $this->desc,
 		    'host' => $this->host,
 		    'details' => $this->details,
+		    'location' => $this->location,
                 );
         return $json;
     }
@@ -124,6 +128,7 @@ class AskAnExpertEvent extends BackboneModel {
 						'description' => $this->desc,
 						'host' => $this->host,
 						'details' => $this->details,
+						'location' => $this->location,
                                           ), true);
             if($status){
                 DBFunctions::commit();
@@ -151,7 +156,8 @@ class AskAnExpertEvent extends BackboneModel {
                                                 'theme' => $this->theme,
                                                 'description' => $this->desc,
 						'host' => $this->host,
-                                                'details' => $this->details,
+						'details' => $this->details,
+						'location' => $this->location,
 					  ),
                                           array('id' => EQ($this->id)),
                                           array(),

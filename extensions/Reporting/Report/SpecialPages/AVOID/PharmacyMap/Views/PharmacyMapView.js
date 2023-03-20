@@ -21,7 +21,7 @@ PharmacyMapView = Backbone.View.extend({
         dc.increment("count");
     
         this.model.bind('sync', this.render);//change to on
-        
+       	 
         $(document).on('click', 'a.programWebsite', function(){
             this.clickWebsite(this.model.cat);
         }.bind(this));
@@ -45,9 +45,23 @@ PharmacyMapView = Backbone.View.extend({
         "click #printMap": "printMap",
         "click .category": "findCategory",
         "click .previous_button": "previousCategory",
-        "click #questions": "clickQuestions"
+        "click #questions": "clickQuestions",
+	"keypress #keywordsearch": "keywordSearch",
     },
-    
+
+
+
+    keywordSearch: function(){
+	if (event.key === "Enter") {
+            this.refresh = false;
+            this.renderMap = true;
+	    this.model.cat = null;
+            this.model.key = $('#keywordsearch').val();
+	    $("#searchbar_key").prepend('<img src="/skins/throbber.gif">');
+            this.model.fetch(); 
+	}
+    },
+
     clickQuestions(e){
         $("#questionsDialog").dialog({
             width: 'auto',
@@ -112,6 +126,7 @@ PharmacyMapView = Backbone.View.extend({
                 this.renderMap = true;
                 this.model.cat = this.buttons[cat]["code"];
                 this.note = this.buttons[cat]["note"];
+		this.model.key = null;
                 this.model.fetch();
                 $(".throbber", ev.currentTarget).show();
             }
@@ -462,6 +477,13 @@ PharmacyMapView = Backbone.View.extend({
         $(document).on('click', '.paginate_button', function () {
             this.refreshMap();
         }.bind(this));
+	if(this.model.key != null){
+	    $('#keywordsearch').val(this.model.key);
+	    if($("#body_accordion").accordion("option", "active") !== false){
+                $('#accordionHeader').click();
+            }
+	    $("#searchbar_key").append("<div class='searches'><br /><b>"+data.length+"</b> Results for Keyword Search: <b>"+this.model.key+"</b></div>");
+	}
         return this.$el;
     }
 

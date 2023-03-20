@@ -468,7 +468,7 @@
             ]]>
         </ReportItem>
         <ReportItem id="program_avoid" type="SelectReportItem" options="Canadian Frailty Network website|Poster, flyer, or pamphlet at community venue|Newspaper|Magazine or Newsletter 
-|Healthcare practitioner|Social media|Word of mouth|Other" blobItem="program_avoid">
+|Healthcare practitioner|Social media|Word of mouth|Event|Radio|Mail|Other" blobItem="program_avoid">
             <![CDATA[
                     <h3>How did you hear about the AVOID Frailty program?</h3>
                     <div class="requiredField">{$item}</div>

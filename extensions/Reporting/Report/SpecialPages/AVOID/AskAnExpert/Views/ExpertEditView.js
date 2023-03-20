@@ -61,6 +61,7 @@ ExpertEditView = Backbone.View.extend({
 		"end_of_event": datetimeendstr,
 		"date_for_questions": datetimestrquestion,
 		"details":form.find('textarea#details').val(),
+		"location":form.find('#location').val(),
 	});
 	var isNew = this.model.isNew();
         this.model.save(null, {

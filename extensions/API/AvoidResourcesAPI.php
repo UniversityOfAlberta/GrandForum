@@ -8,17 +8,32 @@
         }
 
 
-        function callAPI($cat="CFN-ACT-EX-DANCE"){
+        function callAPI($cat="CFN-ACT-EX-DANCE", $key=""){
             global $config;
-            if(Cache::exists($cat)){
-                return Cache::fetch($cat);
+	    if($key == ""){
+		if(Cache::exists($cat)){
+                    return Cache::fetch($cat);
+                }
+                $postData = array(
+                        "Dataset"=>"on",
+                        "Lang"=>"en",
+                        "Search"=>"match",
+                        "MatchMode"=>"category",
+                        "MatchTerms"=>$cat,
+                        "SearchType"=>"proximity",
+                        "Distance"=>10000,
+                        "Latitude"=>45.1397821,
+                        "Longitude"=>-77.2922286,
+                        "SortOrder"=>"distance",
+                        "PageIndex"=>0,
+                        "PageSize"=>1000,
+                        "Fields"=>"Eligibility,AgencyDescription,ParentAgency,PhysicalAddress1,EmailAddressMain,WebsiteAddress"
+                );
             }
-            $postData = array(
+            else{
+                $postData = array(
                     "Dataset"=>"on",
                     "Lang"=>"en",
-                    "Search"=>"match",
-                    "MatchMode"=>"category",
-                    "MatchTerms"=>$cat,
                     "SearchType"=>"proximity",
                     "Distance"=>10000,
                     "Latitude"=>45.1397821,
@@ -26,8 +41,11 @@
                     "SortOrder"=>"distance",
                     "PageIndex"=>0,
                     "PageSize"=>1000,
+                    "Search"=> "term",
+                    "Term"=> $key,
                     "Fields"=>"Eligibility,AgencyDescription,ParentAgency,PhysicalAddress1,EmailAddressMain,WebsiteAddress"
-            );
+                );
+            }
             
             // Create the context for the request
             $context = stream_context_create(array(
@@ -58,6 +76,10 @@
             if(isset($_GET['cat'])){
                 $cat = $_GET['cat'];
                 $myJSON =json_encode($this->callAPI($cat));
+            }
+            elseif(isset($_GET['key'])){
+                $key = $_GET['key'];
+                $myJSON =json_encode($this->callAPI("", $key));
             }
             else{ 
                 $myJSON =json_encode($this->callAPI());

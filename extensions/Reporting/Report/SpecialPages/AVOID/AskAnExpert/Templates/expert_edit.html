@@ -39,12 +39,17 @@
     </tr>
     <tr>
         <td class="label">Description:</td>
-	<td class="field"><textarea id="description" cols="20" rows="3" name="description"><%= description%></textarea></td>
+	<td class="field"><textarea id="description" style="height:250px;" cols="20" rows="3" name="description"><%= description%></textarea></td>
     </tr>
     <tr>
         <td class="label">Details:</td>
-        <td class="field"><textarea id="details" cols="20" rows="3" name="details"><%= details%></textarea></td>
+        <td class="field"><textarea id="details" style="height:100px;" cols="10" rows="2" name="details"><%= details%></textarea></td>
     </tr>
+    <tr>
+        <td class="label">Location:</td>
+        <td class="field"><input type="text" style="width:300px" id="location" name="location" value="<%= location%>"></td>
+    </tr>
+
 </table>
 <br />
     <% if(!this.isDialog){ %>

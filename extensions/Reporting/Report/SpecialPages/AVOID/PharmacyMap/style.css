@@ -276,3 +276,26 @@ table#listTable.dataTable tbody tr:hover > .sorting_1 {
 #questionsTable ul li:first-child {
     margin-top: 0;
 }
+
+
+input.hs-search-field__input {
+    height: 50px;
+    width: 700px;
+    margin-bottom: 10px;
+    font-size: 25px;
+    background-image: url(/skins/search.png);
+    background-repeat: no-repeat;
+    background-position-x: 10px;
+    background-position-y: center;
+    border-radius: 0.5em !important;
+    padding-left: 40px;
+    background-color: #fff;
+    border: 1px solid #000;
+    box-shadow: none;
+    -webkit-appearance: none;
+}
+
+.searches {
+    font-size:20px;
+    margin-bottom:20px;
+}

@@ -50,6 +50,7 @@ class AskAnExpertEventAPI extends RESTAPI {
         $askanexpertevent->host = $this->POST('host');
 	$askanexpertevent->theme = $this->POST('theme');
 	$askanexpertevent->details = $this->POST('details');
+	$askanexpertevent->location = $this->POST('location');
         $askanexpertevent->active = 1;
         $askanexpertevent->currently_on = 1;
         $status =$askanexpertevent->create();
@@ -82,6 +83,7 @@ class AskAnExpertEventAPI extends RESTAPI {
         $askanexpertevent->host = $this->POST('host');
 	$askanexpertevent->theme = $this->POST('theme');
 	$askanexpertevent->details = $this->POST('details');
+	$askanexpertevent->location = $this->POST('location');
         $askanexpertevent->active = 1;
         $status = $askanexpertevent->update();
         if(!$status){
