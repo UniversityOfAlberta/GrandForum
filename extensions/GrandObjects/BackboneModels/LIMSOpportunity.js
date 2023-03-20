@@ -33,6 +33,7 @@ LIMSOpportunity = Backbone.Model.extend({
             userType: "",
             description: "",
             category: "",
+            files: [],
             date: "",
             isAllowedToEdit: true
         };

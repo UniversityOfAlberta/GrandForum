@@ -40,3 +40,17 @@
     </tbody>
 </table>
 <button id="addTask" style="margin-top:15px;">Add Task</button>
+<h4>Documents</h4>
+<table id="files" class="wikitable">
+    <tr><th>File</th><th>Delete?</th></tr>
+<% _.each(files, function(file, i){ %>
+    <% if(file.id != null){ %>
+        <tr>
+            <td><a href="<%= file.url %>" target="_blank"><%= file.filename %></a></td>
+            <td align="center"><%= HTML.CheckBox(this, 'files.' + i + '.delete', {value: 1}) %></td>
+        </tr>
+    <% } %>
+<% }.bind(this)) %>
+</table>
+<button id="addDocument">Add Document</button>
+<!--button id="addProduct">Add Product</button-->

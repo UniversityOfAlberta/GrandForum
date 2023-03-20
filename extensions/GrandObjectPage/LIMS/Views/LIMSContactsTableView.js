@@ -111,6 +111,7 @@ LIMSContactsTableView = Backbone.View.extend({
 	            "Save": {
                     text: "Save Contact",
                     click: function(){
+                        $(".ui-dialog-buttonset .throbber", this.editDialog.parent()).show();
                         var buttons = $(".ui-dialog-buttonset button", this.editDialog.parent());
                         $(buttons).prop('disabled', true);
                         // Save Contact
@@ -120,6 +121,7 @@ LIMSContactsTableView = Backbone.View.extend({
                                 // Save Tasks
                                 $.when.apply(null, this.editDialog.view.saveTasks()).done(function(){
                                     $(buttons).prop('disabled', false);
+                                    $(".ui-dialog-buttonset .throbber", this.editDialog.parent()).hide();
                                     this.editDialog.dialog("close");
                                     this.model.fetch();
                                     clearAllMessages();
@@ -128,6 +130,7 @@ LIMSContactsTableView = Backbone.View.extend({
                             }.bind(this));
                         }.bind(this)).fail(function(e){
                             $(buttons).prop('disabled', false);
+                            $(".ui-dialog-buttonset .throbber", this.editDialog.parent()).hide();
                             clearAllMessages("#dialogMessages");
                             addError(e.responseText, true, "#dialogMessages");
                         }.bind(this));
@@ -138,6 +141,8 @@ LIMSContactsTableView = Backbone.View.extend({
 	            }.bind(this)
             }
 	    });
+	    
+	    $(".ui-dialog-buttonset", this.editDialog.parent()).prepend("<span class='throbber' style='display:none;'></span>");
 	    
 	    this.deleteDialog = this.$("#deleteDialog").dialog({
 	        autoOpen: false,

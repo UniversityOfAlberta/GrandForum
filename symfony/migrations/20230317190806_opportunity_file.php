@@ -26,7 +26,7 @@ class OpportunityFile extends AbstractMigration
         $table = $this->table('grand_lims_files', array('id' => 'id'));
         $table->addColumn('opportunity_id', 'integer')
               ->addColumn('filename', 'string', array('limit' => 128))
-              ->addColumn('mime', 'string', array('limit' => '64'))
+              ->addColumn('type', 'string', array('limit' => '64'))
               ->addColumn('data', 'text', array('limit' => MysqlAdapter::TEXT_MEDIUM))
               ->addIndex('opportunity_id')
               ->create();

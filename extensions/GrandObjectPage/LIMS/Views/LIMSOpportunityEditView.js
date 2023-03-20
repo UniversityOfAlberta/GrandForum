@@ -33,9 +33,17 @@ LIMSOpportunityEditView = Backbone.View.extend({
         this.model.trigger("change:toDelete");
     },
     
+    addDocument: function(){
+        var files = this.model.get('files');
+        files.push({id: null, data: ''});
+        this.model.set('files', files);
+        this.$("#files").append("<tr><td>" + HTML.File(this, 'files.' + (files.length - 1), {}) + "</td><td></td></tr>");
+    },
+    
     events: {
         "click #deleteOpportunity": "deleteOpportunity",
-        "click #addTask": "addTask"
+        "click #addTask": "addTask",
+        "click #addDocument": "addDocument"
     },
     
     removeTasks: function(){

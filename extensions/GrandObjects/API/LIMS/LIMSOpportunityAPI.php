@@ -3,8 +3,20 @@
 class LIMSOpportunityAPI extends RESTAPI {
     
     function doGET(){
+        $files = ($this->getParam('files') != "");
+        $file_id = $this->getParam('file_id');
         if($this->getParam('id') != ""){
             $opportunity = LIMSOpportunity::newFromId($this->getParam('id'));
+            if($files && $file_id != ""){
+                $file = $opportunity->getFile($file_id);
+                if(isset($file['data']) && isset($file['type']) && isset($file['filename'])){
+                    header('Content-Type: '.$file['type']);
+                    header('Content-Disposition: attachment; filename="'.$file['filename'].'"');
+                    $exploded = explode("base64,", $file['data']);
+                    echo base64_decode(@$exploded[1]);
+                    exit;
+                }
+            }
             return $opportunity->toJSON();
         }
         else{
@@ -23,6 +35,7 @@ class LIMSOpportunityAPI extends RESTAPI {
             $opportunity->userType = $this->POST('userType');
             $opportunity->category = $this->POST('category');
             $opportunity->description = $this->POST('description');
+            $opportunity->files = $this->POST('files');
             $opportunity->create();
             return $opportunity->toJSON();
         }
@@ -39,6 +52,7 @@ class LIMSOpportunityAPI extends RESTAPI {
             $opportunity->category = $this->POST('category');
             $opportunity->date = $this->POST('date');
             $opportunity->description = $this->POST('description');
+            $opportunity->files = $this->POST('files');
             $opportunity->update();
             return $opportunity->toJSON();
         }

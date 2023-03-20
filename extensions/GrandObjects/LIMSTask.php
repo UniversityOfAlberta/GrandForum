@@ -201,8 +201,6 @@ class LIMSTask extends BackboneModel {
 	    if($this->isAllowedToEdit()){
 	        DBFunctions::delete('grand_lims_task',
 	                            array('id' => $this->id));
-	        DBFunctions::delete('grand_lims_files',
-	                            array('opportunity_id' => $this->id));
 	        $this->id = "";
 	    }
 	}
