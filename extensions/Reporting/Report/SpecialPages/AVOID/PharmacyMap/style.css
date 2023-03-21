@@ -283,12 +283,8 @@ input.hs-search-field__input {
     width: 700px;
     margin-bottom: 10px;
     font-size: 25px;
-    background-image: url(/skins/search.png);
-    background-repeat: no-repeat;
-    background-position-x: 10px;
-    background-position-y: center;
     border-radius: 0.5em !important;
-    padding-left: 40px;
+    padding-left: 14px;
     background-color: #fff;
     border: 1px solid #000;
     box-shadow: none;

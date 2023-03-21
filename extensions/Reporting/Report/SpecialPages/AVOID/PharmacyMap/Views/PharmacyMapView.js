@@ -47,17 +47,16 @@ PharmacyMapView = Backbone.View.extend({
         "click .previous_button": "previousCategory",
         "click #questions": "clickQuestions",
 	"keypress #keywordsearch": "keywordSearch",
+	"click #keysearch_btn": "keywordSearch",
     },
 
-
-
-    keywordSearch: function(){
-	if (event.key === "Enter") {
+    keywordSearch(e){
+	if (event.key === "Enter" || e.currentTarget.id == 'keysearch_btn') {
             this.refresh = false;
             this.renderMap = true;
 	    this.model.cat = null;
             this.model.key = $('#keywordsearch').val();
-	    $("#searchbar_key").prepend('<img src="/skins/throbber.gif">');
+	    $("#searchbar_key").append('<img style="height:4em;" src='+wgServer+wgScriptPath+'/skins/throbber.gif>');
             this.model.fetch(); 
 	}
     },
@@ -482,7 +481,7 @@ PharmacyMapView = Backbone.View.extend({
 	    if($("#body_accordion").accordion("option", "active") !== false){
                 $('#accordionHeader').click();
             }
-	    $("#searchbar_key").append("<div class='searches'><br /><b>"+data.length+"</b> Results for Keyword Search: <b>"+this.model.key+"</b></div>");
+	    $(".searches").append("<br /><b>"+data.length+"</b> Results for Keyword Search: <b>"+this.model.key+"</b>");
 	}
         return this.$el;
     }
