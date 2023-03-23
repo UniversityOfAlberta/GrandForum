@@ -105,13 +105,13 @@ class ProjectPage {
                 if($config->getValue('networkName') == "FES"){
                     $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
                 }
-                else{
+                else if((strstr($project->getName(), "GIS-") === false)){
                     $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET')){
+                if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET') && (strstr($project->getName(), "GIS-") === false)){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
@@ -120,7 +120,7 @@ class ProjectPage {
                 if($config->getValue('wikiEnabled')){
                     $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
                 }
-                if($config->getValue('networkName') == "GlycoNet"){
+                if($config->getValue('networkName') == "GlycoNet" && (strstr($project->getName(), "GIS-") === false)){
                     $tabbedPage->addTab(new ProjectReportsTab($project, $visibility));
                 }
                 if($visibility['isLead'] && isExtensionEnabled('Reporting')){

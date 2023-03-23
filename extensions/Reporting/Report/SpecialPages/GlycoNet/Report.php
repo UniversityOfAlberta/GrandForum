@@ -123,7 +123,7 @@ class Report extends AbstractReport{
         }*/
         if($person->isRole(NI) || $person->isRole(HQP) || $person->isRole(FAKENI)){
             foreach($person->getProjects() as $project){
-                if(strstr($project->getName(), "GIS") !== false){
+                if(strstr($project->getName(), "GIS-") !== false){
                     // No project Report for GIS
                     continue;
                 }
