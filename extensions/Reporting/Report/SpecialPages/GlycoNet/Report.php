@@ -123,6 +123,10 @@ class Report extends AbstractReport{
         }*/
         if($person->isRole(NI) || $person->isRole(HQP) || $person->isRole(FAKENI)){
             foreach($person->getProjects() as $project){
+                if(strstr($project->getName(), "GIS") !== false){
+                    // No project Report for GIS
+                    continue;
+                }
                 if($person->isRole(PL, $project) || $person->isRole(NI, $project) || $person->isRole(HQP, $project) || $person->isRole(FAKENI, $project)){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReport") && isset($_GET['project']) && $_GET['project'] == $project->getName()) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}ProjectReport&project={$project->getName()}", $selected);
