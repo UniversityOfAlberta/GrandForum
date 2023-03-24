@@ -54,7 +54,6 @@ class LIMSOpportunityAPI extends RESTAPI {
             $opportunity->owner = $this->POST('owner')->id;
             $opportunity->userType = $this->POST('userType');
             $opportunity->category = $this->POST('category');
-            $opportunity->date = $this->POST('date');
             $opportunity->surveyed = $this->POST('surveyed');
             $opportunity->responded = $this->POST('responded');
             $opportunity->satisfaction = $this->POST('satisfaction');
