@@ -3,13 +3,13 @@
     <p>Are you sure you want to delete this contact (this will also delete the related opportunities and tasks)?</p>
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
-<% if(isAllowedToCreateCRMContacts){ %>
+<% if(isAllowedToCreateLIMSContacts){ %>
     <button id="addContact">Add Contact</button>
 <% } %>
 <table id="contacts" frame="box" rules="all">
     <thead>
         <tr>
-            <% if(isAllowedToCreateCRMContacts){ %>
+            <% if(isAllowedToCreateLIMSContacts){ %>
                 <th width="1%">Edit</th>
             <% } %>
             <th>Contact</th>
@@ -25,15 +25,15 @@
     <tbody>
         <% this.model.each(function(contact){
             if(contact.get('opportunities').length == 0){
-                contact.get('opportunities').push(new CRMOpportunity().toJSON());
+                contact.get('opportunities').push(new LIMSOpportunity().toJSON());
             }
             _.each(contact.get('opportunities'), function(opportunity){
                 if(opportunity.tasks == undefined || opportunity.tasks.length == 0){
-                    opportunity.tasks = [new CRMTask().toJSON()];
+                    opportunity.tasks = [new LIMSTask().toJSON()];
                 }
                 _.each(opportunity.tasks, function(task){ %>
                     <tr>
-                        <% if(isAllowedToCreateCRMContacts){ %>
+                        <% if(isAllowedToCreateLIMSContacts){ %>
                             <td align="center" style="white-space:nowrap;">
                                 <span class="edit-icon" data-id="<%= contact.get('id') %>"></span>
                                 <span class="delete-icon" data-id="<%= contact.get('id') %>"></span>

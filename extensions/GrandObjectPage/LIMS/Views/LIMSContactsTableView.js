@@ -68,7 +68,11 @@ LIMSContactsTableView = Backbone.View.extend({
             'iDisplayLength': -1,
             'order': [[ 1, "asc" ]],
             'aLengthMenu': [[-1], ['All']],
-            'rowsGroup': rowsGroup
+            'rowsGroup': rowsGroup,
+            'dom': 'Blfrtip',
+            'buttons': [
+                'excel'
+            ]
         });
         table = this.table;
         this.table.order(order);
@@ -86,6 +90,10 @@ LIMSContactsTableView = Backbone.View.extend({
         this.$('#contacts_wrapper').prepend("<div id='contacts_length' class='dataTables_length'></div>");
 	    this.$("#contacts_length").empty();
 	    this.$("#contacts_length").append(this.$("#addContact").detach());
+	    this.$("#contacts_length").append(this.$(".dt-buttons button").detach());
+	    this.$(".dt-buttons").remove();
+	    
+	    this.$("#addContact").css("margin-right", "5px");
     },
     
     render: function(){
