@@ -131,7 +131,7 @@ class Report extends AbstractReport {
         
         if($person->isLoggedIn()){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPIC-AT")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC-AT", "{$url}EPIC-AT", $selected);
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC-AT Award 2023", "{$url}EPIC-AT", $selected);
         }
         
         /*if($person->isLoggedIn()){
