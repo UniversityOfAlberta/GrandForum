@@ -1,27 +1,38 @@
 <span id="deleteOpportunity" class="delete-icon" style="float: right; margin-top: 5px;" title="Delete Opportunity"></span>
-<div style="display:flex;margin-bottom:13px;margin-right:32px;">
-    <div style="margin-right:30px;">
-        <b>Category:</b>
-        <%= HTML.Select(this, 'category', {style: 'vertical-align:middle;', value: category, options: ['Synthesis',
-                                                                                                       'Glycan-Analysis',
-                                                                                                       'Glycan-Ligand screening',
-                                                                                                       'Glycan-Ligand discovery',
-                                                                                                       'Glyco-engineering',
-                                                                                                       'Molecular biology',
-                                                                                                       'Other']}) %>
-    </div>
-    <div style="margin-right:30px;">
-        <b>Owner:</b>
-        <%= HTML.Select(this, 'owner.id', {style: 'width:200px;vertical-align:middle;', options: _.union([{option: owner.name, value: owner.id}], _.filter(_.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != owner.id; }))}) %>
-    </div>
-    <div style="margin-right:30px;">
-        <b>User Type:</b>
-        <%= HTML.Select(this, 'owner.userType', {style: 'width:200px;vertical-align:middle;', options: ['On site', 'Remote', 'Data']}) %>
-    </div>
-    <div style="line-height: 28px;">
-        <%= date %>
-    </div>
-</div>
+<table style="margin-bottom:13px;margin-right:32px;margin-top:-4px;">
+    <tr>
+        <td align="right"><b>Category:</b></td>
+        <td style="padding-right:30px;">
+            <%= HTML.Select(this, 'category', {style: 'vertical-align:middle;', value: category, options: ['Synthesis',
+                                                                                                           'Glycan-Analysis',
+                                                                                                           'Glycan-Ligand screening',
+                                                                                                           'Glycan-Ligand discovery',
+                                                                                                           'Glyco-engineering',
+                                                                                                           'Molecular biology',
+                                                                                                           'Other']}) %>
+        </td>
+        
+        <td align="right"><b>Owner:</b></td>
+        <td style="padding-right:30px;">
+            <%= HTML.Select(this, 'owner.id', {style: 'width:200px;vertical-align:middle;', options: _.union([{option: owner.name, value: owner.id}], _.filter(_.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != owner.id; }))}) %>
+        </td>
+        
+        <td align="right"><b>User Type:</b></td>
+        <td style="padding-right:30px;"><%= HTML.Select(this, 'owner.userType', {style: 'width:140px;vertical-align:middle;', options: ['On site', 'Remote', 'Data']}) %></td>
+        
+        <td><%= date %></td>
+    </tr>
+    <tr>
+        <td align="right"><b>Surveyed:</b></td>
+        <td><%= HTML.Select(this, 'surveyed', {style: 'vertical-align:middle;', value: category, options: ['Yes', 'No']}) %></td>
+        
+        <td align="right"><b>Responded:</b></td>
+        <td><%= HTML.Select(this, 'responded', {style: 'vertical-align:middle;', value: category, options: ['Yes', 'No']}) %></td>
+        
+        <td align="right"><b>Satisfaction:</b></td>
+        <td><%= HTML.Select(this, 'satisfaction', {style: 'vertical-align:middle;', value: category, options: ['1', '2', '3', '4', '5']}) %></td>
+    </tr>
+</table>
 <%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:100%; margin-left:0;margin-right:0;'}) %>
 <h4>Tasks</h4>
 <table id="tasks" class="wikitable" style="width:100%;">

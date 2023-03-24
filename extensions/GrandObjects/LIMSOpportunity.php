@@ -12,8 +12,12 @@ class LIMSOpportunity extends BackboneModel {
     var $userType;
     var $description;
     var $category;
+    var $surveyed;
+    var $responded;
+    var $satisfaction;
     var $date;
     var $files = array();
+    var $products = array();
 
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_lims_opportunity'),
@@ -46,7 +50,11 @@ class LIMSOpportunity extends BackboneModel {
             $this->userType = $data[0]['user_type'];
             $this->description = $data[0]['description'];
             $this->category = $data[0]['category'];
+            $this->surveyed = $data[0]['surveyed'];
+            $this->responded = $data[0]['responded'];
+            $this->satisfaction = $data[0]['satisfaction'];
             $this->date = $data[0]['date'];
+            $this->products = json_decode($data[0]['products']);
             $files = DBFunctions::select(array('grand_lims_files'),
                                          array('id', 'filename', 'type'),
                                          array('opportunity_id' => $this->id));
@@ -85,6 +93,18 @@ class LIMSOpportunity extends BackboneModel {
     function getCategory(){
         return $this->category;
     }
+    
+    function getSurveyed(){
+        return $this->surveyed;
+    }
+    
+    function getResponded(){
+        return $this->responded;
+    }
+    
+    function getSatisfaction(){
+        return $this->satisfaction;
+    }
 
     function getDate(){
         return $this->date;
@@ -92,6 +112,10 @@ class LIMSOpportunity extends BackboneModel {
 
     function getTasks(){
         return LIMSTask::getTasks($this->getId());
+    }
+    
+    function getProducts(){
+        return $this->products;
     }
 
     function getFiles(){
@@ -133,6 +157,10 @@ class LIMSOpportunity extends BackboneModel {
                           'userType' => $this->getUserType(),
                           'description' => $this->getDescription(),
                           'category' => $this->getCategory(),
+                          'surveyed' => $this->getSurveyed(),
+                          'responded' => $this->getResponded(),
+                          'satisfaction' => $this->getSatisfaction(),
+                          'products' => $this->getProducts(),
                           'files' => $this->getFiles(),
                           'date' => $this->getDate(),
                           'isAllowedToEdit' => $this->isAllowedToEdit());
@@ -149,6 +177,10 @@ class LIMSOpportunity extends BackboneModel {
                                       'user_type' => $this->userType,
                                       'description' => $this->description,
                                       'category' => $this->category,
+                                      'surveyed' => $this->surveyed,
+                                      'responded' => $this->responded,
+                                      'satisfaction' => $this->satisfaction,
+                                      'products' => json_encode($this->products),
                                       'date' => COL('CURRENT_TIMESTAMP')));
             $this->id = DBFunctions::insertId();
             $this->uploadFiles();
@@ -162,7 +194,11 @@ class LIMSOpportunity extends BackboneModel {
                                       'owner' => $this->owner,
                                       'user_type' => $this->userType,
                                       'description' => $this->description,
-                                      'category' => $this->category),
+                                      'category' => $this->category,
+                                      'surveyed' => $this->surveyed,
+                                      'responded' => $this->responded,
+                                      'satisfaction' => $this->satisfaction,
+                                      'products' => json_encode($this->products)),
                                 array('id' => $this->id));
             $this->uploadFiles();
         }

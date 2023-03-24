@@ -20,10 +20,29 @@ LIMSContactEditView = Backbone.View.extend({
                 main.set('title', this.model.get('title'));
             }
         });
+        this.listenTo(this.model, "change:details", this.changeDetails);
         if(options.isDialog != undefined){
             this.isDialog = options.isDialog;
         }
         this.selectTemplate();
+    },
+    
+    changeDetails: function(){
+        // Geographic
+        if(this.model.get('details').geographic == "Outside Canada: other than United States"){
+            this.$("[name=details_institution_other]").show();
+        }
+        else{
+            this.$("[name=details_institution_other]").hide();
+        }
+        
+        // HQP
+        if(this.model.get('details').hqp == "Yes"){
+            this.$("[name=details_hqp_other]").show();
+        }
+        else{
+            this.$("[name=details_hqp_other]").hide();
+        }
     },
     
     selectTemplate: function(){
@@ -179,6 +198,7 @@ LIMSContactEditView = Backbone.View.extend({
             }
             this.$el.html(this.template(this.model.toJSON()));
         }
+        this.changeDetails();
         return this.$el;
     }
 
