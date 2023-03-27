@@ -3528,13 +3528,13 @@ class Person extends BackboneModel {
         if(count($role_objs) > 0){
             $defaultSkip = false;
             foreach($role_objs as $r){
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $defaultSkip = true;
                 }
             }
             foreach($role_objs as $r){
                 $skip = $defaultSkip;
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $skip = true;
                     foreach($r->getProjects() as $p){
                         if($p != null && $p->getId() == $project->getId()){
@@ -3588,13 +3588,13 @@ class Person extends BackboneModel {
         if(count($role_objs) > 0){
             $defaultSkip = false;
             foreach($role_objs as $r){
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $defaultSkip = true;
                 }
             }
             foreach($role_objs as $r){
                 $skip = $defaultSkip;
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $skip = true;
                     foreach($r->getProjects() as $p){
                         if($p->getId() == $project->getId()){
@@ -3662,13 +3662,13 @@ class Person extends BackboneModel {
         if(count($role_objs) > 0){
             $defaultSkip = false;
             foreach($role_objs as $r){
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $defaultSkip = true;
                 }
             }
             foreach($role_objs as $r){
                 $skip = $defaultSkip;
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $skip = true;
                     foreach($r->getProjects() as $p){
                         if($p->getId() == $project->getId()){
