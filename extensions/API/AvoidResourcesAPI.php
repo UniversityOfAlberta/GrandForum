@@ -7,6 +7,16 @@
 
         }
 
+	function filter_CFN($json_obj){
+	   $newjson = array();
+	   for($x = 0; $x <= count($json_obj)-1; $x++){
+		$result_obj = $json_obj[$x];
+		if(strpos($result_obj["Categories"], 'CFN') !== false){
+		    $newjson[] = $result_obj;
+		}
+	   }
+	   return $newjson;
+	}
 
         function callAPI($cat="CFN-ACT-EX-DANCE", $key=""){
             global $config;
@@ -27,7 +37,7 @@
                         "SortOrder"=>"distance",
                         "PageIndex"=>0,
                         "PageSize"=>1000,
-                        "Fields"=>"Eligibility,AgencyDescription,ParentAgency,PhysicalAddress1,EmailAddressMain,WebsiteAddress"
+                        "Fields"=>"Eligibility,AgencyDescription,ParentAgency,PhysicalAddress1,EmailAddressMain,WebsiteAddress,Categories"
                 );
             }
             else{
@@ -40,10 +50,10 @@
                     "Longitude"=>-77.2922286,
                     "SortOrder"=>"distance",
                     "PageIndex"=>0,
-                    "PageSize"=>1000,
-                    "Search"=> "term",
+		    "PageSize"=>1000,
+                    "Search"=>"term",
                     "Term"=> $key,
-                    "Fields"=>"Eligibility,AgencyDescription,ParentAgency,PhysicalAddress1,EmailAddressMain,WebsiteAddress"
+                    "Fields"=>"Eligibility,AgencyDescription,ParentAgency,PhysicalAddress1,EmailAddressMain,WebsiteAddress,Categories"
                 );
             }
             
@@ -79,7 +89,8 @@
             }
             elseif(isset($_GET['key'])){
                 $key = $_GET['key'];
-                $myJSON =json_encode($this->callAPI("", $key));
+		$myJSON =$this->callAPI("", $key);
+		$myJSON = json_encode($this->filter_CFN($myJSON));
             }
             else{ 
                 $myJSON =json_encode($this->callAPI());
