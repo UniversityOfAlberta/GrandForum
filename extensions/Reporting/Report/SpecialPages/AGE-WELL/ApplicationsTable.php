@@ -539,6 +539,12 @@ class ApplicationsTable extends SpecialPage{
         $ubc->setBlobSection(HQP_APPLICATION_FORM);
         $ubc->setId("UBC");
         
+        $ubc2 = new CheckboxReportItem();
+        $ubc2->setBlobType(BLOB_ARRAY);
+        $ubc2->setBlobItem("HQP_APPLICATION_UBC2");
+        $ubc2->setBlobSection(HQP_APPLICATION_FORM);
+        $ubc2->setId("UBC2");
+        
         $shrf = new CheckboxReportItem();
         $shrf->setBlobType(BLOB_ARRAY);
         $shrf->setBlobItem("HQP_APPLICATION_SHRF");
@@ -570,6 +576,7 @@ class ApplicationsTable extends SpecialPage{
                                                                                              "MIRA" => $mira,
                                                                                              "UofT" => $uoft,
                                                                                              "UBC" => $ubc,
+                                                                                             "UBC2" => $ubc2,
                                                                                              "SHRF" => $shrf,
                                                                                              "UW" => $uw,
                                                                                              "UOFC" => $uofc,
