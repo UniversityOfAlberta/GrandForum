@@ -189,6 +189,13 @@ class LIMSOpportunity extends BackboneModel {
 
     function update(){
         if($this->isAllowedToEdit()){
+            $newProducts = array();
+            foreach($this->products as $product){
+                if(!(isset($product->delete) && $product->delete == true)){
+                    $newProducts[] = $product;
+                }
+            }
+            $this->products = $newProducts;
             DBFunctions::update('grand_lims_opportunity',
                                 array('contact' => $this->contact,
                                       'owner' => $this->owner,

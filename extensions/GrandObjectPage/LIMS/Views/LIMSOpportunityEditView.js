@@ -40,10 +40,29 @@ LIMSOpportunityEditView = Backbone.View.extend({
         this.$("#files").append("<tr><td>" + HTML.File(this, 'files.' + (files.length - 1), {}) + "</td><td></td></tr>");
     },
     
+    addProduct: function(){
+        var products = this.model.get('products');
+        products.push({type: "", text: ""});
+        this.model.set('products', products);
+        this.$("#products").append("<tr><td>" + HTML.Select(this, 'products.' + (products.length - 1) + ".type", {options: LIMSProductTypes}) + "</td>" + 
+                                   "    <td>" + HTML.TextBox(this, 'products.' + (products.length - 1) + ".text", {}) + "</td>" + 
+                                   "</tr>");
+    },
+    
+    deleteProduct: function(e){
+        var products = this.model.get('products');
+        var id = $(e.target).attr("data-id");
+        products[id].delete = 1;
+        this.model.set('products', products);
+        $(e.target).closest("tr").remove();
+    },
+    
     events: {
         "click #deleteOpportunity": "deleteOpportunity",
         "click #addTask": "addTask",
-        "click #addDocument": "addDocument"
+        "click #addDocument": "addDocument",
+        "click #addProduct": "addProduct",
+        "click #products .delete-icon": "deleteProduct"
     },
     
     removeTasks: function(){

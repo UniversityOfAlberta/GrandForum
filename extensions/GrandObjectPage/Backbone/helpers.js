@@ -422,21 +422,44 @@ HTML.Select = function(view, attr, options){
     el.setAttribute('name', HTML.Name(attr));
     var val = HTML.Value(view, attr);
     var foundSelected = false;
-    _.each(options.options, function(opt){
-        var selected = "";
-        if(val == null){
-            val = "";
-        }
-        if(val.split(":")[0] == opt || val == opt || 
-           (typeof opt == 'object' && val.split(":")[0] == opt.value) || (typeof opt == 'object' && val == opt.value)){
-            selected = "selected='selected'";
-            foundSelected = true;
-        }
-        if(typeof opt == 'object'){
-            $(el).append("<option " + selected + " value='" + opt.value + "'>" + opt.option + "</option>");
+    _.each(options.options, function(opt, i){
+        if(_.isString(i)){
+            $(el).append("<optgroup label='" + i + "' />");
+            var optgroup = $("optgroup", el).last();
+            _.each(opt, function(opt2){
+                var selected = "";
+                if(val == null){
+                    val = "";
+                }
+                if(val.split(":")[0] == opt2 || val == opt2 || 
+                   (typeof opt2 == 'object' && val.split(":")[0] == opt2.value) || (typeof opt2 == 'object' && val == opt2.value)){
+                    selected = "selected='selected'";
+                    foundSelected = true;
+                }
+                if(typeof opt2 == 'object'){
+                    $(optgroup).append("<option " + selected + " value='" + opt2.value + "'>" + opt2.option + "</option>");
+                }
+                else{
+                    $(optgroup).append("<option " + selected + ">" + opt2 + "</option>");
+                }
+            });
         }
         else{
-            $(el).append("<option " + selected + ">" + opt + "</option>");
+            var selected = "";
+            if(val == null){
+                val = "";
+            }
+            if(val.split(":")[0] == opt || val == opt || 
+               (typeof opt == 'object' && val.split(":")[0] == opt.value) || (typeof opt == 'object' && val == opt.value)){
+                selected = "selected='selected'";
+                foundSelected = true;
+            }
+            if(typeof opt == 'object'){
+                $(el).append("<option " + selected + " value='" + opt.value + "'>" + opt.option + "</option>");
+            }
+            else{
+                $(el).append("<option " + selected + ">" + opt + "</option>");
+            }
         }
     });
 
