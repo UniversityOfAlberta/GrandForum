@@ -209,9 +209,10 @@ Programme ELITE pour la Jeunesse Noire
         
         // Now send email to coordinator
         $subject = "ELITE Program for Black Youth – Feedback Submitted";
+        $match = @ElitePosting::newFromId($_POST['hire']->match);
         if(@$_POST['hire']->action == "Accepted"){
             $message = "Dear Program Coordinator,
-                        An internship host has accepted an intern. Please proceed to review and finalize the position.
+                        An internship host ({$person->getNameForForms()} - {$match->getTitle()}) has accepted an intern ({$this->person->getNameForForms()}). Please proceed to review and finalize the position.
 
                         Thank you.
 
@@ -222,7 +223,7 @@ Programme ELITE pour la Jeunesse Noire
         }
         else{
             $message = "Dear Program Coordinator,
-                        An internship host has declined an intern. Please proceed to review and finalize the position.
+                        An internship host ({$person->getNameForForms()} - {$match->getTitle()}) has declined an intern ({$this->person->getNameForForms()}). Please proceed to review and finalize the position.
 
                         Thank you.
 
