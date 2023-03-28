@@ -45,7 +45,7 @@ LIMSOpportunityEditView = Backbone.View.extend({
         products.push({type: "", text: ""});
         this.model.set('products', products);
         this.$("#products").append("<tr><td>" + HTML.Select(this, 'products.' + (products.length - 1) + ".type", {options: LIMSProductTypes}) + "</td>" + 
-                                   "    <td>" + HTML.TextBox(this, 'products.' + (products.length - 1) + ".text", {}) + "</td>" + 
+                                   "    <td>" + HTML.TextBox(this, 'products.' + (products.length - 1) + ".text", {style: "width: 100%; box-sizing: border-box;"}) + "</td>" + 
                                    "</tr>");
     },
     
