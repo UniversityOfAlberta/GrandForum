@@ -81,11 +81,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                                        ->select(HEAD_MONEY)
                                                        ->limitCols($i, 1);
                                     $other    = $budget->copy()
-                                                       ->where(HEAD2_ROW, array('Other Federal Funding'))
+                                                       ->where(HEAD2_ROW, array('Other Federal Funding', "Other Federal Funding (See 'External Funding' worksheet)"))
                                                        ->select(HEAD_MONEY)
                                                        ->limitCols($i, 1);
                                     $external = $budget->copy()
-                                                       ->where(HEAD2_ROW, array('External Funding (not Federal)'))
+                                                       ->where(HEAD2_ROW, array('External Funding (not Federal)', "External Funding (not Federal) (See 'External Funding' worksheet)"))
                                                        ->select(HEAD_MONEY)
                                                        ->limitCols($i, 1);
                                     $total    = $budget->copy()
@@ -103,6 +103,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                         $external->size() == 0 ||
                                         $total->size() == 0) ||
                                        ($requestVal + $otherVal + $externalVal) != $totalVal){
+                                        echo "$requestVal $otherVal $externalVal $totalVal\n";
                                         $error = "The totals in the budget do not add up.  Make sure that you did not modify the spreadsheet formulas.";
                                     } 
                                 }
