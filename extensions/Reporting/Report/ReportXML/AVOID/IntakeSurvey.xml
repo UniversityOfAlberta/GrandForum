@@ -468,7 +468,7 @@
             ]]>
         </ReportItem>
         <ReportItem id="program_avoid" type="SelectReportItem" options="Canadian Frailty Network website|Poster, flyer, or pamphlet at community venue|Newspaper|Magazine or Newsletter 
-|Healthcare practitioner|Social media|Word of mouth|Event|Radio|Mail|Other" blobItem="program_avoid">
+|Healthcare practitioner|Social media|Word of mouth|Event|Radio|Mail|Television|Other" blobItem="program_avoid">
             <![CDATA[
                     <h3>How did you hear about the AVOID Frailty program?</h3>
                     <div class="requiredField">{$item}</div>
@@ -668,9 +668,11 @@
             ]]>
         </ReportItem>
         <ReportItem id="vaccinate3_avoid" blobItem="vaccinate3_avoid"  type="RadioReportItem" orientation="horizontal"  options="Yes|No"  optional="true">
-            <![CDATA[
+	    <![CDATA[
+		<span id="vaccinate3_avoid">
                     <h3>Have you had a shingles vaccine? (once after age 50)</h3>
-                    <div class="requiredField">{$item}</div>
+		    <div class="requiredField">{$item}</div>
+		</span>
             ]]>
         </ReportItem>
         <ReportItem id="vaccinate3specify_avoid" blobItem="vaccinate3specify_avoid"  type="RadioReportItem" options="Shingrix|Zostavax II|Unsure" optional="true">
@@ -698,9 +700,11 @@
             ]]>
         </Static>
         <ReportItem id="vaccinate4_avoid" blobItem="vaccinate4_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No"  optional="true">
-            <![CDATA[
+	    <![CDATA[
+		<span id="vaccinate4_avoid">
                     <h3>Have you had a pneumonia vaccine? (once at age 65)</h3>
-                    <div class="requiredField">{$item}</div>
+		    <div class="requiredField">{$item}</div>
+		</span>
             ]]>
         </ReportItem>
         <ReportItem id="vaccinate5_avoid" blobItem="vaccinate5_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">

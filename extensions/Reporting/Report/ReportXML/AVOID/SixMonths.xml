@@ -4,9 +4,39 @@
         <Role role="INACTIVE+"></Role>
     </Permissions>
     <ReportSection id="eula" delete="true" />
-    <ReportSection id="socio_info" delete="true" />
+    <ReportSection id="socio_info" delete="true"/>
     <ReportSection id="OnSiteEvaluation" delete="true" />
     <ReportSection id="FitBit" delete="true" />
-    
-    <ReportSection id="behaviouralassess" title="Six Month Follow Up: Behavioural Self-Assessment" />
+    <ReportSection id="behaviouralassess" title="Six Month Follow Up: Behavioural Self-Assessment">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    function checkVaccination(){
+                        var shinglesVaccination = '{getText(RP_AVOID,behaviouralassess,vaccinate3_avoid,0,{$user_id},0)}';
+			var pneumoniaVaccination = '{getText(RP_AVOID,behaviouralassess,vaccinate4_avoid,0,{$user_id},0)}';
+			var shinglesVaccination2 = '{getText(RP_AVOID_THREEMO,behaviouralassess,vaccinate3_avoid,0,{$user_id},0)}';
+                        var pneumoniaVaccination2 = '{getText(RP_AVOID_THREEMO,behaviouralassess,vaccinate4_avoid,0,{$user_id},0)}';
+                        if(shinglesVaccination == 'Yes' || shinglesVaccination2 == 'Yes'){
+                            $('input[type="radio"][name="SelfAssessment_vaccinate3_avoid"]').val("Yes");
+                            $('input[type="hidden"][name="SelfAssessment_vaccinate3_avoid"]').val("Yes");
+                            $('span#vaccinate3_avoid').hide();
+                            $('span#vaccinate3specify').hide();
+
+                        }
+                        if(pneumoniaVaccination == 'Yes' || pneumoniaVaccination2 == 'Yes'){
+                            $('input[type="radio"][name="SelfAssessment_vaccinate4_avoid"]').val("Yes");
+                            $('input[type="hidden"][name="SelfAssessment_vaccinate4_avoid"]').val("Yes");
+                            $('span#vaccinate4_avoid').hide();
+                            $('span#vaccinate4specify').hide();
+			}
+			saveAll();
+
+                    }
+                    $(document).ready(function(){
+                        checkVaccination();
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
 </Report>
