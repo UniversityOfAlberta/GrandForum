@@ -18,12 +18,14 @@ define('CUBE_TOTAL', 27);
 define('SUB_MONEY', 28);
 define('SUB_PERC', 29);
 define('HEAD_MONEY', 30);
+define('INTEGER', 31);
 ////Validation Types
 define('V_PROJ', 50);
 define('V_PERS', 51);
 define('V_PERS_NOT_NULL', 52);
 
 $cellTypes[MONEY] = "MoneyCell";
+$cellTypes[INTEGER] = "IntegerCell";
 $cellTypes[SUB_MONEY] = "SubMoneyCell";
 $cellTypes[HEAD_MONEY] = "HeadMoneyCell";
 $cellTypes[PERC] = "PercCell";
@@ -68,6 +70,7 @@ define('GLYCONET_NI_BUDGET_STRUCTURE2', 23);
 define('AGEWELL_BUDGET_STRUCTURE2022', 24);
 define('AGEWELL_NI_BUDGET_STRUCTURE2022', 25);
 define('AGEWELL_BUDGET_STRUCTURE_IH', 26);
+define('GLYCONET_KPI_STRUCTURE', 27);
 
 $budgetStructures = array();
 
@@ -348,6 +351,108 @@ $budgetStructures[GLYCONET_NI_BUDGET_STRUCTURE2] =
           array(HEAD2,      MONEY,      BLANK,      NA,         HEAD2,      MONEY,      MONEY,      BLANK,      NA,     HEAD2,      MONEY,      MONEY),
           array(HEAD2,      MONEY,      BLANK,      NA,         HEAD2,      MONEY,      MONEY,      BLANK,      NA,     HEAD2,      MONEY,      MONEY),
           array(HEAD1_ROW,  HEAD_MONEY, BLANK,      NA,         HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, BLANK,      NA,     HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY),
+    );
+    
+$budgetStructures[GLYCONET_KPI_STRUCTURE] = 
+    array(array(NA,         NA,         NA),
+          array(NA,         NA,         NA),
+          array(NA,         HEAD,       NA),            // 1. Users of the Facility
+          array(NA,         CENTRE,     CENTRE),
+          array(NA,         HEAD_ROW,   NA),            // Total Users by Type
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT_BOLD, RIGHT_BOLD),
+          array(NA,         HEAD_ROW,   NA),            // Total Users Geographically
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT_BOLD, RIGHT_BOLD),
+          array(NA,         HEAD_ROW,   NA),            // Total Users by Sector
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT_BOLD, RIGHT_BOLD),
+          array(NA,         BLANK,      NA),
+          array(NA,         HEAD,       NA),            // 2. User Demand for Facility
+          array(NA,         CENTRE,     CENTRE),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         BLANK,      NA),
+          array(NA,         HEAD,       NA),            // 3. Optimal User of the Facility
+          array(NA,         CENTRE,     CENTRE),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         BLANK,      NA),
+          array(NA,         HEAD,       NA),            // 4. Management FTEs Contributing to O&M
+          array(NA,         CENTRE,     CENTRE),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT_BOLD, RIGHT_BOLD),
+          array(NA,         BLANK,      NA),
+          array(NA,         HEAD,       NA),            // 5. User Satisfaction
+          array(NA,         CENTRE,     CENTRE),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         BLANK,      NA),
+          array(NA,         HEAD,       NA),            // 6. Research Outputs
+          array(NA,         CENTRE,     CENTRE),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT_BOLD, RIGHT_BOLD),
+          array(NA,         BLANK,      NA),
+          array(NA,         HEAD,       NA),            // 7. Engagement and Outreach Activities
+          array(NA,         CENTRE,     CENTRE),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT_BOLD, RIGHT_BOLD),
+          array(NA,         BLANK,      NA),
+          array(NA,         HEAD,       NA),            // 8. Contributions to Training (By HQP Type)
+          array(NA,         CENTRE,     CENTRE),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT_BOLD, RIGHT_BOLD),
+          array(NA,         BLANK,      NA),
+          array(NA,         HEAD,       NA),            // 9. Technology Development and Transfer
+          array(NA,         CENTRE,     CENTRE),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT_BOLD, RIGHT_BOLD),
+          array(NA,         BLANK,      NA),
+          array(NA,         HEAD,       NA),            // 10. Facility Specific Indicators
+          array(NA,         CENTRE,     CENTRE),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      RIGHT)
     );
     
 $budgetStructures[TECH_WORKSHOP_STRUCTURE] = 
@@ -797,4 +902,5 @@ $budgetStructures[HUAWEI_MILESTONES] =
           array(HEAD1,     MONEY,    MONEY,    MONEY,    MONEY),
           array(HEAD1,     COL_SUM,  COL_SUM,  COL_SUM,  COL_SUM),
     );
+    
 ?>

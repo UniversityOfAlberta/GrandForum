@@ -114,6 +114,9 @@ class ProjectPage {
                 if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET') && (strstr($project->getName(), "GIS-") === false)){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 }
+                if(strstr($project->getName(), "GIS-") !== false){
+                    $tabbedPage->addTab(new ProjectKPITab($project, $visibility));
+                }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
