@@ -596,6 +596,30 @@ class Descriptors extends SpecialPage {
                     </tr>
                 </tbody>
             </table>
+            
+            <b>Baseline: Clinical Frailty Scale</b>
+            <table class='wikitable' style='margin-top:0;'>
+                <thead>
+                    <tr>
+                        <th>Score</th>
+                        <th>RCHA Total (N={$nIntake})</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1-3</td>
+                        <td>".($cfs[1] + $cfs[2] + $cfs[3])." (".number_format(($cfs[1] + $cfs[2] + $cfs[3])/max(1, $nIntake)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>{$cfs[4]} (".number_format($cfs[4]/max(1, $nIntake)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>5-9</td>
+                        <td>".($cfs[5] + $cfs[6] + $cfs[7] + $cfs[8] + $cfs[9])." (".number_format(($cfs[5] + $cfs[6] + $cfs[7] + $cfs[8] + $cfs[9])/max(1, $nIntake)*100, 1).")</td>
+                    </tr>
+                </tbody>
+            </table>
             </div>
         </div>
         
