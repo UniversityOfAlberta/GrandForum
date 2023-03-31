@@ -2069,7 +2069,6 @@
             <![CDATA[
                 <br />
                 Are you aware there are resources to support you? 
-                <br />Note: Provide appropriate pamphlet / referral: Smoking Cessation program
                 {$item}
                 </span>
             ]]>
@@ -2150,7 +2149,6 @@
                 Comments:
                 {$item}
                 <br />
-                <p>Notes: Discuss and encourage aerobic and resistance exercise. Evaluate those with possible CAD or microvascular complications undertaking exercise substantially more vigorous than brisk walking</p>	
                 <p>Aerobic: ≥150 minutes/week</p>
                 <p>Resistance: 3 sessions/week</p>
 
@@ -2173,14 +2171,36 @@
             ]]>
         </Static>
 
-        <ReportItem id="avoid_chronic" blobItem="avoid_chronic" type="CheckboxReportItem" blobType="BLOB_ARRAY" orientation="vertical" options="CPOD|Asthma|PND or Sleep Apnea|Cancer|Diabetes Mellitus|Hypertension|Hyperlipidemia|Atrial Fibrillation|Coronary Heart Disease|Stroke|Depression|Dementia|Arthritis|Other" optional="true">
+        <ReportItem id="avoid_chronic" blobItem="avoid_chronic" type="CheckboxReportItem" blobType="BLOB_ARRAY" orientation="vertical" options="COPD|Asthma|PND or Sleep Apnea|Cancer|Diabetes Mellitus|Hypertension|Hyperlipidemia|Atrial Fibrillation|Coronary Heart Disease|Stroke|Depression|Dementia|Arthritis|Other" optional="true">
             <![CDATA[
                 <hr />
                 <h3>22. CHRONIC DISEASE</h3>
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
+	<ReportItem id="avoid_chronic_2" type="Text" blobItem="avoid_chronic_2" width="400px" optional="true">
+            <![CDATA[
+        <span id="avoid_chronic_2">
+            Specify: {$item}
+        </span>
+                ]]>
+	</ReportItem>
+	<Static>
+            <![CDATA[
+            <script type='text/javascript'>
+                $('span#avoid_chronic_2').hide();
+                function specifyChronic(){
+                    if($("input:checkbox[name='InPersonAssessment_avoid_chronic[]'][value='Other']").is(':checked')){
+                            $('span#avoid_chronic_2').show();
+                    }
+                    else{ $('span#avoid_chronic_2').hide();}
+                }
+                _.defer(specifyChronic);
+                $("input:checkbox[name='InPersonAssessment_avoid_chronic[]']").change(specifyChronic);
 
+            </script>
+        ]]>
+        </Static>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" text="" />

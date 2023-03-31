@@ -663,7 +663,7 @@
         <ReportItem id="vaccinate2_avoid" blobItem="vaccinate2_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">
             <![CDATA[
                 <span class="vaccinateyes">
-                    <h3>Have you had your annual flu vaccine this year?</h3>
+                    <h3>Have you had the most recent annual flu vaccine?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
@@ -715,36 +715,10 @@
         </ReportItem>
         <ReportItem id="vaccinate6_avoid" blobItem="vaccinate6_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">
             <![CDATA[
-                    <h3>Have you had two doses of the COVID-19 vaccine?</h3>
+                    <h3>Have you had the most recent annual COVID vaccine?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="vaccinate7_avoid" blobItem="vaccinate7_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">
-            <![CDATA[
-                        <span id="vaxcovidbooster">
-                                <h3>Have you had your COVID-19 booster vaccine?</h3>
-                                {$item}
-                        </span>
-                </span>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                        <script type='text/javascript'>
-                                $('span#vaxcovidbooster').hide();
-                                function specifyBooster(){
-                                        if($("input:radio[name='SelfAssessment_vaccinate6_avoid']:checked").val() == "Yes"){
-                                                $('span#vaxcovidbooster').show();
-                                        }
-                                        else{ 
-                                                $('span#vaxcovidbooster').hide();
-                                        }
-                                }
-                                _.defer(specifyBooster);
-                    $("input:radio[name='SelfAssessment_vaccinate6_avoid']").change(specifyBooster);
-            </script>    
-        ]]>
-        </Static>
         <ReportItem id="vax_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="vax_end" orientation="vertical" options="I was not aware of the recommended vaccines|I don't know where or how to get vaccinated|I don't see the point of getting vaccinated|Other" optional="true">
             <![CDATA[
             <span class="vaccinateyes">
@@ -926,7 +900,7 @@
         </ReportItem>
         <ReportItem id="interact7_avoid" blobItem="interact7_avoid" type="RadioReportItem" orientation="horizontal" options="Hardly ever|Some of the time|Often">
             <![CDATA[
-                    <h3>How often do you feel that you lack companionship?</h3>
+                    <h3>How often do you feel that you lack companionship (partner, friends, etc)?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
@@ -1107,39 +1081,34 @@
                         <i>To better understand what you aim to achieve with the AVOID Frailty Program, please select which of the following statements best describes you in relation to each of the components of AVOID</i>
         ]]>
         </Static>
-        <ReportItem id="lifestyle"  blobItem="lifestyle" type="RadioReportItem" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and would like to start planning my first steps|I am already engaged in some healthy behaviours in this area but want to create lasting habits|I am already engaged in health behaviours and am interested to continue to improve even more"
-                                                                                options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+        <ReportItem id="lifestyle"  blobItem="lifestyle" type="RadioReportItem" orientation="table" tableType="header" rowHeader="Activity" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and will start planning my first steps|I have recently made healthy lifestyle changes in this area, but want to create healthy habits|I am engaged in healthy behaviours and intend to maintain this behavior going forward "
+                                                                                options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and will start planning my first steps (preparation)|I have recently made healthy lifestyle changes in this area, but want to create healthy habits (action)|I am engaged in healthy behaviours and intend to maintain this behavior going forward (maintenance)">
             <![CDATA[
-                    <h3>Activity:</h3>
-                    <div class="requiredField">{$item}</div>
+                    {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lifestyle2"  blobItem="lifestyle2" type="RadioReportItem" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and would like to start planning my first steps|I am already engaged in some healthy behaviours in this area but want to create lasting habits|I am already engaged in health behaviours and am interested to continue to improve even more"                                                                             
-                                                                                  options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+        <ReportItem id="lifestyle2"  blobItem="lifestyle2" type="RadioReportItem" orientation="table" tableType="row" rowHeader="Vaccination" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and will start planning my first steps|I have recently made healthy lifestyle changes in this area, but want to create healthy habits|I am engaged in healthy behaviours and intend to maintain this behavior going forward"                                                                             
+                                                                                  options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and will start planning my first steps (preparation)|I have recently made healthy lifestyle changes in this area, but want to create healthy habits (action)|I am engaged in healthy behaviours and intend to maintain this behavior going forward (maintenance)">
             <![CDATA[
-                    <h3>Vaccination:</h3>
-                    <div class="requiredField">{$item}</div>
+                    {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lifestyle3"  blobItem="lifestyle3" type="RadioReportItem" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and would like to start planning my first steps|I am already engaged in some healthy behaviours in this area but want to create lasting habits|I am already engaged in health behaviours and am interested to continue to improve even more"                                                                             
-                                                                                  options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+        <ReportItem id="lifestyle3"  blobItem="lifestyle3" type="RadioReportItem" orientation="table" tableType="row" rowHeader="Optimized Medication Use" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and will start planning my first steps|I have recently made healthy lifestyle changes in this area, but want to create healthy habits|I am engaged in healthy behaviours and intend to maintain this behavior going forward "                                                                             
+                                                                                  options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and will start planning my first steps (preparation)|I have recently made healthy lifestyle changes in this area, but want to create healthy habits (action)|I am engaged in healthy behaviours and intend to maintain this behavior going forward  (maintenance)">
             <![CDATA[
-                    <h3>Optimized Medication Use:</h3>
-                    <div class="requiredField">{$item}</div>
+                    {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lifestyle4"  blobItem="lifestyle4" type="RadioReportItem" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and would like to start planning my first steps|I am already engaged in some healthy behaviours in this area but want to create lasting habits|I am already engaged in health behaviours and am interested to continue to improve even more"                                                                             
-                                                                                  options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+        <ReportItem id="lifestyle4"  blobItem="lifestyle4" type="RadioReportItem" orientation="table" tableType="row" rowHeader="Social Interaction" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and will start planning my first steps|I have recently made healthy lifestyle changes in this area, but want to create healthy habits|I am engaged in healthy behaviours and intend to maintain this behavior going forward "                                                                             
+                                                                                  options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and will start planning my first steps (preparation)|I have recently made healthy lifestyle changes in this area, but want to create healthy habits (action)|I am engaged in healthy behaviours and intend to maintain this behavior going forward  (maintenance)">
             <![CDATA[
-                    <h3>Social Interaction:</h3>
-                    <div class="requiredField">{$item}</div>
+                    {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lifestyle5"  blobItem="lifestyle5" type="RadioReportItem" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and would like to start planning my first steps|I am already engaged in some healthy behaviours in this area but want to create lasting habits|I am already engaged in health behaviours and am interested to continue to improve even more"                                                                             
-                                                                                  options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+        <ReportItem id="lifestyle5"  blobItem="lifestyle5" type="RadioReportItem" orientation="table" tableType="end" rowHeader="Diet and Nutrition" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and will start planning my first steps|I have recently made healthy lifestyle changes in this area, but want to create healthy habits|I am engaged in healthy behaviours and intend to maintain this behavior going forward "                                                                             
+                                                                                  options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and will start planning my first steps (preparation)|I have recently made healthy lifestyle changes in this area, but want to create healthy habits (action)|I am engaged in healthy behaviours and intend to maintain this behavior going forward  (maintenance)">
             <![CDATA[
-                    <h3>Diet and Nutrition:</h3>
-                    <div class="requiredField">{$item}</div>
+                    {$item}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -1303,7 +1272,7 @@
         <ReportItem id="symptoms_avoid8_specify" type="RadioReportItem" orientation="vertical" blobItem="SYMPTOMS8SPECIFY" options="Less than 1 kilometer occasionally|Less than 1 kilometer most days|Less than 100 meters most occasionally|Less than 100 meters most days" optional="true">
             <![CDATA[
 		<span id="symptoms8_specify">
-			Please indicate distance: 
+			Please indicate at what distance, and how often your walking becomes limited: 
 			<div class="requiredField">{$item}</div>
 		</span>
             	]]>
@@ -1431,7 +1400,7 @@
         </ReportItem>
         <ReportItem id="help_avoid" blobItem="help_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
-                    <h3>Please indicate if you need help from others with any of the following:</h3>
+                    <h3>Please indicate if you need or currently receive help from others with any of the following:</h3>
                     <ul>
                     <li>Eating</li>
                     <div class="requiredField">{$item}</div>
@@ -1464,7 +1433,7 @@
         </ReportItem>
         <Static>
             <![CDATA[
-                        <h3>Please indicate if you need help with any of the following instrumental activities of daily living?</h3>
+                        <h3>Please indicate if you need or receive help with any of the following instrumental activities of daily living?</h3>
                 ]]>
         </Static>
         <ReportItem id="help6_avoid" blobItem="help6_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
