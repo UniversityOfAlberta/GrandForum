@@ -485,8 +485,7 @@ class ProgressReport extends SpecialPage {
             'vaccinate3_avoid' => "Shingles Vaccine",
             'vaccinate4_avoid' => "Pneumonia Vaccine",
             'vaccinate5_avoid' => "Booster Vaccines",
-            'vaccinate6_avoid' => "COVID-19 Vaccine",
-            'vaccinate7_avoid' => "COVID-19 Booster"
+            'vaccinate6_avoid' => "COVID-19 Vaccine"
         );
         
         $initial = array();

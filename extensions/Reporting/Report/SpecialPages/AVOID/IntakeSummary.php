@@ -56,7 +56,6 @@ class IntakeSummary extends SpecialPage {
         'vaccinate4_avoid' => 'Pneumonia vaccine',
         'vaccinate5_avoid' => 'Booster vaccines',
         'vaccinate6_avoid' => '2 covid vaccines',
-        'vaccinate7_avoid' => 'covid booster',
         'vax_end' => 'Vaccine Barriers',
         'VAXENDTEXTSPECIFY' => 'Other Barrier',
         'meds1_avoid' => '# Rx Meds',
