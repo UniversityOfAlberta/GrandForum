@@ -180,7 +180,8 @@ class UsageVisualizations extends SpecialPage {
                     stack: true,
                     drawPoints: false,
                     dataAxis: {
-                        showMinorLabels: false,
+                        showMinorLabels: true,
+                        maxMinorChars: 100,
                         left: {
                             title: {
                                 text: title
@@ -202,7 +203,8 @@ class UsageVisualizations extends SpecialPage {
                         style: 'circle'
                     },
                     dataAxis: {
-                        showMinorLabels: false,
+                        showMinorLabels: true,
+                        maxMinorChars: 100,
                         left: {
                             title: {
                                 text: title
