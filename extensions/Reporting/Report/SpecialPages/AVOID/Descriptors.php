@@ -92,15 +92,15 @@ class Descriptors extends SpecialPage {
                     $frailty[3]++;
                 }
                 
-                $frailty["All"][] = $total;
+                $frailtyByAge["All"][] = $total;
                 if($age == "less than 60" || $age < 65){
-                    $frailty["<60-64"][] = $total;
+                    $frailtyByAge["<60-64"][] = $total;
                 }
                 else if($age >= 65 && $age < 75){
-                    $frailty["65-74"][] = $total;
+                    $frailtyByAge["65-74"][] = $total;
                 }
                 else if($age >= 75){
-                    $frailty["75+"][] = $total;
+                    $frailtyByAge["75+"][] = $total;
                 }
                 
                 if($age == "less than 60" || $age <= 60){
