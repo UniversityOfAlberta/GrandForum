@@ -55,6 +55,9 @@ class Descriptors extends SpecialPage {
         
         $cfs = array(0,0,0,0,0,0,0,0,0,0);
         $cfs6 = array(0,0,0,0,0,0,0,0,0,0);
+        $cfsByAge = array("<60-64" => array(0,0,0,0,0,0,0,0,0,0),
+                          "65-74" => array(0,0,0,0,0,0,0,0,0,0),
+                          "75+" => array(0,0,0,0,0,0,0,0,0,0));
         
         $ages = array(0,0,0,0,0,0,0);
         $genders = array(0,0,0,0);
@@ -95,12 +98,15 @@ class Descriptors extends SpecialPage {
                 $frailtyByAge["All"][] = $total;
                 if($age == "less than 60" || $age < 65){
                     $frailtyByAge["<60-64"][] = $total;
+                    @$cfsByAge["<60-64"][$fScores["CFS"]]++;
                 }
                 else if($age >= 65 && $age < 75){
                     $frailtyByAge["65-74"][] = $total;
+                    @$cfsByAge["65-74"][$fScores["CFS"]]++;
                 }
                 else if($age >= 75){
                     $frailtyByAge["75+"][] = $total;
+                    @$cfsByAge["75+"][$fScores["CFS"]]++;
                 }
                 
                 if($age == "less than 60" || $age <= 60){
@@ -603,20 +609,32 @@ class Descriptors extends SpecialPage {
                     <tr>
                         <th>Score</th>
                         <th>RCHA Total (N={$nIntake})</th>
+                        <th><60-64 (N=".count($frailtyByAge['<60-64']).")</th>
+                        <th>65-74 (N=".count($frailtyByAge['65-74']).")</th>
+                        <th>75+ (N=".count($frailtyByAge['75+']).")</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>1-3</td>
                         <td>".($cfs[1] + $cfs[2] + $cfs[3])." (".number_format(($cfs[1] + $cfs[2] + $cfs[3])/max(1, $nIntake)*100, 1).")</td>
+                        <td>".($cfsByAge["<60-64"][1] + $cfsByAge["<60-64"][2] + $cfsByAge["<60-64"][3])." (".number_format(($cfsByAge["<60-64"][1] + $cfsByAge["<60-64"][2] + $cfsByAge["<60-64"][3])/max(1, count($frailtyByAge['<60-64']))*100, 1).")</td>
+                        <td>".($cfsByAge["65-74"][1] + $cfsByAge["65-74"][2] + $cfsByAge["65-74"][3])." (".number_format(($cfsByAge["65-74"][1] + $cfsByAge["65-74"][2] + $cfsByAge["65-74"][3])/max(1, count($frailtyByAge['65-74']))*100, 1).")</td>
+                        <td>".($cfsByAge["75+"][1] + $cfsByAge["75+"][2] + $cfsByAge["75+"][3])." (".number_format(($cfsByAge["75+"][1] + $cfsByAge["75+"][2] + $cfsByAge["75+"][3])/max(1, count($frailtyByAge['75+']))*100, 1).")</td>
                     </tr>
                     <tr>
                         <td>4</td>
                         <td>{$cfs[4]} (".number_format($cfs[4]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$cfsByAge["<60-64"][4]} (".number_format($cfsByAge["<60-64"][4]/max(1, count($frailtyByAge['<60-64']))*100, 1).")</td>
+                        <td>{$cfsByAge["65-74"][4]} (".number_format($cfsByAge["65-74"][4]/max(1, count($frailtyByAge['65-74']))*100, 1).")</td>
+                        <td>{$cfsByAge["75+"][4]} (".number_format($cfsByAge["75+"][4]/max(1, count($frailtyByAge['75+']))*100, 1).")</td>
                     </tr>
                     <tr>
                         <td>5-9</td>
                         <td>".($cfs[5] + $cfs[6] + $cfs[7] + $cfs[8] + $cfs[9])." (".number_format(($cfs[5] + $cfs[6] + $cfs[7] + $cfs[8] + $cfs[9])/max(1, $nIntake)*100, 1).")</td>
+                        <td>".($cfsByAge["<60-64"][5] + $cfsByAge["<60-64"][6] + $cfsByAge["<60-64"][7] + $cfsByAge["<60-64"][8] + $cfsByAge["<60-64"][9])." (".number_format(($cfsByAge["<60-64"][5] + $cfsByAge["<60-64"][6] + $cfsByAge["<60-64"][7] + $cfsByAge["<60-64"][8] + $cfsByAge["<60-64"][9])/max(1, count($frailtyByAge['<60-64']))*100, 1).")</td>
+                        <td>".($cfsByAge["65-74"][5] + $cfsByAge["65-74"][6] + $cfsByAge["65-74"][7] + $cfsByAge["65-74"][8] + $cfsByAge["65-74"][9])." (".number_format(($cfsByAge["65-74"][5] + $cfsByAge["65-74"][6] + $cfsByAge["65-74"][7] + $cfsByAge["65-74"][8] + $cfsByAge["65-74"][9])/max(1, count($frailtyByAge['65-74']))*100, 1).")</td>
+                        <td>".($cfsByAge["75+"][5] + $cfsByAge["75+"][6] + $cfsByAge["75+"][7] + $cfsByAge["75+"][8] + $cfsByAge["75+"][9])." (".number_format(($cfsByAge["75+"][5] + $cfsByAge["75+"][6] + $cfsByAge["75+"][7] + $cfsByAge["75+"][8] + $cfsByAge["75+"][9])/max(1, count($frailtyByAge['75+']))*100, 1).")</td>
                     </tr>
                 </tbody>
             </table>
