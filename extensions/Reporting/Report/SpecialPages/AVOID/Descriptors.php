@@ -48,6 +48,10 @@ class Descriptors extends SpecialPage {
         
         $frailty = array(0,0,0,0);
         $frailty6 = array(0,0,0,0);
+        $frailtyByAge = array("All" => array(),
+                              "<60-64" => array(),
+                              "65-74" => array(),
+                              "75+" => array());
         
         $cfs = array(0,0,0,0,0,0,0,0,0,0);
         $cfs6 = array(0,0,0,0,0,0,0,0,0,0);
@@ -86,6 +90,17 @@ class Descriptors extends SpecialPage {
                 }
                 else {
                     $frailty[3]++;
+                }
+                
+                $frailty["All"][] = $total;
+                if($age == "less than 60" || $age < 65){
+                    $frailty["<60-64"][] = $total;
+                }
+                else if($age >= 65 && $age < 75){
+                    $frailty["65-74"][] = $total;
+                }
+                else if($age >= 75){
+                    $frailty["75+"][] = $total;
                 }
                 
                 if($age == "less than 60" || $age <= 60){
@@ -481,6 +496,34 @@ class Descriptors extends SpecialPage {
 	                    <td>Severely Frail (≥45%)</td>
 	                    <td>{$frailty[3]} (".number_format($frailty[3]/max(1, $nIntake)*100, 1).")</td>
 	                    <td>{$frailty6[3]} (".number_format($frailty6[3]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <b>Baseline: Mean (SD) Frailty index by Age Group</b>
+            <table class='wikitable' style='margin-top:0;'>
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>RCHA Total (N=".count($frailtyByAge["All"]).")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>All</td>
+	                    <td>".number_format(array_sum($frailtyByAge['All'])/max(1,count($frailtyByAge['All'])), 2)." (".number_format(stdev($frailtyByAge['All']), 2).")</td>
+	                </tr>
+	                <tr>
+	                    <td><60-64</td>
+	                    <td>".number_format(array_sum($frailtyByAge['<60-64'])/max(1,count($frailtyByAge['<60-64'])), 2)." (".number_format(stdev($frailtyByAge['<60-64']), 2).")</td>
+	                </tr>
+	                <tr>
+	                    <td>65-74</td>
+	                    <td>".number_format(array_sum($frailtyByAge['65-74'])/max(1,count($frailtyByAge['65-74'])), 2)." (".number_format(stdev($frailtyByAge['65-74']), 2).")</td>
+	                </tr>
+	                <tr>
+	                    <td>75+</td>
+	                    <td>".number_format(array_sum($frailtyByAge['75+'])/max(1,count($frailtyByAge['75+'])), 2)." (".number_format(stdev($frailtyByAge['75+']), 2).")</td>
                     </tr>
                 </tbody>
             </table>

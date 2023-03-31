@@ -181,7 +181,6 @@ class UsageVisualizations extends SpecialPage {
                     drawPoints: false,
                     dataAxis: {
                         showMinorLabels: true,
-                        maxMinorChars: 100,
                         left: {
                             title: {
                                 text: title
@@ -204,7 +203,6 @@ class UsageVisualizations extends SpecialPage {
                     },
                     dataAxis: {
                         showMinorLabels: true,
-                        maxMinorChars: 100,
                         left: {
                             title: {
                                 text: title

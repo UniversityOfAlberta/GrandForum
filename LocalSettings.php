@@ -582,6 +582,21 @@ function recursive_implode($glue, $array, $include_keys = false, $trim_all = tru
 	return (string) $glued_string;
 }
 
+// https://learnetutorials.com/php/programs/calculate-standard-deviation
+function stdev($a){
+    $count = count($a);
+    $v = 0;
+    $avg = array_sum($a) / $count;
+    foreach ($a as $i) {
+        $v += pow(($i - $avg), 2);
+    }
+    $stdev = sqrt($v / $count);
+    if(is_nan($stdev)){
+        return 0;
+    }
+    return $stdev;
+}
+
 function encrypt($plaintext, $ignoreError=false){
     if(!isset($_SERVER['ENC_KEY'])){
         if($ignoreError){ return $plaintext; }
