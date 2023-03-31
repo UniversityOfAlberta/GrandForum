@@ -37,8 +37,13 @@ class UsageVisualizations extends SpecialPage {
             $people[] = $person;
         }
         
+        if(!isset($_GET['groupByMonth']) && !isset($_GET['groupByDay'])){
+            $_GET['groupByMonth'] = true;
+        }
+        
         $startDate = substr($config->getValue('projectPhaseDates')[1], 0, 10);
-        $endDate = date('Y-m-d', time() + 24*3600);
+        $endDate = isset($_GET['groupByMonth']) ? substr(date('Y-m-d'),0,7)."-".cal_days_in_month(CAL_GREGORIAN,date('m'),date('Y')) : 
+                                                  date('Y-m-d', time() + 24*3600);
         $rangeStart = date('Y-m-d', strtotime($endDate) - 365*24*3600);
         
         // Initialize arrays
@@ -49,32 +54,37 @@ class UsageVisualizations extends SpecialPage {
         $pageviews3 = array();
         $pageviews4 = array();
         for($date=$startDate; $date <= $endDate; $date=date('Y-m-d', strtotime($date) + 24*3600)){
-            $logins[$date] = ['x' => $date, 
-                              'y' => 0,
-                              'group' => '0'];
-            $registrations[$date] = ['x' => $date, 
-                                     'y' => '0', 
-                                     'group' => '0'];
-            $pageviews1[$date] = ['x' => $date, 
-                                  'y' => 0, 
-                                  'group' => '0'];
-            $pageviews2[$date] = ['x' => $date, 
-                                  'y' => 0, 
-                                  'group' => '1'];
-            $pageviews3[$date] = ['x' => $date, 
-                                  'y' => 0, 
+            $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
+            $date2 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-".cal_days_in_month(CAL_GREGORIAN,substr($date,5,2),substr($date,0,4))." 23:59:59" : $date." 23:59:59";
+            $logins[$date1] = ['x' => $date1,
+                               'end' => $date2,
+                               'y' => 0,
+                               'group' => '0'];
+            $registrations[$date1] = ['x' => $date1,
+                                      'end' => $date2,
+                                      'y' => '0',
+                                      'group' => '0'];
+            $pageviews1[$date1] = ['x' => $date1, 
+                                   'y' => 0, 
+                                   'group' => '0'];
+            $pageviews2[$date1] = ['x' => $date1, 
+                                   'y' => 0, 
+                                   'group' => '1'];
+            $pageviews3[$date1] = ['x' => $date1, 
+                                   'y' => 0, 
                                   'group' => '2'];
-            $pageviews4[$date] = ['x' => $date, 
-                                  'y' => 0, 
-                                  'group' => '3'];
+            $pageviews4[$date1] = ['x' => $date1, 
+                                   'y' => 0, 
+                                   'group' => '3'];
         }
         
         // Logins
         $loggedinDC = DataCollection::newFromPage('loggedin');
         foreach($loggedinDC as $dc){
             foreach($dc->getData()['log'] as $date){
-                if(isset($logins[$date])){
-                    $logins[$date]['y']++;
+                $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
+                if(isset($logins[$date1])){
+                    $logins[$date1]['y']++;
                 }
             }
         }
@@ -82,8 +92,9 @@ class UsageVisualizations extends SpecialPage {
         // Registrations
         foreach($people as $person){
             $date = $person->getRegistration(true);
-            if(isset($registrations[$date])){
-                $registrations[$date]['y']++;
+            $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
+            if(isset($registrations[$date1])){
+                $registrations[$date1]['y']++;
             }
         }
         
@@ -91,32 +102,36 @@ class UsageVisualizations extends SpecialPage {
         $pageViewsDC = DataCollection::newFromPage('EducationResources-Hit');
         foreach($pageViewsDC as $dc){
             foreach(array_unique($dc->getData()['log']) as $date){
-                if(isset($pageviews1[$date])){
-                    $pageviews1[$date]['y']++;
+                $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
+                if(isset($pageviews1[$date1])){
+                    $pageviews1[$date1]['y']++;
                 }
             }
         }
         $pageViewsDC = DataCollection::newFromPage('Programs-Hit');
         foreach($pageViewsDC as $dc){
             foreach(array_unique($dc->getData()['log']) as $date){
-                if(isset($pageviews2[$date])){
-                    $pageviews2[$date]['y']++;
+                $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
+                if(isset($pageviews2[$date1])){
+                    $pageviews2[$date1]['y']++;
                 }
             }
         }
         $pageViewsDC = DataCollection::newFromPage('CommunityPrograms-Hit');
         foreach($pageViewsDC as $dc){
             foreach(array_unique($dc->getData()['log']) as $date){
-                if(isset($pageviews3[$date])){
-                    $pageviews3[$date]['y']++;
+                $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
+                if(isset($pageviews3[$date1])){
+                    $pageviews3[$date1]['y']++;
                 }
             }
         }
         $pageViewsDC = DataCollection::newFromPage('AskAnExpert-Hit');
         foreach($pageViewsDC as $dc){
             foreach(array_unique($dc->getData()['log']) as $date){
-                if(isset($pageviews4[$date])){
-                    $pageviews4[$date]['y']++;
+                $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
+                if(isset($pageviews4[$date1])){
+                    $pageviews4[$date1]['y']++;
                 }
             }
         }
@@ -127,16 +142,32 @@ class UsageVisualizations extends SpecialPage {
                                  array_values($pageviews2), 
                                  array_values($pageviews3), 
                                  array_values($pageviews4));
-        
-        $wgOut->addHTML("<h1 style='text-align: center;'>Unique Logins per Day</h1>
+        $unit = isset($_GET['groupByMonth']) ? "Month" : "Day";
+        $daySelected = (isset($_GET['groupByDay'])) ? "selected" : "";
+        $monthSelected = (isset($_GET['groupByMonth'])) ? "selected" : "";
+        $wgOut->addHTML("<b style='line-height:2em;'>Group By:</b>&nbsp;
+                         <select id='groupBy'>
+                            <option $daySelected>Day</option>
+                            <option $monthSelected>Month</option>
+                         </select>
+                         <h1 style='text-align: center;'>Unique Logins per {$unit}</h1>
                          <div id='logins'></div>
                          
-                         <h1 style='text-align: center;'>Registrations per Day</h1>
+                         <h1 style='text-align: center;'>Registrations per {$unit}</h1>
                          <div id='registrations'></div>
                          
-                         <h1 style='text-align: center;'>Page Views per Day</h1>
+                         <h1 style='text-align: center;'>Page Views per {$unit}</h1>
                          <div id='pageviews'></div>
         <script type='text/javascript'>
+            $('#groupBy').change(function(){
+                if($('#groupBy option:selected').val() == 'Day'){
+                    document.location = wgServer + wgScriptPath + '/index.php/Special:UsageVisualizations?groupByDay';
+                }
+                else{
+                    document.location = wgServer + wgScriptPath + '/index.php/Special:UsageVisualizations?groupByMonth';
+                }
+            });
+        
             // create a dataSet with groups
             var logins = ".json_encode($logins).";
             var registrations = ".json_encode($registrations).";
