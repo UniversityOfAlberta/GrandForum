@@ -826,6 +826,7 @@ abstract class AbstractReport extends SpecialPage {
                                 $pResult = ($pResult || $this->project->getName() == $perm['perm']['project']);
                             }
                             if($pResult && !($me->isMemberOf($this->project) || 
+                                             $me->isMemberOfDuring($this->project, $perm['start'], $perm['end']) ||
                                              $me->isThemeLeaderOf($this->project) || 
                                              $me->isThemeCoordinatorOf($this->project) ||
                                              $me->isRoleAtLeast(SD))){
