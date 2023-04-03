@@ -5,6 +5,16 @@
     </Permissions>
     <!-- HAC -->
     <ReportSection id="hac_review" name="HAC Review" tooltip="Review of HAC Proposals" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <p><button id='downloadAll'>Download All</button></p>
+                <script type='text/javascript'>
+                    $("#downloadAll").click(function(){
+                        $(".buttons-excel").click();
+                    });
+                </script>
+            ]]>
+        </Static>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="HAC">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_HAC,APPLICATION_FORM,TITLE,0,{$user_id},0)} - {$user_name}">
                 <Static>
@@ -181,7 +191,10 @@
                             $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false,
                                                                         'dom': 'Blfrtip',
                                                                         'buttons': [
-                                                                            'excel'
+                                                                            {
+                                                                                extend: 'excelHtml5',
+                                                                                title: "{$user_name}"
+                                                                            },
                                                                         ]});
                         </script>
                     ]]>
