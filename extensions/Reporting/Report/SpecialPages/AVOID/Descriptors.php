@@ -7,6 +7,8 @@ $wgSpecialPageGroups['Descriptors'] = 'reporting-tools';
 
 $wgHooks['SubLevelTabs'][] = 'Descriptors::createSubTabs';
 
+require_once("EQ5D5L.php");
+
 function runDescriptors($par) {
     Descriptors::execute($par);
 }
@@ -23,7 +25,7 @@ class Descriptors extends SpecialPage {
     }
     
     function execute($par){
-        global $wgServer, $wgScriptPath, $wgOut;
+        global $wgServer, $wgScriptPath, $wgOut, $EQ5D5L;
         $me = Person::newFromWgUser();
         $wgOut->setPageTitle("Descriptives");
         $people = Person::getAllPeople(CI);
@@ -58,6 +60,15 @@ class Descriptors extends SpecialPage {
         $cfsByAge = array("<60-64" => array(0,0,0,0,0,0,0,0,0,0),
                           "65-74" => array(0,0,0,0,0,0,0,0,0,0),
                           "75+" => array(0,0,0,0,0,0,0,0,0,0));
+                          
+        $eqByAge = array("All" => array(),
+                         "<60-64" => array(),
+                         "65-74" => array(),
+                         "75+" => array());
+        $selfHealthByAge = array("All" => array(),
+                                 "<60-64" => array(),
+                                 "65-74" => array(),
+                                 "75+" => array());
         
         $ages = array(0,0,0,0,0,0,0);
         $genders = array(0,0,0,0);
@@ -74,6 +85,8 @@ class Descriptors extends SpecialPage {
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
                 $scores = $fScores["Health"];
                 $selfHealth = $this->getBlobData("HEALTH_QUESTIONS", "healthstatus_avoid6", $person, YEAR);
+                $eqId = implode("", $api->getHealthScores($person->getId(), "RP_AVOID"));
+                $eqMean = $EQ5D5L[$eqId];
                 $age = $this->getBlobData("AVOID_Questions_tab0", "avoid_age", $person, YEAR);
                 $gender = $this->getBlobData("AVOID_Questions_tab0", "avoid_gender", $person, YEAR);
                 $ethnicity = $this->getBlobData("AVOID_Questions_tab0", "ethnicity_avoid", $person, YEAR)["ethnicity_avoid"];
@@ -96,17 +109,25 @@ class Descriptors extends SpecialPage {
                 }
                 
                 $frailtyByAge["All"][] = $total;
+                $eqByAge["All"][] = $eqMean;
+                $selfHealthByAge["All"][] = $selfHealth;
                 if($age == "less than 60" || $age < 65){
                     $frailtyByAge["<60-64"][] = $total;
                     @$cfsByAge["<60-64"][$fScores["CFS"]]++;
+                    $eqByAge["<60-64"][] = $eqMean;
+                    $selfHealthByAge["<60-64"][] = $selfHealth;
                 }
                 else if($age >= 65 && $age < 75){
                     $frailtyByAge["65-74"][] = $total;
                     @$cfsByAge["65-74"][$fScores["CFS"]]++;
+                    $eqByAge["65-74"][] = $eqMean;
+                    $selfHealthByAge["65-74"][] = $selfHealth;
                 }
                 else if($age >= 75){
                     $frailtyByAge["75+"][] = $total;
                     @$cfsByAge["75+"][$fScores["CFS"]]++;
+                    $eqByAge["75+"][] = $eqMean;
+                    $selfHealthByAge["75+"][] = $selfHealth;
                 }
                 
                 if($age == "less than 60" || $age <= 60){
@@ -812,6 +833,44 @@ class Descriptors extends SpecialPage {
                 <tr>
                     <td>Prefer not to say</td>
                     <td>{$educations[6]} (".number_format($educations[6]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <b>Baseline: Mean (SD) EQ-5D-5L Utilities and EQ-VAS by Age Group</b>
+        <table class='wikitable' style='margin-top:0;'>
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>Utilities</th>
+                    <th>EQ Vas</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>RCHA Total (N=".count($eqByAge["All"]).")</th>
+                    <th>RCHA Total (N=".count($selfHealthByAge["All"]).")</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>All</td>
+                    <td>".number_format(array_sum($eqByAge['All'])/max(1,count($eqByAge['All'])), 3)." (".number_format(stdev($eqByAge['All']), 3).")</td>
+                    <td>".number_format(array_sum($selfHealthByAge['All'])/max(1,count($selfHealthByAge['All'])), 2)." (".number_format(stdev($selfHealthByAge['All']), 2).")</td>
+                </tr>
+                <tr>
+                    <td><60-64</td>
+                    <td>".number_format(array_sum($eqByAge['<60-64'])/max(1,count($eqByAge['<60-64'])), 3)." (".number_format(stdev($eqByAge['<60-64']), 3).")</td>
+                    <td>".number_format(array_sum($selfHealthByAge['<60-64'])/max(1,count($selfHealthByAge['<60-64'])), 2)." (".number_format(stdev($selfHealthByAge['<60-64']), 2).")</td>
+                </tr>
+                <tr>
+                    <td>65-74</td>
+                    <td>".number_format(array_sum($eqByAge['65-74'])/max(1,count($eqByAge['65-74'])), 3)." (".number_format(stdev($eqByAge['65-74']), 3).")</td>
+                    <td>".number_format(array_sum($selfHealthByAge['65-74'])/max(1,count($selfHealthByAge['65-74'])), 2)." (".number_format(stdev($selfHealthByAge['65-74']), 2).")</td>
+                </tr>
+                <tr>
+                    <td>75+</td>
+                    <td>".number_format(array_sum($eqByAge['75+'])/max(1,count($eqByAge['75+'])), 3)." (".number_format(stdev($eqByAge['75+']), 3).")</td>
+                    <td>".number_format(array_sum($selfHealthByAge['75+'])/max(1,count($selfHealthByAge['75+'])), 2)." (".number_format(stdev($selfHealthByAge['75+']), 2).")</td>
                 </tr>
             </tbody>
         </table>");
