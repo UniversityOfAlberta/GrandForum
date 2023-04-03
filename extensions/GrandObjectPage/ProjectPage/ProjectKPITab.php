@@ -77,7 +77,7 @@ class ProjectKPITab extends AbstractEditableTab {
             $endYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Roll-over kpi in April
             
             $phaseDates = $config->getValue("projectPhaseDates");
-            $startYear = date('Y', strtotime($project->getCreated()) - (3 * 31 * 24 * 60 * 60));
+            $startYear = date('Y', strtotime($project->getCreated()) - (3 * 30 * 24 * 60 * 60));
             
             for($i=$endYear; $i >= $startYear; $i--){
                 foreach(array_reverse(self::$qMap, true) as $q => $quarter){
