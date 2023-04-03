@@ -35,7 +35,7 @@ class Report extends AbstractReport{
         }
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
 
-        foreach($person->getProjects() as $project){
+        foreach($person->getProjects(true) as $project){
             if($person->isRole(PL, $project) || 
                $person->isRole(PA, $project) || 
                $person->isRole(RP, $project) ||
