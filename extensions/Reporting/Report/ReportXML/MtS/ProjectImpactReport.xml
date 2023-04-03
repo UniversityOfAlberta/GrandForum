@@ -14,6 +14,7 @@
 
         </Role>
         <Project />
+        <Project deleted="true" />
     </Permissions>
     <ReportSection id="introduction" type="EditableReportSection" blobSection="INTRODUCTION" name="1 - Intro &amp; Consent" title="Project Impact Report&lt;div style='margin-top:5px;'>SECTION 1 Introduction and Informed Consent&lt;/div>">
         <Static>
