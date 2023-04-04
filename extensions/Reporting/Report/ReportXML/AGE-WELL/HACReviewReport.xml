@@ -240,6 +240,7 @@
                     {set(q2,0)}
                     {set(q3,0)}
                     {set(nReviewers,0)}
+                    {set(nTotalReviewers,0)}
                 ]]>
             </Static>
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="HAC" includeSelf="true">
@@ -253,6 +254,11 @@
                         {set(nReviewers, {add({get(nReviewers)},1)})}
                     ]]>
                 </If>
+                <Static>
+                    <![CDATA[
+                        {set(nTotalReviewers, {add({get(nTotalReviewers)},1)})}
+                    ]]>
+                </Static>
             </ReportItemSet>
             <Static>
                 <![CDATA[
@@ -282,7 +288,7 @@
                     ]]>
                 </Static>
             </ReportItemSet>
-            <If if="{&lt;({get(nReviewers)},2)}">
+            <If if="{&lt;({get(nTotalReviewers)},2)}">
                 <![CDATA[
                     <td></td>
                     <td></td>
@@ -290,7 +296,7 @@
                     <td></td>
                 ]]>
             </If>
-            <If if="{&lt;({get(nReviewers)},1)}">
+            <If if="{&lt;({get(nTotalReviewers)},1)}">
                 <![CDATA[
                     <td></td>
                     <td></td>
