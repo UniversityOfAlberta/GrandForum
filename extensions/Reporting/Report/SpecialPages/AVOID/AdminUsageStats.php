@@ -382,20 +382,12 @@ class AdminUsageStats extends SpecialPage {
 
         asort($top3);
         $top3 = array_reverse($top3);
-        $top3Keys = array_keys($top3);
         
-        @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
-            <tr>
-                <td class='label'>Top 3</td>
-                <td align='right'>
-                    <table>
-                        <tr><td style='font-weight: bold;'>{$top3Keys[0]}&nbsp;</td><td align='right'>{$top3[$top3Keys[0]]}</td></tr>
-                        <tr><td style='font-weight: bold;'>{$top3Keys[1]}&nbsp;</td><td align='right'>{$top3[$top3Keys[1]]}</td></tr>
-                        <tr><td style='font-weight: bold;'>{$top3Keys[2]}&nbsp;</td><td align='right'>{$top3[$top3Keys[2]]}</td></tr>
-                    </table>
-                </td>
-            </tr>
-        </table>");
+        @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>");
+        foreach($top3 as $key => $top){
+            $wgOut->addHTML("<tr><td style='font-weight: bold;'>{$key}&nbsp;</td><td align='right'>{$top}</td></tr>");
+        }
+        @$wgOut->addHTML("</table>");
     }
 
     static function createSubTabs(&$tabs){
