@@ -917,26 +917,26 @@ class Descriptors extends SpecialPage {
             <tbody>
                 <tr>
                     <td>All</td>
-                    <td>".count($lonelinessByAge['All']["3-5"])." (".number_format(count($lonelinessByAge['All']["3-5"])/max(1, $nIntake)*100, 1).")</td>
-                    <td>".count($lonelinessByAge['All']["6-9"])." (".number_format(count($lonelinessByAge['All']["6-9"])/max(1, $nIntake)*100, 1).")</td>
+                    <td>".count($lonelinessByAge['All']["3-5"])." (".number_format(count($lonelinessByAge['All']["3-5"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
+                    <td>".count($lonelinessByAge['All']["6-9"])." (".number_format(count($lonelinessByAge['All']["6-9"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
                     <td>".number_format(array_sum(array_flatten($lonelinessByAge['All']))/max(1,count(array_flatten($lonelinessByAge['All']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['All'])), 2).")</td>
                 </tr>
                 <tr>
                     <td><60-64</td>
-                    <td>".count($lonelinessByAge['<60-64']["3-5"])." (".number_format(count($lonelinessByAge['<60-64']["3-5"])/max(1, $nIntake)*100, 1).")</td>
-                    <td>".count($lonelinessByAge['<60-64']["6-9"])." (".number_format(count($lonelinessByAge['<60-64']["6-9"])/max(1, $nIntake)*100, 1).")</td>
+                    <td>".count($lonelinessByAge['<60-64']["3-5"])." (".number_format(count($lonelinessByAge['<60-64']["3-5"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
+                    <td>".count($lonelinessByAge['<60-64']["6-9"])." (".number_format(count($lonelinessByAge['<60-64']["6-9"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
                     <td>".number_format(array_sum(array_flatten($lonelinessByAge['<60-64']))/max(1,count(array_flatten($lonelinessByAge['<60-64']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['<60-64'])), 2).")</td>
                 </tr>
                 <tr>
                     <td>65-74</td>
-                    <td>".count($lonelinessByAge['65-74']["3-5"])." (".number_format(count($lonelinessByAge['65-74']["3-5"])/max(1, $nIntake)*100, 1).")</td>
-                    <td>".count($lonelinessByAge['65-74']["6-9"])." (".number_format(count($lonelinessByAge['65-74']["6-9"])/max(1, $nIntake)*100, 1).")</td>
+                    <td>".count($lonelinessByAge['65-74']["3-5"])." (".number_format(count($lonelinessByAge['65-74']["3-5"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
+                    <td>".count($lonelinessByAge['65-74']["6-9"])." (".number_format(count($lonelinessByAge['65-74']["6-9"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
                     <td>".number_format(array_sum(array_flatten($lonelinessByAge['65-74']))/max(1,count(array_flatten($lonelinessByAge['65-74']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['65-74'])), 2).")</td>
                 </tr>
                 <tr>
                     <td>75+</td>
-                    <td>".count($lonelinessByAge['75+']["3-5"])." (".number_format(count($lonelinessByAge['75+']["3-5"])/max(1, $nIntake)*100, 1).")</td>
-                    <td>".count($lonelinessByAge['75+']["6-9"])." (".number_format(count($lonelinessByAge['75+']["6-9"])/max(1, $nIntake)*100, 1).")</td>
+                    <td>".count($lonelinessByAge['75+']["3-5"])." (".number_format(count($lonelinessByAge['75+']["3-5"])/max(1,count(array_flatten($lonelinessByAge['75+'])))*100, 1).")</td>
+                    <td>".count($lonelinessByAge['75+']["6-9"])." (".number_format(count($lonelinessByAge['75+']["6-9"])/max(1,count(array_flatten($lonelinessByAge['75+'])))*100, 1).")</td>
                     <td>".number_format(array_sum(array_flatten($lonelinessByAge['75+']))/max(1,count(array_flatten($lonelinessByAge['75+']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['75+'])), 2).")</td>
                 </tr>
             </tbody>
