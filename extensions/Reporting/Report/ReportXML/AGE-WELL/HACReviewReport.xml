@@ -208,10 +208,25 @@
                 <table class='wikitable' id="eval_table">
                     <thead>
                         <tr>
-                            <th>HAC</th>
-                            <th>Avg. Q1</th>
+                            <th colspan='2'></th>
+                            <th colspan='4'>Reviewer 1</th>
+                            <th colspan='4'>Reviewer 2</th>
+                            <th>Overall Average</th>
+                        </tr>
+                        <tr>
+                            <th>Applicant</th>
+                            <th>Title</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Total</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Total</th>
+                            <!--th>Avg.Q1</th>
                             <th>Avg. Q2</th>
-                            <th>Avg. Q3</th>
+                            <th>Avg. Q3</th-->
                             <th>Avg. Total</th>
                         </tr>
                     </thead>
@@ -242,10 +257,52 @@
             <Static>
                 <![CDATA[
                     <tr>
-                        <td style='white-space:nowrap;'><b>{getText(RP_HAC,APPLICATION_FORM,TITLE,0,{$user_id},0)} - {$user_name}</b></td>
-                        <td align='right'>{round({divide({get(q1)},{get(nReviewers)})},2)}</td>
+                        <td>{$user_name}</td>
+                        <td>{getText(RP_HAC,APPLICATION_FORM,TITLE,0,{$user_id},0)}</td>
+            ]]>
+            </Static>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="HAC" includeSelf="true">
+                <Static>
+                    <![CDATA[
+                        <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_1_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                            {getText(RP_HAC_REVIEW,REVIEW,REVIEW_1,{$parent_id},{$user_id},0)}
+                        </td>
+                        <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_2_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                            {getText(RP_HAC_REVIEW,REVIEW,REVIEW_2,{$parent_id},{$user_id},0)}
+                        </td>
+                        <td align='right' title='{replace(',&#39;,{getRawText(RP_HAC_REVIEW,REVIEW,REVIEW_3_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                            {getText(RP_HAC_REVIEW,REVIEW,REVIEW_3,{$parent_id},{$user_id},0)}
+                        </td>
+                        <td align='right'>
+                            {divide({add({multiply({getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_1,{$parent_id},{$user_id},0)},6)},
+                                         {multiply({getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_2,{$parent_id},{$user_id},0)},3)},
+                                         {multiply({getNumber(RP_HAC_REVIEW,REVIEW,REVIEW_3,{$parent_id},{$user_id},0)},1)}
+                            )},10)}
+                        </td>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <If if="{&lt;({get(nReviewers)},2)}">
+                <![CDATA[
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                ]]>
+            </If>
+            <If if="{&lt;({get(nReviewers)},1)}">
+                <![CDATA[
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                ]]>
+            </If>
+            <Static>
+                <![CDATA[
+                        <!--td align='right'>{round({divide({get(q1)},{get(nReviewers)})},2)}</td>
                         <td align='right'>{round({divide({get(q2)},{get(nReviewers)})},2)}</td>
-                        <td align='right'>{round({divide({get(q3)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q3)},{get(nReviewers)})},2)}</td-->
                         <td align='right'>
                             {set(total, 
                                 {divide({add({multiply({get(q1)},6)}, 
