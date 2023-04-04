@@ -363,6 +363,22 @@ class UserFrailtyIndexAPI extends API{
         return $scores;
     }
     
+    function getLonelinessScores($user_id, $reportType){
+        $a1s = array("Hardly ever","Some of the time","Often");
+        $a2s = array("Hardly ever","Some of the time","Often");
+        $a3s = array("Hardly ever","Some of the time","Often");
+    
+        $a1 = trim($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "interact7_avoid", $user_id));
+        $a2 = trim($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "interact8_avoid", $user_id));
+        $a3 = trim($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "interact9_avoid", $user_id));
+        
+        $answers = array(array_search($a1, $a1s)+1,
+                         array_search($a2, $a2s)+1,
+                         array_search($a3, $a3s)+1);
+        
+        return $answers;
+    }
+    
     function getHealthScores($user_id, $reportType){
         $a1s = array("I have no problems in walking about",
                      "I have slight problems in walking about",

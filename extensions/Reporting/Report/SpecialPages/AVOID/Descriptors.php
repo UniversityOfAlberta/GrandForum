@@ -69,6 +69,10 @@ class Descriptors extends SpecialPage {
                                  "<60-64" => array(),
                                  "65-74" => array(),
                                  "75+" => array());
+        $lonelinessByAge = array("All" => array("3-5" => array(), "6-9" => array()),
+                                 "<60-64"  => array("3-5" => array(), "6-9" => array()),
+                                 "65-74"  => array("3-5" => array(), "6-9" => array()),
+                                 "75+"  => array("3-5" => array(), "6-9" => array()));
         
         $ages = array(0,0,0,0,0,0,0);
         $genders = array(0,0,0,0);
@@ -87,6 +91,7 @@ class Descriptors extends SpecialPage {
                 $selfHealth = $this->getBlobData("HEALTH_QUESTIONS", "healthstatus_avoid6", $person, YEAR);
                 $eqId = implode("", $api->getHealthScores($person->getId(), "RP_AVOID"));
                 $eqMean = $EQ5D5L[$eqId];
+                $loneliness = array_sum($api->getLonelinessScores($person->getId(), "RP_AVOID"));
                 $age = $this->getBlobData("AVOID_Questions_tab0", "avoid_age", $person, YEAR);
                 $gender = $this->getBlobData("AVOID_Questions_tab0", "avoid_gender", $person, YEAR);
                 $ethnicity = $this->getBlobData("AVOID_Questions_tab0", "ethnicity_avoid", $person, YEAR)["ethnicity_avoid"];
@@ -111,23 +116,47 @@ class Descriptors extends SpecialPage {
                 $frailtyByAge["All"][] = $total;
                 $eqByAge["All"][] = $eqMean;
                 $selfHealthByAge["All"][] = $selfHealth;
+                if($loneliness <= 5){
+                    $lonelinessByAge["All"]["3-5"][] = $loneliness;
+                }
+                else{
+                    $lonelinessByAge["All"]["6-9"][] = $loneliness;
+                }
                 if($age == "less than 60" || $age < 65){
                     $frailtyByAge["<60-64"][] = $total;
                     @$cfsByAge["<60-64"][$fScores["CFS"]]++;
                     $eqByAge["<60-64"][] = $eqMean;
                     $selfHealthByAge["<60-64"][] = $selfHealth;
+                    if($loneliness <= 5){
+                        $lonelinessByAge["<60-64"]["3-5"][] = $loneliness;
+                    }
+                    else{
+                        $lonelinessByAge["<60-64"]["6-9"][] = $loneliness;
+                    }
                 }
                 else if($age >= 65 && $age < 75){
                     $frailtyByAge["65-74"][] = $total;
                     @$cfsByAge["65-74"][$fScores["CFS"]]++;
                     $eqByAge["65-74"][] = $eqMean;
                     $selfHealthByAge["65-74"][] = $selfHealth;
+                    if($loneliness <= 5){
+                        $lonelinessByAge["65-74"]["3-5"][] = $loneliness;
+                    }
+                    else{
+                        $lonelinessByAge["65-74"]["6-9"][] = $loneliness;
+                    }
                 }
                 else if($age >= 75){
                     $frailtyByAge["75+"][] = $total;
                     @$cfsByAge["75+"][$fScores["CFS"]]++;
                     $eqByAge["75+"][] = $eqMean;
                     $selfHealthByAge["75+"][] = $selfHealth;
+                    if($loneliness <= 5){
+                        $lonelinessByAge["75+"]["3-5"][] = $loneliness;
+                    }
+                    else{
+                        $lonelinessByAge["75+"]["6-9"][] = $loneliness;
+                    }
                 }
                 
                 if($age == "less than 60" || $age <= 60){
@@ -871,6 +900,55 @@ class Descriptors extends SpecialPage {
                     <td>75+</td>
                     <td>".number_format(array_sum($eqByAge['75+'])/max(1,count($eqByAge['75+'])), 3)." (".number_format(stdev($eqByAge['75+']), 3).")</td>
                     <td>".number_format(array_sum($selfHealthByAge['75+'])/max(1,count($selfHealthByAge['75+'])), 2)." (".number_format(stdev($selfHealthByAge['75+']), 2).")</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <b>Baseline: Loneliness by Age Group</b>
+        <table class='wikitable' style='margin-top:0;'>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>3-5<br />Mean (SD)<br />Total (%)</th>
+                    <th>6-9<br />Mean (SD)<br />Total (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>All</td>
+                    <td>".number_format(array_sum($lonelinessByAge['All']["3-5"])/max(1,count($lonelinessByAge['All']["3-5"])), 2)." (".number_format(stdev($lonelinessByAge['All']["3-5"]), 2).")<br />
+                        ".count($lonelinessByAge['All']["3-5"])." (".number_format(count($lonelinessByAge['All']["3-5"])/max(1, $nIntake), 2).")
+                    </td>
+                    <td>".number_format(array_sum($lonelinessByAge['All']["6-9"])/max(1,count($lonelinessByAge['All']["6-9"])), 2)." (".number_format(stdev($lonelinessByAge['All']["6-9"]), 2).")<br />
+                        ".count($lonelinessByAge['All']["6-9"])." (".number_format(count($lonelinessByAge['All']["6-9"])/max(1, $nIntake), 2).")
+                    </td>
+                </tr>
+                <tr>
+                    <td><60-64</td>
+                    <td>".number_format(array_sum($lonelinessByAge['<60-64']["3-5"])/max(1,count($lonelinessByAge['<60-64']["3-5"])), 2)." (".number_format(stdev($lonelinessByAge['<60-64']["3-5"]), 2).")<br />
+                        ".count($lonelinessByAge['<60-64']["3-5"])." (".number_format(count($lonelinessByAge['<60-64']["3-5"])/max(1, $nIntake), 2).")
+                    </td>
+                    <td>".number_format(array_sum($lonelinessByAge['<60-64']["6-9"])/max(1,count($lonelinessByAge['<60-64']["6-9"])), 2)." (".number_format(stdev($lonelinessByAge['<60-64']["6-9"]), 2).")<br />
+                        ".count($lonelinessByAge['<60-64']["6-9"])." (".number_format(count($lonelinessByAge['<60-64']["6-9"])/max(1, $nIntake), 2).")
+                    </td>
+                </tr>
+                <tr>
+                    <td>65-74</td>
+                    <td>".number_format(array_sum($lonelinessByAge['65-74']["3-5"])/max(1,count($lonelinessByAge['65-74']["3-5"])), 2)." (".number_format(stdev($lonelinessByAge['65-74']["3-5"]), 2).")<br />
+                        ".count($lonelinessByAge['65-74']["3-5"])." (".number_format(count($lonelinessByAge['65-74']["3-5"])/max(1, $nIntake), 2).")
+                    </td>
+                    <td>".number_format(array_sum($lonelinessByAge['65-74']["6-9"])/max(1,count($lonelinessByAge['65-74']["6-9"])), 2)." (".number_format(stdev($lonelinessByAge['65-74']["6-9"]), 2).")<br />
+                        ".count($lonelinessByAge['65-74']["6-9"])." (".number_format(count($lonelinessByAge['65-74']["6-9"])/max(1, $nIntake), 2).")
+                    </td>
+                </tr>
+                <tr>
+                    <td>75+</td>
+                    <td>".number_format(array_sum($lonelinessByAge['75+']["3-5"])/max(1,count($lonelinessByAge['75+']["3-5"])), 2)." (".number_format(stdev($lonelinessByAge['75+']["3-5"]), 2).")<br />
+                        ".count($lonelinessByAge['75+']["3-5"])." (".number_format(count($lonelinessByAge['75+']["3-5"])/max(1, $nIntake), 2).")
+                    </td>
+                    <td>".number_format(array_sum($lonelinessByAge['75+']["6-9"])/max(1,count($lonelinessByAge['75+']["6-9"])), 2)." (".number_format(stdev($lonelinessByAge['75+']["6-9"]), 2).")<br />
+                        ".count($lonelinessByAge['75+']["6-9"])." (".number_format(count($lonelinessByAge['75+']["6-9"])/max(1, $nIntake), 2).")
+                    </td>
                 </tr>
             </tbody>
         </table>");
