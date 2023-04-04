@@ -169,5 +169,12 @@
                 {$item}<br />
             ]]>
         </ReportItem>
+        
+        <ReportItem id="telus_funding" type="Radio" blobItem="TELUS_FUNDING" options="Yes|No">
+            <![CDATA[
+                <h3>Indicate if you want TELUS to consider this application for their possible funding</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>
