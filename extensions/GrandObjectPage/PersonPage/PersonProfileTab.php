@@ -586,7 +586,7 @@ EOF;
     }
     
     function showTopProducts($person, $visibility, $max=5){
-        global $config;
+        global $config, $wgServer, $wgScriptPath;
         if(!$visibility['isMe']){
             return;
         }
@@ -623,6 +623,59 @@ EOF;
         else{
             $this->html .= "You have not entered any <i>Select Research Outcomes</i> yet<br />";
         }
+        
+        // Profile PDF Buttons
+        $profilePDF = new DummyReport("Profile", $this->person, null, YEAR);
+        $check = $profilePDF->getPDF();
+        $tok = (count($check) > 0) ? $check[0]['token'] : false;
+    	$style1 = ($tok === false) ? "display:none;" : "";
+        	
+        $this->html .= "<br />
+                        <button id='generateProfileButton' type='button' style='width:16em;'>&nbsp;Generate Profile PDF&nbsp;<span id='profileThrobber' style='display:none;position:absolute;margin-top:-2px;' class='throbber'></span></button>
+                        <a id='downloadProfilePDF' style='width:12em;{$style1}' class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}'>Download Profile PDF</a>
+                        <div style='display:none;' class='error' id='generate_error'></div>
+                        <div style='display:none;' class='success' id='generate_success'></div>";
+        $this->html .= "<script type='text/javascript'>
+            $('#generateProfileButton').click(function(){
+                $('#generateProfileButton').prop('disabled', true);
+                $('#generate_success').html('');
+                $('#generate_success').css('display', 'none');
+                $('#generate_error').html('');
+                $('#generate_error').css('display', 'none');
+                $('#profileThrobber').css('display', 'inline-block');
+                $.ajax({
+                    url : '$wgServer$wgScriptPath/index.php/Special:Report?report=MyProfile&generatePDF', 
+                    success : function(data){
+                        for(index in data){
+                            var val = data[index];
+                            if(typeof val.tok != 'undefined'){
+                                var tok = val.tok;
+
+                                $('#generate_button').attr('value', tok);
+                                $('#downloadProfilePDF').show();
+                                
+                                $('#generate_success').html('PDF Generated Successfully.');
+                                $('#generate_success').css('display', 'block');
+                                $('#downloadProfilePDF').attr('href', '{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf=' + tok);
+                            }
+                            else{
+                                $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                $('#generate_error').css('display', 'block');
+                            }
+                        }
+                        $('#profileThrobber').css('display', 'none');
+                        $('#generateProfileButton').removeAttr('disabled');
+                    },
+                    error : function(response){
+                        // Error
+                        $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                        $('#generate_error').css('display', 'block');
+                        $('#generateProfileButton').removeAttr('disabled');
+                        $('#profileThrobber').css('display', 'none');
+                    }
+                });
+            });
+        </script>";
     }
     
 }
