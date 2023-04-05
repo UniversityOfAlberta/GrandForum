@@ -102,7 +102,7 @@ class SpecialEventRegistration extends SpecialPage{
             }
             if($event->getArticleLink() != ""){
                 $link = (substr($event->getArticleLink(), 0, 4) == "http") ? "<a href='{$event->getArticleLink()}'>{$event->getArticleLink()}</a>" : $event->getArticleLink();
-                $message .= "<p>Please join us on the following dates and times using the respective links: {$link}</p>";
+                $message .= "<p>Please join us in person or online: {$link}</p>";
             }
             $message .= "<p>Please save this email for future reference, we look forward to seeing you.</p>";
             if($event != null && trim($event->title) == "3rd AI4IA Conference"){
