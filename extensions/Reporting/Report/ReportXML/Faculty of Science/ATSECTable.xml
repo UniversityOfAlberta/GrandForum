@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="false">
     <Permissions>
-        <Role role="INACTIVE+" subRole="FEC">
-            <SectionPermission id="fec" permissions="rw" />
-            <SectionPermission id="fec_votes" permissions="" />
+        <Role role="INACTIVE+" subRole="ATSEC">
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="" />
         </Role>
         <Role role="DEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
-            <SectionPermission id="fec" permissions="rw" />
-            <SectionPermission id="fec_votes" permissions="rw" />
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="rw" />
         </Role>
         <Role role="VDEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
-            <SectionPermission id="fec" permissions="rw" />
-            <SectionPermission id="fec_votes" permissions="rw" />
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="rw" />
         </Role>
         <Role role="HR" start="{$this_year}-07-01" end="{$next_year}-07-01">
-            <SectionPermission id="fec" permissions="rw" />
-            <SectionPermission id="fec_votes" permissions="r" />
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="r" />
         </Role>
         <Role role="MANAGER+" start="{$this_year}-07-01" end="{$next_year}-07-01">
-            <SectionPermission id="fec" permissions="rw" />
-            <SectionPermission id="fec_votes" permissions="" />
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="" />
         </Role>
     </Permissions>
     <Script>
@@ -30,27 +30,20 @@
                     $.get(wgServer + wgScriptPath + '/index.php?action=api.voteFreeze', function(response){
                         var data = response.data;
                         
-                        var sumFaculty = 0;
-                        var sumFSO = 0;
+                        var sumATS = 0;
                         
-                        var nFaculty = 0;
-                        var nFSO = 0;
+                        var nATS = 0;
                         
-                        var nRevFaculty = 0;
-                        var nRevFSO = 0;
+                        var nRevATS = 0;
                         
-                        var sumRevFaculty = 0;
-                        var sumRevFSO = 0;
+                        var sumRevATS = 0;
                         
-                        var sumDDFaculty = 0;
-                        var sumDDFSO = 0;
+                        var sumDDATS = 0;
                         
-                        var nDDFaculty = 0;
-                        var nDDFSO = 0;
+                        var nDDATS = 0;
                         
                         // Get these numbers from sciea/scihr each year
-                        var targetFac = 306.2;
-                        var targetFSO = 13.2;
+                        var targetATS = 19.20;
                         
                         var needsSaving = false;
                         
@@ -130,25 +123,12 @@
                                increment != "0.00" &&
                                increment != "0.00 (PTC)" &&
                                increment != "0A"){
-                                if(caseN.indexOf('A') != -1 ||
-                                   caseN.indexOf('B') != -1 ||
-                                   caseN.indexOf('C') != -1 ||
-                                   caseN.indexOf('N') != -1){
-                                    sumFaculty += parseFloat(increment);
+                                if(caseN.indexOf('T') != -1){
+                                    sumATS += parseFloat(increment);
                                     if(revisedIncrement == ""){
                                         revisedIncrement = increment;
                                     }
-                                    nFaculty++;
-                                } else 
-                                if(caseN.indexOf('D') != -1 ||
-                                   caseN.indexOf('E') != -1 ||
-                                   caseN.indexOf('F') != -1 ||
-                                   caseN.indexOf('M') != -1){
-                                    sumFSO += parseFloat(increment);
-                                    if(revisedIncrement == ""){
-                                        revisedIncrement = increment;
-                                    }
-                                    nFSO++;
+                                    nATS++;
                                 }
                             }
                             
@@ -157,19 +137,9 @@
                                revisedIncrement != "0.00" &&
                                revisedIncrement != "0.00 (PTC)" &&
                                revisedIncrement != "0A"){
-                                if(caseN.indexOf('A') != -1 ||
-                                   caseN.indexOf('B') != -1 ||
-                                   caseN.indexOf('C') != -1 ||
-                                   caseN.indexOf('N') != -1){
-                                    sumRevFaculty += parseFloat(revisedIncrement);
-                                    nRevFaculty++;
-                                } else 
-                                if(caseN.indexOf('D') != -1 ||
-                                   caseN.indexOf('E') != -1 ||
-                                   caseN.indexOf('F') != -1 ||
-                                   caseN.indexOf('M') != -1){
-                                    sumRevFSO += parseFloat(revisedIncrement);
-                                    nRevFSO++;
+                                if(caseN.indexOf('T') != -1){
+                                    sumRevATS += parseFloat(revisedIncrement);
+                                    nRevATS++;
                                 }
                             }
                             
@@ -178,19 +148,9 @@
                                ddIncrement != "0.00" &&
                                ddIncrement != "0.00 (PTC)" &&
                                ddIncrement != "0A"){
-                                if(caseN.indexOf('A') != -1 ||
-                                   caseN.indexOf('B') != -1 ||
-                                   caseN.indexOf('C') != -1 ||
-                                   caseN.indexOf('N') != -1){
-                                    sumDDFaculty += parseFloat(ddIncrement);
-                                    nDDFaculty++;
-                                } else 
-                                if(caseN.indexOf('D') != -1 ||
-                                   caseN.indexOf('E') != -1 ||
-                                   caseN.indexOf('F') != -1 ||
-                                   caseN.indexOf('M') != -1){
-                                    sumDDFSO += parseFloat(ddIncrement);
-                                    nDDFSO++;
+                                if(caseN.indexOf('T') != -1){
+                                    sumDDATS += parseFloat(ddIncrement);
+                                    nDDATS++;
                                 }
                             }
                         });
@@ -200,28 +160,19 @@
                             saveAll();
                         }
                         
-                        var facSign = (targetFac - sumRevFaculty > 0) ? "-" : "+";
-                        var fsoSign = (targetFSO - sumRevFSO > 0) ? "-" : "+";
+                        var atsSign = (targetATS - sumRevATS > 0) ? "-" : "+";
                         
-                        $("#averageFac").text(number_format(sumFaculty/Math.max(1,nFaculty)));
-                        $("#averageFSO").text(number_format(sumFSO/Math.max(1,nFSO)));
-                        $("#totalFac").text(number_format(sumFaculty));
-                        $("#totalFSO").text(number_format(sumFSO));
+                        $("#averageATS").text(number_format(sumATS/Math.max(1,nATS)));
+                        $("#totalATS").text(number_format(sumATS));
                         
-                        $("#runningAverageFac").text(number_format(sumRevFaculty/Math.max(1,nRevFaculty)));
-                        $("#runningAverageFSO").text(number_format(sumRevFSO/Math.max(1,nRevFSO)));
-                        $("#runningTotalFac").text(number_format(sumRevFaculty));
-                        $("#runningTotalFSO").text(number_format(sumRevFSO));
+                        $("#runningAverageATS").text(number_format(sumRevATS/Math.max(1,nRevATS)));
+                        $("#runningTotalATS").text(number_format(sumRevATS));
                         
-                        $("#ddAverageFac").text(number_format(sumDDFaculty/Math.max(1,nDDFaculty)));
-                        $("#ddAverageFSO").text(number_format(sumDDFSO/Math.max(1,nDDFSO)));
-                        $("#ddTotalFac").text(number_format(sumDDFaculty));
-                        $("#ddTotalFSO").text(number_format(sumDDFSO));
+                        $("#ddAverageATS").text(number_format(sumDDATS/Math.max(1,nDDATS)));
+                        $("#ddTotalATS").text(number_format(sumDDATS));
                         
-                        $("#targetFac").text(number_format(targetFac));
-                        $("#deltaFac").text(facSign + number_format(Math.abs(targetFac - sumRevFaculty)));
-                        $("#targetFSO").text(number_format(targetFSO));
-                        $("#deltaFSO").text(facSign + number_format(Math.abs(targetFSO - sumRevFSO)));
+                        $("#targetATS").text(number_format(targetATS));
+                        $("#deltaATS").text(atsSign + number_format(Math.abs(targetATS - sumRevATS)));
                         
                         lastData = response.data;
                     });
@@ -231,7 +182,7 @@
             </script>
         ]]>
     </Script>
-    <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" blobSection="TABLE" type="EditableReportSection">
+    <ReportSection id="atsec" tooltip="ATSEC Table" name="ATSEC Table" title="ATSEC Table" blobSection="TABLE" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <style>
@@ -251,7 +202,6 @@
                             <th>Recommended Increment</th>
                             <th>Revised Increment</th>
                             <th>Increment Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
-                            <th>Tenure Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
                             <th>Promotion Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
                             <th>Comments <span class='tooltip' title='Comments will be visible to the FEC Chair'>&#9432;</span></th>
                         </tr>
@@ -259,7 +209,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" atsec="true" start="{$last_year}-07-01" end="{$this_year}-07-01">
             <Static>
                 <![CDATA[
                     <tr data-id="{$user_id}">
@@ -321,7 +271,7 @@
                     </td>
                 ]]>
             </Static>
-            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_sub_roles},Faculty Evaluation Committee)})}">
+            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_sub_roles},Academic Teaching Staff Evaluation Committee)})}">
                 <!-- Increment Vote -->
                 <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
                     <![CDATA[
@@ -332,26 +282,6 @@
                             <div class='field' style='display:none;'>
                                 <span id='vote_{$user_id}'>{$item}</span>
                             </div>
-                        </td>
-                    ]]>
-                </ReportItem>
-                <!-- Tenure Vote -->
-                <ReportItem id="t_vote" type="Select" blobType="BLOB_TEXT" blobItem="T_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
-                    <![CDATA[
-                        <td class="t_vote">
-                            <div class='text' style='display:none;'>
-                                
-                            </div>
-                            <div class='field' style='display:none;'>
-                                <span id='t_vote_{$user_id}'>{$item}</span>
-                            </div>
-                            <script type='text/javascript'>
-                                var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
-                                if(tenure != "i recommend that an appointment with tenure be offered" &&
-                                   tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
-                                    $("#t_vote_{$user_id}").remove();
-                                }
-                            </script>
                         </td>
                     ]]>
                 </ReportItem>
@@ -414,7 +344,6 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
                 ]]>
             </Else>
             <Static>
@@ -446,70 +375,54 @@
                 <h3>Recommended Increment Totals <small>(Excludes DD cases)</small></h3>
                 <table class='wikitable' frame='box' rules='all'>
                     <tr>
-                        <th>Average<br />Faculty Increment</th>
-                        <th>Average<br />FSO Increment</th>
-                        <th>Total<br />Faculty Increment</th>
-                        <th>Total<br />FSO Increment</th>
+                        <th>Average<br />ATS Increment</th>
+                        <th>Total<br />ATS Increment</th>
                     </tr>
                     <tr>
-                        <td id='averageFac' align='right'></td>
-                        <td id='averageFSO' align='right'></td>
-                        <td id='totalFac' align='right'></td>
-                        <td id='totalFSO' align='right'></td>
+                        <td id='averageATS' align='right'></td>
+                        <td id='totalATS' align='right'></td>
                     </tr>
                 </table>
                 
                 <h3>Running Increment Totals <small>(Excludes DD cases)</small></h3>
                 <table id='runningIncrements' class='wikitable' frame='box' rules='all'>
                     <tr>
-                        <th>Average<br />Faculty Increment</th>
-                        <th>Average<br />FSO Increment</th>
-                        <th>Total<br />Faculty Increment</th>
-                        <th>Total<br />FSO Increment</th>
+                        <th>Average<br />ATS Increment</th>
+                        <th>Total<br />ATS Increment</th>
                     </tr>
                     <tr>
-                        <td id='runningAverageFac' align='right'></td>
-                        <td id='runningAverageFSO' align='right'></td>
-                        <td id='runningTotalFac' align='right'></td>
-                        <td id='runningTotalFSO' align='right'></td>
+                        <td id='runningAverageATS' align='right'></td>
+                        <td id='runningTotalATS' align='right'></td>
                     </tr>
                 </table>
                 
                 <h3>Dean's Decision Increment Totals</h3>
                 <table id='ddIncrements' class='wikitable' frame='box' rules='all'>
                     <tr>
-                        <th>Average<br />Faculty Increment</th>
-                        <th>Average<br />FSO Increment</th>
-                        <th>Total<br />Faculty Increment</th>
-                        <th>Total<br />FSO Increment</th>
+                        <th>Average<br />ATS Increment</th>
+                        <th>Total<br />ATS Increment</th>
                     </tr>
                     <tr>
-                        <td id='ddAverageFac' align='right'></td>
-                        <td id='ddAverageFSO' align='right'></td>
-                        <td id='ddTotalFac' align='right'></td>
-                        <td id='ddTotalFSO' align='right'></td>
+                        <td id='ddAverageATS' align='right'></td>
+                        <td id='ddTotalATS' align='right'></td>
                     </tr>
                 </table>
                 
                 <h3>Target Totals</h3>
                 <table id='targetIncrements' class='wikitable' frame='box' rules='all'>
                     <tr>
-                        <th>Target<br />Faculty Increment</th>
-                        <th>Diff<br />Faculty Increment</th>
-                        <th>Target<br />FSO Increment</th>
-                        <th>Diff<br />FSO Increment</th>
+                        <th>Target<br />ATS Increment</th>
+                        <th>Diff<br />ATS Increment</th>
                     </tr>
                     <tr>
-                        <td id='targetFac' align='right'></td>
-                        <td id='deltaFac' align='right'></td>
-                        <td id='targetFSO' align='right'></td>
-                        <td id='deltaFSO' align='right'></td>
+                        <td id='targetATS' align='right'></td>
+                        <td id='deltaATS' align='right'></td>
                     </tr>
                 </table>
             ]]>
         </If>
     </ReportSection>
-    <ReportSection id="fec_votes" tooltip="FEC Votes" name="FEC Votes" title="FEC Votes" blobSection="TABLE" type="EditableReportSection">
+    <ReportSection id="atsec_votes" tooltip="ATSEC Votes" name="ATSEC Votes" title="ATSEC Votes" blobSection="TABLE" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <style>
@@ -529,14 +442,9 @@
                             <th rowspan='2'>Recommended Increment</th>
                             <th rowspan='2'>Revised Increment</th>
                             <th colspan='4'>Increment Votes</th>
-                            <th colspan='4'>Tenure Votes</th>
                             <th colspan='4'>Promotion Votes</th>
                         </tr>
                         <tr>
-                            <th>Y</th>
-                            <th>N</th>
-                            <th>A</th>
-                            <th>Freeze</th>
                             <th>Y</th>
                             <th>N</th>
                             <th>A</th>
@@ -550,7 +458,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" includeDD="false" start="{$last_year}-07-01" end="{$this_year}-07-01">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" atsec="true" includeDD="false" start="{$last_year}-07-01" end="{$this_year}-07-01">
             <Static>
                 <![CDATA[
                     <tr>
@@ -573,20 +481,6 @@
             <ReportItem id="freeze" type="VoteResultsReportItem" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="75px">
                 <![CDATA[
                         {$item}
-                ]]>
-            </ReportItem>
-            
-            <!-- Tenure Votes -->
-            <ReportItem id="t_freeze" type="VoteResultsReportItem" freezeId="t_vote_{$user_id}" blobItem="T_FREEZE" blobSubItem="{$user_id}" voteBlobItem="T_VOTE" personId="1" width="75px">
-                <![CDATA[
-                        {$item}
-                        <script type='text/javascript'>
-                            var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
-                            if(tenure != "i recommend that an appointment with tenure be offered" &&
-                               tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
-                                $(".t_vote_{$user_id}").empty();
-                            }
-                        </script>
                 ]]>
             </ReportItem>
             

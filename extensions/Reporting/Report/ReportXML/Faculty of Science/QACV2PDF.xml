@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name=" " headerName=" " footer="{$next_year} Quality Assurance Reporting Period: July 1 {$startYear} - June 30 {$endYear}" reportType="RP_QA2" pdfType="RPTP_QA2" ajax="true" startYear="-5">
+<Report name=" " headerName=" " footer="{$next_year} Quality Assurance Reporting Period: July 1 {$startYear} - June 30 {$endYear}" reportType="RP_QA2" pdfType="RPTP_QA2" ajax="true" startYear="-5" personId="{GET(userId, {$my_id})}">
     <ReportSection id="information" tooltip="Information" name="Information" title="QA CV" blobSection="FEC_INFORMATION" type="HeaderReportSection" pagebreak="false">
         <Static>
             <![CDATA[
@@ -100,86 +100,103 @@
         <If if="{contains({$user_roles},ATS)}">
             <ReportItem id="teachingbookmark" type="BookmarkReportItem" title="Teaching Development and Innovation">
                 <![CDATA[
-                    <h2>Teaching Development and Innovation</h2>
+                    <h2>Last 3 Years of Teaching Development and Innovation</h2>
                 ]]>
             </ReportItem>
-            <ReportItem id="development" type="MultiTextReportItem" blobReport="RP_FEC" blobSection="FEC_COURSES" blobItem="FEC_INFO_DEVELOPMENT" blobYear="{$this_year}" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" orientation="list" delimiter="&lt;br />">
-                <![CDATA[
-                    <h3>{$this_year}</h3>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="development" type="MultiTextReportItem" blobReport="RP_FEC" blobSection="FEC_COURSES" blobItem="FEC_INFO_DEVELOPMENT" blobYear="{$last_year}" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" orientation="list" delimiter="&lt;br />">
-                <![CDATA[
-                    <h3>{$last_year}</h3>
-                    {$item}<br />
-                ]]>
-            </ReportItem>
+            <If if="{!=(,{getArray(RP_FEC, FEC_COURSES, FEC_INFO_DEVELOPMENT, 0, {$user_id}, 0, development,;,{$this_year})})}">
+                <ReportItem id="development" type="MultiTextReportItem" blobReport="RP_FEC" blobSection="FEC_COURSES" blobItem="FEC_INFO_DEVELOPMENT" blobYear="{$this_year}" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" orientation="list" delimiter="&lt;br />">
+                    <![CDATA[
+                        <h3>{$this_year}</h3>
+                        {$item}
+                        
+                    ]]>
+                </ReportItem>
+            </If>
+            <If if="{!=(,{getArray(RP_FEC, FEC_COURSES, FEC_INFO_DEVELOPMENT, 0, {$user_id}, 0, development,;,{$last_year})})}">
+                <ReportItem id="development" type="MultiTextReportItem" blobReport="RP_FEC" blobSection="FEC_COURSES" blobItem="FEC_INFO_DEVELOPMENT" blobYear="{$last_year}" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" orientation="list" delimiter="&lt;br />">
+                    <![CDATA[
+                        <h3>{$last_year}</h3>
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+            </If>
+            <If if="{!=(,{getArray(RP_FEC, FEC_COURSES, FEC_INFO_DEVELOPMENT, 0, {$user_id}, 0, development,;,{$2_years_ago})})}">
+                <ReportItem id="development" type="MultiTextReportItem" blobReport="RP_FEC" blobSection="FEC_COURSES" blobItem="FEC_INFO_DEVELOPMENT" blobYear="{$2_years_ago}" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" orientation="list" delimiter="&lt;br />">
+                    <![CDATA[
+                        <h3>{$2_years_ago}</h3>
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+            </If>
         </If>
         
         <!-- Supervision and Training Responsibilities -->
-        <ReportItem id="studentsbookmark" type="BookmarkReportItem" title="Supervision and Training Responsibilities">
-            <![CDATA[
-                <h2>Supervision and Training Responsibilities</h2>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                <table class="wikitable" frame="box" rules="all">
-                    <tr>
-                        <th style='width:12em;'>Level</th>
-                        <th>Current</th>
-                        <th>Completed</th>
-                    </tr>
-                    <tr>
-                        <td>PDFs (co)supervised</td>
-                        <td>{user_fellow_count(current)}</td>
-                        <td>{user_fellow_count(completed)}</td>
-                    </tr>
-                    <tr>
-                        <td>PhD students</td>
-                        <td>{user_phd_count(current)}</td>
-                        <td>{user_phd_count(completed)}</td>
-                    </tr>
-                    <tr>
-                        <td>MSc students</td>
-                        <td>{user_msc_count(current)}</td>
-                        <td>{user_msc_count(completed)}</td>
-                    </tr>
-                    <tr>
-                        <td>Undergraduate students</td>
-                        <td>{user_ugrad_count(current)}</td>
-                        <td>{user_ugrad_count(completed)}</td>
-                    </tr>
-                    <tr>
-                        <td>Technical personnel</td>
-                        <td>{user_tech_count(current)}</td>
-                        <td>{user_tech_count(completed)}</td>
-                    </tr>
-                </table><br />
-            ]]>
-        </Static>
-        
-        <!-- Publications -->
-        <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="15 Most Recent Publications">
-            <![CDATA[
-                <h2>15 Most Recent Publications</h2>
-                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|Collections Paper|Conference Paper|Proceedings Paper|Workshop Paper|Bachelors Thesis|Book|Book Chapter|Book Review|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|Other|PHD Thesis|White Paper|Tech Report|Poster|Manual" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30" limit="15">
-            <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+        <If if="{!contains({$user_roles},ATS)}">
+            <ReportItem id="studentsbookmark" type="BookmarkReportItem" title="Supervision and Training Responsibilities">
                 <![CDATA[
-                    <li style="page-break-inside: avoid;"><b>({$product_type})</b> {$item}</li>
+                    <h2>Supervision and Training Responsibilities</h2>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </ul><br />
-            ]]>
-        </Static>
+            <Static>
+                <![CDATA[
+                    <table class="wikitable" frame="box" rules="all">
+                        <tr>
+                            <th style='width:12em;'>Level</th>
+                            <th>Current</th>
+                            <th>Completed</th>
+                        </tr>
+                        <tr>
+                            <td>PDFs (co)supervised</td>
+                            <td>{user_fellow_count(current)}</td>
+                            <td>{user_fellow_count(completed)}</td>
+                        </tr>
+                        <tr>
+                            <td>PhD students</td>
+                            <td>{user_phd_count(current)}</td>
+                            <td>{user_phd_count(completed)}</td>
+                        </tr>
+                        <tr>
+                            <td>MSc students</td>
+                            <td>{user_msc_count(current)}</td>
+                            <td>{user_msc_count(completed)}</td>
+                        </tr>
+                        <tr>
+                            <td>Undergraduate students</td>
+                            <td>{user_ugrad_count(current)}</td>
+                            <td>{user_ugrad_count(completed)}</td>
+                        </tr>
+                        <tr>
+                            <td>Technical personnel</td>
+                            <td>{user_tech_count(current)}</td>
+                            <td>{user_tech_count(completed)}</td>
+                        </tr>
+                    </table><br />
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Publications -->
+        <If if="{!contains({$user_roles},ATS)}">
+            <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="15 Most Recent Publications">
+                <![CDATA[
+                    <h2>15 Most Recent Publications</h2>
+                    <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
+                    <ul>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|Collections Paper|Conference Paper|Proceedings Paper|Workshop Paper|Bachelors Thesis|Book|Book Chapter|Book Review|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|Other|PHD Thesis|White Paper|Tech Report|Poster|Manual" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30" limit="15">
+                <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;"><b>({$product_type})</b> {$item}</li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul><br />
+                ]]>
+            </Static>
+        </If>
         
         <!-- Grants -->
         <If id="grants_if" if="{>({$user_cv_grant_count},0)}">

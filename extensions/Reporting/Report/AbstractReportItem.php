@@ -290,11 +290,12 @@ abstract class AbstractReportItem {
     function getBlobValue(){
         $report = $this->getReport();
         $section = $this->getSection();
-        $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $personId = $this->getAttr('personId', $report->person->getId());
         $sec = $this->getAttr('blobSection', $section->sec);
         $rep = $this->getAttr('blobReport', $report->reportType);
+        $year = $this->getAttr('blobYear', $report->year);
 
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
+        $blob = new ReportBlob($this->blobType, $year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();

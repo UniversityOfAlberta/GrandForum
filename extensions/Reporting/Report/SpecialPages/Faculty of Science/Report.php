@@ -61,8 +61,8 @@ class Report extends AbstractReport{
             $tabs["FEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
         }
         if($person->isRole(DEAN) || $person->isRole(VDEAN) || $person->isRole(HR) || $person->isSubRole("ATSEC")){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECTable")) ? "selected" : false;
-            $tabs["ATSEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ATSECTable")) ? "selected" : false;
+            $tabs["ATSEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ATSECTable", $selected);
         }
         
         if($person->isRole(CHAIR) || $person->isRole(EA)){
