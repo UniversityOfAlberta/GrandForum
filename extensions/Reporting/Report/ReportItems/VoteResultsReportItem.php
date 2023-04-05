@@ -60,12 +60,18 @@ class VoteResultsReportItem extends SelectReportItem {
         
         $voteBlobItem = $this->getAttr("voteBlobItem");
         $votes = DBFunctions::select(array('grand_report_blobs'),
-                                     array('user_id', 'data'),
+                                     array('user_id', 'data', 'encrypted'),
                                      array('year' => $year,
                                            'rp_type' => $report->reportType,
                                            'rp_section' => $section->sec,
                                            'rp_item' => $voteBlobItem,
                                            'rp_subitem' => $this->blobSubItem));
+        // Decrypt if needed
+        foreach($votes as $key => $vote){
+            if($vote['encrypted']){
+                $votes[$key]['data'] = decrypt($vote['data']);
+            }
+        }
         return $votes;
     }
     
@@ -90,7 +96,7 @@ class VoteResultsReportItem extends SelectReportItem {
                 // If not yet archived, do it
                 $blob = new ReportBlob(BLOB_TEXT, $year, $vote['user_id'], 0);
                 $blob_address = ReportBlob::create_address($report->reportType, $section->sec, "{$voteBlobItem}_ARCHIVED_{$nVotes}", $this->blobSubItem);
-                $blob->store(trim($vote['data']), $blob_address);
+                $blob->store(trim($vote['data']), $blob_address, $vote['encrypted']);
                 
                 // Now delete old vote
                 $blob = new ReportBlob(BLOB_TEXT, $year, $vote['user_id'], 0);

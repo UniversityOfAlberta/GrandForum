@@ -53,6 +53,7 @@ abstract class AbstractReport extends SpecialPage {
     var $pdfType;
     var $pdfFiles;
     var $showInstructions = true;
+    var $encrypt = false;
     var $variables = array();
     
     /**
@@ -472,6 +473,10 @@ abstract class AbstractReport extends SpecialPage {
         $this->header = $header;
     }
     
+    function setEncrypt($encrypt){
+        $this->encrypt = $encrypt;
+    }
+    
     // Adds a new section to this Report
     function addSection($section, $position=null){
         $section->setParent($this);
@@ -741,7 +746,7 @@ abstract class AbstractReport extends SpecialPage {
                     $this_person = Person::newFromId($_GET['userId']);
                 }
                 $sto = new ReportStorage($this_person);
-                @$sto->store_report($data, $html,$pdf['pdf'], 0, 0, $report->pdfType.$_GET['section'], $this->year);
+                @$sto->store_report($data, $html,$pdf['pdf'], 0, 0, $report->pdfType.$_GET['section'], $this->year, $this->encrypt);
                 if($report->project != null){
                     $ind = new ReportIndex($this_person);
                     $rid = $sto->metadata('report_id');
@@ -769,7 +774,7 @@ abstract class AbstractReport extends SpecialPage {
                 $this_person = Person::newFromId($_GET['userId']);
             }
             $sto = new ReportStorage($this_person);
-            @$sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType.$_GET['section'], $this->year);
+            @$sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType.$_GET['section'], $this->year, $this->encrypt);
             if($this->project != null){
                 $ind = new ReportIndex($this_person);
                 $rid = $sto->metadata('report_id');

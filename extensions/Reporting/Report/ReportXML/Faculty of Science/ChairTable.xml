@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="false">
+<Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="false" encrypt="true">
     <Permissions>
         <!--Role role="CHAIR">
             <SectionPermission id="evaluations" permissions="rw" />
@@ -229,18 +229,18 @@
                                        )}
                                   )}">
                 <If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px" encrypt="true">
                         <![CDATA[
                                 </td>
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='promotion'>{$item}</td>
                             </tr>
@@ -248,18 +248,18 @@
                     </ReportItem>
                 </If>
                 <If id="if_ca" if="{contains({$user_sub_roles},Chair's Advice)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="80px">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="80px" encrypt="true">
                         <![CDATA[
                                 </td>
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='promotion'>{$item}</td>
                             </tr>
@@ -269,18 +269,18 @@
             </If>
             <If id="if_ea" if="{contains({$my_roles},EA)}">
                 <If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px" encrypt="true">
                         <![CDATA[
                                 </td>
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$value}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='promotion'>{$value}</td>
                             </tr>
@@ -288,18 +288,18 @@
                     </ReportItem>
                 </If>
                 <If id="if_ca" if="{contains({$user_sub_roles},Chair's Advice)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="80px">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="80px" encrypt="true">
                         <![CDATA[
                                 </td>
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$value}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_CHAIR_ADVICE" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='promotion'>{$value}</td>
                             </tr>
@@ -580,13 +580,13 @@
                 ]]>
             </ReportItem>
             <If id="if_chair" if="{and({!contains({$my_roles},EA)},{or({contains({$my_roles},Chair)},{contains({$user_sub_roles},Chair's Recommendation)})})}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px" encrypt="true">
                     <![CDATA[
                             </td>
                             <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px" encrypt="true">
                     <![CDATA[
                             <td align='center' class='promotion'>{$item}</td>
                         </tr>
@@ -594,13 +594,13 @@
                 </ReportItem>
             </If>
             <If id="if_ea" if="{contains({$my_roles},EA)}">
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px" encrypt="true">
                     <![CDATA[
                             </td>
                             <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px" encrypt="true">
                     <![CDATA[
                             <td align='center' class='promotion'>{$value}</td>
                         </tr>
@@ -762,18 +762,18 @@
             </If>
             <If id="if_dean" if="{!contains({$my_roles},DeanEA)}">
                 <If id="if_dr" if="{contains({$user_sub_roles},Dean's Recommendation)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="80px">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="80px" encrypt="true">
                         <![CDATA[
                                 </td>
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='promotion'>{$item}</td>
                             </tr>
@@ -781,18 +781,18 @@
                     </ReportItem>
                 </If>
                 <If id="if_da" if="{contains({$user_sub_roles},Dean's Advice)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="80px">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="80px" encrypt="true">
                         <![CDATA[
                                 </td>
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='promotion'>{$item}</td>
                             </tr>
@@ -800,18 +800,18 @@
                     </ReportItem>
                 </If>
                 <If id="if_dd" if="{contains({$user_sub_roles},Dean's Decision)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="80px">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="80px" encrypt="true">
                         <![CDATA[
                                 </td>
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='promotion'>{$item}</td>
                             </tr>
@@ -821,18 +821,18 @@
             </If>
             <If id="if_ea" if="{contains({$my_roles},DeanEA)}">
                 <If id="if_dr" if="{contains({$user_sub_roles},Dean's Recommendation)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="80px">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="80px" encrypt="true">
                         <![CDATA[
                                 </td>
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$value}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_REVIEW" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='promotion'>{$value}</td>
                             </tr>
@@ -840,18 +840,18 @@
                     </ReportItem>
                 </If>
                 <If id="if_da" if="{contains({$user_sub_roles},Dean's Advice)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="80px">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="80px" encrypt="true">
                         <![CDATA[
                                 </td>
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$value}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_ADVICE" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='promotion'>{$value}</td>
                             </tr>
@@ -859,18 +859,18 @@
                     </ReportItem>
                 </If>
                 <If id="if_dd" if="{contains({$user_sub_roles},Dean's Decision)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="80px">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="80px" encrypt="true">
                         <![CDATA[
                                 </td>
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$value}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px">
+                    <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSection="FEC_DEAN_DECISION" blobSubItem="{$user_id}" width="200px" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='promotion'>{$value}</td>
                             </tr>
@@ -1064,63 +1064,63 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}" rich="true">
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Teaching Evaluations</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true">
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Research Evaluations</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px" rich="true">
+                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Service/Committees Evaluations</h2>
                         <h3>Departmental</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px" rich="true">
+                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px" rich="true" encrypt="true">
                     <![CDATA[
                         <h3>Faculty</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px" rich="true">
+                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px" rich="true" encrypt="true">
                     <![CDATA[
                         <h3>University</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px" rich="true">
+                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px" rich="true" encrypt="true">
                     <![CDATA[
                         <h3>Scientific</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px" rich="true">
+                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px" rich="true" encrypt="true">
                     <![CDATA[
                         <h3>Community Outreach</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px" rich="true">
+                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px" rich="true" encrypt="true">
                     <![CDATA[
                         <h3>Other</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}" rich="true">
+                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>General Comments</h2>
                         {$item}
                     ]]>
                 </ReportItem>
                 <If if="{!contains({$user_case_number}, T)}">
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
                         <![CDATA[
                             <h3>Recommendations</h3>
                             <table id="chairTable" class="wikitable" width="100%">
@@ -1136,14 +1136,14 @@
                                 <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
                         <![CDATA[
                                 <td align='center' class='tenure'>{$item}</td>
                         ]]>
                     </ReportItem>
                 </If>
                 <Else>
-                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
                         <![CDATA[
                             <h3>Recommendations</h3>
                             <table id="chairTable" class="wikitable" width="100%">
@@ -1159,7 +1159,7 @@
                         ]]>
                     </ReportItem>
                 </Else>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%">
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                             <td align='center' class='promotion'>{$item}</td>
                         </tr>
@@ -1169,6 +1169,37 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
                 <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}">
                     <![CDATA[
                         {$item}
@@ -1269,7 +1300,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                         <h3>Recommendations</h3>
                         <table id="chairTable" class="wikitable" width="100%">
@@ -1285,12 +1316,12 @@
                             <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                             <td align='center' class='tenure'>{$item}</td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%">
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                             <td align='center' class='promotion'>{$item}</td>
                         </tr>
@@ -1300,6 +1331,37 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
                 <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Advice" userId="{$user_id}">
                     <![CDATA[
                         {$item}
@@ -1400,7 +1462,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                         <h3>Recommendations</h3>
                         <table id="chairTable" class="wikitable" width="100%">
@@ -1416,12 +1478,12 @@
                             <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                             <td align='center' class='tenure'>{$item}</td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%">
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                             <td align='center' class='promotion'>{$item}</td>
                         </tr>
@@ -1431,6 +1493,37 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
                 <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Decision" userId="{$user_id}">
                     <![CDATA[
                         {$item}
@@ -1531,7 +1624,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                         <h3>Recommendations</h3>
                         <table id="chairTable" class="wikitable" width="100%">
@@ -1547,12 +1640,12 @@
                             <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                             <td align='center' class='tenure'>{$item}</td>
                     ]]>
                 </ReportItem>
-                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%">
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                             <td align='center' class='promotion'>{$item}</td>
                         </tr>
@@ -1562,6 +1655,37 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
                 <ReportItem id="submit" type="SimpleReviewSubmit" section="Chair Advice" userId="{$user_id}">
                     <![CDATA[
                         {$item}

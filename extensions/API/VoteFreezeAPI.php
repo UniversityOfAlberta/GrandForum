@@ -16,28 +16,28 @@
                $me->isSubRole("FEC") ||
                $me->isSubRole("ATSEC")){
                 $freeze = DBFunctions::select(array('grand_report_blobs'),
-                                              array('rp_subitem', 'data'),
+                                              array('rp_subitem', 'data', 'encrypted'),
                                               array('year' => YEAR,
                                                     'rp_type' => "RP_FEC_TABLE",
                                                     'rp_section' => "TABLE",
                                                     'rp_item' => "FREEZE",
                                                     'data' => "Frozen"));
                 $t_freeze = DBFunctions::select(array('grand_report_blobs'),
-                                                array('rp_subitem', 'data'),
+                                                array('rp_subitem', 'data', 'encrypted'),
                                                 array('year' => YEAR,
                                                       'rp_type' => "RP_FEC_TABLE",
                                                       'rp_section' => "TABLE",
                                                       'rp_item' => "T_FREEZE",
                                                       'data' => "Frozen"));
                 $p_freeze = DBFunctions::select(array('grand_report_blobs'),
-                                                array('rp_subitem', 'data'),
+                                                array('rp_subitem', 'data', 'encrypted'),
                                                 array('year' => YEAR,
                                                       'rp_type' => "RP_FEC_TABLE",
                                                       'rp_section' => "TABLE",
                                                       'rp_item' => "P_FREEZE",
                                                       'data' => "Frozen"));
                 $increments = DBFunctions::select(array('grand_report_blobs'),
-                                                  array('rp_subitem', 'data'),
+                                                  array('rp_subitem', 'data', 'encrypted'),
                                                   array('year' => YEAR,
                                                         'rp_type' => "RP_FEC_TABLE",
                                                         'rp_section' => "TABLE",
@@ -48,7 +48,10 @@
                 $this->data['t_freeze'] = array();
                 $this->data['p_freeze'] = array();
                 foreach($increments as $case){
-                    $this->data['increment'][$case['rp_subitem']] = $case['data'];
+                    $data = ($case['encrypted'] == 1) ? decrypt($case['data']) : $case['data'];
+                    if($data != ""){
+                        $this->data['increment'][$case['rp_subitem']] = $data;
+                    }
                 }
                 foreach($freeze as $case){
                     $this->data['freeze'][] = $case['rp_subitem'];

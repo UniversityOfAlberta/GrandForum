@@ -52,6 +52,8 @@ class ReportBlob {
 	
 	// The hash for this blob (based on time of creation, user, project etc.)
 	private $_md5;
+	
+	private $_encrypted;
 
 	function __construct($type = BLOB_NULL, $year = 0, $owner = 0, $proj = 0) {
 		$this->_type = $type;
@@ -78,6 +80,7 @@ class ReportBlob {
 		$this->_blob_id = null;
 		$this->_changed = null;
 		$this->_md5 = null;
+		$this->_encrypted = 0;
 	}
 
 
@@ -110,8 +113,13 @@ class ReportBlob {
 		return $this->_type;
 	}
 
-    public function getMD5(){
-        return $this->_md5;
+    public function getMD5($urlencode=true){
+        if($urlencode){
+            return urlencode($this->_md5);
+        }
+        else{
+            return $this->_md5;
+        }
     }
 
 	/// Stores the blob data at the specified address.  If the address is not
@@ -128,7 +136,7 @@ class ReportBlob {
 	///	  components have a blank key and/or associated value).
 	///	- DomainException (blob type is null).
 	///	- UnexpectedValueException (unknown blob type).
-	public function store(&$data, $address = null) {
+	public function store(&$data, $address = null, $encrypt=false) {
 		// Some checks before trying to actually store data.
 		global $wgImpersonating, $wgRealUser;
 		Cache::delete($this->getCacheId($address));
@@ -170,8 +178,13 @@ class ReportBlob {
 			throw new UnexpectedValueException('Attempted to store a blob of an unknown type (new type registered?).');
 		}
 
-		// Prepare data for writing into the database.
-		$this->_data_transformed = DBFunctions::escape($this->_data);
+		$this->_data_transformed = $this->_data;
+
+        // Encrypt
+        if($encrypt){
+            $this->_data_transformed = encrypt($this->_data_transformed);
+            $this->_encrypted = 1;
+        }
 
 		// Prepare the address for an SQL statement.
 		$where_list = array();
@@ -197,10 +210,13 @@ class ReportBlob {
 			    return true;
 			}
 			$this->_blob_id = $res[0]['blob_id'];
-			$status = DBFunctions::execSQL("UPDATE grand_report_blobs SET data = '{$this->_data_transformed}', " .
-				"blob_type = {$this->_type} ," .
-				"edited_by = {$impersonateId} " .
-				"WHERE blob_id = {$this->_blob_id}", true);
+			
+			$status = DBFunctions::execSQL("UPDATE grand_report_blobs 
+			    SET data = '{$this->_data_transformed}', 
+				    blob_type = {$this->_type} ,
+				    edited_by = {$impersonateId} ,
+				    encrypted = '{$encrypt}'
+			    WHERE blob_id = {$this->_blob_id}", true);
 	        if($wgImpersonating){
 	            $oldData = DBFunctions::escape($res[0]['data']);
 	            $impersonateId = $wgRealUser->getId();
@@ -216,9 +232,9 @@ class ReportBlob {
 			$insert_keys = implode(',', array_keys($address));
 			$insert_data = "'".implode("','", array_values($address))."'";
 			DBFunctions::execSQL("INSERT INTO grand_report_blobs " .
-				"(edited_by, year, user_id, proj_id, {$insert_keys}, changed, blob_type, data, md5) " .
+				"(edited_by, year, user_id, proj_id, {$insert_keys}, changed, blob_type, data, md5, encrypted) " .
 				"VALUES ({$impersonateId}, {$this->_year}, {$this->_owner_id}, {$this->_proj_id}, " .
-				"{$insert_data}, CURRENT_TIMESTAMP, {$this->_type}, '{$this->_data_transformed}', '{$md5}');", true);
+				"{$insert_data}, CURRENT_TIMESTAMP, {$this->_type}, '{$this->_data_transformed}', '{$md5}', {$this->_encrypted});", true);
 			if($wgImpersonating){
 			    $res = DBFunctions::execSQL("SELECT blob_id FROM grand_report_blobs WHERE " .
 			                                "user_id = {$this->_owner_id} AND " .
@@ -257,21 +273,29 @@ class ReportBlob {
 			                                   $dbdata['rp_item'], $dbdata['rp_subitem']);
 		$this->_changed = $dbdata['changed'];
 		$this->_type = $dbdata['blob_type'];
-		$this->_md5 = $dbdata['md5'];
+		if($dbdata['encrypted']){
+		    $this->_md5 = encrypt($dbdata['md5']);
+		}
+		else{
+		    $this->_md5 = $dbdata['md5'];
+		}
+		$this->_encrypted = $dbdata['encrypted'];
+		
+		$this->_data = ($this->_encrypted) ? decrypt($dbdata['data']) : $dbdata['data'];
 
 		// Undo data transformations, if necessary.
 		switch ($this->_type) {
-		case BLOB_ARRAY:
-		case BLOB_CSV:
-			// Unserialize.
-			$this->_data = unserialize($dbdata['data']);
-			if ($this->_data === false)
-				throw new RuntimeException("Unserialization of blob #{$this->_blob_id} failed.");
-			break;
+            case BLOB_ARRAY:
+            case BLOB_CSV:
+                // Unserialize.
+                $this->_data = unserialize($this->_data);
+                if ($this->_data === false)
+	                throw new RuntimeException("Unserialization of blob #{$this->_blob_id} failed.");
+                break;
 
-		default:
-			// Assume any other method does not need transforming.
-			$this->_data = $dbdata['data'];
+            default:
+                // Assume any other method does not need transforming.
+                break;
 		}
 
 		return true;
@@ -285,8 +309,12 @@ class ReportBlob {
 	/// of the Blob instance is unchanged.
 	public function load($address = null, $skipCache=false) {
 	    $cacheId = $this->getCacheId($address);
-	    if(Cache::exists($cacheId) && !$skipCache && $this->_owner_id !== "%"){
+	    if(Cache::exists($cacheId) && !$skipCache && $this->_owner_id !== "%" && strstr($this->_owner_id, "|") === false){
 	        $this->_data = Cache::fetch($cacheId);
+	        if(is_array($this->_data) && isset($this->_data['encrypted'])){
+	            $this->_encrypted = 1;
+	            $this->_data = unserialize(decrypt($this->_data['encrypted']));
+	        }
 	        return true;
 	    }
 		// Some checks before going to the database.
@@ -340,7 +368,12 @@ class ReportBlob {
 		}
 		if($this->_type != BLOB_RAW && $this->_owner_id !== "%"){
 		    // Cache the data as long as it isn't a raw type since they can be quite large
-		    Cache::store($cacheId, $this->_data);
+		    if($this->_encrypted){
+		        Cache::store($cacheId, array('encrypted' => encrypt(serialize($this->_data))));
+		    }
+		    else{
+		        Cache::store($cacheId, $this->_data);
+		    }
 		}
 		return $ret;
 	}
@@ -373,10 +406,11 @@ class ReportBlob {
 	public function loadFromMD5($id = null) {
 		if ($id == null)
 			return false;
-
-        $res = DBFunctions::select(array('grand_report_blobs'),
-                                   array('*'),
-                                   array('md5' => EQ($id)));
+        $id = DBFunctions::escape($id);
+        $res = DBFunctions::execSQL("SELECT *
+                                     FROM grand_report_blobs
+                                     WHERE (encrypted = 0 AND md5 = '{$id}')
+                                     OR (encrypted = 1 AND md5 = '".decrypt($id, true)."')");
 		if (count($res) > 0)
 			// MySQL enforces unique ID.
 			return $this->populate($res[0]);

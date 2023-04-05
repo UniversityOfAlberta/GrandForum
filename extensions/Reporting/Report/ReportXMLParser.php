@@ -306,6 +306,9 @@ class ReportXMLParser {
                 $this->report->person = Person::newFromId($id);
                 $this->report->person->id = $id;
             }
+            if(isset($attributes->encrypt)){
+                $this->report->setEncrypt(strtolower($attributes->encrypt) == "true");
+            }
             if(!$quick){
                 $children = $this->parser->children();
                 if(isset($children->Script)){
@@ -743,6 +746,9 @@ class ReportXMLParser {
             }
             if(isset($attributes->private)){
                 $item->setPrivate(strtolower($attributes->private) == "true");
+            }
+            if(isset($attributes->encrypt)){
+                $item->setEncrypt(strtolower($attributes->encrypt) == "true");
             }
             if(isset($value['project_id'])){
                 $item->setProjectId($value['project_id']);

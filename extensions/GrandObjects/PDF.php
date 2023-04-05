@@ -15,6 +15,7 @@ class PDF extends BackboneModel {
     var $type;
     var $submitted;
     var $timestamp;
+    var $encrypted;
     var $project = false;
     var $projectId = 0;
     
@@ -25,7 +26,7 @@ class PDF extends BackboneModel {
      */
     static function newFromId($id){
         $id = DBFunctions::escape($id);
-        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
+        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id, r.encrypted
                                       FROM `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
                                       WHERE r.report_id = '{$id}'");
         return new PDF($data);
@@ -38,14 +39,15 @@ class PDF extends BackboneModel {
      */
     static function newFromToken($tok){
         $tok = DBFunctions::escape($tok);
-        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
+        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id, r.encrypted
                                       FROM `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
-                                      WHERE r.token = '{$tok}'");
+                                      WHERE ((r.encrypted = 0 AND r.token = '{$tok}') OR 
+                                             (r.encrypted = 1 AND r.token = '".decrypt($tok, true)."'))");
         return new PDF($data);
     }
     
     static function getAllPDFs(){
-        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
+        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id, r.encrypted
                                       FROM (SELECT MAX(r1.report_id) as report_id
                                             FROM `grand_pdf_report` r1 LEFT JOIN `grand_pdf_index` i1 ON r1.report_id = i1.report_id
                                             GROUP BY r1.user_id, r1.year, r1.type, i1.sub_id) t1, `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
@@ -69,6 +71,10 @@ class PDF extends BackboneModel {
             $this->submitted = $data[0]['submitted'];
             $this->timestamp = $data[0]['timestamp'];
             $this->projectId = $data[0]['sub_id'];
+            $this->encrypted = $data[0]['encrypted'];
+            if($this->encrypted){
+                $this->id = encrypt($this->id);
+            }
         }
     }
     
@@ -160,10 +166,10 @@ class PDF extends BackboneModel {
      */
     function getPDF(){
         $data = DBFunctions::select(array('grand_pdf_report'),
-                                    array('pdf'),
+                                    array('pdf', 'encrypted'),
                                     array('report_id' => $this->getReportId()));
         if(count($data) > 0){
-            return $data[0]['pdf'];
+            return ($data[0]['encrypted']) ? decrypt($data[0]['pdf']) : $data[0]['pdf'];
         }
         return null;
     }

@@ -455,3 +455,40 @@ function sanitizeInput($str){
     $str = str_replace("/", "&#x2F;", $str);
     return $str;
 }
+
+if(file_exists($config->getValue("encryptionKey"))){
+    $_SERVER['ENC_KEY'] = file_get_contents($config->getValue("encryptionKey"));
+}
+
+function encrypt($plaintext, $ignoreError=false){
+    if(!isset($_SERVER['ENC_KEY'])){
+        if($ignoreError){ return $plaintext; }
+        throw new Exception('ENC_KEY not defined');
+    }
+    $plaintext = str_pad($plaintext, 50, "\0", STR_PAD_LEFT); // Pad so that the response can't be inferred from the length of the encrypted string
+    $key = $_SERVER['ENC_KEY'];
+    $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
+    $iv = openssl_random_pseudo_bytes($ivlen);
+    $ciphertext_raw = openssl_encrypt($plaintext, $cipher, $key, 0, $iv);
+    $hmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary=true);
+    $ciphertext = base64_encode( $iv.$hmac.$ciphertext_raw );
+    return $ciphertext;
+}
+
+function decrypt($ciphertext, $ignoreError=false){
+    if(!isset($_SERVER['ENC_KEY'])){
+        if($ignoreError){ return $ciphertext; }
+        throw new Exception('ENC_KEY not defined');
+    }
+    $key = $_SERVER['ENC_KEY'];
+    $c = base64_decode($ciphertext);
+    $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
+    $iv = substr($c, 0, $ivlen);
+    $hmac = substr($c, $ivlen, $sha2len=32);
+    $ciphertext_raw = substr($c, $ivlen+$sha2len);
+    $original_plaintext = openssl_decrypt($ciphertext_raw, $cipher, $key, 0, $iv);
+    $original_plaintext = ltrim($original_plaintext, "\0");
+    return $original_plaintext;
+}
+
+?>

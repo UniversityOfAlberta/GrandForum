@@ -43,6 +43,9 @@
     // Localization Cache Directory
     $config->setValue("localizationCache", "");
     
+    // The location of the encryption key
+    $config->setValue("encryptionKey", "");
+    
     // Default Mailing List Admins
     $config->setValue("listAdmins", array());
     
