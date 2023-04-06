@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Review Report" ajax="true" disabled="false" personId="0" year="2023">
     <Permissions>
-        <Role role="STAFF+"></Role>
+        <Role role="STAFF+" />
+        <Person id="6576" />
     </Permissions>
     <!-- HAC -->
     <ReportSection id="hac_review" name="HAC Review" tooltip="Review of HAC Proposals" type="ReportSection">
