@@ -280,23 +280,24 @@ class AVOIDDashboard extends SpecialPage {
 
         
         $progressReport = (AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO") ||
-                           AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? " | <a id='viewProgressReport' href='#'>Progress Report</a>" : "";
+                           AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? "<br /><a id='viewProgressReport' href='#'>Progress Report</a>" : "";
         $assessmentReport = "";
         if(AVOIDDashboard::isPersonAssessmentDone($me->getId())){
             // This might be a bit slow, but unlikely to be noticable.  If it becomes a problem, it should be moved to an ajax/api request
             $content = InPersonFollowup::getContent($me); 
             $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php?action=api.DownloadWordHtmlApi' enctype='multipart/form-data' id='downloadword' method='post' target='_blank'><input type='hidden' name='content' value='{$content}'><input type='hidden' name='filename' value='{$me->getNameForForms()} In-Person Assessment Download'><input id='downloadWord' type='submit' style='display:none;' value='Download Word'></form>");
-            $assessmentReport = " | <a id='viewAssessmentReport' onClick='$(\"#downloadWord\").click();' href='#'>In-Person Frailty Report</a>";
+            $assessmentReport = "<br /><a id='viewAssessmentReport' onClick='$(\"#downloadWord\").click();' href='#'>In-Person Frailty Report</a>";
         }
         
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
                             <div class='program-body {$membersOnly}' style='width: 100%;'>
-                                <p>
+                                <p style='margin-bottom:0.5em;'>
                                     {$frailty}<br />
                                     <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a><br />
-                                    <a id='viewReport' href='#'>My Personal Report and Recommendations</a>{$assessmentReport}{$progressReport}
                                 </p>
+                                <a class='viewReport' href='#'><img src='{$wgServer}{$wgScriptPath}/skins/report.png' style='height:5em;max-height:100px;margin-right:0.5em;' /></a>
+                                <div style='display:inline-block;vertical-align:middle;'><a class='viewReport' href='#'>My Personal Report and Recommendations</a>{$assessmentReport}{$progressReport}</div>
                                 <p>
                                     <b>How do I use this program?</b><br />
                                     Step 1. Review your personal report above to learn about your risks and recommendations<br />
@@ -385,7 +386,7 @@ class AVOIDDashboard extends SpecialPage {
                 $(window).resize();
             });
             
-            $('#viewReport').click(function(){
+            $('.viewReport').click(function(){
                 $('#frailtyFrame')[0].src = $('#frailtyFrame')[0].src; // Refresh
                 $('#bodyContent').css('overflow-y', 'hidden');
                 if($('#reportDialog', $('.ui-dialog')).length == 0){
