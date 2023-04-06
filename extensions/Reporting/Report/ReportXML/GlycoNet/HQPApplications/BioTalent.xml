@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Technical/Essential Skills Fundamentals Training Program" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" pdfFiles="HQPApplications/BioTalentPDF" ajax="true" disabled="false" year="2023">
+<Report name="Technical Skills Fundamentals Training Program" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" pdfFiles="HQPApplications/BioTalentPDF" ajax="true" disabled="false" year="2023">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
@@ -16,17 +16,17 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Technical/Essential Skills Fundamentals Training Program" type="ReportSection">
+    <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Technical Skills Fundamentals Training Program" type="ReportSection">
         <Static>
             <![CDATA[
                 <h3>Background</h3>
-                <p>GlycoNet will sponsor trainees (graduate students, post-doctoral fellows, research technicians, and research associates) to take BioTalent’s Technical/Essential Skills Fundamentals courses from April 1, 2021 to March 31, 2023.</p>
+                <p>GlycoNet will sponsor trainees (graduate students, post-doctoral fellows, research technicians, and research associates) to take BioTalent’s Technical Skills Fundamentals courses from April 1, 2021 to March 31, 2024.</p>
                 
                 <h3>Instructions</h3>
                 <ul>
                     <li>Applications are accepted and reviewed on a rolling basis. Applications will be reviewed by GlycoNet Management every week and applicants will be notified of their application status no later than two weeks after the application is received.</li>
-                    <li>Award will include an access code to BioTalent Canada Technical/Essential Skills Fundamentals courses.</li>
-                    <li>Award recipients must complete a short survey in the GlycoNet Forum within one month of the completion of the Technical/Essential Skills Fundamentals Training Program. In the survey, award recipients will be asked to reflect on what they learned and how the course may influence their studies and career goals. This survey will be used to evaluate the interest of GlycoNet HQP in the course.</li>
+                    <li>Award will include an access code to BioTalent Canada Technical Skills Fundamentals courses.</li>
+                    <li>Award recipients must complete a short survey in the GlycoNet Forum within one month of the completion of the Technical Skills Fundamentals Training Program. In the survey, award recipients will be asked to reflect on what they learned and how the course may influence their studies and career goals. This survey will be used to evaluate the interest of GlycoNet HQP in the course.</li>
                 </ul>
             ]]>
         </Static>
@@ -59,7 +59,7 @@
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="300" recommended="true">
             <![CDATA[
                 <h3>Description</h3>
-                <p>Describe why you are interested in taking BioTalent’s Technical/Essential Skills Fundamentals Training Program, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</p>
+                <p>Describe why you are interested in taking BioTalent’s Technical Skills Fundamentals Training Program, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -82,8 +82,8 @@
             <![CDATA[
                 <p>By submitting this BioTalent’s Training Program Competition Application Form, I agree that:</p>
                 <ol>
-                    <li>I will complete the BioTalent Technical/Essential Skills Fundamentals courses by March 31, 2023.</li>
-                    <li>I will answer the survey within one month of the completion of the Technical/Essential Skills Fundamentals Training Program.</li>
+                    <li>I will complete the BioTalent Technical Skills Fundamentals courses by March 31, 2024.</li>
+                    <li>I will answer the survey within one month of the completion of the Technical Skills Fundamentals Training Program.</li>
                     <li>I may be contacted by GlycoNet for sharing my experience in communications materials such as the website, social media, newsletter, and/or annual corporate report.</li>
                 </ol>
                 {$item}

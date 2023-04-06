@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Technical/Essential Skills Fundamentals Training Program" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" ajax="true" disabled="false" year="2023">
+<Report name="Technical Skills Fundamentals Training Program" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" ajax="true" disabled="false" year="2023">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <span style='font-size: 1.5em;font-weight:bold'>Technical/Essential Skills Fundamentals Training Program</span>
+                <span style='font-size: 1.5em;font-weight:bold'>Technical Skills Fundamentals Training Program</span>
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -49,7 +49,7 @@
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="300" recommended="true">
             <![CDATA[
                 <h3>Description</h3>
-                <p><b>Describe why you are interested in taking BioTalent’s Technical/Essential Skills Fundamentals Training Program, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</b></p>
+                <p><b>Describe why you are interested in taking BioTalent’s Technical Skills Fundamentals Training Program, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</b></p>
                 {$item}
             ]]>
         </ReportItem>

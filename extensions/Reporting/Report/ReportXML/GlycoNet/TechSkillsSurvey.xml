@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Technical/Essential Skills Fundamentals Training Program Survey" reportType="RP_TECH_SKILLS_SURVEY" pdfType="RP_TECH_SKILLS_SURVEY" pdfFiles="TechSkillsSurveyPDF" ajax="true" disabled="false" year="0">
+<Report name="Technical Skills Fundamentals Training Program Survey" reportType="RP_TECH_SKILLS_SURVEY" pdfType="RP_TECH_SKILLS_SURVEY" pdfFiles="TechSkillsSurveyPDF" ajax="true" disabled="false" year="0">
     <Permissions>
         <Role role="HQP" subRole="TSF HQP" />
     </Permissions>
-    <ReportSection id="survey" tooltip="Survey" name="Survey" title="Technical/Essential Skills Fundamentals Training Program Survey" type="EULAReportSection" blobSection="SURVEY">
+    <ReportSection id="survey" tooltip="Survey" name="Survey" title="Technical Skills Fundamentals Training Program Survey" type="EULAReportSection" blobSection="SURVEY">
         <ReportItem id="status" type="Radio" blobItem="STATUS" options="M.Sc.|PhD|PDF|Research Associate|Technician">
             <![CDATA[
                 <h3>1. What is your academic status?</h3>
