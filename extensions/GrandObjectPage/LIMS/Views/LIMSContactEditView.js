@@ -3,24 +3,30 @@ LIMSContactEditView = Backbone.View.extend({
     isDialog: false,
     subViews: [],
     saving: false,
+    allProjects: new Projects(),
 
     initialize: function(options){
-        this.model.saving = false;
-        if(!this.model.isNew()){
-            this.model.fetch();
-        }
-        this.listenTo(this.model, "sync", function(){
-            this.selectTemplate();
-            this.render();
-        }.bind(this));
-        this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
-        this.listenTo(this.model.opportunities, "change:toDelete", this.removeOpportunities);
-        this.listenTo(this.model, "change:title", function(){
-            if(!this.isDialog){
-                main.set('title', this.model.get('title'));
+        this.allProjects.fetch();
+        this.allProjects.ready().then(function(){
+            this.model.saving = false;
+            if(!this.model.isNew()){
+                this.model.fetch();
             }
-        });
-        this.listenTo(this.model, "change:details", this.changeDetails);
+            
+            this.listenTo(this.model, "sync", function(){
+                this.selectTemplate();
+                this.render();
+            }.bind(this));
+            this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
+            this.listenTo(this.model.opportunities, "change:toDelete", this.removeOpportunities);
+            this.listenTo(this.model, "change:title", function(){
+                if(!this.isDialog){
+                    main.set('title', this.model.get('title'));
+                }
+            });
+            this.listenTo(this.model, "change:details", this.changeDetails);
+            
+        }.bind(this));
         if(options.isDialog != undefined){
             this.isDialog = options.isDialog;
         }
@@ -186,7 +192,7 @@ LIMSContactEditView = Backbone.View.extend({
     },
         
     renderOpportunities: function(model){
-        var view = new LIMSOpportunityEditView({model: model});
+        var view = new LIMSOpportunityEditView({model: model, allProjects: new Projects(this.allProjects.where({type: "Administrative"}))});
         this.$("#opportunities").append(view.render());
         this.subViews.push(view);
     },

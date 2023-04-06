@@ -32,6 +32,7 @@ class LIMSOpportunityAPI extends RESTAPI {
             $opportunity = new LIMSOpportunity(array());
             $opportunity->contact = $this->POST('contact');
             $opportunity->owner = $this->POST('owner')->id;
+            $opportunity->project = $this->POST('project')->id;
             $opportunity->userType = $this->POST('userType');
             $opportunity->category = $this->POST('category');
             $opportunity->surveyed = $this->POST('surveyed');
@@ -52,6 +53,7 @@ class LIMSOpportunityAPI extends RESTAPI {
         $opportunity = LIMSOpportunity::newFromId($this->getParam('id'));
         if($opportunity->isAllowedToEdit()){
             $opportunity->owner = $this->POST('owner')->id;
+            $opportunity->project = $this->POST('project')->id;
             $opportunity->userType = $this->POST('userType');
             $opportunity->category = $this->POST('category');
             $opportunity->surveyed = $this->POST('surveyed');

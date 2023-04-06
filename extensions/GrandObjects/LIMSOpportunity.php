@@ -9,6 +9,7 @@ class LIMSOpportunity extends BackboneModel {
     var $id;
     var $contact;
     var $owner;
+    var $project;
     var $userType;
     var $description;
     var $category;
@@ -47,6 +48,7 @@ class LIMSOpportunity extends BackboneModel {
             $this->id = $data[0]['id'];
             $this->contact = $data[0]['contact'];
             $this->owner = $data[0]['owner'];
+            $this->project = $data[0]['project'];
             $this->userType = $data[0]['user_type'];
             $this->description = $data[0]['description'];
             $this->category = $data[0]['category'];
@@ -80,6 +82,14 @@ class LIMSOpportunity extends BackboneModel {
 
     function getOwner(){
         return $this->owner;
+    }
+    
+    function getProject(){
+        return Project::newFromId($this->project);
+    }
+    
+    function getProjectId(){
+        return $this->project;
     }
 
     function getUserType(){
@@ -148,12 +158,20 @@ class LIMSOpportunity extends BackboneModel {
     function toArray(){
         if($this->isAllowedToView()){
             $person = $this->getPerson();
+            $proj = $this->getProject();
             $owner = array('id' => $person->getId(),
                            'name' => $person->getNameForForms(),
                            'url' => $person->getUrl());
+            $project = array('id' => '', 'name' => '', 'url' => '');
+            if($proj != null){
+                $project = array('id' => $proj->getId(),
+                                 'name' => $proj->getName(),
+                                 'url' => $proj->getUrl());
+            }
             $json = array('id' => $this->getId(),
                           'contact' => $this->getContact()->getId(),
                           'owner' => $owner,
+                          'project' => $project,
                           'userType' => $this->getUserType(),
                           'description' => $this->getDescription(),
                           'category' => $this->getCategory(),
@@ -174,6 +192,7 @@ class LIMSOpportunity extends BackboneModel {
             DBFunctions::insert('grand_lims_opportunity',
                                 array('contact' => $this->contact,
                                       'owner' => $this->owner,
+                                      'project' => $this->project,
                                       'user_type' => $this->userType,
                                       'description' => $this->description,
                                       'category' => $this->category,
@@ -199,6 +218,7 @@ class LIMSOpportunity extends BackboneModel {
             DBFunctions::update('grand_lims_opportunity',
                                 array('contact' => $this->contact,
                                       'owner' => $this->owner,
+                                      'project' => $this->project,
                                       'user_type' => $this->userType,
                                       'description' => $this->description,
                                       'category' => $this->category,

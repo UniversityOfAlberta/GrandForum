@@ -2,11 +2,12 @@ LIMSOpportunityEditView = Backbone.View.extend({
 
     subViews: [],
     saving: false,
+    allProjects: null,
 
-    initialize: function(){
+    initialize: function(options){
         this.model.saving = false;
+        this.allProjects = options.allProjects;
         this.listenTo(this.model, "sync", this.render);
-        //this.listenTo(this.model.tasks, "sync", this.renderTasks);
         this.listenTo(this.model.tasks, "add", this.renderTasks);
         this.listenTo(this.model.tasks, "change:toDelete", this.removeTasks);
         this.listenTo(this.model, "change:category", this.updateTasks);

@@ -20,17 +20,20 @@
         <td align="right"><b>User Type:</b></td>
         <td style="padding-right:30px;"><%= HTML.Select(this, 'owner.userType', {style: 'width:140px;vertical-align:middle;', options: ['On site', 'Remote', 'Data']}) %></td>
         
-        <td><%= date %></td>
+        <td colspan="2"><%= date %></td>
     </tr>
     <tr>
         <td align="right"><b>Surveyed:</b></td>
-        <td><%= HTML.Select(this, 'surveyed', {style: 'vertical-align:middle;', value: category, options: ['Yes', 'No']}) %></td>
+        <td><%= HTML.Select(this, 'surveyed', {style: 'vertical-align:middle;', options: ['Yes', 'No']}) %></td>
         
         <td align="right"><b>Responded:</b></td>
-        <td><%= HTML.Select(this, 'responded', {style: 'vertical-align:middle;', value: category, options: ['Yes', 'No']}) %></td>
+        <td><%= HTML.Select(this, 'responded', {style: 'vertical-align:middle;', options: ['Yes', 'No']}) %></td>
         
         <td align="right"><b>Satisfaction:</b></td>
-        <td><%= HTML.Select(this, 'satisfaction', {style: 'vertical-align:middle;', value: category, options: ['1', '2', '3', '4', '5']}) %></td>
+        <td><%= HTML.Select(this, 'satisfaction', {style: 'vertical-align:middle;', options: ['1', '2', '3', '4', '5']}) %></td>
+        
+        <td align="right"><b>Project:</b></td>
+        <td><%= HTML.Select(this, 'project.id', {style: 'vertical-align:middle;', options: _.map(this.allProjects.toJSON(), function(p){ return {option: p.name, value: p.id}; } )}) %></td>
     </tr>
 </table>
 <%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:100%; margin-left:0;margin-right:0;'}) %>
