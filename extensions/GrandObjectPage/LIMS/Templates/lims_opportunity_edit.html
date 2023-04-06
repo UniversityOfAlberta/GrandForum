@@ -66,10 +66,10 @@
 <button id="addDocument">Add Document</button>
 <h4>Products</h4>
 <table id="products" class="wikitable" width="100%">
-    <tr><th style="width:0;">Type</th><th>Product</th><th style="width:0;"></th></tr>
+    <tr><th style="width:0;">Type</th><th>Details</th><th style="width:0;"></th></tr>
     <% _.each(products, function(product, i){ %>
         <tr>
-            <td><%= HTML.Select(this, 'products.' + i + ".type", {options: LIMSProductTypes}) %></a></td>
+            <td><%= HTML.Select(this, 'products.' + i + ".type", {options: LIMSProductTypes, style: 'width:300px;'}) %></a></td>
             <td><%= HTML.TextBox(this, 'products.' + i + ".text", {style: "width: 100%; box-sizing: border-box;"}) %></a></td>
             <td align="center"><span data-id="<%= i %>" class="delete-icon" style="margin-left:7px;margin-right:7px;" title="Delete Product"></span></td>
         </tr>
