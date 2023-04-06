@@ -15,6 +15,7 @@ class ProjectAPI extends RESTAPI {
     
     function doGET(){
         $full = ($this->getParam('full') != "");
+        $administrative = ($this->getParam('administrative') != "");
         if($this->getParam('id') != ""){
             $project = Project::newFromId($this->getParam('id'));
             if($this->getParam('id') == "-1"){
@@ -33,7 +34,13 @@ class ProjectAPI extends RESTAPI {
             return json_encode($array);
         }
         else{
-            $projects = new Collection(Project::getAllProjectsEver(true));
+            $projects = array();
+            foreach(Project::getAllProjectsEver(true) as $project){
+                if(!$administrative || ($project->getType() == "Administrative")){
+                    $projects[] = $project;
+                }
+            }
+            $projects = new Collection($projects);
             $arrays = $projects->toArray();
             if($full){
                 foreach($arrays as $key => $array){

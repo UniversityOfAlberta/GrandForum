@@ -3,9 +3,11 @@ LIMSContactEditView = Backbone.View.extend({
     isDialog: false,
     subViews: [],
     saving: false,
-    allProjects: new Projects(),
+    allProjects: null,
 
     initialize: function(options){
+        this.allProjects = new Projects();
+        this.allProjects.type = "administrative";
         this.allProjects.fetch();
         this.allProjects.ready().then(function(){
             this.model.saving = false;
@@ -192,7 +194,7 @@ LIMSContactEditView = Backbone.View.extend({
     },
         
     renderOpportunities: function(model){
-        var view = new LIMSOpportunityEditView({model: model, allProjects: new Projects(this.allProjects.where({type: "Administrative"}))});
+        var view = new LIMSOpportunityEditView({model: model, allProjects: this.allProjects});
         this.$("#opportunities").append(view.render());
         this.subViews.push(view);
     },
