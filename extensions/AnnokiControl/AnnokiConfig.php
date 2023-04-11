@@ -30,6 +30,9 @@ $wgWhitelistRead[] = "File:Clinical SOGC Induced Abortion- Updated Guidance duri
 $wgWhitelistRead[] = "File:Clinical SOGC Canadian Protocol for the Provision of Medical Abortion via Telemedicine.pdf";
 $wgWhitelistRead[] = "File:Medical Abortion Prescriber Checklist.pdf";
 $wgWhitelistRead[] = "File:Medical Abortion Prescriber Checklist Resource Guide.pdf";
+$wgWhitelistRead[] = "File:Medical Abortion Prescriber Checklist.pdf";
+$wgWhitelistRead[] = "File:Liste de controle du prescripteur davortement medical.pdf";
+$wgWhitelistRead[] = "File:Guide de ressources pour la liste de controle du prescripteur davortement medical.pdf";
 $wgWhitelistRead[] = "File:Procedural Abortion Care Guidebook.pdf";
 
 $wgGroupPermissions['*']['read']            = false;
