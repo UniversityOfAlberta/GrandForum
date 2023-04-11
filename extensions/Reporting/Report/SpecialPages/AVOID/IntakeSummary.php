@@ -174,7 +174,7 @@ class IntakeSummary extends SpecialPage {
     }
     
     static function getRow($person, $report, $type=false, $simple=false){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $config;
         $userLink = "{$person->getId()}";
         if($type == false){
             $userLink = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
