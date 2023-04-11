@@ -185,6 +185,9 @@ class IntakeSummary extends SpecialPage {
             foreach(@$person->getSubRoles() as $sub){
                 $subRoles[] = $config->getValue('subRoles', $sub);
             }
+            if(empty($subRoles)){
+                $subRoles[] = "online independent";
+            }
             $html = "<tr>
                         <td>{$userLink}</td>
                         <td style='white-space:nowrap;' align='left'>".implode(",<br />", $subRoles)."</td>";
