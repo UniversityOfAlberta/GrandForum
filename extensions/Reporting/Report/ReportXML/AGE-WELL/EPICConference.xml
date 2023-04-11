@@ -19,6 +19,7 @@
         <Role subType="SIP/CAT HQP" />
         <Role subType="Alumni HQP" />
         <Role subType="EPIC grad" />
+        <Role subType="EPIC AT" />
     </Permissions>
     <ReportSection id="instructions" tooltip="Instructions" name="Instructions" title="The EPIC Conference (2023)" type="ReportSection">
         <Static>
