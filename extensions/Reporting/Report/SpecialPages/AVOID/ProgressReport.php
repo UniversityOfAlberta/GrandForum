@@ -244,6 +244,7 @@ class ProgressReport extends SpecialPage {
                             <div class='title'>
                                 Your AVOID Frailty Progress Report
                             </div>
+                            <div class='pdfnodisplay' style='margin-top:1em;'>You can also print your progress report <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ProgressReport' target='_blank'><b><u>here</u></b></a>.</div>
                         </div>
                         <br />
                         <br />
