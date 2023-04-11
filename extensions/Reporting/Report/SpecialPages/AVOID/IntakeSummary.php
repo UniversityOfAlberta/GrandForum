@@ -142,11 +142,13 @@ class IntakeSummary extends SpecialPage {
     }
     
     static function getHeader($report, $type=false, $simple=false){
+        global $config;
         $html = "";
         if(!$simple){
             $html = "<thead>
                         <tr>
-                            <th>User Id</th>";
+                            <th>User Id</th>
+                            <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>";
         }
         if($type != false){
             $html .= "<th>Type</th>";
@@ -179,8 +181,13 @@ class IntakeSummary extends SpecialPage {
         }
         $html = "";
         if(!$simple){
+            $subRoles = array();
+            foreach(@$person->getSubRoles() as $sub){
+                $subRoles[] = $config->getValue('subRoles', $sub);
+            }
             $html = "<tr>
-                        <td>{$userLink}</td>";
+                        <td>{$userLink}</td>
+                        <td style='white-space:nowrap;' align='left'>".implode(",<br />", $subRoles)."</td>";
         }
         if($type != false){
             $html .= "<td>{$type}</td>";

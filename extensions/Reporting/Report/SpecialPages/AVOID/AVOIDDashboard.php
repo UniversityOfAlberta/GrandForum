@@ -285,7 +285,7 @@ class AVOIDDashboard extends SpecialPage {
         if(AVOIDDashboard::isPersonAssessmentDone($me->getId())){
             // This might be a bit slow, but unlikely to be noticable.  If it becomes a problem, it should be moved to an ajax/api request
             $content = InPersonFollowup::getContent($me); 
-            $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php?action=api.DownloadWordHtmlApi' enctype='multipart/form-data' id='downloadword' method='post' target='_blank'><input type='hidden' name='content' value='{$content}'><input type='hidden' name='filename' value='{$me->getNameForForms()} In-Person Assessment Download'><input id='downloadWord' type='submit' style='display:none;' value='Download Word'></form>");
+            $wgOut->addHTML("<form style='display:none;' action='{$wgServer}{$wgScriptPath}/index.php?action=api.DownloadWordHtmlApi' enctype='multipart/form-data' id='downloadword' method='post' target='_blank'><input type='hidden' name='content' value='{$content}'><input type='hidden' name='filename' value='{$me->getNameForForms()} In-Person Assessment Download'><input id='downloadWord' type='submit' style='display:none;' value='Download Word'></form>");
             $assessmentReport = "<br /><a id='viewAssessmentReport' onClick='$(\"#downloadWord\").click();' href='#'>In-Person Frailty Report</a>";
         }
         
