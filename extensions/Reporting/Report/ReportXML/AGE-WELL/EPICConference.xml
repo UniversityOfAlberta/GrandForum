@@ -13,6 +13,12 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role subType="Affiliate HQP" />
+        <Role subType="Project Funded HQP" />
+        <Role subType="WP/CC Funded HQP" />
+        <Role subType="SIP/CAT HQP" />
+        <Role subType="Alumni HQP" />
+        <Role subType="EPIC grad" />
     </Permissions>
     <ReportSection id="instructions" tooltip="Instructions" name="Instructions" title="The EPIC Conference (2023)" type="ReportSection">
         <Static>
