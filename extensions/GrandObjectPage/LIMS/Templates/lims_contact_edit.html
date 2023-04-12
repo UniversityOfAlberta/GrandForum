@@ -56,7 +56,14 @@
                 <td class="label">HQP:</td>
                 <td>
                     <%= HTML.Select(this, 'details.hqp', {options: ['Yes', 'No']}) %>
-                    <%= HTML.TextBox(this, 'details.hqp_other', {placeholder: 'HQP Type', style: 'width:244px;'}) %>
+                    <%= HTML.Select(this, 'details.hqp_other', {placeholder: 'HQP Type', style: 'width:256px;', 
+                                                                options: ['College Students',
+                                                                          'University Undergrad Students',
+                                                                          'M.Sc. Students',
+                                                                          'Ph.D. Students',
+                                                                          'PDFs',
+                                                                          'Scientific & Technical Personnel (Outside GIS)']
+                                                                          }) %>
                 </td>
             </tr>
         </table>
