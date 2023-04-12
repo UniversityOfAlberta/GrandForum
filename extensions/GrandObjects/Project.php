@@ -1008,9 +1008,15 @@ class Project extends BackboneModel {
      * @return boolean Whether or not the logged in user can edit this project
      */
     function userCanEdit(){
+        global $config;
         $me = Person::newFromWgUser();
         if($this->getType() == "Innovation Hub" && $me->isMemberOf($this)){
             // Members of Innovation Hubs should be able to edit
+            return true;
+        }
+        if($config->getValue('networkName') == "GlycoNet" && 
+           $this->getType() == "Administrative" &&
+           ($me->isRole("GIS Leader") || $me->isRole("GIS Manager"))){
             return true;
         }
         if(!$me->isRoleAtLeast(STAFF) &&

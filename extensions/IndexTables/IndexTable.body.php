@@ -438,6 +438,11 @@ class IndexTable {
                 foreach($project->getLeaders() as $lead){
                     $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
                 }
+                if($config->getValue('networkName') == "GlycoNet"){
+                    foreach($project->getAllPeople("GIS Leader") as $leader){
+                        $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
+                    }
+                }
                 $leaderString = implode(", ", $leaders);
                 $wgOut->addHTML("<tr>
                                     <td><a href='{$project->getUrl()}'>{$project->getName()}<a></td>
