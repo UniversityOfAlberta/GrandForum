@@ -114,8 +114,17 @@ class ProjectKPITab extends AbstractEditableTab {
                     $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
                     
                     if($edit){
-                        $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/GIS KPIs.xlsx'>Download Template</a>
-                                        <h3 style='margin-top: 0;'>Upload KPI</h3>
+                        $lastblb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
+                        $lastaddr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$i}_Q".($q-1), 0);
+                        $lastblb->load($lastaddr, true);
+                        $lastmd5 = $blb->getMD5();
+                        if($q > 1 && $lastmd5 != ""){
+                            $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$lastmd5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q".($q-1)."_KPI.xlsx'>Download Q".($q-1)." KPI</a>";
+                        }
+                        else{
+                            $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/GIS KPIs.xlsx'>Download Template</a>";
+                        }
+                        $this->html .= "<h3 style='margin-top: 0;'>Upload KPI</h3>
                                         <input type='file' name='kpi[{$i}_Q{$q}]' accept='.xlsx' />";
                     }
                     
