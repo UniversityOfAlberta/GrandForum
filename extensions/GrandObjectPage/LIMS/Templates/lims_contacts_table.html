@@ -1,10 +1,10 @@
 <div id="editDialog" style="display:none;"></div>
-<div id="deleteDialog" style="display:none;" title="Delete Contact">
-    <p>Are you sure you want to delete this contact (this will also delete the related opportunities and tasks)?</p>
+<div id="deleteDialog" style="display:none;" title="Delete Customer/User">
+    <p>Are you sure you want to delete this customer/user (this will also delete the related requests and tasks)?</p>
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <% if(isAllowedToCreateLIMSContacts){ %>
-    <button id="addContact">Add Contact</button>
+    <button id="addContact">Add Customer/User</button>
 <% } %>
 <table id="contacts" frame="box" rules="all">
     <thead>
@@ -12,7 +12,7 @@
             <% if(isAllowedToCreateLIMSContacts){ %>
                 <th width="1%">Edit</th>
             <% } %>
-            <th>Contact</th>
+            <th>Customer/User</th>
             <th>Owner</th>
             <th>Request</th>
             <th width="1%">Category</th>

@@ -25,7 +25,7 @@ LIMSContactsTableView = Backbone.View.extend({
         this.editDialog.view = view;
         this.editDialog.dialog({
             height: $(window).height()*0.75, 
-            title: "Add Contact"
+            title: "Add Customer/User"
         });
         this.editDialog.dialog('open');
     },
@@ -36,7 +36,7 @@ LIMSContactsTableView = Backbone.View.extend({
         this.editDialog.view = view;
         this.editDialog.dialog({
             height: $(window).height()*0.75, 
-            title: "Edit Contact"
+            title: "Edit Customer/User"
         });
         this.editDialog.dialog('open');
     },
@@ -117,7 +117,7 @@ LIMSContactsTableView = Backbone.View.extend({
 	        }.bind(this),
 	        buttons: {
 	            "Save": {
-                    text: "Save Contact",
+                    text: "Save Customer/User",
                     click: function(){
                         $(".ui-dialog-buttonset .throbber", this.editDialog.parent()).show();
                         var buttons = $(".ui-dialog-buttonset button", this.editDialog.parent());
