@@ -51,7 +51,7 @@ class ProjectKPITab extends AbstractEditableTab {
         $project = $this->project;
         $me = Person::newFromId($wgUser->getId());
         
-        $this->showKPI(false);
+        $this->showKPI();
         
         return $this->html;
     }
@@ -60,11 +60,13 @@ class ProjectKPITab extends AbstractEditableTab {
         return $this->generateBody();
     }
 
-    function showKPI($renderForPDF=false){
+    function showKPI(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
         $me = Person::newFromWgUser();
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
+        
+        $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
         
         if($me->isMemberOf($this->project) || $this->visibility['isLead']){
             $wgOut->addScript("<script type='text/javascript'>
@@ -111,7 +113,6 @@ class ProjectKPITab extends AbstractEditableTab {
                     $result = $blb->load($addr, true);
                     $md5 = $blb->getMD5();
                     $xls = $blb->getData();
-                    $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
                     
                     if($edit){
                         $lastblb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
