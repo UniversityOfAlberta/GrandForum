@@ -1016,7 +1016,8 @@ class Project extends BackboneModel {
         }
         if($config->getValue('networkName') == "GlycoNet" && 
            $this->getType() == "Administrative" &&
-           ($me->isRole("GIS Leader") || $me->isRole("GIS Manager"))){
+           ($me->isRole("GIS Leader", $this) || 
+            $me->isRole("GIS Manager", $this))){
             return true;
         }
         if(!$me->isRoleAtLeast(STAFF) &&
