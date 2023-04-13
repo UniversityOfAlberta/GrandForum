@@ -428,9 +428,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $deleteActivity = "<td align='center' style='white-space: nowrap;'><input type='checkbox' name='milestone_activity_delete[$activityId]' style='vertical-align:middle;' /></td>";
                 $deleteColspan = 1;
             }
-            if($this instanceof ProjectFESMilestonesTab){
-                $deleteColspan += 2;
-            }
             $yearOffset = ($this->nYears < $this->maxNYears) ? 2 : 0;
             $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
             $this->html .= "<tr class='top_border' data-id='$activityId'>
