@@ -72,7 +72,7 @@ class ProjectKPITab extends AbstractEditableTab {
             $cells = @$sheet->toArray(null, false, false);
             $nRows = 0;
             foreach($cells as $rowN => $row){
-                if($row[0] != ""){
+                if($row[0] != "" || $rowN <= 25){
                     $nRows++;
                 }
             }
