@@ -61,13 +61,55 @@ class ProjectKPITab extends AbstractEditableTab {
         return $this->generateBody();
     }
     
+    static function optimizeFn($obj){
+        // Optimize formulas
+        $sheets = $obj->getAllSheets();
+        
+        $max = 0;
+        for($i=2; $i<count($sheets); $i++){
+            $obj->setActiveSheetIndex($i);
+            $sheet = $obj->getActiveSheet();
+            $cells = @$sheet->toArray(null, false, false);
+            $nRows = 0;
+            foreach($cells as $rowN => $row){
+                if($row[0] != ""){
+                    $nRows++;
+                }
+            }
+            $nRows = min(200, $nRows);
+            $max = max($max, $nRows);
+            
+            foreach($cells as $rowN => $row){
+                foreach($row as $colN => $col){
+                    if(strstr($cells[$rowN][$colN], "=") !== false){
+                        $cells[$rowN][$colN] = str_replace("200", $nRows, $cells[$rowN][$colN]);
+                    }
+                }
+            }
+            $cells = @$sheet->fromArray($cells);
+        }
+
+        $obj->setActiveSheetIndex(1);
+        $sheet = $obj->getActiveSheet();
+        $cells = @$sheet->toArray(null, false, false);
+        foreach($cells as $rowN => $row){
+            foreach($row as $colN => $col){
+                if(strstr($cells[$rowN][$colN], "=") !== false){
+                    $cells[$rowN][$colN] = str_replace("200", $max, $cells[$rowN][$colN]);
+                }
+            }
+        }
+        $cells = @$sheet->fromArray($cells);
+        return $obj;
+    }
+    
     static function getKPITemplate(){
         global $config;
         if(Cache::exists("KPI_Template")){
             return Cache::fetch("KPI_Template");
         }
         $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
-        $summary = new Budget("XLS", $structure, file_get_contents("data/GIS KPIs.xlsx"), 1);
+        $summary = new Budget("XLS", $structure, file_get_contents("data/GIS KPIs.xlsx"), 1, "ProjectKPITab::optimizeFn");
         $summary->xls[69][1]->style .= "white-space: initial;";
         $summary->xls[71][1]->style .= "white-space: initial;";
         $summary->xls[97][1]->style .= "white-space: initial;";
@@ -89,7 +131,7 @@ class ProjectKPITab extends AbstractEditableTab {
         $md5 = $blb->getMD5();
         if($xls != null){
             $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
-            $kpi = new Budget("XLS", $structure, $xls, 1);
+            $kpi = new Budget("XLS", $structure, $xls, 1, "ProjectKPITab::optimizeFn");
             $kpi->xls[69][1]->style .= "white-space: initial;";
             $kpi->xls[71][1]->style .= "white-space: initial;";
             $kpi->xls[97][1]->style .= "white-space: initial;";

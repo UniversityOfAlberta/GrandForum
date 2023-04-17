@@ -37,6 +37,9 @@ class Budget extends QueryableTable{
             case 4:
                 self::Budget($argv[1], $argv[2], $argv[3]);
                 break;
+            case 5: 
+                self::Budget($argv[1], $argv[2], $argv[3], $argv[4]);
+                break;
         }
     }
     
@@ -59,7 +62,7 @@ class Budget extends QueryableTable{
     }
     
     // Creates a new Budget instance with the given person ID, structure type, and data set
-    private function Budget($structure, $data, $sheet=0){
+    private function Budget($structure, $data, $sheet=0, $optimizeFn=null){
         global $budgetStructures;
         $this->QueryableTable();
         if(is_array($structure)){
@@ -68,7 +71,7 @@ class Budget extends QueryableTable{
         else{
             $this->structure = @$this->preprocessStructure($budgetStructures[$structure]);
         }
-        if(!$this->readCells($data, $sheet)){
+        if(!$this->readCells($data, $sheet, $optimizeFn)){
             // Some error happened when reading the data, try to recover
             $data = array();
             foreach($this->structure as $rowN => $row){
@@ -140,7 +143,7 @@ class Budget extends QueryableTable{
     }
     
     // Reads the cells in the budget based on the specified structure
-    private function readCells($data, $sheet=0){
+    private function readCells($data, $sheet=0, $optimizeFn){
         $dir = dirname(__FILE__);
         require_once($dir . '/../../../Classes/PHPExcel/IOFactory.php');
         if(!($data instanceof PHPExcel)){
@@ -182,6 +185,11 @@ class Budget extends QueryableTable{
                 }
                 $objReader->setReadDataOnly(true);
                 $obj = $objReader->load($tmpn);
+                
+                if(is_callable($optimizeFn)){
+                    call_user_func_array($optimizeFn, array(&$obj));
+                }
+                
                 $obj->setActiveSheetIndex($sheet);
             }
             else{
@@ -191,7 +199,7 @@ class Budget extends QueryableTable{
             $sheet = $obj->getActiveSheet();
             $maxCol = $sheet->getHighestColumn();
             $maxRow = $sheet->getHighestRow();
-            $cells = @$sheet->toArray(null, true, false); // Explicitely read only values not style (3rd arg)
+            $cells = @$sheet->toArray(null, true, false);
             
             if($this->structure == null){
                 // Create a fake structure so that it doesn't fail
