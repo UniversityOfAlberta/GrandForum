@@ -68,11 +68,11 @@ class ProjectKPITab extends AbstractEditableTab {
         }
         $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
         $summary = new Budget("XLS", $structure, file_get_contents("data/GIS KPIs.xlsx"), 1);
-        Cache::store("KPI_Template", $summary, 86400*7);
         $summary->xls[69][1]->style .= "white-space: initial;";
         $summary->xls[71][1]->style .= "white-space: initial;";
         $summary->xls[97][1]->style .= "white-space: initial;";
         $summary->xls[98][1]->style .= "white-space: initial;";
+        Cache::store("KPI_Template", $summary, 86400*7);
         return $summary;
     }
     
