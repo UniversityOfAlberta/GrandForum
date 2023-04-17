@@ -69,6 +69,10 @@ class ProjectKPITab extends AbstractEditableTab {
         $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
         $summary = new Budget("XLS", $structure, file_get_contents("data/GIS KPIs.xlsx"), 1);
         Cache::store("KPI_Template", $summary, 86400*7);
+        $summary->xls[69][1]->style .= "white-space: initial;";
+        $summary->xls[71][1]->style .= "white-space: initial;";
+        $summary->xls[97][1]->style .= "white-space: initial;";
+        $summary->xls[98][1]->style .= "white-space: initial;";
         return $summary;
     }
     
@@ -86,9 +90,22 @@ class ProjectKPITab extends AbstractEditableTab {
         if($xls != null){
             $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
             $kpi = new Budget("XLS", $structure, $xls, 1);
+            $kpi->xls[69][1]->style .= "white-space: initial;";
+            $kpi->xls[71][1]->style .= "white-space: initial;";
+            $kpi->xls[97][1]->style .= "white-space: initial;";
+            $kpi->xls[98][1]->style .= "white-space: initial;";
             Cache::store("{$project->getId()}_{$id}", array($kpi, $md5), 86400*7);
         }
         return array($kpi, $md5);
+    }
+    
+    static function addKPI($kpi1, $kpi2){
+        foreach($kpi2->xls as $key => $row){
+            if(@is_numeric($row[2]->value)){
+                $kpi1->xls[$key][2]->value += $row[2]->value;
+            }
+        }
+        return $kpi1;
     }
 
     function showKPI(){
@@ -155,10 +172,6 @@ class ProjectKPITab extends AbstractEditableTab {
                     if(!$edit){
                         list($kpi, $md5) = ProjectKPITab::getKPI($this->project, "KPI_{$i}_Q{$q}");
                         if($kpi != null){
-                            $kpi->xls[69][1]->style .= "white-space: initial;";
-                            $kpi->xls[71][1]->style .= "white-space: initial;";
-                            $kpi->xls[97][1]->style .= "white-space: initial;";
-                            $kpi->xls[98][1]->style .= "white-space: initial;";
                             $this->html .= $kpi->render()."<br />";
                             $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q{$q}_KPI.xlsx'>Download KPI</a><br />";
                         }
