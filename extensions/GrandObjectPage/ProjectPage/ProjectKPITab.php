@@ -68,7 +68,7 @@ class ProjectKPITab extends AbstractEditableTab {
         }
         $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
         $summary = new Budget("XLS", $structure, file_get_contents("data/GIS KPIs.xlsx"), 1);
-        Cache::store("KPI_Template", $summary);
+        Cache::store("KPI_Template", $summary, 86400*7);
         return $summary;
     }
     
@@ -85,7 +85,7 @@ class ProjectKPITab extends AbstractEditableTab {
         if($xls != null){
             $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
             $kpi = new Budget("XLS", $structure, $xls, 1);
-            Cache::store("{$project->getId()}_{$id}", array($kpi, $md5));
+            Cache::store("{$project->getId()}_{$id}", array($kpi, $md5), 86400*7);
         }
         return array($kpi, $md5);
     }
