@@ -27,6 +27,7 @@ class ProjectKPITab extends AbstractEditableTab {
                         $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
                         $addr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$year_q}", 0);
                         $blb->store($contents, $addr);
+                        Cache::delete("{$this->project->getId()}_KPI_{$year_q}");
                     }
                 }
             }
@@ -59,14 +60,41 @@ class ProjectKPITab extends AbstractEditableTab {
     function generateEditBody(){
         return $this->generateBody();
     }
+    
+    static function getKPITemplate(){
+        global $config;
+        if(Cache::exists("KPI_Template")){
+            return Cache::fetch("KPI_Template");
+        }
+        $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
+        $summary = new Budget("XLS", $structure, file_get_contents("data/GIS KPIs.xlsx"), 1);
+        Cache::store("KPI_Template", $summary);
+        return $summary;
+    }
+    
+    static function getKPI($project, $id){
+        global $config;
+        if(Cache::exists("{$project->getId()}_{$id}")){
+            return Cache::fetch("{$project->getId()}_{$id}");
+        }
+        $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $project->getId());
+        $addr = ReportBlob::create_address("RP_KPI", "KPI", $id, 0);
+        $blb->load($addr, true);
+        $xls = $blb->getData();
+        $md5 = $blb->getMD5();
+        if($xls != null){
+            $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
+            $kpi = new Budget("XLS", $structure, $xls, 1);
+            Cache::store("{$project->getId()}_{$id}", array($kpi, $md5));
+        }
+        return array($kpi, $md5);
+    }
 
     function showKPI(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
         $me = Person::newFromWgUser();
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
-        
-        $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
         
         if($me->isMemberOf($this->project) || $this->visibility['isLead']){
             $wgOut->addScript("<script type='text/javascript'>
@@ -108,17 +136,11 @@ class ProjectKPITab extends AbstractEditableTab {
                     $this->html .= "<div style='overflow: auto;'>";
                     
                     // KPI
-                    $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
-                    $addr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$i}_Q{$q}", 0);
-                    $result = $blb->load($addr, true);
-                    $md5 = $blb->getMD5();
-                    $xls = $blb->getData();
-                    
                     if($edit){
                         $lastblb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
                         $lastaddr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$i}_Q".($q-1), 0);
                         $lastblb->load($lastaddr, true);
-                        $lastmd5 = $blb->getMD5();
+                        $lastmd5 = $lastblb->getMD5();
                         if($q > 1 && $lastmd5 != ""){
                             $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$lastmd5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q".($q-1)."_KPI.xlsx'>Download Q".($q-1)." KPI</a>";
                         }
@@ -130,9 +152,8 @@ class ProjectKPITab extends AbstractEditableTab {
                     }
                     
                     if(!$edit){
-                        //$xls = null;
-                        if($xls != null){
-                            $kpi = new Budget("XLS", $structure, $xls, 1);
+                        list($kpi, $md5) = ProjectKPITab::getKPI($this->project, "KPI_{$i}_Q{$q}");
+                        if($kpi != null){
                             $kpi->xls[69][1]->style .= "white-space: initial;";
                             $kpi->xls[71][1]->style .= "white-space: initial;";
                             $kpi->xls[97][1]->style .= "white-space: initial;";

@@ -26,10 +26,7 @@ class ProjectKPISummaryTab extends AbstractTab {
         $me = Person::newFromWgUser();
         $project = $this->project;
         
-        $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
-        
-        $template = file_get_contents("data/GIS KPIs.xlsx");
-        $summary = new Budget("XLS", $structure, $template, 1);
+        $summary = ProjectKPITab::getKPITemplate();
         
         if($me->isMemberOf($this->project) || $this->visibility['isLead']){
             $endYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Roll-over kpi in April
@@ -62,14 +59,8 @@ class ProjectKPISummaryTab extends AbstractTab {
                     }
                     
                     // KPI
-                    $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
-                    $addr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$i}_Q{$q}", 0);
-                    $result = $blb->load($addr, true);
-                    $md5 = $blb->getMD5();
-                    $xls = $blb->getData();
-                    if($xls != null){
-                        $kpi = new Budget("XLS", $structure, $xls, 1);
-                        
+                    list($kpi, $md5) = ProjectKPITab::getKPI($this->project, "KPI_{$i}_Q{$q}");
+                    if($kpi != null){
                         foreach($kpi->xls as $key => $row){
                             if(@is_numeric($row[2]->value)){
                                 $summary->xls[$key][2]->value += $row[2]->value;
