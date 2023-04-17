@@ -31,13 +31,13 @@ function addReminder($id, $person){
 }
 
 function sendMail($subject, $message, $person){
-    global $config;
+    global $config, $wgServer, $wgScriptPath;
     $message = nl2br($message);
     $headers  = "Content-type: text/html\r\n"; 
     $headers .= "From: AVOID Frailty <noreply@healthyagingcentres.ca>" . "\r\n";
     $hash = hash('sha256', $person->getId()."_".$person->getRegistration());
     
-    $message .= "<p><a href='https://healthyagingcentres.ca/portal/index.php?action=api.userunsub&code={$hash}'>Click here</a> to unsubscribe from AVOID notifications.</p>"; 
+    $message .= "<p><a href='$wgServer$wgScriptPath/index.php?action=api.userunsub&code={$hash}'>Click here</a> to unsubscribe from AVOID notifications.</p>"; 
     mail($person->getEmail(), $subject, $message, $headers);
 }
 
@@ -89,7 +89,7 @@ foreach($people as $person){
            strtotime($actionPlan->getDate()) + 7*86400 < time()){
             addReminder("ActionPlanCheckIn{$actionPlan->getId()}", $person);
             $subject = "Time to Submit your Action Plan";
-            $message = "<p>How has your week been? Did you do what you committed to? Don't forget to sign back into your account at <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a> to submit your weekly action <a href='https://healthyagingcentres.ca/portal/index.php/Special:AVOIDDashboard'>plan</a>. It will show up in your logged accomplishments. If things didn't go as planned, that's okay too! Maybe you want to edit your weekly plan to something more attainable.</p>";
+            $message = "<p>How has your week been? Did you do what you committed to? Don't forget to sign back into your account at <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a> to submit your weekly action <a href='$wgServer$wgScriptPath/index.php/Special:AVOIDDashboard'>plan</a>. It will show up in your logged accomplishments. If things didn't go as planned, that's okay too! Maybe you want to edit your weekly plan to something more attainable.</p>";
             sendMail($subject, $message, $person);
             echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
         }
