@@ -77,6 +77,7 @@ class ProjectKPITab extends AbstractEditableTab {
         if(Cache::exists("{$project->getId()}_{$id}")){
             return Cache::fetch("{$project->getId()}_{$id}");
         }
+        $kpi = null;
         $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $project->getId());
         $addr = ReportBlob::create_address("RP_KPI", "KPI", $id, 0);
         $blb->load($addr, true);
