@@ -321,13 +321,7 @@
                 </script>
             ]]>
         </Static>
-        <ReportItem id="avoid_communication_fup_recommended" blobItem="avoid_communication_fup_recommended" type="Textarea" rich="false">
-            <![CDATA[
-                <span id="avoid_communication_fup_recommended">
-                <b>Recommendation</b><br />{$item}
-                </span>
-            ]]>
-        </ReportItem>
+
 
         <ReportItem id="avoid_cognition" blobItem="avoid_cognition" type="IntegerReportItem">
             <![CDATA[
@@ -541,13 +535,6 @@
                 </script>
             ]]>
         </Static>
-        <ReportItem id="avoid_dementia_fup_recommended" blobItem="avoid_dementia_fup_recommended" type="Textarea" rich="false">
-            <![CDATA[
-                <span id="avoid_dementia_fup_recommended">
-                <b>Recommendation</b><br />{$item}
-                </span>
-            ]]>
-        </ReportItem>
 
         <ReportItem id="avoid_depression" blobItem="avoid_depression" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
             <![CDATA[
@@ -1053,6 +1040,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_urinary_recommended" blobItem="avoid_urinary_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_urinary_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
         <ReportItem id="avoid_bowel" blobItem="avoid_bowel" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <hr />
@@ -1383,7 +1377,13 @@
                 </table>
             ]]>
         </ReportItem>
-
+        <ReportItem id="avoid_strength_fup_recommended" blobItem="avoid_strength_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_strength_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_nutrition1" blobItem="avoid_nutrition1" type="IntegerReportItem">       
             <![CDATA[
@@ -2201,6 +2201,13 @@
             </script>
         ]]>
         </Static>
+    <ReportItem id="avoid_chronic_recommended" blobItem="avoid_chronic_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_chronic_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" text="" />
