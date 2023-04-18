@@ -296,6 +296,12 @@ class ApplicationsTable extends SpecialPage{
         $title->setBlobItem('TITLE');
         $title->setBlobSection('APPLICATION_FORM');
         
+        $lay = new TextareaReportItem();
+        $lay->setBlobType(BLOB_TEXT);
+        $lay->setBlobItem('SUMMARY');
+        $lay->setBlobSection('APPLICATION_FORM');
+        $lay->setAttr('rich', "true");
+        
         $uni = new TextReportItem();
         $uni->setBlobType(BLOB_TEXT);
         $uni->setBlobItem('INSTITUTION');
@@ -380,6 +386,7 @@ class ApplicationsTable extends SpecialPage{
         
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_HAC', null, 2023, "HAC 2023", array("Title" => $title,
+                                                                                       "Lay Summary" => $lay,
                                                                                        "Institution" => $uni,
                                                                                        "Keywords" => $keywords,
                                                                                        "Challenge Areas" => $challenges,
