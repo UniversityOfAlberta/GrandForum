@@ -122,7 +122,7 @@ class AdminDataCollection extends SpecialPage{
                     }
                 }
 
-                $phone = $person->getExtra('phone', '');
+                $phone = $person->getExtra('phone', $person->getPhoneNumber());
                 //grab clinician data
                 $age_lovedone = $person->getExtra('ageOfLovedOne', '');
                 $age = $person->getExtra('ageField', '');
