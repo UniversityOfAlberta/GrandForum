@@ -8,516 +8,536 @@
     </Permissions>
     <!-- Personal Information -->
     <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="&lt;span class='en'>Application&lt;/span>&lt;span class='fr'>Demande&lt;/span>" title="&lt;span class='en'>ELITE Intern Application&lt;/span>&lt;span class='fr'>Formulaire de demande pour les stagiaires ELITE&lt;/span>" showProgress="true">
-        <Static>
-            <![CDATA[
-                <b>
-                    <span class='en'>Welcome to the Intern Application Portal for the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth. Please read our Brochure for Interns before completing your application: <a href="https://www.eliteprogram.ca/program/" target="_blank">DOWNLOAD IT HERE</a>. Personal information submitted through this form will be held as confidential and will be stored, used, and disclosed only to the extent permitted by the Freedom of Information and Protection of Privacy Act, R.S.A. 2000, c. F-25 (as amended).</span>
-                    <span class='fr'>Bienvenue au portail pour le Formulaire de demande pour les stagiaires du Programme d’apprentissage expérimental en innovation, technologie et entrepreneuriat (ELITE) pour la jeunesse noire. Veuillez lire notre brochure pour les stagiaires avant de compléter votre formulaire : TÉLÉCHARGEZ-LE ICI. Les renseignements personnels soumis dans le formulaire resteront confidentiels et seront stockés, utilisés et divulgués uniquement par ce qui est permis par la Loi sur la protection des renseignements personnels, L.R.A. 2000, ch. F-25 (amendée).</span>
-                </b>
-            ]]>
-        </Static>
-        <If if="{==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)}">
-            <![CDATA[
-                <div class="info">
-                    <b>{getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)}</b><br />
-                    {getText(RP_ELITE, PROFILE, COMMENTS, 0, {$user_id}, 0)}
-                </div>
-            ]]>
-        </If>
-        <Static>
-            <![CDATA[
-                <p>
-                    <span class='en'>All items with a <span style="color:red;">*</span> require mandatory responses</span>
-                    <span class='fr'>Tous les éléments ayant un * nécessite obligatoirement une réponse</span>
-                </p>
-                <table>
-                    
-            ]]>
-        </Static>
-        <ReportItem id="region" type="Select" blobItem="REGION" options="|Edmonton|Ottawa" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required" style="width: 100px;"><span class='en'>Region</span><span class='fr'>Région</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="last_name" type="Text" blobItem="LAST_NAME" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td colspan="4"><h2 style="margin-top:0;"><span class='en'>Personal Information</span><span class='fr'>Information personnelle</span></h2></td>
-                </tr>
-                <tr>
-                    <td class="label required" style="width: 100px;"><span class='en'>Last Name</span><span class='fr'>Nom de famille</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="first_name" type="Text" blobItem="FIRST_NAME" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>First Name</span><span class='fr'>Prénom</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="middle_name" type="Text" blobItem="MIDDLE_NAME" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label"><span class='en'>Middle Name</span><span class='fr'>Second prénom</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="birthdate" type="Calendar" blobItem="BIRTHDATE" yearRange="c-50:{$year}" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>Date of Birth</span><span class='fr'>Date de naissance</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="gender" type="Select" blobItem="GENDER" options="Male|Female|Non-binary|Other|I prefer not to say" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>Gender</span><span class='fr'>Genre</span>:</td>
-                    <td class="value" colspan="3">{$item}
-                        <script type='text/javascript'>
-                            if(wgLang == 'fr'){
-                                $("select[name=ApplicationDemande_gender] option[value='Male']").text('Homme');
-                                $("select[name=ApplicationDemande_gender] option[value='Female']").text('Femme');
-                                $("select[name=ApplicationDemande_gender] option[value='Non-binary']").text('Non binaire');
-                                $("select[name=ApplicationDemande_gender] option[value='Other']").text('Autre');
-                                $("select[name=ApplicationDemande_gender] option[value='I prefer not to say']").text('Je préfère ne pas dire');
-                            }
-                        </script>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="ethnic" type="Radio" blobItem="ETHNIC" options="Black|White|Indigenous|South Asian|Chinese|Filipino|Arab|Southeast Asian|West Asian|Korean|Japanese|Other" 
-                                labels="&lt;span class='en'>Black&lt;/span>&lt;span class='fr'>Noir-e&lt;/span>|
-                                        &lt;span class='en'>White&lt;/span>&lt;span class='fr'>Blanc-he&lt;/span>|
-                                        &lt;span class='en'>Indigenous (North American, Central American, South American Indigenous peoples)&lt;/span>&lt;span class='fr'>Autochtone (Des peuples autochtones de l’Amérique du Nord, de l’Amérique Centrale, ou de l’Amérique du Sud)&lt;/span>|
-                                        &lt;span class='en'>South Asian (e.g., East Indian, Pakistani, Sri Lankan, etc.)&lt;/span>&lt;span class='fr'>Asiatique du Sud (par ex. Indien-ne de l’Est, Pakistanais-e, Srilankais-e, etc.)&lt;/span>|
-                                        &lt;span class='en'>Chinese&lt;/span>&lt;span class='fr'>Chinois-e&lt;/span>|
-                                        &lt;span class='en'>Filipino&lt;/span>&lt;span class='fr'>Philippin-e&lt;/span>|
-                                        &lt;span class='en'>Arab&lt;/span>&lt;span class='fr'>Arabe&lt;/span>|
-                                        &lt;span class='en'>Southeast Asian (e.g., Vietnamese, Cambodian, Laotian, Thai, etc.)&lt;/span>&lt;span class='fr'>Asiatique du Sud-Est (par ex. Vietnamien-ne, Cambodgien-ne, Laotien-ne, Thaïlandais-e, etc.)&lt;/span>|
-                                        &lt;span class='en'>West Asian (e.g., Iranian, Afghan, etc.)&lt;/span>&lt;span class='fr'>Asiatique de l’Ouest (par ex. Iranien-ne, Afghan-e, etc.)&lt;/span>|
-                                        &lt;span class='en'>Korean&lt;/span>&lt;span class='fr'>Coréen-ne&lt;/span>|
-                                        &lt;span class='en'>Japanese&lt;/span>&lt;span class='fr'>Japonais-e&lt;/span>|
-                                        Other" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>Ethnic Group</span><span class='fr'>Groupe ethnique</span>:</td>
-                    <td class="value" colspan="3">{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="ethnic_other" type="Text" blobItem="ETHNIC_OTHER" optional="true" placeholder="Other...">
-            <![CDATA[
-                        <div style="position: absolute; margin-top: -28px; margin-left: 24px;">
-                            {$item}
+        <If if="{or({==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},)},
+                    {==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Submitted)},
+                    {==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)},
+                )}">
+            <Static>
+                <![CDATA[
+                    <b>
+                        <span class='en'>Welcome to the Intern Application Portal for the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth. Please read our Brochure for Interns before completing your application: <a href="https://www.eliteprogram.ca/program/" target="_blank">DOWNLOAD IT HERE</a>. Personal information submitted through this form will be held as confidential and will be stored, used, and disclosed only to the extent permitted by the Freedom of Information and Protection of Privacy Act, R.S.A. 2000, c. F-25 (as amended).</span>
+                        <span class='fr'>Bienvenue au portail pour le Formulaire de demande pour les stagiaires du Programme d’apprentissage expérimental en innovation, technologie et entrepreneuriat (ELITE) pour la jeunesse noire. Veuillez lire notre brochure pour les stagiaires avant de compléter votre formulaire : TÉLÉCHARGEZ-LE ICI. Les renseignements personnels soumis dans le formulaire resteront confidentiels et seront stockés, utilisés et divulgués uniquement par ce qui est permis par la Loi sur la protection des renseignements personnels, L.R.A. 2000, ch. F-25 (amendée).</span>
+                    </b>
+                ]]>
+            </Static>
+            <If if="{==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)}">
+                <![CDATA[
+                    <div class="info">
+                        <b>{getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)}</b><br />
+                        {getText(RP_ELITE, PROFILE, COMMENTS, 0, {$user_id}, 0)}
+                    </div>
+                ]]>
+            </If>
+            <Static>
+                <![CDATA[
+                    <p>
+                        <span class='en'>All items with a <span style="color:red;">*</span> require mandatory responses</span>
+                        <span class='fr'>Tous les éléments ayant un * nécessite obligatoirement une réponse</span>
+                    </p>
+                    <table>
+                        
+                ]]>
+            </Static>
+            <ReportItem id="region" type="Select" blobItem="REGION" options="|Edmonton|Ottawa" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required" style="width: 100px;"><span class='en'>Region</span><span class='fr'>Région</span>:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="last_name" type="Text" blobItem="LAST_NAME" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2 style="margin-top:0;"><span class='en'>Personal Information</span><span class='fr'>Information personnelle</span></h2></td>
+                    </tr>
+                    <tr>
+                        <td class="label required" style="width: 100px;"><span class='en'>Last Name</span><span class='fr'>Nom de famille</span>:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_name" type="Text" blobItem="FIRST_NAME" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>First Name</span><span class='fr'>Prénom</span>:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="middle_name" type="Text" blobItem="MIDDLE_NAME" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label"><span class='en'>Middle Name</span><span class='fr'>Second prénom</span>:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="birthdate" type="Calendar" blobItem="BIRTHDATE" yearRange="c-50:{$year}" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>Date of Birth</span><span class='fr'>Date de naissance</span>:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="gender" type="Select" blobItem="GENDER" options="Male|Female|Non-binary|Other|I prefer not to say" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>Gender</span><span class='fr'>Genre</span>:</td>
+                        <td class="value" colspan="3">{$item}
                             <script type='text/javascript'>
-                                $('[name=ApplicationDemande_ethnic_other]').attr('placeholder', showLanguage(wgLang, "Other...", "Autre..."));
+                                if(wgLang == 'fr'){
+                                    $("select[name=ApplicationDemande_gender] option[value='Male']").text('Homme');
+                                    $("select[name=ApplicationDemande_gender] option[value='Female']").text('Femme');
+                                    $("select[name=ApplicationDemande_gender] option[value='Non-binary']").text('Non binaire');
+                                    $("select[name=ApplicationDemande_gender] option[value='Other']").text('Autre');
+                                    $("select[name=ApplicationDemande_gender] option[value='I prefer not to say']").text('Je préfère ne pas dire');
+                                }
                             </script>
-                        </div>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="language" type="Select" blobItem="LANGUAGE" options="French|English|Both" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>Official Languages</span><span class='fr'>Langues officielles</span>:</td>
-                    <td class="value" colspan="3">{$item}
-                        <script type='text/javascript'>
-                            if(wgLang == 'fr'){
-                                $("select[name=ApplicationDemande_language] option[value='French']").text('Français');
-                                $("select[name=ApplicationDemande_language] option[value='English']").text('Anglais');
-                                $("select[name=ApplicationDemande_language] option[value='Both']").text('Les deux');
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="ethnic" type="Radio" blobItem="ETHNIC" options="Black|White|Indigenous|South Asian|Chinese|Filipino|Arab|Southeast Asian|West Asian|Korean|Japanese|Other" 
+                                    labels="&lt;span class='en'>Black&lt;/span>&lt;span class='fr'>Noir-e&lt;/span>|
+                                            &lt;span class='en'>White&lt;/span>&lt;span class='fr'>Blanc-he&lt;/span>|
+                                            &lt;span class='en'>Indigenous (North American, Central American, South American Indigenous peoples)&lt;/span>&lt;span class='fr'>Autochtone (Des peuples autochtones de l’Amérique du Nord, de l’Amérique Centrale, ou de l’Amérique du Sud)&lt;/span>|
+                                            &lt;span class='en'>South Asian (e.g., East Indian, Pakistani, Sri Lankan, etc.)&lt;/span>&lt;span class='fr'>Asiatique du Sud (par ex. Indien-ne de l’Est, Pakistanais-e, Srilankais-e, etc.)&lt;/span>|
+                                            &lt;span class='en'>Chinese&lt;/span>&lt;span class='fr'>Chinois-e&lt;/span>|
+                                            &lt;span class='en'>Filipino&lt;/span>&lt;span class='fr'>Philippin-e&lt;/span>|
+                                            &lt;span class='en'>Arab&lt;/span>&lt;span class='fr'>Arabe&lt;/span>|
+                                            &lt;span class='en'>Southeast Asian (e.g., Vietnamese, Cambodian, Laotian, Thai, etc.)&lt;/span>&lt;span class='fr'>Asiatique du Sud-Est (par ex. Vietnamien-ne, Cambodgien-ne, Laotien-ne, Thaïlandais-e, etc.)&lt;/span>|
+                                            &lt;span class='en'>West Asian (e.g., Iranian, Afghan, etc.)&lt;/span>&lt;span class='fr'>Asiatique de l’Ouest (par ex. Iranien-ne, Afghan-e, etc.)&lt;/span>|
+                                            &lt;span class='en'>Korean&lt;/span>&lt;span class='fr'>Coréen-ne&lt;/span>|
+                                            &lt;span class='en'>Japanese&lt;/span>&lt;span class='fr'>Japonais-e&lt;/span>|
+                                            Other" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>Ethnic Group</span><span class='fr'>Groupe ethnique</span>:</td>
+                        <td class="value" colspan="3">{$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="ethnic_other" type="Text" blobItem="ETHNIC_OTHER" optional="true" placeholder="Other...">
+                <![CDATA[
+                            <div style="position: absolute; margin-top: -28px; margin-left: 24px;">
+                                {$item}
+                                <script type='text/javascript'>
+                                    $('[name=ApplicationDemande_ethnic_other]').attr('placeholder', showLanguage(wgLang, "Other...", "Autre..."));
+                                </script>
+                            </div>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="language" type="Select" blobItem="LANGUAGE" options="French|English|Both" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>Official Languages</span><span class='fr'>Langues officielles</span>:</td>
+                        <td class="value" colspan="3">{$item}
+                            <script type='text/javascript'>
+                                if(wgLang == 'fr'){
+                                    $("select[name=ApplicationDemande_language] option[value='French']").text('Français');
+                                    $("select[name=ApplicationDemande_language] option[value='English']").text('Anglais');
+                                    $("select[name=ApplicationDemande_language] option[value='Both']").text('Les deux');
+                                }
+                            </script>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            
+            <!-- Education -->
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2><span class='en'>Education</span><span class='fr'>Éducation</span></h2></td>
+                    </tr>
+                ]]>
+            </Static>
+            <ReportItem id="education" type="Select" blobItem="EDUCATION" options="High school|Post-secondary|Transitioning from High School to Post secondary|Other" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>Education</span><span class='fr'>Éducation</span>:</td>
+                        <td class="value" colspan="3">{$item}
+                            <script type='text/javascript'>
+                                if(wgLang == 'fr'){
+                                    $("select[name=ApplicationDemande_education] option[value='High school']").text('École secondaire (lycée)');
+                                    $("select[name=ApplicationDemande_education] option[value='Post-secondary']").text('École supérieure');
+                                    $("select[name=ApplicationDemande_education] option[value='Transitioning from High School to Post secondary']").text('Transition du secondaire au postsecondaire');
+                                    $("select[name=ApplicationDemande_education] option[value='Other']").text('Autre');
+                                }
+                            </script>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="enrollment" type="Select" blobItem="ENROLLMENT" options="High School|College/Vocational School|University|WILL NOT ENROLL" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>Enrollment in Fall</span><span class='fr'>Inscription en automne</span>:</td>
+                        <td class="value" colspan="3"><span class='en'>Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?</span><span class='fr'>Serez-vous inscrit-e à temps plein dans un établissement d’enseignement (école secondaire, collège/école vocationnelle, ou l’université) lors de la session d’automne?</span>{$item}
+                            <script type='text/javascript'>
+                                if(wgLang == 'fr'){
+                                    $("select[name=ApplicationDemande_enrollment] option[value='High School']").text('École secondaire');
+                                    $("select[name=ApplicationDemande_enrollment] option[value='College/Vocational School']").text('Collège/école vocationnelle');
+                                    $("select[name=ApplicationDemande_enrollment] option[value='University']").text('Université');
+                                    $("select[name=ApplicationDemande_enrollment] option[value='WILL NOT ENROLL']").text("NE S'INSCRIRE PAS");
+                                }
+                            </script>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="institution_name" type="Text" blobItem="INSTITUTION_NAME" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label tooltip required" title="Name of the educational institution"><span class='en'>Institution Name</span><span class='fr'>Nom de l’établissement</span>:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="institution_city" type="Text" blobItem="INSTITUTION_CITY" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>City</span><span class='fr'>Ville</span>:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="institution_prov" type="Text" blobItem="INSTITUTION_PROV" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>Province/State</span><span class='fr'>Province/État</span>:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            
+            <!-- Contact Information -->
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2><span class='en'>Contact Information</span><span class='fr'>Coordonnées</span></h2></td>
+                    </tr>
+                ]]>
+            </Static>
+            <ReportItem id="address1" type="Text" blobItem="ADDRESS1" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label tooltip required" title="Street Name and number"><span class='en'>Address Line 1</span><span class='fr'>Adresse (ligne 1)</span>:</td>
+                        <td class="value" style="width:200px">{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="email" type="Text" blobItem="EMAIL" encrypt="true">
+                <![CDATA[
+                        <td class="label required" style="width:1px;"><span class='en'>E-mail</span><span class='fr'>Courriel</span>:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="address2" type="Text" blobItem="ADDRESS2" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label tooltip" title="House, Apt, Suite"><span class='en'>Address Line 2</span><span class='fr'>Adresse (ligne 2)</span>:</td>
+                        <td class="value">{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="phone" type="Text" blobItem="PHONE" encrypt="true">
+                <![CDATA[
+                        <td class="label tooltip required" title="Phone number of the individual"><span class='en'>Cellphone Number</span><span class='fr'>Numéro de cellulaire</span>:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="city" type="Text" blobItem="CITY" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label tooltip required" title="City"><span class='en'>City</span><span class='fr'>Ville</span>:</td>
+                        <td class="value">{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="contact_name" type="Text" blobItem="CONTACT_NAME" encrypt="true">
+                <![CDATA[
+                        <td class="label tooltip required" title="Name of the individual's emergency contact"><span class='en'>Emergency Contact Name</span><span class='fr'>Personne à contacter en cas d’urgence</span>:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="prov" type="Text" blobItem="PROV" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label tooltip required" title="Province"><span class='en'>Province/State</span><span class='fr'>Province/État</span>:</td>
+                        <td class="value">{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="contact" type="Text" blobItem="CONTACT" encrypt="true">
+                <![CDATA[
+                        <td class="label tooltip required" title="Phone number of the individual's emergency contact"><span class='en'>Emergency Contact</span><span class='fr'>Numéro à composer en cas d’urgence</span>:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="zip" type="Text" blobItem="ZIP" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>Zip/Postal Code</span><span class='fr'>Code postal/zip</span>:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            
+            <!-- Social Media Accounts -->
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2><span class='en'>Social Media Accounts (Optional)</span><span class='fr'>Comptes des réseaux sociaux</span></h2></td>
+                    </tr>
+                ]]>
+            </Static>
+            <ReportItem id="twitter" type="Text" blobItem="TWITTER" placeholder="https://twitter.com/Twitter" width="315px" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label">Twitter:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="facebook" type="Text" blobItem="FACEBOOK" placeholder="https://www.facebook.com/facebook" width="315px" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label">Facebook:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="linkedin" type="Text" blobItem="LINKEDIN" placeholder="https://www.linkedin.com/in/first-last-00000000" width="315px" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label">LinkedIn:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="website" type="Text" blobItem="WEBSITE" placeholder="https://mywebsite.com" width="315px" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label"><span class='en'>Website</span><span class='fr'>Site web</span>:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            
+            <!-- Immigration and Work Eligibility -->
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2><span class='en'>Immigration and Work Eligibility</span><span class='fr'>Immigration et admissibilité au travail</span></h2></td>
+                    </tr>
+                ]]>
+            </Static>
+            <ReportItem id="immigration" type="ComboBoxReportItem" blobItem="IMMIGRATION" options="Citizen|Permanent Resident|Refugee|International Student|Work Permit Holder" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>Canadian Immigration Status</span><span class='fr'>Statut d’immigration canadienne</span>:</td>
+                        <td class="value" colspan="3"><span class='en'>What is your immigration Status in Canada?</span><span class='fr'>Quel est votre statut d’immigrant au Canada?</span>{$item}
+                            <script type='text/javascript'>
+                                if(wgLang == 'fr'){
+                                    $("select[name=ApplicationDemande_immigration] option[value='Citizen Permanent Resident']").text('Citoyen-ne');
+                                    $("select[name=ApplicationDemande_immigration] option[value='Permanent Resident']").text('Résident-e permanent-e');
+                                    $("select[name=ApplicationDemande_immigration] option[value='Refugee']").text('Réfugié-e');
+                                    $("select[name=ApplicationDemande_immigration] option[value='International Student']").text('Élève international');
+                                    $("select[name=ApplicationDemande_immigration] option[value='Work Permit Holder']").text('Permis de travail');
+                                }
+                            </script>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="eligibility" type="Select" blobItem="ELIGIBILITY" options="Yes|No|Not sure" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required"><span class='en'>Eligibility to Work in Canada</span><span class='fr'>Autorisation de travail au Canada</span>:</td>
+                        <td class="value" colspan="3"><span class='en'>Are you Eligible to Work in Canada?</span><span class='fr'>Êtes vous autorisé-e à travailler au Canada</span>{$item}
+                            <script type='text/javascript'>
+                                if(wgLang == 'fr'){
+                                    $("select[name=ApplicationDemande_eligibility] option[value='Yes']").text('Oui');
+                                    $("select[name=ApplicationDemande_eligibility] option[value='No']").text('Non');
+                                    $("select[name=ApplicationDemande_eligibility] option[value='Not sure']").text('Je ne sais pas');
+                                }
+                            </script>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            
+            <!-- Other Obligations -->
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2><span class='en'>Other Obligations</span><span class='fr'>Autres obligations</span></h2></td>
+                    </tr>
+                ]]>
+            </Static>
+            <ReportItem id="enrolled" type="Radio" blobItem="ENROLLED" options="High School|College/Vocational School|University|Will Not Enroll"
+                                      labels="&lt;span class='en'>High School&lt;/span>&lt;span class='fr'>École secondaire&lt;/span>|
+                                              &lt;span class='en'>College/Vocational School&lt;/span>&lt;span class='fr'>Collège/école vocationnelle&lt;/span>|
+                                              &lt;span class='en'>University&lt;/span>&lt;span class='fr'>Université&lt;/span>|
+                                              &lt;span class='en'>Will Not Enroll&lt;/span>&lt;span class='fr'>Ne sera pas inscrit-e&lt;/span>"
+                                      encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label" style="text-align: left; white-space:normal;" colspan="4"><span class='en'>Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?</span><span class='fr'>Serez-vous inscrit-e à des études à temps plein dans un établissement d'enseignement (école secondaire, collège/école vocationnelle, ou l’université) lors de la session d'automne?</span><span style="display:inline-block;line-height:1em;" class="label required"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="value" colspan="4">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="major" type="Text" blobItem="MAJOR" width="250px" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label" style="text-align: left; white-space:normal;" colspan="4"><span class='en'>If you are enrolled in studies at a post-secondary institution (college/vocational school or university), what is your major or program of study?</span><span class='fr'>Si vous êtes inscrit-e à des études dans une institution du poste-secondaire (collège/école vocationnelle ou l’université), quelle est votre majeure ou programme d'études?</span></td>
+                    </tr>
+                    <tr>
+                        <td class="value" colspan="4">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="other" type="Radio" blobItem="OTHER" options="Yes|No|Not Sure"
+                                   labels="&lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Oui&lt;/span>|
+                                           &lt;span class='en'>No&lt;/span>&lt;span class='fr'>Non&lt;/span>|
+                                           &lt;span class='en'>Not Sure&lt;/span>&lt;span class='fr'>Je ne sais pas&lt;/span>"
+                                   encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label" style="text-align: left; white-space:normal;" colspan="4"><span class='en'>If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?</span><span class='fr'>Si vous êtes admis-e au Programme ELITE pour la jeunesse noire en tant que stagiaire, comptez-vous travailler ou prendre des cours à n’importe quel moment du lundi au vendredi, entre 8h et 17h?</span><span style="display:inline-block;line-height:1em;" class="label required"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="value" colspan="4">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="other2" type="Radio" blobItem="OTHER2" options="Yes|No|Not Sure"
+                                    labels="&lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Oui&lt;/span>|
+                                            &lt;span class='en'>No&lt;/span>&lt;span class='fr'>Non&lt;/span>|
+                                            &lt;span class='en'>Not Sure&lt;/span>&lt;span class='fr'>Je ne sais pas&lt;/span>"
+                                    encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label" style="text-align: left; white-space:normal;" colspan="4"><span class='en'>If you are accepted as an intern in the ELITE Program for Black Youth, do you have any other employment or extra-curricular commitments between May and August (for post-secondary applicants) or between July and August (for high school applicants) that would take you away from work with ELITE Program internship hosts?</span><span class='fr'>Si vous êtes admis-e au Programme ELITE pour la jeunesse noire en tant que stagiaire, aurez-vous un autre travail ou des engagements extracurriculaires entre mai et août (pour les postulant-e-s du poste secondaire) ou entre juillet et août (pour les postulant-e-s du secondaire) qui interrompraient votre travail avec les responsables de stage du Programme ELITE?</span><span style="display:inline-block;line-height:1em;" class="label required"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="value" colspan="4">{$item}</td>
+                    </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+            
+            <!-- Available Projects -->
+            <Static>
+                <![CDATA[
+                    <h2 class="required"><span class='en'>Available Projects</span><span class='fr'>Projets disponibles</span></h2>
+                    <p><span class='en'>Internship hosts have provided brief descriptions of possible projects. Please review all the internship host project descriptions. Select your top five projects in order of preference. If there are more than five projects that interest you, please state the additional ones in the Comments Box below.</span><span class='fr'>Les responsables de stage ont fourni de courtes descriptions des projets possibles. Veuillez consulter toutes les descriptions de ces projets. Classez vos cinq meilleurs choix de projets en fonction de vos préférences. Si vous avez choisi plus de cinq projets, veuillez les lister en les classant dans la boîte à commentaires ci-dessous.</span></p>
+                ]]>
+            </Static>
+            <ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY" projectType="Intern" limit="5">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            
+            <!-- Attachments -->
+            <Static>
+                <![CDATA[
+                    <h2><span class='en'>Attachments</span><span class='fr'>Pièces jointes</span></h2>
+                ]]>
+            </Static>
+            <ReportItem id="aspirations" type="Upload" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+                <![CDATA[
+                    <h3 class="required"><span class='en'>Professional Aspirations and Academic Interests</span><span class='fr'>Motivations professionnelles et des Intérêts académiques</span></h3>
+                    <p><b><span class='en'>Please see the Brochure for Interns for requirements and tips.</span><span class='fr'>Veuillez consulter la brochure pour les stagiaires pour le guide avec les exigences et des astuces.</span></b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="transcript" type="Upload" blobItem="TRANSCRIPT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+                <![CDATA[
+                    <h3 class="required"><span class='en'>Transcript</span><span class='fr'>Relevé de notes</span></h3>
+                    <p><b><span class='en'>For high school applicants, please submit a full Government transcript, or a full high school transcript obtained from your school. An example of a full Government transcript can be found <a href='{$wgServer}{$wgScriptPath}/data/Example Government Transcript.pdf' target='_blank'>HERE</a>. If you attend a school in the Edmonton Public School system, you or your parent or guardian can visit SchoolZone at <a href="https://www.epsb.ca/schools/schoolzone/" target="_blank">https://www.epsb.ca/schools/schoolzone/</a> to get a copy of your full high school transcript. Please speak with your schoolteacher, guidance counsellor, or school office if you need help.</span><span class='fr'>Pour les étudiant-e-s de l’école secondaire, veuillez fournir un relevé de notes complet gouvernemental, ou un relevé de notes complet fourni par votre école. Un exemple d’un relevé de notes complet gouvernemental est disponible <a href='{$wgServer}{$wgScriptPath}/data/Example Government Transcript.pdf' target='_blank'>ICI</a>. Si vous êtes un-e étudiant-e fréquentant une école du système Edmonton Public Schools, vous, votre parent ou tuteur/tutrice pouvez visiter SchoolZone au <a href="https://www.epsb.ca/schools/schoolzone/" target="_blank">https://www.epsb.ca/schools/schoolzone/</a> pour obtenir une copie complète de votre relevé de note. Veuillez-vous renseigner auprès de votre enseignant-e, conseiller-/conseillère en orientation ou au bureau de votre école si vous aviez besoin d'aide.</span></b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="resume" type="Upload" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+                <![CDATA[
+                    <h3 class="required">Résumé</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No"
+                                            labels="&lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Oui&lt;/span>|
+                                                    &lt;span class='en'>No&lt;/span>&lt;span class='fr'>Non&lt;/span>" 
+                                            encrypt="true">
+                <![CDATA[
+                    <h2 class="required"><span class='en'>Acknowledgment and Agreement</span><span class='fr'>Engagement</span></h2>
+                    <p><span class='en'>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</span><span class='fr'>Je m’engage à faire deux présentations orales ou par affiches lors des ateliers du Programme si je suis admis-e au Programme ELITE pour la jeunesse noire.</span></p>
+                    {$item}
+                    <div id="acknowledgmentWarning" class="warning" style="display:none;">
+                        <span class='en'>You selected "No". Are you sure? You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.</span>
+                        <span class='fr'>Vous avez sélectionné « Non ». Êtes vous certain-e ? Vous ne pouvez pas être admis-e au Programme ELITE pour la jeunesse noire si vous ne participez pas aux ateliers.</span></div>
+                    <script type="text/javascript">
+                        $("input[name=ApplicationDemande_acknowledgment]").change(function(){
+                            var value = $("input[name=ApplicationDemande_acknowledgment]:checked").val();
+                            if(value == "No"){
+                                $("#acknowledgmentWarning").slideDown();
                             }
-                        </script>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <!-- Education -->
-        <Static>
-            <![CDATA[
-                <tr>
-                    <td colspan="4"><h2><span class='en'>Education</span><span class='fr'>Éducation</span></h2></td>
-                </tr>
-            ]]>
-        </Static>
-        <ReportItem id="education" type="Select" blobItem="EDUCATION" options="High school|Post-secondary|Transitioning from High School to Post secondary|Other" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>Education</span><span class='fr'>Éducation</span>:</td>
-                    <td class="value" colspan="3">{$item}
-                        <script type='text/javascript'>
-                            if(wgLang == 'fr'){
-                                $("select[name=ApplicationDemande_education] option[value='High school']").text('École secondaire (lycée)');
-                                $("select[name=ApplicationDemande_education] option[value='Post-secondary']").text('École supérieure');
-                                $("select[name=ApplicationDemande_education] option[value='Transitioning from High School to Post secondary']").text('Transition du secondaire au postsecondaire');
-                                $("select[name=ApplicationDemande_education] option[value='Other']").text('Autre');
+                            else{
+                                $("#acknowledgmentWarning").slideUp();
                             }
-                        </script>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="enrollment" type="Select" blobItem="ENROLLMENT" options="High School|College/Vocational School|University|WILL NOT ENROLL" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>Enrollment in Fall</span><span class='fr'>Inscription en automne</span>:</td>
-                    <td class="value" colspan="3"><span class='en'>Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?</span><span class='fr'>Serez-vous inscrit-e à temps plein dans un établissement d’enseignement (école secondaire, collège/école vocationnelle, ou l’université) lors de la session d’automne?</span>{$item}
-                        <script type='text/javascript'>
-                            if(wgLang == 'fr'){
-                                $("select[name=ApplicationDemande_enrollment] option[value='High School']").text('École secondaire');
-                                $("select[name=ApplicationDemande_enrollment] option[value='College/Vocational School']").text('Collège/école vocationnelle');
-                                $("select[name=ApplicationDemande_enrollment] option[value='University']").text('Université');
-                                $("select[name=ApplicationDemande_enrollment] option[value='WILL NOT ENROLL']").text("NE S'INSCRIRE PAS");
-                            }
-                        </script>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="institution_name" type="Text" blobItem="INSTITUTION_NAME" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label tooltip required" title="Name of the educational institution"><span class='en'>Institution Name</span><span class='fr'>Nom de l’établissement</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="institution_city" type="Text" blobItem="INSTITUTION_CITY" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>City</span><span class='fr'>Ville</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="institution_prov" type="Text" blobItem="INSTITUTION_PROV" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>Province/State</span><span class='fr'>Province/État</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <!-- Contact Information -->
-        <Static>
-            <![CDATA[
-                <tr>
-                    <td colspan="4"><h2><span class='en'>Contact Information</span><span class='fr'>Coordonnées</span></h2></td>
-                </tr>
-            ]]>
-        </Static>
-        <ReportItem id="address1" type="Text" blobItem="ADDRESS1" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label tooltip required" title="Street Name and number"><span class='en'>Address Line 1</span><span class='fr'>Adresse (ligne 1)</span>:</td>
-                    <td class="value" style="width:200px">{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="email" type="Text" blobItem="EMAIL" encrypt="true">
-            <![CDATA[
-                    <td class="label required" style="width:1px;"><span class='en'>E-mail</span><span class='fr'>Courriel</span>:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="address2" type="Text" blobItem="ADDRESS2" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label tooltip" title="House, Apt, Suite"><span class='en'>Address Line 2</span><span class='fr'>Adresse (ligne 2)</span>:</td>
-                    <td class="value">{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="phone" type="Text" blobItem="PHONE" encrypt="true">
-            <![CDATA[
-                    <td class="label tooltip required" title="Phone number of the individual"><span class='en'>Cellphone Number</span><span class='fr'>Numéro de cellulaire</span>:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="city" type="Text" blobItem="CITY" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label tooltip required" title="City"><span class='en'>City</span><span class='fr'>Ville</span>:</td>
-                    <td class="value">{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="contact_name" type="Text" blobItem="CONTACT_NAME" encrypt="true">
-            <![CDATA[
-                    <td class="label tooltip required" title="Name of the individual's emergency contact"><span class='en'>Emergency Contact Name</span><span class='fr'>Personne à contacter en cas d’urgence</span>:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="prov" type="Text" blobItem="PROV" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label tooltip required" title="Province"><span class='en'>Province/State</span><span class='fr'>Province/État</span>:</td>
-                    <td class="value">{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="contact" type="Text" blobItem="CONTACT" encrypt="true">
-            <![CDATA[
-                    <td class="label tooltip required" title="Phone number of the individual's emergency contact"><span class='en'>Emergency Contact</span><span class='fr'>Numéro à composer en cas d’urgence</span>:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="zip" type="Text" blobItem="ZIP" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>Zip/Postal Code</span><span class='fr'>Code postal/zip</span>:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <!-- Social Media Accounts -->
-        <Static>
-            <![CDATA[
-                <tr>
-                    <td colspan="4"><h2><span class='en'>Social Media Accounts (Optional)</span><span class='fr'>Comptes des réseaux sociaux</span></h2></td>
-                </tr>
-            ]]>
-        </Static>
-        <ReportItem id="twitter" type="Text" blobItem="TWITTER" placeholder="https://twitter.com/Twitter" width="315px" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label">Twitter:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="facebook" type="Text" blobItem="FACEBOOK" placeholder="https://www.facebook.com/facebook" width="315px" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label">Facebook:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="linkedin" type="Text" blobItem="LINKEDIN" placeholder="https://www.linkedin.com/in/first-last-00000000" width="315px" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label">LinkedIn:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="website" type="Text" blobItem="WEBSITE" placeholder="https://mywebsite.com" width="315px" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label"><span class='en'>Website</span><span class='fr'>Site web</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <!-- Immigration and Work Eligibility -->
-        <Static>
-            <![CDATA[
-                <tr>
-                    <td colspan="4"><h2><span class='en'>Immigration and Work Eligibility</span><span class='fr'>Immigration et admissibilité au travail</span></h2></td>
-                </tr>
-            ]]>
-        </Static>
-        <ReportItem id="immigration" type="ComboBoxReportItem" blobItem="IMMIGRATION" options="Citizen|Permanent Resident|Refugee|International Student|Work Permit Holder" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>Canadian Immigration Status</span><span class='fr'>Statut d’immigration canadienne</span>:</td>
-                    <td class="value" colspan="3"><span class='en'>What is your immigration Status in Canada?</span><span class='fr'>Quel est votre statut d’immigrant au Canada?</span>{$item}
-                        <script type='text/javascript'>
-                            if(wgLang == 'fr'){
-                                $("select[name=ApplicationDemande_immigration] option[value='Citizen Permanent Resident']").text('Citoyen-ne');
-                                $("select[name=ApplicationDemande_immigration] option[value='Permanent Resident']").text('Résident-e permanent-e');
-                                $("select[name=ApplicationDemande_immigration] option[value='Refugee']").text('Réfugié-e');
-                                $("select[name=ApplicationDemande_immigration] option[value='International Student']").text('Élève international');
-                                $("select[name=ApplicationDemande_immigration] option[value='Work Permit Holder']").text('Permis de travail');
-                            }
-                        </script>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="eligibility" type="Select" blobItem="ELIGIBILITY" options="Yes|No|Not sure" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required"><span class='en'>Eligibility to Work in Canada</span><span class='fr'>Autorisation de travail au Canada</span>:</td>
-                    <td class="value" colspan="3"><span class='en'>Are you Eligible to Work in Canada?</span><span class='fr'>Êtes vous autorisé-e à travailler au Canada</span>{$item}
-                        <script type='text/javascript'>
-                            if(wgLang == 'fr'){
-                                $("select[name=ApplicationDemande_eligibility] option[value='Yes']").text('Oui');
-                                $("select[name=ApplicationDemande_eligibility] option[value='No']").text('Non');
-                                $("select[name=ApplicationDemande_eligibility] option[value='Not sure']").text('Je ne sais pas');
-                            }
-                        </script>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <!-- Other Obligations -->
-        <Static>
-            <![CDATA[
-                <tr>
-                    <td colspan="4"><h2><span class='en'>Other Obligations</span><span class='fr'>Autres obligations</span></h2></td>
-                </tr>
-            ]]>
-        </Static>
-        <ReportItem id="enrolled" type="Radio" blobItem="ENROLLED" options="High School|College/Vocational School|University|Will Not Enroll"
-                                  labels="&lt;span class='en'>High School&lt;/span>&lt;span class='fr'>École secondaire&lt;/span>|
-                                          &lt;span class='en'>College/Vocational School&lt;/span>&lt;span class='fr'>Collège/école vocationnelle&lt;/span>|
-                                          &lt;span class='en'>University&lt;/span>&lt;span class='fr'>Université&lt;/span>|
-                                          &lt;span class='en'>Will Not Enroll&lt;/span>&lt;span class='fr'>Ne sera pas inscrit-e&lt;/span>"
-                                  encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label" style="text-align: left; white-space:normal;" colspan="4"><span class='en'>Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?</span><span class='fr'>Serez-vous inscrit-e à des études à temps plein dans un établissement d'enseignement (école secondaire, collège/école vocationnelle, ou l’université) lors de la session d'automne?</span><span style="display:inline-block;line-height:1em;" class="label required"></span></td>
-                </tr>
-                <tr>
-                    <td class="value" colspan="4">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="major" type="Text" blobItem="MAJOR" width="250px" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label" style="text-align: left; white-space:normal;" colspan="4"><span class='en'>If you are enrolled in studies at a post-secondary institution (college/vocational school or university), what is your major or program of study?</span><span class='fr'>Si vous êtes inscrit-e à des études dans une institution du poste-secondaire (collège/école vocationnelle ou l’université), quelle est votre majeure ou programme d'études?</span></td>
-                </tr>
-                <tr>
-                    <td class="value" colspan="4">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="other" type="Radio" blobItem="OTHER" options="Yes|No|Not Sure"
-                               labels="&lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Oui&lt;/span>|
-                                       &lt;span class='en'>No&lt;/span>&lt;span class='fr'>Non&lt;/span>|
-                                       &lt;span class='en'>Not Sure&lt;/span>&lt;span class='fr'>Je ne sais pas&lt;/span>"
-                               encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label" style="text-align: left; white-space:normal;" colspan="4"><span class='en'>If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?</span><span class='fr'>Si vous êtes admis-e au Programme ELITE pour la jeunesse noire en tant que stagiaire, comptez-vous travailler ou prendre des cours à n’importe quel moment du lundi au vendredi, entre 8h et 17h?</span><span style="display:inline-block;line-height:1em;" class="label required"></span></td>
-                </tr>
-                <tr>
-                    <td class="value" colspan="4">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="other2" type="Radio" blobItem="OTHER2" options="Yes|No|Not Sure"
-                                labels="&lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Oui&lt;/span>|
-                                        &lt;span class='en'>No&lt;/span>&lt;span class='fr'>Non&lt;/span>|
-                                        &lt;span class='en'>Not Sure&lt;/span>&lt;span class='fr'>Je ne sais pas&lt;/span>"
-                                encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label" style="text-align: left; white-space:normal;" colspan="4"><span class='en'>If you are accepted as an intern in the ELITE Program for Black Youth, do you have any other employment or extra-curricular commitments between May and August (for post-secondary applicants) or between July and August (for high school applicants) that would take you away from work with ELITE Program internship hosts?</span><span class='fr'>Si vous êtes admis-e au Programme ELITE pour la jeunesse noire en tant que stagiaire, aurez-vous un autre travail ou des engagements extracurriculaires entre mai et août (pour les postulant-e-s du poste secondaire) ou entre juillet et août (pour les postulant-e-s du secondaire) qui interrompraient votre travail avec les responsables de stage du Programme ELITE?</span><span style="display:inline-block;line-height:1em;" class="label required"></span></td>
-                </tr>
-                <tr>
-                    <td class="value" colspan="4">{$item}</td>
-                </tr>
-                </table>
-            ]]>
-        </ReportItem>
-        
-        <!-- Available Projects -->
-        <Static>
-            <![CDATA[
-                <h2 class="required"><span class='en'>Available Projects</span><span class='fr'>Projets disponibles</span></h2>
-                <p><span class='en'>Internship hosts have provided brief descriptions of possible projects. Please review all the internship host project descriptions. Select your top five projects in order of preference. If there are more than five projects that interest you, please state the additional ones in the Comments Box below.</span><span class='fr'>Les responsables de stage ont fourni de courtes descriptions des projets possibles. Veuillez consulter toutes les descriptions de ces projets. Classez vos cinq meilleurs choix de projets en fonction de vos préférences. Si vous avez choisi plus de cinq projets, veuillez les lister en les classant dans la boîte à commentaires ci-dessous.</span></p>
-            ]]>
-        </Static>
-        <ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY" projectType="Intern" limit="5">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Attachments -->
-        <Static>
-            <![CDATA[
-                <h2><span class='en'>Attachments</span><span class='fr'>Pièces jointes</span></h2>
-            ]]>
-        </Static>
-        <ReportItem id="aspirations" type="Upload" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
-            <![CDATA[
-                <h3 class="required"><span class='en'>Professional Aspirations and Academic Interests</span><span class='fr'>Motivations professionnelles et des Intérêts académiques</span></h3>
-                <p><b><span class='en'>Please see the Brochure for Interns for requirements and tips.</span><span class='fr'>Veuillez consulter la brochure pour les stagiaires pour le guide avec les exigences et des astuces.</span></b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="transcript" type="Upload" blobItem="TRANSCRIPT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
-            <![CDATA[
-                <h3 class="required"><span class='en'>Transcript</span><span class='fr'>Relevé de notes</span></h3>
-                <p><b><span class='en'>For high school applicants, please submit a full Government transcript, or a full high school transcript obtained from your school. An example of a full Government transcript can be found <a href='{$wgServer}{$wgScriptPath}/data/Example Government Transcript.pdf' target='_blank'>HERE</a>. If you attend a school in the Edmonton Public School system, you or your parent or guardian can visit SchoolZone at <a href="https://www.epsb.ca/schools/schoolzone/" target="_blank">https://www.epsb.ca/schools/schoolzone/</a> to get a copy of your full high school transcript. Please speak with your schoolteacher, guidance counsellor, or school office if you need help.</span><span class='fr'>Pour les étudiant-e-s de l’école secondaire, veuillez fournir un relevé de notes complet gouvernemental, ou un relevé de notes complet fourni par votre école. Un exemple d’un relevé de notes complet gouvernemental est disponible <a href='{$wgServer}{$wgScriptPath}/data/Example Government Transcript.pdf' target='_blank'>ICI</a>. Si vous êtes un-e étudiant-e fréquentant une école du système Edmonton Public Schools, vous, votre parent ou tuteur/tutrice pouvez visiter SchoolZone au <a href="https://www.epsb.ca/schools/schoolzone/" target="_blank">https://www.epsb.ca/schools/schoolzone/</a> pour obtenir une copie complète de votre relevé de note. Veuillez-vous renseigner auprès de votre enseignant-e, conseiller-/conseillère en orientation ou au bureau de votre école si vous aviez besoin d'aide.</span></b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="resume" type="Upload" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
-            <![CDATA[
-                <h3 class="required">Résumé</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No"
-                                        labels="&lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Oui&lt;/span>|
-                                                &lt;span class='en'>No&lt;/span>&lt;span class='fr'>Non&lt;/span>" 
-                                        encrypt="true">
-            <![CDATA[
-                <h2 class="required"><span class='en'>Acknowledgment and Agreement</span><span class='fr'>Engagement</span></h2>
-                <p><span class='en'>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</span><span class='fr'>Je m’engage à faire deux présentations orales ou par affiches lors des ateliers du Programme si je suis admis-e au Programme ELITE pour la jeunesse noire.</span></p>
-                {$item}
-                <div id="acknowledgmentWarning" class="warning" style="display:none;">
-                    <span class='en'>You selected "No". Are you sure? You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.</span>
-                    <span class='fr'>Vous avez sélectionné « Non ». Êtes vous certain-e ? Vous ne pouvez pas être admis-e au Programme ELITE pour la jeunesse noire si vous ne participez pas aux ateliers.</span></div>
-                <script type="text/javascript">
-                    $("input[name=ApplicationDemande_acknowledgment]").change(function(){
-                        var value = $("input[name=ApplicationDemande_acknowledgment]:checked").val();
-                        if(value == "No"){
-                            $("#acknowledgmentWarning").slideDown();
-                        }
-                        else{
-                            $("#acknowledgmentWarning").slideUp();
-                        }
-                    }).change();
-                </script>
-            ]]>
-        </ReportItem>
-        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" optional="true" encrypt="true">
-            <![CDATA[
-                <h2><span class='en'>Comments</span><span class='fr'>Commentaires</span></h2>
-                <p><span class='en'>Please provide any comments that you would like to share with the ELITE Program and the Review Committee.</span><span class='fr'>Veuillez donner des commentaires que vous voulez partager avec le Programme ELITE et le Comité de révision.</span></p>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="submit" name="&lt;span class='en'>Submit&lt;/span>&lt;span class='fr'>Soumettre&lt;/span>" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <If if="{or({==({getText(RP_ELITE, PROFILE, ACKNOWLEDGMENT, 0, {$user_id}, 0)},No)})}">
-            <![CDATA[
-                <span class='en'>You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.</span>
-                <span class='fr'>Vous ne pouvez pas être admis-e au Programme ELITE pour la jeunesse noire si vous ne participez pas aux ateliers.</span>
-            ]]>
+                        }).change();
+                    </script>
+                ]]>
+            </ReportItem>
+            <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" optional="true" encrypt="true">
+                <![CDATA[
+                    <h2><span class='en'>Comments</span><span class='fr'>Commentaires</span></h2>
+                    <p><span class='en'>Please provide any comments that you would like to share with the ELITE Program and the Review Committee.</span><span class='fr'>Veuillez donner des commentaires que vous voulez partager avec le Programme ELITE et le Comité de révision.</span></p>
+                    {$item}
+                ]]>
+            </ReportItem>
         </If>
         <Else>
-            <If if="{!=({getProgress(profile)},100)}">
+            <![CDATA[
+                Your application is marked as <b>{getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)}</b> and can no longer make any modifications.
+            ]]>
+        </Else>
+    </ReportSection>
+    <ReportSection id="submit" name="&lt;span class='en'>Submit&lt;/span>&lt;span class='fr'>Soumettre&lt;/span>" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <If if="{or({==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},)},
+                    {==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Submitted)},
+                    {==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)},
+                )}">
+            <If if="{or({==({getText(RP_ELITE, PROFILE, ACKNOWLEDGMENT, 0, {$user_id}, 0)},No)})}">
                 <![CDATA[
-                    <span class='en'>You have not completed the application.</span>
-                    <span class='fr'>Vous n’avez pas complété le formulaire demande.</span>
+                    <span class='en'>You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.</span>
+                    <span class='fr'>Vous ne pouvez pas être admis-e au Programme ELITE pour la jeunesse noire si vous ne participez pas aux ateliers.</span>
                 ]]>
             </If>
             <Else>
-                <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+                <If if="{!=({getProgress(profile)},100)}">
+                    <![CDATA[
+                        <span class='en'>You have not completed the application.</span>
+                        <span class='fr'>Vous n’avez pas complété le formulaire demande.</span>
+                    ]]>
+                </If>
+                <Else>
+                    <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+                </Else>
             </Else>
+        </If>
+        <Else>
+            <![CDATA[
+                Your application is marked as <b>{getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)}</b> and can no longer make any modifications.
+            ]]>
         </Else>
     </ReportSection>
 </Report>

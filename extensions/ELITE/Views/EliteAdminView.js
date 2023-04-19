@@ -199,6 +199,7 @@ EliteAdminProfilesView = Backbone.View.extend({
     moreDialog: null,
     receivedDialog: null,
     rejectDialog: null,
+    declineDialog: null,
     matchDialog: null,
     
     initialize: function(){
@@ -237,6 +238,12 @@ EliteAdminProfilesView = Backbone.View.extend({
         this.rejectDialog.model = this.model.get(id);
     },
     
+    openDeclineDialog: function(el){
+        var id = $(el.target).attr('data-id');
+        this.declineDialog.dialog('open');
+        this.declineDialog.model = this.model.get(id);
+    },
+    
     openMatchDialog: function(el){
         var id = $(el.target).attr('data-id');
         this.matchDialog.html(this.$("#match_" + id).html());
@@ -249,6 +256,7 @@ EliteAdminProfilesView = Backbone.View.extend({
         "click .shortlist": "openShortlistDialog",
         "click .more": "openMoreDialog",
         "click .reject": "openRejectDialog",
+        "click .decline": "openDeclineDialog",
         "click .received": "openReceivedDialog",
         "click .match": "openMatchDialog",
     },
@@ -343,6 +351,23 @@ EliteAdminProfilesView = Backbone.View.extend({
                 }.bind(this),
                 "Cancel": function(){
                     this.rejectDialog.dialog('close');
+                }.bind(this)
+            }
+        });
+        this.declineDialog = this.$("#declineDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            buttons: {
+                "Decline": function(){
+                    this.declineDialog.model.set('status', 'Declined');
+                    this.declineDialog.model.save();
+                    this.declineDialog.dialog('close'); 
+                }.bind(this),
+                "Cancel": function(){
+                    this.declineDialog.dialog('close');
                 }.bind(this)
             }
         });
