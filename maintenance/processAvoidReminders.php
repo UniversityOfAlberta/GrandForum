@@ -99,12 +99,12 @@ foreach($people as $person){
     $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID");
     $threeMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO");
     $sixMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO");
+    $nineMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_NINEMO");
+    $twelveMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO");
     
     $baseDiff = (time() - strtotime(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID")))/86400;
-    $threeMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_THREEMO")))/86400;
-    $sixMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_SIXMO")))/86400;
 
-    if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && getReminder("3MonthReminder", $person)['count'] < 1){
+    if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*6 && getReminder("3MonthReminder", $person)['count'] < 1){
         // 3 Month
         addReminder("3MonthReminder", $person);
         $subject = "Been 3 months since healthy aging assessment was completed";
@@ -112,7 +112,7 @@ foreach($people as $person){
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
-    else if($threeMonthSubmitted && !$sixMonthSubmitted && $baseDiff >= 30*6 && getReminder("6MonthReminder", $person)['count'] < 1){
+    else if($baseLineSubmitted && !$sixMonthSubmitted && $baseDiff >= 30*6 && $baseDiff < 30*9 && getReminder("6MonthReminder", $person)['count'] < 1){
         // 6 Month
         addReminder("6MonthReminder", $person);
         $subject = "Been 6 months since healthy aging assessment was completed";
@@ -120,8 +120,25 @@ foreach($people as $person){
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
+    else if($baseLineSubmitted && !$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*12 && getReminder("9MonthReminder", $person)['count'] < 1){
+        // 6 Month
+        addReminder("9MonthReminder", $person);
+        $subject = "Been 9 months since healthy aging assessment was completed";
+        $message = "<p>Hello, It has been 9 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours. When you have a minute, please fill in the health-related behaviours and lifestyle section of the assessment, which should take less than 5 minutes. This will also allow us to display for you, your healthy aging progress. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        sendMail($subject, $message, $person);
+        echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
+    }
+    else if($baseLineSubmitted && !$twelveMonthSubmitted && $baseDiff >= 30*12 && getReminder("12MonthReminder", $person)['count'] < 1){
+        // 6 Month
+        addReminder("12MonthReminder", $person);
+        $subject = "Been 12 months since healthy aging assessment was completed";
+        $message = "<p>Hello, It has been 12 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours and if that has slowed your risk of frailty. When you have a few minutes, please fill in the portion of the healthy aging assessment linked below, which should take less than 15 minutes. This will also allow us to display for you, your healthy aging progress and refresh your frailty report. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        sendMail($subject, $message, $person);
+        echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
+    }
     
     // Three/Six Month 5-day reminders
+    /*
     if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && 
        time() - getReminder("3MonthReminder", $person)['time'] > 5*86400 && 
        getReminder("3MonthReminder2", $person)['count'] < 1){
@@ -131,6 +148,7 @@ foreach($people as $person){
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
+    */
 }
 
 file_put_contents("{$dir}/reminders.json", json_encode($reminders));
