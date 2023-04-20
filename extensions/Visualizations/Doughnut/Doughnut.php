@@ -24,7 +24,6 @@ class Doughnut extends Visualization {
         global $wgOut, $wgServer, $wgScriptPath;
         $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Doughnut/doughnut/raphael.js" type="text/javascript" charset="utf-8"></script>');
         $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Doughnut/doughnut/popup.js" type="text/javascript" charset="utf-8"></script>');
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Doughnut/doughnut/spinner.js" type="text/javascript" charset="utf-8"></script>');
         $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Doughnut/doughnut/doughnut.js" type="text/javascript" charset="utf-8"></script>');
     }
 

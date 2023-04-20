@@ -1661,6 +1661,13 @@ select span.noshow {
     vertical-align: middle;
 }
 
+.spinner {
+    width: 249px;
+    height: 249px;
+    background: url('../throbber.gif');
+    background-size: 100%;
+}
+
 /* MailingList */
 
 .thread-message {
