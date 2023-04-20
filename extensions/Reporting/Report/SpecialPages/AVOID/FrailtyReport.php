@@ -642,6 +642,28 @@ behaviour. They are not clinical recommendations, for which you should seek advi
                         </div>
                         <br />
                         <br />
+                        
+                        <script type='text/php'>
+                            \$php_code = '
+                                if(\$PAGE_NUM == 1){
+                                    \$note = \"{$person->getNameForForms()}\";
+                                    \$font = \$fontMetrics->getFont(\"verdana\");
+                                    \$size = 6;
+                                    \$text_height = \$fontMetrics->getFontHeight(\$font, \$size);
+                                    \$text_width = \$fontMetrics->getTextWidth(\"\$note\", \$font, \$size);
+                                    \$color = array(0,0,0);
+                                    \$w = \$pdf->get_width();
+                                    \$h = \$pdf->get_height();
+                                    \$y = \$h - \$text_height - 24;
+
+                                    \$x = \$pdf->get_width() - \$text_width;
+
+                                    \$pdf->text(\$x - 28, \$y+(\$text_height) - \$text_height + 4, \"\$note\", \$font, \$size, \$color);
+                                }
+                                ';
+                             \$pdf->page_script(\$php_code);
+                        </script>
+                        
                         <table class='recommendations' cellspacing='0' style='width: 100%;'>
                             <tr>
                                 <th class='dark-top' colspan='5'>The following risks and recommendations are from the health outcomes section of the assessment</th>
