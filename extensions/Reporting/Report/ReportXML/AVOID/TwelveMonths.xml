@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Twelve Months Form" reportType="RP_AVOID_TWELVEMO" pdfType="RPTP_AVOID" pdfFiles="TWELVEMOFORMPDF" ajax="true" disabled="false" extends="SixMonths">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    <ReportSection id="behaviouralassess" title="Twelve Month Follow Up: Behavioural Self-Assessment" />
+</Report>

@@ -225,7 +225,7 @@
                 </p>
             ]]>
         </Static>
-        <ReportItem id="socio_info1" type="SelectReportItem" options="less than 60|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100" blobItem="avoid_age">
+        <ReportItem id="socio_info1" type="SelectReportItem" options="less than 60|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105" blobItem="avoid_age">
             <![CDATA[
                 <h3>Age</h3>
                 <div class="requiredField">{$item}</div>
@@ -721,7 +721,6 @@
         </ReportItem>
         <ReportItem id="vax_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="vax_end" orientation="vertical" options="I was not aware of the recommended vaccines|I don't know where or how to get vaccinated|I don't see the point of getting vaccinated|Other" optional="true">
             <![CDATA[
-            <span class="vaccinateyes">
             <span id="vax_end">
             <h3>What are the main reasons that you have not had all of the recommended vaccinations listed above? (choose all that apply):</h3>
             {$item}
