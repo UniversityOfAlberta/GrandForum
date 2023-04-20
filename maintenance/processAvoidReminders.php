@@ -121,7 +121,7 @@ foreach($people as $person){
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
     else if($baseLineSubmitted && !$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*12 && getReminder("9MonthReminder", $person)['count'] < 1){
-        // 6 Month
+        // 9 Month
         addReminder("9MonthReminder", $person);
         $subject = "Been 9 months since healthy aging assessment was completed";
         $message = "<p>Hello, It has been 9 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours. When you have a minute, please fill in the health-related behaviours and lifestyle section of the assessment, which should take less than 5 minutes. This will also allow us to display for you, your healthy aging progress. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
@@ -129,7 +129,7 @@ foreach($people as $person){
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
     else if($baseLineSubmitted && !$twelveMonthSubmitted && $baseDiff >= 30*12 && getReminder("12MonthReminder", $person)['count'] < 1){
-        // 6 Month
+        // 12 Month
         addReminder("12MonthReminder", $person);
         $subject = "Been 12 months since healthy aging assessment was completed";
         $message = "<p>Hello, It has been 12 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours and if that has slowed your risk of frailty. When you have a few minutes, please fill in the portion of the healthy aging assessment linked below, which should take less than 15 minutes. This will also allow us to display for you, your healthy aging progress and refresh your frailty report. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
