@@ -389,7 +389,14 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="employment_avoid" type="SelectReportItem" options="Employed|Unemployed|I am permanently unable to work|I volunteer or look after children or other family members|I am retired|Other (specify):" blobItem="employment_avoid">
+        <ReportItem id="employment_avoid" type="SelectReportItem" options="Employed|Unemployed|I am permanently unable to work|I volunteer or look after children or other family members|I am retired|Other (specify):" blobItem="employment_avoid" optional="true">
+            <!-- This one isn't used anymore -->
+            <![CDATA[
+                    <!--h3>Employment status:</h3>
+                    <div>{$item}</div-->
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" options="Employed|Unemployed|I am permanently unable to work|I volunteer or look after children or other family members|I am retired|Other (specify):" blobItem="employments_avoid">
             <![CDATA[
                     <h3>Employment status:</h3>
                     <div class="requiredField">{$item}</div>
@@ -407,13 +414,13 @@
             <script type='text/javascript'>
                 $('span#employspecify').hide();
                 function specifyEmploy(){
-                    if($("select[name='GettingtoKnowYou_employment_avoid']").val() == "Other (specify):"){
-                            $('span#employspecify').show();
+                    if($("input[name='GettingtoKnowYou_employment_avoid\[\]'][value='Other (specify):']").is(":checked")){
+                        $('span#employspecify').show();
                     }
                     else{ $('span#employspecify').hide();}
                 }
                 _.defer(specifyEmploy);
-                $("select[name='GettingtoKnowYou_employment_avoid']").change(specifyEmploy);
+                $("input[name='GettingtoKnowYou_employment_avoid\[\]']").change(specifyEmploy);
                 
                 $('span#living_specify').hide();
                 function specifyLiving(){
@@ -461,7 +468,7 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="internetissues_avoid" type="SelectReportItem" options="Never|On occasion|Often – My internet connection is not reliable" blobItem="internetissues_avoid">
+        <ReportItem id="internetissues_avoid" type="SelectReportItem" options="Never|On occasion|Often – My internet connection is not reliable|I do not have internet" blobItem="internetissues_avoid">
             <![CDATA[
                     <h3>How often do you experience internet connectivity issues?</h3>
                     <div class="requiredField">{$item}</div>
