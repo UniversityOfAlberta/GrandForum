@@ -1975,12 +1975,17 @@ class Person extends BackboneModel {
      */
     function getNameForForms($sep = ' ') {
         global $config;
+        $name = "";
         if($config->getValue('includeMiddleName') && $this->getMiddleName() != "")
-            return str_replace("\"", "<span class='noshow'>&quot;</span>", trim("{$this->getFirstName()} {$this->getMiddleName()} {$this->getLastName()}"));
+            $name = str_replace("\"", "<span class='noshow'>&quot;</span>", trim("{$this->getFirstName()} {$this->getMiddleName()} {$this->getLastName()}"));
         else if (!empty($this->realname))
-            return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
+            $name = str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
         else
-            return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
+            $name = str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
+        if($name == null){
+            $name = "";
+        }
+        return $name;
     }
 
     private function formatName($matches){
@@ -2022,6 +2027,9 @@ class Person extends BackboneModel {
         $format = strtolower($format);
         $format = preg_replace_callback($regex,"self::formatName",$format);
         $format = str_replace("\"", "<span class='noshow'>&quot;</span>", $format);
+        if($format == null){
+            $format = "";
+        }
         return $format;
     }
 
