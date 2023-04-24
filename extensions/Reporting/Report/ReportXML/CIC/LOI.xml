@@ -8,6 +8,48 @@
         </Role>
     </Permissions>
     <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Letter of Intent" title="Construction Innovation Centre (CIC) LETTER OF INTENT (LOI) for Proposed Research Project">
+        <If if="{!=({getText(RP_LOI, INTENT, NSERC_APPROVED, 0, {$user_id}, {$project_id})}, )}">
+            <![CDATA[
+                {set(status, NSERC Approved)}
+            ]]>
+        </If>
+        <ElseIf if="{!=({getText(RP_LOI, INTENT, NSERC_REJECTED, 0, {$user_id}, {$project_id})}, )}">
+            <![CDATA[
+                {set(status, NSERC Rejected)}
+            ]]>
+        </ElseIf>
+        <ElseIf if="{or({!=({getText(RP_LOI, INTENT, NSERC_SUBMITTED, 0, {$user_id}, {$project_id})}, )},
+                        {!=({getText(RP_LOI, INTENT, NSERC_RESUBMITTED, 0, {$user_id}, {$project_id})}, )})}">
+            <![CDATA[
+                {set(status, NSERC Submitted)}
+            ]]>
+        </ElseIf>
+        <ElseIf if="{!=({getText(RP_LOI, INTENT, COMMITTEE2_APPROVED, 0, {$user_id}, {$project_id})}, )}">
+            <![CDATA[
+                {set(status, Committee 2 Approved)}
+            ]]>
+        </ElseIf>
+        <ElseIf if="{!=({getText(RP_LOI, INTENT, COMMITTEE1_APPROVED, 0, {$user_id}, {$project_id})}, )}">
+            <![CDATA[
+                {set(status, Committee 1 Approved)}
+            ]]>
+        </ElseIf>
+        <ElseIf if="{!=({getText(RP_LOI, INTENT, LOI_SUBMITTED, 0, {$user_id}, {$project_id})}, )}">
+            <![CDATA[
+                {set(status, Submitted)}
+            ]]>
+        </ElseIf>
+        <Else>
+            <![CDATA[
+                {set(status, Not Submitted)}
+            ]]>
+        </Else>
+        <Static>
+            <![CDATA[
+                <h3>LOI Status: {get(status)}</h3>
+                <h2>Letter of Intent</h2>
+            ]]>
+        </Static>
         <ReportItem id="pi" type="Text" blobItem="PI" width="300px">
             <![CDATA[
                 <table>
@@ -222,7 +264,23 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="INTENT" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="submitted" type="TextReportItem" blobItem="LOI_SUBMITTED">
+            <![CDATA[
+                <div style='display:none;'>{$item}</div>
+            ]]>
+        </ReportItem>
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('#reportFooter').prev().hide();
+                    $('#reportFooter').hide();
+                    $('#generateButton').click(function(){
+                        $('input[name=Submit_submitted]').val('{timestamp(Y-m-d)}').change();
+                    });
+                </script>
+            ]]>
+        </Static>
     </ReportSection>
 </Report>

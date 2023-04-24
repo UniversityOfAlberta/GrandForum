@@ -99,7 +99,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		    $wgOut->addHTML("<div class='warning'>The report is not 100% complete.  Double check to make sure you did not miss any fields.</div>");
 		}
 		$wgOut->addHTML("<h3><span class='en'>Generate a new PDF</span><span class='fr'>Créer un nouveau PDF</span></h3>");
-		$wgOut->addHTML("<p><button id='generateButton' $disabled><span class='en'>Submit</span><span class='fr'>Soumettre</span></button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
+		$wgOut->addHTML("<p><button id='generateButton' type='button' $disabled><span class='en'>Submit</span><span class='fr'>Soumettre</span></button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
 		                    {$text}<br />
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
 
