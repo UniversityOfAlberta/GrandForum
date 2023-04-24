@@ -1982,7 +1982,7 @@ class Person extends BackboneModel {
             $name = str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
         else
             $name = str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
-        if($name == null){
+        if(empty($name)){
             $name = "";
         }
         return $name;
@@ -2027,7 +2027,7 @@ class Person extends BackboneModel {
         $format = strtolower($format);
         $format = preg_replace_callback($regex,"self::formatName",$format);
         $format = str_replace("\"", "<span class='noshow'>&quot;</span>", $format);
-        if($format == null){
+        if(empty($format)){
             $format = "";
         }
         return $format;
