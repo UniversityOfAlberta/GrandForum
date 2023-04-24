@@ -1995,9 +1995,9 @@ class Person extends BackboneModel {
             $match1 = str_replace("%first", $this->getFirstName(), $match1);
             $match1 = str_replace("%middle", str_replace(".","",$this->getMiddleName()), $match1);
             $match1 = str_replace("%last", $this->getLastName(), $match1);
-            $match1 = str_replace("%f", substr($this->getFirstName(), 0,1), $match1);
-            $match1 = str_replace("%m", substr($this->getMiddleName(), 0,1), $match1);
-            $match1 = str_replace("%l", substr($this->getLastName(),0,1), $match1);
+            $match1 = str_replace("%f", mb_substr($this->getFirstName(), 0,1), $match1);
+            $match1 = str_replace("%m", mb_substr($this->getMiddleName(), 0,1), $match1);
+            $match1 = str_replace("%l", mb_substr($this->getLastName(), 0,1), $match1);
 
             $match2 = str_replace("%first", "", $match2);
             $match2 = str_replace("%middle", "", $match2);
