@@ -3,10 +3,10 @@
     <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Letter of Intent" title="Construction Innovation Centre (CIC) LETTER OF INTENT (LOI) for Proposed Research Project" pagebreak="false">
         <ReportItem id="pi" type="Text" blobItem="PI" width="300px">
             <![CDATA[
-                <table>
+                <table cellpadding="0" cellspacing="0">
                     <tr>
                         <td class="label">
-                            Name of Principal Investigator:
+                            Name of Principal Investigator:&nbsp;
                         </td>
                         <td class="value">
                             {$item}
@@ -18,50 +18,43 @@
             <![CDATA[
                     <tr>
                         <td class="label">
-                            Department and University:
+                            Department and University:&nbsp;
                         </td>
                         <td class="value">
                             {$item}
                         </td>
                     </tr>
                 </table>
+                <b>Do you have a role in the CIC that creates a potential conflict of interest in evaluating this LOI?</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="coi" type="Checkbox" blobItem="COI" blobType="BLOB_ARRAY" options="Do you have a role in the CIC that creates a potential conflict of interest in evaluating this LOI?">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="coi_explain" type="Textarea" blobItem="COI_EXPLAIN" optional="true">
-            <![CDATA[
-                <div id='coi_explain'>
-                    (If yes, please explain)
+        <If if="{==({getArray(RP_LOI, INTENT, COI, 0, {$user_id}, {$project_id}, coi)},Yes)}">
+            <ReportItem id="coi" type="Checkbox" blobItem="COI" blobType="BLOB_ARRAY" labels="Do you have a role in the CIC that creates a potential conflict of interest in evaluating this LOI?" options="Yes">
+                <![CDATA[
                     {$item}
-                </div>
-                <script type="text/javascript">
-                    var changeCOI = function(){
-                        var value = $("[name='LetterofIntent_coi[]']:checked").val();
-                        if(value != undefined && value != ""){
-                            $('#coi_explain').show();
-                        }
-                        else{
-                            $('#coi_explain').hide();
-                        }
-                    }
-                    $("[name='LetterofIntent_coi[]']").change(changeCOI).change();
-                </script>
+                ]]>
+            </ReportItem>
+            <ReportItem id="coi_explain" type="Textarea" blobItem="COI_EXPLAIN" optional="true">
+                <![CDATA[
+                    <p style='margin-top:0.5em;'>{$item}</p>
+                ]]>
+            </ReportItem>
+        </If>
+        <Else>
+            <![CDATA[
+                <i>No</i>
             ]]>
-        </ReportItem>
+        </Else>
         <ReportItem id="title" type="Text" blobItem="TITLE" width="510px">
             <![CDATA[
                 <h3>Title of Project</h3>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="keywords" type="MultiText" blobItem="KEYWORDS" blobType="BLOB_ARRAY" labels="Keyword" types="Text" multiple="true" min="5" max="10">
+        <ReportItem id="keywords" type="MultiText" blobItem="KEYWORDS" blobType="BLOB_ARRAY" labels="Keyword" types="Text" multiple="true" min="5" max="10" orientation="list">
             <![CDATA[
                 <h3>Keywords</h3>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="problem" type="Textarea" blobItem="PROBLEM" rich="true">
@@ -100,11 +93,10 @@
                 <h2>Budget</h2>
             ]]>
         </Static>
-        <ReportItem type="MultiText" blobType="BLOB_ARRAY" blobItem="BUDGET" multiple="true"
+        <ReportItem type="MultiText" blobType="BLOB_ARRAY" blobItem="BUDGET" multiple="true" class="wikitable"
                     indices="partner|year1|year2|year3|year4|year5|comments" 
                     labels="Partner/Source|Year 1|Year 2|Year 3|Year 4|Year 5|Comments" 
-                    types="Text|Text|Text|Text|Text|Text|Textarea"
-                    sizes="250|50|50|50|50|50|250">
+                    types="Text|Text|Text|Text|Text|Text|Textarea">
             <![CDATA[
                 {$item}
             ]]>
@@ -115,25 +107,26 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="area" type="Checkbox" blobItem="AREA" blobType="BLOB_ARRAY" options="Productivity and Performance|Health and Safety|Sustainability and the Environment|Off-site Construction and Modularization|Energy|Design and Planning|Other">
+        <ReportItem id="area" type="Checkbox" blobItem="AREA" blobType="BLOB_ARRAY" options="Productivity and Performance|Health and Safety|Sustainability and the Environment|Off-site Construction and Modularization|Energy|Design and Planning|Other" delimiter="&lt;br />">
             <![CDATA[
                 <h2>Metrics to Evaluate Project LOI:</h2>
                 <h3>Fit</h3>
-                <i>Does the project fit within the CIC’s research focus areas? (check all that apply)</i>
-                <div style="display:flex;">
-                    <div style="margin-right: 50px;">
-                        <h3>Research Area</h3>
-                        {$item}
-                    </div>
+                <table cellpadding="0" cellspacing="0" style="width:100%;">
+                    <tr>
+                        <td style="width:50%; padding-right:1em;" valign="top">
+                            <h4 style="width:100%;">Research Area</h4>
+                            {$item}
+                        </td>
             ]]>
         </ReportItem>
-        <ReportItem id="method" type="Checkbox" blobItem="METHOD" blobType="BLOB_ARRAY" options="Artificial Intelligence (AI)|Automation and Technology|Simulation Modeling|Systems and Data Integration|Visualization/BIM|Decision support systems|Other">
+        <ReportItem id="method" type="Checkbox" blobItem="METHOD" blobType="BLOB_ARRAY" options="Artificial Intelligence (AI)|Automation and Technology|Simulation Modeling|Systems and Data Integration|Visualization/BIM|Decision support systems|Other" delimiter="&lt;br />">
             <![CDATA[
-                    <div>
-                        <h3>Research Method</h3>
-                        {$item}
-                    </div>
-                </div>
+                        <td style="width:50%;" valign="top">
+                            <h4 style="width:100%;">Research Method</h4>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
             ]]>
         </ReportItem>
         <ReportItem id="fit_explain" type="Textarea" blobItem="FIT_EXPLAIN" optional="true">
@@ -146,48 +139,43 @@
         <ReportItem id="implementation" type="Textarea" blobItem="IMPLEMENTATION" rich="true">
             <![CDATA[
                 <h3>Potential for Implementation</h3>
-                What is the research outcome and how can it be implemented in practice?
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="interest" type="MultiText" blobItem="INTEREST" blobType="BLOB_ARRAY" indices="partner|engagement" labels="Confirmed industry partners|Engagement (role, in-kinds, cash contribution, etc.)" types="Text|Textarea" sizes="200|400" multiple="true">
+        <ReportItem id="interest" type="MultiText" class="wikitable" blobItem="INTEREST" blobType="BLOB_ARRAY" indices="partner|engagement" labels="Confirmed industry partners|Engagement (role, in-kinds, cash contribution, etc.)" types="Text|Textarea" sizes="50%|50%" multiple="true">
             <![CDATA[
                 <h3>Interest</h3>
-                Have industry partners shown willingness to participate in the project?
+                <h4>Have industry partners shown willingness to participate in the project?</h4>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="interest" type="MultiText" blobItem="INTEREST" blobType="BLOB_ARRAY" indices="partner|engagement" labels="Other potential industry partners|Engagement (role, in-kinds, cash contribution, etc.)" types="Text|Textarea" sizes="200|400" multiple="true">
+        <ReportItem id="interest_other" type="MultiText" class="wikitable" blobItem="INTEREST_OTHER" blobType="BLOB_ARRAY" indices="partner|engagement" labels="Other potential industry partners|Engagement (role, in-kinds, cash contribution, etc.)" types="Text|Textarea" sizes="50%|50%" multiple="true">
             <![CDATA[
-                Have industry partners shown willingness to participate in the project?
+                <h4>Other potential industry partners</h4>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="multidiscipline" type="Textarea" blobItem="MULTIDISCIPLINE" rich="true">
             <![CDATA[
                 <h3>Multi-disciplinary Research</h3>
-                Does the research include researchers from more than one discipline?
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="reach" type="Textarea" blobItem="REACH" rich="true">
             <![CDATA[
                 <h3>Reach of Benefits</h3>
-                How does the construction industry at large, a specific construction sector, or the government benefit from the proposed project?
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="contributions" type="Textarea" blobItem="CONTRIBUTIONS" rich="true">
             <![CDATA[
                 <h3>Scientific Contributions</h3>
-                What are the expected contributions of the project to the state-of-the-art in research?
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="metrics" type="Textarea" blobItem="METRICS" rich="true">
             <![CDATA[
                 <h3>Proposed Metrics to Measure Project Performance at Completion</h3>
-                What are the expected contributions of the project to the state-of-the-art in research?
                 {$item}
             ]]>
         </ReportItem>

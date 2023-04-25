@@ -76,7 +76,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="coi" type="Checkbox" blobItem="COI" blobType="BLOB_ARRAY" options="Do you have a role in the CIC that creates a potential conflict of interest in evaluating this LOI?">
+        <ReportItem id="coi" type="Checkbox" blobItem="COI" blobType="BLOB_ARRAY" labels="Do you have a role in the CIC that creates a potential conflict of interest in evaluating this LOI?" options="Yes">
             <![CDATA[
                 {$item}
             ]]>
@@ -202,13 +202,13 @@
         <ReportItem id="interest" type="MultiText" blobItem="INTEREST" blobType="BLOB_ARRAY" indices="partner|engagement" labels="Confirmed industry partners|Engagement (role, in-kinds, cash contribution, etc.)" types="Text|Textarea" sizes="200|400" multiple="true">
             <![CDATA[
                 <h3>Interest</h3>
-                Have industry partners shown willingness to participate in the project?
+                <h4>Have industry partners shown willingness to participate in the project?</h4>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="interest" type="MultiText" blobItem="INTEREST" blobType="BLOB_ARRAY" indices="partner|engagement" labels="Other potential industry partners|Engagement (role, in-kinds, cash contribution, etc.)" types="Text|Textarea" sizes="200|400" multiple="true">
+        <ReportItem id="interest_other" type="MultiText" blobItem="INTEREST_OTHER" blobType="BLOB_ARRAY" indices="partner|engagement" labels="Other potential industry partners|Engagement (role, in-kinds, cash contribution, etc.)" types="Text|Textarea" sizes="200|400" multiple="true">
             <![CDATA[
-                Have industry partners shown willingness to participate in the project?
+                <h4>Other potential industry partners</h4>
                 {$item}
             ]]>
         </ReportItem>
