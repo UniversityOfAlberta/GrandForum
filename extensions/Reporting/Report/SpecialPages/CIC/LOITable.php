@@ -56,7 +56,7 @@ class LOITable extends SpecialPage{
             exit;
         }
         
-        $this->saveBlobValue('CREATED', 
+        $this->saveBlobValue('PROJ_CREATED', 
                              $person->getId(), 
                              $projectId, 
                              1);
@@ -98,6 +98,15 @@ class LOITable extends SpecialPage{
             $sto->store_report($rpData, $data[0]['html'], $data[0]['pdf'], 0, 0, 'RP_LOI', 0, 0);
         }
     }
+    
+    function declineProject(){
+        $person = Person::newFromId($_POST['user_id']);
+        $projectId = $_POST['project_id'];
+        $this->saveBlobValue('PROJ_DECLINED', 
+                             $person->getId(), 
+                             $projectId, 
+                             1);
+    }
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
@@ -107,6 +116,11 @@ class LOITable extends SpecialPage{
         }
         if(isset($_GET['createProject'])){
             $this->createProject();
+            header('Content-Type: text/html');
+            exit;
+        }
+        if(isset($_GET['declineProject'])){
+            $this->declineProject();
             header('Content-Type: text/html');
             exit;
         }
@@ -134,8 +148,9 @@ class LOITable extends SpecialPage{
                 if(!$report->isGenerated()){
                     break;
                 }
-                if($this->getBlobValue('CREATED', $person, $projectId) == 1){
-                    //continue;
+                if($this->getBlobValue('PROJ_CREATED', $person, $projectId) == 1 ||
+                   $this->getBlobValue('PROJ_DECLINED', $person, $projectId) == 1){
+                    continue;
                 }
                 $pdf = $report->getPDF();
                 $wgOut->addHTML("<tr class='loiRow' data-person='{$person->getId()}' data-project='{$projectId}'>
@@ -180,7 +195,10 @@ class LOITable extends SpecialPage{
                             </tr>
                         </table>
                     </td>
-                    <td><button class='createProject' type='button'>Create Project</button></td>
+                    <td align='center'>
+                        <button class='createProject' type='button' style='width:7em;margin-bottom:0.5em;'>Create</button><br />
+                        <button class='declineProject' type='button' style='width:7em;'>Decline</button>
+                    </td>
                 </tr>");
             }
         }
@@ -224,6 +242,8 @@ class LOITable extends SpecialPage{
             });
             
             $('.createProject').click(function(){
+                var el = this;
+                $(el).prop('disabled', true);
                 var tr = $(this).closest('.loiRow');
                 var data = {
                     user_id: $(tr).attr('data-person'),
@@ -231,6 +251,7 @@ class LOITable extends SpecialPage{
                 };
                 
                 $.post('{$wgServer}{$wgScriptPath}/index.php/Special:LOITable?createProject', data, function(response){
+                    $(el).prop('disabled', false);
                     clearError();
                     clearSuccess();
                     if(response != ''){
@@ -238,6 +259,35 @@ class LOITable extends SpecialPage{
                     }
                     else{
                         addSuccess('The project was created');
+                        order = table.order();
+                        search = table.search();
+                        table.destroy();
+                        $(tr).remove();
+                        table = createTable();
+                        table.order(order);
+	                    table.search(search);
+                    }
+                });
+            });
+            
+            $('.declineProject').click(function(){
+                var el = this;
+                $(el).prop('disabled', true);
+                var tr = $(this).closest('.loiRow');
+                var data = {
+                    user_id: $(tr).attr('data-person'),
+                    project_id: $(tr).attr('data-project')
+                };
+                
+                $.post('{$wgServer}{$wgScriptPath}/index.php/Special:LOITable?declineProject', data, function(response){
+                    $(el).prop('disabled', false);
+                    clearError();
+                    clearSuccess();
+                    if(response != ''){
+                        addError(response);
+                    }
+                    else{
+                        addSuccess('The project was declined');
                         order = table.order();
                         search = table.search();
                         table.destroy();
