@@ -10,6 +10,11 @@
         <ReportItemSet id="projects" type="AllProjects">
             <ReportItemSet id="toggle" type="ToggleHeader" title="{$project_name} - {$project_full_name}">
                 <!-- Project Lifecycle -->
+                <ReportItem id="pdf" type="PDFReportItem" reportType="LOI" buttonName="Download LOI">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
                 <Static>
                     <![CDATA[
                         <div style='display:flex;'>
@@ -18,7 +23,7 @@
                         <table class="wikitable">
                     ]]>
                 </Static>
-                <ReportItem id="duration" type="Select" blobItem="DURATION" labels="1 year|2 years|3 years|4 years|5 years" options="1|2|3|4|5" default="1">
+                <ReportItem id="duration" type="Select" blobItem="DURATION" labels="1 year|2 years|3 years|4 years|5 years" options="1|2|3|4|5" default="5">
                     <![CDATA[
                         <tr><td class="label">Duration:</td><td id='duration{$project_id}'>{$item}</td></tr>
                     ]]>
