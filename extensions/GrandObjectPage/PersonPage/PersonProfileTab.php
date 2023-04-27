@@ -213,6 +213,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->privateProfile = @$_POST['private_profile'];
             $this->person->update();
             $this->person->setKeywords(explode(",", $_POST['keywords']));
+            $this->person->setAliases(explode(";", $_POST['aliases']));
             
             $api = new UserEmailAPI();
             $api->doAction(true);
@@ -494,7 +495,7 @@ EOF;
     }
     
     function showEditContact($person, $visibility){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
         $university = $person->getUniversity();
         $me = Person::newFromWgUser();
         $this->html .= "<table>
@@ -518,10 +519,21 @@ EOF;
                                 <td align='right'><b>Email:</b></td>
                                 <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
                             </tr>
+                            <tr>
+                                <td align='right' style='padding-top: 0.5em;'><b>Aliases:</b><br /><small style='line-height: 1.5em; display: inline-block;'>Can be used for alternate names<br />to help match ".strtolower($config->getValue('productsTerm'))." authors.<br />Should be in the format <i>First Last</i></small></td>
+                                <td valign='top' style='max-width: 0;'><input type='text' name='aliases' value='".str_replace("'", "&#39;", implode(";", $person->getAliases()))."' /></td>
+                            </tr>
                         </table>";
         
         $this->html .= "<script type='text/javascript'>
-            $('input[name=employeeId]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 0})
+            $('input[name=employeeId]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 0});
+            
+            $('input[name=aliases]').tagit({
+                allowSpaces: true,
+                removeConfirmation: false,
+                singleField: true,
+                singleFieldDelimiter: ';',
+            });
         </script>";
         
         $this->html .= "</td></tr>";
@@ -550,7 +562,7 @@ EOF;
     private function selectList($person, $value){
         $productStructure = Product::structure();
         $categories = @array_keys($productStructure['categories']);
-        $allProducts = $person->getPapers('all', true, 'grand', true, 'Public');
+        $allProducts = $person->getPapers('all', true, 'grand', true, 'Public', true, true);
         $products = array();
         foreach($allProducts as $product){
             $date = $product->getDate();

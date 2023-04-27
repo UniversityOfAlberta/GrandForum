@@ -1912,6 +1912,41 @@ class Person extends BackboneModel {
         return $format;
     }
     
+    /**
+     * Returns an array of aliases for this Person
+     * @return array This Person's aliases
+     */
+    function getAliases(){
+        $data = DBFunctions::select(array('mw_user_aliases'),
+                                    array('*'),
+                                    array('user_id' => $this->id));
+        $aliases = array();
+        foreach($data as $row){
+            $aliases[] = $row['alias'];
+        }
+        return $aliases;
+    }
+    
+    /**
+     * Updates the Person's aliases
+     * @param array $aliases The array of aliases
+     * @return array This Person's aliases
+     */
+    function setAliases($aliases){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEdit($this)){
+            DBFunctions::delete('mw_user_aliases',
+                                array('user_id' => $this->id));
+            foreach($aliases as $alias){
+                DBFunctions::insert('mw_user_aliases',
+                                    array('user_id' => $this->id,
+                                          'alias' => $alias));
+            }
+            self::$aliasCache = array();
+        }
+        return $aliases;
+    }
+    
     // Returns the user's profile.
     // If $private is true, then it grabs the private version, otherwise it gets the public
     /**

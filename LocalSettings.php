@@ -383,6 +383,14 @@ function flatten(array $array) {
     return $return;
 }
 
+function array_pluck($array, $field){
+    $ret = array();
+    foreach($array as $value){
+        $ret[] = @$value[$field];
+    }
+    return $ret;
+}
+
 function adjustBrightness($hex, $steps) {
     // Steps should be between -255 and 255. Negative = darker, positive = lighter
     $steps = max(-255, min(255, $steps));
