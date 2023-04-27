@@ -191,13 +191,13 @@ class ProjectDashboardTab extends AbstractEditableTab {
         }
         ksort($products);
         $products = array_reverse($products);
-        $html = "<select class='chosen' name='top_products[]' style='max-width:800px;'>";
+        $html = "<div style='margin-bottom:2px;'><select class='chosen' name='top_products[]' style='max-width:800px;'>";
         $html .= "<option value=''>---</option>";
         foreach($categories as $category){
             $html .= $this->optGroup($products, $category, $value);
         }
         $html .= $this->optGroup($products, "Contribution", $value);
-        $html .= "</select><br />";
+        $html .= "</select></div>";
         return $html;
     }
     
@@ -367,7 +367,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
             $year = date('Y', time() - (3 * 30 * 24 * 60 * 60));
             $upToDate = $project->getUpToDate($year);
             if($upToDate){
-                $this->html .= "<p><b>The information in this section is current as per the end of Fiscal Year ($year-".($year+1).")</b></p>\n";
+                $this->html .= "<p><b>The information in this section is current as per the end of Fiscal Year (".($year-1)."-".($year).")</b></p>\n";
             }
         }
     }
@@ -377,7 +377,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
         if($config->getValue('networkName') == "FES"){
             $year = date('Y', time() - (3 * 30 * 24 * 60 * 60));
             $upToDate = $project->getUpToDate($year);
-            $field = new SingleCheckBox("upToDate", "Up To Date", $upToDate, array("&nbsp;<b>The information in this section is current as per the end of Fiscal Year (".($year)."-".($year+1).")</b>" => 1));
+            $field = new SingleCheckBox("upToDate", "Up To Date", $upToDate, array("&nbsp;<b>The information in this section is current as per the end of Fiscal Year (".($year-1)."-".($year).")</b>" => 1));
             $this->html .= "<input type='hidden' name='upToDate' value='0' />{$field->render()}";
         }
     }
