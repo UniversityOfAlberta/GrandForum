@@ -581,19 +581,20 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     });
                 };
                 
-                var nMilestones = $('.milestones tr').length;
-                var freq = 50;
-                if(nMilestones >= 250){
-                    freq = 100;
-                }
-                else if(nMilestones >= 500){
-                    freq = 200;
-                }
-                else if(nMilestones >= 1000){
-                    freq = 250;
-                }
-
-                $('#bodyContent').scroll(_.throttle(scrollScheduleFn, freq));
+                $(document).ready(function(){
+                    var nMilestones = $('.milestones tr').length;
+                    var freq = 50;
+                    if(nMilestones >= 250){
+                        freq = 100;
+                    }
+                    else if(nMilestones >= 500){
+                        freq = 200;
+                    }
+                    else if(nMilestones >= 1000){
+                        freq = 250;
+                    }
+                    $('#bodyContent').scroll(_.throttle(scrollScheduleFn, freq));
+                });
                 
                 $('#project').bind('tabsselect', function(event, ui){
                     _.defer(scrollScheduleFn);
