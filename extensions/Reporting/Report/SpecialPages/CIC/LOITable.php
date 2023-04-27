@@ -163,35 +163,35 @@ class LOITable extends SpecialPage{
                         <table class='dates' cellspacing='0' cellpadding='0'>
                             <tr>
                                 <td>LOI Submitted:</td>
-                                <td><input style='width: 5em;' type='datepicker' name='LOI_SUBMITTED' value='{$this->getBlobValue('LOI_SUBMITTED', $person, $projectId)}' /></td>
+                                <td><input style='width: 72px;' type='datepicker' name='LOI_SUBMITTED' value='{$this->getBlobValue('LOI_SUBMITTED', $person, $projectId)}' /></td>
                             </tr>
                             <tr>
                                 <td>Committee 1 Approved:</td>
-                                <td><input style='width: 5em;' type='datepicker' name='COMMITTEE1_APPROVED' value='{$this->getBlobValue('COMMITTEE1_APPROVED', $person, $projectId)}' /></td>
+                                <td><input style='width: 72px;' type='datepicker' name='COMMITTEE1_APPROVED' value='{$this->getBlobValue('COMMITTEE1_APPROVED', $person, $projectId)}' /></td>
                             </tr>
                             <tr>
                                 <td>Committee 2 Approved:</td>
-                                <td><input style='width: 5em;' type='datepicker' name='COMMITTEE2_APPROVED' value='{$this->getBlobValue('COMMITTEE2_APPROVED', $person, $projectId)}' /></td>
+                                <td><input style='width: 72px;' type='datepicker' name='COMMITTEE2_APPROVED' value='{$this->getBlobValue('COMMITTEE2_APPROVED', $person, $projectId)}' /></td>
                             </tr>
                             <tr>
                                 <td>NSERC Alliance Submitted:</td>
-                                <td><input style='width: 5em;' type='datepicker' name='NSERC_SUBMITTED' value='{$this->getBlobValue('NSERC_SUBMITTED', $person, $projectId)}' /></td>
+                                <td><input style='width: 72px;' type='datepicker' name='NSERC_SUBMITTED' value='{$this->getBlobValue('NSERC_SUBMITTED', $person, $projectId)}' /></td>
                             </tr>
                             <tr>
                                 <td>NSERC Alliance Resubmitted:&nbsp;</td>
-                                <td><input style='width: 5em;' type='datepicker' name='NSERC_RESUBMITTED' value='{$this->getBlobValue('NSERC_RESUBMITTED', $person, $projectId)}' /></td>
+                                <td><input style='width: 72px;' type='datepicker' name='NSERC_RESUBMITTED' value='{$this->getBlobValue('NSERC_RESUBMITTED', $person, $projectId)}' /></td>
                             </tr>
                             <tr>
                                 <td>NSERC Alliance Rejected:</td>
-                                <td><input style='width: 5em;' type='datepicker' name='NSERC_REJECTED' value='{$this->getBlobValue('NSERC_REJECTED', $person, $projectId)}' /></td>
+                                <td><input style='width: 72px;' type='datepicker' name='NSERC_REJECTED' value='{$this->getBlobValue('NSERC_REJECTED', $person, $projectId)}' /></td>
                             </tr>
                             <tr>
                                 <td>NSERC Alliance Approved:</td>
-                                <td><input style='width: 5em;' type='datepicker' name='NSERC_APPROVED' value='{$this->getBlobValue('NSERC_APPROVED', $person, $projectId)}' /></td>
+                                <td><input style='width: 72px;' type='datepicker' name='NSERC_APPROVED' value='{$this->getBlobValue('NSERC_APPROVED', $person, $projectId)}' /></td>
                             </tr>
                             <tr>
                                 <td>Project End:</td>
-                                <td><input style='width: 5em;' type='datepicker' name='PROJECT_END' value='{$this->getBlobValue('PROJECT_END', $person, $projectId)}' /></td>
+                                <td><input style='width: 72px;' type='datepicker' name='PROJECT_END' value='{$this->getBlobValue('PROJECT_END', $person, $projectId)}' /></td>
                             </tr>
                         </table>
                     </td>
