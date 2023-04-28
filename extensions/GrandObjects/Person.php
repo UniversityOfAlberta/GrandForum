@@ -110,6 +110,8 @@ class Person extends BackboneModel {
     var $dateOfAssociate;
     var $dateOfProfessor;
     var $dateOfTenure;
+    var $dateOfProbation1;
+    var $dateOfProbation2;
     var $dateOfRetirement;
     var $dateOfLastDegree;
     var $lastDegree;
@@ -597,6 +599,8 @@ class Person extends BackboneModel {
                                               'date_assistant',
                                               'date_associate',
                                               'date_professor',
+                                              'date_probation1',
+                                              'date_probation2',
                                               'date_tenure',
                                               'date_retirement',
                                               'date_last_degree',
@@ -622,6 +626,8 @@ class Person extends BackboneModel {
                 $this->dateOfAssistant = $row['date_assistant'];
                 $this->dateOfAssociate = $row['date_associate'];
                 $this->dateOfProfessor = $row['date_professor'];
+                $this->dateOfProbation1 = $row['date_probation1'];
+                $this->dateOfProbation2 = $row['date_probation2'];
                 $this->dateOfTenure = $row['date_tenure'];
                 $this->dateOfRetirement = $row['date_retirement'];
                 $this->dateOfLastDegree = $row['date_last_degree'];
@@ -657,6 +663,8 @@ class Person extends BackboneModel {
                                               'date_associate' => $this->dateOfAssociate,
                                               'date_professor' => $this->dateOfProfessor,
                                               'date_tenure' => $this->dateOfTenure,
+                                              'date_probation1' => $this->dateOfProbation1,
+                                              'date_probation2' => $this->dateOfProbation2,
                                               'date_retirement' => $this->dateOfRetirement,
                                               'date_last_degree' => $this->dateOfLastDegree,
                                               'last_degree' => $this->lastDegree,
@@ -684,6 +692,8 @@ class Person extends BackboneModel {
                                           'date_associate' => $this->dateOfAssociate,
                                           'date_professor' => $this->dateOfProfessor,
                                           'date_tenure' => $this->dateOfTenure,
+                                          'date_probation1' => $this->dateOfProbation1,
+                                          'date_probation2' => $this->dateOfProbation2,
                                           'date_retirement' => $this->dateOfRetirement,
                                           'date_last_degree' => $this->dateOfLastDegree,
                                           'last_degree' => $this->lastDegree,
