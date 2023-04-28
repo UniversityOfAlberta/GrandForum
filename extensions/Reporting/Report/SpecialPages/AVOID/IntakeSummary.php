@@ -11,6 +11,8 @@ function runIntakeSummary($par) {
     IntakeSummary::execute($par);
 }
 
+require_once("EQ5D5L.php");
+
 class IntakeSummary extends SpecialPage {
     
     static $pageTitle = "Intake Summary";
@@ -154,9 +156,10 @@ class IntakeSummary extends SpecialPage {
         if($type != false){
             $html .= "<th>Type</th>";
         }
-        if(static::$rpType != "RP_AVOID_THREEMO"){
+        if(static::$rpType != "RP_AVOID_THREEMO" && static::$rpType != "RP_AVOID_NINEMO"){
             $html .= "<th>Frailty Score</th>";
             $html .= "<th>EQ Health State</th>";
+            $html .= "<th>EQ Health Score</th>";
             $html .= "<th>CFS Score</th>";
         }
         foreach($report->sections as $section){
@@ -175,7 +178,7 @@ class IntakeSummary extends SpecialPage {
     }
     
     static function getRow($person, $report, $type=false, $simple=false){
-        global $wgServer, $wgScriptPath, $config;
+        global $wgServer, $wgScriptPath, $config, $EQ5D5L;
         $userLink = "{$person->getId()}";
         if($type == false){
             $userLink = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
@@ -194,18 +197,22 @@ class IntakeSummary extends SpecialPage {
                         <td style='white-space:nowrap;' align='left'>".implode(",<br />", $subRoles)."</td>";
         }
         if($type != false){
-            $html .= "<td>{$type}</td>";
+            $html .= "<td style='white-space:nowrap;'>{$type}</td>";
         }
-        if(static::$rpType != "RP_AVOID_THREEMO"){
+        if(static::$rpType != "RP_AVOID_THREEMO" && static::$rpType != "RP_AVOID_NINEMO"){
             $api = new UserFrailtyIndexAPI();
             if($report->reportType == "RP_AVOID_THREEMO"){
                 $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
+            }
+            else if($report->reportType == "RP_AVOID_NINEMO"){
+                $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
             }
             else{
                 $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
             }
             $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
             $html .= "<td>".implode("", $scores["Health"])."</td>";
+            $html .= "<td>".$EQ5D5L[implode("", $scores["Health"])]."</td>";
             $html .= "<td>".$scores["CFS"]."</td>";
         }
         foreach($report->sections as $section){
@@ -249,6 +256,10 @@ class IntakeSummary extends SpecialPage {
             $wgOut->addHTML(self::getRow($report->person, $report, "3 Month"));
             $report->reportType = "RP_AVOID_SIXMO";
             $wgOut->addHTML(self::getRow($report->person, $report, "6 Month"));
+            $report->reportType = "RP_AVOID_NINEMO";
+            $wgOut->addHTML(self::getRow($report->person, $report, "9 Month"));
+            $report->reportType = "RP_AVOID_TWELVEMO";
+            $wgOut->addHTML(self::getRow($report->person, $report, "12 Month"));
         }
         $wgOut->addHTML("</tbody>
                         </table>
