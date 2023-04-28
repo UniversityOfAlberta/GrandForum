@@ -560,7 +560,7 @@ EOF;
                         }
                         else if(strstr(strtolower(@$types[$j]), "chosen") !== false){
                             $align = ($isVertical) ? "left" : "center";
-                            $item .= @"<td align='{$align}' valign='top' style='padding:0 3px 0 3px; {$size}'>".implode(", ", $value[$index])."</td>";
+                            $item .= @"<td align='{$align}' valign='top' style='padding:0 3px 0 3px; {$size}'>".@implode(", ", $value[$index])."</td>";
                         }
                         else if(strtolower(@$types[$j]) == "random"){
                             //$item .= "<td align='right' valign='top' style='display:none; {$size}'>{$value[$index]}</td>";
