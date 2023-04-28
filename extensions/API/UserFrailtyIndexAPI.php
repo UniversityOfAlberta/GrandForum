@@ -293,8 +293,11 @@ class UserFrailtyIndexAPI extends API{
         return $score;
     }
     
-    function getSelfPerceivedHealth($user_id, $reportType){
+    function getSelfPerceivedHealth($user_id, $reportType, $raw=false){
         $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "HEALTH_QUESTIONS", "healthstatus_avoid6", $user_id);
+        if($raw){
+            return $ans;
+        }
         if($ans != null && $ans <= 50){
             return 1;
         }
@@ -534,6 +537,7 @@ class UserFrailtyIndexAPI extends API{
         }
         $scores["Behavioral"] = $this->getBehavioralScores($user_id, $reportType);
         $scores["Health"] = $this->getHealthScores($user_id, $reportType);
+        $scores["VAS"] = $this->getSelfPerceivedHealth($user_id, $reportType, true);
         $scores["CFS"] = $this->getCFS($user_id, $reportType);
         
         // Labels

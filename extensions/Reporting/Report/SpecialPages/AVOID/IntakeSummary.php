@@ -160,6 +160,7 @@ class IntakeSummary extends SpecialPage {
             $html .= "<th>Frailty Score</th>";
             $html .= "<th>EQ Health State</th>";
             $html .= "<th>EQ Health Score</th>";
+            $html .= "<th>VAS Score</th>";
             $html .= "<th>CFS Score</th>";
         }
         foreach($report->sections as $section){
@@ -213,6 +214,7 @@ class IntakeSummary extends SpecialPage {
             $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
             $html .= "<td>".implode("", $scores["Health"])."</td>";
             $html .= "<td>".$EQ5D5L[implode("", $scores["Health"])]."</td>";
+            $html .= "<td>".$scores["VAS"]."</td>";
             $html .= "<td>".$scores["CFS"]."</td>";
         }
         foreach($report->sections as $section){
