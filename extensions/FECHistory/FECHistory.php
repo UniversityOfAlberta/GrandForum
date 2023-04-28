@@ -34,6 +34,8 @@ class FECHistory extends SpecialPage{
                                     <th>ATS I</th>
                                     <th>ATS II</th>
                                     <th>ATS III</th>
+                                    <th>Probation1</th>
+                                    <th>Probation2</th>
                                     <th>Tenure</th>
                                     <th>Retirement</th>
                                     <th>Date of Last Degree</th>
@@ -63,6 +65,8 @@ class FECHistory extends SpecialPage{
                                      <td>".str_replace("00:00:00", "", $fec->dateAtsec1)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateAtsec2)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateAtsec3)."</td>
+                                     <td>".str_replace("00:00:00", "", $fec->dateOfProbation1)."</td>
+                                     <td>".str_replace("00:00:00", "", $fec->dateOfProbation2)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfTenure)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfRetirement)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfLastDegree)."</td>
