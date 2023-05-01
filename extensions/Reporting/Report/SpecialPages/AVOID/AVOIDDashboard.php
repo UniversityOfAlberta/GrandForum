@@ -41,12 +41,6 @@ class AVOIDDashboard extends SpecialPage {
         return $objs;
     }
     
-    function generateReport(){
-        $api = new UserFrailtyIndexAPI();
-        $scores = $api->getFrailtyScore($me->getId());
-        exit;
-    }
-    
     static function executeFitBitAPI($url){
         global $wgMessage;
         $me = Person::newFromWgUser();
@@ -228,9 +222,6 @@ class AVOIDDashboard extends SpecialPage {
             </script></html>";
             exit;
         }
-        if(isset($_GET['generateReport'])){
-            $this->generateReport();
-        }
         self::importFitBit();
         $dir = dirname(__FILE__) . '/';
         $me = Person::newFromWgUser();
@@ -365,10 +356,10 @@ class AVOIDDashboard extends SpecialPage {
         
         $wgOut->addHTML("</div>
         <div title='Frailty Report' style='display:none; overflow: hidden; padding:0 !important; background: white;' id='reportDialog'>
-            <iframe id='frailtyFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview'></iframe>
+            <iframe id='frailtyFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' data-src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview'></iframe>
         </div>
         <div title='Progress Report' style='display:none; overflow: hidden; padding:0 !important; background: white;' id='progressReportDialog'>
-            <iframe id='progressFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' src='{$wgServer}{$wgScriptPath}/index.php/Special:ProgressReport?preview'></iframe>
+            <iframe id='progressFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' data-src='{$wgServer}{$wgScriptPath}/index.php/Special:ProgressReport?preview'></iframe>
         </div>
         <script type='text/javascript'>
             $('#bodyContent h1:not(.program-header)').hide();
@@ -387,7 +378,7 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             $('.viewReport').click(function(){
-                $('#frailtyFrame')[0].src = $('#frailtyFrame')[0].src; // Refresh
+                $('#frailtyFrame')[0].src = $('#frailtyFrame').attr('data-src'); // Refresh
                 $('#bodyContent').css('overflow-y', 'hidden');
                 if($('#reportDialog', $('.ui-dialog')).length == 0){
                     $('#reportDialog').dialog({
@@ -416,6 +407,7 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             $('#viewProgressReport').click(function(){
+                $('#progressFrame')[0].src = $('#progressFrame').attr('data-src'); // Refresh
                 $('#bodyContent').css('overflow-y', 'hidden');
                 if($('#progressReportDialog', $('.ui-dialog')).length == 0){
                     $('#progressReportDialog').dialog({

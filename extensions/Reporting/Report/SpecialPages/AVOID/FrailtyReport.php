@@ -758,7 +758,7 @@ behaviour. They are not clinical recommendations, for which you should seek advi
             }
             $html = "$dom";
         }
-        
+        Gamification::log('OpenReport');
         return $html;
     }
     
