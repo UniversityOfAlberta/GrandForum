@@ -49,12 +49,12 @@
         </ReportItem>
         <ReportItem id="phone" type="Text" width="180px" blobItem="PHONE">
             <![CDATA[
-                <b>Phone Number:</b> {$item} (optional)<br />
-                <p><span class='program-text'>You will be contacted with further details</span></p>
-                <!--b>This program is now full</b-->
+                <!--b>Phone Number:</b> {$item} (optional)<br />
+                <p><span class='program-text'>You will be contacted with further details</span></p-->
+                <b>This program is now full</b>
             ]]>
         </ReportItem>
-        <ReportItem id="register" type="Checkbox" 
+        <!--ReportItem id="register" type="Checkbox" 
                     labels="&lt;b>Kingston&lt;/b> Community Health Centre, 263 Weller Ave, Unit 4.&lt;br />Thursday April 27, 10:30 to 11:30am and runs weekly for 10 weeks|Lennox &amp; Addington Seniors Outreach Services, 12 Richmond Park Drive, &lt;b>Napanee&lt;/b>.&lt;br />Thursday April 27, 1:45pm to 2:45pm and runs weekly for 10 weeks" 
                     options="Kingston Community Health Centre, 263 Weller Ave, Unit 4. Thursday April 27, 10:30 to 11:30am and runs weekly for 10 weeks|Lennox &amp; Addington Seniors Outreach Services, 12 Richmond Park Drive, Napanee. Thursday April 27, 1:45pm to 2:45pm and runs weekly for 10 weeks" blobType="BLOB_ARRAY" blobItem="REGISTER">
             <![CDATA[
@@ -88,7 +88,7 @@
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <Static>
             <![CDATA[   </div>
                         <div style='width: 16em; margin-left: 1em;'>
