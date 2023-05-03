@@ -922,13 +922,13 @@ class Paper extends BackboneModel{
                             $mNames = str_replace(".", "", implode(" ", $mNames));
                         }
                     }
-                    if((strlen($last) == 1 || strtoupper($last) == $last) && strlen($first) > 1){
+                    if((mb_strlen($last) == 1 || strtoupper($last) == $last) && strlen($first) > 1){
                         // Simple check to see if last/first name format is reversed
                         $tmpLast = $last;
                         $last = $first;
                         $first = $tmpLast;
                     }
-                    if(strlen($first) > 1 && strtoupper($first) == $first){
+                    if(mb_strlen($first) > 1 && strtoupper($first) == $first){
                         // The first name is probably just initials
                         $firstTmp = $first;
                         $first = $firstTmp[0];
@@ -1894,7 +1894,7 @@ class Paper extends BackboneModel{
 
     function toArray(){
         $me = Person::newFromWgUser();
-        if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
+        if(!Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
             // Only access the cache if the user is logged in
             $json = Cache::fetch($this->getCacheId());
             return $json;
