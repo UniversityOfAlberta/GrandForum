@@ -48,7 +48,7 @@ class Gamification {
             $exploded = explode("/", $action);
             $action = @$exploded[0];
             
-            @$points[$action] = min($points[$action] + $act->getPoints(), self::$actions[$action]);
+            @$points[$action] = min($points[$action] + $act->getPoints(), self::$actions[$action]['maximum']);
         }
         return array_sum($points);
     }
@@ -88,11 +88,16 @@ class Gamification {
                                       'action' => $fullAction));
             $id = DBFunctions::insertId();
             DBFunctions::commit();
-            $gamification = self::newFromId($id);
-            $array = (isset($_COOKIE['gamification'])) ? json_decode($_COOKIE['gamification']) : array();
-            $array[] = $gamification->toArray();
-            setcookie('gamification', json_encode($array), time()+3600, $wgScriptPath);
-            $_COOKIE['gamification'] = json_encode($array);
+            $actions = self::newFromUserId($me->getId(), $fullAction);
+            $points = array_reduce($actions, function($sum, $action){ return $sum + $action->getPoints(); }, 0);
+            if($points <= self::$actions[$action]['maximum']){
+                // Only notify user if within maximum points
+                $gamification = self::newFromId($id);
+                $array = (isset($_COOKIE['gamification'])) ? json_decode($_COOKIE['gamification']) : array();
+                $array[] = $gamification->toArray();
+                setcookie('gamification', json_encode($array), time()+3600, $wgScriptPath);
+                $_COOKIE['gamification'] = json_encode($array);
+            }
         }
     }
     
