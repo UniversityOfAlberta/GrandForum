@@ -42,17 +42,28 @@ class Gamification {
     static function calculatePoints($person){
         $actions = self::newFromUserId($person->getId());
         $points = array();
-        foreach($actions as $action){
-            @$points[$action->getAction()] = min($points[$action->getAction()] + $action->getPoints(),
-                                                 self::$actions[$action->getAction()]);
+        foreach($actions as $act){
+            $action = $act->getAction();
+            
+            $exploded = explode("/", $action);
+            $action = @$exploded[0];
+            
+            @$points[$action] = min($points[$action] + $act->getPoints(), self::$actions[$action]);
         }
         return array_sum($points);
     }
     
     static function log($action){
-        global $wgMessage;
+        global $wgMessage, $wgServer, $wgScriptPath;
+        return; // TODO: Gamification is disabled for now
         $me = Person::newFromWgUser();
         $date = date('Y-m-d h:i:s');
+        
+        $exploded = explode("/", $action);
+        $action = @$exploded[0];
+        $subAction = @$exploded[1];
+        
+        $fullAction = ($subAction != "") ? "{$action}/{$subAction}" : $action;
         
         if(!isset(self::$actions[$action])){
             $wgMessage->addError("Gamification action '{$action}' not found");
@@ -60,7 +71,7 @@ class Gamification {
         }
         
         $create = true;
-        $actions = self::newFromUserId($me->getId(), $action);
+        $actions = self::newFromUserId($me->getId(), $fullAction);
         if(count($actions) > 0){
             $create = false;
             foreach($actions as $act){
@@ -74,8 +85,14 @@ class Gamification {
         if($create){
             DBFunctions::insert('grand_gamification',
                                 array('user_id' => $me->getId(),
-                                      'action' => $action));
+                                      'action' => $fullAction));
+            $id = DBFunctions::insertId();
             DBFunctions::commit();
+            $gamification = self::newFromId($id);
+            $array = (isset($_COOKIE['gamification'])) ? json_decode($_COOKIE['gamification']) : array();
+            $array[] = $gamification->toArray();
+            setcookie('gamification', json_encode($array), time()+3600, $wgScriptPath);
+            $_COOKIE['gamification'] = json_encode($array);
         }
     }
     
@@ -112,31 +129,47 @@ class Gamification {
         return $this->action;
     }
     
+    function getText(){
+        $exploded = explode("/", $this->getAction());
+        $action = @$exploded[0];
+        return self::$actions[$action]['text'];
+    }
+    
     /**
-     * Returns the country code of this Gamification
-     * @return string The country code of this Gamification
+     * Returns the date of this Gamification
+     * @return string The date of this Gamification
      */
     function getDate(){
         return $this->date;
     }
     
     function getPoints(){
-        return self::$actions[$this->getAction()]['points'];
+        $exploded = explode("/", $this->getAction());
+        $action = @$exploded[0];
+        return self::$actions[$action]['points'];
+    }
+    
+    function toArray(){
+        return array(
+            'action' => $this->getAction(),
+            'text' => $this->getText(),
+            'points' => $this->getPoints()
+        );
     }
 }
 
-Gamification::addAction('HealthAssessment', 4, 'Health Assessment', 0);
-Gamification::addAction('OpenReport', 5, 'Open Report', 9999);
-Gamification::addAction('EducationModule', 5, 'Open Report', 0, 40);
-Gamification::addAction('CreateActionPlan', 2, 'Create weekly action plan', 0, 24);
-Gamification::addAction('SubmitActionPlan', 2, 'Submit a weekly action plan', 0, 36);
-Gamification::addAction('MeetActionPlan', 3, 'Meet your action plan goal', 0, 48);
+Gamification::addAction('HealthAssessment', 4, 'Completed Healthy Aging Assessment', 9999);
+Gamification::addAction('3MonthFollowup', 10, 'Completed 3 month follow up assessment', 9999);
+Gamification::addAction('OpenReport', 5, 'Opened Report', 9999);
+Gamification::addAction('EducationModule', 5, 'Completed Education Module', 9999, 40);
+Gamification::addAction('CreateActionPlan', 2, 'Created weekly action plan', 1, 24);
+Gamification::addAction('SubmitActionPlan', 2, 'Submited a weekly action plan', 1, 36);
+Gamification::addAction('MeetActionPlan', 3, 'Met your action plan goal', 1, 48);
 Gamification::addAction('ActionPlanConsistency', 2, '10 weeks minimum of action plans submitted consistency bonus', 70);
-Gamification::addAction('CreateClipBoard', 1, 'Create a clip board of community programs', 0);
-Gamification::addAction('3MonthFollowup', 10, '3 month follow up assessment', 0);
-Gamification::addAction('LoginConsistency', 2, 'log in 5+ times per week consistency bonus', 7);
-Gamification::addAction('SignUpProgram', 5, 'Sign up for an AVOID Program', 0);
-Gamification::addAction('SignAskAnExpert', 5, 'Sign up for Ask an Expert', 0);
-Gamification::addAction('5CommunitySupports', 10, 'Looked into 5 community supports', 0);
+Gamification::addAction('CreateClipBoard', 1, 'Created a clip board of community programs', 9999);
+Gamification::addAction('LoginConsistency', 2, 'Logged in 5+ times per week consistency bonus', 7);
+Gamification::addAction('SignUpProgram', 5, 'Signed up for an AVOID Program', 0);
+Gamification::addAction('SignAskAnExpert', 5, 'Signed up for Ask an Expert', 0);
+Gamification::addAction('5CommunitySupports', 10, 'Lookeded into 5 community supports', 0);
 
 ?>

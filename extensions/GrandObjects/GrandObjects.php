@@ -38,6 +38,7 @@ autoload_register('GrandObjects/API/DataCollection');
 autoload_register('GrandObjects/API/AvoidResource');
 autoload_register('GrandObjects/API/AskAnExpertEvent');
 autoload_register('GrandObjects/API/ActionPlan');
+autoload_register('GrandObjects/API/Gamification');
 
 global $apiRequest;
 // Person
@@ -227,6 +228,10 @@ $apiRequest->addAction('Hidden','askanexpert/:id', 'AskAnExpertEventAPI');
 // AVOID ActionPlan
 $apiRequest->addAction('Hidden','actionplan', 'ActionPlanAPI');
 $apiRequest->addAction('Hidden','actionplan/:id', 'ActionPlanAPI');
+
+// Gamification
+$apiRequest->addAction('Hidden', 'gamification/', 'GamificationAPI');
+$apiRequest->addAction('Hidden', 'gamification/:userId', 'GamificationAPI');
 
 function addScript($file){
     global $wgServer, $wgScriptPath;

@@ -4,7 +4,7 @@ ActionPlanTrackerView = Backbone.View.extend({
 
     initialize: function() {
         this.render();
-        this.model.bind('change', this.save.bind(this));
+        this.model.bind('change:tracker', this.save.bind(this));
     },
 
     events: {

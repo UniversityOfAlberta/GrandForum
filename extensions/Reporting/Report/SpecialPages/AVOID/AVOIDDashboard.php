@@ -378,7 +378,6 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             $('.viewReport').click(function(){
-                $('#frailtyFrame')[0].src = $('#frailtyFrame').attr('data-src'); // Refresh
                 $('#bodyContent').css('overflow-y', 'hidden');
                 if($('#reportDialog', $('.ui-dialog')).length == 0){
                     $('#reportDialog').dialog({
@@ -399,6 +398,7 @@ class AVOIDDashboard extends SpecialPage {
                         viewFullScreen = !viewFullScreen;
                         $(window).resize();
                     });
+                    $('#frailtyFrame')[0].src = $('#frailtyFrame').attr('data-src'); // Refresh
                 }
                 else{
                     $('#reportDialog').dialog('open');
@@ -407,7 +407,6 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             $('#viewProgressReport').click(function(){
-                $('#progressFrame')[0].src = $('#progressFrame').attr('data-src'); // Refresh
                 $('#bodyContent').css('overflow-y', 'hidden');
                 if($('#progressReportDialog', $('.ui-dialog')).length == 0){
                     $('#progressReportDialog').dialog({
@@ -428,6 +427,7 @@ class AVOIDDashboard extends SpecialPage {
                         viewProgressFullScreen = !viewProgressFullScreen;
                         $(window).resize();
                     });
+                    $('#progressFrame')[0].src = $('#progressFrame').attr('data-src'); // Refresh
                 }
                 else{
                     $('#progressReportDialog').dialog('open');
@@ -722,20 +722,35 @@ class AVOIDDashboard extends SpecialPage {
     
     static function checkAllSubmissions($userId){
         $me = Person::newFromId($userId);
-        if($me->isRole(ADMIN) || $me->isRole(STAFF)){
-            return true;
-        }
+        
         $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID");
         $threeMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID_THREEMO");
         $sixMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID_SIXMO");
+        $nineMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID_NINEMO");
+        $twelveMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID_TWELVEMO");
+        
+        if($baseLineSubmitted){
+            Gamification::log('HealthAssessment');
+        }
+        if($threeMonthSubmitted){
+            Gamification::log('3MonthFollowup');
+        }
+        
+        if($me->isRole(ADMIN) || $me->isRole(STAFF)){
+            return true;
+        }
         
         $baseDiff = (time() - strtotime(AVOIDDashboard::submissionDate($userId, "RP_AVOID")))/86400;
         $threeMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($userId, "RP_AVOID_THREEMO")))/86400;
         $sixMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($userId, "RP_AVOID_SIXMO")))/86400;
+        $nineMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($userId, "RP_AVOID_NINEMO")))/86400;
+        $twelveMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($userId, "RP_AVOID_TWELVEMO")))/86400;
         
         if(!$baseLineSubmitted || 
-           ($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3) ||
-           ($threeMonthSubmitted && !$sixMonthSubmitted && $baseDiff >= 30*6)){
+           (!$threeMonthSubmitted && $baseDiff >= 30*3) ||
+           (!$sixMonthSubmitted && $baseDiff >= 30*6) ||
+           (!$nineMonthSubmitted && $baseDiff >= 30*9) ||
+           (!$twelveMonthSubmitted && $baseDiff >= 30*12)){
             return false;
         }
         return true;

@@ -73,4 +73,48 @@ $(document).ready(function(){
             });
         }
     });
+
+    // Gamification
+    $(document).on("mousemove", function(e){
+        var x = e.originalEvent.clientX;
+        var y = e.originalEvent.clientY;
+        var pos = $("#achievementContainer").position();
+        var width = $("#achievementContainer").outerWidth();
+        var height = $("#achievementContainer").outerHeight();
+        
+        if(x >= pos.left && x <= pos.left + width &&
+           y >= pos.top  && y <= pos.top  + height){
+            $("#achievement").addClass("hover");
+        }
+        else{
+            $("#achievement").removeClass("hover");
+        }
+    });
+    
+    setInterval(function(){
+        if($.cookie('gamification') != undefined){
+            if($("#achievementContainer").css("opacity") == 0){
+                var gamification = JSON.parse($.cookie('gamification'));
+                var achievement = gamification.shift();
+                if(achievement != null){
+                    $("#achievementPoints").text(achievement.points);
+                    $("#achievementText").text(achievement.text);
+                    showAchievement();
+                    $.cookie('gamification', JSON.stringify(gamification), {path: wgScriptPath});
+                    setTimeout(function(){
+                        hideAchievement();
+                    }, 5000);
+                }
+            }
+        }
+    }, 250);
 });
+
+function showAchievement(){
+    $("#achievementContainer").animate({opacity: 1, right: '20px'}, 250);
+    document.getElementById("ding").play();
+}
+
+function hideAchievement(){
+    $("#achievementContainer").animate({opacity: 0, right: '-5em'}, 250);
+}

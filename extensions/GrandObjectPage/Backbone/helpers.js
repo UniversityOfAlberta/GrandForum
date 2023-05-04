@@ -222,6 +222,8 @@ HTML.CheckBox = function(view, attr, options){
     view.events['change input[name=' + HTML.Name(attr) + '][type=checkbox]'] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
+            var elems = attr.split(".");
+            
             var data = view.model.get(attr.substr(0, index));
             if($(e.currentTarget).is(":checked")){
                 data[attr.substr(index+1)] = $(e.target).val();
@@ -231,6 +233,7 @@ HTML.CheckBox = function(view, attr, options){
             }
             view.model.set(attr.substr(0, index), _.clone(data));
             view.model.trigger("change");
+            view.model.trigger('change:' + elems[0], view.model);
         }
         else{
             if($(e.currentTarget).is(":checked")){

@@ -141,6 +141,7 @@ class DataCollection extends BackboneModel {
                                       'modified' => EQ(COL('CURRENT_TIMESTAMP'))));
             $this->id = DBFunctions::insertId();
             DBFunctions::commit();
+            $this->check5Logins();
         }
     }
     
@@ -151,6 +152,7 @@ class DataCollection extends BackboneModel {
                                       'modified' => EQ(COL('CURRENT_TIMESTAMP'))),
                                 array('id' => $this->id));
             DBFunctions::commit();
+            $this->check5Logins();
         }
     }
     
@@ -159,6 +161,21 @@ class DataCollection extends BackboneModel {
             DBFunctions::delete('grand_data_collection',
                                 array('id' => $this->id));
             DBFunctions::commit();
+        }
+    }
+    
+    function check5Logins(){
+        if($this->getPage() == "loggedin"){
+            $count = 0;
+            for($d=0;$d<7;$d++){
+                $date = date('Y-m-d', time() - $d*3600*24);
+                if(in_array($date, $this->data->log)){
+                    $count++;
+                }
+            }
+            if($count >= 5){
+                Gamification::log('LoginConsistency');
+            }
         }
     }
     

@@ -83,6 +83,9 @@ class EducationResources extends SpecialPage {
             $wgOut->addHTML("");
             
             $percent = self::completion($category->id);
+            if($percent == 100){
+                Gamification::log("EducationModule/{$category->id}");
+            }
             $wgOut->addHTML("<div id='resources{$category->id}' class='resources modules' style='display:none; position: relative; width: 100%;'>
             <div class='modules module-3cols-outer'>
                 <div class='program-box program-body' style='width:100%;'>Education Module</div>

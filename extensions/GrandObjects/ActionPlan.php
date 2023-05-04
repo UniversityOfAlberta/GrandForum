@@ -209,6 +209,16 @@ class ActionPlan extends BackboneModel {
         return $this->components;
     }
     
+    function metGoals(){
+        $tracker = (array)($this->getTracker());
+        foreach($this->getDates() as $key => $date){
+            if($date == 1 && (!isset($tracker[$key]) || $tracker[$key] != 1)){
+                return false;
+            }
+        }
+        return true;
+    }
+    
     function getSubmitted(){
         return ($this->submitted != 0);
     }
@@ -262,6 +272,7 @@ class ActionPlan extends BackboneModel {
             $this->id = DBFunctions::insertId();
             DBFunctions::commit();
             setcookie('lastfitbit', time(), time()-3600); // Expire this cookie
+            Gamification::log("CreateActionPlan");
         }
     }
     
@@ -282,6 +293,13 @@ class ActionPlan extends BackboneModel {
                                       'submitted' => $this->submitted),
                                 array('id' => $this->id));
             DBFunctions::commit();
+            
+            if($this->submitted){
+                Gamification::log("SubmitActionPlan");
+                if($this->metGoals()){
+                    Gamification::log("MeetActionPlan");
+                }
+            }
         }
     }
     

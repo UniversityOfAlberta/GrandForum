@@ -4984,6 +4984,7 @@ class Person extends BackboneModel {
                                           array('user_id' => EQ($this->id)));
         }
         DBFunctions::commit();
+        Gamification::log("CreateClipBoard");
         return true;
     }
 

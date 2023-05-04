@@ -30,12 +30,26 @@ ActionPlanCreateView = Backbone.View.extend({
                "[name=components_D]," + 
                "[name=components_S]," + 
                "[name=components_F]").prop("checked", false).change();
+        this.$("[name=dates_Mon]," +
+               "[name=dates_Tue]," +
+               "[name=dates_Wed]," + 
+               "[name=dates_Thu]," + 
+               "[name=dates_Fri]," + 
+               "[name=dates_Sat]," + 
+               "[name=dates_Sun]").prop("checked", false).change();
         _.defer(function(){
             if(this.model.get('type') == ActionPlan.MANUAL){
                 this.$(".manual").show().parent().removeClass("skip");
                 this.$(".fitbit").hide().parent().addClass("skip");
             }
             else if(this.model.get('type') == ActionPlan.FITBIT){
+                this.$("[name=dates_Mon]," +
+                       "[name=dates_Tue]," +
+                       "[name=dates_Wed]," + 
+                       "[name=dates_Thu]," + 
+                       "[name=dates_Fri]," + 
+                       "[name=dates_Sat]," + 
+                       "[name=dates_Sun]").prop("checked", true).change();
                 this.$(".manual").hide().parent().addClass("skip");
                 this.$(".fitbit").show().parent().removeClass("skip");
                 this.changeFitbit();
