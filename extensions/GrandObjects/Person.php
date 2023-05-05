@@ -650,7 +650,7 @@ class Person extends BackboneModel {
         //TODO: This can be done in another file separate from this object. Did this to save time and should
         //fix in the future
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->getId() || $me->isRoleAtLeast(MANAGER) || $isSupervisor){
+        if($me->getId() == $this->getId() || $me->isRoleAtLeast(STAFF)){
             unset(self::$fecInfoCache[$this->getId()]);
             $fec = DBFunctions::select(array('grand_personal_fec_info'),
                                        array('*'),
