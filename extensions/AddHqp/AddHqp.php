@@ -61,7 +61,7 @@ class AddHqp extends SpecialPage{
                 DBFUnctions::commit();
             }
             else{
-                $wgMessage->addWarning("<br /><b>WARNING:</b> If there are more than one of the same person, it may cause problems with your publications being associated with the wrong person.  Use 'Find Existing HQP' if the user already exists.  Only continue if you are certain that this is a unique account.");
+                $wgMessage->addWarning("<div><b>WARNING:</b> If there are more than one of the same person, it may cause problems with your publications being associated with the wrong person.  Use 'Find Existing HQP' if the user already exists.</div>");
             }
             AddHqp::generateFormHTML($wgOut);
         }
@@ -109,7 +109,7 @@ class AddHqp extends SpecialPage{
         
         $emailLabel = new Label("email_label", "Email", "The email address of the user", VALIDATE_NOT_NULL);
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
-        $emailField->registerValidation(new UniqueEmailValidation(VALIDATION_POSITIVE, VALIDATION_WARNING));
+        $emailField->registerValidation(new UniqueEmailValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         $emailField->registerValidation(new UoAEmailValidation(VALIDATION_POSITIVE, VALIDATION_WARNING));        
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
