@@ -129,6 +129,7 @@ class ReportItemCallback {
             "product_id" => "getProductId",
             "product_type" => "getProductType",
             "product_title" => "getProductTitle",
+            "product_status" => "getProductStatus",
             "product_authors" => "getProductAuthors",
             "product_description" => "getProductDescription",
             "product_url" => "getProductUrl",
@@ -789,6 +790,11 @@ class ReportItemCallback {
     function getProductTitle(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getTitle();
+    }
+    
+    function getProductStatus(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getStatus();
     }
     
     function getProductAuthors(){

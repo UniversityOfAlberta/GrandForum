@@ -1544,6 +1544,7 @@ class Paper extends BackboneModel{
             $title = $this->title;
         }
         $type = $this->type;
+        $status = $this->status;
         $pages = $this->getData(array('ms_pages', 'pages'));
         $publisher = $this->getData(array('publisher'));
         $venue = $this->getVenue();
@@ -1620,6 +1621,7 @@ class Paper extends BackboneModel{
             $match1 = str_ireplace("%amon",      $amon,      $match1);
             $match1 = str_ireplace("%title",     $title,     $match1);
             $match1 = str_ireplace("%type",      $type,      $match1);
+            $match1 = str_ireplace("%status",      $status,      $match1);
             $match1 = str_ireplace("%pages",     $pages,     $match1);
             $match1 = str_ireplace("%authors",   $authors,   $match1);
             $match1 = str_ireplace("%publisher", $publisher, $match1);
@@ -1646,6 +1648,7 @@ class Paper extends BackboneModel{
             $match2 = str_ireplace("%amon",      "", $match2);
             $match2 = str_ireplace("%title",     "", $match2);
             $match2 = str_ireplace("%type",      "", $match2);
+            $match2 = str_ireplace("%status",      "", $match2);
             $match2 = str_ireplace("%pages",     "", $match2);
             $match2 = str_ireplace("%authors",   "", $match2);
             $match2 = str_ireplace("%publisher", "", $match2);
