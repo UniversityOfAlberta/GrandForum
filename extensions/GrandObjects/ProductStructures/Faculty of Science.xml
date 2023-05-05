@@ -895,7 +895,8 @@
                 <field label="Tech Department" type="String">tech_department</field>
             </data>
             <authors label="Inventor"></authors>
-            <date label="Date"></date>
+            <acceptance_date label="Date Filed"></acceptance_date>
+            <date label="Date Awarded"></date>
         </Product>
         
         <Product type="Spin-Off" status="">
