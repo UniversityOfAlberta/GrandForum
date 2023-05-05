@@ -138,26 +138,12 @@ class PersonFECTab extends AbstractEditableTab {
             $this->html .= "<div style='float: right; display: inline-block;'>{$count} publications (of which {$peerCount} refereed) have been imported to the Forum.</div>";
         }
         
-        // Tenure
+        // HR Note
         $blb = new ReportBlob(BLOB_RAW, 0, $this->person->getId(), 0);
-        $addr = ReportBlob::create_address('FEC_HISTORY', 'FEC_HISTORY', 'TENURE', 0);
+        $addr = ReportBlob::create_address('FEC_HISTORY', 'FEC_HISTORY', 'HR_NOTE', 0);
         $result = $blb->load($addr, true);
-        $tenureMD5 = $blb->getMD5();
-        $tenureLink = ($tenureMD5 != "") ? "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$tenureMD5}'>Download</a>" : "";
-        
-        // Promotion
-        $blb = new ReportBlob(BLOB_RAW, 0, $this->person->getId(), 0);
-        $addr = ReportBlob::create_address('FEC_HISTORY', 'FEC_HISTORY', 'PROMOTION', 0);
-        $result = $blb->load($addr, true);
-        $promotionMD5 = $blb->getMD5();
-        $promotionLink = ($promotionMD5 != "") ? "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$promotionMD5}'>Download</a>" : "";
-        
-        // Sabbatical
-        $blb = new ReportBlob(BLOB_RAW, 0, $this->person->getId(), 0);
-        $addr = ReportBlob::create_address('FEC_HISTORY', 'FEC_HISTORY', 'SABBATICAL', 0);
-        $result = $blb->load($addr, true);
-        $sabbaticalMD5 = $blb->getMD5();
-        $sabbaticalLink = ($sabbaticalMD5 != "") ? "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$sabbaticalMD5}'>Download</a>" : "";
+        $hrNoteMD5 = $blb->getMD5();
+        $hrNoteLink = ($hrNoteMD5 != "") ? "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$hrNoteMD5}'>Download</a>" : "";
         
         $this->html .= "<table>";
         $this->html .= "<tr><td align='right' style='white-space:nowrap;'><b>Date of PhD:</b></td><td>".substr($this->person->dateOfPhd, 0, 10)."</td></tr>";
@@ -177,11 +163,7 @@ class PersonFECTab extends AbstractEditableTab {
         $this->html .= "<tr><td align='right' style='white-space:nowrap;'><b>Date of Retirement:</b></td><td>".substr($this->person->dateOfRetirement, 0, 10)."</td></tr>";
         $this->html .= "<tr><td align='right' style='white-space:nowrap;'><b>Date of Last Degree:</b></td><td>".substr($this->person->dateOfLastDegree, 0, 10)."</td></tr>";
         $this->html .= "<tr><td align='right' style='white-space:nowrap;'><b>Last Degree:</b></td><td>".$this->person->lastDegree."</td></tr>";
-        if($this->isChair() || $this->isCommittee()){
-            $this->html .= "<tr><td align='right' style='white-space:nowrap;'><b>Tenure Package:</b></td><td>{$tenureLink}</td></tr>";
-            $this->html .= "<tr><td align='right' style='white-space:nowrap;'><b>Promotion Package:</b></td><td>{$promotionLink}</td></tr>";
-        }
-        $this->html .= "<tr><td align='right' style='white-space:nowrap;'><b>Sabbatical Package:</b></td><td>{$sabbaticalLink}</td></tr>";
+        $this->html .= "<tr><td align='right' style='white-space:nowrap;'><b>HR Note:</b></td><td>{$hrNoteLink}</td></tr>";
         $this->html .= "</table>";
     }
     
@@ -211,11 +193,7 @@ class PersonFECTab extends AbstractEditableTab {
             $this->html .= "<tr><td align='right'><b>Date of Last Degree:</b></td><td><input type='text' name='dateOfLastDegree' class='calendar' style='display:none;' value='".substr($this->person->dateOfLastDegree, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>Last Degree:</b></td><td><input type='text' name='lastDegree' value='".$this->person->lastDegree."' /></td></tr>";
         }
-        if($this->isChair() || $this->isCommittee()){
-            $this->html .= "<tr><td align='right'><b>Tenure Package:</b></td><td><input type='file' name='tenure' accept='application/pdf' /></td></tr>";
-            $this->html .= "<tr><td align='right'><b>Promotion Package:</b></td><td><input type='file' name='promotion' accept='application/pdf' /></td></tr>";
-        }
-        $this->html .= "<tr><td align='right'><b>Sabbatical Package:</b></td><td><input type='file' name='sabbatical' accept='application/pdf' /></td></tr>";
+        $this->html .= "<tr><td align='right'><b>HR Note:</b></td><td><input type='file' name='hr_note' accept='application/pdf' /></td></tr>";
         $this->html .= "</table>";
         
         $this->html .= "<script type='text/javascript'>
