@@ -58,6 +58,8 @@ class AdminDataCollection extends SpecialPage{
                                         <th rowspan='2'>Submitted Intake Survey</th>
                                         <th rowspan='2'>Submitted 3Month Survey</th>
                                         <th rowspan='2'>Submitted 6Month Survey</th>
+                                        <th rowspan='2'>Submitted 9Month Survey</th>
+                                        <th rowspan='2'>Submitted 12Month Survey</th>
                                         <th rowspan='2'>Action Plans</th>
                                         <th colspan='10'>Data Collected</th>
                                     </tr>
@@ -84,6 +86,8 @@ class AdminDataCollection extends SpecialPage{
                 $submitted = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID")) ? "Yes" : "No");
                 $submitted3 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")) ? "Yes" : "No");
                 $submitted6 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")) ? "Yes" : "No");
+                $submitted9 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_NINEMO")) ? "Yes" : "No");
+                $submitted12 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")) ? "Yes" : "No");
                 $registration_str = $person->getRegistration();
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $touched_str = $person->getTouched();
@@ -158,6 +162,8 @@ class AdminDataCollection extends SpecialPage{
                 <td>{$submitted}</td>
                 <td>{$submitted3}</td>
                 <td>{$submitted6}</td>
+                <td>{$submitted9}</td>
+                <td>{$submitted12}</td>
                 <td style='white-space:nowrap;'>
                     <b>Created:</b> ".count($plans)."<br />
                     <b>Submitted:</b> ".count($submittedPlans)."<br />
