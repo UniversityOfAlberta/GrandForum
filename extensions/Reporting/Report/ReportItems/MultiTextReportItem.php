@@ -101,8 +101,8 @@ EOF;
                             foreach($project->getMilestones() as $milestone){
                                 $names[] = $milestone->title;
                             }
-                            $combobox = new SelectBox("{$this->getPostId()}[\" + i + \"][$index]", "Milestone", '', $names);
-                            $combobox->attr('class', 'raw');
+                            $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Milestone", '', $names);
+                            //$combobox->attr('class', 'raw');
                             $combobox->attr('style', "width:{$sizes[$j]}px;");
                             $item .= @"\"<td width='{$widths[2]}' align='$align'><span>".$combobox->renderSelect()."</span></td>\" + \n";
                         }
@@ -306,7 +306,7 @@ EOF;
                             foreach($project->getMilestones() as $milestone){
                                 $names[] = $milestone->title;
                             }
-                            $combobox = new SelectBox("{$this->getPostId()}[$i][$index]", "Milestone", $value[$index], $names);
+                            $combobox = new ComboBox("{$this->getPostId()}[$i][$index]", "Milestone", $value[$index], $names);
                             $combobox->attr('class', 'raw');
                             $combobox->attr('style', "width:{$sizes[$j]}px;");
                             $item .= "<td align='$align'>".$combobox->render()."</td>";
