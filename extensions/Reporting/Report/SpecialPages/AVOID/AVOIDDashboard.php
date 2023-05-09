@@ -254,8 +254,8 @@ class AVOIDDashboard extends SpecialPage {
         $label = $scores["Label"];
         $frailty = "";
         if($label == "very low risk"){ 
-            $frailty = "<span class='en'>Based on your answers in the assessment, you have a <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty</span>
-                        <span class='fr'>Sur la base de vos réponses à l’évaluation, vous avez un <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</span>.
+            $frailty = "<span class='en'>Based on your answers in the assessment, you have a <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.</span>
+                        <span class='fr'>Sur la base de vos réponses à l’évaluation, vous avez un <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</span>
 ";
         }
         else if($label == "low risk"){
