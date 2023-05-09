@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="ELITE Intern Application" reportType="RP_ELITE" pdfType="RPTP_ELITE" pdfFiles="ApplicationPDF" year="0" ajax="true" encrypt="true" disabled="true">
+<Report name="ELITE Intern Application" reportType="RP_ELITE" pdfType="RPTP_ELITE" pdfFiles="ApplicationPDF" year="0" ajax="true" encrypt="true" disabled="false">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="profile" permissions="rw" />
@@ -530,7 +530,15 @@
                     ]]>
                 </If>
                 <Else>
-                    <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+                    <If if="{==({getText(RP_ELITE, PROFILE, EDUCATION, 0, {$user_id}, 0)},High school)}">
+                        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+                    </If>
+                    <Else>
+                        <![CDATA[
+                            <span class='en'>Only <b>High school</b> applications are open at this time.</span>
+                            <span class='fr'>Seules les candidatures <b>High school</b> sont ouvertes pour le moment.</span>
+                        ]]>
+                    </Else>
                 </Else>
             </Else>
         </If>
