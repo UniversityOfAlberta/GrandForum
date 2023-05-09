@@ -254,19 +254,23 @@ class AVOIDDashboard extends SpecialPage {
         $label = $scores["Label"];
         $frailty = "";
         if($label == "very low risk"){ 
-            $frailty = "Based on your answers in the assessment, you have a <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.
+            $frailty = "<span class='en'>Based on your answers in the assessment, you have a <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty</span>
+                        <span class='fr'>Sur la base de vos réponses à l’évaluation, vous avez un <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span>risque très faible</span> de fragilisation.</span>.
 ";
         }
         else if($label == "low risk"){
-            $frailty = "Based on your answers in the assessment, you have a <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.
+            $frailty = "<span class='en'>Based on your answers in the assessment, you have a <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.</span>
+                        <span class='fr'>Sur la base de vos réponses à l’évaluation, vous avez un risque moyen <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</span>
 ";
         }
         else if($label == "medium risk"){
-            $frailty = "Based on your answers in the assessment, you have a <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.
+            $frailty = "<span class='en'>Based on your answers in the assessment, you have a <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.</span>
+                        <span class='fr'>Sur la base de vos réponses à l’évaluation, vous avez un risque moyen <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</span>
 ";
         }
         else if($label == "high risk"){
-            $frailty = "Based on your answers in the assessment, you have a <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.";
+            $frailty = "<span class='en'>Based on your answers in the assessment, you have a <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.</span>
+                        <span class='fr'>Sur la base de vos réponses à l’évaluation, vous avez un risque moyen <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</span>";
         }
 
         
@@ -285,20 +289,34 @@ class AVOIDDashboard extends SpecialPage {
                             <div class='program-body {$membersOnly}' style='width: 100%;'>
                                 <p style='margin-bottom:0.5em;'>
                                     {$frailty}<br />
-                                    <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a> | <a href='https://www.youtube.com/watch?v=tzyYBp1v1WI&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE' target='_blank'>Frailty: Ask the Expert</a><br />
+                                    <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>
+                                        <span class='en'>What is Frailty?</span>
+                                        <span class='fr'>Qu’est-ce que la fragilité?</span></a> | 
+                                    <a href='https://www.youtube.com/watch?v=tzyYBp1v1WI&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE' target='_blank'>Frailty: Ask the Expert</a><br />
                                 </p>
                                 <a class='viewReport' href='#'><img src='{$wgServer}{$wgScriptPath}/skins/report.png' style='height:5em;max-height:100px;margin-right:0.5em;' /></a>
-                                <div style='display:inline-block;vertical-align:middle;'><a class='viewReport' href='#'>My Personal Report and Recommendations</a>{$assessmentReport}{$progressReport}</div>
+                                <div style='display:inline-block;vertical-align:middle;'>
+                                    <a class='viewReport' href='#'>
+                                        <span class='en'>My Personal Report and Recommendations</span>
+                                        <span class='fr'>Mon rapport personnel et mes recommandations</span>
+                                    </a>{$assessmentReport}{$progressReport}
+                                </div>
                                 <p>
-                                    <b>How do I use this program?</b><br />
-                                    Step 1. Review your personal report above to learn about your risks and recommendations<br />
-                                    Step 2. Use the action plan template below to create and track a healthy change <b>this week</b><br />
-                                    Step 3. Use the education, programs and resources to support your healthy aging goals
+                                    <b><span class='en'>How do I use this program?</span><span class='fr'>Utilisation du programme</span></b><br />
+                                    <span class='en'>Step 1. Review your personal report above to learn about your risks and recommendations</span>
+                                    <span class='fr'>Étape 1. Consultez votre rapport personnel ci-dessus pour connaître vos risques et les recommandations à suivre.</span><br />
+                                    
+                                    <span class='en'>Step 2. Use the action plan template below to create and track a healthy change <b>this week</b></span>
+                                    <span class='fr'>Étape 2. Utilisez le modèle de plan d’action ci-dessous pour choisir un changement sain et en faire le suivi <b>cette semaine</b></span><br />
+                                    
+                                    <span class='en'>Step 3. Use the education, programs and resources to support your healthy aging goals</span>
+                                    <span class='fr'>Étape 3. Utilisez les modules d’éducation, les programmes et les ressources pour soutenir vos objectifs de vieillissement sain.</span>
                                 </p>
 
                                 <p style='margin-bottom:0;'>
-                                    Still need help? Whether it’s navigating the site or something else, we are here to help you. Please click the button below for 1-on-1 assistance.<br />
-                                    <a id='helpButton' class='program-button' style='width: 4em; text-align: center;'>Help</a>
+                                    <span class='en'>Still need help? Whether it’s navigating the site or something else, we are here to help you. Please click the button below for 1-on-1 assistance.</span>
+                                    <span class='fr'>Vous avez encore besoin d’aide? Qu’il s’agisse de la navigation sur le site ou d’autre chose, nous sommes là pour vous aider. Veuillez cliquer sur le bouton ci-dessous pour obtenir de l’assistance individuelle.</span><br />
+                                    <a id='helpButton' class='program-button' style='width: 4em; text-align: center;'><span class='en'>Help</span><span class='fr'>Aide</span></a>
                                 </p>
                             </div>
                          </div>");
@@ -306,18 +324,30 @@ class AVOIDDashboard extends SpecialPage {
         // Upcoming Events
         $events = Wiki::newFromTitle("UpcomingEvents");
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Upcoming Events & Announcements</h1>
+                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>
+                                <span class='en'>My Upcoming Events & Announcements</span>
+                                <span class='fr'>Mes événements à venir et annonces</span>
+                            </h1>
                             <span class='program-body' style='width: 100%;'>{$events->getText()}</span>
                          </div>");
         
         // Weekly Action Plan
         $fitbitEnabled = ($me->getExtra('fitbit') != "" && time() < $me->getExtra('fitbit_expires')) ? "checked" : "";
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Weekly Action Plan</h1>");
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>
+                            <span class='en'>My Weekly Action Plan</span>
+                            <span class='fr'>Mon plan d’action hebdomadaire</span>
+                        </h1>");
         $wgOut->addHTML("<div class='program-body $membersOnly' style='width: 100%;'>
                             <div id='actionPlanMessages'></div>
-                            <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan <a id='viewActionPlanOverview' href='#'>Overview</a> and review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a> to increase your chance of success.</p>
-                            <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.  If you have a fitbit watch, you can allow this program to connect to it so that it will track your daily goals automatically.</p>
+                            <p>
+                                <span class='en'>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan <a id='viewActionPlanOverview' href='#'>Overview</a> and review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a> to increase your chance of success.</span>
+                                <span class='fr'>Les plans d’action représentent de petits pas vers des objectifs de santé plus larges. Avant de vous lancer, veuillez lire l’<a id='viewActionPlanOverview' href='#'>aperçu</a> du plan d’action et passer en revue le <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>module « Pour un changement réussi »</a> afin d’augmenter vos chances de réussite.</span>
+                            </p>
+                            <p>
+                                <span class='en'>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.  If you have a fitbit watch, you can allow this program to connect to it so that it will track your daily goals automatically.</span>
+                                <span class='fr'>Utilisez le modèle de plan d’action fourni pour élaborer des plans hebdomadaires, suivre vos progrès quotidiens et examiner vos réalisations dans votre journal de plans d’action.</span>
+                            </p>
                             <div id='fitbitMessages'></div>
                             Connect with your <b>Fitbit</b> for easy monitoring&nbsp;&nbsp;&nbsp;
                             Off <label class='switch'>
@@ -325,7 +355,12 @@ class AVOIDDashboard extends SpecialPage {
                                 <span class='toggle round' style='border: none !important;'></span>
                             </label> On
                             <p>
-                                <div id='newPlan' style='display: none;'><a id='createActionPlan' href='#'>Create NEW Action Plan</a></div>
+                                <div id='newPlan' style='display: none;'>
+                                    <a id='createActionPlan' href='#'>
+                                        <span class='en'>Create NEW Action Plan</span>
+                                        <span class='fr'>Créer un NOUVEAU plan d’action</span>
+                                    </a>
+                                </div>
                                 <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a> / <a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a> / <a id='repeatActionPlan' href='#'>Repeat for another week</a>)</div>
                             </p>
                             <div id='actionPlanTracker' style='display:none;'></div>
@@ -337,17 +372,29 @@ class AVOIDDashboard extends SpecialPage {
         
         // Progress
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress</h1>");
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>
+                            <span class='en'>My AVOID Progress</span>
+                            <span class='fr'>Mon progrès</span>
+                         </h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
                             <div id='pastActionPlans'></div>
-                            <h3 style='margin-bottom: 0;margin-top:0;'>Education Module Progress</h3>
+                            <h3 style='margin-bottom: 0;margin-top:0;'>
+                                <span class='en'>Education Module Progress</span>
+                                <span class='fr'>Progression des modules</span>
+                            </h3>
                             <div class='modules'>
                                  <div class='module-2cols-outer'>
-                                    <b>Completed</b>
+                                    <b>
+                                        <span class='en'>Completed</span>
+                                        <span class='fr'>Achevé</span>
+                                    </b>
                                     <ul>".implode($complete)."</ul>
                                  </div>
                                  <div class='module-2cols-outer'>
-                                    <b>In Progress</b>
+                                    <b>
+                                        <span class='en'>In Progress</span>
+                                        <span class='fr'>En cours</span>
+                                    </b>
                                     <ul>".implode($inProgress)."</ul>
                                  </div>
                             </div>

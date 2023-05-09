@@ -543,15 +543,19 @@ class UserFrailtyIndexAPI extends API{
         // Labels
         if($scores["Total"] >= 0 && $scores["Total"] <= 3){
             $scores["Label"] = "very low risk";
+            $scores["LabelFr"] = "risque très faible";
         }
         else if($scores["Total"] > 3 && $scores["Total"] <= 8){
             $scores["Label"] = "low risk";
+            $scores["LabelFr"] = "risque faible";
         }
         else if($scores["Total"] > 8 && $scores["Total"] <= 16){
             $scores["Label"] = "medium risk";
+            $scores["LabelFr"] = "risque moyen";
         }
         else if($scores["Total"] > 16){
             $scores["Label"] = "high risk";
+            $scores["LabelFr"] = "risque élevé";
         }
         return $scores;
     }

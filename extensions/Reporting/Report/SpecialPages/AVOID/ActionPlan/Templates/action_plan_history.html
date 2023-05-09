@@ -1,5 +1,8 @@
 <% if(this.model.length > 0){ %>
-    <h3 style="margin-bottom: 0;margin-top:0;">Action Plans Log - Review your accomplishments!</h3>
+    <h3 style="margin-bottom: 0;margin-top:0;">
+        <span class='en'>Action Plans Log - Review your accomplishments!</span>
+        <span class='fr'>Journal de plans d’action – passez en revue vos réalisations!</span>
+    </h3>
     <div class="modules" style="gap:0;">
         <% _.each(new ActionPlans(this.model.where({submitted: true})).getComponents(), function(comp){ %>
             <div style="width: 250px;margin-bottom:0.5em;flex: 1 1 auto;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;">

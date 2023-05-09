@@ -81,27 +81,28 @@ class Report extends AbstractReport{
                 font-size: 1.25em;
                 user-select: none;
                 pointer-events: none;
-                height: 5em;
+                min-height: 5em;
                 z-index: 100000;
             }
             
             #achievement {
-                background: #333333;
+                background: #222222;
                 background-image: url('{$wgServer}{$wgScriptPath}/skins/goldstar.png');
                 background-repeat: no-repeat;
                 background-size: 4em 4em;
                 background-position: 0.5em 0.5em; 
                 color: white;
-                height: 4em;
+                min-height: 4em;
                 padding: 0.5em 1em;
                 padding-left: 5em;
                 border-radius: 0.75em;
                 box-shadow: 3px 3px 6px rgba(0,0,0,0.5);
-                transition: opacity 0.25s;
+                transition: filter 0.25s, opacity 0.25s;
             }
             
             #achievement.hover {
                 opacity: 0.25 !important;
+                filter: blur(0.25em);
             }
             
             @media only screen and (max-width: 767px) {
@@ -120,7 +121,7 @@ class Report extends AbstractReport{
         $wgOut->addScript("<script src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/avoid.js?".filemtime('extensions/Reporting/Report/SpecialPages/AVOID/avoid.js')."'></script>");
         $wgOut->addHTML("<audio id='ding' preload='auto'><source src='{$wgServer}{$wgScriptPath}/skins/ding.mp3' type='audio/mpeg' /></audio>");
         $wgOut->addHTML("<div id='achievementContainer' style='opacity:0; right: -5em;'>
-                            <div id='achievement'><b style='display:inline-block;font-size:1.25em; line-height: 1.25em;'>Achievement Unlocked!</b><br /><span id='achievementPoints'>X</span> points - <span id='achievementText'>Lorem Ipsum</span></div>
+                            <div id='achievement'><b style='display:inline-block;font-size:1.25em; margin-top: 0.5em; margin-bottom: 0.2em;'><span id='achievementPoints'>X</span> points</b><br /><div id='achievementText' style='margin-bottom: 0.5em;'>Lorem Ipsum</div></div>
                          </div>");
         $wgOut->addHTML("<div title='Become a Member' style='display:none;' id='becomeMemberDialog'>
                             <div id='memberMessages'></div>

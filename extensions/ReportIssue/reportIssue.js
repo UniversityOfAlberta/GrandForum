@@ -3,9 +3,9 @@ $(document).ready(function(){
     var dataToSend = {};
     var selector = (showSideBar) ? "div#side" : "#header ul";
 
-    $(selector).append("<div id='reportIssue'><button><span class='en'>Report Issue</span><span class='fr' style='font-size:0.85em;'>Signaler un problème</span></button><span class='throbber' style='display:none;'></span></div>");
+    $(selector).append("<div id='reportIssue'><button><span class='en'>Report Issue</span><span class='fr' style='font-size:0.85em;line-height:1em;'>Signaler un problème</span></button><span class='throbber' style='display:none;'></span></div>");
     if(isExtensionEnabled("ContactUs")){
-        $(selector).append("<div id='contactUs'><button>Contact Us</button></div>");
+        $(selector).append("<div id='contactUs'><button><span class='en'>Contact Us</span><span class='fr'>Contactez-nous</span></button></div>");
     }
     
     if(!showSideBar){

@@ -4,13 +4,13 @@
     position: relative;
 }
 
-#reportIssue .throbber {
+#reportIssue .throbber, #contactUs .throbber {
     position: absolute;
     right: 5px;
     top: 6px;
 }
 
-#reportIssue button {
+#reportIssue button, #contactUs button {
     text-align: center !important;
     padding-left: 0 !important;
     padding-right: 0 !important;

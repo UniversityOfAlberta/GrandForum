@@ -328,12 +328,12 @@ If you need help with managing the medications you are on, visit the following C
     
     function drawRow($key, $row, $scores){
         global $wgServer, $wgScriptPath;
-        $need = "N";
+        $need = "<span class='en'>N</span><span class='fr'>N</span>";
         $education = "";
         $programs = "";
         $community = "";
         if($scores[$key] > 0){
-            $need = "Y";
+            $need = "<span class='en'>Y</span><span class='fr'>O</span>";
             foreach($row['education'] as $k => $e){
                 if(is_array($e)){
                     $links = array();
@@ -368,7 +368,7 @@ If you need help with managing the medications you are on, visit the following C
         $html = "<tr>
                     <td align='center' style='padding-top: 1em; font-style: initial;'>{$need}</td>
                     <td align='center'><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$row['img']}' alt='{$key}' /><br />{$key}</td>";
-        if($need == "Y"){
+        if($need == "<span class='en'>Y</span><span class='fr'>O</span>"){
             $html .= "<td align='center' style='font-size: 0.9em;'>{$education}</td>
                     <td align='center' style='font-size: 0.8em;'>{$programs}</td>
                     <td style='font-size: 0.9em;'>{$community}</td>";
@@ -381,7 +381,7 @@ If you need help with managing the medications you are on, visit the following C
     }
     
     function generateReport($person){
-        global $wgServer, $wgScriptPath, $config;
+        global $wgServer, $wgScriptPath, $config, $wgLang;
         $dir = dirname(__FILE__) . '/';
         require_once($dir . '/../../../../../Classes/SmartDomDocument/SmartDomDocument.php');
         $api = new UserFrailtyIndexAPI();
@@ -473,13 +473,13 @@ If you need help with managing the medications you are on, visit the following C
                                 float: right;
                                 color: #06619b;
                                 
-                                margin-top: 1em;
+                                margin-top: 2.25em;
                                 margin-right: 1.5em;
                             }
                             
                             .title {
                                 font-weight: 700;
-                                font-size: 1.75em;
+                                font-size: 1.6em;
                                 line-height: 1em;
                                 text-decoration: underline;
                             }
@@ -586,36 +586,54 @@ If you need help with managing the medications you are on, visit the following C
                                 padding: 0;
                                 margin: 0;
                                 line-height: 1em;
-                            }
+                            }";
                             
+                    if($wgLang->getCode() == "en"){
+	                    $html .= ".fr { display: none !important; }";
+	                }
+	                else if($wgLang->getCode() == "fr"){
+	                    $html .= ".en { display: none !important; }";
+	                }
+                    $html .= "     
                         </style>
                     </head>
                     <body>
                         <div class='stickyContainer pdfnodisplay'>
                             <table class='sticky recommendations' cellspacing='0' style='width: 100%;'>
                                 <tr>
-                                    <th class='dark-top' colspan='5'>The following risks and recommendations are from the health outcomes section of the assessment</th>
+                                    <th class='dark-top' colspan='5'>
+                                        <span class='en'>The following risks and recommendations are from the health outcomes section of the assessment</span>
+                                        <span class='fr' style='font-size:0.8em;'>Les recommandations et les risques suivants sont issus de la section de l’évaluation consacrée aux résultats en matière de santé.</span>
+                                    </th>
                                 </tr>
                                 <tr>
                                     <th rowspan='2' style='min-width: 6em; width: 6em; padding-bottom: 0; position: relative;'>
-                                        <div style='line-height: 1em; position: absolute; top: 8px; left: 0;width:100%; text-align: center;'>Risk<br />Identified?<br />(Y/N)</div>
+                                        <div style='line-height: 1em; position: absolute; top: 8px; left: 0;width:100%; text-align: center;'>
+                                            <span class='en'>Risk<br />Identified?<br />(Y/N)</span>
+                                            <span class='fr'>Risque<br />identifié?<br />(O/N)</span>
+                                        </div>
                                     </th>
                                     <th rowspan='2' style='min-width: 6em; width: 6em;'>
-                                        Topic
+                                        <span class='en'>Topic</span>
+                                        <span class='fr'>Sujet</span>
                                     </th>
                                     <th class='dark' colspan='3'>
-                                        AVOID Frailty Program Support Recommendation
+                                        <span class='en'>AVOID Frailty Program Support Recommendation</span>
+                                        <span class='fr'>Recommandation de soutien du programme Proactif</span>
                                     </th>
                                 </tr>
                                 <tr>
                                     <th align='left' style='width: 6.5em;'>
-                                        <small><i>AVOID Frailty<br />Education<br />Topic<br /></i></small>
+                                        <span class='en'><small><i>AVOID Frailty<br />Education<br />Topic<br /></i></small></span>
+                                        <span class='fr'><small><i>Sujet d’éducation<br />du programme<br />Proacif</i></small></span>
                                     </th>
                                     <th align='left' style='width: 9em;'>
-                                        <small><i>AVOID Frailty<br />Programs<br /></i></small>
+                                        <span class='en'><small><i>AVOID Frailty<br />Programs<br /></i></small></span>
+                                        <span class='fr'><small><i>Programmes offerts<br />dans le cadre<br />de Proactif</i></small></span>
                                     </th>
                                     <th align='left' style='width: 13em;'>
-                                        <small><i>Community Program<br />Category (Find these in the <br />Community Program Library)<br /></i></small>
+                                        <span class='en'><small><i>Community Program<br />Category (Find these in the <br />Community Program Library)<br /></i></small></span>
+                                        <span class='fr'><small><i>Catégorie de ressources<br />communautaires (dans le Répertoire<br />des ressources communautaires)</i></small></span>
                                     </th>
                                 </tr>
                             </table>
@@ -629,16 +647,20 @@ If you need help with managing the medications you are on, visit the following C
                         </div>
                         <div class='title-box'>
                             <div class='title'>
-                                My Frailty and Behavioural Status:<br />
-                                Report from Healthy Aging Assessment
+                                <span class='en'>My Frailty and Behavioural Status:<br />Report from Healthy Aging Assessment</span>
+                                <span class='fr'>Mon état de fragilité:<br />Rapport de l’évaluation du vieillissement sain</span>
                             </div>
-                            <div class='frailtyStatus'>My Frailty Status: <u>{$scores['Label']}</u></div>
+                            <div class='frailtyStatus'>
+                                <span class='en'>My Frailty Status: <u>{$scores['Label']}</u></span>
+                                <span class='fr'>Mon état de fragilité: <u>{$scores["LabelFr"]}</u></span>
+                            </div>
                             <div class='pdfnodisplay' style='margin-top:1em;'>Your recommendations with direct links to resources are below.<br />You can also print your personal report <a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'><b><u>here</u></b></a>.</div>
                         </div>
                         <div class='list'>
-                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />This report shows the items that went into your frailty status. Where a need was identified from your answers, some recommended resources appear in that topic to address that specific item. If you do not see any recommendations, it means that no needs were identified from your answers.</p>
-                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/star.png' />The recommendations throughout this program are meant to support healthy 
-behaviour. They are not clinical recommendations, for which you should seek advice from your health care providers (example: doctor, pharmacist, dentist).</p>
+                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' /><span class='en'>This report shows the items that went into your frailty status. Where a need was identified from your answers, some recommended resources appear in that topic to address that specific item. If you do not see any recommendations, it means that no needs were identified from your answers.</span><span class='fr'>Ce rapport montre les domaines évalués pour mesurer votre état de fragilité. Lorsqu’un besoin est établi à partir de vos réponses, certaines ressources recommandées apparaissent dans cette rubrique concernant ce domaine précis. Si vous ne voyez pas de recommandations, cela signifie qu’aucun besoin n’a été établi à partir de vos réponses.</span>
+                            </p>
+                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/star.png' /><span class='en'>The recommendations throughout this program are meant to support healthy 
+behaviour. They are not clinical recommendations, for which you should seek advice from your health care providers (example: doctor, pharmacist, dentist).</span><span class='fr'>Les recommandations formulées tout au long de ce programme visent à favoriser un vieillissement en santé. Il ne s’agit pas de recommandations cliniques pour lesquelles vous devez demander conseil à un professionnel de la santé (p. ex. médecin, pharmacien, dentiste).</span></p>
                         </div>
                         <br />
                         <br />
@@ -666,7 +688,10 @@ behaviour. They are not clinical recommendations, for which you should seek advi
                         
                         <table class='recommendations' cellspacing='0' style='width: 100%;'>
                             <tr>
-                                <th class='dark-top' colspan='5'>The following risks and recommendations are from the health outcomes section of the assessment</th>
+                                <th class='dark-top' colspan='5'>
+                                    <span class='en'>The following risks and recommendations are from the health outcomes section of the assessment</span>
+                                    <span class='fr' style='font-size:0.8em;'>Les recommandations et les risques suivants sont issus de la section de l’évaluation consacrée aux résultats en matière de santé.</span>
+                                </th>
                             </tr>
                             <tr>
                                 <th rowspan='2' style='min-width: 6em; width: 6em; padding-bottom: 0; position: relative;'>
@@ -681,13 +706,16 @@ behaviour. They are not clinical recommendations, for which you should seek advi
                             </tr>
                             <tr>
                                 <th align='left' style='width: 6.5em;'>
-                                    <small><i>AVOID Frailty<br />Education<br />Topic<br /></i></small>
+                                    <span class='en'><small><i>AVOID Frailty<br />Education<br />Topic<br /></i></small></span>
+                                    <span class='fr'><small><i>Sujet d’éducation<br />du programme<br />Proacif</i></small></span>
                                 </th>
                                 <th align='left' style='width: 9em;'>
-                                    <small><i>AVOID Frailty<br />Programs<br /></i></small>
+                                    <span class='en'><small><i>AVOID Frailty<br />Programs<br /></i></small></span>
+                                    <span class='fr'><small><i>Programmes offerts<br />dans le cadre<br />de Proactif</i></small></span>
                                 </th>
                                 <th align='left' style='width: 13em;'>
-                                    <small><i>Community Program<br />Category (Find these in the <br />Community Program Library)<br /></i></small>
+                                    <span class='en'><small><i>Community Program<br />Category (Find these in the <br />Community Program Library)<br /></i></small></span>
+                                    <span class='fr'><small><i>Catégorie de ressources<br />communautaires (dans le Répertoire<br />des ressources communautaires)</i></small></span>
                                 </th>
                             </tr>";
         foreach(self::$healthRows as $key => $row){
@@ -695,7 +723,11 @@ behaviour. They are not clinical recommendations, for which you should seek advi
         }
         
         $html .= "<tr><td class='white' colspan='5'></td></tr>
-                  <tr style='page-break-after: avoid;'><th class='dark-top' colspan='5'>The following risks and recommendations are from the behavioural portion of the assessment</th></tr>";
+                  <tr style='page-break-after: avoid;'>
+                    <th class='dark-top' colspan='5'>
+                        <span class='en'>The following risks and recommendations are from the behavioural portion of the assessment</span>
+                        <span class='fr' style='font-size:0.8em;'>Les recommandations et les risques suivants sont issus de la section de l’évaluation consacrée aux résultats en matière de santé.</span>
+                    </th></tr>";
         foreach(self::$behavioralRows as $key => $row){
             $html .= $this->drawRow($key, $row, $scores["Behavioral"]);
         }
@@ -711,7 +743,7 @@ behaviour. They are not clinical recommendations, for which you should seek advi
         
         $html .= "      </table>
                         <br />
-                        <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />While the behaviours recommended for all AVOID components play a role in a healthy lifestyle, you may want to focus on one or a few at a time - this report can help you decide where to start and focus your efforts. You can use this as a place to start on your healthy aging journey to help you develop an action plan around one or more of the topics that can best help slow the onset of frailty for you personally.
+                        <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' /><span class='en'>While the behaviours recommended for all AVOID components play a role in a healthy lifestyle, you may want to focus on one or a few at a time - this report can help you decide where to start and focus your efforts. You can use this as a place to start on your healthy aging journey to help you develop an action plan around one or more of the topics that can best help slow the onset of frailty for you personally.</span><span class='fr'>Bien que les comportements recommandés pour toutes les composantes du programme Proactif pour éviter la fragilisation jouent un rôle dans un mode de vie sain, vous voudrez peut-être vous concentrer sur un ou plusieurs d’entre eux à la fois; ce rapport peut vous aider à décider par où commencer et sur quoi concentrer vos efforts. Vous pouvez l’utiliser comme point de départ de votre parcours de vieillissement en santé. Il vous sera ainsi plus facile d’élaborer un plan d’action autour d’un ou de plusieurs des domaines qui contribueront de manière optimale à ralentir l’apparition de la fragilité pour vous, personnellement.</span>
                         <br />
                         <br />
                         {$actionPlanMessage}
@@ -721,7 +753,7 @@ behaviour. They are not clinical recommendations, for which you should seek advi
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_bottom.png' style='z-index: -2; position: absolute; bottom:0; left: 0; right:0; width: 216mm;' />
                         <script type='text/javascript'>
                             var initialWidth = $(window).width();
-                            
+                            var wgLang = '{$wgLang->getCode()}';
                             $(window).resize(function(){
                                 $('html').width('100%');
                                 var desiredWidth = $(window).width();
@@ -729,6 +761,9 @@ behaviour. They are not clinical recommendations, for which you should seek advi
                                 var scaleFactor = desiredWidth/initialWidth;
                                 $('div.body').css('transform', 'scale(' + scaleFactor + ')');
                                 $('div.stickyContainer').css('top', 496*scaleFactor);
+                                if(wgLang == 'fr'){
+                                    $('div.stickyContainer').css('top', parseFloat($('div.stickyContainer').css('top')) + 16*scaleFactor);
+                                }
                                 $('table.sticky').css('transform', 'scale(' + scaleFactor + ')')
                                                  .css('margin-left', scaleFactor - 1 + 'cm');
                                 $('body').height($('div.body').outerHeight()*scaleFactor);
