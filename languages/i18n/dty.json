@@ -9,7 +9,9 @@
 			"पर्वत सुबेदी",
 			"बिप्लब आनन्द",
 			"रमेश सिंह बोहरा",
-			"राम प्रसाद जोशी"
+			"राम प्रसाद जोशी",
+			"Bada Kaji",
+			"बडा काजी"
 		]
 	},
 	"tog-underline": "सम्बन्ध निम्न रेखाङ्कन:",
@@ -176,7 +178,7 @@
 	"history_small": "इतिहास",
 	"updatedmarker": "मेरो अन्तिम घुमाई पछि अद्यतन गरियाको",
 	"printableversion": "छाप्द मिल्ल्या संस्करण",
-	"permalink": "स्थायी लिङ्क",
+	"permalink": "स्थायी कडी",
 	"print": "छाप",
 	"view": "अवलोकन गर",
 	"view-foreign": " $1 हेर",
@@ -965,6 +967,8 @@
 	"action-move-categorypages": "श्रेणी पृष्ठ सार",
 	"action-movefile": "ये फाईललाइ सार",
 	"action-upload": "ये फाइल अपलोड गर",
+	"action-delete": "मेटऽ",
+	"action-undelete": "मेट्याको रद्द अरऽ",
 	"action-unwatchedpages": "कसैले ध्यान नराख्याका पाननको सूची हेद्या",
 	"action-userrights-interwiki": "अन्य विकिका प्रयोगकर्तानको प्रयोगकर्ता अधिकार सम्पादन गद्या",
 	"action-applychangetags": "तमरो परिवर्तनसँगै ट्यागहरू लागु गर्न्या",

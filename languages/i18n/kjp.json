@@ -4,7 +4,8 @@
 			"DannyS712",
 			"Ninjastrikers",
 			"Rul1902",
-			"Sawmw"
+			"Sawmw",
+			"Amire80"
 		]
 	},
 	"underline-always": "ကိုဝ်ၜၠင်",
@@ -416,6 +417,7 @@
 	"action-edit": "လိက်မေံယိုဝ် မ်ုအင်းတါင်",
 	"action-createpage": "မ်ုပ္တံင် လိက်မေံၜၠါ်ယိုဝ်",
 	"action-createaccount": "ဆ်ုအင်းသုံ့က်ုဆာဆ်ုမာ မ်ုအင်းတင်",
+	"action-move": "အ်ုၰာႋၰံင်",
 	"action-delete": "လိက်‌မေံၜၠါ်ယိုဝ် မ်ုထုဂ်ဆိင့်",
 	"enhancedrc-history": "မေင်ႋစိင်",
 	"recentchanges": "အ်ုခါ့ယိုဝ် ဆ်ုအင်းလယ်လ်ုဖး",
@@ -604,7 +606,7 @@
 	"isimage": "File လင့်",
 	"whatlinkshere-prev": "{{PLURAL:$1|လါင်းခါင့်|လါင်းခါင့် $1}}",
 	"whatlinkshere-next": "{{PLURAL:$1|မေံယာ့ခဝ့်|မေံယာ့ခဝ် $1}}",
-	"whatlinkshere-links": "လင့်ခ်သယ်",
+	"whatlinkshere-links": "← လင့်ခ်သယ်",
 	"whatlinkshere-hideredirs": "$1 ထါင်ၮဲထါင်သယ်လ်ုဖး",
 	"whatlinkshere-hidetrans": "$1 ဆူ့လင်ဍံင်",
 	"whatlinkshere-hidelinks": "$1 လင့်ခ်သယ်",

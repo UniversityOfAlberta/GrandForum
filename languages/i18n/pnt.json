@@ -10,7 +10,8 @@
 			"Sinopeus",
 			"Urhixidur",
 			"ZaDiak",
-			"아라"
+			"아라",
+			"Amire80"
 		]
 	},
 	"tog-underline": "Υπογράμμιση συνδεσμίων:",
@@ -125,7 +126,7 @@
 	"protect_change": "Άλλαγμαν",
 	"unprotect": "Άνοιγμαν",
 	"newpage": "Καινούρεον σελίδα",
-	"talkpagelinktext": "Καλάτσεμαν",
+	"talkpagelinktext": "καλάτσεμαν",
 	"specialpage": "Ειδικόν σελίδαν",
 	"personaltools": "Προσωπικά εργαλεία",
 	"talk": "Καλάτσεμαν",
@@ -456,6 +457,8 @@
 	"action-movefile": "ετεροχλάεμαν αβούτου τη αρχείου",
 	"action-upload": "φόρτωσον αβούτο το αρχείον",
 	"action-upload_by_url": "φόρτωσον αβούτο το αρχείον ασ' έναν URL",
+	"action-delete": "Σβήσον",
+	"action-undelete": "Κλώσιμον",
 	"nchanges": "$1 {{PLURAL:$1|αλλαγή|αλλαγάς}}",
 	"recentchanges": "Υστερνά αλλαγάς",
 	"recentchanges-legend": "Επιλογάς υστερνιδίων αλλαγίων",

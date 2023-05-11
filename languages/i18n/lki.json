@@ -17,7 +17,8 @@
 			"Miladrahimi",
 			"Mjbmr",
 			"Physicsch",
-			"Process cq"
+			"Process cq",
+			"Amire80"
 		]
 	},
 	"tog-underline": "خط کیشائن ژێر پیوندەل:",
@@ -789,7 +790,7 @@
 	"revdelete-legend": "تنظیم محدودیت‌های پیدایی",
 	"revdelete-hide-text": "متن نسخه",
 	"revdelete-hide-image": "نهفتن محتویات فایل",
-	"revdelete-hide-name": "نهفتن متغییرها و هدف",
+	"revdelete-hide-name": "نهفتن متغیرها و هدف",
 	"revdelete-hide-comment": "خلاصة دةسکاری",
 	"revdelete-hide-user": "نام کاربری/نشانی آی‌پی",
 	"revdelete-hide-restricted": "فرونشانی اطلاعات برای مدیران به همراه دیگران",
@@ -2030,7 +2031,7 @@
 	"isimage": "پیوند پرونده",
 	"whatlinkshere-prev": "{{PLURAL:$1|previous|previous $1}}",
 	"whatlinkshere-next": "{{PLURAL:$1|next|next $1}}",
-	"whatlinkshere-links": "← پیوند",
+	"whatlinkshere-links": "→ پیوند",
 	"whatlinkshere-hideredirs": "$1 تغییرمسیر",
 	"whatlinkshere-hidetrans": "$1 تراگنجانش‌ها",
 	"whatlinkshere-hidelinks": "$1 پیوند",

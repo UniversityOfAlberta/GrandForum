@@ -7,7 +7,9 @@
 			"Kurdbuddha",
 			"Mjbmr",
 			"Paraw2",
-			"아라"
+			"아라",
+			"Amire80",
+			"NR Deblocked"
 		]
 	},
 	"tog-numberheadings": "ژمارەکردنی خۆدکاری سەرتیترەکان",
@@ -330,6 +332,8 @@
 	"right-writeapi": "ئەوکاربردن API ئەڕاێ نۊساین",
 	"newuserlogpage": "پێرست درسکردن ئەوکاربەر",
 	"action-edit": "ئەی پەڕە وێراشتە بکە",
+	"action-move": "جیوەجی بکە",
+	"action-delete": "بسڕەوە",
 	"nchanges": "$1 {{PLURAL:$1|گووڕانکاری}}",
 	"enhancedrc-history": "دیروک",
 	"recentchanges": "دۊایین گووڕانکاریەیل",
@@ -374,7 +378,7 @@
 	"recentchangeslinked": "گووڕانکاریە پەیوەندیدارەگان",
 	"recentchangeslinked-toolbox": "گووڕانکاری پەیوەندیدارەگان",
 	"recentchangeslinked-title": "گووڕانکاریە پەیوەندیدارەگان وە \"$1\" ـەو",
-	"recentchangeslinked-summary": "ئیە پێرستێگ لە گووڕانکاریەگان دۊایی لە ئەو پەڕەیلەسە ک بەسیار دێرن لە پەڕەێگ دیاریکریاێ (یا ئڕاێ ئەندامەگان پۆلێگ دیاریکریاێ)\nپەڕەگان [[Special:Watchlist|پێرست چاودێریەگەت]] '''پڕرەنگن'''.",
+	"recentchangeslinked-summary": "ئیە پێرستێگ لە گووڕانکاریەگان دۊایی لە ئەو پەڕەیلەسە ک بەسیار دێرن لە پەڕەێگ دیاریکریاێ (یا ئەڕاێ ئەندامەگان پۆلێگ دیاریکریاێ)\nپەڕەگان [[Special:Watchlist|پێرست چاودێریەگەت]] '''پڕرەنگن'''.",
 	"recentchangeslinked-page": "ناو پەڕە:",
 	"recentchangeslinked-to": "وەجیگەێ ئەوە، گووڕانکاریەگان ئەو پەڕەیلە نیشان بدە ک بەسیار وە پەڕەی دیاریکریاێ دێرن.",
 	"upload": "پەڕگەێگ بار بکە",
@@ -492,7 +496,7 @@
 	"isimage": "بەسیار پەڕگە",
 	"whatlinkshere-prev": "{{PLURAL:$1|پێشتر|$1 پێشتر}}",
 	"whatlinkshere-next": "{{PLURAL:$1|دیگە|$1 تر}}",
-	"whatlinkshere-links": "← بەسیارەگان",
+	"whatlinkshere-links": "→ بەسیارەگان",
 	"whatlinkshere-hideredirs": "ڕەوانەکەرەگان $1",
 	"whatlinkshere-hidetrans": "ناوتەپیاێەگان (transclusions) $1",
 	"whatlinkshere-hidelinks": "$1 بەسیار",

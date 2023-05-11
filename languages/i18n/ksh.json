@@ -14,7 +14,9 @@
 			"TTO",
 			"Vlad5250",
 			"לערי ריינהארט",
-			"아라"
+			"아라",
+			"MuratTheTurkish",
+			"1233qwer1234qwer4"
 		]
 	},
 	"tog-underline": "Dun de Lengks ongerschtriische:",
@@ -760,7 +762,7 @@
 	"rev-suppressed-text-view": "Di Väsjohn fun dä Sigg es <strong>verschtoche</strong>.\nAls ene Wikki_Köhbeß kanns De se ävver doch bekike, wann De wells.\nWann Ehr en [{{FULLURL:{{#spezial:Log}}/suppress|page={{FULLPAGENAMEE}}}} {{lcfirst:{{int:suppressionlog}}}}] loore doht, künnt Ehr velleisch mih doh drövver lesse.",
 	"rev-deleted-no-diff": "De kanns de Ongerscheide nit beloore, ein vun de Versione es '''fottjeschmeße'''.\nMieh Einzelheite hät [{{fullurl:{{#special:Log}}/suppress|page={{FULLPAGENAMEE}}}} {{lcfirst:{{int:deletionlog}}}}].",
 	"rev-suppressed-no-diff": "Do kanns der keine Ungerscheid zwesche dä Versione beloore, weil ein dofun '''fottjeschmeße''' es.",
-	"rev-deleted-unhide-diff": "Ein vun de Versione es '''fottjeschmeße'''.\nMieh Einzelheite hät [{{fullurl:{{#special:Log}}/suppress|page={{FULLPAGENAMEE}}}} {{lcfirst:{{int:deletionlog}}}}].\nAls ene Wiki_Köbes kanns De [$1 de Ungerscheide ävver aankike] wann De wells.",
+	"rev-deleted-unhide-diff": "Ein vun de Versione es '''fottjeschmeße'''.\nMieh Einzelheite hät [{{fullurl:{{#special:Log}}/delete|page={{FULLPAGENAMEE}}}} {{lcfirst:{{int:deletionlog}}}}].\nAls ene Wiki_Köbes kanns De [$1 de Ungerscheide ävver aankike] wann De wells.",
 	"rev-suppressed-unhide-diff": "Ein vun de Versione heh es '''verschtoche'''.\nMieh Einzelheite hät [{{fullurl:{{#special:Log}}/suppress|page={{FULLPAGENAMEE}}}} {{lcfirst:{{int:suppressionlog}}}}].\nAls ene Wiki_Köbes kanns De [$1 de Ungerscheide ävver aankike] wann De wells.",
 	"rev-deleted-diff-view": "Ein vun de Versione heh es '''fottjeschmeße'''.\nMieh Einzelheite hät [{{fullurl:{{#special:Log}}/delete|page={{FULLPAGENAMEE}}}} {{lcfirst:{{int:deletionlog}}}}].\nAls ene Wiki_Köbes kanns De de Ungerscheide ävver aankike wann De wells.",
 	"rev-suppressed-diff-view": "Ein vun de Versione heh es '''verschtoche'''.\nMieh Einzelheite hät [{{fullurl:{{#special:Log}}/suppress|page={{FULLPAGENAMEE}}}} {{lcfirst:{{int:suppressionlog}}}}].\nAls ene Wiki_Köbes kanns De de Ungerscheide ävver aankike wann De wells.",
@@ -2685,7 +2687,7 @@
 	"autoredircomment": "Leit öm op „[[$1]]“",
 	"autosumm-new": "De Sigg wood neu aanjelaat met däm Aanfang: $1",
 	"autosumm-newblank": "En läddijje Sigg wood aanjelaat",
-	"size-bytes": "$1&nbsp;<i lang=\"en\" xml:lang=\"en\" dir=\"ltr\" title=\"Binary Digit\">{{PLURAL:$1|Byte|Bytes|Byte}}</i>",
+	"size-bytes": "$1&nbsp;{{PLURAL:$1|Byte|Bytes|Byte}}",
 	"size-kilobytes": "$1&nbsp;KB",
 	"size-megabytes": "$1&nbsp;MB",
 	"size-gigabytes": "$1&nbsp;GB",
@@ -2915,7 +2917,7 @@
 	"tags-edit-revision-legend": "Donn Makkehronge för heh di {{PLURAL:$1|Väsjohn|Väsjohne|kein Väsjohne}} verjävve udder wälsche fott nämme",
 	"tags-edit-logentry-legend": "Donn Makkehronge för {{PLURAL:$1|heh dä Enndraach|heh di Enndrähsch|keine Enndraach}} em Logbohch verjävve udder fott nämme",
 	"tags-edit-existing-tags": "Makkehronge, di mer han:",
-	"tags-edit-existing-tags-none": "<tt>-&nbsp;nix&nbsp;-</tt>",
+	"tags-edit-existing-tags-none": "<em>-&nbsp;nix&nbsp;-</em>",
 	"tags-edit-new-tags": "Neuje Makkehronge:",
 	"tags-edit-add": "Donn heh di Makkehronge derbei:",
 	"tags-edit-remove": "Donn heh di Makkehronge fottnämme:",

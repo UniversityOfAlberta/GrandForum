@@ -8,7 +8,10 @@
 			"Wantok",
 			"Wytukaze",
 			"לערי ריינהארט",
-			"सरोज कुमार ढकाल"
+			"सरोज कुमार ढकाल",
+			"Amire80",
+			"MinecraftAustralia",
+			"Tok Pisin"
 		]
 	},
 	"tog-underline": "Putim lain ananit long ol link:",
@@ -110,7 +113,7 @@
 	"cancel": "Toromwe senis",
 	"moredotdotdot": "Moa...",
 	"mypage": "Pes bilong mi",
-	"mytalk": "Toktok bilong mi",
+	"mytalk": "Toktok",
 	"anontalk": "Toktok bilong dispela IP",
 	"navigation": "Ol bikpela pes",
 	"and": "&#32;na",
@@ -132,12 +135,12 @@
 	"protect": "Tambuim",
 	"protect_change": "senisim",
 	"newpage": "Nupela pes",
-	"talkpagelinktext": "Toktok",
+	"talkpagelinktext": "toktok",
 	"specialpage": "Sipesol pes",
 	"personaltools": "Ol pes bilong mi",
 	"talk": "Toktok",
 	"views": "Ol lukluk",
-	"toolbox": "Sipesol bokis",
+	"toolbox": "Ol tul:",
 	"imagepage": "Lukim pes bilong fail",
 	"mediawikipage": "Lukim pes bilong toksave",
 	"templatepage": "Lukim templet pes",
@@ -275,7 +278,7 @@
 	"datedefault": "Nogat laik",
 	"prefs-rc": "Nupela senis",
 	"prefs-watchlist": "Lukautbuk",
-	"prefs-watchlist-days-max": "Maximum $1 {{PLURAL:$1|day|days}}",
+	"prefs-watchlist-days-max": "No moa long $1 {{PLURAL:$1|de}}",
 	"prefs-watchlist-edits-max": "No moa long: 1000",
 	"prefs-resetpass": "Senis paswot",
 	"saveprefs": "Holim long tingting",
@@ -591,6 +594,6 @@
 	"compare-page2": "Pes 2",
 	"htmlform-selectorother-other": "Narapela",
 	"rightsnone": "i nogat wanpela",
-	"searchsuggest-search": "Painim",
+	"searchsuggest-search": "Painim long {{SITENAME}}",
 	"expand_templates_ok": "OK"
 }

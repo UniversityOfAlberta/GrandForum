@@ -8,7 +8,8 @@
 			"Erdemaslancan",
 			"Paivud",
 			"Trần Nguyễn Minh Huy",
-			"아라"
+			"아라",
+			"Amire80"
 		]
 	},
 	"tog-underline": "Link underlining",
@@ -105,7 +106,7 @@
 	"protect": "Varjaa",
 	"protect_change": "muutu",
 	"newpage": "Uusi cülci",
-	"talkpagelinktext": "Juttu",
+	"talkpagelinktext": "juttu",
 	"specialpage": "Osoobennoi cülci",
 	"personaltools": "Õmad tööriisõd",
 	"talk": "Juttu",
@@ -305,6 +306,8 @@
 	"newuserlogpage": "Uuvvõd cäüttijäd",
 	"rightslog": "Cäütteminõikuslogi",
 	"action-edit": "muutu sitä cülciä",
+	"action-move": "Liikut",
+	"action-delete": "Pühi",
 	"nchanges": "$1 {{PLURAL:$1|muutuz|muutussõd}}",
 	"recentchanges": "Viimõizõd muutussõd",
 	"recentchanges-legend": "Viimass muutuhsõss valimizõd",
