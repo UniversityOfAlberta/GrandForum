@@ -92,13 +92,13 @@ class XmlDumpWriter {
 		$schemaVersion = XML_DUMP_SCHEMA_VERSION_11
 	) {
 		Assert::parameter(
-			in_array( $contentMode, [ self::WRITE_CONTENT, self::WRITE_STUB ] ),
+			in_array( $contentMode, [ self::WRITE_CONTENT, self::WRITE_STUB ], true ),
 			'$contentMode',
 			'must be one of the following constants: WRITE_CONTENT or WRITE_STUB.'
 		);
 
 		Assert::parameter(
-			in_array( $schemaVersion, self::$supportedSchemas ),
+			in_array( $schemaVersion, self::$supportedSchemas, true ),
 			'$schemaVersion',
 			'must be one of the following schema versions: '
 				. implode( ',', self::$supportedSchemas )
@@ -560,7 +560,7 @@ class XmlDumpWriter {
 		if ( $content instanceof TextContent ) {
 			// HACK: For text based models, bypass the serialization step. This allows extensions (like Flow)
 			// that use incompatible combinations of serialization format and content model.
-			$data = $content->getNativeData();
+			$data = $content->getText();
 		} else {
 			$data = $content->serialize( $contentFormat );
 		}

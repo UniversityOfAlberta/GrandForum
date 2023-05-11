@@ -81,6 +81,7 @@ use Wikimedia\ScopedCallback;
  *
  * @ingroup Parser
  */
+#[AllowDynamicProperties]
 class Parser {
 	/**
 	 * Update this version number when the ParserOutput format
@@ -3889,7 +3890,7 @@ class Parser {
 			return $name;
 		}
 
-		$attrText = !isset( $params['attr'] ) ? null : $frame->expand( $params['attr'] );
+		$attrText = !isset( $params['attr'] ) ? '' : $frame->expand( $params['attr'] );
 		if ( substr( $attrText, 0, $errorLen ) === $errorStr ) {
 			// See above
 			return $attrText;
@@ -3938,9 +3939,6 @@ class Parser {
 				}
 			}
 		} else {
-			if ( $attrText === null ) {
-				$attrText = '';
-			}
 			if ( isset( $params['attributes'] ) ) {
 				foreach ( $params['attributes'] as $attrName => $attrValue ) {
 					$attrText .= ' ' . htmlspecialchars( $attrName ) . '="' .
@@ -4304,18 +4302,18 @@ class Parser {
 			$fallbackAnchor = $fallbackHeadline;
 			if ( isset( $refers[$arrayKey] ) ) {
 				// phpcs:ignore Generic.Formatting.DisallowMultipleStatements
-				for ( $i = 2; isset( $refers["${arrayKey}_$i"] ); ++$i );
+				for ( $i = 2; isset( $refers["{$arrayKey}_$i"] ); ++$i );
 				$anchor .= "_$i";
 				$linkAnchor .= "_$i";
-				$refers["${arrayKey}_$i"] = true;
+				$refers["{$arrayKey}_$i"] = true;
 			} else {
 				$refers[$arrayKey] = true;
 			}
 			if ( $fallbackHeadline !== false && isset( $refers[$fallbackArrayKey] ) ) {
 				// phpcs:ignore Generic.Formatting.DisallowMultipleStatements
-				for ( $i = 2; isset( $refers["${fallbackArrayKey}_$i"] ); ++$i );
+				for ( $i = 2; isset( $refers["{$fallbackArrayKey}_$i"] ); ++$i );
 				$fallbackAnchor .= "_$i";
-				$refers["${fallbackArrayKey}_$i"] = true;
+				$refers["{$fallbackArrayKey}_$i"] = true;
 			} else {
 				$refers[$fallbackArrayKey] = true;
 			}
@@ -5587,7 +5585,10 @@ class Parser {
 		# Process section extraction flags
 		$flags = 0;
 		$sectionParts = explode( '-', $sectionId );
-		$sectionIndex = array_pop( $sectionParts );
+		// The section ID may either be a magic string such as 'new' (which should be treated as 0),
+		// or a numbered section ID in the format of "T-<section index>".
+		// Explicitly coerce the section index into a number accordingly. (T323373)
+		$sectionIndex = (int)array_pop( $sectionParts );
 		foreach ( $sectionParts as $part ) {
 			if ( $part === 'T' ) {
 				$flags |= self::PTD_FOR_INCLUSION;
@@ -5597,7 +5598,7 @@ class Parser {
 		# Check for empty input
 		if ( strval( $text ) === '' ) {
 			# Only sections 0 and T-0 exist in an empty document
-			if ( $sectionIndex == 0 ) {
+			if ( $sectionIndex === 0 ) {
 				if ( $mode === 'get' ) {
 					return '';
 				}
@@ -5620,7 +5621,7 @@ class Parser {
 		$node = $root->getFirstChild();
 
 		# Find the target section
-		if ( $sectionIndex == 0 ) {
+		if ( $sectionIndex === 0 ) {
 			# Section zero doesn't nest, level=big
 			$targetLevel = 1000;
 		} else {
@@ -5891,7 +5892,9 @@ class Parser {
 
 		# Use specified revision timestamp, falling back to the current timestamp
 		$revObject = $this->getRevisionRecordObject();
-		$timestamp = $revObject ? $revObject->getTimestamp() : $this->mOptions->getTimestamp();
+		$timestamp = $revObject && $revObject->getTimestamp()
+			? $revObject->getTimestamp()
+			: $this->mOptions->getTimestamp();
 		$this->mOutput->setRevisionTimestampUsed( $timestamp ); // unadjusted time zone
 
 		# The cryptic '' timezone parameter tells to use the site-default
