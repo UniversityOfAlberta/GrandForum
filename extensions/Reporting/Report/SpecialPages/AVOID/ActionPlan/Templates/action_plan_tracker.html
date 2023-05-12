@@ -1,13 +1,13 @@
 <p><b>Action Plan Daily Tracker - Accomplished your plan today?</b></p>
 <table class='wikitable' style='width: 100%;'>
     <tr>
-        <th style='width: 14.2%;line-height:1em;'>Mon<br /><small><%= new Date(date.replace(/-/g, "/")).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Tue<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Wed<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Thu<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Fri<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Sat<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Sun<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Mon</en><fr>Lun</fr><br /><small><%= new Date(date.replace(/-/g, "/")).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Tue</en><fr>Mar</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Wed</en><fr>Mer</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Thu</en><fr>Jeu</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Fri</en><fr>Ven</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Sat</en><fr>Sam</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Sun</en><fr>Dim</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
      </tr>
      <% if(type == "Fitbit Monitoring"){ %>
         <tr>

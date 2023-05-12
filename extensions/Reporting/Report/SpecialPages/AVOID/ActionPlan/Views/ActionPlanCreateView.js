@@ -107,12 +107,13 @@ ActionPlanCreateView = Backbone.View.extend({
                 draggable: false,
                 resizable: false,
                 width: 'auto',
+                title: '<en>My Weekly Action Plan</en><fr>Mon plan d’action hebdomadaire</fr>',
                 height: $(window).height()*0.85,
                 position: { 'my': 'center', 'at': 'center' },
                 buttons: {
                     'Previous': {
                         id: "previousActionPlanSection",
-                        text: "Previous",
+                        text: (wgLang == 'en') ? "Previous" : "Précédent",
                         click: function(){
                             if(this.$(".actionPlanSection.open").prevAll(":not(.skip)").first().length > 0){
                                 this.$(".actionPlanSection.open").slideUp().removeClass("open").prevAll(":not(.skip)").first()
@@ -127,7 +128,7 @@ ActionPlanCreateView = Backbone.View.extend({
                     },
                     'Next': {
                         id: "nextActionPlanSection",
-                        text: "Next",
+                        text: (wgLang == 'en') ? "Next" : "Prochain",
                         click: function(){
                             $("#previousActionPlanSection").prop("disabled", false);
                             if(this.$(".actionPlanSection.open").nextAll(":not(.skip)").first().length > 0){
@@ -142,7 +143,7 @@ ActionPlanCreateView = Backbone.View.extend({
                     },
                     'Save': {
                         id: "saveActionPlanButton",
-                        text: 'Create Plan',
+                        text: (wgLang == 'en') ? "Create Plan" : "Créer un plan",
                         click: function(){
                             this.model.save(null, {
                                 success: function(){

@@ -71,19 +71,19 @@ ActionPlan.MANUAL = "Manual-Monitoring";
 ActionPlan.comp2Text = function(comp){
     switch(comp){
         case "A": 
-            return "Activity";
+            return (wgLang == 'en') ? "Activity" : "Activité physique";
         case "V":
-            return "Vaccinate";
+            return (wgLang == 'en') ? "Vaccinate" : "Vaccination";
         case "O":
-            return "Optimize Medication";
+            return (wgLang == 'en') ? "Optimize Medication" : "Optimisation des médicaments";
         case "I":
-            return "Interact";
+            return (wgLang == 'en') ? "Interact" : "Vie sociale";
         case "D":
-            return "Diet & Nutrition";
+            return (wgLang == 'en') ? "Diet & Nutrition" : "Alimentation";
         case "S":
-            return "Sleep";
+            return (wgLang == 'en') ? "Sleep" : "Sommeil";
         case "F":
-            return "Falls Prevention";
+            return (wgLang == 'en') ? "Falls Prevention" : "Prévention des chutes";
     }
     return "Other";
 }

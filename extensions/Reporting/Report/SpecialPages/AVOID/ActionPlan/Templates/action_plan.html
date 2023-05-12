@@ -5,19 +5,31 @@
     <img src="<%= wgServer + wgScriptPath %>/skins/logo1.png" />
 </div>
 
-<div class="actionPlanTitle">My Weekly<br />Action Plan</div>
+<div class="actionPlanTitle">
+    <en>My Weekly<br />Action Plan</en>
+    <fr>Mon plan d’action<br />hebdomadaire</fr>
+</div>
 
-<h3>What is one broader goal you’d like to start working on now?</h3>
+<h3>
+    <en>What is a broader goal that you’d like to start working on?</en>
+    <fr>Y a-t-il un objectif plus général sur lequel vous aimeriez commencer à travailler maintenant?</fr>
+</h3>
 <div class="textarea">
     <%= nl2br(goals) %>
 </div>
 
-<h3>What do you think are the barriers or challenges to meeting this goal?</h3>
+<h3>
+    <en>What are the barriers or challenges to meeting that goal?</en>
+    <fr>Selon vous, quels sont les obstacles ou les défis à relever pour atteindre cet objectif?</fr>
+</h3>
 <div class="textarea">
     <%= nl2br(barriers) %>
 </div>
 
-<h3>My Action Plan This Week</h3>
+<h3>
+    <en>My Action Plan This Week</en>
+    <fr>Mon plan d’action cette semaine</fr>
+</h3>
 <div class="textarea">
     <b>Date:</b> <%= dateTimeHelpers.formatDate(date, 'yyyy-MM-dd', 'd MMMM, yyyy') %><br /><br />
     <% if(type == ActionPlan.FITBIT){ %>
@@ -67,13 +79,13 @@
 <h4>Action Plan Daily Tracker - Accomplished your plan today?</h4>
 <table class='wikitable' style='width: 100%;'>
     <tr>
-        <th style='width: 14.2%;line-height:1em;'>Mon<br /><small><%= new Date(date.replace(/-/g, "/")).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Tue<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Wed<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Thu<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Fri<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Sat<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-        <th style='width: 14.2%;line-height:1em;'>Sun<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Mon</en><fr>Lun</fr><br /><small><%= new Date(date.replace(/-/g, "/")).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Tue</en><fr>Mar</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Wed</en><fr>Mer</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Thu</en><fr>Jeu</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Fri</en><fr>Ven</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Sat</en><fr>Sam</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Sun</en><fr>Dim</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
      </tr>
      <tr>
         <td align='center'><% if(tracker.Mon == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>

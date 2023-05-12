@@ -1,22 +1,46 @@
 <div class="actionPlanSection">
-    <h3 style="margin-top:0.5em;">What is a broader goal that you’d like to start working on?</h3>
+    <h3 style="margin-top:0.5em;">
+        <en>What is a broader goal that you’d like to start working on?</en>
+        <fr>Y a-t-il un objectif plus général sur lequel vous aimeriez commencer à travailler maintenant?</fr>
+    </h3>
     <%= HTML.TextArea(this, 'goals', {style: 'height: 200px;width:100%;'}) %>
 </div>
 
 <div class="actionPlanSection">
-    <h3 style="margin-top:0.5em;">What are the barriers or challenges to meeting that goal?</h3>
+    <h3 style="margin-top:0.5em;">
+        <en>What are the barriers or challenges to meeting that goal?</en>
+        <fr>Selon vous, quels sont les obstacles ou les défis à relever pour atteindre cet objectif?</fr>
+    </h3>
     <%= HTML.TextArea(this, 'barriers', {style: 'height: 200px;width:100%;'}) %>
 </div>
 
 <div class="actionPlanSection">
-    <h4 style="margin-top:0;">Goals to Action</h4>
-    <p>Think about one thing you can realistically expect to accomplish within the next week related to your goal.</p>
-    It should be:
+    <h4 style="margin-top:0;">
+        <en>Goals to Action</en>
+        <fr>Passez à l’action</fr>
+    </h4>
+    <p>
+        <en>Think about one thing you can realistically expect to accomplish within the next week related to your goal.</en>
+        <fr>Réfléchissez à une chose que vous pouvez raisonnablement espérer accomplir au cours de la semaine prochaine en rapport avec votre objectif.</fr>
+    </p>
+    <en>It should be:</en><fr>Votre plan d’action doit:</fr>
     <ul>
-        <li>Something you want to do</li>
-        <li>Help you solve a problem or reach a goal</li>
-        <li>Be actionable</li>
-        <li>Answer what? How much? When? How often?</li>
+        <li>
+            <en>Something you want to do</en>
+            <fr>Représenter ce que vous voulez faire;</fr>
+        </li>
+        <li>
+            <en>Help you solve a problem or reach a goal</en>
+            <fr>Vous aider à résoudre un problème ou à atteindre un objectif;</fr>
+        </li>
+        <li>
+            <en>Be actionable</en>
+            <fr>Être réalisable (p. ex. remplacer l’eau par le jus, plutôt que perdre du poids);</fr>
+        </li>
+        <li>
+            <en>Answer what? How much? When? How often?</en>
+            <fr>Répondez à ces questions : Quoi? Dans quelle mesure? À quel moment? Et à quelle fréquence?</fr>
+        </li>
     </ul>
 
     <% if(me.get('extra').fitbit != undefined && me.get('extra').fitbit != '' && new Date().getTime()/1000 < me.get('extra').fitbit_expires){ %>
@@ -28,7 +52,10 @@
 
 <div class="actionPlanSection">
     <div class="manual">
-        <h3 style="margin-top:0.5em;">My Action Plan This Week</h3>
+        <h3 style="margin-top:0.5em;">
+            <en>My Action Plan This Week</en>
+            <fr>Mon plan d’action cette semaine</fr>
+        </h3>
         <div style="box-sizing: border-box; width: 100%; background: #fae6cb; border: none !important; border-radius: 0 0 14px 14px; padding: 14px !important;">
             <div>
                 <b>This week I will:</b><br />
@@ -49,13 +76,13 @@
                 <b>How often:</b><br />
                 <table class='wikitable' style="width: 100%;margin-top:0;margin-bottom:0;">
                     <tr>
-                        <th style='width: 14.2%;line-height:1em;'>Mon<br /><small><%= new Date(actionPlanDate.replace(/-/g, "/")).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                        <th style='width: 14.2%;line-height:1em;'>Tue<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                        <th style='width: 14.2%;line-height:1em;'>Wed<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                        <th style='width: 14.2%;line-height:1em;'>Thu<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                        <th style='width: 14.2%;line-height:1em;'>Fri<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                        <th style='width: 14.2%;line-height:1em;'>Sat<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                        <th style='width: 14.2%;line-height:1em;'>Sun<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Mon</en><fr>Lun</fr><br /><small><%= new Date(actionPlanDate.replace(/-/g, "/")).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Tue</en><fr>Mar</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Wed</en><fr>Mer</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Thu</en><fr>Jeu</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Fri</en><fr>Ven</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Sat</en><fr>Sam</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Sun</en><fr>Dim</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
                      </tr>
                      <tr>
                         <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Mon', {value: 1}) %></td>
@@ -92,7 +119,8 @@
                     </div>
                 </div>
                 <div class="warning confidenceWarning" style="display:none;">
-                    If your confidence level is below 7, there is a strong chance that you will not complete your action plan this week. You may want to edit your plan so that you have a confidence level of at least a 7.
+                    <en>If your confidence level is below 7, there is a strong chance that you will not complete your action plan this week. You may want to edit your plan so that you have a confidence level of at least a 7.</en>
+                    <fr>Si vous répondez 7 ou plus, votre plan d’action est probablement raisonnable. Si votre réponse est inférieure à 7, vous devriez revoir votre plan.</fr>
                 </div>
             </div>
         </div>

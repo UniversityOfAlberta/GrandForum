@@ -13,40 +13,61 @@
         $lastName = str_replace("'", "&#39;", $me->getLastName());
         $email = str_replace("'", "&#39;", $me->getEmail());
         $loggedIn = "<tr>
-                        <td class='label'>First Name:</td>
+                        <td class='label'><en>First Name</en><fr>Prénom</fr>:</td>
                         <td class='value'><input type='text' name='first_name' value='{$firstName}' /></td>
                      </tr>
                      <tr>
-                        <td class='label'>Last Name:</td>
+                        <td class='label'><en>Last Name</en><fr>Nom</fr>:</td>
                         <td class='value'><input type='text' name='last_name' value='{$lastName}' /></td>
                      </tr>
                      <tr>
-                        <td class='label'>Email:</td>
+                        <td class='label'><en>Email</en><fr>Courriel</fr>:</td>
                         <td class='value'><input type='text' name='email' value='{$email}' /></td>
                      </tr>";
         
         $wgOut->addHTML("<div title='Report Issue' id='reportIssueDialog' style='display:none;'>
-            <p>If you are experiencing an issue on the current page, you can report it here.  Explain what the issue is and a report will be sent to {$config->getValue('supportEmail')}.  The following information will automatically be sent:</p>
+            <p>
+                <en>If you are experiencing an issue on the current page, you can report it here.  Explain what the issue is and a report will be sent to {$config->getValue('supportEmail')}.  The following information will automatically be sent:</en>
+                <fr>Si vous rencontrez un problème sur la page actuelle, vous pouvez le signaler ici. Expliquez la nature du problème; un rapport sera envoyé à {$config->getValue('supportEmail')}. Les renseignements suivants seront automatiquement transmis:</fr>
+            </p>
             <ul>
-                <li>User/Email (if logged in)</li>
-                <li>Browser Information</li>
-                <li>Url of Page</li>
-                <li>Screenshot of page</li>
+                <li>
+                    <en>User/Email (if logged in)</en>
+                    <fr>Utilisateur/courriel (si connecté)</fr>
+                </li>
+                <li>
+                    <en>Browser Information</en>
+                    <fr>Information sur le navigateur</fr>
+                </li>
+                <li>
+                    <en>Url of Page</en>
+                    <fr>URL de la page</fr>
+                </li>
+                <li>
+                    <en>Screenshot of page</en>
+                    <fr>Capture d’écran de la page</fr>
+                </li>
             </ul>
             <table>
             {$loggedIn}
             </table>
-            <b>Additional Comments:</b>
+            <b><en>Additional Comments:</en><fr>Commentaires supplémentaires:</fr></b>
             <textarea style='width:100%;height:100px;' id='additional_comments'></textarea>
         </div>");
         
         $wgOut->addHTML("<div title='Contact Us' id='contactUsDialog' style='display:none; width: 112px;'>
-            Do you have questions, comments or need some help?<br />
-            Send us an email.
+            <en>
+                Do you have questions, comments or need some help?<br />
+                Send us an email.
+            </en>
+            <fr>
+                Vous avez des questions, des commentaires ou besoin d’aide?<br />
+                Envoyez-nous un courriel.
+            </fr>
             <table>
                 {$loggedIn}
                 <tr>
-                    <td class='label'><b>Subject:</b></td>
+                    <td class='label'><b><en>Subject</en><fr>Objet</fr>:</b></td>
                     <td class='value'> 
                         <select id='topic' style='vertical-align:middle;'>
                             <option selected>Find an expert</option>
@@ -60,7 +81,7 @@
                     <td class='value'><input type='text' id='topicOther' /></td>
                 </tr>
             </table>
-            <b>Message:</b><br />
+            <b><en>Message</en><fr>Message</fr>:</b><br />
             <textarea style='width:100%;height:100px;' id='additional_comments'></textarea>
             <div id='contactFile'>
                 <div id='fileSizeError' class='error' style='display:none;'>This file is too large, please choose a file smaller than 5MB</div>

@@ -53,19 +53,25 @@ $(document).ready(function(){
         autoOpen: false,
         width: '35em',
         buttons: {
-            "Submit": function(){   
-                dataToSend.first_name = $("div#reportIssueDialog input[name=first_name]").val();
-                dataToSend.last_name = $("div#reportIssueDialog input[name=last_name]").val();
-                dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
-                dataToSend.comments = $("div#reportIssueDialog textarea").val();
-                $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
-                    $(this).dialog('close');
-                    clearSuccess();
-                    addSuccess('The issue has been reported.');
-                }.bind(this));
+            "Submit": {
+                text: (wgLang == 'en') ? "Submit" : "Soumettre",
+                click: function(){   
+                    dataToSend.first_name = $("div#reportIssueDialog input[name=first_name]").val();
+                    dataToSend.last_name = $("div#reportIssueDialog input[name=last_name]").val();
+                    dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
+                    dataToSend.comments = $("div#reportIssueDialog textarea").val();
+                    $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
+                        $(this).dialog('close');
+                        clearSuccess();
+                        addSuccess('The issue has been reported.');
+                    }.bind(this));
+                }
             },
-            "Cancel": function(){
-                $(this).dialog('close');
+            "Cancel": {
+                text: (wgLang == 'en') ? "Cancel" : "Annuler",
+                click: function(){
+                    $(this).dialog('close');
+                }
             }
         }
     });
@@ -73,27 +79,34 @@ $(document).ready(function(){
     $("div#contactUsDialog").dialog({
         autoOpen: false,
         width: '35em',
+        title: (wgLang == 'en') ? "Contact Us" : "Communiquez avec nous",
         buttons: {
-            "Submit": function(){
-                dataToSend.topic = $("div#contactUsDialog #topic").val();
-                if(dataToSend.topic == "Other" && $("div#contactUsDialog #topicOther").val().trim() != ""){
-                    dataToSend.topic += ": " + $("div#contactUsDialog #topicOther").val().trim();
+            "Submit": {
+                text: (wgLang == 'en') ? "Submit" : "Soumettre",
+                click: function(){
+                    dataToSend.topic = $("div#contactUsDialog #topic").val();
+                    if(dataToSend.topic == "Other" && $("div#contactUsDialog #topicOther").val().trim() != ""){
+                        dataToSend.topic += ": " + $("div#contactUsDialog #topicOther").val().trim();
+                    }
+                    if(dataToSend.topic == ""){
+                        dataToSend.topic = $("div#contactUsDialog #topicOther").val().trim();
+                    }
+                    dataToSend.first_name = $("div#contactUsDialog input[name=first_name]").val();
+                    dataToSend.last_name = $("div#contactUsDialog input[name=last_name]").val();
+                    dataToSend.email = $("div#contactUsDialog input[name=email]").val();
+                    dataToSend.comments = $("div#contactUsDialog textarea").val();
+                    $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
+                        $(this).dialog('close');
+                        clearSuccess();
+                        addSuccess('Your message has been sent to support.');
+                    }.bind(this));
                 }
-                if(dataToSend.topic == ""){
-                    dataToSend.topic = $("div#contactUsDialog #topicOther").val().trim();
-                }
-                dataToSend.first_name = $("div#contactUsDialog input[name=first_name]").val();
-                dataToSend.last_name = $("div#contactUsDialog input[name=last_name]").val();
-                dataToSend.email = $("div#contactUsDialog input[name=email]").val();
-                dataToSend.comments = $("div#contactUsDialog textarea").val();
-                $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
-                    $(this).dialog('close');
-                    clearSuccess();
-                    addSuccess('Your message has been sent to support.');
-                }.bind(this));
             },
-            "Cancel": function(){
-                $(this).dialog('close');
+            "Cancel": {
+                text: (wgLang == 'en') ? "Cancel" : "Annuler",
+                click: function(){
+                    $(this).dialog('close');
+                }
             }
         }
     });
@@ -101,21 +114,28 @@ $(document).ready(function(){
     $("div#helpDialog").dialog({
         autoOpen: false,
         width: '35em',
+        title: (wgLang == 'en') ? "Help" : "Aide",
         buttons: {
-            "Submit": function(){
-                dataToSend.first_name = $("div#helpDialog input[name=first_name]").val();
-                dataToSend.last_name = $("div#helpDialog input[name=last_name]").val();
-                dataToSend.email = $("div#helpDialog input[name=email]").val();
-                dataToSend.phone = $("div#helpDialog input[name=phone]").val();
-                dataToSend.comments = $("div#helpDialog textarea").val();
-                $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
-                    $(this).dialog('close');
-                    clearSuccess();
-                    addSuccess('Your message has been sent to support.');
-                }.bind(this));
+            "Submit": {
+                text: (wgLang == 'en') ? "Submit" : "Soumettre",
+                click: function(){
+                    dataToSend.first_name = $("div#helpDialog input[name=first_name]").val();
+                    dataToSend.last_name = $("div#helpDialog input[name=last_name]").val();
+                    dataToSend.email = $("div#helpDialog input[name=email]").val();
+                    dataToSend.phone = $("div#helpDialog input[name=phone]").val();
+                    dataToSend.comments = $("div#helpDialog textarea").val();
+                    $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
+                        $(this).dialog('close');
+                        clearSuccess();
+                        addSuccess('Your message has been sent to support.');
+                    }.bind(this));
+                }
             },
-            "Cancel": function(){
-                $(this).dialog('close');
+            "Cancel": {
+                text: (wgLang == 'en') ? "Cancel" : "Annuler",
+                click: function(){
+                    $(this).dialog('close');
+                }
             }
         }
     });
