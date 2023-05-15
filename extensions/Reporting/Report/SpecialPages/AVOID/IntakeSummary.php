@@ -290,7 +290,8 @@ class IntakeSummary extends SpecialPage {
         $people = Person::getAllPeople(CI);
         
         $report = new DummyReport(static::$reportName, $me, null, YEAR);
-        $wgOut->addHTML("<table id='summary' class='wikitable'>");
+        $wgOut->addHTML("
+                         <table id='summary' class='wikitable'>");
         $wgOut->addHTML(self::getHeader($report));
         $wgOut->addHTML("<tbody>");
         
@@ -316,6 +317,17 @@ class IntakeSummary extends SpecialPage {
                 ],
                 scrollX: true,
                 scrollY: $('#bodyContent').height() - 400
+            });
+            
+            $('#summary_length').append(\"<button id='compare' style='margin-left:1em;'>Compare visible users</button>\");
+            
+            $('#compare').click(function(){
+                var ids = [];
+                $('#summary tbody tr td:first-child').each(function(i, el){
+                    ids.push($(el).text());
+                });
+                ids = ids.join(',');
+                document.location = wgServer + wgScriptPath + '/index.php/Special:IntakeSummary?users=' + ids;
             });
         </script>");
     }
