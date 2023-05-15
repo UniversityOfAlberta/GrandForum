@@ -220,7 +220,7 @@ class IntakeSummary extends SpecialPage {
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
-                    $value = $item->getBlobValue();
+                    $value = (AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType)) ? $item->getBlobValue() : "";
                     if(is_array($value)){
                         $html .= "<td>".implode(", ", $value)."</td>";
                     }
