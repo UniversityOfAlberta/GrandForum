@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC-AT Award 2023" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT2" pdfType="RPTP_EPIC_AT2" pdfFiles="EPIC-ATPDF" ajax="true" disabled="false" year="2023">
+<Report name="EPIC-AT Award 2023" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT2" pdfType="RPTP_EPIC_AT2" pdfFiles="EPIC-ATPDF" ajax="true" disabled="true" year="2023">
     <Permissions>
         <Role role="INACTIVE+" />
         <Role role="INACTIVE-Candidate+" />
