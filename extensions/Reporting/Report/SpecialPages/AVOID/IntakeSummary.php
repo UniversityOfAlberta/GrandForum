@@ -217,10 +217,11 @@ class IntakeSummary extends SpecialPage {
             $html .= "<td>".$scores["VAS"]."</td>";
             $html .= "<td>".$scores["CFS"]."</td>";
         }
+        $hasSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType);
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
-                    $value = (AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType)) ? $item->getBlobValue() : "";
+                    $value = ($hasSubmitted) ? $item->getBlobValue() : "";
                     if(is_array($value)){
                         $html .= "<td>".implode(", ", $value)."</td>";
                     }
