@@ -516,29 +516,35 @@ class UserFrailtyIndexAPI extends API{
         $scores = array();
         foreach(self::$checkanswers as $category => $categories){
             $score = 0;
-            foreach($categories as $answer){
-                $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, $answer["ReportSection"], $answer["blobItem"], $user_id);
-                $check_answers_list = $answer["answer_scores"];
-                foreach($check_answers_list as $key=>$value){
-                    if($key == $ans){
-                        $score = $score + $value;
+            if(AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)){
+                foreach($categories as $answer){
+                    $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, $answer["ReportSection"], $answer["blobItem"], $user_id);
+                    $check_answers_list = $answer["answer_scores"];
+                    foreach($check_answers_list as $key=>$value){
+                        if($key == $ans){
+                            $score = $score + $value;
+                        }
                     }
                 }
             }
             $scores[$category] = $score;
         }
-        $scores["Health Conditions"] = $this->getSymptomsScore($user_id, $reportType);
-        $scores["Self-Perceived Health"] = $this->getSelfPerceivedHealth($user_id, $reportType);
+        $scores["Health Conditions"] = (AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)) ? $this->getSymptomsScore($user_id, $reportType) : 0;
+        $scores["Self-Perceived Health"] = (AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)) ? $this->getSelfPerceivedHealth($user_id, $reportType) : 0;
         $scores["Total"] = 0;
         foreach($scores as $key => $score){
             if($key != "Total"){
                 $scores["Total"] += $score;
             }
         }
-        $scores["Behavioral"] = $this->getBehavioralScores($user_id, $reportType);
-        $scores["Health"] = $this->getHealthScores($user_id, $reportType);
-        $scores["VAS"] = $this->getSelfPerceivedHealth($user_id, $reportType, true);
-        $scores["CFS"] = $this->getCFS($user_id, $reportType);
+        $scores["Behavioral"] = (AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)) ? $this->getBehavioralScores($user_id, $reportType) : array("Activity" => 0, 
+                                                                                                                                                        "Vaccination" => 0,
+                                                                                                                                                        "Optimize Medication" => 0,
+                                                                                                                                                        "Interact" => 0,
+                                                                                                                                                        "Diet and Nutrition" => 0);
+        $scores["Health"] = (AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)) ? $this->getHealthScores($user_id, $reportType) : array(0,0,0,0,0);
+        $scores["VAS"] = (AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)) ? $this->getSelfPerceivedHealth($user_id, $reportType, true) : 0;
+        $scores["CFS"] = (AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)) ? $this->getCFS($user_id, $reportType) : 0;
         
         // Labels
         if($scores["Total"] >= 0 && $scores["Total"] <= 3){
