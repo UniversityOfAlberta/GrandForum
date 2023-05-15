@@ -597,6 +597,11 @@ function stdev($a){
     return $stdev;
 }
 
+function showLanguage($english, $french){
+    global $wgLang;
+    return ($wgLang->getCode() == 'en') ? $english : $french;
+}
+
 function encrypt($plaintext, $ignoreError=false){
     if(!isset($_SERVER['ENC_KEY'])){
         if($ignoreError){ return $plaintext; }

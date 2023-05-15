@@ -89,55 +89,55 @@ class Register extends SpecialPage{
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
         
-        $firstNameLabel = new Label("first_name_label", "<span class='en'>First Name</span><span class='fr'>Prénom</span>", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
+        $firstNameLabel = new Label("first_name_label", "<en>First Name</en><fr>Prénom</fr>", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
         $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOT_NULL);
         $firstNameRow = new FormTableRow("first_name_row");
         $firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
         
-        $lastNameLabel = new Label("last_name_label", "<span class='en'>Last Name</span><span class='fr'>Nom</span>", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
+        $lastNameLabel = new Label("last_name_label", "<en>Last Name</en><fr>Nom</fr>", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
         
-        $userNameLabel = new Label("user_name_label", "<span class='en'>Username</span><span class='fr'>Username</span>", "The username", VALIDATE_NOT_NULL);
+        $userNameLabel = new Label("user_name_label", "<en>Username</en><fr>Nom d’usager</fr>", "The username", VALIDATE_NOT_NULL);
         $userNameField = new TextField("user_name_field", "Last Name", "", VALIDATE_NOT_NULL);
         $userNameRow = new FormTableRow("user_name_row");
         $userNameRow->append($userNameLabel)->append($userNameField->attr('size', 20));
         $userNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         
-        $emailLabel = new Label("email_label", "<span class='en'>Email</span><span class='fr'>Courriel</span>", "The email address of the user", VALIDATE_NOT_NULL);
+        $emailLabel = new Label("email_label", "<en>Email</en><fr>Courriel</fr>", "The email address of the user", VALIDATE_NOT_NULL);
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
         $emailField->registerValidation(new UniqueEmailValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
         
-        $passwordLabel = new Label("password_label", "<span class='en'>Password</span><span class='fr'>Password</span>", "The password of the user", VALIDATE_NOT_NULL);
+        $passwordLabel = new Label("password_label", "<en>Password</en><fr>Mot de passe</fr>", "The password of the user", VALIDATE_NOT_NULL);
         $passwordField = new PasswordField("password_field", "Password", "", VALIDATE_NOT_NULL);
         $passwordRow = new FormTableRow("password_row");
         $passwordRow->append($passwordLabel)->append($passwordField);
         
-        $password2Label = new Label("password2_label", "<span class='en'>Password (confirm)</span><span class='fr'>Password (confirm)</span>", "The password of the user", VALIDATE_NOT_NULL);
+        $password2Label = new Label("password2_label", "<en>Password (confirm)</en><fr>Mot de passe (confirmation)</fr>", "The password of the user", VALIDATE_NOT_NULL);
         $password2Field = new PasswordField("password2_field", "Password (confirm)", "", VALIDATE_NOT_NULL);
         $password2Row = new FormTableRow("password2_row");
         $password2Row->append($password2Label)->append($password2Field);
         
         // These next fields for are for AVOID
-        $phoneLabel = new Label("phone_label", "Phone Number", "Phone Number", VALIDATE_NOT_NULL);
+        $phoneLabel = new Label("phone_label", "<en>Phone Number</en><fr>Numéro de téléphone</fr>", "Phone Number", VALIDATE_NOT_NULL);
         $phoneField = new TextField("phone_field", "Phone Number", "", VALIDATE_NOT_NULL);
         $phoneRow = new FormTableRow("phone_row");
         $phoneRow->append($phoneLabel)->append($phoneField->attr('size', 10));
         
-        $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "or Age of loved one", "The age of the loved one", VALIDATE_NOTHING);
+        $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "<en>or Age of loved one</en><fr>ou Âge de l'être cher</fr>", "The age of the loved one", VALIDATE_NOTHING);
         $ageOfLovedOneField = new TextField("age_of_loved_one_field", "Age of loved one", "", VALIDATE_NOTHING);
         $ageOfLovedOneRow = new FormTableRow("age_of_loved_one_row");
         $ageOfLovedOneRow->append($ageOfLovedOneLabel)->append($ageOfLovedOneField->attr('size', 3));
         
-        $ageLabel = new Label("age_label", "Guest User Age", "The age of the user", VALIDATE_NOTHING);
+        $ageLabel = new Label("age_label", "<en>Guest User Age</en><fr>Âge de l'utilisateur invité</fr>", "The age of the user", VALIDATE_NOTHING);
         $ageField = new TextField("age_field", "Guest User Age", "", VALIDATE_NOTHING);
         $ageRow = new FormTableRow("age_row");
         $ageRow->append($ageLabel)->append($ageField->attr('size', 3));
         
-        $practiceLabel = new Label("practice_label", "Practice", "The practice of the user", VALIDATE_NOT_NULL);
+        $practiceLabel = new Label("practice_label", "<en>Practice</en><fr>Pratique</fr>", "The practice of the user", VALIDATE_NOT_NULL);
         $practiceField = new TextField("practice_field", "Practice", "", VALIDATE_NOT_NULL);
         $practiceRow = new FormTableRow("practice_row");
         $practiceRow->append($practiceLabel)->append($practiceField->attr('size', 20));
@@ -147,7 +147,7 @@ class Register extends SpecialPage{
         $roleRow = new FormTableRow("role_row");
         $roleRow->append($roleLabel)->append($roleField->attr('size', 20));
         
-        $hearLabel = new Label("hear_label", "How did you hear about the AVOID Frailty program?", "How did you hear about the AVOID Frailty program?", VALIDATE_NOT_NULL);
+        $hearLabel = new Label("hear_label", "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr>", "How did you hear about the AVOID Frailty program?", VALIDATE_NOT_NULL);
         $hearLabel->colspan = 2;
         $hearRow1 = new FormTableRow("hear_row1");
         $hearRow1->append($hearLabel);
@@ -207,7 +207,7 @@ class Register extends SpecialPage{
     }
     
      function generateFormHTML($wgOut){
-        global $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang;
+        global $wgServer, $wgScriptPath, $wgRoles, $config;
         $user = Person::newFromWgUser();
         if($config->getValue('networkName') == "ADA" || $config->getValue('networkName') == "CFN"){
             $wgOut->setPageTitle("Member Registration");
@@ -223,12 +223,7 @@ class Register extends SpecialPage{
             Applicants may register using their institutional email address only. For permission to use a non .ca email address, please contact <a href='mailto:mtsfunding@yorku.ca'>mtsfunding@yorku.ca</a>.<br /><br />");
         }
         else if($config->getValue('networkName') == 'ELITE'){
-            if($wgLang->getCode() == 'en'){
-                $wgOut->setPageTitle("Member Registration");
-            }
-            else{
-                $wgOut->setPageTitle("Inscription des membres");
-            }
+            $wgOut->setPageTitle(showLanguage("Member Registration", "Inscription des membres"));
             $wgOut->addHTML("<span class='en'>Your registration with {$config->getValue('networkName')} Program Application Portal will grant you access. You will receive a registration email within a few minutes after submission of your information. If you do not receive the registration email in your main inbox, please check your spam or junk mail folder. If you did not receive the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</span>
                             <span class='fr'>
                                 Votre inscription au portail du formulaire de demande pour le Programme ELITE vous donnera accès au portail. Vous recevrez un courriel d'inscription quelques minutes après la soumission de vos informations. Si vous ne recevez pas le courriel d'inscription dans votre boîte de réception principale, veuillez vérifier votre dossier de courriels indésirables. Si vous n'avez pas reçu le courriel, veuillez contacter <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.
@@ -237,18 +232,20 @@ class Register extends SpecialPage{
         else if($config->getValUE("networkName") == "AVOID"){
             $role = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? $_GET['role'] : CI; // Member
             if($role == CI){
-                $wgOut->setPageTitle("Member Registration");
+                $wgOut->setPageTitle(showLanguage("Member Registration", "Inscription - Membre"));
             }
             else if($role == "Partner"){
-                $wgOut->setPageTitle("Care Partner/Guest Registration");
+                $wgOut->setPageTitle(showLanguage("Care Partner/Guest Registration", "Inscription - Partenaire/Invité"));
             }
             else if($role == "Clinician"){
-                $wgOut->setPageTitle("Clinician Registration");
+                $wgOut->setPageTitle(showLanguage("Clinician Registration", "Inscription - Partenaire/Invité"));
             }
             $wgOut->addHTML("<div class='program-body'>
-                                By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.
+                                <en>By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</en>
+                                <fr>En vous inscrivant au site Web Proactif, vous obtenez le statut de {$role}. Consultez vos pourriels si vous ne recevez pas le courriel de confirmation d’inscription dans les prochaines minutes. Si vous n’avez toujours rien reçu, veuillez écrire aux adresses suivantes: <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</fr>
                                 <br /><br />
-                                If completing the online registration or healthy aging assessment presents any challenges for you (such as vision problems, or an unsteady hand), program administration can complete it on your behalf over the phone. Please call 613-549-6666. Ex. 2834 to organize this.
+                                <en>If completing the online registration or healthy aging assessment presents any challenges for you (such as vision problems, or an unsteady hand), program administration can complete it on your behalf over the phone. Please call 613-549-6666. Ex. 2834 to organize this.</en>
+                                <fr>Si vous avez de la difficulté à remplir le questionnaire (par exemple, si vous avez des problèmes de vision ou que vos mains tremblent), nous pouvons le remplir pour vous. Pour organiser une rencontre téléphonique d’assistance, appelez au 418-663-5313, poste 12218.</fr>
                                 <br /><br />");
         }
         else if($config->getValue('networkName') == 'IDeaS'){
@@ -285,6 +282,9 @@ class Register extends SpecialPage{
                 $('[name=user_name_field]').val(username);
                 $('[name=user_name_field]').addClass('changed');
             });
+            $('#side').hide();
+            $('#outerHeader').css('left', 0);
+            $('#bodyContent').css('left', 0);
         </script>");
     }
     

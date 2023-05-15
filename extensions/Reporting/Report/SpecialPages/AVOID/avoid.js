@@ -5,14 +5,14 @@ $(document).ready(function(){
 
     $('#bodyContent').append("<div id='avoidButtons' class='program-body'></div>");
     
-    $('#avoidButtons').append("<a id='scrollToTop' class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='#'>Top of Page</a>");
+    $('#avoidButtons').append("<a id='scrollToTop' class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='#'><en>Top of Page</en><fr>Haut de la page</fr></a>");
     if(me.isLoggedIn()){
         var selected = $(".top-nav-element.selected a");
         if(selected.text() != "My Profile"){
-            $('#avoidButtons').append("<a class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='" + wgServer + wgScriptPath + "/index.php/Special:AVOIDDashboard'>Back to My Profile</a>");
+            $('#avoidButtons').append("<a class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='" + wgServer + wgScriptPath + "/index.php/Special:AVOIDDashboard'><en>Back to My Profile</en><fr>Retour à Mon Profil</fr></a>");
         }
         if(selected.text() != "" && selected.text() != "My Profile"){
-            $('#avoidButtons').append("<a class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='" + selected.attr('href') + "'>Back to " + selected.html() + "</a>");
+            $('#avoidButtons').append("<a class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='" + selected.attr('href') + "'><en>Back to</en><fr>Retour à</fr> " + selected.html() + "</a>");
         }
     }
     
