@@ -514,9 +514,9 @@ class UserFrailtyIndexAPI extends API{
 
     function getFrailtyScore($user_id, $reportType="RP_AVOID"){
         $scores = array();
-        foreach(self::$checkanswers as $category => $categories){
-            $score = 0;
-            if(AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)){
+        if(AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)){
+            foreach(self::$checkanswers as $category => $categories){
+                $score = 0;
                 foreach($categories as $answer){
                     $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, $answer["ReportSection"], $answer["blobItem"], $user_id);
                     $check_answers_list = $answer["answer_scores"];
@@ -526,8 +526,8 @@ class UserFrailtyIndexAPI extends API{
                         }
                     }
                 }
+                $scores[$category] = $score;
             }
-            $scores[$category] = $score;
         }
         $scores["Health Conditions"] = (AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)) ? $this->getSymptomsScore($user_id, $reportType) : 0;
         $scores["Self-Perceived Health"] = (AVOIDDashboard::hasSubmittedSurvey($user_id, $reportType)) ? $this->getSelfPerceivedHealth($user_id, $reportType) : 0;
