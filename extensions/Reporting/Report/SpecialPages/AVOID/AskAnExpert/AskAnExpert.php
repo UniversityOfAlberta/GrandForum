@@ -58,7 +58,7 @@ class AskAnExpert extends BackbonePage {
         if($me->isLoggedIn()){
             if(AVOIDDashboard::checkAllSubmissions($wgUser->getId())){
                 $selected = @($wgTitle->getText() == "AskAnExpert") ? "selected" : false;
-                $GLOBALS['tabs']['AskAnExpert'] = TabUtils::createTab("Ask an Expert", "{$wgServer}{$wgScriptPath}/index.php/Special:AskAnExpert", $selected);
+                $GLOBALS['tabs']['AskAnExpert'] = TabUtils::createTab("<span class='en'>Ask an Expert</span><span class='fr'>Demandez à un Expert</span>", "{$wgServer}{$wgScriptPath}/index.php/Special:AskAnExpert", $selected);
             }
         }
         return true;

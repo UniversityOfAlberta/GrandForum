@@ -133,7 +133,7 @@ class InPersonAssessment extends SpecialPage {
         $me = Person::newFromWgUser();
         if($me->isRole("Assessor")){
             $selected = @($wgTitle->getText() == "InPersonAssessment" || ($wgTitle->getText() == "Report" && @$_GET['report'] == "InPersonAssessment")) ? "selected" : false;
-            $GLOBALS['tabs']['InPersonAssessment'] = TabUtils::createTab("Assessor", "{$wgServer}{$wgScriptPath}/index.php/Special:InPersonAssessment", $selected);
+            $GLOBALS['tabs']['InPersonAssessment'] = TabUtils::createTab("<span class='en'>Assessor</span><span class='fr'>Conseiller</fr>", "{$wgServer}{$wgScriptPath}/index.php/Special:InPersonAssessment", $selected);
         }
         return true;
     }

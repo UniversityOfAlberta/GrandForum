@@ -192,7 +192,7 @@ class AVOIDDashboard extends SpecialPage {
 	}
     
     function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $wgLang;
         if(isset($_GET['fitbitApi'])){
             $me = Person::newFromWgUser();
             if(isset($_GET['disable']) || isset($_GET['token'])){
@@ -243,8 +243,12 @@ class AVOIDDashboard extends SpecialPage {
                 $inProgress[] = $text;
             }
         }
-        
-        $wgOut->setPageTitle("My Profile");
+        if($wgLang->getCode() == 'en'){
+            $wgOut->setPageTitle("My Profile");
+        }
+        else{
+            $wgOut->setPageTitle("Mon Profil");
+        }
         $wgOut->addHTML("<div class='modules'>");
         
         // Frailty Status
@@ -810,7 +814,7 @@ class AVOIDDashboard extends SpecialPage {
         if($me->isLoggedIn()){
             if(AVOIDDashboard::checkAllSubmissions($me->getId())){
                 $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
-                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
+                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("<span class='en'>My Profile</span><span class='fr'>Mon Profil</span>", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
             }
         }
         return true;

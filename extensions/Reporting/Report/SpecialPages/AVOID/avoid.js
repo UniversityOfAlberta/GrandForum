@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    if($('.top-nav-element.selected').text().trim() == "Manager" || $('.top-nav-element.selected').text().trim() == "Assessor"){
+    if($('.top-nav-element.selected').text().indexOf("Manager") != -1 || $('.top-nav-element.selected').text().trim() == "Assessor"){
         $("#submenu").show();
     }
 
