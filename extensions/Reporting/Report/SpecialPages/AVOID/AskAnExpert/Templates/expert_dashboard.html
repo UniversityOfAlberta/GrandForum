@@ -1,46 +1,49 @@
 <div class='program-body' style='overflow: auto;'>
     <div style='display:flex;'>
         <div class='program-header' style="text-align:center; width:800px;line-height:0.8em;">
-		ASK AN AVOID EXPERT
-		<br />
-		<span style="font-size:0.4em;">A series of KFL&A community events to support a healthy lifestyle</span>
-		     </div>
-        <div class='' style='min-width: 200px;'>
-		<img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style='float: right; height: 140px;' />
+            ASK AN AVOID EXPERT
+            <br />
+            <span style="font-size:0.4em;">A series of KFL&A community events to support a healthy lifestyle</span>
         </div>
-	<div style="position:absolute;top:0px;right:10px;">
-		<% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){%>
-            <!--a href="<%= wgServer+wgScriptPath%>/index.php/Special:AskAnExpert#/1/edit" id="editeventbtn" style="float:right" class="program-button" title="Edit">Edit Event</a-->
-            <a href="#" id="editeventbtn" style="float:right" class="editbutton" title="Edit">Edit Event</a>
-        <% } %>
-	</div>
+        <div class='' style='min-width: 200px;'>
+            <img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style='float: right; height: 140px;' />
+        </div>
+        <div style="position:absolute;top:0px;right:10px;">
+            <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){%>
+                <!--a href="<%= wgServer+wgScriptPath%>/index.php/Special:AskAnExpert#/1/edit" id="editeventbtn" style="float:right" class="program-button" title="Edit">Edit Event</a-->
+                <a href="#" id="editeventbtn" style="float:right" class="editbutton" title="Edit">Edit Event</a>
+            <% } %>
+        </div>
     </div>
     <div id="editDialog" style="display:none;"></div>
     <div id="registerDialog" style="display:none;"></div>
     <div id="detailsDialog" style="display:none;"></div>
     <div class="expert_announce"><b>
-	<span style="color:#005f9d;">Current Theme:</span> <%= output.theme  %><br />
-	<span style="color:#005f9d;">Host:</span> <%= output.host  %><br />
-	<span style="color:#005f9d;">Event:</span> <%= output.event  %><br />
-	<span style="color:#005f9d;">Description:</span></b> <%= output.description %> <br />
+        <span style="color:#005f9d;">Current Theme:</span> <%= output.theme  %><br />
+        <span style="color:#005f9d;">Host:</span> <%= output.host  %><br />
+        <span style="color:#005f9d;">Event:</span> <%= output.event  %><br />
+        <span style="color:#005f9d;">Description:</span></b> <%= output.description %> <br />
     </div>
     <div style='display:flex; clear: both;'>
         <div style='width:40%; padding-right:1em;'>
-		<div class='program-box' style='margin-left:0.5em;    border-radius: 0em !important;'>
-			<ul><li><span style=""><%= output.date  %> @ <%= output.time %> - <%= output.end_time %></span></li>
-				<li><%= output.location  %></li>
-		<li><a id="registerevent" class="registerbtn" data-cat="register" href="#">REGISTER</a></li>
-			</ul>
-		</div>
+            <% if (output.end_of_event != '0000-00-00 00:00:00'){ %>
+                <div class='program-box' style='margin-left:0.5em;    border-radius: 0em !important;'>
+                    <ul>
+                        <li><span style=""><%= output.date  %> @ <%= output.time %> - <%= output.end_time %></span></li>
+                        <li><%= output.location  %></li>
+                        <li><a id="registerevent" class="registerbtn" data-cat="register" href="#">REGISTER</a></li>
+                    </ul>
+                </div>
+            <% } %>
         </div>
         <div style='width:60%; padding-left:1em;'>
             <div style="color:#005f9d;">
-		    <b>Past Event Resources</b><br />
-		    <ul><li><a href="https://healthyagingcentres.ca/portal/EducationModules/Sleep/Resources/Sleep Presentation AVOID program.pdf" target="_blank">The Road to Better Sleep March 1, 2023</a></li>
-		        <li><a href="https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true" target="_blank">Transit Travel Training Jan 12, 2023</a></li>
-			    <li><a href="https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true" target="_blank">Kingston Access Bus Jan 12, 2023</a></li>
-			</ul>
-
+                <b>Past Event Resources</b><br />
+                <ul>
+                    <li><a href="https://healthyagingcentres.ca/portal/EducationModules/Sleep/Resources/Sleep Presentation AVOID program.pdf" target="_blank">The Road to Better Sleep March 1, 2023</a></li>
+                    <li><a href="https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true" target="_blank">Transit Travel Training Jan 12, 2023</a></li>
+                    <li><a href="https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true" target="_blank">Kingston Access Bus Jan 12, 2023</a></li>
+                </ul>
             </div>
         </div>
     </div>
