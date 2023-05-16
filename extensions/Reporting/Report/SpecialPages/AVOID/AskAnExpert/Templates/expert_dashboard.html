@@ -6,7 +6,7 @@
             <span style="font-size:0.4em;">A series of KFL&A community events to support a healthy lifestyle</span>
         </div>
         <div class='' style='min-width: 200px;'>
-            <img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style='float: right; height: 140px;' />
+            <img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style="float: right; height: 140px;" />
         </div>
         <div style="position:absolute;top:0px;right:10px;">
             <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){%>
@@ -27,7 +27,7 @@
     <div style='display:flex; clear: both;'>
         <div style='width:40%; padding-right:1em;'>
             <% if (output.end_of_event != '0000-00-00 00:00:00'){ %>
-                <div class='program-box' style='margin-left:0.5em;    border-radius: 0em !important;'>
+                <div class='program-box' style="margin-left:0.5em; border-radius: 0em !important;">
                     <ul>
                         <li><span style=""><%= output.date  %> @ <%= output.time %> - <%= output.end_time %></span></li>
                         <li><%= output.location  %></li>
@@ -36,7 +36,7 @@
                 </div>
             <% } %>
         </div>
-        <div style='width:60%; padding-left:1em;'>
+        <div style="width:60%; padding-left:1em;">
             <div style="color:#005f9d;">
                 <b>Past Event Resources</b><br />
                 <ul>
