@@ -90,12 +90,18 @@ Major: weakness that severely limits the quality of the proposal or potential of
                 <tr>
                     <th style="min-width:110px;">HQP Name</th>
                     <th style="min-width:125px;">Application PDF</th>
+                    <th style="min-width:125px;">References</th>
                 </tr>
             ]]>
         </Static>
         <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="HQP-2023">
             <ReportItem id="hqp_pdf" type="PDFReportItem" reportType="HQPApplication" width="100%" project="true">
                 <![CDATA[<tr><td>{$user_name}</td><td>{$item}</td>]]>
+            </ReportItem>
+            <ReportItem id="letters" arrayId="letters" type="EliteUploadedLetters" blobReport="200" blobSection="2" blobItem="LETTERS" blobType="BLOB_ARRAY" personId="{$user_id}" showStatus="false" optional="true">
+                <![CDATA[
+                    <td>{$item}</td></tr>
+                ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
