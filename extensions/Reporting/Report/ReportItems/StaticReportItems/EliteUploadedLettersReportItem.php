@@ -7,6 +7,7 @@ class EliteUploadedLettersReportItem extends MultiTextReportItem {
         $this->id = $this->getAttr('arrayId', $this->id);
         $showStatus = (strtolower($this->getAttr('showStatus', 'false')) == 'true');
         $letters = $this->getBlobValue();
+        $reportType = $this->getAttr("blobReport", $this->getReport()->reportType);
         $md5s = array();
         if(is_array($letters)){
             foreach($letters as $letter){
@@ -17,7 +18,7 @@ class EliteUploadedLettersReportItem extends MultiTextReportItem {
                                                  array('md5'),
                                                  array('year' => $this->getReport()->year,
                                                        'user_id' => $this->personId,
-                                                       'rp_type' => $this->getReport()->reportType,
+                                                       'rp_type' => $reportType,
                                                        'rp_section' => "PROFILE",
                                                        'rp_item' => "LETTER",
                                                        'rp_subitem' => $md5));
