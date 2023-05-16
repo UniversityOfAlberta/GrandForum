@@ -58,17 +58,20 @@ class EducationResources extends SpecialPage {
 	function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
         $dir = dirname(__FILE__) . '/';
-        $wgOut->setPageTitle("AVOID Education");
+        $wgOut->setPageTitle(showLanguage("AVOID Education", "PROACTIF pour éviter la fragilisation – Éducation"));
         $categories = self::JSON();
         
         $cols = 8;
-        $wgOut->addHTML("<p class='program-body'>Click the topic that you want to learn about.</p>");
+        $wgOut->addHTML("<p class='program-body'>
+                            <en>Click the topic that you want to learn about.</en>
+                            <fr>Cliquez sur la rubrique concernant laquelle vous souhaitez obtenir des renseignements.</fr>
+                         </p>");
         $wgOut->addHTML("<div class='modules' style='margin-bottom: 1em;'>");
         $n = 0;
         foreach($categories as $category){
-            $wgOut->addHTML("<a id='category{$category->id}' title='{$category->title}' data-id='{$category->id}' class='category module module-{$cols}cols-outer' href='#'>
-                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}.png' alt='{$category->title}' />
-                <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$category->title}</div>
+            $wgOut->addHTML("<a id='category{$category->id}' title='".showLanguage($category->title, $category->titleFr)."' data-id='{$category->id}' class='category module module-{$cols}cols-outer' href='#'>
+                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}.png' alt='".showLanguage($category->title, $category->titleFr)."' />
+                <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>".showLanguage($category->title, $category->titleFr)."</div>
             </a>");
             $n++;
         }
@@ -89,8 +92,8 @@ class EducationResources extends SpecialPage {
             $wgOut->addHTML("<div id='resources{$category->id}' class='resources modules' style='display:none; position: relative; width: 100%;'>
             <div class='modules module-3cols-outer'>
                 <div class='program-box program-body' style='width:100%;'>Education Module</div>
-                <a id='module{$category->id}' class='module' title='{$category->title}' href='{$url}'>
-                    <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}/thumbnail.png' alt='{$category->title}' />
+                <a id='module{$category->id}' class='module' title='".showLanguage($category->title, $category->titleFr)."' href='{$url}'>
+                    <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}/thumbnail.png' alt='".showLanguage($category->title, $category->titleFr)."' />
                     <div class='module-progress'>
                         <div class='module-progress-bar' style='width:{$percent}%;'></div>
                         <div class='module-progress-text'>".number_format($percent)."% Complete</div>

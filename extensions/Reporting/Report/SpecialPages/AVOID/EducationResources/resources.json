@@ -2,6 +2,7 @@
     {
         "id": "IngredientsForChange",
         "title": "Ingredients for Change",
+        "titleFr": "Pour un changement réussi",
         "videos": 5,
         "questions": 4,
         "tags": ["everything"],
@@ -10,6 +11,7 @@
     {
         "id": "Activity",
         "title": "Activity",
+        "titleFr": "Activité physique",
         "videos": 8,
         "questions": 3,
         "tags": ["activity module"],
@@ -59,6 +61,7 @@
     {
         "id": "Vaccination",
         "title": "Vaccinate",
+        "titleFr": "Vaccination",
         "videos": 7,
         "questions": 3,
         "tags": ["vaccination module"],
@@ -103,6 +106,7 @@
     {
         "id": "OptimizeMedication",
         "title": "Optimize Medication",
+        "titleFr": "Optimisation des médicaments",
         "videos": 6,
         "questions": 3,
         "tags": ["optimize medication module"],
@@ -142,6 +146,7 @@
     {
         "id": "Interact",
         "title": "Interact",
+        "titleFr": "Vie sociale",
         "videos": 7,
         "questions": 3,
         "tags": ["interact module"],
@@ -166,6 +171,7 @@
     {
         "id": "DietAndNutrition",
         "title": "Diet and Nutrition",
+        "titleFr": "Alimentation",
         "videos": 12,
         "questions": 4,
         "tags": ["diet and nutrition module"],
@@ -255,6 +261,7 @@
     {
         "id": "Sleep",
         "title": "Sleep",
+        "titleFr": "Sommeil",
         "videos": 6,
         "questions": 4,
         "tags": [],
@@ -319,6 +326,7 @@
     {
         "id": "FallsPrevention",
         "title": "Falls Prevention",
+        "titleFr": "Prévention des chutes",
         "videos": 6,
         "questions": 3,
         "tags": [],

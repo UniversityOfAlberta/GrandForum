@@ -235,7 +235,7 @@ class AVOIDDashboard extends SpecialPage {
         $inProgress = array();
         foreach($modules as $module){
             $completion = EducationResources::completion($module->id);
-            $text = "<li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$module->id}'>{$module->title}</a></li>";
+            $text = "<li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$module->id}'>".showLanguage($module->title, $module->titleFr)."</a></li>";
             if($completion == 100){
                 $complete[] = $text;
             }

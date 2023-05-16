@@ -2162,6 +2162,10 @@ div.program-text {
     line-height: 1.5em;
 }
 
+.module-progress-text * {
+    text-decoration: none !important;
+}
+
 .quiz-footer {
     width: calc(100% + 20px); 
     margin-left:-10px; 
