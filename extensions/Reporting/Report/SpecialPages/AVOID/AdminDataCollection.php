@@ -16,7 +16,7 @@ class AdminDataCollection extends SpecialPage{
 
     function execute($par){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-        $this->getOutput()->setPageTitle("Usage Stats");
+        $this->getOutput()->setPageTitle("Users");
         $people = array();
         foreach(Person::getAllPeople() as $person){
             if($person->isRoleAtLeast(STAFF)){
@@ -39,34 +39,26 @@ class AdminDataCollection extends SpecialPage{
             }
         </style>");
         $wgOut->addHTML("<b>Active User Count:</b> ".count($people));
-        $topics = array("IngredientsForChange","Activity","Vaccination","OptimizeMedication","Interact","DietAndNutrition","Sleep","FallsPrevention");
         if(count($people) > 0){
             $wgOut->addHTML("<table id='data' class='wikitable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>
                                 <thead>
                                     <tr style='background:#EEEEEE;'>
-                                        <th rowspan='2'>Name</th>
-                                        <th rowspan='2'>Email</th>
-                                        <th rowspan='2'>Age</th>
-                                        <th rowspan='2'>Postal Code</th>
-                                        <th rowspan='2'>Role</th>
-                                        <th rowspan='2'>Date Registered</th>
-                                        <th rowspan='2'>Last Logged In</th>
-                                        <th rowspan='2'>Extra</th>
-                                        <th rowspan='2'>Hear about us</th>
-                                        <th rowspan='2'>In person opportunity</th>
-                                        <th rowspan='2'>Fitbit</th>
-                                        <th rowspan='2'>Submitted Intake Survey</th>
-                                        <th rowspan='2'>Submitted 3Month Survey</th>
-                                        <th rowspan='2'>Submitted 6Month Survey</th>
-                                        <th rowspan='2'>Submitted 9Month Survey</th>
-                                        <th rowspan='2'>Submitted 12Month Survey</th>
-                                        <th rowspan='2'>Action Plans</th>
-                                        <th colspan='10'>Data Collected</th>
-                                    </tr>
-                                    <tr>
-                                        <th>".implode("</th><th>", $topics)."</th>
-                                        <th>Program Library</th>
-                                        <th>Links</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Age</th>
+                                        <th>Postal Code</th>
+                                        <th>Role</th>
+                                        <th>Date Registered</th>
+                                        <th>Last Logged In</th>
+                                        <th>Extra</th>
+                                        <th>Hear about us</th>
+                                        <th>In person opportunity</th>
+                                        <th>Fitbit</th>
+                                        <th>Submitted Intake Survey</th>
+                                        <th>Submitted 3Month Survey</th>
+                                        <th>Submitted 6Month Survey</th>
+                                        <th>Submitted 9Month Survey</th>
+                                        <th>Submitted 12Month Survey</th>
                                     </tr>
                                 </thead>
                                 <tbody>");
@@ -100,31 +92,6 @@ class AdminDataCollection extends SpecialPage{
                                     <td>{$person->getRoleString()}</td>
                                     <td nowrap>{$registration_date}</td>
                                     <td nowrap>{$touched_date}</td>");
-
-                // Action Plans
-                $plans = array();
-                foreach(ActionPlan::newFromUserId($person->getId()) as $plan){
-                    $plans[] = $plan;
-                }
-                
-                $submittedPlans = array();
-                $components = array('A' => 0, 
-                                    'V' => 0, 
-                                    'O' => 0, 
-                                    'I' => 0, 
-                                    'D' => 0, 
-                                    'S' => 0, 
-                                    'F' => 0);
-                foreach($plans as $plan){
-                    foreach($plan->getComponents() as $comp => $val){
-                        if($val == 1){
-                            @$components[$comp]++;
-                        }
-                    }
-                    if($plan->getSubmitted()){
-                        $submittedPlans[] = $plan;
-                    }
-                }
 
                 $phone = $person->getExtra('phone', $person->getPhoneNumber());
                 //grab clinician data
@@ -164,160 +131,43 @@ class AdminDataCollection extends SpecialPage{
                 <td>{$submitted6}</td>
                 <td>{$submitted9}</td>
                 <td>{$submitted12}</td>
-                <td style='white-space:nowrap;'>
-                    <b>Created:</b> ".count($plans)."<br />
-                    <b>Submitted:</b> ".count($submittedPlans)."<br />
-                </td>");
-
-                $resource_data_sql = "SELECT * FROM `grand_data_collection` WHERE user_id = {$person->getId()}";
-                $resource_data = DBFunctions::execSQL($resource_data_sql);
-                $links = array();
-
-                // Topics
-                foreach($topics as $topic){
-                    $wgOut->addHTML("<td style='padding:0;'>");
-                    foreach($resource_data as $page){
-                        $page_name = trim($page["page"]);
-                        $page_data = json_decode($page["data"], true);
-                        if($page_name == $topic){
-                            $wgOut->addHTML("<table style='border-collapse: collapse; table-layout: auto; width: 100%;'>");
-                            $x_num = 0;
-                            foreach($page_data as $key => $value){
-                                if(strlen($key) < 4){
-                                    continue;
-                                }
-                                if(is_array($value)){
-                                    continue;
-                                    $value = implode("|",$value);
-                                }
-                                $key = str_replace("PageCount", " Views", $key);
-                                $key = str_replace("Time", " Time", $key);
-                                if(strpos($key, "Time")){
-                                    $init = $value;
-                                    $hours = floor($init / 3600);
-                                    $minutes = floor(($init / 60) % 60);
-                                    $seconds = $init % 60;
-                                    $value = "$hours:$minutes:$seconds";
-                                }
-                                if($x_num%2==0){
-                                    $wgOut->addHTML("<tr style='background-color:#ececec'><td nowrap>$key</td><td align='right'>$value</td></tr>");
-                                }
-                                else{
-                                    $wgOut->addHTML("<tr style=''><td nowrap>$key</td><td align='right'>$value</td></tr>");
-                                }
-                                $x_num++;
-                            }
-                            $wgOut->addHTML("</table>");
-                        }
-                    }
-                    $wgOut->addHTML("</td>");
-                }
-                
-                // Program Library
-                $wgOut->addHTML("<td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>");
-                $x_num = 0;
-                foreach($resource_data as $page){
-                    $page_name = trim($page["page"]);
-                    if(strstr($page_name, "ProgramLibrary") !== false){
-                        $page_name = str_replace("ProgramLibrary-", "", trim($page["page"]));
-                        $page_data = json_decode($page["data"],true);
-                        $views = isset($page_data["pageCount"]) ? $page_data["pageCount"] : 0;
-                        $websiteClicks = isset($page_data["websiteClicks"]) ? $page_data["websiteClicks"] : 0;
-                        if($x_num%2==0){
-                            $wgOut->addHTML("
-                                <tr style='background-color:#ececec'>
-                                    <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
-                                    <td nowrap>Views: $views</td>
-                                </tr>
-                                <tr style='background-color:#ececec'>
-                                    <td nowrap>Website: $websiteClicks</td>
-                                </tr>");
-                        }
-                        else{
-                            $wgOut->addHTML("
-                                <tr style=''>
-                                    <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
-                                    <td nowrap>Views: $views</td>
-                                </tr>
-                                <tr>
-                                    <td nowrap>Website: $websiteClicks</td>
-                                </tr>");
-                        }
-                        $x_num++;
-                    }
-                    else if(!in_array($page_name, $topics) && $page_name != ""){
-                        $links[] = $page;
-                    }
-                }
-                
-                // Links
-                $wgOut->addHTML("</table></td><td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>");
-                $x_num = 0;
-                foreach($links as $link){
-                    $page_name = trim($link["page"]);
-                    $page_data = json_decode($link["data"],true);
-                    $views = isset($page_data["count"]) ? $page_data["count"] : (isset($page_data["hits"]) ? $page_data["hits"] : 0);
-                    $time = @$page_data["time"];
-                    if($x_num%2==0){
-                        $wgOut->addHTML("
-                            <tr style='background-color:#ececec'>
-                                <td rowspan='2'>$page_name</td>
-                                <td nowrap>Views: $views</td>
-                            </tr>
-                            <tr style='background-color:#ececec'>
-                                <td nowrap>Time: $time</td>
-                            </tr>");
-                    }
-                    else{
-                        $wgOut->addHTML("
-                            <tr style=''>
-                                <td rowspan='2'>$page_name</td>
-                                <td nowrap>Views: $views</td>
-                            </tr>
-                            <tr style=''>
-                                <td nowrap>Time: $time</td>
-                            </tr>");
-                    }
-                    $x_num++;
-                }
-
-                $wgOut->addHTML("</table></td>");
+                </tr>");
             }
             $wgOut->addHTML("</tbody>
-                            </table>
-                            <div id='adminDataCollectionMessages'></div>
-                            <script type='text/javascript'>
-                                table = $('#data').DataTable({
-                                    aLengthMenu: [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
-                                    iDisplayLength: -1,
-                                    'dom': 'Blfrtip',
-                                    'buttons': [
-                                        'excel'
-                                    ],
-                                    scrollX: true,
-                                    scrollY: $('#bodyContent').height() - 400
+                        </table>
+                        <div id='adminDataCollectionMessages'></div>
+                        <script type='text/javascript'>
+                            table = $('#data').DataTable({
+                                aLengthMenu: [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
+                                iDisplayLength: -1,
+                                'dom': 'Blfrtip',
+                                'buttons': [
+                                    'excel'
+                                ],
+                                scrollX: true,
+                                scrollY: $('#bodyContent').height() - 400
+                            });
+                            $('#data_length').append('<button id=\"copyEmails\" style=\"margin-left: 15px;\">Copy Visible Email Addresses</button>');
+                            $('#copyEmails').click(function(){
+                                var emails = [];
+                                $('.emailCell:visible').each(function(){
+                                    var email = $(this).text().trim();
+                                    if(email != ''){
+                                        emails.push(email);
+                                    }
                                 });
-                                $('#data_length').append('<button id=\"copyEmails\" style=\"margin-left: 15px;\">Copy Visible Email Addresses</button>');
-                                $('#copyEmails').click(function(){
-                                    var emails = [];
-                                    $('.emailCell:visible').each(function(){
-                                        var email = $(this).text().trim();
-                                        if(email != ''){
-                                            emails.push(email);
-                                        }
-                                    });
-                                    navigator.clipboard.writeText(emails.join(','));
-                                    clearAllMessages('#adminDataCollectionMessages');
-                                    $('#adminDataCollectionMessages').stop();
-                                    $('#adminDataCollectionMessages').show();
-                                    $('#adminDataCollectionMessages').css('opacity', 0.95);
-                                    addSuccess('Visible email addresses copied', false, '#adminDataCollectionMessages');
-                                    $('#adminDataCollectionMessages').fadeOut(5000);
-                                });
-                                _.defer(function(){
-                                    table.draw();
-                                });
-                            </script>");
+                                navigator.clipboard.writeText(emails.join(','));
+                                clearAllMessages('#adminDataCollectionMessages');
+                                $('#adminDataCollectionMessages').stop();
+                                $('#adminDataCollectionMessages').show();
+                                $('#adminDataCollectionMessages').css('opacity', 0.95);
+                                addSuccess('Visible email addresses copied', false, '#adminDataCollectionMessages');
+                                $('#adminDataCollectionMessages').fadeOut(5000);
+                            });
+                            _.defer(function(){
+                                table.draw();
+                            });
+                        </script>");
         }
     }
 
@@ -338,7 +188,7 @@ class AdminDataCollection extends SpecialPage{
         $person = Person::newFromWgUser();
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "AdminDataCollection") ? "selected" : false;
-            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Usage Stats", "{$wgServer}{$wgScriptPath}/index.php/Special:AdminDataCollection", $selected);
+            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Users", "{$wgServer}{$wgScriptPath}/index.php/Special:AdminDataCollection", $selected);
         }
         return true;
     }

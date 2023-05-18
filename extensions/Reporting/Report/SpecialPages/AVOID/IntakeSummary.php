@@ -162,6 +162,7 @@ class IntakeSummary extends SpecialPage {
             $html .= "<th>EQ Health Score</th>";
             $html .= "<th>VAS Score</th>";
             $html .= "<th>CFS Score</th>";
+            $html .= "<th>Usage</th>";
         }
         foreach($report->sections as $section){
             foreach($section->items as $item){
@@ -193,7 +194,7 @@ class IntakeSummary extends SpecialPage {
             if(empty($subRoles)){
                 $subRoles[] = "online independent";
             }
-            $html = "<tr>
+            $html = "<tr data-id='{$person->getId()}'>
                         <td>{$userLink}</td>
                         <td style='white-space:nowrap;' align='left'>".implode(",<br />", $subRoles)."</td>";
         }
@@ -216,6 +217,7 @@ class IntakeSummary extends SpecialPage {
             $html .= "<td>".$EQ5D5L[implode("", $scores["Health"])]."</td>";
             $html .= "<td>".$scores["VAS"]."</td>";
             $html .= "<td>".$scores["CFS"]."</td>";
+            $html .= "<td align='center'><a href='#' class='viewUsage'>View</a></td>";
         }
         $hasSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType);
         foreach($report->sections as $section){
@@ -241,15 +243,18 @@ class IntakeSummary extends SpecialPage {
         global $wgOut;
         $me = Person::newFromWgUser();
         $report = new DummyReport(IntakeSummary::$reportName, $me, null, YEAR);
+
+        $people = array();
+        foreach(explode(",", $_GET['users']) as $id){
+            $person = Person::newFromId($id);
+            $people[] = $person;
+            
+            $wgOut->addHTML($this->dataCollectionTable($person));
+        }
         
         $wgOut->addHTML("<table id='summary' class='wikitable'>");
         $wgOut->addHTML(self::getHeader($report, true, false));
         $wgOut->addHTML("<tbody>");
-        
-        $people = array();
-        foreach(explode(",", $_GET['users']) as $id){
-            $people[] = Person::newFromId($id);
-        }
         
         foreach($people as $person){
             $report->person = $person;
@@ -265,48 +270,212 @@ class IntakeSummary extends SpecialPage {
             $wgOut->addHTML(self::getRow($report->person, $report, "12 Month"));
         }
         $wgOut->addHTML("</tbody>
-                        </table>
-        <script type='text/javascript'>
-            $('#summary').DataTable({
-                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
-                'iDisplayLength': -1,
-                'dom': 'Blfrtip',
-                'buttons': [
-                    'excel'
-                ],
-                scrollX: true,
-                scrollY: $('#bodyContent').height() - 400
-            });
-        </script>");
+                        </table>");
+    }
+    
+    function dataCollectionTable($person){
+        $topics = array("IngredientsForChange","Activity","Vaccination","OptimizeMedication","Interact","DietAndNutrition","Sleep","FallsPrevention");
+        $html = "<div id='data_{$person->getId()}' style='display:none;'><table class='wikitable data_collection' cellpadding='5' cellspacing='1'>
+                    <thead>
+                        <tr>
+                            <th rowspan='2'>Action Plans</th>
+                            <th colspan='10'>Data Collected</th>
+                        </tr>
+                        <tr>
+                            <th>".implode("</th><th>", $topics)."</th>
+                            <th>Program Library</th>
+                            <th>Links</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+    
+        // Action Plans
+        $plans = array();
+        foreach(ActionPlan::newFromUserId($person->getId()) as $plan){
+            $plans[] = $plan;
+        }
+        
+        $submittedPlans = array();
+        $components = array('A' => 0, 
+                            'V' => 0, 
+                            'O' => 0, 
+                            'I' => 0, 
+                            'D' => 0, 
+                            'S' => 0, 
+                            'F' => 0);
+        foreach($plans as $plan){
+            foreach($plan->getComponents() as $comp => $val){
+                if($val == 1){
+                    @$components[$comp]++;
+                }
+            }
+            if($plan->getSubmitted()){
+                $submittedPlans[] = $plan;
+            }
+        }
+        
+        $html .= "<tr>
+                <td style='white-space:nowrap;'>
+                    <b>Created:</b> ".count($plans)."<br />
+                    <b>Submitted:</b> ".count($submittedPlans)."<br />
+                </td>";
+    
+        $resource_data_sql = "SELECT * FROM `grand_data_collection` WHERE user_id = {$person->getId()}";
+        $resource_data = DBFunctions::execSQL($resource_data_sql);
+        $links = array();
+
+        // Topics
+        foreach($topics as $topic){
+            $html .= "<td style='padding:0;'>";
+            foreach($resource_data as $page){
+                $page_name = trim($page["page"]);
+                $page_data = json_decode($page["data"], true);
+                if($page_name == $topic){
+                    $html .= "<table style='border-collapse: collapse; table-layout: auto; width: 100%;'>";
+                    $x_num = 0;
+                    foreach($page_data as $key => $value){
+                        if(strlen($key) < 4){
+                            continue;
+                        }
+                        if(is_array($value)){
+                            continue;
+                            $value = implode("|",$value);
+                        }
+                        $key = str_replace("PageCount", " Views", $key);
+                        $key = str_replace("Time", " Time", $key);
+                        if(strpos($key, "Time")){
+                            $init = $value;
+                            $hours = floor($init / 3600);
+                            $minutes = floor(($init / 60) % 60);
+                            $seconds = $init % 60;
+                            $value = "$hours:$minutes:$seconds";
+                        }
+                        if($x_num%2==0){
+                            $html .= "<tr style='background-color:#ececec'><td nowrap>$key</td><td align='right'>$value</td></tr>";
+                        }
+                        else{
+                            $html .= "<tr style=''><td nowrap>$key</td><td align='right'>$value</td></tr>";
+                        }
+                        $x_num++;
+                    }
+                    $html .= "</table>";
+                }
+            }
+            $html .= "</td>";
+        }
+            
+        // Program Library
+        $html .= "<td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>";
+        $x_num = 0;
+        foreach($resource_data as $page){
+            $page_name = trim($page["page"]);
+            if(strstr($page_name, "ProgramLibrary") !== false){
+                $page_name = str_replace("ProgramLibrary-", "", trim($page["page"]));
+                $page_data = json_decode($page["data"],true);
+                $views = isset($page_data["pageCount"]) ? $page_data["pageCount"] : 0;
+                $websiteClicks = isset($page_data["websiteClicks"]) ? $page_data["websiteClicks"] : 0;
+                if($x_num%2==0){
+                    $html .= "
+                        <tr style='background-color:#ececec'>
+                            <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
+                            <td nowrap>Views: $views</td>
+                        </tr>
+                        <tr style='background-color:#ececec'>
+                            <td nowrap>Website: $websiteClicks</td>
+                        </tr>";
+                }
+                else{
+                    $html .= "
+                        <tr style=''>
+                            <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
+                            <td nowrap>Views: $views</td>
+                        </tr>
+                        <tr>
+                            <td nowrap>Website: $websiteClicks</td>
+                        </tr>";
+                }
+                $x_num++;
+            }
+            else if(!in_array($page_name, $topics) && $page_name != ""){
+                $links[] = $page;
+            }
+        }
+            
+        // Links
+        $html .= "</table></td><td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>";
+        $x_num = 0;
+        foreach($links as $link){
+            $page_name = trim($link["page"]);
+            $page_data = json_decode($link["data"],true);
+            $views = isset($page_data["count"]) ? $page_data["count"] : (isset($page_data["hits"]) ? $page_data["hits"] : 0);
+            $time = @$page_data["time"];
+            if($x_num%2==0){
+                $html .= "
+                    <tr style='background-color:#ececec'>
+                        <td rowspan='2'>$page_name</td>
+                        <td nowrap>Views: $views</td>
+                    </tr>
+                    <tr style='background-color:#ececec'>
+                        <td nowrap>Time: $time</td>
+                    </tr>";
+            }
+            else{
+                $html .= "
+                    <tr style=''>
+                        <td rowspan='2'>$page_name</td>
+                        <td nowrap>Views: $views</td>
+                    </tr>
+                    <tr style=''>
+                        <td nowrap>Time: $time</td>
+                    </tr>";
+            }
+            $x_num++;
+        }
+        $html .= "</table></td>";
+        $html .= "</tbody></table></div>";
+        return $html;
     }
     
     function execute($par){
         global $wgServer, $wgScriptPath, $wgOut;
         if(isset($_GET['users'])){
             $this->userTable();
-            return;
         }
-        $me = Person::newFromWgUser();
-        $wgOut->setPageTitle(static::$pageTitle);
-        $people = Person::getAllPeople(CI);
-        
-        $report = new DummyReport(static::$reportName, $me, null, YEAR);
+        else{
+            $me = Person::newFromWgUser();
+            $wgOut->setPageTitle(static::$pageTitle);
+            $people = Person::getAllPeople(CI);
+            
+            $report = new DummyReport(static::$reportName, $me, null, YEAR);
+            foreach($people as $person){
+                if(!$person->isRoleAtMost(CI)){
+                    continue;
+                }
+                if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
+                    $wgOut->addHTML($this->dataCollectionTable($person));
+                }
+            }
+            
+            $wgOut->addHTML("
+                             <table id='summary' class='wikitable'>");
+            $wgOut->addHTML(self::getHeader($report));
+            $wgOut->addHTML("<tbody>");
+            
+            foreach($people as $person){
+                if(!$person->isRoleAtMost(CI)){
+                    continue;
+                }
+                if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
+                    $report->person = $person;
+                    $wgOut->addHTML(self::getRow($person, $report));
+                }
+            }
+            $wgOut->addHTML("</tbody>
+                            </table>");
+        }
         $wgOut->addHTML("
-                         <table id='summary' class='wikitable'>");
-        $wgOut->addHTML(self::getHeader($report));
-        $wgOut->addHTML("<tbody>");
-        
-        foreach($people as $person){
-            if(!$person->isRoleAtMost(CI)){
-                continue;
-            }
-            if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
-                $report->person = $person;
-                $wgOut->addHTML(self::getRow($person, $report));
-            }
-        }
-        $wgOut->addHTML("</tbody>
-                        </table>
+        <div id='usageDialog' style='display:none;'></div>
+                        
         <script type='text/javascript'>
             $('#summary').DataTable({
                 'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
@@ -330,6 +499,17 @@ class IntakeSummary extends SpecialPage {
                 ids = ids.join(',');
                 document.location = wgServer + wgScriptPath + '/index.php/Special:IntakeSummary?users=' + ids;
             });
+            
+            $('.viewUsage').click(function(){
+                var id = $(this).closest('tr').attr('data-id');
+                $('#usageDialog').html($('#data_' + id).html());
+                $('#usageDialog').dialog({
+                    width: 'auto',
+                    height: 'auto',
+                    title: 'User ' + id + ' Usage Data'
+                });
+            });
+
         </script>");
     }
     
