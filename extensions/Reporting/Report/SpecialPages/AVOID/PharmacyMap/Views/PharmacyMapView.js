@@ -21,7 +21,7 @@ PharmacyMapView = Backbone.View.extend({
         dc.increment("count");
     
         this.model.bind('sync', this.render);//change to on
-       	 
+        
         $(document).on('click', 'a.programWebsite', function(){
             this.clickWebsite(this.model.cat);
         }.bind(this));
@@ -46,23 +46,24 @@ PharmacyMapView = Backbone.View.extend({
         "click .category": "findCategory",
         "click .previous_button": "previousCategory",
         "click #questions": "clickQuestions",
-	"keypress #keywordsearch": "keywordSearch",
-	"click #keysearch_btn": "keywordSearch",
+        "keypress #keywordsearch": "keywordSearch",
+        "click #keysearch_btn": "keywordSearch",
     },
 
     keywordSearch(e){
-	if (event.key === "Enter" || e.currentTarget.id == 'keysearch_btn') {
+        if (event.key === "Enter" || e.currentTarget.id == 'keysearch_btn') {
             this.refresh = false;
             this.renderMap = true;
-	    this.model.cat = null;
+            this.model.cat = null;
             this.model.key = $('#keywordsearch').val();
-	    $("#searchbar_key").append('<img style="height:4em;" src='+wgServer+wgScriptPath+'/skins/throbber.gif>');
+            $("#searchbar_key").append('<img style="height:4em;" src='+wgServer+wgScriptPath+'/skins/throbber.gif>');
             this.model.fetch(); 
-	}
+        }
     },
 
     clickQuestions(e){
         $("#questionsDialog").dialog({
+            title: showLanguage(wgLang, "Questions to consider", "Questions à poser avant de s’inscrire à des ressources communautaires"),
             width: 'auto',
             height: $(window).height()*0.90,
             resizable: false
@@ -125,7 +126,7 @@ PharmacyMapView = Backbone.View.extend({
                 this.renderMap = true;
                 this.model.cat = this.buttons[cat]["code"];
                 this.note = this.buttons[cat]["note"];
-		this.model.key = null;
+                this.model.key = null;
                 this.model.fetch();
                 $(".throbber", ev.currentTarget).show();
             }
@@ -427,7 +428,7 @@ PharmacyMapView = Backbone.View.extend({
 
     render: function () {
         //this.$el.empty();
-        main.set('title', 'Using the Community Program Library');
+        main.set('title', showLanguage(wgLang, 'Using the Community Program Library', 'Utilisation du Répertoire des ressources communautaires'));
         var data = this.model.toJSON();
         $("#questionsDialog").remove();
         this.$el.html(this.template({
@@ -476,13 +477,13 @@ PharmacyMapView = Backbone.View.extend({
         $(document).on('click', '.paginate_button', function () {
             this.refreshMap();
         }.bind(this));
-	if(this.model.key != null){
-	    $('#keywordsearch').val(this.model.key);
-	    if($("#body_accordion").accordion("option", "active") !== false){
+        if(this.model.key != null){
+            $('#keywordsearch').val(this.model.key);
+            if($("#body_accordion").accordion("option", "active") !== false){
                 $('#accordionHeader').click();
             }
-	    $(".searches").append("<br /><b>"+data.length+"</b> Results for Keyword Search: <b>"+this.model.key+"</b>");
-	}
+            $(".searches").append("<br /><b>"+data.length+"</b> Results for Keyword Search: <b>"+this.model.key+"</b>");
+        }
         return this.$el;
     }
 

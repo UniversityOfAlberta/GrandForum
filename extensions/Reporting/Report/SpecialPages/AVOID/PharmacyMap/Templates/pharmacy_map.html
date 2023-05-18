@@ -1,112 +1,225 @@
 <div class="alert-msg"><span id="dialog_title_span">Removed from Clipboard!</span></div>
 <p class='program-body'>
-    Hover your mouse over a community resource to see a description. The + symbol means the resource category expands
-    further. Click on the resource to see sub-categories.
-    When you can no longer expand, the map will show you specific locations for that resource within KFL&A. Contact the
-    program or service for more information, or to sign up.
-    If you want to go back to the main library page, click the blue link indicating the previous category.
+    <en>
+        Hover your mouse over a community resource to see a description. The + symbol means the resource category expands
+        further. Click on the resource to see sub-categories.
+        When you can no longer expand, the map will show you specific locations for that resource within KFL&A. Contact the
+        program or service for more information, or to sign up.
+        If you want to go back to the main library page, click the blue link indicating the previous category.
+    </en>
+    <fr>
+        Glissez votre souris sur une ressource communautaire pour en voir la description. Le symbole « (+) » signifie que la catégorie de ressources comprend des sous-catégories. Cliquez sur la ressource pour voir les sous-catégories. Lorsqu’il n’y a plus de sous-catégorie, la carte affiche les emplacements précis où cette ressource est offerte à Trois-Rivières. Communiquez avec le programme ou le service désiré pour obtenir de plus amples renseignements ou pour vous inscrire. Si vous souhaitez revenir à la page principale du Répertoire, cliquez sur le lien en bleu (Activité ou Catégorie) qui s’affiche en haut à gauche.
+    </fr>
 </p>
-<p class='program-body'>Have you used a formal or informal program recently that you don’t see in the library and wish to share
-    with the community?<br />
-    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:Report?report=SubmitProgram" class="program-button" title="Submit a Program">Submit a Program</a>
+<p class='program-body'>
+    <en>Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community?<br /></en>
+    <fr>Avez-vous récemment eu recours à une ressource officielle ou informelle que vous ne voyez pas dans la liste et que vous aimeriez mentionner à la communauté?</fr>
+    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:Report?report=SubmitProgram" class="program-button" title="Submit a Program">
+        <en>Submit a Program</en>
+        <fr>Soumettre une ressource</fr>
+    </a>
 </p>
 <p class="program-body">
-    <img id="bkmarked" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg"> Click on this icon located next to each program name below to create a list of programs you are interested in. They will be added to your clipboard. <br />
-    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:ClipboardList" class="program-button" title="Print/View Clipboard">Print/View Clipboard</a>
+    <img id="bkmarked" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg">
+    <en>Click on this icon located next to each program name below to create a list of programs you are interested in. They will be added to your clipboard.</en>
+    <fr>Cliquez sur cette icône située à côté de chaque nom de ressources ci-dessous pour créer une liste des ressources qui vous intéressent. Elles seront ajoutées à votre presse-papiers.</fr>
+    <br />
+    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:ClipboardList" class="program-button" title="Print/View Clipboard">
+        <en>Print/View Clipboard</en>
+        <fr>Imprimer/afficher le presse-papiers</fr>
+    </a>
     <!--% if(this.note != null && this.note != 'No notes'){ %-->
-        <a id="questions" href="#asdf" class="program-button" title="Questions to consider asking when calling about a support">Questions to Consider</a>
+        <a id="questions" href="#asdf" class="program-button" title="Questions to consider asking when calling about a support">
+            <en>Questions to Consider</en>
+            <fr>Questions pertinentes</fr>
+        </a>
         <div id="questionsDialog" title="Questions to Consider" style="display:none; padding: 0.5em !important;">
-            <p>Ready to contact a program or service but not sure what you need to ask? Take a look at Questions to Consider to get you started.</p>
+            <p>
+                Ready to contact a program or service but not sure what you need to ask? Take a look at Questions to Consider to get you started.
+            </p>
             <!--%= this.note %-->
             <table id="questionsTable" class="wikitable" frame="box" rules="all">
                 <tr>
-                    <th style="width: 8em;">Category</th>
-                    <th>Questions to Consider:</th>
+                    <th style="width: 8em;">
+                        <en>Category</en>
+                        <fr>Catégorie</fr>
+                    </th>
+                    <th>
+                        <en>Questions to Consider:</en>
+                        <fr>Questions pertinentes:</fr>
+                    </th>
                 </tr>
                 <tr>
-                    <th valign="top">Food Services and Delivery</th>
+                    <th valign="top">
+                        <en>Food Services and Delivery</en>
+                        <fr>Services de restauration et de livraison</fr>
+                    </th>
                     <td>
                         <ul>
-                            <li>Does the service offer hot meals or frozen meals?</li>
-                            <li>What size are the meals?</li>
-                            <li>How do you place an order? Online or over the phone?</li>
-                            <li>When will my order arrive? Is there flexibility on timing?</li>
-                            <li>Is there a delivery charge?</li>
-                            <li>Where is the store where the food is made and am I able to collect from there instead of having it delivered?</li>
-                            <li>Should I tip the driver?</li>
-                            <li>How do I request a menu?</li>
-                            <li>How do I pay? Can I prepay for meals?</li>
-                            <li>Can I buy meals as a gift for someone?</li>
-                            <li>Is it possible to change the sides on a particular meal (rice instead of potato)?</li>
-                            <li>Can you accommodate dietary restrictions?</li>
+                            <en>
+                                <li>Does the service offer hot meals or frozen meals?</li>
+                                <li>What size are the meals?</li>
+                                <li>How do you place an order? Online or over the phone?</li>
+                                <li>When will my order arrive? Is there flexibility on timing?</li>
+                                <li>Is there a delivery charge?</li>
+                                <li>Where is the store where the food is made and am I able to collect from there instead of having it delivered?</li>
+                                <li>Should I tip the driver?</li>
+                                <li>How do I request a menu?</li>
+                                <li>How do I pay? Can I prepay for meals?</li>
+                                <li>Can I buy meals as a gift for someone?</li>
+                                <li>Is it possible to change the sides on a particular meal (rice instead of potato)?</li>
+                                <li>Can you accommodate dietary restrictions?</li>
+                            </en>
+                            <fr>
+                                <li>Le service propose-t-il des repas chauds ou des repas surgelés?</li>
+                                <li>Quelle quantité de nourriture les repas contiennent-ils?</li>
+                                <li>Comment faut-il procéder pour passer une commande? En ligne ou par téléphone?</li>
+                                <li>Quand ma commande arrivera-t-elle? Y a-t-il une certaine souplesse quant à l’horaire de commande et de livraison?</li>
+                                <li>Y a-t-il des frais de livraison?</li>
+                                <li>Où se trouve le magasin où sont fabriqués les aliments et puis-je y ramasser les repas plutôt que de me les faire livrer?</li>
+                                <li>Dois-je donner un pourboire au chauffeur?</li>
+                                <li>Comment puis-je demander un menu?</li>
+                                <li>Comment puis-je payer? Puis-je payer les repas à l’avance?</li>
+                                <li>Puis-je acheter des repas comme cadeau pour quelqu’un?</li>
+                                <li>Est-il possible de changer les accompagnements d’un repas particulier (riz au lieu de pommes de terre)?</li>
+                                <li>Respecte-t-on les restrictions alimentaires?</li>
+                            </fr>
                         </ul>
                     </td>
                 </tr>
                 <tr>
-                    <th valign="top">Personal Care and Help at home</th>
+                    <th valign="top">
+                        <en>Personal Care and Help at home</en>
+                        <fr>Soins personnels et aide à domicile</fr>
+                    </th>
                     <td>
                         <ul>
-                            <li>What services does your organization provide?</li>
-                            <li>How quickly can we initiate services? Is there a waitlist?</li>
-                            <li>How often can I arrange care in the home?</li>
-                            <li>How do you match your clients with caregivers? Is there a contract?</li>
-                            <li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li>
-                            <li>How does the payment process work? Hourly rate? Cancellation charges?</li>
-                            <li>If I have an issue or concern, who will be my point of contact?</li>
-                            <li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li>
-                            <li>How do I report a no-show or late caregiver?</li>
-                            <li>How do you provide last-minute coverage?</li>
+                            <en>
+                                <li>What services does your organization provide?</li>
+                                <li>How quickly can we initiate services? Is there a waitlist?</li>
+                                <li>How often can I arrange care in the home?</li>
+                                <li>How do you match your clients with caregivers? Is there a contract?</li>
+                                <li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li>
+                                <li>How does the payment process work? Hourly rate? Cancellation charges?</li>
+                                <li>If I have an issue or concern, who will be my point of contact?</li>
+                                <li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li>
+                                <li>How do I report a no-show or late caregiver?</li>
+                                <li>How do you provide last-minute coverage?</li>
+                            </en>
+                            <fr>
+                                <li>Quels services l’organisation fournit-elle?</li>
+                                <li>Dans quel délai peut-on recevoir les services? Y a-t-il une liste d’attente?</li>
+                                <li>quelle fréquence puis-je obtenir des soins à domicile?</li>
+                                <li>Comment la clientèle est-elle mise en relation avec les soignants? Y a-t-il un contrat?</li>
+                                <li>Quelles sont les qualifications des soignants? Ont-ils reçu une formation pour des affections particulières?</li>
+                                <li>Comment fonctionne le processus de paiement? Quel est le taux horaire? Y a-t-il des frais d’annulation?</li>
+                                <li>Si j’ai un problème ou une préoccupation, qui sera mon point de contact?</li>
+                                <li>Comment communique-t-on avec la clientèle et les membres de la famille concernant les problèmes, les préoccupations ou les recommandations?</li>
+                                <li>Comment puis-je signaler un soignant qui ne se présente pas ou qui est en retard?</li>
+                                <li>Comment assurez-vous un service de dernière minute?</li>
+                            </fr>
                         </ul>
                     </td>
                 </tr>
                 <tr>
-                    <th valign="top">Transportation</th>
+                    <th valign="top">
+                        <en>Transportation</en>
+                        <fr>Transport</fr>
+                    </th>
                     <td>
                         <ul>
-                            <li>What is the cost? Per KM, set fee?</li>
-                            <li>Can the driver assist with transfers, putting mobility aids in the vehicle, etc?</li>
-                            <li>Do you have accessible vehicles available?</li>
-                            <li>Can I bring a companion with me and is there an additional cost?</li>
-                            <li>How much notice is needed to set up a drive?</li>
-                            <li>Is there a referral process or criteria for accessing the services?</li>
-                            <li>Can I set up a regular weekly scheduled (weekly) ride, or do I have to book one ride at a time?</li>
+                            <en>
+                                <li>What is the cost? Per KM, set fee?</li>
+                                <li>Can the driver assist with transfers, putting mobility aids in the vehicle, etc?</li>
+                                <li>Do you have accessible vehicles available?</li>
+                                <li>Can I bring a companion with me and is there an additional cost?</li>
+                                <li>How much notice is needed to set up a drive?</li>
+                                <li>Is there a referral process or criteria for accessing the services?</li>
+                                <li>Can I set up a regular weekly scheduled (weekly) ride, or do I have to book one ride at a time?</li>
+                            </en>
+                            <fr>
+                                <li>Quel est le coût? S'agit-il d’un tarif fixe ou par kilomètre?</li>
+                                <li>Le chauffeur peut-il aider lors de transferts, aider à mettre les aides à la mobilité dans le véhicule, etc.?</li>
+                                <li>Avez-vous des véhicules adaptés?</li>
+                                <li>Puis-je amener une personne avec moi et y a-t-il un coût supplémentaire?</li>
+                                <li>Quel est le délai de préavis nécessaire pour organiser un transport?</li>
+                                <li>Pour accéder aux services, faut-il une recommandation? Ou faut-il satisfaire à certains critères?</li>
+                                <li>Puis-je programmer un trajet régulier (hebdomadaire) ou dois-je réserver un seul trajet à la fois?</li>
+                            </fr>
                         </ul>
                     </td>
                 </tr>
                 <tr>
-                    <th valign="top">Class/Membership Based</th>
+                    <th valign="top">
+                        <en>Class/Membership Based</en>
+                        <fr>Services offerts par classe/adhésion</fr>
+                    </th>
                     <td>
                         <ul>
-                            <li>What is the cost? Is it per class, membership fee, etc?</li>
-                            <li>Is there a drop-in option/pay as you go?</li>
-                            <li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li>
-                            <li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li>
-                            <li>Are the instructors able to offer modifications for physical/medical limitations?</li>
-                            <li>Is pre-registration required?</li>
-                            <li>Can I try a class before committing?</li>
-                            <li>Is the program offered virtually or in-person?</li>
-                            <li>Is there transportation assistance for getting there?</li>
+                            <en>
+                                <li>What is the cost? Is it per class, membership fee, etc?</li>
+                                <li>Is there a drop-in option/pay as you go?</li>
+                                <li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li>
+                                <li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li>
+                                <li>Are the instructors able to offer modifications for physical/medical limitations?</li>
+                                <li>Is pre-registration required?</li>
+                                <li>Can I try a class before committing?</li>
+                                <li>Is the program offered virtually or in-person?</li>
+                                <li>Is there transportation assistance for getting there?</li>
+                            </en>
+                            <fr>
+                                <li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li>
+                                <li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li>
+                                <li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li>
+                                <li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li>
+                                <li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li>
+                                <li>La préinscription est-elle obligatoire?</li>
+                                <li>Puis-je essayer un cours avant de m’engager?</li>
+                                <li>Le programme est-il offert virtuellement ou en personne?</li>
+                                <li>Existe-t-il une aide au transport pour s’y rendre?</li>
+                            </fr>
                         </ul>
                     </td>
                 </tr>
                 <tr>
-                    <th valign="top">Mental Health & Health Care Services</th>
+                    <th valign="top">
+                        <en>Mental Health & Health Care Services</en>
+                        <fr>Santé mentale et services de soins de santé</fr>
+                    </th>
                     <td>
                         <ul>
-                            <li>Which services are OHIP covered?</li>
-                            <li>Is there a cost for this program/ support?</li>
-                            <li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li>
-                            <li>I don’t have a family doctor – how can I get a referral?</li>
-                            <li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li>
-                            <li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li>
-                            <li>How often is it recommended to access these services?</li>
-                            <li>Is the health support time limited? Ie. Is it an 8-week program?</li>
-                            <li>Is there a psychiatrist to support?</li>
-                            <li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li>
-                            <li>Is there a current waitlist for programming?</li>
-                            <li>What does the referral process look like? Will I be contacted? What follow up is required?</li>
-                            <li>Will I be assigned a case manager? What will my care team look like?</li>
-                            <li>Will victim services assist with the funding of counselling and if so/ for how long?</li>
+                            <en>
+                                <li>Which services are OHIP covered?</li>
+                                <li>Is there a cost for this program/ support?</li>
+                                <li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li>
+                                <li>I don’t have a family doctor – how can I get a referral?</li>
+                                <li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li>
+                                <li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li>
+                                <li>How often is it recommended to access these services?</li>
+                                <li>Is the health support time limited? Ie. Is it an 8-week program?</li>
+                                <li>Is there a psychiatrist to support?</li>
+                                <li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li>
+                                <li>Is there a current waitlist for programming?</li>
+                                <li>What does the referral process look like? Will I be contacted? What follow up is required?</li>
+                                <li>Will I be assigned a case manager? What will my care team look like?</li>
+                                <li>Will victim services assist with the funding of counselling and if so/ for how long?</li>
+                            </en>
+                            <fr>
+                                <li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li>
+                                <li>Y a-t-il un coût pour ce programme ou service?</li>
+                                <li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li>
+                                <li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li>
+                                <li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li>
+                                <li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li>
+                                <li>À quelle fréquence est-il recommandé d’accéder à ces services?</li>
+                                <li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li>
+                                <li>Y a-t-il un psychiatre pour offrir du soutien?</li>
+                                <li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li>
+                                <li>Existe-t-il une liste d’attente pour accéder aux programmes?</li>
+                                <li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li>
+                                <li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li>
+                                <li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li>
+                            </fr>
                         </ul>
                     </td>
                 </tr>

@@ -1,543 +1,697 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Suggest Program Form" reportType="RP_AVOIDSUGG" pdfType="RPTP_AVOIDSUGG" pdfFiles="SuggestProgramPDF" ajax="true" disabled="false">
-	<Permissions>
-                <Role role="INACTIVE+"></Role>
-        </Permissions>
-	<ReportSection id="program_submit" tooltip="Program Submission Details" name="Program Submission Details" title="Program Submission Details" blobSection="AVOID_PROGRAM_SUBMIT" type="EditableReportSection" pagebreak="false" >
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    <ReportSection id="program_submit" tooltip="Program Submission Details" name="Program Submission Details" title="&lt;en>Program Submission Details&lt;/en>&lt;fr>Détails de la soumission du programme&lt;/fr>" blobSection="AVOID_PROGRAM_SUBMIT" type="EditableReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <style>
+                    #outerReport > div:first-child {
+                        display: none !important;
+                    }
+                </style>
                 
-                <Static>
-			<![CDATA[
-				<p>Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community?</p>
-				<p>Please fill in the form to the best of your knowledge and ability to submit a new program to the library. Once submitted, we will make sure that it is ongoing and suitable for the community before adding it to the library.</p>
+                <p>
+                    <en>Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community?</en>
+                    <fr>Avez-vous récemment eu recours à une ressource officielle ou informelle que vous ne voyez pas dans la liste et que vous aimeriez mentionner à la communauté?</fr>
+                </p>
+                <p>
+                    <en>Please fill in the form to the best of your knowledge and ability to submit a new program to the library. Once submitted, we will make sure that it is ongoing and suitable for the community before adding it to the library.</en>
+                    <fr>Veuillez remplir le formulaire au mieux de vos connaissances et de vos capacités pour soumettre un nouveau programme à ajouter au Répertoire. Une fois soumis, nous nous assurerons qu’elle est toujours offerte et adaptée à la communauté avant de l’ajouter au Répertoire.</fr>
+                </p>
 
-				<a id="clear" href="#">Clear Form</a>
-			]]>
-		</Static>
-		<Static>
-			<![CDATA[
-
-				<script type="text/javascript">
-					$('#clear').click(function(){
-                                                $(':input').not(':button, :submit, :reset, :hidden, :checkbox, :radio').val('');
-                                                $(':checkbox, :radio').prop('checked', false);
-                            		});
-
-				</script>
-			]]>
-		</Static>
-        	<ReportItem id="publicname" type="Text" blobItem="PUBLICNAME" width="400px">
-            		<![CDATA[
-				<h3>Public Name:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="desc" type="Textarea" blobItem="DESCRIPTION" width="400px">
-            		<![CDATA[
-				<h3>Description of programs and services:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-        	<ReportItem id="hours" type="Text" blobItem="HOURS" width="200px">
-            		<![CDATA[
-				<h3>Hours of Operation:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="eligibility" type="Textarea" blobItem="ELIGIBLITY" width="400px">
-            		<![CDATA[
-				<h3>Eligibility:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="docs_required" type="Text" blobItem="DOCSREQUIRED" width="400px">
-            		<![CDATA[
-				<h3>Documents Required:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="appprocess" type="Text" blobItem="APPLICATIONPROCESS" width="400px">
-            		<![CDATA[
-				<h3>Application Process:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="fees" type="Text" blobItem="FEES" width="400px">
-            		<![CDATA[
-				<h3>Fees:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="accessibility" type="Text" blobItem="ACCESSIBILITY" width="400px">
-            		<![CDATA[
-				<h3>Accessibility:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="legalstatus" type="Text" blobItem="LEGALSTATUS" width="400px">
-            		<![CDATA[
-				<h3>Legal Status:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="officephone" type="Text" blobItem="OFFICEPHONE" width="400px">
-            		<![CDATA[
-				<h3>Office Phone:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="crisisphone" type="Text" blobItem="CRISISPHONE" width="400px">
-            		<![CDATA[
-				<h3>Crisis Phone:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="businessline" type="Text" blobItem="BUSINESSLINE" width="400px">
-            		<![CDATA[
-				<h3>Business Line:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="fax" type="Text" blobItem="FAX" width="400px">
-            		<![CDATA[
-				<h3>Fax:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="tty" type="Text" blobItem="TTY" width="400px">
-            		<![CDATA[
-				<h3>TTY:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="tollfree" type="Text" blobItem="TOLLFREE" width="400px">
-            		<![CDATA[
-				<h3>Toll Free:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="email" type="Text" blobItem="EMAIL" width="400px">
-            		<![CDATA[
-				<h3>Email:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="website" type="Text" blobItem="WEBSITE" width="400px">
-            		<![CDATA[
-				<h3>Website:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <Static>
-                        <![CDATA[
-                                <br/><br/>
-                                <div id="reportHeader">Program Primary Contact</div><hr>
-                        ]]>	
-                </Static>
-                <ReportItem id="programprimarycontactname" type="Text" blobItem="PROGRAMPRIMARYCONTACTNAME" width="400px">
-            		<![CDATA[
-				<h3>Name:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="programprimarycontacttitle" type="Text" blobItem="PROGRAMPRIMARYCONTACTTITLE" width="400px">
-            		<![CDATA[
-				<h3>Title:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="programprimarycontactphone" type="Text" blobItem="PROGRAMPRIMARYCONTACTPHONE" width="400px">
-            		<![CDATA[
-				<h3>Phone:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="programprimarycontactemail" type="Text" blobItem="PROGRAMPRIMARYCONTACTEMAIL" width="400px">
-            		<![CDATA[
-				<h3>Email:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <Static>
-                        <![CDATA[
-                                <br/><br/>
-                                <div id="reportHeader">Director or Senior Contact</div><hr>
-                        ]]>	
-                </Static>
-                <ReportItem id="directorseniorcontactname" type="Text" blobItem="DIRECTORSENIORCONTACTNAME" width="400px">
-            		<![CDATA[
-				<h3>Name:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="directorseniorcontacttitle" type="Text" blobItem="DIRECTORSENIORCONTACTTITLE" width="400px">
-            		<![CDATA[
-				<h3>Title:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="directorseniorcontactphone" type="Text" blobItem="DIRECTORSENIORCONTACTPHONE" width="400px">
-            		<![CDATA[
-				<h3>Phone:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="directorseniorcontactemail" type="Text" blobItem="DIRECTORSENIORCONTACTEMAIL" width="400px">
-            		<![CDATA[
-				<h3>Email:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="areaserved" type="Text" blobItem="AREASSERVED" width="400px">
-            		<![CDATA[
-				<h3>Areas Served:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                 <ReportItem id="languages" type="Text" blobItem="LANGUAGES" width="400px">
-            		<![CDATA[
-				<h3>Languages:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="address" type="Text" blobItem="ADDRESS1" width="400px">
-            		<![CDATA[
-				<h3>Address1:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="address2" type="Text" blobItem="ADDRESS2" width="400px">
-            		<![CDATA[
-				<h3>Address2:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="city" type="Text" blobItem="CITY" width="400px">
-            		<![CDATA[
-				<h3>City:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="province" type="Text" blobItem="PROVINCE" width="400px">
-            		<![CDATA[
-				<h3>Province:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="country" type="Text" blobItem="COUNTRY" width="400px">
-            		<![CDATA[
-				<h3>Country:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="postalcode" type="Text" blobItem="POSTALCODE" width="400px">
-            		<![CDATA[
-				<h3>Postal Code:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="Intersection" type="Text" blobItem="INTERSECTION" width="400px">
-            		<![CDATA[
-				<h3>Intersection:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <Static>
-                        <![CDATA[
-                                <br/><br/>
-                                <div id="reportHeader">Mailing Address</div><hr>
-                        ]]>	
-                </Static>
-                <ReportItem id="mailingaddress" type="Text" blobItem="MAILINGADDRESS" width="400px">
-            		<![CDATA[
-                                <h3>Mail Care of</h3>
-                                <h3>Address1:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="mailingaddress2" type="Text" blobItem="MAILINGADDRESS2" width="400px">
-            		<![CDATA[
-				<h3>Address2:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="mailingcity" type="Text" blobItem="MAILINGCITY" width="400px">
-            		<![CDATA[
-				<h3>City:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="mailingprovince" type="Text" blobItem="MAILINGPROVINCE" width="400px">
-            		<![CDATA[
-				<h3>Province:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="mailingcountry" type="Text" blobItem="MAILINGCOUNTRY" width="400px">
-            		<![CDATA[
-				<h3>Country:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="mailingpostalcode" type="Text" blobItem="MAILINGPOSTALCODE" width="400px">
-            		<![CDATA[
-				<h3>Postal Code:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <Static>
-                        <![CDATA[
-                                <br/><br/>
-                                <div id="reportHeader">SOCIAL MEDIA</div><hr>
-                        ]]>	
-                </Static>
-                <ReportItem id="facebook" type="Text" blobItem="FACEBOOK" width="400px">
-            		<![CDATA[
-				<h3>Facebook:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="instagram" type="Text" blobItem="INSTAGRAM" width="400px">
-            		<![CDATA[
-				<h3>Instagram:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-
-                <ReportItem id="linkedin" type="Text" blobItem="LINKEDIN" width="400px">
-            		<![CDATA[
-				<h3>LinkedIn:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="twitter" type="Text" blobItem="TWITTER" width="400px">
-            		<![CDATA[
-				<h3>Twitter:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="youtube" type="Text" blobItem="YOUTUBE" width="400px">
-            		<![CDATA[
-				<h3>Youtube:</h3>
-				{$item}
-					]]>
-		</ReportItem>
-                <ReportItem id="other_information" type="Textarea" blobItem="OTHER_INFORMATION" width="400px">
-            		<![CDATA[
-                                <p>Any other updates not shown above?<br />
-                                If there is some special information you wish to pass along to those reviewing the record, please enter it here:</p>
-				{$item}
-				<br /><br />
-					]]>
-		</ReportItem>
-		<ReportItem id="submit" type="SubmitEmail">
-                <![CDATA[
-                    <table>
-                        <tr>
-                            <td><b>User:</b></td>
-                            <td>{$user_name} &lt;{$user_email}&gt;</td>
-                        </tr>
-                        <tr>
-                            <td><b>Date Submitted:</b></td>
-                            <td>{time2date({$timestamp})}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Public Name:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PUBLICNAME,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td valign='top'><b>Description:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DESCRIPTION,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Hours:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,HOURS,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td valign='top'><b>Eligibility:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ELIGIBLITY,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Documents Required:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DOCSREQUIRED,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Application Process:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,APPLICATIONPROCESS,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Fees:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,FEES,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Accessibility:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ACCESSIBILITY,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Legal Status:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,LEGALSTATUS,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Office Phone:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,OFFICEPHONE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Crisis Phone:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,CRISISPHONE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Business Line:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,BUSINESSLINE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Fax:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,FAX,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>TTY:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,TTY,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Toll Free:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,TOLLFREE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Email:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,EMAIL,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Website:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,WEBSITE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <th colspan='2'>Program Primary Contact</th>
-                        </tr>
-                        <tr>
-                            <td><b>Name:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTNAME,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Title:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTTITLE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Phone:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTPHONE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Email:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTEMAIL,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <th colspan='2'>Director or Senior Contact</th>
-                        </tr>
-                        <tr>
-                            <td><b>Name:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTNAME,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Title:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTTITLE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Phone:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTPHONE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Email:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTEMAIL,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Areas Served:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,AREASSERVED,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Languages:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,LANGUAGES,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Address1:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ADDRESS1,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Address2:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ADDRESS2,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>City:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,CITY,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Province:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROVINCE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Country:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,COUNTRY,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Postal Code:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,POSTALCODE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Intersection:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,INTERSECTION,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <th colspan='2'>Mailing Address</th>
-                        </tr>
-                        <tr>
-                            <td><b>Address1:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGADDRESS,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Address2:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGADDRESS2,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>City:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGCITY,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Province:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGPROVINCE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Country:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGCOUNTRY,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Postal Code:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGPOSTALCODE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <th colspan='2'>Social Media</th>
-                        </tr>
-                        <tr>
-                            <td><b>Facebook:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,FACEBOOK,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Instagram:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,INSTAGRAM,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>LinkedIn:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,LINKEDIN,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Twitter:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,TWITTER,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Youtube:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,YOUTUBE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td valign='top'><b>Other Information:</b></td>
-                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,OTHER_INFORMATION,0,{$user_id},0}</td>
-                        </tr>
-                    </table>
-                ]]>
-            </ReportItem>
+                <a id="clear" href="#">
+                    <en>Clear Form</en>
+                    <fr>Effacer le formulaire</fr>
+                </a>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $('#clear').click(function(){
+                        $(':input').not(':button, :submit, :reset, :hidden, :checkbox, :radio').val('');
+                        $(':checkbox, :radio').prop('checked', false);
+                    });
+                </script>
+            ]]>
+        </Static>
+        <ReportItem id="publicname" type="Text" blobItem="PUBLICNAME" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Public Name:</en>
+                    <fr>Nom public:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="desc" type="Textarea" blobItem="DESCRIPTION" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Description of programs and services:</en>
+                    <fr>Description de la ressource et des services</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hours" type="Text" blobItem="HOURS" width="200px">
+            <![CDATA[
+                <h3>
+                    <en>Hours of Operation:</en>
+                    <fr>Heures d’ouverture:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="eligibility" type="Textarea" blobItem="ELIGIBLITY" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Eligibility:</en>
+                    <fr>Admissibilité:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="docs_required" type="Text" blobItem="DOCSREQUIRED" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Documents Required:</en>
+                    <fr>Documents requis:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="appprocess" type="Text" blobItem="APPLICATIONPROCESS" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Application Process:</en>
+                    <fr>Processus de demande:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="fees" type="Text" blobItem="FEES" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Fees:</en>
+                    <fr>Frais:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="accessibility" type="Text" blobItem="ACCESSIBILITY" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Accessibility:</en>
+                    <fr>Accessibilité:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="legalstatus" type="Text" blobItem="LEGALSTATUS" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Legal Status:</en>
+                    <fr>Statut juridique:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="officephone" type="Text" blobItem="OFFICEPHONE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Office Phone:</en>
+                    <fr>Téléphone du bureau:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="crisisphone" type="Text" blobItem="CRISISPHONE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Crisis Phone:</en>
+                    <fr>Téléphone d’urgence:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="businessline" type="Text" blobItem="BUSINESSLINE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Business Line:</en>
+                    <fr>Secteur d’activité:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="fax" type="Text" blobItem="FAX" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Fax:</en>
+                    <fr>Télécopieur:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="tty" type="Text" blobItem="TTY" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>TTY:</en>
+                    <fr>ATS:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="tollfree" type="Text" blobItem="TOLLFREE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Toll Free:</en>
+                    <fr>Numéro sans frais:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" type="Text" blobItem="EMAIL" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Email:</en>
+                    <fr>Courriel:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="website" type="Text" blobItem="WEBSITE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Website:</en>
+                    <fr>Site Web:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br/><br/>
+                <div id="reportHeader">
+                    <en>Program Primary Contact</en>
+                    <fr>Personne-ressource principale du service</fr>
+                </div><hr>
+            ]]>
+        </Static>
+        <ReportItem id="programprimarycontactname" type="Text" blobItem="PROGRAMPRIMARYCONTACTNAME" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Name:</en>
+                    <fr>Nom:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="programprimarycontacttitle" type="Text" blobItem="PROGRAMPRIMARYCONTACTTITLE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Title:</en>
+                    <fr>Titre:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="programprimarycontactphone" type="Text" blobItem="PROGRAMPRIMARYCONTACTPHONE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Phone:</en>
+                    <fr>Téléphone:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="programprimarycontactemail" type="Text" blobItem="PROGRAMPRIMARYCONTACTEMAIL" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Email:</en>
+                    <fr>Courriel:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br/><br/>
+                <div id="reportHeader">
+                    <en>Director or Senior Contact</en>
+                    <fr>Direction ou personne-ressource principale</fr>
+                </div><hr>
+            ]]>
+        </Static>
+        <ReportItem id="directorseniorcontactname" type="Text" blobItem="DIRECTORSENIORCONTACTNAME" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Name:</en>
+                    <fr>Nom:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="directorseniorcontacttitle" type="Text" blobItem="DIRECTORSENIORCONTACTTITLE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Title:</en>
+                    <fr>Titre:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="directorseniorcontactphone" type="Text" blobItem="DIRECTORSENIORCONTACTPHONE" width="400px">
+            <![CDATA[
+                <h3
+                    <en>Phone:</en>
+                    <fr>Téléphone:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="directorseniorcontactemail" type="Text" blobItem="DIRECTORSENIORCONTACTEMAIL" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Email:</en>
+                    <fr>Courriel:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="areaserved" type="Text" blobItem="AREASSERVED" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Areas Served:</en>
+                    <fr>Régions desservies:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="languages" type="Text" blobItem="LANGUAGES" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Languages:</en>
+                    <fr>Langues:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="address" type="Text" blobItem="ADDRESS1" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Address1:</en>
+                    <fr>Adresse1:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="address2" type="Text" blobItem="ADDRESS2" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Address2:</en>
+                    <fr>Adresse2:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="city" type="Text" blobItem="CITY" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>City:</en>
+                    <fr>Ville:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="province" type="Text" blobItem="PROVINCE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Province:</en>
+                    <fr>Province:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="country" type="Text" blobItem="COUNTRY" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Country:</en>
+                    <fr>Pays:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="postalcode" type="Text" blobItem="POSTALCODE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Postal Code:</en>
+                    <fr>Code postal:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="Intersection" type="Text" blobItem="INTERSECTION" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Intersection:</en>
+                    <fr>Intersection:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br/><br/>
+                <div id="reportHeader">
+                    <en>Mailing Address</en>
+                    <fr>Adresse postale</fr>
+                </div><hr>
+            ]]>
+        </Static>
+        <ReportItem id="mailingaddress" type="Text" blobItem="MAILINGADDRESS" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Mail Care of</en>
+                    <fr>À l’attention de</fr>
+                </h3>
+                <h3>
+                    <en>Address1:</en>
+                    <fr>Adresse1:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="mailingaddress2" type="Text" blobItem="MAILINGADDRESS2" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Address2:</en>
+                    <fr>Adresse2:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="mailingcity" type="Text" blobItem="MAILINGCITY" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>City:</en>
+                    <fr>Ville:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="mailingprovince" type="Text" blobItem="MAILINGPROVINCE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Province:</en>
+                    <fr>Province:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="mailingcountry" type="Text" blobItem="MAILINGCOUNTRY" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Country:</en>
+                    <fr>Pays:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="mailingpostalcode" type="Text" blobItem="MAILINGPOSTALCODE" width="400px">
+            <![CDATA[
+                <h3>
+                    <en>Postal Code:</en>
+                    <fr>Code postal:</fr>
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br/><br/>
+                <div id="reportHeader">
+                    <en>SOCIAL MEDIA</en>
+                    <fr>MÉDIAS SOCIAUX</fr>
+                </div><hr>
+            ]]>
+        </Static>
+        <ReportItem id="facebook" type="Text" blobItem="FACEBOOK" width="400px">
+            <![CDATA[
+                <h3>Facebook:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="instagram" type="Text" blobItem="INSTAGRAM" width="400px">
+            <![CDATA[
+                <h3>Instagram:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="linkedin" type="Text" blobItem="LINKEDIN" width="400px">
+            <![CDATA[
+                <h3>LinkedIn:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="twitter" type="Text" blobItem="TWITTER" width="400px">
+            <![CDATA[
+                <h3>Twitter:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="youtube" type="Text" blobItem="YOUTUBE" width="400px">
+            <![CDATA[
+                <h3>Youtube:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_information" type="Textarea" blobItem="OTHER_INFORMATION" width="400px">
+            <![CDATA[
+                <p>
+                    <en>
+                        Any other updates not shown above?<br />
+                        If there is some special information you wish to pass along to those reviewing the record, please enter it here:
+                    </en>
+                    <fr>
+                        Y a-t-il d’autres mises à jour autres que celles indiquées ci-dessus?<br />
+                        S’il y a des renseignements particuliers que vous souhaitez transmettre aux personnes qui examinent le dossier, veuillez les inscrire ici:
+                    </fr>
+                </p>
+                {$item}
+                <br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="submit" type="SubmitEmail">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td><b>User:</b></td>
+                        <td>{$user_name} &lt;{$user_email}&gt;</td>
+                    </tr>
+                    <tr>
+                        <td><b>Date Submitted:</b></td>
+                        <td>{time2date({$timestamp})}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Public Name:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PUBLICNAME,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td valign='top'><b>Description:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DESCRIPTION,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Hours:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,HOURS,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td valign='top'><b>Eligibility:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ELIGIBLITY,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Documents Required:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DOCSREQUIRED,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Application Process:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,APPLICATIONPROCESS,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Fees:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,FEES,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Accessibility:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ACCESSIBILITY,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Legal Status:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,LEGALSTATUS,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Office Phone:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,OFFICEPHONE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Crisis Phone:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,CRISISPHONE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Business Line:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,BUSINESSLINE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Fax:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,FAX,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>TTY:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,TTY,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Toll Free:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,TOLLFREE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,EMAIL,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Website:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,WEBSITE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <th colspan='2'>Program Primary Contact</th>
+                    </tr>
+                    <tr>
+                        <td><b>Name:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTNAME,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Title:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTTITLE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Phone:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTPHONE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTEMAIL,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <th colspan='2'>Director or Senior Contact</th>
+                    </tr>
+                    <tr>
+                        <td><b>Name:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTNAME,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Title:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTTITLE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Phone:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTPHONE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTEMAIL,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Areas Served:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,AREASSERVED,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Languages:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,LANGUAGES,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Address1:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ADDRESS1,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Address2:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ADDRESS2,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>City:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,CITY,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Province:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROVINCE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Country:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,COUNTRY,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Postal Code:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,POSTALCODE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Intersection:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,INTERSECTION,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <th colspan='2'>Mailing Address</th>
+                    </tr>
+                    <tr>
+                        <td><b>Address1:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGADDRESS,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Address2:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGADDRESS2,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>City:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGCITY,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Province:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGPROVINCE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Country:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGCOUNTRY,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Postal Code:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGPOSTALCODE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <th colspan='2'>Social Media</th>
+                    </tr>
+                    <tr>
+                        <td><b>Facebook:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,FACEBOOK,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Instagram:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,INSTAGRAM,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>LinkedIn:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,LINKEDIN,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Twitter:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,TWITTER,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Youtube:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,YOUTUBE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td valign='top'><b>Other Information:</b></td>
+                        <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,OTHER_INFORMATION,0,{$user_id},0}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>
