@@ -283,9 +283,10 @@ class AVOIDDashboard extends SpecialPage {
         $assessmentReport = "";
         if(AVOIDDashboard::isPersonAssessmentDone($me->getId())){
             // This might be a bit slow, but unlikely to be noticable.  If it becomes a problem, it should be moved to an ajax/api request
-            $content = InPersonFollowup::getContent($me); 
-            $wgOut->addHTML("<form style='display:none;' action='{$wgServer}{$wgScriptPath}/index.php?action=api.DownloadWordHtmlApi' enctype='multipart/form-data' id='downloadword' method='post' target='_blank'><input type='hidden' name='content' value='{$content}'><input type='hidden' name='filename' value='{$me->getNameForForms()} In-Person Assessment Download'><input id='downloadWord' type='submit' style='display:none;' value='Download Word'></form>");
-            $assessmentReport = "<br /><a id='viewAssessmentReport' onClick='$(\"#downloadWord\").click();' href='#'>In-Person Frailty Report</a>";
+            $content = urldecode(InPersonFollowup::getContent($me));
+            $wgOut->addHTML("<div id='assessmentDialog' title='In Person Assessment' style='display:none;'>{$content}</div>");
+            /*$wgOut->addHTML("<form style='display:none;' action='{$wgServer}{$wgScriptPath}/index.php?action=api.DownloadWordHtmlApi' enctype='multipart/form-data' id='downloadword' method='post' target='_blank'><input type='hidden' name='content' value='{$content}'><input type='hidden' name='filename' value='{$me->getNameForForms()} In-Person Assessment Download'><input id='downloadWord' type='submit' style='display:none;' value='Download Word'></form>");*/
+            $assessmentReport = "<br /><a id='viewAssessmentReport' href='#'>In-Person Frailty Report</a>";
         }
         
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
@@ -458,6 +459,36 @@ class AVOIDDashboard extends SpecialPage {
                 $(window).resize();
             });
             
+            $('#viewAssessmentReport').click(function(){
+                $('#bodyContent').css('overflow-y', 'hidden');
+                if($('#assessmentDialog', $('.ui-dialog')).length == 0){
+                    $('#assessmentDialog').dialog({
+                        modal: true,
+                        draggable: false,
+                        resizable: false,
+                        width: 'auto',
+                        height: $(window).height()*0.90,
+                        position: { 'my': 'center', 'at': 'center' },
+                        close: function(){
+                            $('#bodyContent').css('overflow-y', 'auto');
+                            viewFullScreen = false;
+                        }
+                    });
+                    $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
+                    $('.ui-dialog-titlebar:visible').append(\"<a id='viewAssessmentFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
+                    $('#viewAssessmentFullScreen', $('.ui-dialog')).click(function(){
+                        viewAssessmentFullScreen = !viewAssessmentFullScreen;
+                        $(window).resize();
+                    });
+                }
+                else{
+                    $('#assessmentDialog').dialog('open');
+                }
+                $(window).resize();
+            });
+            
+            $('#assessmentDialog h1').show();
+            
             $('#viewProgressReport').click(function(){
                 $('#bodyContent').css('overflow-y', 'hidden');
                 if($('#progressReportDialog', $('.ui-dialog')).length == 0){
@@ -599,8 +630,10 @@ class AVOIDDashboard extends SpecialPage {
             $('[name=fitbitToggle]').change(authorizeFitBit);
             
             var viewFullScreen = false;
+            var viewAssessmentFullScreen = false;
             var viewProgressFullScreen = false;
             var initialFrameWidth = $('#reportDialog').width();
+            var initialAssessmentWidth = $('#assessmentDialog').width();
             var initialProgressWidth = $('#progressReportDialog').width();
             $('#frailtyFrame').width('100%');
             $('#progressFrame').width('100%');
@@ -644,17 +677,55 @@ class AVOIDDashboard extends SpecialPage {
                     }
                 }
                 
-                if(viewProgressFullScreen){
-                    $('#viewProgressFullScreen', $('.ui-dialog')).text('Exit Full Screen').blur();
-                        $('.ui-dialog').css('padding', 0)
-                                       .css('border-width', 0);
-                        $('#progressReportDialog').dialog({
-                            height: $(window).height(),
-                            width: $(window).width()
+                if(viewAssessmentFullScreen){
+                    $('#viewAssessmentFullScreen', $('.ui-dialog')).text('Exit Full Screen').blur();
+                    $('.ui-dialog').css('padding', 0)
+                                   .css('border-width', 0);
+                    $('#assessmentDialog').dialog({
+                        height: $(window).height(),
+                        width: $(window).width()
+                    });
+                    $('#assessmentDialog').dialog({
+                        position: { 'my': 'center', 'at': 'center' }
+                    });
+                }
+                else{
+                    $('.ui-dialog').css('padding', 2)
+                                   .css('border-width', 1);
+                                   
+                    $('#viewAssessmentFullScreen', $('.ui-dialog')).text('View as Full Screen').blur();
+                    
+                    var desiredWidth = $(window).width()*0.75;
+                    if(window.matchMedia('(max-width: 767px)').matches){
+                        desiredWidth = $(window).width()*0.99;
+                    }
+                    else if(window.matchMedia('(max-width: 1024px)').matches){
+                        desiredWidth = $(window).width()*0.80;
+                    }
+                    
+                    var scaleFactor = desiredWidth/initialProgressWidth;
+                    if($('#assessmentDialog').is(':visible')){
+                        $('#assessmentDialog').dialog({
+                            height: $(window).height()*0.90,
+                            width: initialProgressWidth*scaleFactor
                         });
-                        $('#progressReportDialog').dialog({
+                        $('#assessmentDialog').dialog({
                             position: { 'my': 'center', 'at': 'center' }
                         });
+                    }
+                }
+                
+                if(viewProgressFullScreen){
+                    $('#viewProgressFullScreen', $('.ui-dialog')).text('Exit Full Screen').blur();
+                    $('.ui-dialog').css('padding', 0)
+                                   .css('border-width', 0);
+                    $('#progressReportDialog').dialog({
+                        height: $(window).height(),
+                        width: $(window).width()
+                    });
+                    $('#progressReportDialog').dialog({
+                        position: { 'my': 'center', 'at': 'center' }
+                    });
                 }
                 else{
                     $('.ui-dialog').css('padding', 2)
