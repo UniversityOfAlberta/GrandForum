@@ -450,7 +450,7 @@ class IntakeSummary extends SpecialPage {
             $report = new DummyReport(static::$reportName, $me, null, YEAR);
             foreach($people as $person){
                 if(!$person->isRoleAtMost(CI)){
-                    //continue;
+                    continue;
                 }
                 if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
                     $wgOut->addHTML($this->dataCollectionTable($person));
@@ -467,7 +467,7 @@ class IntakeSummary extends SpecialPage {
             
             foreach($people as $person){
                 if(!$person->isRoleAtMost(CI)){
-                    //continue;
+                    continue;
                 }
                 if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
                     $report->person = $person;
