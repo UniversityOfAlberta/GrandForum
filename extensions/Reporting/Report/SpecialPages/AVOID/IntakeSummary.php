@@ -284,12 +284,15 @@ class IntakeSummary extends SpecialPage {
                     <thead>
                         <tr>
                             <th rowspan='2'>Action Plans</th>
-                            <th colspan='10'>Data Collected</th>
+                            <th colspan='13'>Data Collected</th>
                         </tr>
                         <tr>
                             <th>".implode("</th><th>", $topics)."</th>
                             <th>Program Library</th>
-                            <th>Links</th>
+                            <th>Frailty Report Views</th>
+                            <th>Recommendations</th>
+                            <th>Progress Report Views</th>
+                            <th>Logins</th>
                         </tr>
                     </thead>
                     <tbody>";
@@ -327,16 +330,15 @@ class IntakeSummary extends SpecialPage {
     
         $resource_data_sql = "SELECT * FROM `grand_data_collection` WHERE user_id = {$person->getId()}";
         $resource_data = DBFunctions::execSQL($resource_data_sql);
-        $links = array();
 
         // Topics
         foreach($topics as $topic){
-            $html .= "<td style='padding:0;'>";
+            $html .= "<td style='padding:0;' valign='top'>";
             foreach($resource_data as $page){
                 $page_name = trim($page["page"]);
                 $page_data = json_decode($page["data"], true);
                 if($page_name == $topic){
-                    $html .= "<table style='border-collapse: collapse; table-layout: auto; width: 100%;'>";
+                    $html .= "<table class='wikitable' style='border-collapse: collapse; table-layout: auto; width: 100%; margin-top:0px; margin-bottom:0;'>";
                     foreach($page_data as $key => $value){
                         if(strlen($key) < 4){
                             continue;
@@ -357,13 +359,14 @@ class IntakeSummary extends SpecialPage {
                         $html .= "<tr style=''><td nowrap>$key</td><td align='right'>$value</td></tr>";
                     }
                     $html .= "</table>";
+                    break;
                 }
             }
             $html .= "</td>";
         }
             
         // Program Library
-        $html .= "<td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>";
+        $html .= "<td style='padding:0;' valign='top'><table class='wikitable' style='border-collapse: collapse; table-layout: auto; width: 100%; margin-top:0px; margin-bottom:0;'>";
         foreach($resource_data as $page){
             $page_name = trim($page["page"]);
             if(strstr($page_name, "ProgramLibrary") !== false){
@@ -372,36 +375,40 @@ class IntakeSummary extends SpecialPage {
                 $views = isset($page_data["pageCount"]) ? $page_data["pageCount"] : 0;
                 $websiteClicks = isset($page_data["websiteClicks"]) ? $page_data["websiteClicks"] : 0;
                 $html .= "
-                    <tr style=''>
-                        <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
-                        <td nowrap>Views: $views</td>
-                    </tr>
                     <tr>
-                        <td nowrap>Website: $websiteClicks</td>
+                        <td style='white-space:nowrap;'>$page_name</td>
+                        <td nowrap>Views: $views</td>
                     </tr>";
-            }
-            else if(!in_array($page_name, $topics) && $page_name != ""){
-                $links[] = $page;
             }
         }
             
         // Links
-        $html .= "</table></td><td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>";
-        foreach($links as $link){
-            $page_name = trim($link["page"]);
-            $page_data = json_decode($link["data"],true);
-            $views = isset($page_data["count"]) ? $page_data["count"] : (isset($page_data["hits"]) ? $page_data["hits"] : 0);
-            $time = @$page_data["time"];
-            $html .= "
-                <tr style=''>
-                    <td rowspan='2'>$page_name</td>
-                    <td nowrap>Views: $views</td>
-                </tr>
-                <tr style=''>
-                    <td nowrap>Time: $time</td>
-                </tr>";
-        }
         $html .= "</table></td>";
+        $fviews = 0;
+        $ftime = 0;
+        $pviews = 0;
+        $ptime = 0;
+        $logins = 0;
+        foreach($resource_data as $page){
+            $page_name = trim($page["page"]);
+            $page_data = json_decode($page["data"],true);
+            if(strstr($page_name, "FrailtyReport") !== false){
+                $fviews += isset($page_data["count"]) ? $page_data["count"] : (isset($page_data["hits"]) ? $page_data["hits"] : 0);
+                $ftime += @$page_data["time"];
+            }
+            else if(strstr($page_name, "ProgressReport") !== false){
+                $pviews += isset($page_data["count"]) ? $page_data["count"] : (isset($page_data["hits"]) ? $page_data["hits"] : 0);
+                $ptime += @$page_data["time"];
+            }
+            else if(strstr($page_name, "loggedin") !== false){
+                $logins += count($page_data["log"]);
+            }
+        }
+        $html .= "<td align='right'>$fviews</td>";
+        $html .= "<td></td>";
+        $html .= "<td align='right'>$pviews</td>";
+        $html .= "<td align='right'>$logins</td>";
+        $html .= "</tr>";
         $html .= "</tbody></table></div>";
         return $html;
     }
@@ -443,7 +450,7 @@ class IntakeSummary extends SpecialPage {
             $report = new DummyReport(static::$reportName, $me, null, YEAR);
             foreach($people as $person){
                 if(!$person->isRoleAtMost(CI)){
-                    continue;
+                    //continue;
                 }
                 if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
                     $wgOut->addHTML($this->dataCollectionTable($person));
@@ -460,7 +467,7 @@ class IntakeSummary extends SpecialPage {
             
             foreach($people as $person){
                 if(!$person->isRoleAtMost(CI)){
-                    continue;
+                    //continue;
                 }
                 if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
                     $report->person = $person;

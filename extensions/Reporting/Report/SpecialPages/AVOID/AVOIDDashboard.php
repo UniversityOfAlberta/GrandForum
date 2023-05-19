@@ -431,6 +431,9 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             $('.viewReport').click(function(){
+                var reportClick = new DataCollection();
+                    reportClick.init(me.get('id'), 'Special:FrailtyReport');
+                    reportClick.increment('hits');
                 $('#bodyContent').css('overflow-y', 'hidden');
                 if($('#reportDialog', $('.ui-dialog')).length == 0){
                     $('#reportDialog').dialog({
@@ -490,6 +493,9 @@ class AVOIDDashboard extends SpecialPage {
             $('#assessmentDialog h1').show();
             
             $('#viewProgressReport').click(function(){
+                var reportClick = new DataCollection();
+                    reportClick.init(me.get('id'), 'Special:ProgressReport');
+                    reportClick.increment('hits');
                 $('#bodyContent').css('overflow-y', 'hidden');
                 if($('#progressReportDialog', $('.ui-dialog')).length == 0){
                     $('#progressReportDialog').dialog({
