@@ -181,10 +181,12 @@ class IntakeSummary extends SpecialPage {
     
     static function getRow($person, $report, $type=false, $simple=false){
         global $wgServer, $wgScriptPath, $config, $EQ5D5L;
+        $me = Person::newFromWgUser();
         $userLink = "{$person->getId()}";
         if($type == false){
             $userLink = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
         }
+        $contact = ($me->isRole(ADMIN)) ? "\n<br /><a href='#' class='viewContact'>Contact</a>" : "" ;
         $html = "";
         if(!$simple){
             $subRoles = array();
@@ -195,7 +197,7 @@ class IntakeSummary extends SpecialPage {
                 $subRoles[] = "online independent";
             }
             $html = "<tr data-id='{$person->getId()}'>
-                        <td>{$userLink}</td>
+                        <td>{$userLink}{$contact}</td>
                         <td style='white-space:nowrap;' align='left'>".implode(",<br />", $subRoles)."</td>";
         }
         if($type != false){
@@ -250,6 +252,9 @@ class IntakeSummary extends SpecialPage {
             $people[] = $person;
             
             $wgOut->addHTML($this->dataCollectionTable($person));
+            if($me->isRoleAtLeast(ADMIN)){
+                $wgOut->addHTML($this->contactTable($person));
+            }
         }
         
         $wgOut->addHTML("<table id='summary' class='wikitable'>");
@@ -332,7 +337,6 @@ class IntakeSummary extends SpecialPage {
                 $page_data = json_decode($page["data"], true);
                 if($page_name == $topic){
                     $html .= "<table style='border-collapse: collapse; table-layout: auto; width: 100%;'>";
-                    $x_num = 0;
                     foreach($page_data as $key => $value){
                         if(strlen($key) < 4){
                             continue;
@@ -350,13 +354,7 @@ class IntakeSummary extends SpecialPage {
                             $seconds = $init % 60;
                             $value = "$hours:$minutes:$seconds";
                         }
-                        if($x_num%2==0){
-                            $html .= "<tr style='background-color:#ececec'><td nowrap>$key</td><td align='right'>$value</td></tr>";
-                        }
-                        else{
-                            $html .= "<tr style=''><td nowrap>$key</td><td align='right'>$value</td></tr>";
-                        }
-                        $x_num++;
+                        $html .= "<tr style=''><td nowrap>$key</td><td align='right'>$value</td></tr>";
                     }
                     $html .= "</table>";
                 }
@@ -366,7 +364,6 @@ class IntakeSummary extends SpecialPage {
             
         // Program Library
         $html .= "<td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>";
-        $x_num = 0;
         foreach($resource_data as $page){
             $page_name = trim($page["page"]);
             if(strstr($page_name, "ProgramLibrary") !== false){
@@ -374,27 +371,14 @@ class IntakeSummary extends SpecialPage {
                 $page_data = json_decode($page["data"],true);
                 $views = isset($page_data["pageCount"]) ? $page_data["pageCount"] : 0;
                 $websiteClicks = isset($page_data["websiteClicks"]) ? $page_data["websiteClicks"] : 0;
-                if($x_num%2==0){
-                    $html .= "
-                        <tr style='background-color:#ececec'>
-                            <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
-                            <td nowrap>Views: $views</td>
-                        </tr>
-                        <tr style='background-color:#ececec'>
-                            <td nowrap>Website: $websiteClicks</td>
-                        </tr>";
-                }
-                else{
-                    $html .= "
-                        <tr style=''>
-                            <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
-                            <td nowrap>Views: $views</td>
-                        </tr>
-                        <tr>
-                            <td nowrap>Website: $websiteClicks</td>
-                        </tr>";
-                }
-                $x_num++;
+                $html .= "
+                    <tr style=''>
+                        <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
+                        <td nowrap>Views: $views</td>
+                    </tr>
+                    <tr>
+                        <td nowrap>Website: $websiteClicks</td>
+                    </tr>";
             }
             else if(!in_array($page_name, $topics) && $page_name != ""){
                 $links[] = $page;
@@ -403,36 +387,46 @@ class IntakeSummary extends SpecialPage {
             
         // Links
         $html .= "</table></td><td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>";
-        $x_num = 0;
         foreach($links as $link){
             $page_name = trim($link["page"]);
             $page_data = json_decode($link["data"],true);
             $views = isset($page_data["count"]) ? $page_data["count"] : (isset($page_data["hits"]) ? $page_data["hits"] : 0);
             $time = @$page_data["time"];
-            if($x_num%2==0){
-                $html .= "
-                    <tr style='background-color:#ececec'>
-                        <td rowspan='2'>$page_name</td>
-                        <td nowrap>Views: $views</td>
-                    </tr>
-                    <tr style='background-color:#ececec'>
-                        <td nowrap>Time: $time</td>
-                    </tr>";
-            }
-            else{
-                $html .= "
-                    <tr style=''>
-                        <td rowspan='2'>$page_name</td>
-                        <td nowrap>Views: $views</td>
-                    </tr>
-                    <tr style=''>
-                        <td nowrap>Time: $time</td>
-                    </tr>";
-            }
-            $x_num++;
+            $html .= "
+                <tr style=''>
+                    <td rowspan='2'>$page_name</td>
+                    <td nowrap>Views: $views</td>
+                </tr>
+                <tr style=''>
+                    <td nowrap>Time: $time</td>
+                </tr>";
         }
         $html .= "</table></td>";
         $html .= "</tbody></table></div>";
+        return $html;
+    }
+    
+    function contactTable($person){
+        $name = $person->getNameForForms();
+        $email = $person->getEmail();
+        $phone = $person->getExtra('phone', $person->getPhoneNumber());
+        
+        $html = "<div id='contact_{$person->getId()}' style='display:none;'>
+                    <table cellpadding='0' cellspacing='0'>
+                        <tr>
+                            <td class='label'>Name:</td>
+                            <td>{$name}</td>
+                        </tr>
+                        <tr>
+                            <td class='label'>Email:</td>
+                            <td>{$email}</td>
+                        </tr>
+                        <tr>
+                            <td class='label'>Phone#:</td>
+                            <td>{$phone}</td>
+                        </tr>
+                    </table>
+                 </div>";
         return $html;
     }
     
@@ -453,6 +447,9 @@ class IntakeSummary extends SpecialPage {
                 }
                 if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
                     $wgOut->addHTML($this->dataCollectionTable($person));
+                    if($me->isRoleAtLeast(ADMIN)){
+                        $wgOut->addHTML($this->contactTable($person));
+                    }
                 }
             }
             
@@ -475,6 +472,7 @@ class IntakeSummary extends SpecialPage {
         }
         $wgOut->addHTML("
         <div id='usageDialog' style='display:none;'></div>
+        <div id='contactDialog' style='display:none;'></div>
                         
         <script type='text/javascript'>
             $('#summary').DataTable({
@@ -507,6 +505,16 @@ class IntakeSummary extends SpecialPage {
                     width: 'auto',
                     height: 'auto',
                     title: 'User ' + id + ' Usage Data'
+                });
+            });
+            
+            $('.viewContact').click(function(){
+                var id = $(this).closest('tr').attr('data-id');
+                $('#contactDialog').html($('#contact_' + id).html());
+                $('#contactDialog').dialog({
+                    width: 'auto',
+                    height: 'auto',
+                    title: 'User ' + id + ' Contact Information'
                 });
             });
 
