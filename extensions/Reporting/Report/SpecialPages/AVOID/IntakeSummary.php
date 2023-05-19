@@ -406,7 +406,12 @@ class IntakeSummary extends SpecialPage {
         }
         $html .= "<td align='right'>$fviews</td>";
         $html .= "<td></td>";
-        $html .= "<td align='right'>$pviews</td>";
+        if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")){
+            $html .= "<td align='right'>$pviews</td>";
+        }
+        else{
+            $html .= "<td align='right'>N/A</td>";
+        }
         $html .= "<td align='right'>$logins</td>";
         $html .= "</tr>";
         $html .= "</tbody></table></div>";
