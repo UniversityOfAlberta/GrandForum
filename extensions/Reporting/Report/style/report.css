@@ -466,9 +466,9 @@ div.options > label > input:checked +img {
 
 .label-health{
     display: inline-block;
-    width: 150px;
+    width: 7em;
     min-width: 150px;
-    height: 94px;
+    height: 4.5em;
     border-style: solid;
     text-align: center;
     background: black;
