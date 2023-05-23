@@ -162,8 +162,8 @@ class IntakeSummary extends SpecialPage {
             $html .= "<th>EQ Health Score</th>";
             $html .= "<th>VAS Score</th>";
             $html .= "<th>CFS Score</th>";
-            $html .= "<th>Usage</th>";
         }
+        $html .= "<th>Usage</th>";
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
@@ -219,8 +219,8 @@ class IntakeSummary extends SpecialPage {
             $html .= "<td>".$EQ5D5L[implode("", $scores["Health"])]."</td>";
             $html .= "<td>".$scores["VAS"]."</td>";
             $html .= "<td>".$scores["CFS"]."</td>";
-            $html .= "<td align='center'><a href='#' class='viewUsage'>View</a></td>";
         }
+        $html .= "<td align='center'><a href='#' class='viewUsage'>View</a></td>";
         $hasSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType);
         foreach($report->sections as $section){
             foreach($section->items as $item){
