@@ -156,7 +156,7 @@ class EPICATReviewTable extends SpecialPage{
                 $html .= "<td align='center'>{$button}</td>";
                 $html .= "<td>{$eval->getNameForForms()}</td>";
                 $html .= "<td valign='top'>{$overall}</td>";
-                if($evalkey == "EPIC-2023-Special"){
+                if($evalKey == "EPIC-2023-Special"){
                     $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$goals}</td>";
                     $html .= "<td valign='top'>{$goalsComm}</td>";
                     $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$deliv}</td>";
