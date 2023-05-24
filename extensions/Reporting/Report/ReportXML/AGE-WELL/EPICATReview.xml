@@ -122,6 +122,11 @@
             <ReportItem id="hqp_pdf" type="PDFReportItem" reportType="EPIC-AT2023" width="100%" project="true">
                 <![CDATA[<tr><td>{$user_name}</td><td>{$item}</td>]]>
             </ReportItem>
+            <ReportItem id="letters" arrayId="letters" type="EliteUploadedLetters" blobReport="RP_EPIC_AT2" blobSection="2" blobItem="LETTERS" blobType="BLOB_ARRAY" personId="{$user_id}" showStatus="false" optional="true">
+                <![CDATA[
+                    <td>{$item}</td></tr>
+                ]]>
+            </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
