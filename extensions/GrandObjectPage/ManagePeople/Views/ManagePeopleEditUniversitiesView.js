@@ -153,15 +153,17 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     },
    
     render: function(){
-        this.$el.html(this.template(this.model.toJSON()));
+        var date = Date.format(new Date(), 'yyyy-MM-dd HH:mm:ss');
+        var currentRoles = new Roles(this.person.roles.filter(function(r){ return between(r, date, '5000'); }));
+        this.$el.html(this.template(_.extend(this.model.toJSON(), {currentRoles: currentRoles})));
         this.$("[name=university]").css('max-width', '200px').css('width', '200px');
         this.$("[name=faculty]").css('max-width', '200px').css('width', '200px');
         this.$("[name=department]").css('max-width', '200px').css('width', '200px');
         this.$("[name=university]").combobox();
         this.$("[name=faculty]").combobox();
         this.$("[name=department]").combobox();
-        if(!(_.where(this.person.roles.toJSON(), {role: HQP}).length > 0 && 
-             _.filter(this.person.roles.toJSON(), function(r){ return !(r.role == HQP || r.role == PL || r.role == PS); }).length == 0)){
+        if(!(_.where(currentRoles.toJSON(), {role: HQP}).length > 0 && 
+             _.filter(currentRoles.toJSON(), function(r){ return !(r.role == HQP || r.role == PL || r.role == PS); }).length == 0)){
             this.$("[name=position]").css('max-width', '200px').css('width', '200px');
             this.$("[name=position]").combobox();
         }
