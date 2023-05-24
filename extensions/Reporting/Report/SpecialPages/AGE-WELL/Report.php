@@ -260,7 +260,7 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HACReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HAC", "{$url}HACReview", $selected);
         }
-        if(count($person->getEvaluates("EEA-2022", 2022)) > 0){
+        /*if(count($person->getEvaluates("EEA-2022", 2022)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEAReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EEA", "{$url}EEAReview", $selected);
         }
@@ -271,7 +271,7 @@ class Report extends AbstractReport {
         if(count($person->getEvaluates("CRP-2018", 2018)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CRPReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CRP", "{$url}CRPReview", $selected);
-        }
+        }*/
         if($person->isRole(SD) || $person->isRole(RMC) || $person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReviewFeedback")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Project (Feedback)", "{$url}ProjectReviewFeedback", $selected);

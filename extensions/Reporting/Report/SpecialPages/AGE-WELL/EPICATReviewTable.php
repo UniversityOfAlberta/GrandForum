@@ -63,7 +63,7 @@ class EPICATReviewTable extends SpecialPage{
             <thead>
                 <tr>
                     <th colspan='7' style='background: #FFFFFF;'></th>";
-        if($year == 2023){
+        if($evalKey == "EPIC-2023-Special"){
             $html .= "<th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Objectives & Rationale</th>
                       <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Deliverables & Feasibility</th>
                       <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Potential Impact</th>";
@@ -83,7 +83,7 @@ class EPICATReviewTable extends SpecialPage{
                     <th>Application&nbsp;PDF</th>
                     <th>Reviewer</th>
                     <th>Overall Comments</th>";
-        if($year == 2023){
+        if($evalKey == "EPIC-2023-Special"){
             $html .= "<th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
                       <th>Comments</th>
                       <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
@@ -115,7 +115,7 @@ class EPICATReviewTable extends SpecialPage{
             $evaluators = $candidate->getEvaluators($year, $evalKey);
             $nEval = count($evaluators);
 
-            if($year == 2023){
+            if($evalKey == "EPIC-2023-Special"){
                 $report = new DummyReport("EPIC-AT2023", $candidate, null, $year, true);
             }
             else{
@@ -156,7 +156,7 @@ class EPICATReviewTable extends SpecialPage{
                 $html .= "<td align='center'>{$button}</td>";
                 $html .= "<td>{$eval->getNameForForms()}</td>";
                 $html .= "<td valign='top'>{$overall}</td>";
-                if($year == 2023){
+                if($evalkey == "EPIC-2023-Special"){
                     $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$goals}</td>";
                     $html .= "<td valign='top'>{$goalsComm}</td>";
                     $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$deliv}</td>";
