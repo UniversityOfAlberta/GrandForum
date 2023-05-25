@@ -446,9 +446,11 @@ class IntakeSummary extends SpecialPage {
         $html .= "<tr>";
         foreach($programs as $key => $program){
             $checked = ($this->getBlobData("ATTENDANCE", "{$key}", $person, 0, "RP_SUMMARY") == 1) ? "checked" : "";
+            $span = ($checked != "") ? "Yes" : "No";
             $html .= "<td align='center' style='width:1px;'>
                 <input type='hidden' value='0' name='{$key}' />
                 <input type='checkbox' value='1' name='{$key}' $checked />
+                <span style='display:none;'>$span</span>
             </td>";
         }
         
@@ -457,6 +459,7 @@ class IntakeSummary extends SpecialPage {
             $date = $this->getBlobData("ATTENDANCE", "{$key}_date", $person, 0, "RP_SUMMARY");
             $html .= "<td align='center' style='width:1px;'>
                 <input type='date' value='$date' name='{$key}_date' style='width: 8em;' />
+                <span style='display:none;'>$date</span>
             </td>";
         }
         
@@ -544,7 +547,11 @@ class IntakeSummary extends SpecialPage {
         <iframe id='programAttendanceFrame' name='programAttendanceFrame' style='display:none;'></iframe>
         <div id='usageDialog' style='display:none;'></div>
         <div id='contactDialog' style='display:none;'></div>
-                        
+        <style>
+            .downloadExcel {
+                float: left;
+            }
+        </style>                
         <script type='text/javascript'>
             $('#summary').DataTable({
                 'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
@@ -577,6 +584,14 @@ class IntakeSummary extends SpecialPage {
                     height: 'auto',
                     title: 'User ' + id + ' Usage Data',
                     buttons: {
+                        'Excel' : {
+                            text: 'Download as Excel',
+                            class: 'downloadExcel',
+                            click: function(){
+                                window.open('data:application/vnd.ms-excel,' + $('.data_collection', '#usageDialog')[0].outerHTML + 
+                                                                               $('.program_attendance', '#usageDialog')[0].outerHTML);
+                            }
+                        },
                         'Save' : function(e){
                             var dataStr = $('#usageDialog form').serialize();
                             $(e.currentTarget).prop('disabled', true);
