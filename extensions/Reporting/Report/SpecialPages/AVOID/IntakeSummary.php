@@ -184,7 +184,7 @@ class IntakeSummary extends SpecialPage {
         $me = Person::newFromWgUser();
         $userLink = "{$person->getId()}";
         if($type == false){
-            $userLink = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
+            $userLink = "<a class='userLink' href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
         }
         $contact = ($me->isRole(ADMIN)) ? "\n<br /><a href='#' class='viewContact'>Contact</a>" : "" ;
         $html = "";
@@ -262,6 +262,9 @@ class IntakeSummary extends SpecialPage {
         $wgOut->addHTML("<tbody>");
         
         foreach($people as $person){
+            if($person->getId() == 0){
+                continue;
+            }
             $report->person = $person;
             $report->reportType = "RP_AVOID";
             $wgOut->addHTML(self::getRow($report->person, $report, "Intake"));
@@ -344,8 +347,9 @@ class IntakeSummary extends SpecialPage {
                     <b>Submitted:</b> ".count($submittedPlans)."<br />
                 </td>";
     
-        $resource_data_sql = "SELECT * FROM `grand_data_collection` WHERE user_id = {$person->getId()}";
-        $resource_data = DBFunctions::execSQL($resource_data_sql);
+        $resource_data = DBFunctions::select(array('grand_data_collection'),
+                                             array('*'),
+                                             array('user_id' => $person->getId()));
 
         // Topics
         foreach($topics as $key => $topic){
@@ -569,7 +573,7 @@ class IntakeSummary extends SpecialPage {
             
             $('#compare').click(function(){
                 var ids = [];
-                $('#summary tbody tr td:first-child').each(function(i, el){
+                $('#summary tbody tr td:first-child a.userLink').each(function(i, el){
                     ids.push($(el).text());
                 });
                 ids = ids.join(',');
