@@ -115,10 +115,14 @@ class EPICATReviewTable extends SpecialPage{
             $evaluators = $candidate->getEvaluators($year, $evalKey);
             $nEval = count($evaluators);
 
+            $rpType = 'RP_EPIC_AT';
             if($evalKey == "EPIC-2023-Special"){
                 $report = new DummyReport("EPIC-AT2023", $candidate, null, $year, true);
             }
             else{
+                if($year >= 2023){
+                    $rpType = 'RP_EPIC_AT2';
+                }
                 $report = new DummyReport("EPIC-AT", $candidate, null, $year, true);
             }
             $check = $report->getLatestPDF();
@@ -128,9 +132,9 @@ class EPICATReviewTable extends SpecialPage{
                 $button = "<a class='button' href='{$pdf->getUrl()}'>Download PDF</a>";
             }
             
-            $level = $this->getBlobValue($year, $candidate->getId(), 0, 'HQP_APPLICATION_STAT', BLOB_TEXT, 'RP_EPIC_AT', HQP_APPLICATION_FORM);
-            $uni = $this->getBlobValue($year, $candidate->getId(), 0, HQP_APPLICATION_UNI, BLOB_TEXT, 'RP_EPIC_AT', HQP_APPLICATION_FORM);
-            $lvl = $this->getBlobValue($year, $candidate->getId(), 0, HQP_APPLICATION_LVL, BLOB_ARRAY, 'RP_EPIC_AT', HQP_APPLICATION_FORM);
+            $level = $this->getBlobValue($year, $candidate->getId(), 0, 'HQP_APPLICATION_STAT', BLOB_TEXT, $rpType, HQP_APPLICATION_FORM);
+            $uni = $this->getBlobValue($year, $candidate->getId(), 0, HQP_APPLICATION_UNI, BLOB_TEXT, $rpType, HQP_APPLICATION_FORM);
+            $lvl = $this->getBlobValue($year, $candidate->getId(), 0, HQP_APPLICATION_LVL, BLOB_ARRAY, $rpType, HQP_APPLICATION_FORM);
             $lvl = (isset($lvl['level'])) ? implode("<br style='mso-data-placement:same-cell' />", $lvl['level']) : "";
             
             foreach($evaluators as $key => $eval){
