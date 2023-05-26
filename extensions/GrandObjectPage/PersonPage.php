@@ -141,6 +141,9 @@ class PersonPage {
                 if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATS")) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
                 }
+                if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATS"))){
+                    $tabbedPage->addTab(new PersonStoriesTab($person, $visibility));
+                }
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
                 if($me->isRoleAtLeast(STAFF) || $me->isRole(DEAN) || $me->isRole(VDEAN)){
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));

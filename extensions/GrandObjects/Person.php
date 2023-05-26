@@ -2115,6 +2115,17 @@ class Person extends BackboneModel {
         return null;
     }
     
+    function getStories(){
+        $data = DBFunctions::select(array('grand_stories'),
+                                    array('*'),
+                                    array('user_id' => $this->getId()));
+        $array = array();
+        foreach($data as $row){
+            $array[] = $row['paragraph'];
+        }
+        return $array;
+    }
+    
     /**
      * Returns the current University that this Person is at
      * @return array The current University this Person is at
