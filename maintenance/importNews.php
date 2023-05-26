@@ -35,7 +35,7 @@
                     $skipNext = true;
                 }
                 $paragraph = urldecode(preg_replace("/=(.{2})=(.{2})=(.{2})/", "%$1%$2%$3", $paragraph));
-                $paragraph = preg_replace("/\[(http.*?)\]/", "<a href='$1'>$1</a>", $paragraph);
+                $paragraph = preg_replace("/\[(http.*?)\]/", "<a href='$1' target='_blank'>$1</a>", $paragraph);
                 if(strstr($paragraph, "To: {$person->getFirstName()} {$person->getLastName()}") === false && 
                   (strstr($paragraph, $person->getNameForForms()) !== false ||
                    strstr($paragraph, "{$person->getFirstName()} {$person->getLastName()}")) !== false){
