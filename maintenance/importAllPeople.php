@@ -27,6 +27,12 @@
         $hrDeptId = $csv[7];
         $hrDept = $csv[8];
         
+        if(strstr($hrDept, "SCI ") === false &&
+           strstr($hrDept, "SC ") === false &&
+           strstr($hrDept, "ART Psychology") === false){
+            continue;
+        }
+        
         $username = str_replace("'", "", str_replace(" ", "", "{$firstName}.{$lastName}"));
         $realname = "{$firstName} {$lastName}";
         
