@@ -297,7 +297,7 @@ EOF;
         $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getPersonCloudData&person={$person->getId()}";
         $wordle = new Wordle($dataUrl, true, '$("#personProducts_wrapper input").val(text); $("#personProducts_wrapper input").trigger("keyup")');
         $wordle->width = "100%";
-        $wordle->height = 232;
+        $wordle->height = 229;
         $wgOut->addScript("<script type='text/javascript'>
                                 $(document).ready(function(){
                                     onLoad{$wordle->index}();
@@ -477,7 +477,7 @@ EOF;
     */
     function showContact($person, $visibility){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $this->html .= "<div id='contact' style='white-space: nowrap;position:relative;height:172px;min-height:150px'>";
+        $this->html .= "<div id='contact' style='white-space: nowrap;position:relative;height:226px;min-height:150px'>";
         $this->html .= <<<EOF
             <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;'></div>
             <script type='text/javascript'>
