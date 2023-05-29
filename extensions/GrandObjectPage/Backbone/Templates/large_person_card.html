@@ -24,11 +24,36 @@
                     <td style="color:#333333;"><a href="<%= ldap %>" target="_blank"><%= parseUrl(ldap).hostname %></a></td>
                 </tr>
             <% } %>
-
             <% if(phone != "" && phone != "http://"){ %>
                 <tr>
                     <td width="100">Phone Number&nbsp;</td>
                     <td style="color:#333333;"><%= phone %></td>
+                </tr>
+            <% } %>
+            
+            <!-- IDs -->
+            <% if(googleScholarId != "" && googleScholarId != "http://" && googleScholarId.indexOf('user=') !== -1){ %>
+                <tr>
+                    <td width="100">Google Scholar&nbsp;</td>
+                    <td style="color:#333333;"><a href="<%= googleScholarId %>" target="_blank"><%= googleScholarId.split('user=')[1] %></a></td>
+                </tr>
+            <% } %>
+            <% if(sciverseId != ""){ %>
+                <tr>
+                    <td width="100">SciVerse&nbsp;</td>
+                    <td style="color:#333333;"><a href="https://www.scopus.com/authid/detail.uri?authorId=<%= sciverseId %>" target="_blank"><%= sciverseId %></a></td>
+                </tr>
+            <% } %>
+            <% if(orcId != ""){ %>
+                <tr>
+                    <td width="100">ORCID&nbsp;</td>
+                    <td style="color:#333333;"><a href="https://orcid.org/<%= orcId %>" target="_blank"><%= orcId %></a></td>
+                </tr>
+            <% } %>
+            <% if(wos != ""){ %>
+                <tr>
+                    <td width="100">ResearcherID&nbsp;</td>
+                    <td style="color:#333333;"><a href="https://www.webofscience.com/wos/author/record/<%= wos %>" target="_blank"><%= wos %></a></td>
                 </tr>
             <% } %>
         </table>
