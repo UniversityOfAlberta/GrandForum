@@ -10,12 +10,68 @@ $wgHooks['SubLevelTabs'][] = 'AdminDataCollection::createSubTabs';
 
 class AdminDataCollection extends SpecialPage{
 
+    static $programs = array("otago" => "Otago", 
+                             "coached_by_peer" => "Coached by Peer", 
+                             "peer_choach" => "Peer-Coach",
+                             "community_connector" => "Community Connector",
+                             "peer_navigator" => "Peer Navigator",
+                             "ask_an_expert" => "Ask an Expert",
+                             "tech_training" => "Tech Training");
+
     function __construct() {
         SpecialPage::__construct("AdminDataCollection", STAFF.'+', true);
+    }
+    
+    function dataCollectionTable($person){
+        global $wgServer, $wgScriptPath;
+        $html = "<div id='data_{$person->getId()}' style='display:none;'>";
+        $html .= "<form action='{$wgServer}{$wgScriptPath}/index.php/Special:AdminDataCollection?updateProgramAttendance&user={$person->getId()}' method='post'><table class='wikitable program_attendance' cellpadding='5' cellspacing='1' style='width:100%;'>
+                    <thead>
+                        <tr>
+                            <th>".implode("</th><th>", AdminDataCollection::$programs)."</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+        
+        $html .= "<tr>";
+        foreach(AdminDataCollection::$programs as $key => $program){
+            $checked = (IntakeSummary::getBlobData("ATTENDANCE", "{$key}", $person, 0, "RP_SUMMARY") == 1) ? "checked" : "";
+            $span = ($checked != "") ? "Yes" : "No";
+            $html .= "<td align='center' style='width:1px;'>
+                <input type='hidden' value='0' name='{$key}' />
+                <input type='checkbox' value='1' name='{$key}' $checked />
+                <span style='display:none;'>$span</span>
+            </td>";
+        }
+        
+        $html .= "</tr><tr>";
+        foreach(AdminDataCollection::$programs as $key => $program){
+            $date = IntakeSummary::getBlobData("ATTENDANCE", "{$key}_date", $person, 0, "RP_SUMMARY");
+            $html .= "<td align='center' style='width:1px;'>
+                <input type='date' value='$date' name='{$key}_date' style='width: 8em;' />
+                <span style='display:none;'>$date</span>
+            </td>";
+        }
+        
+        $html .= "</tr></tbody></table></form>";
+        
+        $html .= "</div>";
+        return $html;
+    }
+    
+    function updateProgramAttendance(){
+        $person = Person::newFromId($_GET['user']);
+        foreach($_POST as $key => $value){
+            IntakeSummary::saveBlobData($value, "ATTENDANCE", "{$key}", $person, 0, "RP_SUMMARY");
+        }
     }
 
     function execute($par){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
+        if(isset($_GET['updateProgramAttendance'])){
+            $this->updateProgramAttendance();
+            exit;
+        }
         $this->getOutput()->setPageTitle("Users");
         $people = array();
         foreach(Person::getAllPeople() as $person){
@@ -40,6 +96,9 @@ class AdminDataCollection extends SpecialPage{
         </style>");
         $wgOut->addHTML("<b>Active User Count:</b> ".count($people));
         if(count($people) > 0){
+            foreach($people as $person){
+                $wgOut->addHTML($this->dataCollectionTable($person));
+            }
             $wgOut->addHTML("<table id='data' class='wikitable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>
                                 <thead>
                                     <tr style='background:#EEEEEE;'>
@@ -54,6 +113,7 @@ class AdminDataCollection extends SpecialPage{
                                         <th>Hear about us</th>
                                         <th>In person opportunity</th>
                                         <th>Fitbit</th>
+                                        <th>Attendance</th>
                                         <th>Submitted Intake Survey</th>
                                         <th>Submitted 3Month Survey</th>
                                         <th>Submitted 6Month Survey</th>
@@ -84,7 +144,7 @@ class AdminDataCollection extends SpecialPage{
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $touched_str = $person->getTouched();
                 $touched_date = substr($touched_str,0,4)."-".substr($touched_str,4,2)."-".substr($touched_str,6,2);
-                $wgOut->addHTML("<tr style='background:#FFFFFF;' VALIGN=TOP>
+                $wgOut->addHTML("<tr style='background:#FFFFFF;' data-id='{$person->getId()}' VALIGN=TOP>
                                     <td>$name</td>
                                     <td class='emailCell'>$email</td>
                                     <td nowrap>$avoid_age</td>
@@ -126,6 +186,7 @@ class AdminDataCollection extends SpecialPage{
                     <b>Q1:</b> {$fitbit1}<br />
                     <b>Q2:</b> {$fitbit2}
                 </td>
+                <td align='center'><a href='#' class='viewUsage'>View</a></td>
                 <td>{$submitted}</td>
                 <td>{$submitted3}</td>
                 <td>{$submitted6}</td>
@@ -136,6 +197,7 @@ class AdminDataCollection extends SpecialPage{
             $wgOut->addHTML("</tbody>
                         </table>
                         <div id='adminDataCollectionMessages'></div>
+                        <div id='usageDialog' style='display:none;'></div>
                         <script type='text/javascript'>
                             table = $('#data').DataTable({
                                 aLengthMenu: [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
@@ -166,6 +228,48 @@ class AdminDataCollection extends SpecialPage{
                             });
                             _.defer(function(){
                                 table.draw();
+                            });
+                            
+                            $('.viewUsage').click(function(){
+                                var id = $(this).closest('tr').attr('data-id');
+                                $('#usageDialog').html($('#data_' + id).html());
+                                $('#usageDialog').dialog({
+                                    width: 'auto',
+                                    height: 'auto',
+                                    title: 'Program Attendance',
+                                    buttons: {
+                                        'Save' : function(e){
+                                            var dataStr = $('#usageDialog form').serialize();
+                                            $(e.currentTarget).prop('disabled', true);
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: $('#usageDialog form').attr('action'),
+                                                data: dataStr,
+                                                success: function (data) {
+                                                    $('#usageDialog input[type=submit]').click();
+                                                    $('#usageDialog input').each(function(i, el){
+                                                        $(el).attr('value', $(el).val());
+                                                        if($(el).prop('checked')){
+                                                            $(el).attr('checked', 'checked');
+                                                        }
+                                                        else{
+                                                            $(el).removeAttr('checked');
+                                                        }
+                                                    });
+                                                    $('#data_' + id).html($('#usageDialog').html());
+                                                    $(e.currentTarget).prop('disabled', false);
+                                                    $(this).dialog('close');
+                                                }.bind(this),
+                                                error: function(data){
+                                                    $(e.currentTarget).prop('disabled', false);
+                                                }.bind(this)
+                                            });
+                                        },
+                                        'Cancel' : function(){
+                                            $(this).dialog('close');
+                                        }
+                                    }
+                                });
                             });
                         </script>");
         }

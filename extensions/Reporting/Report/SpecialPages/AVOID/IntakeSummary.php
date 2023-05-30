@@ -296,14 +296,6 @@ class IntakeSummary extends SpecialPage {
                         "DietAndNutrition" => "Diet And Nutrition",
                         "Sleep" => "Sleep",
                         "FallsPrevention" => "Falls Prevention");
-        
-        $programs = array("otago" => "Otago", 
-                          "coached_by_peer" => "Coached by Peer", 
-                          "peer_choach" => "Peer-Coach",
-                          "community_connector" => "Community Connector",
-                          "peer_navigator" => "Peer Navigator",
-                          "ask_an_expert" => "Ask an Expert",
-                          "tech_training" => "Tech Training");
                           
         $html = "<div id='data_{$person->getId()}' style='display:none;'><table class='wikitable data_collection' cellpadding='5' cellspacing='1' style='width:100%;'>
                     <thead>
@@ -442,38 +434,31 @@ class IntakeSummary extends SpecialPage {
         $html .= "</tbody></table>";
         
         // Programs
-        $html .= "<form action='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?updateProgramAttendance&user={$person->getId()}' method='post'><table class='wikitable program_attendance' cellpadding='5' cellspacing='1' style='width:100%;'>
+        $html .= "<table class='wikitable program_attendance' cellpadding='5' cellspacing='1' style='width:100%;'>
                     <thead>
                         <tr>
-                            <th colspan='".count($programs)."'>Program Attendance</th>
+                            <th colspan='".count(AdminDataCollection::$programs)."'>Program Attendance</th>
                         </tr>
                         <tr>
-                            <th>".implode("</th><th>", $programs)."</th>
+                            <th>".implode("</th><th>", AdminDataCollection::$programs)."</th>
                         </tr>
                     </thead>
                     <tbody>";
         
         $html .= "<tr>";
-        foreach($programs as $key => $program){
+        foreach(AdminDataCollection::$programs as $key => $program){
             $checked = ($this->getBlobData("ATTENDANCE", "{$key}", $person, 0, "RP_SUMMARY") == 1) ? "checked" : "";
             $span = ($checked != "") ? "Yes" : "No";
-            $html .= "<td align='center' style='width:1px;'>
-                <input type='hidden' value='0' name='{$key}' />
-                <input type='checkbox' value='1' name='{$key}' $checked />
-                <span style='display:none;'>$span</span>
-            </td>";
+            $html .= "<td align='center' style='width:1px;'>$span</td>";
         }
         
         $html .= "</tr><tr>";
-        foreach($programs as $key => $program){
+        foreach(AdminDataCollection::$programs as $key => $program){
             $date = $this->getBlobData("ATTENDANCE", "{$key}_date", $person, 0, "RP_SUMMARY");
-            $html .= "<td align='center' style='width:1px;'>
-                <input type='date' value='$date' name='{$key}_date' style='width: 8em;' />
-                <span style='display:none;'>$date</span>
-            </td>";
+            $html .= "<td align='center' style='width:1px;'>$date</td>";
         }
         
-        $html .= "</tr></tbody></table></form>";
+        $html .= "</tr></tbody></table>";
         
         $html .= "</div>";
         return $html;
@@ -503,21 +488,10 @@ class IntakeSummary extends SpecialPage {
         return $html;
     }
     
-    function updateProgramAttendance(){
-        $person = Person::newFromId($_GET['user']);
-        foreach($_POST as $key => $value){
-            $this->saveBlobData($value, "ATTENDANCE", "{$key}", $person, 0, "RP_SUMMARY");
-        }
-    }
-    
     function execute($par){
         global $wgServer, $wgScriptPath, $wgOut;
         if(isset($_GET['users'])){
             $this->userTable();
-        }
-        else if(isset($_GET['updateProgramAttendance'])){
-            $this->updateProgramAttendance();
-            exit;
         }
         else{
             $me = Person::newFromWgUser();
@@ -602,33 +576,6 @@ class IntakeSummary extends SpecialPage {
                                                                                $('.program_attendance', '#usageDialog')[0].outerHTML);
                             }
                         },
-                        'Save' : function(e){
-                            var dataStr = $('#usageDialog form').serialize();
-                            $(e.currentTarget).prop('disabled', true);
-                            $.ajax({
-                                type: 'POST',
-                                url: $('#usageDialog form').attr('action'),
-                                data: dataStr,
-                                success: function (data) {
-                                    $('#usageDialog input[type=submit]').click();
-                                    $('#usageDialog input').each(function(i, el){
-                                        $(el).attr('value', $(el).val());
-                                        if($(el).prop('checked')){
-                                            $(el).attr('checked', 'checked');
-                                        }
-                                        else{
-                                            $(el).removeAttr('checked');
-                                        }
-                                    });
-                                    $('#data_' + id).html($('#usageDialog').html());
-                                    $(e.currentTarget).prop('disabled', false);
-                                    $(this).dialog('close');
-                                }.bind(this),
-                                error: function(data){
-                                    $(e.currentTarget).prop('disabled', false);
-                                }.bind(this)
-                            });
-                        },
                         'Cancel' : function(){
                             $(this).dialog('close');
                         }
@@ -659,7 +606,7 @@ class IntakeSummary extends SpecialPage {
         return true;
     }
     
-    function getBlobData($blobSection, $blobItem, $person, $year, $rpType=null){
+    static function getBlobData($blobSection, $blobItem, $person, $year, $rpType=null){
         $rpType = ($rpType == null) ? static::$rpType : $rpType;
         $blb = new ReportBlob(BLOB_TEXT, $year, $person->getId(), 0);
         $addr = ReportBlob::create_address($rpType, $blobSection, $blobItem, 0);
@@ -667,7 +614,7 @@ class IntakeSummary extends SpecialPage {
         return $blb->getData();
     }
     
-    function saveBlobData($value, $blobSection, $blobItem, $person, $year, $rpType=null){
+    static function saveBlobData($value, $blobSection, $blobItem, $person, $year, $rpType=null){
         $rpType = ($rpType == null) ? static::$rpType : $rpType;
         $blb = new ReportBlob(BLOB_TEXT, $year, $person->getId(), 0);
         $addr = ReportBlob::create_address($rpType, $blobSection, $blobItem, 0);
