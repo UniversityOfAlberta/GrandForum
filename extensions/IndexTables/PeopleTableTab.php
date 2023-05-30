@@ -166,6 +166,10 @@ class PeopleTableTab extends AbstractTab {
                                     {$facultyHead}
                                     <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap; width:20%;'>Title / Rank</th>
+                                    <th style='white-space: nowrap; width:20%;' style='display:none;'>Start Date</th>
+                                    <th style='display:none;'>Prev University</th>
+                                    <th style='display:none;'>Prev {$config->getValue('deptsTerm')}</th>
+                                    <th style='display:none;'>Prev Title / Rank</th>
                                     <th style='display:none;'>First University</th>
                                     {$firstFacultyHead}
                                     <th style='display:none;'>First {$config->getValue('deptsTerm')}</th>
@@ -253,6 +257,14 @@ class PeopleTableTab extends AbstractTab {
             }
             $html .= "<td align='left'>{$person->getDepartment()}</td>";
             $html .= "<td align='left'>{$university['position']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$university['start']}</td>";
+            
+            // Previous University
+            $prevuniversity = $person->getPreviousUniversity();
+            $html .= "<td style='display:none;' align='left'>{$prevuniversity['university']}</td>";
+            $html .= "<td style='display:none;' align='left'>{$prevuniversity['department']}</td>";
+            $html .= "<td style='display:none;' align='left'>{$prevuniversity['position']}</td>";
+            
             // First University
             $firstuniversity = $person->getFirstUniversity();
             $html .= "<td style='display:none;' align='left'>{$firstuniversity['university']}</td>";

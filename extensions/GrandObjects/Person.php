@@ -468,7 +468,7 @@ class Person extends BackboneModel {
      */
     static function generateUniversityCache(){
         if(empty(self::$universityCache)){
-            $sql = "SELECT user_id, university_name, faculty, department, position, end_date
+            $sql = "SELECT user_id, university_name, faculty, department, position, start_date, end_date
                     FROM grand_user_university uu, grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
@@ -481,6 +481,8 @@ class Person extends BackboneModel {
                               "faculty"    => $row['faculty'],
                               "department" => $row['department'],
                               "position"   => $row['position'],
+                              "start"      => $row['start_date'],
+                              "end"        => $row['end_date'],
                               "date"       => $row['end_date']);
                 }
             }
@@ -2294,7 +2296,17 @@ class Person extends BackboneModel {
     function getPosition(){
         $university = $this->getUniversity();
         return (isset($university['position'])) ? $university['position'] : "Unknown";
-    }    
+    }
+    
+    function getUniStart(){
+        $university = $this->getUniversity();
+        return (isset($university['start'])) ? $university['start'] : "";
+    }
+    
+    function getUniEnd(){
+        $university = $this->getUniversity();
+        return (isset($university['end'])) ? $university['end'] : "";
+    }   
     
     /**
      * Used by CCVExport to determine the current position of active/inactive HQP
@@ -2393,6 +2405,23 @@ class Person extends BackboneModel {
         return $this->universityDuring[$startRange.$endRange];
     }
     
+    function getPreviousUniversity(){
+        $universities = $this->getUniversitiesDuring("0000-00-00", "2100-01-01");
+        if(count($universities) > 1){
+            usort($universities, function($a, $b){
+                return ($a['start'] < $b['start']);
+            });
+            return @$universities[1];
+        }
+        // None found, use the 'default' values
+        return array("university" => "",
+                     "faculty"    => "",
+                     "department" => "",
+                     "position"   => "",
+                     "start"      => "",
+                     "end"        => "");
+    }
+    
     function getFirstUniversity(){
         $universities = $this->getUniversitiesDuring("0000-00-00", "2100-01-01");
         if(count($universities) > 0){
@@ -2406,8 +2435,8 @@ class Person extends BackboneModel {
                      "faculty"    => $this->getFaculty(),
                      "department" => $this->getDepartment(),
                      "position"   => $this->getPosition(),
-                     "start" => "",
-                     "end" => "");
+                     "start" => $this->getUniStart(),
+                     "end" => $this->getUniEnd());
     }
     
     /**
