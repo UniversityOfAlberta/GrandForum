@@ -297,7 +297,8 @@ class IntakeSummary extends SpecialPage {
                           "peer_choach" => "Peer-Coach",
                           "community_connector" => "Community Connector",
                           "peer_navigator" => "Peer Navigator",
-                          "ask_an_expert" => "Ask an Expert");
+                          "ask_an_expert" => "Ask an Expert",
+                          "tech_training" => "Tech Training");
                           
         $html = "<div id='data_{$person->getId()}' style='display:none;'><table class='wikitable data_collection' cellpadding='5' cellspacing='1' style='width:100%;'>
                     <thead>
