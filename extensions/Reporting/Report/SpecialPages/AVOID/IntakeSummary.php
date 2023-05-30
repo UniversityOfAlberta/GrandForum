@@ -164,6 +164,7 @@ class IntakeSummary extends SpecialPage {
             $html .= "<th>CFS Score</th>";
         }
         $html .= "<th>Usage</th>";
+        $html .= "<th>Month Registered</th>";
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
@@ -182,6 +183,9 @@ class IntakeSummary extends SpecialPage {
     static function getRow($person, $report, $type=false, $simple=false){
         global $wgServer, $wgScriptPath, $config, $EQ5D5L;
         $me = Person::newFromWgUser();
+        $registration_str = $person->getRegistration();
+        $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2);
+        
         $userLink = "{$person->getId()}";
         if($type == false){
             $userLink = "<a class='userLink' href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
@@ -221,6 +225,7 @@ class IntakeSummary extends SpecialPage {
             $html .= "<td>".$scores["CFS"]."</td>";
         }
         $html .= "<td align='center'><a href='#' class='viewUsage'>View</a></td>";
+        $html .= "<td align='center'>{$registration_date}</td>";
         $hasSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType);
         foreach($report->sections as $section){
             foreach($section->items as $item){
