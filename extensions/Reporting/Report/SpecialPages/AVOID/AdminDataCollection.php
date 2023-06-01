@@ -128,8 +128,18 @@ class AdminDataCollection extends SpecialPage{
                 $avoid_age = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "avoid_age", $person->getId());
                 $avoid_age = str_replace("less than", "<", $avoid_age);
                 $avoid_age = str_replace("more than", ">", $avoid_age);
-                $hear = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "program_avoid", $person->getId());
-                $hear = ($hear == "") ? $person->getExtra('hearField', '') : $hear;
+                
+                $hear = implode("<br />", array_filter(array($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "program_avoid", $person->getId()), 
+                                                             $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "PROGRAMLOCATIONSPECIFY", $person->getId()),
+                                                             $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "platform_avoid", $person->getId()),
+                                                             $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "PROGRAMPLATFORMOTHERSPECIFY", $person->getId()),
+                                                             $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "PROGRAMOTHERSPECIFY", $person->getId()))));
+                $hear = ($hear == "") ? implode("<br />", array_filter(array($person->getExtra('hearField', ''),
+                                                                             $person->getExtra('hearLocationSpecify'),
+                                                                             $person->getExtra('hearPlatformSpecify'),
+                                                                             $person->getExtra('hearPlatformOtherSpecify'),
+                                                                             $person->getExtra('hearProgramOtherSpecify')))) : $hear;
+                
                 $postal_code = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
                 $evaluation1 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation1", $person->getId());
                 $evaluation2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation2", $person->getId());

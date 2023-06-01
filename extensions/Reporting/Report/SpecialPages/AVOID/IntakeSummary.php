@@ -165,6 +165,7 @@ class IntakeSummary extends SpecialPage {
         }
         $html .= "<th>Usage</th>";
         $html .= "<th>Month Registered</th>";
+        $html .= "<th>Hear about us</th>";
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
@@ -185,6 +186,17 @@ class IntakeSummary extends SpecialPage {
         $me = Person::newFromWgUser();
         $registration_str = $person->getRegistration();
         $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2);
+
+        $hear = implode("<br />", array_filter(array(self::getBlobData("AVOID_Questions_tab0", "program_avoid", $person, YEAR, "RP_AVOID"), 
+                                                     self::getBlobData("AVOID_Questions_tab0", "PROGRAMLOCATIONSPECIFY", $person, YEAR, "RP_AVOID"),
+                                                     self::getBlobData("AVOID_Questions_tab0", "platform_avoid", $person, YEAR, "RP_AVOID"),
+                                                     self::getBlobData("AVOID_Questions_tab0", "PROGRAMPLATFORMOTHERSPECIFY", $person, YEAR, "RP_AVOID"),
+                                                     self::getBlobData("AVOID_Questions_tab0", "PROGRAMOTHERSPECIFY", $person, YEAR, "RP_AVOID"))));
+        $hear = ($hear == "") ? implode("<br />", array_filter(array($person->getExtra('hearField', ''),
+                                                                     $person->getExtra('hearLocationSpecify'),
+                                                                     $person->getExtra('hearPlatformSpecify'),
+                                                                     $person->getExtra('hearPlatformOtherSpecify'),
+                                                                     $person->getExtra('hearProgramOtherSpecify')))) : $hear;
         
         $userLink = "{$person->getId()}";
         if($type == false){
@@ -226,6 +238,7 @@ class IntakeSummary extends SpecialPage {
         }
         $html .= "<td align='center'><a href='#' class='viewUsage'>View</a></td>";
         $html .= "<td align='center'>{$registration_date}</td>";
+        $html .= "<td>{$hear}</td>";
         $hasSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType);
         foreach($report->sections as $section){
             foreach($section->items as $item){

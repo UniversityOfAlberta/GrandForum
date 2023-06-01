@@ -149,11 +149,54 @@ class Register extends SpecialPage{
         
         $hearLabel = new Label("hear_label", "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr>", "How did you hear about the AVOID Frailty program?", VALIDATE_NOT_NULL);
         $hearLabel->colspan = 2;
+        $hearLabel->colon = "";
+        $hearLabel->attr('class', 'label tooltip left-align');
         $hearRow1 = new FormTableRow("hear_row1");
         $hearRow1->append($hearLabel);
-        $hearField = new SelectBox("hear_field", "Hear", "", array("", "Canadian Frailty Network website","Poster, flyer, or pamphlet at community venue","Newspaper","Magazine or Newsletter","Healthcare practitioner","Social media","Word of mouth","Other"), VALIDATE_NOT_NULL);
+        $hearField = new SelectBox("hear_field", "Hear", "", array("", "Canadian Frailty Network website", "Poster, flyer, or pamphlet at community venue", "Newspaper", "Magazine or Newsletter", "Healthcare practitioner", "Social media", "Word of mouth", "Event", "Radio", "Mail", "Television", "Other"), VALIDATE_NOT_NULL);
+        $hearField->colspan = 2;
         $hearRow2 = new FormTableRow("hear_row2");
-        $hearRow2->append(new EmptyElement())->append($hearField);
+        $hearRow2->append($hearField);
+        
+        $hearLocationLabel = new Label("hear_label", "If you remember the location, please specify", "If you remember the location, please specify", VALIDATE_NOTHING);
+        $hearLocationLabel->colspan = 2;
+        $hearLocationLabel->attr('class', 'tooltip left-align');
+        $hearRow3 = new FormTableRow("hear_row3");
+        $hearRow3->append($hearLocationLabel);
+        $hearLocationField = new TextField("hear_location_specify", "Hear", "", VALIDATE_NOTHING);
+        $hearLocationField->colspan = 2;
+        $hearRow4 = new FormTableRow("hear_row4");
+        $hearRow4->append($hearLocationField);
+        
+        $hearPlatformLabel = new Label("hear_label", "Please specify platform", "Please specify platform", VALIDATE_NOTHING);
+        $hearPlatformLabel->colspan = 2;
+        $hearPlatformLabel->attr('class', 'tooltip left-align');
+        $hearRow5 = new FormTableRow("hear_row5");
+        $hearRow5->append($hearPlatformLabel);
+        $hearPlatformField = new VerticalRadioBox("hear_platform_specify", "Hear", "", array("Facebook", "Twitter", "LinkedIn", "Other"), VALIDATE_NOTHING);
+        $hearPlatformField->colspan = 2;
+        $hearRow6 = new FormTableRow("hear_row6");
+        $hearRow6->append($hearPlatformField);
+        
+        $hearPlatformOtherLabel = new Label("hear_label", "Specify", "Specify", VALIDATE_NOTHING);
+        $hearPlatformOtherLabel->colspan = 2;
+        $hearPlatformOtherLabel->attr('class', 'tooltip left-align');
+        $hearRow7 = new FormTableRow("hear_row7");
+        $hearRow7->append($hearPlatformOtherLabel);
+        $hearPlatformOtherField = new TextField("hear_platform_other_specify", "Hear", "", VALIDATE_NOTHING);
+        $hearPlatformOtherField->colspan = 2;
+        $hearRow8 = new FormTableRow("hear_row8");
+        $hearRow8->append($hearPlatformOtherField);
+        
+        $hearOtherLabel = new Label("hear_label", "Please specify", "Please specify", VALIDATE_NOTHING);
+        $hearOtherLabel->colspan = 2;
+        $hearOtherLabel->attr('class', 'tooltip left-align');
+        $hearRow9 = new FormTableRow("hear_row9");
+        $hearRow9->append($hearOtherLabel);
+        $hearOtherField = new TextField("hear_other_specify", "Hear", "", VALIDATE_NOTHING);
+        $hearOtherField->colspan = 2;
+        $hearRow10 = new FormTableRow("hear_row10");
+        $hearRow10->append($hearOtherField);
         
         // End AVOID Fields
         
@@ -191,15 +234,29 @@ class Register extends SpecialPage{
             if(isset($_GET['role']) && $_GET['role'] == "Partner"){
                 $formTable->append($ageRow);
                 $formTable->append($ageOfLovedOneRow);
-                $formTable->append($hearRow1)->append($hearRow2);
             }
             if(isset($_GET['role']) && $_GET['role'] == "Clinician"){
                 $formTable->append($practiceRow);
                 $formTable->append($roleRow);
-                $formTable->append($hearRow1)->append($hearRow2);
             }
+            $emptyRow = new FormTableRow("");
+            $emptyRow->append(new EmptyElement());
+            $formTable->append($emptyRow)
+                      ->append($hearRow1)
+                      ->append($hearRow2)
+                      ->append($hearRow3)
+                      ->append($hearRow4)
+                      ->append($hearRow5)
+                      ->append($hearRow6)
+                      ->append($hearRow7)
+                      ->append($hearRow8)
+                      ->append($hearRow9)
+                      ->append($hearRow10);
         }
-        $formTable->append($captchaRow)
+        $emptyRow = new FormTableRow("");
+        $emptyRow->append(new EmptyElement());
+        $formTable->append($emptyRow)
+                  ->append($captchaRow)
                   ->append($submitRow);
         
         $formContainer->append($formTable);
@@ -285,6 +342,52 @@ class Register extends SpecialPage{
             $('#side').hide();
             $('#outerHeader').css('left', 0);
             $('#bodyContent').css('left', 0);
+            
+            // How did you hear about us?
+            $('#hear_row3, #hear_row4').hide();
+            $('#hear_row5, #hear_row6').hide();
+            $('#hear_row7, #hear_row8').hide();
+            $('#hear_row9, #hear_row10').hide();
+            
+            function specifyFrail(){
+                if($(\"select[name='hear_field\").val() == 'Poster, flyer, or pamphlet at community venue'){
+                    $('#hear_row3, #hear_row4').show();
+                    $('#hear_row5, #hear_row6').hide();
+                    $('#hear_row7, #hear_row8').hide();
+                    $('#hear_row9, #hear_row10').hide();
+                }
+                else if($(\"select[name='hear_field\").val() == 'Social media'){
+                    $('#hear_row3, #hear_row4').hide();
+                    $('#hear_row5, #hear_row6').show();
+                    $('#hear_row7, #hear_row8').hide();
+                    $('#hear_row9, #hear_row10').hide();
+                }
+                else if($(\"select[name='hear_field\").val() == 'Other'){
+                    $('#hear_row3, #hear_row4').hide();
+                    $('#hear_row5, #hear_row6').hide();
+                    $('#hear_row7, #hear_row8').hide();
+                    $('#hear_row9, #hear_row10').show();
+                }
+                else{ 
+                    $('#hear_row3, #hear_row4').hide();
+                    $('#hear_row5, #hear_row6').hide();
+                    $('#hear_row7, #hear_row8').hide();
+                    $('#hear_row9, #hear_row10').hide();
+                }
+                
+                if($(\"input:radio[name='hear_platform_specify']\").is(':visible') && 
+                   $(\"input:radio[name='hear_platform_specify']:checked\").val() == 'Other'){
+                    $('#hear_row7, #hear_row8').show();
+                }
+                else{ 
+                    $('#hear_row7, #hear_row8').hide();
+                }
+            }
+            
+            $(\"select[name='hear_field']\").change(specifyFrail);
+            $(\"input:radio[name='hear_platform_specify']\").change(specifyFrail);
+            specifyFrail();
+            
         </script>");
     }
     
@@ -372,7 +475,12 @@ class Register extends SpecialPage{
                     $_POST['wpExtra']['ageField'] = @$_POST['age_field'];
                     $_POST['wpExtra']['practiceField'] = @$_POST['practice_field'];
                     $_POST['wpExtra']['roleField'] = @$_POST['role_field'];
+                    // How did you hear about us?
                     $_POST['wpExtra']['hearField'] = @$_POST['hear_field'];
+                    $_POST['wpExtra']['hearLocationSpecify'] = @$_POST['hear_location_specify'];
+                    $_POST['wpExtra']['hearPlatformSpecify'] = @$_POST['hear_platform_specify'];
+                    $_POST['wpExtra']['hearPlatformOtherSpecify'] = @$_POST['hear_platform_other_specify'];
+                    $_POST['wpExtra']['hearProgramOtherSpecify'] = @$_POST['hear_other_specify'];
                 }
                 
                 $wgGroupPermissions['*']['createaccount'] = true;

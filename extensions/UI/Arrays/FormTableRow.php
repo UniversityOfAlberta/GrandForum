@@ -7,13 +7,13 @@ class FormTableRow extends UIElementArray {
     }
     
     function render(){
-        $html = "\n<tr {$this->renderAttr()}>";
+        $html = "\n<tr id='{$this->id}' {$this->renderAttr()}>";
         foreach($this->elements as $element){
             if($element instanceof Label){
                 $html .= "<td style='vertical-align:top;' colspan='{$element->colspan}'>".$element->render()."</td>";
             }
             else{
-                $html .= "<td class='value'>".$element->render()."</td>";
+                $html .= "<td class='value' colspan='{$element->colspan}'>".$element->render()."</td>";
             }
         }
         return $html."</tr>";

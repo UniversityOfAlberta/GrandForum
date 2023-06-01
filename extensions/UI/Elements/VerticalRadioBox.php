@@ -20,7 +20,7 @@ class VerticalRadioBox extends RadioBox {
             if(is_string($key) || $this->forceKey){
                 $value = $key;
             }
-            $html .= "<input {$this->renderAttr()} type='radio' name='{$this->id}' value='{$value}' $checked/>{$option}<br />";
+            $html .= "<input {$this->renderAttr()} type='radio' name='{$this->id}' value='{$value}' style='vertical-align: middle;' $checked/>&nbsp;<span style='vertical-align: middle;'>{$option}</span><br />";
         }
         return $html;
     }

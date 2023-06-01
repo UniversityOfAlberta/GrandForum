@@ -474,86 +474,8 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="program_avoid" type="SelectReportItem" options="Canadian Frailty Network website|Poster, flyer, or pamphlet at community venue|Newspaper|Magazine or Newsletter 
-|Healthcare practitioner|Social media|Word of mouth|Event|Radio|Mail|Television|Other" blobItem="program_avoid">
-            <![CDATA[
-                    <h3>How did you hear about the AVOID Frailty program?</h3>
-                    <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="program_location__specify" type="Text" blobItem="PROGRAMLOCATIONSPECIFY" width="400px" optional="true">
-            <![CDATA[
-                <span id="programlocationspecify">
-            <p>If you remember the location, please specify: {$item}</p>
-                </span>
-                ]]>
-        </ReportItem>
-        <ReportItem id="program_platform__specify" type="RadioReportItem" options="Facebook|Twitter|LinkedIn|Other" blobItem="platform_avoid" optional="true">
-            <![CDATA[
-                <span id="programspecify">
-            <p>Please specify platform: {$item}</p>
-                </span>
-                ]]>
-        </ReportItem>
-        <ReportItem id="program_platformother_specify" type="Text" blobItem="PROGRAMPLATFORMOTHERSPECIFY" width="400px" optional="true">
-            <![CDATA[
-                <span id="programplatformotherspecify">
-                        Specify: {$item}
-                </span>
-                ]]>
-        </ReportItem>
-        <ReportItem id="program_other_specify" type="Text" blobItem="PROGRAMOTHERSPECIFY" width="400px" optional="true">
-            <![CDATA[
-                <span id="programotherspecify">
-            <p>Please specify: {$item}</p>
-                </span>
-                ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                        <script type='text/javascript'>
-                $('span#programlocationspecify').hide();
-                $('span#programspecify').hide();
-                $('span#programotherspecify').hide();
-                                function specifyFrail(){
-                                        if($("select[name='GettingtoKnowYou_program_avoid").val() == "Poster, flyer, or pamphlet at community venue"){
-                        $('span#programlocationspecify').show();
-                        $('span#programspecify').hide();
-                                                $('span#programotherspecify').hide();
-                    }
-                    else if($("select[name='GettingtoKnowYou_program_avoid").val() == "Social media"){
-                            $('span#programlocationspecify').hide();
-                                                $('span#programspecify').show();
-                                                $('span#programotherspecify').hide();
-                    }
-                                        else if($("select[name='GettingtoKnowYou_program_avoid").val() == "Other"){
-                            $('span#programlocationspecify').hide();
-                                                $('span#programspecify').hide();
-                                                $('span#programotherspecify').show();
-                                        }
-                    else{ 
-                        $('span#programlocationspecify').hide();
-                        $('span#programspecify').hide();
-                        $('span#programotherspecify').hide();
-                    }
-                                }
-                                _.defer(specifyEmploy);
-                                $("select[name='GettingtoKnowYou_program_avoid']").change(specifyFrail);
-                    specifyFrail();
-                    $('span#programplatformotherspecify').hide();
-                    function specifyPlatform(){
-                        if($("input:radio[name='GettingtoKnowYou_program_platform__specify']:checked").val() == "Other"){
-                                                $('span#programplatformotherspecify').show();
-                                        }
-                                        else{ $('span#programplatformotherspecify').hide();}
-                                }
-                                _.defer(specifyPlatform);
-                               $("input:radio[name='GettingtoKnowYou_program_platform__specify']").change(specifyPlatform);
-                    </script>
-                ]]>
-        </Static>
     </ReportSection>
-    <ReportSection id="behaviouralassess" tooltip="Behavioural Self-Assessment" name="Self-Assessment" title="Behavioural Self-Assessment" blobSection="behaviouralassess" type="NextPrevReportSection" pagebreak="false" >
+    <ReportSection id="behaviouralassess" tooltip="Behavioural Self-Assessment" name="Self-Assessment" title="Behavioural Self-Assessment" blobSection="behaviouralassess" type="NextPrevReportSection" pagebreak="false">
         <Static>
             <![CDATA[
                     <i>The following section will ask you about your health-related behaviours and lifestyle. The answers will be used to personalize your
@@ -675,11 +597,11 @@
             ]]>
         </ReportItem>
         <ReportItem id="vaccinate3_avoid" blobItem="vaccinate3_avoid"  type="RadioReportItem" orientation="horizontal"  options="Yes|No"  optional="true">
-	    <![CDATA[
-		<span id="vaccinate3_avoid">
+            <![CDATA[
+                <span id="vaccinate3_avoid">
                     <h3>Have you had a shingles vaccine? (once after age 50)</h3>
-		    <div class="requiredField">{$item}</div>
-		</span>
+                    <div class="requiredField">{$item}</div>
+                </span>
             ]]>
         </ReportItem>
         <ReportItem id="vaccinate3specify_avoid" blobItem="vaccinate3specify_avoid"  type="RadioReportItem" options="Shingrix|Zostavax II|Unsure" optional="true">
@@ -707,11 +629,11 @@
             ]]>
         </Static>
         <ReportItem id="vaccinate4_avoid" blobItem="vaccinate4_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No"  optional="true">
-	    <![CDATA[
-		<span id="vaccinate4_avoid">
+            <![CDATA[
+                <span id="vaccinate4_avoid">
                     <h3>Have you had a pneumonia vaccine? (once at age 65)</h3>
-		    <div class="requiredField">{$item}</div>
-		</span>
+                    <div class="requiredField">{$item}</div>
+                </span>
             ]]>
         </ReportItem>
         <ReportItem id="vaccinate5_avoid" blobItem="vaccinate5_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">
@@ -728,10 +650,10 @@
         </ReportItem>
         <ReportItem id="vax_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="vax_end" orientation="vertical" options="I was not aware of the recommended vaccines|I don't know where or how to get vaccinated|I don't see the point of getting vaccinated|Other" optional="true">
             <![CDATA[
-            <span id="vax_end">
-            <h3>What are the main reasons that you have not had all of the recommended vaccinations listed above? (choose all that apply):</h3>
-            {$item}
-            </span>
+                <span id="vax_end">
+                    <h3>What are the main reasons that you have not had all of the recommended vaccinations listed above? (choose all that apply):</h3>
+                    {$item}
+                </span>
             ]]>
         </ReportItem>
         <ReportItem id="vax_end_text_specify" blobItem="VAXENDTEXTSPECIFY" type="Textarea" optional="true">
@@ -924,10 +846,10 @@
         </ReportItem>
         <ReportItem id="interact_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="interact_end" orientation="vertical" options="I have been restricted due to COVID-19 public health measures|I find it physically/mentally difficult to participate in social interactions|I am not aware of opportunities for social interaction in my community|I have trouble maintaining social connections over time|I do not feel that I need more interaction than I already have|Other" optional="true">
             <![CDATA[
-		    <span id="interact_end">
-			    <h3>What challenges have you faced when it comes to social interaction? (choose all that apply):</h3>
-                <div class="requiredField">{$item}</div>
-            </span>
+                <span id="interact_end">
+                    <h3>What challenges have you faced when it comes to social interaction? (choose all that apply):</h3>
+                    <div class="requiredField">{$item}</div>
+                </span>
             ]]>
         </ReportItem>
         <ReportItem id="interact_end_text_specify" blobItem="INTERACTENDTEXTSPECIFY" type="Textarea" optional="true">
@@ -1121,50 +1043,50 @@
     <ReportSection id="healthquestions" tooltip="Health Related QoL" name="Health Related QoL" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <div style="width:100%;text-align:center">
-            <h2 style='margin-top:0;'>Health Related Quality of Life</h2>
-            <p style='max-width: 100%;'>The AVOID Frailty Program aims to support you in improvements to your physical and social wellbeing. The questions in this section will help us to understand these aspects of your life before you start the program, and we will ask again in 6 months to see if anything has changed.</p>
-            <img src="{$wgServer}{$wgScriptPath}/skins/eq5d5l_logo.png" width="500px" style="text-align:center; max-width: 100%;"><br />
-			    Canada (English)<br />
-			    <b>Health Questionnaire</b><br />
-				   <b>English version for Canada</b>
-        </div>
-                ]]>
+                <div style="width:100%;text-align:center">
+                    <h2 style='margin-top:0;'>Health Related Quality of Life</h2>
+                    <p style='max-width: 100%;'>The AVOID Frailty Program aims to support you in improvements to your physical and social wellbeing. The questions in this section will help us to understand these aspects of your life before you start the program, and we will ask again in 6 months to see if anything has changed.</p>
+                    <img src="{$wgServer}{$wgScriptPath}/skins/eq5d5l_logo.png" width="500px" style="text-align:center; max-width: 100%;"><br />
+                    Canada (English)<br />
+                    <b>Health Questionnaire</b><br />
+                    <b>English version for Canada</b>
+                </div>
+            ]]>
         </Static>
     </ReportSection>
     <ReportSection id="healthquestions2" tooltip="Health Related QoL2" name="Health Related QoL2" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <p>Please tap the ONE box that best describes your health TODAY.</p>
-                ]]>
+                <p>Please tap the ONE box that best describes your health TODAY.</p>
+            ]]>
         </Static>
         <ReportItem id="healthstatus1_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems in walking about|I have slight problems in walking about|I have moderate problems in walking about|I have severe problems in walking about|I am unable to walk about" blobItem="healthstatus_avoid">
             <![CDATA[
-            <div class="options">
+                <div class="options">
                     <h3>MOBILITY</h3>
-                <div class="requiredField" style="margin:0;">{$item}</div>
-        </div>
+                    <div class="requiredField" style="margin:0;">{$item}</div>
+                </div>
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="healthquestions3" tooltip="Health Related QoL3" name="Health Related QoL3" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <p>Please tap the ONE box that best describes your health TODAY.</p>
-                ]]>
+                <p>Please tap the ONE box that best describes your health TODAY.</p>
+            ]]>
         </Static>
         <ReportItem id="healthstatus2_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems washing or dressing myself|I have slight problems washing or dressing myself|I have moderate problems washing or dressing myself|I have severe problems washing or dressing myself|I am unable to wash or dress myself " blobItem="healthstatus_avoid2">
             <![CDATA[
-                        <h3>SELF-CARE</h3>
-                        <div class="requiredField" style="margin:0;">{$item}</div>
-                ]]>
+                <h3>SELF-CARE</h3>
+                <div class="requiredField" style="margin:0;">{$item}</div>
+            ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="healthquestions4" tooltip="Health Related QoL4" name="Health Related QoL4" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <p>Please tap the ONE box that best describes your health TODAY.</p>
-                ]]>
+                <p>Please tap the ONE box that best describes your health TODAY.</p>
+            ]]>
         </Static>
         <ReportItem id="healthstatus3_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems doing my usual activities|I have slight problems doing my usual activities|I have moderate problems doing my usual activities|I have severe problems doing my usual activities|I am unable to do my usual activities" blobItem="healthstatus_avoid3">
             <![CDATA[
@@ -1176,26 +1098,26 @@
     <ReportSection id="healthquestions5" tooltip="Health Related QoL5" name="Health Related QoL5" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <p>Please tap the ONE box that best describes your health TODAY.</p>
-                ]]>
+                <p>Please tap the ONE box that best describes your health TODAY.</p>
+            ]]>
         </Static>
         <ReportItem id="healthstatus4_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no pain or discomfort|I have slight pain or discomfort|I have moderate pain or discomfort|I have severe pain or discomfort|I have extreme pain or discomfort" blobItem="healthstatus_avoid4">
             <![CDATA[
-                    <h3>PAIN / DISCOMFORT</h3>
-                    <div class="requiredField" style="margin:0;">{$item}</div>
+                <h3>PAIN / DISCOMFORT</h3>
+                <div class="requiredField" style="margin:0;">{$item}</div>
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="healthquestions6" tooltip="Health Related QoL6" name="Health Related QoL6" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <p>Please tap the ONE box that best describes your health TODAY.</p>
-                ]]>
+                <p>Please tap the ONE box that best describes your health TODAY.</p>
+            ]]>
         </Static>
         <ReportItem id="healthstatus5_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I am not anxious or depressed|I am slightly anxious or depressed|I am moderately anxious or depressed|I am severely anxious or depressed|I am extremely anxious or depressed" blobItem="healthstatus_avoid5">
             <![CDATA[
-                    <h3>ANXIETY / DEPRESSION</h3>
-                    <div class="requiredField" style="margin:0;">{$item}</div>
+                <h3>ANXIETY / DEPRESSION</h3>
+                <div class="requiredField" style="margin:0;">{$item}</div>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -1277,26 +1199,26 @@
         </ReportItem>
         <ReportItem id="symptoms_avoid8_specify" type="RadioReportItem" orientation="vertical" blobItem="SYMPTOMS8SPECIFY" options="Less than 1 kilometer occasionally|Less than 1 kilometer most days|Less than 100 meters most occasionally|Less than 100 meters most days" optional="true">
             <![CDATA[
-		<span id="symptoms8_specify">
-			Please indicate at what distance, and how often your walking becomes limited: 
-			<div class="requiredField">{$item}</div>
-		</span>
-            	]]>
+                <span id="symptoms8_specify">
+                    Please indicate at what distance, and how often your walking becomes limited: 
+                    <div class="requiredField">{$item}</div>
+                </span>
+            ]]>
         </ReportItem>
         <Static>
             <![CDATA[
-                        <script type='text/javascript'>
-                                $('span#symptoms8_specify').hide();
-                                function specifySymptoms8(){
-                                        if($("input:radio[name='HealthStatus_symptoms_avoid8'][value='Yes']").is(':checked')){
-                                                $('span#symptoms8_specify').show();
-                                        }
-                                        else{ $('span#symptoms8_specify').hide();}
+                <script type='text/javascript'>
+                        $('span#symptoms8_specify').hide();
+                        function specifySymptoms8(){
+                                if($("input:radio[name='HealthStatus_symptoms_avoid8'][value='Yes']").is(':checked')){
+                                        $('span#symptoms8_specify').show();
                                 }
-                                _.defer(specifySymptoms8);
-					$("input:radio[name='HealthStatus_symptoms_avoid8']").change(specifySymptoms8);
-			</script>
-                ]]>
+                                else{ $('span#symptoms8_specify').hide();}
+                        }
+                        _.defer(specifySymptoms8);
+                    $("input:radio[name='HealthStatus_symptoms_avoid8']").change(specifySymptoms8);
+                </script>
+            ]]>
         </Static>
         <ReportItem id="symptoms_avoid9" blobItem="symptoms_avoid9" type="RadioReportItem" orientation="vertical" options="Good|Bad">
             <![CDATA[

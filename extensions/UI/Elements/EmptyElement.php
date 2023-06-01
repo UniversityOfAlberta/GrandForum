@@ -7,7 +7,7 @@ class EmptyElement extends UIElement {
     }
     
     function render(){
-        return "";
+        return "<span style='user-select: none;'>&nbsp;</span>";
     }
 }
 
