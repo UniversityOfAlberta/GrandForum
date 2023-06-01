@@ -523,6 +523,18 @@
                 ]]>
             </ReportItem>
         </If>
+        
+        <ReportItem id="edibookmark" type="BookmarkReportItem" title="EDI and Indigenous Initiatives">
+            <![CDATA[
+                <h2>EDI and Indigenous Initiatives</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="edi" type="Textarea" blobItem="EDI" blobSection="FEC_ADDITIONAL_INFO" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        
         <ReportItem id="committeesbookmark" type="BookmarkReportItem" title="Additional Info">
             <![CDATA[
                 <h2>Additional Info</h2>
@@ -535,7 +547,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="covid" type="Textarea" blobItem="COVID" blobSection="FEC_ADDITIONAL_INFO" optional="true">
+        <!--ReportItem id="covid" type="Textarea" blobItem="COVID" blobSection="FEC_ADDITIONAL_INFO" optional="true">
             <![CDATA[
                 <h2>Pandemic Impact Statement</h2>
                 {$item}
@@ -543,7 +555,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="covid_upload" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="COVID_UPLOAD" blobSection="FEC_ADDITIONAL_INFO" />
+        <ReportItem id="covid_upload" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="COVID_UPLOAD" blobSection="FEC_ADDITIONAL_INFO" /-->
         
         <ReportItem id="sabbatical" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SABBATICAL" blobSection="FEC_ADDITIONAL_INFO" />
         

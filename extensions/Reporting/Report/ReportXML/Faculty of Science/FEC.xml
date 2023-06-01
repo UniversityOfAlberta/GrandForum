@@ -10,6 +10,7 @@
             <SectionPermission id="grants" permissions="rw" />
             <SectionPermission id="services" permissions="rw" />
             <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="pandemic" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
@@ -26,6 +27,7 @@
             <SectionPermission id="grants" permissions="rw" />
             <SectionPermission id="services" permissions="rw" />
             <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="pandemic" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
@@ -42,6 +44,7 @@
             <SectionPermission id="grants" permissions="rw" />
             <SectionPermission id="services" permissions="rw" />
             <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="pandemic" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
@@ -58,6 +61,7 @@
             <SectionPermission id="grants" permissions="rw" />
             <SectionPermission id="services" permissions="rw" />
             <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="pandemic" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
@@ -74,6 +78,7 @@
             <SectionPermission id="grants" permissions="-" />
             <SectionPermission id="services" permissions="-" />
             <SectionPermission id="supplementary" permissions="-" />
+            <SectionPermission id="edi" permissions="-" />
             <SectionPermission id="additionalInfo" permissions="-" />
             <SectionPermission id="pandemic" permissions="-" />
             <SectionPermission id="sabbatical" permissions="-" />
@@ -917,6 +922,14 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="edi" tooltip="EDI and Indigenous Initiatives" name="EDI &amp; II" title="EDI and Indigenous Initiatives" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+        <ReportItem id="edi" type="Textarea" blobItem="EDI" optional="true">
+            <![CDATA[
+                <p>The Faculty of Science recognizes the efforts and contributions of our faculty, FSOs and ATS members to EDI and Indigenous Initiatives in their teaching, research, and service. In this section of your annual report, please describe any of these activities that you have undertaken during this past reporting year.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info &lt;span class='clicktooltip' title='Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.&lt;br />
 &lt;br />
 (Include publications from Graduate Student theses (not co-authored), details of special interest on invited presentations or non-refereed publications, important information about refereed publication venues, distinctions, projects initiated, special details about grants and contracts, unpaid consulting, etc.)'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
@@ -935,7 +948,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="pandemic" tooltip="Pandemic Impact Statement" name="Pandemic Impact" title="Pandemic Impact Statement &lt;span class='clicktooltip' title='Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).&lt;br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+    <!--ReportSection id="pandemic" tooltip="Pandemic Impact Statement" name="Pandemic Impact" title="Pandemic Impact Statement &lt;span class='clicktooltip' title='Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).&lt;br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <p>Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).<br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.</p>
@@ -985,7 +998,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 </script>
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="sabbatical" tooltip="Sabbatical Report" name="Sabbatical Report" title="Sabbatical Report" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="sabbatical" type="Upload" blobType="BLOB_RAW" blobItem="SABBATICAL" mimeType=".pdf" fileSize="5" optional="true">
             <![CDATA[
