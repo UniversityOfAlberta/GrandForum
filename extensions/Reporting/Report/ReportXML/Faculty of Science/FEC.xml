@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FEC" reportType="RP_FEC" pdfFiles="FECpdf" ajax="true">
+<Report name="FEC" reportType="RP_FEC" pdfFiles="FECpdf" ajax="true" encrypt="true">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="information" permissions="rw" />
@@ -171,14 +171,14 @@
                 </div>
             ]]>
         </Static>
-        <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
+        <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
             <![CDATA[
                 <h2>Responsibilities Variation <span class='clicktooltip' title='Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.'>&#9432;</span></h2>
                 Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a>?
                 <div style='margin-left:25px;'>{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="responsibilities_variation" type="MultiTextReportItem" blobItem="FEC_INFO_RESP_VARIATION" blobType="BLOB_ARRAY" labels="% Research|% Teaching|% Service" types="Integer|Integer|Integer" sizes="100|100|100" optional="true">
+        <ReportItem id="responsibilities_variation" type="MultiTextReportItem" blobItem="FEC_INFO_RESP_VARIATION" blobType="BLOB_ARRAY" labels="% Research|% Teaching|% Service" types="Integer|Integer|Integer" sizes="100|100|100" optional="true" encrypt="true">
             <![CDATA[
                 <div id="responsibilities_variation" style='margin-left:25px;display:none;'>
                     {$item}
@@ -199,7 +199,7 @@
                 </script>
             ]]>
         </ReportItem>
-        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Category Description(if other)|Start Date|End Date" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Sabbatical Leave,Political Leave,Other)|Text|Date|Date" sizes="200|200|164|164" multiple="true" addText="Add New" optional="true">
+        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Category Description(if other)|Start Date|End Date" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Sabbatical Leave,Political Leave,Other)|Text|Date|Date" sizes="200|200|164|164" multiple="true" addText="Add New" optional="true" encrypt="true">
             <![CDATA[
                 <h2>Leaves</h2>
                 {$item}
@@ -218,7 +218,7 @@
                 </script>
             ]]>
         </ReportItem>
-        <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" sizes="200|200|350" multiple="true" addText="Add New" optional="true">
+        <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" sizes="200|200|350" multiple="true" addText="Add New" optional="true" encrypt="true">
             <![CDATA[
                 <h2>Reasons For Reduced Teaching<small> (if applicable)</small> <span class='clicktooltip' title='The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.'>&#9432;</span></h2>
                 {$item}
@@ -276,11 +276,11 @@
         <ReportItem id="grad_courses" type="PersonCoursesReportItem" showPercentages="true" levels="5,6,7,8" start="CYCLE_START" end="CYCLE_END">
             <![CDATA[
                 <h3>Graduate <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
-                <!--p><small><b>Note:</b> Courses have not yet been imported.</small></p-->
+                <p><small><b>Note:</b> Courses have not yet been imported.</small></p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="projectCourses" type="MultiTextReportItem" blobItem="FEC_PROJECT_COURSES" blobType="BLOB_ARRAY" labels="Class Prefix|Number|Title|Type|Term|Enrolment" types="Text|Text|Text|Select(LEC,SEM,LAB)|Checkbox(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" sizes="100|50|200|||50" multiple="true" addText="Add New" optional="true">
+        <ReportItem id="projectCourses" type="MultiTextReportItem" blobItem="FEC_PROJECT_COURSES" blobType="BLOB_ARRAY" labels="Class Prefix|Number|Title|Type|Term|Enrolment" types="Text|Text|Text|Select(LEC,SEM,LAB)|Checkbox(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" sizes="100|50|200|||50" multiple="true" addText="Add New" optional="true" encrypt="true">
             <![CDATA[
                 <h3>Project Courses <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='This section should be used for project courses, not individually recorded in Beartracks.<br />If you have taught such a course, and it does not appear above, please enter it below. <br />Click &#39;Add New&#39; to add a line for each such course.'>&#9432;</span></h3>
                 {$item}
@@ -295,7 +295,7 @@
                 ]]>
             </Static>
         </ReportItemSet>
-        <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="600" multiple="true" addText="Add New" optional="true">
+        <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="600" multiple="true" addText="Add New" optional="true" encrypt="true">
             <![CDATA[
                 <h2>Teaching Development and Innovation <span class='clicktooltip' title='Enter the information related to your teaching development. Enter all other teaching information (e.g., related to courses taught outside the university) in the Other Teaching section of the Annual Report.<br />
 <br />
@@ -352,7 +352,7 @@ Add a new teaching development entry to create a new paragraph.<br />
                 </script>
             ]]>
         </ReportItem>
-        <ReportItem id="otherTeaching" type="MultiTextReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="600" multiple="true" addText="Add New" optional="true">
+        <ReportItem id="otherTeaching" type="MultiTextReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="600" multiple="true" addText="Add New" optional="true" encrypt="true">
             <![CDATA[
                 <h2>Other Teaching <span class='clicktooltip' title='Enter information related to guest lectures, student projects, graduate instruction, courses taught outside the University, etc.<br />
 <br />
@@ -373,7 +373,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <p>The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.</p>
             ]]>
         </Instructions>
-        <ReportItem id="students" type="PersonSupervisesReportItem" blobItem="HQP" splitGrad="true" showCommittees="true" awards="true" footnotes="true">
+        <ReportItem id="students" type="PersonSupervisesReportItem" blobItem="HQP" splitGrad="true" showCommittees="true" awards="true" footnotes="true" encrypt="true">
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople">Manage HQP</a>
                 {$item}<br />
@@ -395,7 +395,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </Static>
         <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$product_type}</td><td>{$item}</td>
                 ]]>
@@ -488,7 +488,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </Static>
         <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$product_type}</td><td>{$item}</td>
                 ]]>
@@ -500,7 +500,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$product_type}</td><td>{$item}</td>
                 ]]>
@@ -512,7 +512,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|Other|PHD Thesis|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$product_type}</td><td>{$item}</td>
                 ]]>
@@ -589,7 +589,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </Static>
         <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td><b>({$product_type})</b></td><td>{$item}</td>
                 ]]>
@@ -822,7 +822,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <p>Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a> or to Article 8 of the <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf' target='_blank'>FSO Agreement</a> and to the <a href='https://drive.google.com/file/d/0ByVePqUFqXRESEpMZXUxeGJWWGc/view' target='_blank'>SPA Guidelines</a>.</p>
             ]]>
         </Instructions>
-        <ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA">
+        <ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA" encrypt="true">
             <![CDATA[
                 <script type="text/javascript">
                     $(document).ready(function(){
@@ -848,14 +848,14 @@ Add a new other teaching entry to create a new paragraph.<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="spa_disclosure" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE" blobType="BLOB_TEXT" options="Yes|No">
+        <ReportItem id="spa_disclosure" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
             <![CDATA[
                 <div id="outer_disclosure" style="display:none;">
                 <h3>I confirm that I have an up to date Disclosure Report on file</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="spa_major" type="RadioReportItem" blobItem="FEC_SPA_MAJOR" blobType="BLOB_TEXT" options="Yes|No">
+        <ReportItem id="spa_major" type="RadioReportItem" blobItem="FEC_SPA_MAJOR" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
             <![CDATA[
                 <div id="outer_major" style="display:none;">
                 <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
@@ -863,7 +863,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 </div>
             ]]>
         </ReportItem>
-        <ReportItem id="spa_description" type="TextareaReportItem" blobItem="FEC_SPA_DESC" blobType="BLOB_TEXT">
+        <ReportItem id="spa_description" type="TextareaReportItem" blobItem="FEC_SPA_DESC" blobType="BLOB_TEXT" encrypt="true">
             <![CDATA[
                 <h3>Describe the SPA below</h3>
                 {$item}
@@ -871,7 +871,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
         
-        <ReportItem id="spa_level2" type="SelectReportItem" blobItem="FEC_SPA_LEVEL2" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA">
+        <ReportItem id="spa_level2" type="SelectReportItem" blobItem="FEC_SPA_LEVEL2" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA" encrypt="true">
             <![CDATA[
                 <script type="text/javascript">
                     $(document).ready(function(){
@@ -899,14 +899,14 @@ Add a new other teaching entry to create a new paragraph.<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="spa_disclosure2" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE2" blobType="BLOB_TEXT" options="Yes|No">
+        <ReportItem id="spa_disclosure2" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE2" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
             <![CDATA[
                 <div id="outer_disclosure2" style="display:none;">
                 <h3>I confirm that I have an up to date Disclosure Report on file</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="spa_major2" type="RadioReportItem" blobItem="FEC_SPA_MAJOR2" blobType="BLOB_TEXT" options="Yes|No">
+        <ReportItem id="spa_major2" type="RadioReportItem" blobItem="FEC_SPA_MAJOR2" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
             <![CDATA[
                 <div id="outer_major2" style="display:none;">
                 <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
@@ -914,7 +914,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 </div>
             ]]>
         </ReportItem>
-        <ReportItem id="spa_description2" type="TextareaReportItem" blobItem="FEC_SPA_DESC2" blobType="BLOB_TEXT">
+        <ReportItem id="spa_description2" type="TextareaReportItem" blobItem="FEC_SPA_DESC2" blobType="BLOB_TEXT" encrypt="true">
             <![CDATA[
                 <h3>Describe the SPA below</h3>
                 {$item}
@@ -923,7 +923,7 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="edi" tooltip="EDI and Indigenous Initiatives" name="EDI &amp; II" title="EDI and Indigenous Initiatives" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
-        <ReportItem id="edi" type="Textarea" blobItem="EDI" optional="true">
+        <ReportItem id="edi" type="Textarea" blobItem="EDI" optional="true" encrypt="true">
             <![CDATA[
                 <p>The Faculty of Science recognizes the efforts and contributions of our faculty, FSOs and ATS members to EDI and Indigenous Initiatives in their teaching, research, and service. In this section of your annual report, please describe any of these activities that you have undertaken during this past reporting year.</p>
                 {$item}
@@ -942,7 +942,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <p><b>Activities such as commercialization activities, contributions to professional and policy reports, public dissemination and knowledge translation activities may also be considered meritorious.</b></p>
             ]]>
         </Instructions>
-        <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" addText="Add New" multiple="true" optional="true">
+        <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" addText="Add New" multiple="true" optional="true" encrypt="true">
             <![CDATA[
                 {$item}
             ]]>
@@ -954,19 +954,19 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <p>Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).<br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.</p>
             ]]>
         </Instructions>
-        <ReportItem id="covid" type="Textarea" blobItem="COVID" optional="true">
+        <ReportItem id="covid" type="Textarea" blobItem="COVID" optional="true" encrypt="true">
             <![CDATA[
                 <p>You can either enter your pandemic impact statement below</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="covid_upload" type="Upload" blobType="BLOB_RAW" blobItem="COVID_UPLOAD" mimeType=".pdf" fileSize="5" optional="true">
+        <ReportItem id="covid_upload" type="Upload" blobType="BLOB_RAW" blobItem="COVID_UPLOAD" mimeType=".pdf" fileSize="5" optional="true" encrypt="true">
             <![CDATA[
                 <p>or upload a pdf of the statement</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="covid_confirm" type="Checkbox" blobType="BLOB_ARRAY" blobItem="COVID_CONFIRM" options="I do not wish to provide an impact statement">
+        <ReportItem id="covid_confirm" type="Checkbox" blobType="BLOB_ARRAY" blobItem="COVID_CONFIRM" options="I do not wish to provide an impact statement" encrypt="true">
             <![CDATA[
                 <div id='covid_container' style='display:none;'>
                     <p><b>Please confirm that you do not wish to provide an impact statement</b></p>
@@ -1000,7 +1000,7 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItem>
     </ReportSection-->
     <ReportSection id="sabbatical" tooltip="Sabbatical Report" name="Sabbatical Report" title="Sabbatical Report" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
-        <ReportItem id="sabbatical" type="Upload" blobType="BLOB_RAW" blobItem="SABBATICAL" mimeType=".pdf" fileSize="5" optional="true">
+        <ReportItem id="sabbatical" type="Upload" blobType="BLOB_RAW" blobItem="SABBATICAL" mimeType=".pdf" fileSize="5" optional="true" encrypt="true">
             <![CDATA[
                 <p>Attach a <b>PDF</b> of your sabbatical report here if applicable.  It will be appended at the bottom of the generated Annual Report PDF.</p>
                 {$item}
@@ -1025,7 +1025,7 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission to the FEC" name="Sign &amp; Lock" blobSection="FEC_SUBMIT" type="EditableReportSection" autosave="false" renderpdf="false">
-        <ReportItem id="lock" type="Checkbox" blobItem="LOCK" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
+        <ReportItem id="lock" type="Checkbox" blobItem="LOCK" blobType="BLOB_ARRAY" orientation="vertical" options="Lock" encrypt="true">
             <![CDATA[
                 <p>Once you are satisfied with the generated PDF, you can lock your annual report.<br />
                 <b style="color: red;">NOTE: You will be unable to make further changes after locking your annual report.</b>
