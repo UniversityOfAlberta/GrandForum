@@ -933,6 +933,7 @@ EOF;
             $blob->loadFromMD5($pdf);
             $data = json_decode($blob->getData());
             if($data != null){
+                $pdf = md5($pdf);
                 file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
                 $attached[] = "\"/tmp/{$pdf}\"";
             }

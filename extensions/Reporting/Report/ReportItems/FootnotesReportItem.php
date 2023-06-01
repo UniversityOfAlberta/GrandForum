@@ -51,7 +51,7 @@ EOF;
         $value = str_replace("<", "&lt;", $value);
         $value = str_replace(">", "&gt;", $value);
         $value = nl2br($value);
-        $blob = $this->getMD5();
+        $blob = md5($this->getPostId());
         $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'true')) == 'true');
         $item = "";
         if(trim($value) != ""){

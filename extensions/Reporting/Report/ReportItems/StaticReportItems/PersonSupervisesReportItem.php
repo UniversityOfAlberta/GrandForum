@@ -131,6 +131,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
                     $awards->setAttr("blobSection", $sec);
                     $awards->setAttr("height", "60px");
                     $awards->setAttr("width", "200px");
+                    $awards->encrypt = $this->encrypt;
                     $awards->setBlobItem($this->getAttr("blobItem", "HQP_AWARDS"));
                     $awards->setBlobSubItem($hqpId);
                     $awards->setParent($this);
@@ -150,6 +151,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
                 if(strtolower($this->getAttr("footnotes", "false")) == "true"){
                     $footnote = new FootnotesReportItem();
                     $footnote->setId("{$this->id}_{$hqpId}_footnotes");
+                    $footnote->encrypt = $this->encrypt;
                     $footnote->setAttr("blobSection", $sec);
                     $footnote->setBlobItem($this->getAttr("blobItem", "HQP"));
                     $footnote->setBlobSubItem($hqpId);
