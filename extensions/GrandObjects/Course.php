@@ -56,7 +56,6 @@ class Course extends BackboneModel{
     function Course($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
-            //$this->acadOrg = $data[0]['Acad Org'];
             $this->term = $data[0]['Term'];
             $this->term_string = $data[0]['term_string'];
             $this->shortDesc = $data[0]['Short Desc'];
@@ -66,37 +65,11 @@ class Course extends BackboneModel{
             $this->component = $data[0]['Component'];
             $this->sect = $data[0]['Sect'];
             $this->descr = $data[0]['Descr'];
-            //$this->crsStatus= $data[0]['Crs Status'];
-            //$this->facilId = $data[0]['Facil ID'];
-            //$this->place = $data[0]['Place'];
-            //$this->pat = $data[0]['Pat'];
             $this->startDate = $data[0]['Start Date'];
             $this->endDate = $data[0]['End Date'];
-            //$this->hrsFrom = $data[0]['Hrs From'];
-            //$this->hrsTo = $data[0]['Hrs To'];
-            //$this->mon = $data[0]['Mon'];
-            //$this->tues = $data[0]['Tues'];
-            //$this->wed = $data[0]['Wed'];
-            //$this->thurs = $data[0]['Thurs'];
-            //$this->fri = $data[0]['Fri'];
-            //$this->sat = $data[0]['Sat'];
-            //$this->sun = $data[0]['Sun'];
-            //$this->classType = $data[0]['Class Type'];
             $this->capEnrl = $data[0]['Cap Enrl'];
             $this->totEnrl = $data[0]['Tot Enrl'];
-            //$this->campus = $data[0]['Campus'];
-            //$this->location = $data[0]['Location'];
-            //$this->notesNbr = $data[0]['Notes Nbr'];
-            //$this->noteNbr = $data[0]['Note Nbr'];
-            //$this->note = $data[0]['Note'];
-            //$this->rqGroup = $data[0]['Rq Group'];
-            //$this->restrictionDescr = $data[0]['Restriction Descr'];
-            //$this->approvedHrs = $data[0]['Approved Hrs'];
-            //$this->duration = $data[0]['Duration'];
-            //$this->career = $data[0]['Career'];
-            //$this->consent = $data[0]['Consent'];
             $this->courseDescr = $data[0]['Course Descr'];
-            //$this->maxUnits = $data[0]['Max Units'];
             $this->courseName = "{$data[0]['Sect']} {$data[0]['Descr']}";
         }
     }
@@ -396,8 +369,23 @@ class Course extends BackboneModel{
         return $profs;
     }
 
-    function toarray(){
-        //TODO:implement function
+    function toArray(){
+        return array('id' => $this->id,
+                     'term' => $this->term,
+                     'term_string' => $this->term_string,
+                     'shortDesc' => $this->shortDesc,
+                     'classNbr' => $this->classNbr,
+                     'subject' => $this->subject,
+                     'catalog' => $this->catalog,
+                     'component' => $this->component,
+                     'sect' => $this->sect,
+                     'descr' => $this->descr,
+                     'startDate' => $this->startDate,
+                     'endDate' => $this->endDate,
+                     'capEnrl' => $this->capEnrl,
+                     'totEnrl' => $this->totEnrl,
+                     'courseDescr' => $this->courseDescr,
+                     'courseName' => $this->courseName);
     }
     function delete(){
         //TODO:implement function

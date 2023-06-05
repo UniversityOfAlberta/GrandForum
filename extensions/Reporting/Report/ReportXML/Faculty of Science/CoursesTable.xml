@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="DEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="courses" permissions="rw" />
+        </Role>
+        <Role role="VDEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="courses" permissions="rw" />
+        </Role>
+        <Role role="HR" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="courses" permissions="rw" />
+        </Role>
+        <Role role="MANAGER+" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="courses" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" blobSection="TABLE" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <style>
+                    table#chairTable * {
+                        font-size:11px !important;
+                    }
+                </style>
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th width="1%" rowspan="2">Case#</th>
+                            <th rowspan="2">Name</th>
+                            <th rowspan="2">Rank</th>
+                            <th rowspan="2">Department</th>
+                            <th colspan="2">Fall {$last_year}</th>
+                            <th colspan="2">Winter {$this_year}</th>
+                        </tr>
+                        <tr>
+                            <th># Courses</th>
+                            <th>Total Enrolled</th>
+                            <th># Courses</th>
+                            <th>Total Enrolled</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
+            <Static>
+                <![CDATA[
+                    {set(fallCourses, 0)}
+                    {set(fallEnrolled, 0)}
+                    {set(winterCourses, 0)}
+                    {set(winterEnrolled, 0)}
+                ]]>
+            </Static>
+            <ReportItemSet type="PersonCourses" start="{$last_year}-07-01" end="{$this_year}-07-01" term="Fall{$last_year}">
+                <Static>
+                    <![CDATA[
+                        {set(fallCourses, {add({get(fallCourses)}, 1)})}
+                        {set(fallEnrolled, {add({get(fallEnrolled)}, {getExtra(totEnrl)} )})}
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <ReportItemSet type="PersonCourses" start="{$last_year}-07-01" end="{$this_year}-07-01" term="Winter{$this_year}">
+                <Static>
+                    <![CDATA[
+                        {set(winterCourses, {add({get(winterCourses)}, 1)})}
+                        {set(winterEnrolled, {add({get(winterEnrolled)}, {getExtra(totEnrl)} )})}
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    <tr data-id="{$user_id}">
+                        <td class="casenumber" style='white-space:nowrap;'>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                        <td>{$user_dept}</td>
+                        <td>{get(fallCourses)}</td>
+                        <td>{get(fallEnrolled)}</td>
+                        <td>{get(winterCourses)}</td>
+                        <td>{get(winterEnrolled)}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#chairTable').DataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>
