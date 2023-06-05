@@ -166,14 +166,19 @@ class PeopleTableTab extends AbstractTab {
                                     {$facultyHead}
                                     <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap; width:20%;'>Title / Rank</th>
-                                    <th style='white-space: nowrap; width:20%;' style='display:none;'>Start Date</th>
+                                    <th style='display:none;'>Start Date</th>
+                                    <th style='display:none;'>End Date</th>
                                     <th style='display:none;'>Prev University</th>
                                     <th style='display:none;'>Prev {$config->getValue('deptsTerm')}</th>
                                     <th style='display:none;'>Prev Title / Rank</th>
+                                    <th style='display:none;'>Prev Start Date</th>
+                                    <th style='display:none;'>Prev End Date</th>
                                     <th style='display:none;'>First University</th>
                                     {$firstFacultyHead}
                                     <th style='display:none;'>First {$config->getValue('deptsTerm')}</th>
                                     <th style='display:none;'>First Title / Rank</th>
+                                    <th style='display:none;'>First Start Date</th>
+                                    <th style='display:none;'>First End Date</th>
                                     {$hqpHeader}
                                     <th style='white-space: nowrap; width:40%;'>Keywords / Bio</th>
                                     {$statusHeader}
@@ -258,12 +263,15 @@ class PeopleTableTab extends AbstractTab {
             $html .= "<td align='left'>{$person->getDepartment()}</td>";
             $html .= "<td align='left'>{$university['position']}</td>";
             $html .= "<td align='left' style='display:none;'>{$university['start']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$university['end']}</td>";
             
             // Previous University
             $prevuniversity = $person->getPreviousUniversity();
             $html .= "<td style='display:none;' align='left'>{$prevuniversity['university']}</td>";
             $html .= "<td style='display:none;' align='left'>{$prevuniversity['department']}</td>";
             $html .= "<td style='display:none;' align='left'>{$prevuniversity['position']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$prevuniversity['start']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$prevuniversity['end']}</td>";
             
             // First University
             $firstuniversity = $person->getFirstUniversity();
@@ -273,6 +281,8 @@ class PeopleTableTab extends AbstractTab {
             }
             $html .= "<td style='display:none;' align='left'>{$firstuniversity['department']}</td>";
             $html .= "<td style='display:none;' align='left'>{$firstuniversity['position']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$firstuniversity['start']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$firstuniversity['end']}</td>";
             if($hqpHeader != ''){
                 $supervisors = array();
                 foreach($person->getSupervisorsDuring($start, $end) as $supervisor){
