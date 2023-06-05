@@ -9,6 +9,7 @@ class RadioReportItem extends AbstractReportItem {
 		$showScore = (strtolower($this->getAttr('showScore', 'false')) == 'true');
 		$orientation = $this->getAttr('orientation', 'vertical');
 		$buttonPosition = $this->getAttr('buttonPosition', 'left');
+		$class = $this->getAttr('class', '');
 		$table_type = $this->getAttr('tableType', 'header');
 		$row_header = $this->getAttr('rowHeader', '');
 		$value = $this->getBlobValue();
@@ -25,7 +26,7 @@ class RadioReportItem extends AbstractReportItem {
 					$option = str_replace("'", "&#39;", $option);
 					$output .= "<th>{$labels[$i]}</th>";
 				}
-				$output .= "</tr><tr><td>{$row_header}</td>";
+				$output .= "</tr><tr class='$class'><td>{$row_header}</td>";
 				foreach($options as $i => $option){
 					$checked = "";
 					if($value == $option){
@@ -37,7 +38,7 @@ class RadioReportItem extends AbstractReportItem {
 				$output .= "</tr>";
 			}
 			elseif($table_type == 'row'){
-				$output .= "<tr><td>{$row_header}</td>";
+				$output .= "<tr class='$class'><td>{$row_header}</td>";
 				foreach($options as $i => $option){
 					$checked = "";
 					if($value == $option){
@@ -49,7 +50,7 @@ class RadioReportItem extends AbstractReportItem {
 				$output .= "</tr>";
 			}
 			else{
-				$output .= "<tr><td>{$row_header}</td>";
+				$output .= "<tr class='$class'><td>{$row_header}</td>";
 				foreach($options as $i => $option){
 					$checked = "";
 					if($value == $option){
@@ -60,6 +61,7 @@ class RadioReportItem extends AbstractReportItem {
 				}
 				$output .= "</tr></table>";
 			}
+			$output = $this->processCData("{$output}");
 			$wgOut->addHTML($output);
 		}
 		else{
