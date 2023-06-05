@@ -91,7 +91,11 @@
                 <script type='text/javascript'>
                     $('#chairTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                        "iDisplayLength": -1
+                        "iDisplayLength": -1,
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            'excel'
+                        ]
                     });
                 </script>
             ]]>
