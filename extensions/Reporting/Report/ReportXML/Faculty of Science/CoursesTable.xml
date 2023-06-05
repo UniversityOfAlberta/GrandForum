@@ -14,7 +14,7 @@
             <SectionPermission id="courses" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" blobSection="TABLE" type="EditableReportSection">
+    <ReportSection id="courses" tooltip="Courses Table" name="Courses Table" title="Courses Table" blobSection="TABLE" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <style>
@@ -22,7 +22,7 @@
                         font-size:11px !important;
                     }
                 </style>
-                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                <table id='chairTable' class='wikitable' frame='box' rules='all' style='width:100%;'>
                     <thead>
                         <tr>
                             <th width="1%" rowspan="2">Case#</th>
@@ -31,12 +31,13 @@
                             <th rowspan="2">Department</th>
                             <th colspan="2">Fall {$last_year}</th>
                             <th colspan="2">Winter {$this_year}</th>
+                            <th rowspan="2">Total Enrolled</th>
                         </tr>
                         <tr>
                             <th># Courses</th>
-                            <th>Total Enrolled</th>
+                            <th># Enrolled</th>
                             <th># Courses</th>
-                            <th>Total Enrolled</th>
+                            <th># Enrolled</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,6 +79,7 @@
                         <td>{get(fallEnrolled)}</td>
                         <td>{get(winterCourses)}</td>
                         <td>{get(winterEnrolled)}</td>
+                        <td>{add({get(fallEnrolled)}, {get(winterEnrolled)})}</td>
                     </tr>
                 ]]>
             </Static>
