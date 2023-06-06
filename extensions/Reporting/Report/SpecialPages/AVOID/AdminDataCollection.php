@@ -10,13 +10,13 @@ $wgHooks['SubLevelTabs'][] = 'AdminDataCollection::createSubTabs';
 
 class AdminDataCollection extends SpecialPage{
 
-    static $programs = array("otago" => "Otago", 
-                             "coached_by_peer" => "Coached by Peer", 
-                             "peer_choach" => "Peer-Coach",
-                             "community_connector" => "Community Connector",
-                             "peer_navigator" => "Peer Navigator",
-                             "ask_an_expert" => "Ask an Expert",
-                             "tech_training" => "Tech Training");
+    static $programs = array("otago"               => array("text" => "Otago", "count" => 1), 
+                             "coached_by_peer"     => array("text" => "Coached by Peer", "count" => 1),
+                             "peer_choach"         => array("text" => "Peer-Coach", "count" => 1),
+                             "community_connector" => array("text" => "Community Connector", "count" => 1),
+                             "peer_navigator"      => array("text" => "Peer Navigator", "count" => 1),
+                             "ask_an_expert"       => array("text" => "Ask an Expert", "count" => 3),
+                             "tech_training"       => array("text" => "Tech Training", "count" => 1));
 
     function __construct() {
         SpecialPage::__construct("AdminDataCollection", STAFF.'+', true);
@@ -28,29 +28,34 @@ class AdminDataCollection extends SpecialPage{
         $html .= "<form action='{$wgServer}{$wgScriptPath}/index.php/Special:AdminDataCollection?updateProgramAttendance&user={$person->getId()}' method='post'><table class='wikitable program_attendance' cellpadding='5' cellspacing='1' style='width:100%;'>
                     <thead>
                         <tr>
-                            <th>".implode("</th><th>", AdminDataCollection::$programs)."</th>
+                            <th>".implode("</th><th>", array_column(AdminDataCollection::$programs, 'text'))."</th>
                         </tr>
                     </thead>
                     <tbody>";
         
         $html .= "<tr>";
         foreach(AdminDataCollection::$programs as $key => $program){
-            $checked = (IntakeSummary::getBlobData("ATTENDANCE", "{$key}", $person, 0, "RP_SUMMARY") == 1) ? "checked" : "";
-            $span = ($checked != "") ? "Yes" : "No";
-            $html .= "<td align='center' style='width:1px;'>
-                <input type='hidden' value='0' name='{$key}' />
-                <input type='checkbox' value='1' name='{$key}' $checked />
-                <span style='display:none;'>$span</span>
-            </td>";
-        }
+            $checked = array((IntakeSummary::getBlobData("ATTENDANCE", "{$key}", $person, 0, "RP_SUMMARY") == 1) ? "checked" : "");
+            for($i=1;$i<$program['count'];$i++){
+                $checked[] = (IntakeSummary::getBlobData("ATTENDANCE", "{$key}_$i", $person, 0, "RP_SUMMARY") == 1) ? "checked" : "";
+            }
         
-        $html .= "</tr><tr>";
-        foreach(AdminDataCollection::$programs as $key => $program){
-            $date = IntakeSummary::getBlobData("ATTENDANCE", "{$key}_date", $person, 0, "RP_SUMMARY");
-            $html .= "<td align='center' style='width:1px;'>
-                <input type='date' value='$date' name='{$key}_date' style='width: 8em;' />
-                <span style='display:none;'>$date</span>
-            </td>";
+            $date = array(IntakeSummary::getBlobData("ATTENDANCE", "{$key}_date", $person, 0, "RP_SUMMARY"));
+            for($i=1;$i<$program['count'];$i++){
+                $date[] = IntakeSummary::getBlobData("ATTENDANCE", "{$key}_{$i}_date", $person, 0, "RP_SUMMARY");
+            }
+            $html .= "<td align='center' style='width:1px;white-space:nowrap;'>
+                        <input type='hidden' value='0' name='{$key}' />
+                        <input type='checkbox' value='1' name='{$key}' {$checked[0]} />
+                        <input type='date_tmp' value='{$date[0]}' name='{$key}_date' style='width: 8em;' />
+                        <br />";
+            for($i=1;$i<$program['count'];$i++){
+                $html .= "<input type='hidden' value='0' name='{$key}_{$i}' />
+                          <input type='checkbox' value='1' name='{$key}_{$i}' {$checked[$i]} />
+                          <input type='date_tmp' value='{$date[$i]}' name='{$key}_{$i}_date' style='width: 8em;margin-top:1px;' />
+                          <br />";
+            }
+            $html .= "</td>";
         }
         
         $html .= "</tr></tbody></table></form>";
@@ -242,6 +247,7 @@ class AdminDataCollection extends SpecialPage{
                             
                             $('.viewUsage').click(function(){
                                 var id = $(this).closest('tr').attr('data-id');
+                                $('#data_' + id + ' input[type=date_tmp]').attr('type', 'date');
                                 $('#usageDialog').html($('#data_' + id).html());
                                 $('#usageDialog').dialog({
                                     width: 'auto',

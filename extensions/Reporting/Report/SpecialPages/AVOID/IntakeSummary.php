@@ -450,25 +450,40 @@ class IntakeSummary extends SpecialPage {
         $html .= "<table class='wikitable program_attendance' cellpadding='5' cellspacing='1' style='width:100%;'>
                     <thead>
                         <tr>
-                            <th colspan='".count(AdminDataCollection::$programs)."'>Program Attendance</th>
+                            <th colspan='".count(array_column(AdminDataCollection::$programs, 'text'))."'>Program Attendance</th>
                         </tr>
                         <tr>
-                            <th>".implode("</th><th>", AdminDataCollection::$programs)."</th>
+                            <th>".implode("</th><th>", array_column(AdminDataCollection::$programs, 'text'))."</th>
                         </tr>
                     </thead>
                     <tbody>";
         
         $html .= "<tr>";
-        foreach(AdminDataCollection::$programs as $key => $program){
-            $checked = ($this->getBlobData("ATTENDANCE", "{$key}", $person, 0, "RP_SUMMARY") == 1) ? "checked" : "";
-            $span = ($checked != "") ? "Yes" : "No";
-            $html .= "<td align='center' style='width:1px;'>$span</td>";
-        }
         
-        $html .= "</tr><tr>";
         foreach(AdminDataCollection::$programs as $key => $program){
-            $date = $this->getBlobData("ATTENDANCE", "{$key}_date", $person, 0, "RP_SUMMARY");
-            $html .= "<td align='center' style='width:1px;'>$date</td>";
+            $checked = array((IntakeSummary::getBlobData("ATTENDANCE", "{$key}", $person, 0, "RP_SUMMARY") == 1) ? "checked" : "");
+            $span = array();
+            for($i=1;$i<$program['count'];$i++){
+                $checked[] = (IntakeSummary::getBlobData("ATTENDANCE", "{$key}_$i", $person, 0, "RP_SUMMARY") == 1) ? "checked" : "";
+            }
+            
+            foreach($checked as $check){
+                $span[] = ($check != "") ? "Yes" : "No";
+            }
+        
+            $date = array(IntakeSummary::getBlobData("ATTENDANCE", "{$key}_date", $person, 0, "RP_SUMMARY"));
+            for($i=1;$i<$program['count'];$i++){
+                $date[] = IntakeSummary::getBlobData("ATTENDANCE", "{$key}_{$i}_date", $person, 0, "RP_SUMMARY");
+            }
+            $html .= "<td align='left' style='width:1px;white-space:nowrap;'>";
+            for($i=0;$i<$program['count'];$i++){
+                $html .= "{$span[$i]}";
+                if($date[$i] != ""){
+                    $html .= ": {$date[$i]}";
+                }
+                $html .= "<br />";
+            }
+            $html .= "</td>";
         }
         
         $html .= "</tr></tbody></table>";
