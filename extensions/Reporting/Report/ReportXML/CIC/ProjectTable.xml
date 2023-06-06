@@ -159,7 +159,12 @@
         </Static>
         <Static>
             <![CDATA[
-                <table id="project_table" class='wikitable' frame='box' rules='all'>
+                <style>
+                    table.project_dates td {
+	                    padding: 1px 5px !important;
+                    }
+                </style>
+                <table id="project_table" class='wikitable' frame='box' rules='all' style='font-size:0.9em; line-height:1.25em;'>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -169,12 +174,17 @@
                             <th style='white-space:nowrap;'>Project Lead</th>
                             <th style='white-space:nowrap;'>Research Team</th>
                             <th style='white-space:nowrap; min-width:250px;'>Partners</th>
-                            <th style='white-space:nowrap;'>Year1 Budget</th>
-                            <th style='white-space:nowrap;'>Year2 Budget</th>
-                            <th style='white-space:nowrap;'>Year3 Budget</th>
-                            <th style='white-space:nowrap;'>Year4 Budget</th>
-                            <th style='white-space:nowrap;'>Year5 Budget</th>
-                            <th style='white-space:nowrap;'>Total Budget</th>
+                            <th style='white-space:nowrap;'>2019/20</th>
+                            <th style='white-space:nowrap;'>2020/21</th>
+                            <th style='white-space:nowrap;'>2021/22</th>
+                            <th style='white-space:nowrap;'>2022/23</th>
+                            <th style='white-space:nowrap;'>2023/24</th>
+                            <th style='white-space:nowrap;'>2024/25</th>
+                            <th style='white-space:nowrap;'>2025/26</th>
+                            <th style='white-space:nowrap;'>2026/27</th>
+                            <th style='white-space:nowrap;'>2027/28</th>
+                            <th style='white-space:nowrap;'>2028/29</th>
+                            <th style='white-space:nowrap;'>Total</th>
                             <th>Comments</th>
                         </tr>
                     </thead>
@@ -218,7 +228,7 @@
                             <td>{$project_full_name}</td>
                             <td>{getText(RP_PROJECT_TABLE,PROJECTS,DURATION,0,0,{$project_id})}</td>
                             <td>
-                                <table cellspacing="0" cellpadding="0">
+                                <table cellspacing="0" cellpadding="0" class="project_dates">
                                     <tr>
                                         <td style='white-space:nowrap;border:none;'>LOI Submitted</td>
                                         <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,LOI_SUBMITTED,0,0,{$project_id})}</td>
@@ -276,54 +286,131 @@
                         ]]>
                     </Static>
                 </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </td>
+                    ]]>
+                </Static>
+                
+                <!-- Project Budget Cells -->
                 <If if="{&lt;({$i},{getArrayCount(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id})})}">
                     <!-- Partner row -->
-                    <![CDATA[
-                            </td>
+                    <Static>
+                        <![CDATA[
+                            {set(year, 1)}
                             <td>{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|partner)}</td>
-                            <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year1)},2)}</td>
-                            <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year2)},2)}</td>
-                            <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year3)},2)}</td>
-                            <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year4)},2)}</td>
-                            <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year5)},2)}</td>
-                            <td align='right' style='background: #EEEEEE;'><b>{number_format({add({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year1)},
+                        ]]>
+                    </Static>
+                    <For from="2020" to="{max({substr({$project_start}, 0, 4)}, 2019)}">
+                        <Static>
+                            <![CDATA[
+                                <td class='year{get(year)}'></td>
+                                {set(year, {add({get(year)}, 1)})}
+                            ]]>
+                        </Static>
+                    </For>
+                    <Static>
+                        <![CDATA[
+                            <td align='right' class='year{get(year)}'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year1)},2)}</td>
+                            <td align='right' class='year{add({get(year)}, 1)}'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year2)},2)}</td>
+                            <td align='right' class='year{add({get(year)}, 2)}'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year3)},2)}</td>
+                            <td align='right' class='year{add({get(year)}, 3)}'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year4)},2)}</td>
+                            <td align='right' class='year{add({get(year)}, 4)}'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year5)},2)}</td>
+                            {set(year, {add({get(year)}, 5)})}
+                        ]]>
+                    </Static>
+                    <For from="{add({max({substr({$project_start}, 0, 4)}, 2019)}, 5)}" to="2028">
+                        <Static>
+                            <![CDATA[
+                                <td class='year{get(year)}'></td>
+                                {set(year, {add({get(year)}, 1)})}
+                            ]]>
+                        </Static>
+                    </For>
+                    <Static>
+                        <![CDATA[
+                            <td align='right' class='year_total' style='background: #EEEEEE;'><b>{number_format({add({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year1)},
                                                                                                   {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year2)},
                                                                                                   {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year3)},
                                                                                                   {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year4)},
                                                                                                   {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year5)})},2)}</b></td>
                             <td>{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|comment)}</td>
-                        </tr>
-                    ]]>
+                        ]]>
+                    </Static>
                 </If>
                 <Else>
                     <!-- Totals -->
-                    <![CDATA[
-                            </td>
-                            <td style='background: #EEEEEE;'></td>
+                    <Static>
+                        <![CDATA[
+                            <td></td>
+                        ]]>
+                    </Static>
+                    <For from="2020" to="{max({substr({$project_start}, 0, 4)}, 2019)}">
+                        <Static>
+                            <![CDATA[
+                                <td style='background: #EEEEEE;' align='right'></td>
+                            ]]>
+                        </Static>
+                    </For>
+                    <Static>
+                        <![CDATA[
                             <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total1)},2)}</b></td>
                             <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total2)},2)}</b></td>
                             <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total3)},2)}</b></td>
                             <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total4)},2)}</b></td>
                             <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total5)},2)}</b></td>
+                        ]]>
+                    </Static>
+                    <For from="{add({max({substr({$project_start}, 0, 4)}, 2019)}, 5)}" to="2028">
+                        <Static>
+                            <![CDATA[
+                                <td style='background: #EEEEEE;' align='right'></td>
+                            ]]>
+                        </Static>
+                    </For>
+                    <Static>
+                        <![CDATA[
                             <td style='background: #EEEEEE;' align='right'><b>{number_format({add({get(total1)},
                                                                      {get(total2)},
                                                                      {get(total3)},
                                                                      {get(total4)},
                                                                      {get(total5)})},2)}</b></td>
                             <td></td>
+                        ]]>
+                    </Static>
+                </Else>
+                <Static>
+                    <![CDATA[
                         </tr>
                     ]]>
-                </Else>
+                </Static>
             </For>
         </ReportItemSet>
         <Static>
             <![CDATA[
                     </tbody>
+                    <tfoot>
+                        <tr style='font-weight:bold; background: #555; color: white;'>
+                            <td colspan='7'></td>
+                            <td class='year1_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year2_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year3_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year4_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year5_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year6_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year7_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year8_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year9_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year10_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='total' align='right' style='background: #333; padding-left:10px;'>0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
                 <script type="text/javascript">
                     $("#reportHeader").hide();
                     $("#reportHeader").next().hide();
-                    $("#project_table").DataTable({
+                    table = $("#project_table").DataTable({
                         "autoWidth": true,
                         'iDisplayLength': -1,
                         'order': [[ 1, "asc" ]],
@@ -331,8 +418,14 @@
                            { type: 'natural', targets: [0,7,8,9,10,11,12] }
                         ],
                         'aLengthMenu': [[-1], ['All']],
+                        'drawCallback': function() {
+                            for(y=1;y<=10;y++){
+                                $(".year" + y + "_total").text(number_format(_.reduce($('.year' + y), function(sum, el){ return sum + (!_.isNaN(parseFloat($(el).text().replace(',', ''))) ? parseFloat($(el).text().replace(',', '')) : 0 ); }, 0)));
+                            }
+                            $(".total").text(number_format(_.reduce($('.year_total'), function(sum, el){ return sum + (!_.isNaN(parseFloat($(el).text().replace(',', ''))) ? parseFloat($(el).text().replace(',', '')) : 0 ); }, 0)));
+                        },
                         'scrollX': true,
-                        'scrollY': ($(window).height() - $("#bodyContent").position().top - 100 - 60) + "px",
+                        'scrollY': ($(window).height() - $("#bodyContent").position().top - 100 - 80) + "px",
                         'rowsGroup': [0,1,2,3,4,5],
                         'dom': 'Blfrtip',
                         'buttons': [

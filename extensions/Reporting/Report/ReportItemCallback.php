@@ -188,6 +188,7 @@ class ReportItemCallback {
             "replace" => "replace",
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
+            "substr" => "substr",
             "nl2br" => "nl2br",
             "comma" => "comma",
             "set" => "set",
@@ -2004,6 +2005,10 @@ class ReportItemCallback {
     
     function strtoupper($str){
         return strtoupper($str);
+    }
+    
+    function substr($string, $offset, $length=null){
+        return substr($string, $offset, $length);
     }
     
     function nl2br($str){
