@@ -244,35 +244,35 @@
                                 <table cellspacing="0" cellpadding="0" class="project_dates">
                                     <tr>
                                         <td style='white-space:nowrap;border:none;'>LOI Submitted</td>
-                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,LOI_SUBMITTED,0,0,{$project_id})}</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,LOI_SUBMITTED,0,0,{$project_id})}</td>
                                     </tr>
                                     <tr>
                                         <td style='white-space:nowrap;border:none;'>Committee 1 Approved</td>
-                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,COMMITTEE1_APPROVED,0,0,{$project_id})}</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,COMMITTEE1_APPROVED,0,0,{$project_id})}</td>
                                     </tr>
                                     <tr>
                                         <td style='white-space:nowrap;border:none;'>Committee 2 Approved</td>
-                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,COMMITTEE2_APPROVED,0,0,{$project_id})}</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,COMMITTEE2_APPROVED,0,0,{$project_id})}</td>
                                     </tr>
                                     <tr>
                                         <td style='white-space:nowrap;border:none;'>NSERC Alliance Submitted</td>
-                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_SUBMITTED,0,0,{$project_id})}</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_SUBMITTED,0,0,{$project_id})}</td>
                                     </tr>
                                     <tr>
                                         <td style='white-space:nowrap;border:none;'>NSERC Alliance Resubmitted&nbsp;</td>
-                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_RESUBMITTED,0,0,{$project_id})}</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_RESUBMITTED,0,0,{$project_id})}</td>
                                     </tr>
                                     <tr>
                                         <td style='white-space:nowrap;border:none;'>NSERC Alliance Rejected</td>
-                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_REJECTED,0,0,{$project_id})}</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_REJECTED,0,0,{$project_id})}</td>
                                     </tr>
                                     <tr>
                                         <td style='white-space:nowrap;border:none;'>NSERC Alliance Approved</td>
-                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_APPROVED,0,0,{$project_id})}</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_APPROVED,0,0,{$project_id})}</td>
                                     </tr>
                                     <tr>
                                         <td style='white-space:nowrap;border:none;'>Project End</td>
-                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,PROJECT_END,0,0,{$project_id})}</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,PROJECT_END,0,0,{$project_id})}</td>
                                     </tr>
                                 </table>
                             </td>
@@ -506,8 +506,8 @@
                                                        .css("width", $(".dataTables_scrollBody").width());
                             $(".dataTables_scrollBody").css("top", 62);
                             $(".dataTables_scrollFoot").css("position", "relative")
-                                                       .css("top", 45);
-                            $("#project_table_info").css("margin-top", 45);
+                                                       .css("top", 60);
+                            $("#project_table_info").css("margin-top", 60);
                             if(status != "sticky"){
                                 status = "sticky";
                                 $(".dataTables_scrollBody").trigger("scroll");
