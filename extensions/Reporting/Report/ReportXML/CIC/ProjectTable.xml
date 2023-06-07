@@ -6,6 +6,19 @@
             <SectionPermission id="table" permissions="rw" />
         </Role>
     </Permissions>
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                $(window).resize(function(){
+                    try {
+                        table.columns.adjust().draw();
+                    } catch(error){
+                    
+                    }
+                });
+            </script>
+        ]]>
+    </Script>
     <ReportSection id="projects" tooltip="Projects" name="Projects" blobSection="PROJECTS" type="EditableReportSection" renderpdf="false">
         <ReportItemSet id="projects" type="AllProjects">
             <ReportItemSet id="toggle" type="ToggleHeader" title="{$project_name} - {$project_full_name}">
@@ -391,7 +404,7 @@
                     </tbody>
                     <tfoot>
                         <tr style='font-weight:bold; background: #555; color: white;'>
-                            <td colspan='7'></td>
+                            <td colspan='7' align='right'>Grand Total:</td>
                             <td class='year1_total' align='right' style='padding-left:10px;'>0.00</td>
                             <td class='year2_total' align='right' style='padding-left:10px;'>0.00</td>
                             <td class='year3_total' align='right' style='padding-left:10px;'>0.00</td>
@@ -410,28 +423,109 @@
                 <script type="text/javascript">
                     $("#reportHeader").hide();
                     $("#reportHeader").next().hide();
+                    
+                    $('#project_table thead tr')
+                        .clone(true)
+                        .addClass('filters')
+                        .appendTo('#project_table thead');
+                    
                     table = $("#project_table").DataTable({
-                        "autoWidth": true,
-                        'iDisplayLength': -1,
-                        'order': [[ 1, "asc" ]],
+                        autoWidth: true,
+                        orderCellsTop: true,
+                        iDisplayLength: -1,
+                        order: [[ 1, "asc" ]],
                         columnDefs: [
-                           { type: 'natural', targets: [0,7,8,9,10,11,12] }
+                           { type: 'natural', targets: [0,7,8,9,10,11,12,13,14,15,16,17] }
                         ],
-                        'aLengthMenu': [[-1], ['All']],
-                        'drawCallback': function() {
+                        aLengthMenu: [[-1], ['All']],
+                        drawCallback: function() {
                             for(y=1;y<=10;y++){
                                 $(".year" + y + "_total").text(number_format(_.reduce($('.year' + y), function(sum, el){ return sum + (!_.isNaN(parseFloat($(el).text().replace(',', ''))) ? parseFloat($(el).text().replace(',', '')) : 0 ); }, 0)));
                             }
                             $(".total").text(number_format(_.reduce($('.year_total'), function(sum, el){ return sum + (!_.isNaN(parseFloat($(el).text().replace(',', ''))) ? parseFloat($(el).text().replace(',', '')) : 0 ); }, 0)));
                         },
-                        'scrollX': true,
-                        'scrollY': ($(window).height() - $("#bodyContent").position().top - 100 - 80) + "px",
-                        'rowsGroup': [0,1,2,3,4,5],
-                        'dom': 'Blfrtip',
-                        'buttons': [
+                        scrollX: true,
+                        //scrollY: ($(window).height() - $("#bodyContent").position().top - 217) + "px",
+                        initComplete: function () {
+                            var api = this.api();
+                 
+                            // For each column
+                            api
+                                .columns()
+                                .eq(0)
+                                .each(function (colIdx) {
+                                    // Set the header cell to contain the input element
+                                    var cell = $('.filters th').eq(
+                                        $(api.column(colIdx).header()).index()
+                                    );
+                                    var title = $(cell).text();
+                                    $(cell).html('<input type="text" placeholder="' + title + '" style="width:100%;" />');
+                 
+                                    // On every keypress in this input
+                                    $(
+                                        'input',
+                                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                                    )
+                                        .off('keyup change')
+                                        .on('change', function (e) {
+                                            // Get the search value
+                                            $(this).attr('title', $(this).val());
+                 
+                                            var cursorPosition = this.selectionStart;
+                                            // Search the column for that value
+                                            api
+                                                .column(colIdx)
+                                                .search(this.value, false, false)
+                                                .draw();
+                                        })
+                                        .on('keyup', function (e) {
+                                            e.stopPropagation();
+                 
+                                            $(this).trigger('change');
+                                            $(this)
+                                                .focus()[0]
+                                                .setSelectionRange(cursorPosition, cursorPosition);
+                                        });
+                                });
+                        },
+                        rowsGroup: [0,1,2,3,4,5],
+                        dom: 'Blfrtip',
+                        buttons: [
                             'excel'
                         ]
                     });
+                    
+                    $(".dataTables_scrollHead").css("top", $("#topheader").outerHeight() + $("#header").outerHeight() + $("#submenu").outerHeight() + 1)
+                                               .css("z-index", "1000");
+                    $("#project_table_paginate").hide();
+                    var status = "";
+                    $("#bodyContent").scroll(function(){
+                        if($("#bodyContent").scrollTop() >= 62){
+                            $(".dataTables_scrollHead").css("position", "fixed")
+                                                       .css("width", $(".dataTables_scrollBody").width());
+                            $(".dataTables_scrollBody").css("top", 62);
+                            $(".dataTables_scrollFoot").css("position", "relative")
+                                                       .css("top", 45);
+                            $("#project_table_info").css("margin-top", 45);
+                            if(status != "sticky"){
+                                status = "sticky";
+                                $(".dataTables_scrollBody").trigger("scroll");
+                            }
+                        }
+                        else{
+                            $(".dataTables_scrollHead").css("position", "static")
+                                                       .css("width", "100%");
+                            $(".dataTables_scrollBody").css("top", 0);
+                            $(".dataTables_scrollFoot").css("position", "static");
+                            $("#project_table_info").css("margin-top", 0);
+                            if(status != "static"){
+                                status = "static";
+                                $(".dataTables_scrollBody").trigger("scroll");
+                            }
+                        }
+                    });
+                    
+                    table.columns.adjust().draw();
                 </script>
             ]]>
         </Static>
