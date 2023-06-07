@@ -443,6 +443,7 @@
                                 $(".year" + y + "_total").text(number_format(_.reduce($('.year' + y), function(sum, el){ return sum + (!_.isNaN(parseFloat($(el).text().replace(',', ''))) ? parseFloat($(el).text().replace(',', '')) : 0 ); }, 0)));
                             }
                             $(".total").text(number_format(_.reduce($('.year_total'), function(sum, el){ return sum + (!_.isNaN(parseFloat($(el).text().replace(',', ''))) ? parseFloat($(el).text().replace(',', '')) : 0 ); }, 0)));
+                            $("#project_table tfoot").hide();
                         },
                         scrollX: true,
                         //scrollY: ($(window).height() - $("#bodyContent").position().top - 217) + "px",
@@ -471,7 +472,7 @@
                                             // Get the search value
                                             $(this).attr('title', $(this).val());
                  
-                                            var cursorPosition = this.selectionStart;
+                                            cursorPosition = this.selectionStart;
                                             // Search the column for that value
                                             api
                                                 .column(colIdx)
