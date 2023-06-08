@@ -30,6 +30,7 @@ require_once("PharmacyMap/PharmacyMap.php");
 require_once("ClipboardList/ClipboardList.php");
 require_once("AskAnExpert/AskAnExpert.php");
 require_once("UsageVisualizations.php");
+require_once("HowDidYouHearOfUs.php");
 
 class Report extends AbstractReport{
     
