@@ -45,7 +45,8 @@ class HowDidYouHearOfUs extends SpecialPage{
         $allPeople = Person::getAllCandidates('all');
         
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:HowDidYouHearOfUs' method='post'>
-                         <select id='names' data-placeholder='Chose a Person...' name='user_id'>");
+                         <select id='names' data-placeholder='Chose a Person...' name='user_id'>
+                            <option value=\"0\" selected></option>\n");
 	    foreach($allPeople as $person){
 	        $wgOut->addHTML("<option value=\"{$person->getId()}\">".str_replace(".", " ", $person->getNameForForms())."</option>\n");
 	    }
