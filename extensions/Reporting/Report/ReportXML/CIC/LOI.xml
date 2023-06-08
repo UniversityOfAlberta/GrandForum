@@ -8,11 +8,16 @@
         </Role>
     </Permissions>
     <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Letter of Intent" title="Construction Innovation Centre (CIC) LETTER OF INTENT (LOI) for Proposed Research Project">
-        <If if="{!=({getText(RP_LOI, INTENT, NSERC_APPROVED, 0, {$user_id}, {$project_id})}, )}">
+        <If if="{!=({getText(RP_LOI, INTENT, PROJ_STATUS, 0, {$user_id}, {$project_id})}, )}">
+            <![CDATA[
+                {set(status, {getText(RP_LOI, INTENT, PROJ_STATUS, 0, {$user_id}, {$project_id})})}
+            ]]>
+        </If>
+        <ElseIf if="{!=({getText(RP_LOI, INTENT, NSERC_APPROVED, 0, {$user_id}, {$project_id})}, )}">
             <![CDATA[
                 {set(status, NSERC Approved)}
             ]]>
-        </If>
+        </ElseIf>
         <ElseIf if="{!=({getText(RP_LOI, INTENT, NSERC_REJECTED, 0, {$user_id}, {$project_id})}, )}">
             <![CDATA[
                 {set(status, NSERC Rejected)}

@@ -56,10 +56,10 @@ class LOITable extends SpecialPage{
             exit;
         }
         
-        $this->saveBlobValue('PROJ_CREATED', 
+        $this->saveBlobValue('PROJ_STATUS', 
                              $person->getId(), 
                              $projectId, 
-                             1);
+                             "Created");
         
         // Add Leader
         $_POST['userId'] = $person->getId();
@@ -99,13 +99,13 @@ class LOITable extends SpecialPage{
         }
     }
     
-    function declineProject(){
+    function updateProjStatus(){
         $person = Person::newFromId($_POST['user_id']);
         $projectId = $_POST['project_id'];
-        $this->saveBlobValue('PROJ_DECLINED', 
+        $this->saveBlobValue('PROJ_STATUS', 
                              $person->getId(), 
                              $projectId, 
-                             1);
+                             $_POST['status']);
     }
 
     function execute($par){
@@ -119,8 +119,8 @@ class LOITable extends SpecialPage{
             header('Content-Type: text/html');
             exit;
         }
-        if(isset($_GET['declineProject'])){
-            $this->declineProject();
+        if(isset($_GET['updateProjStatus'])){
+            $this->updateProjStatus();
             header('Content-Type: text/html');
             exit;
         }
@@ -148,11 +148,8 @@ class LOITable extends SpecialPage{
                 if(!$report->isGenerated()){
                     break;
                 }
-                if($this->getBlobValue('PROJ_CREATED', $person, $projectId) == 1 ||
-                   $this->getBlobValue('PROJ_DECLINED', $person, $projectId) == 1){
-                    continue;
-                }
                 $pdf = $report->getPDF();
+                $status = $this->getBlobValue('PROJ_STATUS', $person, $projectId);
                 $wgOut->addHTML("<tr class='loiRow' data-person='{$person->getId()}' data-project='{$projectId}'>
                     <td>{$person->getNameForForms()}</td>
                     <td>
@@ -195,9 +192,20 @@ class LOITable extends SpecialPage{
                             </tr>
                         </table>
                     </td>
-                    <td align='center'>
-                        <button class='createProject' type='button' style='width:7em;margin-bottom:0.5em;'>Create</button><br />
-                        <button class='declineProject' type='button' style='width:7em;'>Decline</button>
+                    <td align='center'>");
+                        if($status != "Created"){
+                            $statusField = new SelectBox("status", "Status", $status, array("", 
+                                                                                            "Revisions Requested" => "Request Revisions", 
+                                                                                            "Declined" => "Decline", 
+                                                                                            "Pre-Created" => "Pre-Create"), VALIDATE_NOT_NULL);
+                            $wgOut->addHTML("{$statusField->render()}<br />");
+                            $hide = ($status != "Pre-Created") ? "display:none;" : "";
+                            $wgOut->addHTML("<button class='createProject' type='button' style='width:7em;margin-top:0.5em;{$hide}'>Create</button><br />");
+                        }
+                        else{
+                            $wgOut->addHTML($status);
+                        }
+                        $wgOut->addHTML("
                     </td>
                 </tr>");
             }
@@ -228,7 +236,7 @@ class LOITable extends SpecialPage{
                 });
             });
             
-            $('#loi_table input, #loi_table select, #loi_table textarea').on('change', function(){
+            $('#loi_table input[type=datepicker]').on('change', function(){
                 var data = {
                     blobItem: $(this).attr('name'),
                     user_id: $(this).closest('.loiRow').attr('data-person'), 
@@ -259,42 +267,35 @@ class LOITable extends SpecialPage{
                     }
                     else{
                         addSuccess('The project was created');
-                        order = table.order();
-                        search = table.search();
-                        table.destroy();
-                        $(tr).remove();
-                        table = createTable();
-                        table.order(order);
-	                    table.search(search);
+                        $('.createProject', tr).hide();
+                        $('[name=status]', tr).hide();
                     }
                 });
             });
             
-            $('.declineProject').click(function(){
+            $('select[name=status]').change(function(){
                 var el = this;
-                $(el).prop('disabled', true);
                 var tr = $(this).closest('.loiRow');
+                var status = $('[name=status] option:selected', tr).val();
                 var data = {
                     user_id: $(tr).attr('data-person'),
-                    project_id: $(tr).attr('data-project')
+                    project_id: $(tr).attr('data-project'),
+                    status: status
                 };
                 
-                $.post('{$wgServer}{$wgScriptPath}/index.php/Special:LOITable?declineProject', data, function(response){
-                    $(el).prop('disabled', false);
+                $.post('{$wgServer}{$wgScriptPath}/index.php/Special:LOITable?updateProjStatus', data, function(response){
                     clearError();
                     clearSuccess();
                     if(response != ''){
                         addError(response);
                     }
                     else{
-                        addSuccess('The project was declined');
-                        order = table.order();
-                        search = table.search();
-                        table.destroy();
-                        $(tr).remove();
-                        table = createTable();
-                        table.order(order);
-	                    table.search(search);
+                        if(status == 'Pre-Created'){
+                            $('.createProject', tr).show();
+                        }
+                        else{
+                            $('.createProject', tr).hide();
+                        }
                     }
                 });
             });
