@@ -74,6 +74,7 @@ class Descriptors extends SpecialPage {
                                  "65-74"  => array("3-5" => array(), "6-9" => array()),
                                  "75+"  => array("3-5" => array(), "6-9" => array()));
         
+        $subroles = array(0,0,0,0);
         $ages = array(0,0,0,0,0,0,0);
         $genders = array(0,0,0,0);
         $ethnicities = array(0,0,0,0,0,0,0,0,0);
@@ -159,26 +160,27 @@ class Descriptors extends SpecialPage {
                     }
                 }
                 
-                if($age == "less than 60" || $age <= 60){
+                if($person->isSubRole('phone-based')){
+                    $subroles[1]++;
+                }
+                else if($person->isSubRole('in-person with volunteer')){
+                    $subroles[2]++;
+                }
+                else if($person->isSubRole('paper copy')){
+                    $subroles[3]++;
+                }
+                else{
+                    $subroles[0]++;
+                }
+                
+                if($age == "less than 60" || $age < 65){
                     $ages[0]++;
                 }
-                else if($age > 60 && $age <= 65){
+                else if($age >= 65 && $age < 75){
                     $ages[1]++;
                 }
-                else if($age > 65 && $age <= 70){
+                else if($age >= 75){
                     $ages[2]++;
-                }
-                else if($age > 70 && $age <= 75){
-                    $ages[3]++;
-                }
-                else if($age > 75 && $age <= 80){
-                    $ages[4]++;
-                }
-                else if($age > 80 && $age <= 85){
-                    $ages[5]++;
-                }
-                else if($age > 85){
-                    $ages[6]++;
                 }
                 
                 if($gender == "Man"){
@@ -700,34 +702,36 @@ class Descriptors extends SpecialPage {
                 </tr>
             </thead>
             <tbody>
+                <tr><th colspan='2' style='text-align: left;'>Sub-Roles</th></tr>
+                <tr>
+                    <td>Online Independant</td>
+                    <td>{$subroles[0]} (".number_format($subroles[0]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Phone-Based</td>
+                    <td>{$subroles[0]} (".number_format($subroles[0]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>In-Person with volunteer</td>
+                    <td>{$subroles[1]} (".number_format($subroles[1]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Paper Copy</td>
+                    <td>{$subroles[2]} (".number_format($subroles[2]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                
                 <tr><th colspan='2' style='text-align: left;'>Age</th></tr>
                 <tr>
-                    <td>Less or equal to 60</td>
+                    <td><60-64</td>
                     <td>{$ages[0]} (".number_format($ages[0]/max(1, $nIntake)*100, 1).")</td>
                 </tr>
                 <tr>
-                    <td>over 60-65</td>
+                    <td>65-74</td>
                     <td>{$ages[1]} (".number_format($ages[1]/max(1, $nIntake)*100, 1).")</td>
                 </tr>
                 <tr>
-                    <td>over 65-70</td>
+                    <td>75+</td>
                     <td>{$ages[2]} (".number_format($ages[2]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>over 70-75</td>
-                    <td>{$ages[3]} (".number_format($ages[3]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>over 75-80</td>
-                    <td>{$ages[4]} (".number_format($ages[4]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>over 80-85</td>
-                    <td>{$ages[5]} (".number_format($ages[5]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>over 85</td>
-                    <td>{$ages[6]} (".number_format($ages[6]/max(1, $nIntake)*100, 1).")</td>
                 </tr>
                 
                 <tr><th colspan='2' style='text-align: left;'>Gender</th></tr>
@@ -909,34 +913,32 @@ class Descriptors extends SpecialPage {
             <thead>
                 <tr>
                     <th></th>
-                    <th>3-5 (Not Lonely)<br />Total (%)<br /></th>
-                    <th>6-9 (Lonely)<br />Total (%)<br /></th>
-                    <th>Mean (SD)</th>
+                    <th>All</th>
+                    <th><60-64</th>
+                    <th>65-74</th>
+                    <th>75+</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>All</td>
+                    <td>3-5 (Not Lonely)<br />Total (%)</td>
                     <td>".count($lonelinessByAge['All']["3-5"])." (".number_format(count($lonelinessByAge['All']["3-5"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
-                    <td>".count($lonelinessByAge['All']["6-9"])." (".number_format(count($lonelinessByAge['All']["6-9"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
-                    <td>".number_format(array_sum(array_flatten($lonelinessByAge['All']))/max(1,count(array_flatten($lonelinessByAge['All']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['All'])), 2).")</td>
-                </tr>
-                <tr>
-                    <td><60-64</td>
                     <td>".count($lonelinessByAge['<60-64']["3-5"])." (".number_format(count($lonelinessByAge['<60-64']["3-5"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
-                    <td>".count($lonelinessByAge['<60-64']["6-9"])." (".number_format(count($lonelinessByAge['<60-64']["6-9"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
-                    <td>".number_format(array_sum(array_flatten($lonelinessByAge['<60-64']))/max(1,count(array_flatten($lonelinessByAge['<60-64']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['<60-64'])), 2).")</td>
-                </tr>
-                <tr>
-                    <td>65-74</td>
                     <td>".count($lonelinessByAge['65-74']["3-5"])." (".number_format(count($lonelinessByAge['65-74']["3-5"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
-                    <td>".count($lonelinessByAge['65-74']["6-9"])." (".number_format(count($lonelinessByAge['65-74']["6-9"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
-                    <td>".number_format(array_sum(array_flatten($lonelinessByAge['65-74']))/max(1,count(array_flatten($lonelinessByAge['65-74']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['65-74'])), 2).")</td>
+                    <td>".count($lonelinessByAge['75+']["3-5"])." (".number_format(count($lonelinessByAge['75+']["3-5"])/max(1,count(array_flatten($lonelinessByAge['75+'])))*100, 1).")</td>
                 </tr>
                 <tr>
-                    <td>75+</td>
-                    <td>".count($lonelinessByAge['75+']["3-5"])." (".number_format(count($lonelinessByAge['75+']["3-5"])/max(1,count(array_flatten($lonelinessByAge['75+'])))*100, 1).")</td>
+                    <td>6-9 (Lonely)<br />Total (%)</td>
+                    <td>".count($lonelinessByAge['All']["6-9"])." (".number_format(count($lonelinessByAge['All']["6-9"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
+                    <td>".count($lonelinessByAge['<60-64']["6-9"])." (".number_format(count($lonelinessByAge['<60-64']["6-9"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
+                    <td>".count($lonelinessByAge['65-74']["6-9"])." (".number_format(count($lonelinessByAge['65-74']["6-9"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
                     <td>".count($lonelinessByAge['75+']["6-9"])." (".number_format(count($lonelinessByAge['75+']["6-9"])/max(1,count(array_flatten($lonelinessByAge['75+'])))*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Mean (SD)</td>
+                    <td>".number_format(array_sum(array_flatten($lonelinessByAge['All']))/max(1,count(array_flatten($lonelinessByAge['All']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['All'])), 2).")</td>
+                    <td>".number_format(array_sum(array_flatten($lonelinessByAge['<60-64']))/max(1,count(array_flatten($lonelinessByAge['<60-64']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['<60-64'])), 2).")</td>
+                    <td>".number_format(array_sum(array_flatten($lonelinessByAge['65-74']))/max(1,count(array_flatten($lonelinessByAge['65-74']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['65-74'])), 2).")</td>
                     <td>".number_format(array_sum(array_flatten($lonelinessByAge['75+']))/max(1,count(array_flatten($lonelinessByAge['75+']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['75+'])), 2).")</td>
                 </tr>
             </tbody>
