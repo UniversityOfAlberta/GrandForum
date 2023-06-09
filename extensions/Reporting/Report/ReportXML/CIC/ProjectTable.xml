@@ -136,7 +136,7 @@
                             indices="partner|year1|year2|year3|year4|year5|comments" 
                             labels="Partner/Source|Year 1|Year 2|Year 3|Year 4|Year 5|Comments" 
                             types="CICPartners|Text|Text|Text|Text|Text|Textarea"
-                            sizes="250|50|50|50|50|50|250">
+                            sizes="400|50|50|50|50|50|250">
                     <![CDATA[
                         <div id='budget{$project_id}'>
                             {$item}
