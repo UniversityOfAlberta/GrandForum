@@ -62,6 +62,7 @@ class ReportItemCallback {
             "project_n_movedon" => "getNMovedOn",
             "project_n_progressed" => "getNProgressed",
             "project_intcomp_application" => "getIntCompApplication", // hard-coded strings
+            "project_cic_partners" => "getCICPartners",
             // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
@@ -1520,6 +1521,24 @@ class ReportItemCallback {
             return $map[$project->getName()];
         }
         return "";
+    }
+    
+    function getCICPartners(){
+        $data = DBFunctions::select(array('grand_report_blobs'),
+                                    array('data'),
+                                    array('rp_type' => 'RP_PROJECT_TABLE',
+                                          'rp_section' => 'PROJECTS',
+                                          'rp_item' => 'BUDGET'));
+        
+        $partners = array("");
+        foreach($data as $row){
+            $obj = unserialize($row['data']);
+            foreach($obj as $partner){
+                $partners[] = $partner['partner'];
+            }
+        }
+        $partners = array_unique($partners);
+        return implode(",", $partners);
     }
     
     function getSPLSubProjects(){

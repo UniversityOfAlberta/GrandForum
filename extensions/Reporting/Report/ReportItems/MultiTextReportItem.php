@@ -61,11 +61,11 @@ class MultiTextReportItem extends AbstractReportItem {
         $orientation = $this->getAttr('orientation', 'horizontal');
         $isVertical = (strtolower($orientation) == 'vertical');
         $values = $this->getBlobValue();
-		$default = $this->getAttr('default', '');
-		if($values === null && $default != ''){
-		    $values = unserialize($default);
-		    $values = $values[$this->id];
-		}
+        $default = $this->getAttr('default', '');
+        if($values === null && $default != ''){
+            $values = unserialize($default);
+            $values = $values[$this->id];
+        }
         if($values == null){
             $values = array();
             $max = -1;
@@ -116,6 +116,12 @@ EOF;
                             $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Project Leader", '', $names);
                             $item .= @"\"<td width='{$widths[2]}' align='$align'><span>".$combobox->renderSelect()."</span></td>\" + \n";
                         }
+                        else if(@$types[$j] == "CICPartners"){
+                            $partners = explode(",", ReportItemCallback::$reportCallback->getCICPartners());
+                            $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Partner", '', $partners);
+                            $combobox->attr('style', "width:{$sizes[$j]}px;");
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><span>".$combobox->renderSelect()."</span></td>\" + \n";
+                        }
                         else if(strtolower(@$types[$j]) == "random"){
                             $item .= @"\"<td width='{$widths[2]}' align='$align' style='display:none;'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='\" + _.random(1000000000) + \"' /></td>\" + \n";
                         }
@@ -160,7 +166,7 @@ EOF;
                                 $align = "left";
                                 $mIndex = "[]";
                             }
-                            $item .= @"\"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px;' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]{$mIndex}' $multi>";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><select style='width:{$sizes[$j]}px;max-width:{$sizes[$j]}px;' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]{$mIndex}' $multi>";
                             $matches = array();
                             preg_match("/^(Select|ComboBox|Chosen)\((.*)\)$/i", $types[$j], $matches);
                             $matches[2] = str_replace('\,', '\comma', $matches[2]);
@@ -209,12 +215,14 @@ EOF;
                                                                                            "padding": 3});
                 max{$this->getPostId()}++;
                 updateTable{$this->getPostId()}();
+                saveAll();
             }
             
             function removeObj{$this->getPostId()}(obj){
                 var id = $(obj).parent().parent().attr('id');
                 $('tr#' + id, $(obj).parent().parent().parent()).remove();
                 updateTable{$this->getPostId()}();
+                saveAll();
             }
             
             function updateTable{$this->getPostId()}(){
@@ -288,17 +296,17 @@ EOF;
                         $align = "left";
                     }
                     if(@$types[$j] == "Milestones"){
-                            $project = Project::newFromHistoricId($this->projectId);
-                            $milestones = array("");
-                            $people = Person::getAllPeople(NI);
-                            foreach($project->getMilestones() as $milestone){
-                                $names[] = $milestone->title;
-                            }
-                            $combobox = new SelectBox("{$this->getPostId()}[$i][$index]", "Milestone", $value[$index], $names);
-                            $combobox->attr('class', 'raw');
-                            $combobox->attr('style', "width:{$sizes[$j]}px;");
-                            $item .= "<td align='$align'>".$combobox->render()."</td>";
+                        $project = Project::newFromHistoricId($this->projectId);
+                        $milestones = array("");
+                        $people = Person::getAllPeople(NI);
+                        foreach($project->getMilestones() as $milestone){
+                            $names[] = $milestone->title;
                         }
+                        $combobox = new SelectBox("{$this->getPostId()}[$i][$index]", "Milestone", $value[$index], $names);
+                        $combobox->attr('class', 'raw');
+                        $combobox->attr('style', "width:{$sizes[$j]}px;");
+                        $item .= "<td align='$align'>".$combobox->render()."</td>";
+                    }
                     else if(@$types[$j] == "NI"){
                         $names = array("");
                         $people = Person::getAllPeople(NI);
@@ -307,6 +315,12 @@ EOF;
                         }
                         asort($names);
                         $combobox = new ComboBox("{$this->getPostId()}[$i][$index]", "Project Leader", $value[$index], $names);
+                        $item .= "<td align='$align'>".$combobox->render()."</td>";
+                    }
+                    else if(@$types[$j] == "CICPartners"){
+                        $partners = explode(",", ReportItemCallback::$reportCallback->getCICPartners());
+                        $combobox = new ComboBox("{$this->getPostId()}[$i][$index]", "Partner", $value[$index], $partners);
+                        $combobox->attr('style', "width:{$sizes[$j]}px;");
                         $item .= "<td align='$align'>".$combobox->render()."</td>";
                     }
                     else if(strtolower(@$types[$j]) == "random"){
@@ -359,7 +373,7 @@ EOF;
                             $align = "left";
                             $mIndex = "[]";
                         }
-                        $item .= @"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px;' class='{$cls}' name='{$this->getPostId()}[$i][$index]{$mIndex}' {$multi}>";
+                        $item .= @"<td width='{$widths[2]}' align='$align'><select style='width:{$sizes[$j]}px;max-width:{$sizes[$j]}px;' class='{$cls}' name='{$this->getPostId()}[$i][$index]{$mIndex}' {$multi}>";
                         $matches = array();
                         preg_match("/^(Select|ComboBox|Chosen)\((.*)\)$/i", $types[$j], $matches);
                         $matches[2] = str_replace('\,', '\comma', $matches[2]);
