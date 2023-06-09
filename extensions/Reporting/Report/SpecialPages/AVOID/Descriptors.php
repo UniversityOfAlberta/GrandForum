@@ -709,15 +709,15 @@ class Descriptors extends SpecialPage {
                 </tr>
                 <tr>
                     <td>Phone-Based</td>
-                    <td>{$subroles[0]} (".number_format($subroles[0]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>In-Person with volunteer</td>
                     <td>{$subroles[1]} (".number_format($subroles[1]/max(1, $nIntake)*100, 1).")</td>
                 </tr>
                 <tr>
-                    <td>Paper Copy</td>
+                    <td>In-Person with volunteer</td>
                     <td>{$subroles[2]} (".number_format($subroles[2]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Paper Copy</td>
+                    <td>{$subroles[3]} (".number_format($subroles[3]/max(1, $nIntake)*100, 1).")</td>
                 </tr>
                 
                 <tr><th colspan='2' style='text-align: left;'>Age</th></tr>
