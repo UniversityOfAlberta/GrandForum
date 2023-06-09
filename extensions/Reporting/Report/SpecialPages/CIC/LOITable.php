@@ -135,7 +135,8 @@ class LOITable extends SpecialPage{
         <table id='loi_table' class='wikitable'>
             <thead>
                 <th style='width:20%;'>Applicant</th>
-                <th style='width:59%;'>Application</th>
+                <th style='width:1%;white-space:nowrap;'>Submission Date</th>
+                <th style='width:60%;'>Application</th>
                 <th style='width:1%;white-space:nowrap;'>Past Submissions</th>
                 <th style='width:1%;'>Dates</th>
                 <th style='width:20%;'>Actions</th>
@@ -153,6 +154,7 @@ class LOITable extends SpecialPage{
                 $status = $this->getBlobValue('PROJ_STATUS', $person, $projectId);
                 $wgOut->addHTML("<tr class='loiRow' data-person='{$person->getId()}' data-project='{$projectId}'>
                     <td>{$person->getNameForForms()}</td>
+                    <td align='center'>".substr($pdf[0]['timestamp'], 0, 10)."</td>
                     <td>
                         {$this->getBlobValue('TITLE', $person, $projectId)}<br />
                         <a class='button' target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=".urlencode($pdf[0]['token'])."'>Download</a>
@@ -222,9 +224,10 @@ class LOITable extends SpecialPage{
         <script type='text/javascript'>
              var createTable = function(){
                  return $('#loi_table').DataTable({
-                    'aLengthMenu': [[100,-1], [100,'All']], 
-                    'iDisplayLength': -1, 
-                    'autoWidth': false
+                    aLengthMenu: [[100,-1], [100,'All']], 
+                    order: [[ 1, 'desc' ]],
+                    iDisplayLength: -1,
+                    autoWidth: false
                  });
              }
              
