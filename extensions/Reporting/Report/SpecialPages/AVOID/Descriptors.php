@@ -921,14 +921,14 @@ class Descriptors extends SpecialPage {
             </thead>
             <tbody>
                 <tr>
-                    <td>3-5 (Not Lonely)<br />Total (%)</td>
+                    <td>3-5 (Not Lonely) Total (%)</td>
                     <td>".count($lonelinessByAge['All']["3-5"])." (".number_format(count($lonelinessByAge['All']["3-5"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
                     <td>".count($lonelinessByAge['<60-64']["3-5"])." (".number_format(count($lonelinessByAge['<60-64']["3-5"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
                     <td>".count($lonelinessByAge['65-74']["3-5"])." (".number_format(count($lonelinessByAge['65-74']["3-5"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
                     <td>".count($lonelinessByAge['75+']["3-5"])." (".number_format(count($lonelinessByAge['75+']["3-5"])/max(1,count(array_flatten($lonelinessByAge['75+'])))*100, 1).")</td>
                 </tr>
                 <tr>
-                    <td>6-9 (Lonely)<br />Total (%)</td>
+                    <td>6-9 (Lonely) Total (%)</td>
                     <td>".count($lonelinessByAge['All']["6-9"])." (".number_format(count($lonelinessByAge['All']["6-9"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
                     <td>".count($lonelinessByAge['<60-64']["6-9"])." (".number_format(count($lonelinessByAge['<60-64']["6-9"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
                     <td>".count($lonelinessByAge['65-74']["6-9"])." (".number_format(count($lonelinessByAge['65-74']["6-9"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
