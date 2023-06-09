@@ -458,34 +458,33 @@ abstract class AbstractReport extends SpecialPage {
         }
         $largestDate = "0000-00-00 00:00:00";
         $return = array();
-        foreach($check as $c){
+        foreach($check as $i => $c){
             $tst = $c['timestamp'];
             if($c['submitted'] == 1){
-                $c['status'] = "Generated/Submitted";
+                $check[$i]['status'] = "Generated/Submitted";
             }
             else if($foundSameUser){
-                $c['status'] = "Generated/Not Submitted";
+                $check[$i]['status'] = "Generated/Not Submitted";
             }
             else if(!$foundSameUser){
-                $c['status'] = "Generated/Not Submitted";
+                $check[$i]['status'] = "Generated/Not Submitted";
             }
             else{
-                $c['status'] = "Generated/Not Submitted";
+                $check[$i]['status'] = "Generated/Not Submitted";
             }
-            $c['name'] = $this->name;
-            if(strcmp($tst, $largestDate) > 0){
-                $largestDate = $tst;
-                $return = array($c);
-            }
+            $check[$i]['name'] = $this->name;
         }
+        usort($check, function($a, $b){
+            return (strcmp($a['timestamp'], $b['timestamp']) < 0);
+        });
         if(isset($check2) && count($check2) > 0){
             foreach($check2 as $chk){
                 if($chk['timestamp'] > $largestDate){
-                    $return[0]['status'] = "Submitted/Re-Generated";
+                    $check[0]['status'] = "Submitted/Re-Generated";
                 }
             }
         }
-        return $return;
+        return $check;
     }
     
     // Sets the name of this Report

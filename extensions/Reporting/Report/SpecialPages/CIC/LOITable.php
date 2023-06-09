@@ -135,7 +135,8 @@ class LOITable extends SpecialPage{
         <table id='loi_table' class='wikitable'>
             <thead>
                 <th style='width:20%;'>Applicant</th>
-                <th style='width:60%;'>Application</th>
+                <th style='width:59%;'>Application</th>
+                <th style='width:1%;white-space:nowrap;'>Past Submissions</th>
                 <th style='width:1%;'>Dates</th>
                 <th style='width:20%;'>Actions</th>
             </thead>
@@ -156,6 +157,13 @@ class LOITable extends SpecialPage{
                         {$this->getBlobValue('TITLE', $person, $projectId)}<br />
                         <a class='button' target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=".urlencode($pdf[0]['token'])."'>Download</a>
                     </td>
+                    <td style='white-space:nowrap;'><div style='max-height:230px;overflow-y:auto;'>");
+                foreach($pdf as $i => $p){
+                    if($i > 0){
+                        $wgOut->addHTML("<a target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=".urlencode($p['token'])."'>{$p['timestamp']}</a><br />");
+                    }
+                }
+                $wgOut->addHTML("</div></td>
                     <td style='white-space: nowrap;'>
                         <table class='dates' cellspacing='0' cellpadding='0'>
                             <tr>
