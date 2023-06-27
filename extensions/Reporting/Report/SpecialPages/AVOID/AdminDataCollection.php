@@ -124,6 +124,11 @@ class AdminDataCollection extends SpecialPage{
                                         <th>Submitted 6Month Survey</th>
                                         <th>Submitted 9Month Survey</th>
                                         <th>Submitted 12Month Survey</th>
+                                        <th>Intake Survey Date</th>
+                                        <th>3Month Survey Date</th>
+                                        <th>6Month Survey Date</th>
+                                        <th>9Month Survey Date</th>
+                                        <th>12Month Survey Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>");
@@ -151,11 +156,19 @@ class AdminDataCollection extends SpecialPage{
                 $evaluation2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation2", $person->getId());
                 $fitbit1 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "FITBIT", "fitbit1", $person->getId());
                 $fitbit2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "FITBIT", "fitbit2", $person->getId());
+                
                 $submitted = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID")) ? "Yes" : "No");
                 $submitted3 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")) ? "Yes" : "No");
                 $submitted6 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")) ? "Yes" : "No");
                 $submitted9 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_NINEMO")) ? "Yes" : "No");
                 $submitted12 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")) ? "Yes" : "No");
+                
+                $date = ($submitted == "Yes") ? AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID") : "N/A";
+                $date3 = ($submitted3 == "Yes") ? AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_THREEMO") : "N/A";
+                $date6 = ($submitted6 == "Yes") ? AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_SIXMO") : "N/A";
+                $date9 = ($submitted9 == "Yes") ? AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_NINEMO") : "N/A";
+                $date12 = ($submitted12 == "Yes") ? AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_TWELVEMO") : "N/A";
+                
                 $registration_str = $person->getRegistration();
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $touched_str = $person->getTouched();
@@ -208,6 +221,11 @@ class AdminDataCollection extends SpecialPage{
                 <td>{$submitted6}</td>
                 <td>{$submitted9}</td>
                 <td>{$submitted12}</td>
+                <td>{$date}</td>
+                <td>{$date3}</td>
+                <td>{$date6}</td>
+                <td>{$date9}</td>
+                <td>{$date12}</td>
                 </tr>");
             }
             $wgOut->addHTML("</tbody>
