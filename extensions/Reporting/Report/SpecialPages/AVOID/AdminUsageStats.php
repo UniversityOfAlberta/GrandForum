@@ -373,8 +373,9 @@ class AdminUsageStats extends SpecialPage {
         $top3 = array();
         foreach(Person::getAllPeople() as $person){
             if($this->exclude($person->getId())){ continue; }
-            $hear = AdminDataCollection::getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "program_avoid", $person->getId());
-            $hear = ($hear == "") ? $person->getExtra('hearField', '') : $hear;
+            $hear = $person->getExtra('hearField', '');
+            $hear = ($hear == "") ? AdminDataCollection::getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "program_avoid", $person->getId()) : $hear;
+            
             if($hear != ""){
                 @$top3[$hear]++;
             }
