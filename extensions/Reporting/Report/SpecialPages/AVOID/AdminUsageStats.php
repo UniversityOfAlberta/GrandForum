@@ -368,24 +368,41 @@ class AdminUsageStats extends SpecialPage {
     
     function showIntakeStats(){
         global $wgOut;
-        $wgOut->addHTML("<h1>How did you hear about AVOID?</h1>");
-        
-        $top3 = array();
+        $tops = array('hear' => array(),
+                      'postal' => array());
         foreach(Person::getAllPeople() as $person){
             if($this->exclude($person->getId())){ continue; }
             $hear = $person->getExtra('hearField', '');
             $hear = ($hear == "") ? AdminDataCollection::getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "program_avoid", $person->getId()) : $hear;
             
+            $postal = AdminDataCollection::getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
+            
             if($hear != ""){
-                @$top3[$hear]++;
+                @$tops['hear'][$hear]++;
+            }
+            
+            if($postal != ""){
+                @$tops['postal'][$postal]++;
             }
         }
 
-        asort($top3);
-        $top3 = array_reverse($top3);
+        foreach($tops as $key => $top){
+            asort($tops[$key]);
+            $tops[$key] = array_reverse($tops[$key]);
+        }
         
+        // How did you hear
+        $wgOut->addHTML("<h1>How did you hear about AVOID?</h1>");
         @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>");
-        foreach($top3 as $key => $top){
+        foreach($tops['hear'] as $key => $top){
+            $wgOut->addHTML("<tr><td style='font-weight: bold;'>{$key}&nbsp;</td><td align='right'>{$top}</td></tr>");
+        }
+        @$wgOut->addHTML("</table>");
+        
+        // Postal Codes
+        $wgOut->addHTML("<h1>Postal Codes</h1>");
+        @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>");
+        foreach($tops['postal'] as $key => $top){
             $wgOut->addHTML("<tr><td style='font-weight: bold;'>{$key}&nbsp;</td><td align='right'>{$top}</td></tr>");
         }
         @$wgOut->addHTML("</table>");
