@@ -163,11 +163,11 @@ class AdminDataCollection extends SpecialPage{
                 $submitted9 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_NINEMO")) ? "Yes" : "No");
                 $submitted12 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")) ? "Yes" : "No");
                 
-                $date = ($submitted == "Yes") ? AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID") : "N/A";
-                $date3 = ($submitted3 == "Yes") ? AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_THREEMO") : "N/A";
-                $date6 = ($submitted6 == "Yes") ? AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_SIXMO") : "N/A";
-                $date9 = ($submitted9 == "Yes") ? AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_NINEMO") : "N/A";
-                $date12 = ($submitted12 == "Yes") ? AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_TWELVEMO") : "N/A";
+                $date = ($submitted == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID"), 0, 10) : "N/A";
+                $date3 = ($submitted3 == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_THREEMO"), 0, 10) : "N/A";
+                $date6 = ($submitted6 == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_SIXMO"), 0, 10) : "N/A";
+                $date9 = ($submitted9 == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_NINEMO"), 0, 10) : "N/A";
+                $date12 = ($submitted12 == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_TWELVEMO"), 0, 10) : "N/A";
                 
                 $registration_str = $person->getRegistration();
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
