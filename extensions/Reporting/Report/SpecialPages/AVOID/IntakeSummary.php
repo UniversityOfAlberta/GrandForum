@@ -187,16 +187,17 @@ class IntakeSummary extends SpecialPage {
         $registration_str = $person->getRegistration();
         $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2);
 
-        $hear = implode("<br />", array_filter(array(self::getBlobData("AVOID_Questions_tab0", "program_avoid", $person, YEAR, "RP_AVOID"), 
-                                                     self::getBlobData("AVOID_Questions_tab0", "PROGRAMLOCATIONSPECIFY", $person, YEAR, "RP_AVOID"),
-                                                     self::getBlobData("AVOID_Questions_tab0", "platform_avoid", $person, YEAR, "RP_AVOID"),
-                                                     self::getBlobData("AVOID_Questions_tab0", "PROGRAMPLATFORMOTHERSPECIFY", $person, YEAR, "RP_AVOID"),
-                                                     self::getBlobData("AVOID_Questions_tab0", "PROGRAMOTHERSPECIFY", $person, YEAR, "RP_AVOID"))));
-        $hear = ($hear == "") ? implode("<br />", array_filter(array($person->getExtra('hearField', ''),
-                                                                     $person->getExtra('hearLocationSpecify'),
-                                                                     $person->getExtra('hearPlatformSpecify'),
-                                                                     $person->getExtra('hearPlatformOtherSpecify'),
-                                                                     $person->getExtra('hearProgramOtherSpecify')))) : $hear;
+        $hear = implode("<br />", array_filter(array($person->getExtra('hearField', ''),
+                                                     $person->getExtra('hearLocationSpecify'),
+                                                     $person->getExtra('hearPlatformSpecify'),
+                                                     $person->getExtra('hearPlatformOtherSpecify'),
+                                                     $person->getExtra('hearProgramOtherSpecify'))));
+        
+        $hear = ($hear == "") ? implode("<br />", array_filter(array(self::getBlobData("AVOID_Questions_tab0", "program_avoid", $person, YEAR, "RP_AVOID"), 
+                                                                     self::getBlobData("AVOID_Questions_tab0", "PROGRAMLOCATIONSPECIFY", $person, YEAR, "RP_AVOID"),
+                                                                     self::getBlobData("AVOID_Questions_tab0", "platform_avoid", $person, YEAR, "RP_AVOID"),
+                                                                     self::getBlobData("AVOID_Questions_tab0", "PROGRAMPLATFORMOTHERSPECIFY", $person, YEAR, "RP_AVOID"),
+                                                                     self::getBlobData("AVOID_Questions_tab0", "PROGRAMOTHERSPECIFY", $person, YEAR, "RP_AVOID")))) : $hear;
         
         $userLink = "{$person->getId()}";
         if($type == false){
