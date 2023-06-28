@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Conference Applications" reportType="RP_CONFERENCE_APPLICATIONS" ajax="true" year="2022" disabled="true">
+<Report name="AGE-WELL Conference Applications" reportType="RP_CONFERENCE_APPLICATIONS" ajax="true" year="2023" disabled="false">
     <Permissions>
-        <Role role="HQP+">
-            <SectionPermission id="applications" permissions="rw" />
-        </Role>
+        <Role role="EXTERNAL+" />
+        <Role role="HQP+" />
     </Permissions>
-    <ReportSection id="description" tooltip="Research Program at AGE-WELL 2022" name="Description" title="Research Program at AGE-WELL 2022" type="ReportSection">
+    <ReportSection id="description" tooltip="Conference Program at AGE-WELL 2023" name="Description" title="Conference Program at AGE-WELL 2023&lt;br />&lt;small>Shaping the Future of Healthy Aging&lt;/small>" type="ReportSection">
         <Static>
             <![CDATA[
-                <p>Join us in Regina, SK for our 6th Annual Conference! Sessions are designed to maximize networking and knowledge exchange amongst AGE-WELL stakeholders.</p>
-
-                <p>There are five program options available this year to showcase AGE-WELL activity. Within each program type, applicants can submit up to six entries to accommodate individuals applying on behalf of their teams.</p>
-
+                <p>Join us in Toronto, ON for the AGE-WELL Annual Conference: Shaping the Future of Healthy Aging! Sessions are designed to maximize networking and knowledge exchange amongst network stakeholders. There are four program options available to showcase your work: symposia, workshops, posters, demos.</p>
+                
+                <h3>Submission Information</h3>
+                <p>The theme of the 2023 conference is <b>Shaping the future of healthy aging</b>. Individuals are encouraged to submit abstracts which address this theme with a focus on technology-enabled solutions. Solutions in the AGE-WELL context may include a technology itself or a service, policy or practice related to technology and aging.</p>
+                
+                <p>Abstracts may be submitted for poster, symposium, workshop or demo presentations. Proposals must be submitted by <b>August 4, 2023</b>.The instructions for submitting an abstract are detailed in the sections below.</p>
+                
+                <h3>Who May Submit</h3>
+                <p>Submissions are encouraged from all stakeholders who work or have an interest in technology and aging or ‘AgeTech”. Submitters do not need to be current members of AGE-WELL (e.g. funded or affiliate researcher, HQP, startup affiliate, etc.).</p>
+                
+                <h3>Abstract Acceptance</h3>
+                <p>The abstract submitter (the person who submits the abstract, whether or not an author on the abstract) will be informed of the status (accepted/rejected) of their submission as soon as possible after reviews are completed. Accepted authors will be advised of registration deadlines to confirm places in the program at that time.</p>
+                
+                <p><b>All individuals attending the conference (including presenters) will be required to register and pay the registration fee.</b></p>
+                
                 <p>Questions about conference applications can be directed to <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a>.</p>
+                
+                <p>Abstract Deadline (all session types): Friday August 4, 2023</p>
+                <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="application2" tooltip="Innovation Talks" name="Innovation Talks" title="Innovation Talks" blobSection="APPLICATIONS" type="EditableReportSection">
+    <ReportSection id="application2" tooltip="Symposia" name="Symposia" title="Symposia" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 2 -->
         <Static>
             <![CDATA[
@@ -29,23 +42,25 @@
                         });
                     });
                 </script>
-                <p>Not your typical conference research presentation! This year’s program will again feature innovation talks that emphasize the co-creation approach AGE-WELL takes when doing research by engaging diverse stakeholders. Each talk will consist of a 15-minute presentation and 5-minute Q&A. Researchers must co-present with a partner, older adult or caregiver involved in their project. Innovation Talks are open to HQP, Project Leads, Investigators and their project stakeholders from any AGE-WELL funding program (e.g. Core Research Projects, Platform Projects, SIP, AIR or Innovation Hubs).</p>
-                
-                <p>Application Deadline: Thursday Aug 18, 2022</p>
-                
-                <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
+                <p>AGE-WELL 2023 will feature symposia as part of concurrent programming on both Wednesday, October 25 and Thursday, October 26. A symposium is a collection of papers / presentations contributed by a group of individuals, usually from different institutions/ organizations, on a single theme. Each participant gives a presentation relevant to the theme. The chair leads the symposium and discusses the papers as they relate to each other and the overall topic. Researchers are encouraged to co-present with a partner, older adult or caregiver involved in their project.  Chairs are encouraged to ensure multiple perspectives are represented to foster an inclusive approach and lively discussion. Symposia chairs are encouraged to include presenters from outside AGE-WELL, where appropriate, or as required by their chosen topic.</p>
+
+                <p>Symposia are 90-minute sessions allowing for presentation and discussion.</p> 
+
+                <p>The symposium proposal must be submitted by the deadline below; attached abstracts for individual presentations comprising the symposium may be submitted after the deadline.</p>
+
+                <p>If you are interested in contributing to a symposium under development by someone else, please submit a brief description of the research you would like considered for inclusion to conference@agewell-nce.ca instead of submitting an abstract through Forum. Please include title of your work, AGE-WELL Challenge Area, as well as proposed presenter name and contact email with the Subject heading “Challenge Area Symposium”.</p>
             ]]>
         </Static>
-        <If id="2_if" if="{>(2023-08-18 00:00:00,{$timestamp})}">
+        <If id="2_if" if="{>(2024-08-18 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="2_accordion">
                 ]]>
             </Static>
-            <For id="2_for" from="0" to="5">
+            <For id="2_for" from="0" to="0">
                 <Static>
                     <![CDATA[
-                        <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
+                        <!--h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3-->
                         <div>
                         <table>
                     ]]>
@@ -53,43 +68,31 @@
                 <ReportItem id="2_presenter" type="Text" blobItem="2_PRESENTER" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter(s) Name:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter Name(s) and Institutions:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="2_project" type="Select" blobItem="2_PROJECT" blobSubItem="{$extraIndex}" options="1.1a ITNE-SK|1.1b ATICON|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.5-CAT|1.6-CAT|1.7-SIP A5|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|3.1 VIGIL|3.2 CoPILOT|3.3a EMOTEC|3.3b NEARS|3.7-S5|3.8-CAT|3.10-SIP A1|3.13-SIP A2|3.14-SIP A3|3.16-CAT|3.17-CAT ELEVATE|3.18-SIP A4|3.19-SIP A4|3.20-SIP A5|3.21-SIP A5|3.22|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.8-CAT|4.9-CAT|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.12-SIP A2|5.13-SIP A3|5.14-SIP A3|5.15-SIP A3|5.16-CAT|5.17-CAT|5.18-CAT|5.20-SIP A4|5.23-SIP A5|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN CARE|6.5-CAT|6.8-SIP A1|6.10-CAT ALADIN|6.12-SIP A4|6.13-SIP A4|6.14-SIP A5|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|AAL|AW-PP2019-PP3|AW-PP2019-PP4|AW-PP2019-PP5|AW-PP2020-PP6|AWCAT-2019-128|AWCAT-2019-131|AWCAT-2019-133|AWCAT-2019-136|AWCAT-2019-138|AWCAT-2019-142|AWCRP-2020-01|AWCRP-2020-02|AWCRP-2020-03|AWCRP-2020-04|AWCRP-2020-05|AWCRP-2020-06|AWCRP-2020-07|AWCRP-2020-08|AWCRP-2020-09|AWCRP-2020-10|AWCRP-2020-11|AWCRP-2020-12|AWCRP-2020-13|AWCRP-2020-14|AWCRP-2020-15|AWCRP-2020-16|AWCRP-2020-17|AWCRP-2020-18|AWSIP-Apr20-025|AWSIP-Apr20-026|AWSIP-Apr20-027|AWSIP-Apr20-028|AWSIP-Apr20-029|AWSIP-Apr20-030|CC1 K-MOB Research|CC2 TECH-TRANS Research|CC3 T-WORK Research|CC4 TRAIN Research|JDQ-CSR|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN|Core Facility|Funded HQP Projects|Other">
+                <ReportItem id="2_email" type="Text" blobItem="2_EMAIL" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Project:</b></td>
-                            <td><div id="2_project{$extraIndex}">{$item}</div>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Contact email:</b></td>
+                            <td>{$item}</td>
+                        </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="2_project_other" type="Text" blobItem="2_PROJECT_OTHER" blobSubItem="{$extraIndex}">
+                <ReportItem id="2_project" type="Select" blobItem="2_PROJECT" blobSubItem="{$extraIndex}" options="CA1 - Supportive Homes &amp; Communities|CA2 - Health Care &amp; Health Service Delivery|CA3 - Autonomy &amp; Independence|CA4 - Cognitive Health &amp; Dementia|CA5 - Mobility &amp; Transportation|CA6 - Healthy Lifestyles &amp; Wellness|CA7 - Staying Connected|CA8 - Financial Wellness &amp; Employment">
                     <![CDATA[
-                            <div id="2_project_other{$extraIndex}" style="display:none;">Other: {$item}</div>
-                            <script type="text/javascript">
-                                var project2_other{$extraIndex}_fn = function(){
-                                    var value = $("#2_project{$extraIndex} option:selected").val();
-                                    if(value == "Other"){
-                                        $("#2_project_other{$extraIndex}").show();
-                                    }
-                                    else{
-                                        $("#2_project_other{$extraIndex}").hide();
-                                    }
-                                ;}
-                                
-                                $("#2_project{$extraIndex}").change(project2_other{$extraIndex}_fn);
-                                project2_other{$extraIndex}_fn();
-                            </script>
-                            </td>
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>AGE-WELL Challenge Area:</b></td>
+                            <td>{$item}</td>
                         </tr>
                     ]]>
                 </ReportItem>
                 <ReportItem id="2_title" type="Text" blobItem="2_TITLE" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Talk:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Symposium:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -97,7 +100,7 @@
                 <ReportItem id="2_abstract" type="Textarea" blobItem="2_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="250">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Abstract:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Symposium Abstract:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -109,7 +112,7 @@
                             <td>
                                 <div class="submit">
                                     {$item}
-                                    <input type="button" value="Save" />
+                                    <!--input type="button" value="Save" /-->
                                 </div>
                             </td>
                         </tr>
@@ -125,7 +128,7 @@
             <Static>
                 <![CDATA[
                     </div>
-                    <script type="text/javascript">
+                    <!--script type="text/javascript">
                         $("#2_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
                             $("#2_accordion").accordion("resize");
@@ -133,12 +136,12 @@
                                 $("#2_accordion").accordion("resize");
                             }, 1000);
                         });
-                    </script>
+                    </script-->
                 ]]>
             </Static>
         </If>
     </ReportSection>
-    <ReportSection id="application1" tooltip="HQP Science Slam Competition" name="HQP Science Slam" title="HQP Science Slam Competition" blobSection="APPLICATIONS" type="EditableReportSection">
+    <ReportSection id="application1" tooltip="Workshops (2-4)" name="Workshops" title="Workshops (2-4)" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 1 -->
         <Static>
             <![CDATA[
@@ -151,31 +154,21 @@
                         });
                     });
                 </script>
-                <p>Challenge yourself to share your research creatively. AGE-WELL 2022 will feature a science slam competition between 5 HQP. A science slam is not your typical scientific talk – it’s like a poetry slam but for science. HQP will have a maximum of 5 minutes and no slides to present some aspect of their work in an engaging way using poetry, song, dance, props, a skit…the sky is the limit. Bring your rap about cognitive assessments or your interpretive dance about machine learning to the conference and win the audience vote to take home the <b>$250</b> top prize. Open only to HQP.</p>
+                <p>Workshops are informal seminars that allow for the demonstration and application of techniques and skills. These are 90-minute sessions allowing for in-depth presentation and discussion.</p>
 
-                <p>Take a look at a few amazing and prize-winning science slams from Science Slam Canada: <a href="https://youtu.be/mhP7nkVtKgA" target="_blank">Curtis Chou uses storytelling to share the importance of malaria research</a> and <a href="https://youtu.be/8V5hXJGlM1k" target="_blank">Aybuke Ozel uses ballet to demonstrate the physics of balance</a>.</p>
-
-                <p>Abstracts should answer the following questions and must not exceed 250 words:</p>
-                <ol>
-                    <li>What’s your medium (song, dance, skit, sculpture, dramatic storytelling)?:</li>
-                    <li>Why should you compete?</li>
-                </ol>
-                
-                <p>Application Deadline: Thursday Aug 18, 2022</p>
-                
-                <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
+                <p>Workshop abstract submissions are not to exceed 250 words. They should include the following information: a) title of workshop b) statement of purpose and objectives c) workshop format (e.g., interactive process), d) anticipated learning outcomes. Workshops must be interactive.</p>
             ]]>
         </Static>
-        <If id="1_if" if="{>(2023-08-18 00:00:00,{$timestamp})}">
+        <If id="1_if" if="{>(2024-08-18 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="1_accordion">
                 ]]>
             </Static>
-            <For id="1_for" from="0" to="5">
+            <For id="1_for" from="0" to="0">
                 <Static>
                     <![CDATA[
-                        <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
+                        <!--h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3-->
                         <div>
                         <table>
                     ]]>
@@ -183,7 +176,23 @@
                 <ReportItem id="1_presenter" type="Text" blobItem="1_PRESENTER" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>HQP Name:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter Name(s) and Institutions:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="1_email" type="Text" blobItem="1_EMAIL" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Contact email:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="1_project" type="Select" blobItem="1_PROJECT" blobSubItem="{$extraIndex}" options="CA1 - Supportive Homes &amp; Communities|CA2 - Health Care &amp; Health Service Delivery|CA3 - Autonomy &amp; Independence|CA4 - Cognitive Health &amp; Dementia|CA5 - Mobility &amp; Transportation|CA6 - Healthy Lifestyles &amp; Wellness|CA7 - Staying Connected|CA8 - Financial Wellness &amp; Employment">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>AGE-WELL Challenge Area:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -191,7 +200,7 @@
                 <ReportItem id="1_title" type="Text" blobItem="1_TITLE" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Talk:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Workshop Title:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -199,15 +208,7 @@
                 <ReportItem id="1_abstract" type="Textarea" blobItem="1_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="250">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Abstract:</b></td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="1_final" type="Textarea" blobItem="1_FINAL" blobSubItem="{$extraIndex}" rich="true" limit="50">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Why should you<br />be chosen for<br />the Final Five:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Workshop Abstract:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -219,7 +220,7 @@
                             <td>
                                 <div class="submit">
                                     {$item}
-                                    <input type="button" value="Save" />
+                                    <!--input type="button" value="Save" /-->
                                 </div>
                             </td>
                         </tr>
@@ -235,7 +236,7 @@
             <Static>
                 <![CDATA[
                     </div>
-                    <script type="text/javascript">
+                    <!--script type="text/javascript">
                         $("#1_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
                             $("#1_accordion").accordion("resize");
@@ -243,12 +244,12 @@
                                 $("#1_accordion").accordion("resize");
                             }, 1000);
                         });
-                    </script>
+                    </script-->
                 ]]>
             </Static>
         </If>
     </ReportSection>
-    <ReportSection id="application4" tooltip="Poster Session" name="Poster Session" title="Poster Session" blobSection="APPLICATIONS" type="EditableReportSection">
+    <ReportSection id="application4" tooltip="Poster Sessions" name="Poster Sessions" title="Poster Sessions" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 4 -->
         <Static>
             <![CDATA[
@@ -261,66 +262,69 @@
                         });
                     });
                 </script>
-                <p>AGE-WELL 2022 will feature poster session open to all network participants. Only one poster per project is permitted. Posters with HQP first authors will automatically be entered in our poster competition.</p>
-                <p>Application Deadline: Thursday Aug 18, 2022</p>
-                
-                <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
+                <p>AGE-WELL 2023 will feature multiple poster sessions open to all network participants on Wednesday October 25 and Thursday October 26. Only one poster per project / individual is permitted. Posters with HQP first authors will automatically be entered in our poster competition. The Poster Session is a display presentation. Material is mounted on a poster board, which is staffed by the author (this is mandatory) for a designated period of time. Abstracts must be informational and must report on work completed.</p>
+
+                <p>Abstracts are not to exceed 250 words and should include the following information: a) full author details, b) a short statement of the objectives c) method d) results e) conclusions</p>
             ]]>
         </Static>
-        <If id="4_if" if="{>(2023-08-18 00:00:00,{$timestamp})}">
+        <If id="4_if" if="{>(2024-08-18 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="4_accordion">
                 ]]>
             </Static>
-            <For id="4_for" from="0" to="5">
+            <For id="4_for" from="0" to="0">
                 <Static>
                     <![CDATA[
-                        <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
+                        <!--h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3-->
                         <div>
                         <table>
                     ]]>
                 </Static>
+                <ReportItem id="4_hqp" type="Checkbox" blobItem="4_HQP" blobSubItem="{$extraIndex}" options="poster is first authored and presented by an HQP">
+                    <![CDATA[
+                        <tr>
+                            <td colspan='2'>
+                                {$item}
+                            </td>
+                        </tr>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="4_presenter" type="Text" blobItem="4_PRESENTER" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter(s) Name:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter Name:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="4_project" type="Select" blobItem="4_PROJECT" blobSubItem="{$extraIndex}" options="1.1a ITNE-SK|1.1b ATICON|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.5-CAT|1.6-CAT|1.7-SIP A5|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|3.1 VIGIL|3.2 CoPILOT|3.3a EMOTEC|3.3b NEARS|3.7-S5|3.8-CAT|3.10-SIP A1|3.13-SIP A2|3.14-SIP A3|3.16-CAT|3.17-CAT ELEVATE|3.18-SIP A4|3.19-SIP A4|3.20-SIP A5|3.21-SIP A5|3.22|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.8-CAT|4.9-CAT|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.12-SIP A2|5.13-SIP A3|5.14-SIP A3|5.15-SIP A3|5.16-CAT|5.17-CAT|5.18-CAT|5.20-SIP A4|5.23-SIP A5|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN CARE|6.5-CAT|6.8-SIP A1|6.10-CAT ALADIN|6.12-SIP A4|6.13-SIP A4|6.14-SIP A5|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|AAL|AW-PP2019-PP3|AW-PP2019-PP4|AW-PP2019-PP5|AW-PP2020-PP6|AWCAT-2019-128|AWCAT-2019-131|AWCAT-2019-133|AWCAT-2019-136|AWCAT-2019-138|AWCAT-2019-142|AWCRP-2020-01|AWCRP-2020-02|AWCRP-2020-03|AWCRP-2020-04|AWCRP-2020-05|AWCRP-2020-06|AWCRP-2020-07|AWCRP-2020-08|AWCRP-2020-09|AWCRP-2020-10|AWCRP-2020-11|AWCRP-2020-12|AWCRP-2020-13|AWCRP-2020-14|AWCRP-2020-15|AWCRP-2020-16|AWCRP-2020-17|AWCRP-2020-18|AWSIP-Apr20-025|AWSIP-Apr20-026|AWSIP-Apr20-027|AWSIP-Apr20-028|AWSIP-Apr20-029|AWSIP-Apr20-030|CC1 K-MOB Research|CC2 TECH-TRANS Research|CC3 T-WORK Research|CC4 TRAIN Research|JDQ-CSR|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN|Core Facility|Funded HQP Projects|Other">
+                <ReportItem id="4_organization" type="Text" blobItem="4_ORGANIZATION" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Project/CC/CF:</b></td>
-                            <td><div id="4_project{$extraIndex}">{$item}</div>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter Organization:</b></td>
+                            <td>{$item}</td>
+                        </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="4_project_other" type="Text" blobItem="4_PROJECT_OTHER" blobSubItem="{$extraIndex}">
+                <ReportItem id="4_email" type="Text" blobItem="4_EMAIL" blobSubItem="{$extraIndex}">
                     <![CDATA[
-                            <div id="4_project_other{$extraIndex}" style="display:none;">Other: {$item}</div>
-                            <script type="text/javascript">
-                                var project4_other{$extraIndex}_fn = function(){
-                                    var value = $("#4_project{$extraIndex} option:selected").val();
-                                    if(value == "Other"){
-                                        $("#4_project_other{$extraIndex}").show();
-                                    }
-                                    else{
-                                        $("#4_project_other{$extraIndex}").hide();
-                                    }
-                                ;}
-                                
-                                $("#4_project{$extraIndex}").change(project4_other{$extraIndex}_fn);
-                                project4_other{$extraIndex}_fn();
-                            </script>
-                            </td>
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Contact email:</b></td>
+                            <td>{$item}</td>
                         </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="4_project" type="Select" blobItem="4_PROJECT" blobSubItem="{$extraIndex}" options="1.1a ITNE-SK|1.1b ATICON|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.5-CAT|1.6-CAT|1.7-SIP A5|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|3.1 VIGIL|3.2 CoPILOT|3.3a EMOTEC|3.3b NEARS|3.7-S5|3.8-CAT|3.10-SIP A1|3.13-SIP A2|3.14-SIP A3|3.16-CAT|3.17-CAT ELEVATE|3.18-SIP A4|3.19-SIP A4|3.20-SIP A5|3.21-SIP A5|3.22|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.8-CAT|4.9-CAT|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.12-SIP A2|5.13-SIP A3|5.14-SIP A3|5.15-SIP A3|5.16-CAT|5.17-CAT|5.18-CAT|5.20-SIP A4|5.23-SIP A5|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN CARE|6.5-CAT|6.8-SIP A1|6.10-CAT ALADIN|6.12-SIP A4|6.13-SIP A4|6.14-SIP A5|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|AAL|AW-PP2019-PP3|AW-PP2019-PP4|AW-PP2019-PP5|AW-PP2020-PP6|AWAIR-2022-01|AWAIR-2022-02|AWAIR-2022-03|AWAIR-2022-04|AWAIR-2022-05|AWAIR-2022-06|AWAIR-2022-07|AWAIR-2022-08|AWAIR-2022-09|AWCAT-2019-128|AWCAT-2019-131|AWCAT-2019-133|AWCAT-2019-136|AWCAT-2019-138|AWCAT-2019-142|AWCRP-2020-01|AWCRP-2020-02|AWCRP-2020-03|AWCRP-2020-04|AWCRP-2020-05|AWCRP-2020-06|AWCRP-2020-07|AWCRP-2020-08|AWCRP-2020-09|AWCRP-2020-10|AWCRP-2020-11|AWCRP-2020-12|AWCRP-2020-13|AWCRP-2020-14|AWCRP-2020-15|AWCRP-2020-16|AWCRP-2020-17|AWCRP-2020-18|AWSIP-Apr20-025|AWSIP-Apr20-026|AWSIP-Apr20-027|AWSIP-Apr20-028|AWSIP-Apr20-029|AWSIP-Apr20-030|CC1 K-MOB Research|CC2 TECH-TRANS Research|CC3 T-WORK Research|CC4 TRAIN Research|JDQ-CSR">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>AGE-WELL Project (if applicable):</b></td>
+                            <td><div id="5_project{$extraIndex}">{$item}</div>
                     ]]>
                 </ReportItem>
                 <ReportItem id="4_title" type="Text" blobItem="4_TITLE" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Poster/Tabletop:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of Poster:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -328,7 +332,7 @@
                 <ReportItem id="4_abstract" type="Textarea" blobItem="4_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="250">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Abstract:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Poster Abstract:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
@@ -340,7 +344,7 @@
                             <td>
                                 <div class="submit">
                                     {$item}
-                                    <input type="button" value="Save" />
+                                    <!--input type="button" value="Save" /-->
                                 </div>
                             </td>
                         </tr>
@@ -356,7 +360,7 @@
             <Static>
                 <![CDATA[
                     </div>
-                    <script type="text/javascript">
+                    <!--script type="text/javascript">
                         $("#4_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
                             $("#4_accordion").accordion("resize");
@@ -364,141 +368,7 @@
                                 $("#4_accordion").accordion("resize");
                             }, 1000);
                         });
-                    </script>
-                ]]>
-            </Static>
-        </If>
-    </ReportSection>
-    <ReportSection id="application3" tooltip="Lunch ‘n’ Learn Sessions" name="Lunch 'n' Learn" title="Lunch ‘n’ Learn Sessions" blobSection="APPLICATIONS" type="EditableReportSection">
-        <!-- Application 3 -->
-        <Static>
-            <![CDATA[
-                <script type="text/javascript">
-                    $(document).ready(function(){
-                        $("div.submit").each(function(i, div){
-                            $("input[type=button]", div).click(function(){
-                                $(".selectedReportTab").click();
-                            });
-                        });
-                    });
-                </script>
-                <p>AGE-WELL 2022 will feature up to 4 Lunch ‘n’ Learn sessions. These 60- or 75- minute workshops will be accessible to attendees as sign-up sessions through the AGE-WELL Conference app.  Lunch ‘n’ Learns slots are available to Challenge Area, Crosscutting Activity Teams, Innovation Hubs and Platform Project teams. <u>Sessions must be interactive</u>.</p>
-                
-                <p>Application Deadline: Thursday Aug 18, 2022</p>
-                
-                <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
-            ]]>
-        </Static>
-        <If id="3_if" if="{>(2023-08-18 00:00:00,{$timestamp})}">
-            <Static>
-                <![CDATA[
-                    <div id="3_accordion">
-                ]]>
-            </Static>
-            <For id="3_for" from="0" to="5">
-                <Static>
-                    <![CDATA[
-                        <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
-                        <div>
-                        <table>
-                    ]]>
-                </Static>
-                <ReportItem id="3_project" type="Select" blobItem="3_PROJECT" blobSubItem="{$extraIndex}" options="Core Facility|Crosscutting Theme|Innovation Hub|Project|Challenge Area">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>AGE-WELL Role:</b></td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="3_presenter" type="Text" blobItem="3_PRESENTER" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter(s) Name:</b></td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="3_name" type="Text" blobItem="3_NAME" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Name/Topic of Workshop:</b></td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="3_structure" width="300px" height="100px" type="Textarea" blobItem="3_STRUCTURE" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Structure & Format:</b><br />
-                                Provide a brief outline of the workshop activities
-                            </td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="3_audience" width="300px" height="100px" type="Textarea" blobItem="3_AUDIENCE" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Audience:</b><br />
-                                Who will benefit from this workshop?
-                            </td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="3_aims" width="300px" height="100px" type="Textarea" blobItem="3_AIMS" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Aims:</b><br />
-                                What is the goal of this workshop?
-                            </td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="3_requirements" width="300px" height="100px" type="Textarea" blobItem="3_REQUIREMENTS" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Room Set-up Requirements:</b><br />
-                                AV requirement, table set-up etc.
-                            </td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="3_submit" type="Checkbox" blobItem="3_SUBMIT" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like to apply for this session">
-                    <![CDATA[
-                        <tr>
-                            <td></td>
-                            <td>
-                                <div class="submit">
-                                    {$item}
-                                    <input type="button" value="Save" />
-                                </div>
-                            </td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <Static>
-                    <![CDATA[
-                        </table>
-                        </div>
-                    ]]>
-                </Static>
-            </For>
-            <Static>
-                <![CDATA[
-                    </div>
-                    <script type="text/javascript">
-                        $("#3_accordion").accordion({heightStyle: "content"});
-                        $(document).ready(function(){
-                            $("#3_accordion").accordion("resize");
-                            _.delay(function(){
-                                $("#3_accordion").accordion("resize");
-                            }, 1000);
-                        });
-                    </script>
+                    </script-->
                 ]]>
             </Static>
         </If>
@@ -516,23 +386,22 @@
                         });
                     });
                 </script>
-                <p>AGE-WELL 2022 will feature our popular Drinks & Demos reception held the evening of Tuesday, October 18.  Members from across our network including industry and community partners, Board of Directors as well as older adults and caregivers will be present at this event. While a network participant can only present one demo, individuals are welcome to submit up to 6 demos on behalf of their teams. The session is open to <u>all network participants</u> (i.e. research teams from any AGE-WELL program, trainees, startup affiliates, Innovation Hubs etc.) the only requirement is that you have something to display that will encourage interaction with attendees (e.g. technology demo, website, KM product, toolkit etc.). </p>
+                <p>AGE-WELL 2023 will feature our popular “Drinks & Demos” within AgeTech Innovation Week receptions on the evenings of Tuesday, October 24 and Wednesday, October 25.  Accepted demos will be scheduled on one of the two reception days to permit maximum participation. This is a free demo option reserved for pre-commercial technologies, knowledge mobilization products such as toolkits, websites etc.</p>
 
-                <p>Application Deadline: Thursday Aug 18, 2022</p>
-                
-                <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
+                <p>Note that AGE-WELL 2023 will also include a paid exhibits hall spanning October 24-26 requiring separate application. Discounts are available for AGE-WELL startup affiliates in the Emerging Innovation Zone of the exhibits hall.</p>
+                <p>Abstracts are not to exceed 250 words and should include a detailed description of the demo and demo and demo set-up (a 3 x 6 table and chairs will be provided). Monitors and electrical may be provided on request and subject to availability.</p>
             ]]>
         </Static>
-        <If id="5_if" if="{>(2023-08-18 00:00:00,{$timestamp})}">
+        <If id="5_if" if="{>(2024-08-18 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="5_accordion">
                 ]]>
             </Static>
-            <For id="5_for" from="0" to="5">
+            <For id="5_for" from="0" to="0">
                 <Static>
                     <![CDATA[
-                        <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
+                        <!--h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3-->
                         <div>
                         <table>
                     ]]>
@@ -540,37 +409,24 @@
                 <ReportItem id="5_presenter" type="Text" blobItem="5_PRESENTER" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter(s) Name:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter Name(s) and Institutions:</b></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="5_project" type="Select" blobItem="5_PROJECT" blobSubItem="{$extraIndex}" options="1.1a ITNE-SK|1.1b ATICON|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.5-CAT|1.6-CAT|1.7-SIP A5|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|3.1 VIGIL|3.2 CoPILOT|3.3a EMOTEC|3.3b NEARS|3.7-S5|3.8-CAT|3.10-SIP A1|3.13-SIP A2|3.14-SIP A3|3.16-CAT|3.17-CAT ELEVATE|3.18-SIP A4|3.19-SIP A4|3.20-SIP A5|3.21-SIP A5|3.22|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.8-CAT|4.9-CAT|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.12-SIP A2|5.13-SIP A3|5.14-SIP A3|5.15-SIP A3|5.16-CAT|5.17-CAT|5.18-CAT|5.20-SIP A4|5.23-SIP A5|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN CARE|6.5-CAT|6.8-SIP A1|6.10-CAT ALADIN|6.12-SIP A4|6.13-SIP A4|6.14-SIP A5|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|AAL|AW-PP2019-PP3|AW-PP2019-PP4|AW-PP2019-PP5|AW-PP2020-PP6|AWCAT-2019-128|AWCAT-2019-131|AWCAT-2019-133|AWCAT-2019-136|AWCAT-2019-138|AWCAT-2019-142|AWCRP-2020-01|AWCRP-2020-02|AWCRP-2020-03|AWCRP-2020-04|AWCRP-2020-05|AWCRP-2020-06|AWCRP-2020-07|AWCRP-2020-08|AWCRP-2020-09|AWCRP-2020-10|AWCRP-2020-11|AWCRP-2020-12|AWCRP-2020-13|AWCRP-2020-14|AWCRP-2020-15|AWCRP-2020-16|AWCRP-2020-17|AWCRP-2020-18|AWSIP-Apr20-025|AWSIP-Apr20-026|AWSIP-Apr20-027|AWSIP-Apr20-028|AWSIP-Apr20-029|AWSIP-Apr20-030|CC1 K-MOB Research|CC2 TECH-TRANS Research|CC3 T-WORK Research|CC4 TRAIN Research|JDQ-CSR|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN|Core Facility|Funded HQP Projects|Other">
+                <ReportItem id="5_email" type="Text" blobItem="5_EMAIL" blobSubItem="{$extraIndex}">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Project:</b></td>
-                            <td><div id="5_project{$extraIndex}">{$item}</div>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Contact email:</b></td>
+                            <td>{$item}</td>
+                        </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="5_project_other" type="Text" blobItem="5_PROJECT_OTHER" blobSubItem="{$extraIndex}">
+                <ReportItem id="5_project" type="Select" blobItem="5_PROJECT" blobSubItem="{$extraIndex}" options="1.1a ITNE-SK|1.1b ATICON|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.5-CAT|1.6-CAT|1.7-SIP A5|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|3.1 VIGIL|3.2 CoPILOT|3.3a EMOTEC|3.3b NEARS|3.7-S5|3.8-CAT|3.10-SIP A1|3.13-SIP A2|3.14-SIP A3|3.16-CAT|3.17-CAT ELEVATE|3.18-SIP A4|3.19-SIP A4|3.20-SIP A5|3.21-SIP A5|3.22|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.8-CAT|4.9-CAT|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.12-SIP A2|5.13-SIP A3|5.14-SIP A3|5.15-SIP A3|5.16-CAT|5.17-CAT|5.18-CAT|5.20-SIP A4|5.23-SIP A5|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN CARE|6.5-CAT|6.8-SIP A1|6.10-CAT ALADIN|6.12-SIP A4|6.13-SIP A4|6.14-SIP A5|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|AAL|AW-PP2019-PP3|AW-PP2019-PP4|AW-PP2019-PP5|AW-PP2020-PP6|AWAIR-2022-01|AWAIR-2022-02|AWAIR-2022-03|AWAIR-2022-04|AWAIR-2022-05|AWAIR-2022-06|AWAIR-2022-07|AWAIR-2022-08|AWAIR-2022-09|AWCAT-2019-128|AWCAT-2019-131|AWCAT-2019-133|AWCAT-2019-136|AWCAT-2019-138|AWCAT-2019-142|AWCRP-2020-01|AWCRP-2020-02|AWCRP-2020-03|AWCRP-2020-04|AWCRP-2020-05|AWCRP-2020-06|AWCRP-2020-07|AWCRP-2020-08|AWCRP-2020-09|AWCRP-2020-10|AWCRP-2020-11|AWCRP-2020-12|AWCRP-2020-13|AWCRP-2020-14|AWCRP-2020-15|AWCRP-2020-16|AWCRP-2020-17|AWCRP-2020-18|AWSIP-Apr20-025|AWSIP-Apr20-026|AWSIP-Apr20-027|AWSIP-Apr20-028|AWSIP-Apr20-029|AWSIP-Apr20-030|CC1 K-MOB Research|CC2 TECH-TRANS Research|CC3 T-WORK Research|CC4 TRAIN Research|JDQ-CSR">
                     <![CDATA[
-                            <div id="5_project_other{$extraIndex}" style="display:none;">Other: {$item}</div>
-                            <script type="text/javascript">
-                                var project5_other{$extraIndex}_fn = function(){
-                                    var value = $("#5_project{$extraIndex} option:selected").val();
-                                    if(value == "Other"){
-                                        $("#5_project_other{$extraIndex}").show();
-                                    }
-                                    else{
-                                        $("#5_project_other{$extraIndex}").hide();
-                                    }
-                                ;}
-                                
-                                $("#5_project{$extraIndex}").change(project5_other{$extraIndex}_fn);
-                                project5_other{$extraIndex}_fn();
-                            </script>
-                            </td>
-                        </tr>
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>AGE-WELL Project (if applicable):</b></td>
+                            <td><div id="5_project{$extraIndex}">{$item}</div>
                     ]]>
                 </ReportItem>
                 <ReportItem id="5_title" type="Text" blobItem="5_TITLE" blobSubItem="{$extraIndex}">
@@ -589,24 +445,6 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="5_requirements" type="Checkbox" blobType="BLOB_ARRAY" blobItem="5_REQUIREMENTS" blobSubItem="{$extraIndex}" options="17” monitor|Power Cable|Laptop">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>AV Requirements:</b></td>
-                            <td>{$item}</td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="5_additional" width="300px" height="100px" type="Textarea" blobItem="5_ADDITIONAL" blobSubItem="{$extraIndex}">
-                    <![CDATA[
-                        <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Additional AV requests*:</b></td>
-                            <td>{$item}<br />
-                                <small>*Items listed here will be at an extra cost to be covered by project</small>
-                            </td>
-                        </tr>
-                    ]]>
-                </ReportItem>
                 <ReportItem id="5_submit" type="Checkbox" blobItem="5_SUBMIT" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like to apply for this session">
                     <![CDATA[
                         <tr>
@@ -614,7 +452,7 @@
                             <td>
                                 <div class="submit">
                                     {$item}
-                                    <input type="button" value="Save" />
+                                    <!--input type="button" value="Save" /-->
                                 </div>
                             </td>
                         </tr>
@@ -630,7 +468,7 @@
             <Static>
                 <![CDATA[
                     </div>
-                    <script type="text/javascript">
+                    <!--script type="text/javascript">
                         $("#5_accordion").accordion({heightStyle: "content"});
                         $(document).ready(function(){
                             $("#5_accordion").accordion("resize");
@@ -638,7 +476,7 @@
                                 $("#5_accordion").accordion("resize");
                             }, 1000);
                         });
-                    </script>
+                    </script-->
                 ]]>
             </Static>
         </If>
