@@ -105,6 +105,14 @@
                         </tr>
                     ]]>
                 </ReportItem>
+                <ReportItem id="2_file" type="Upload" blobItem="2_FILE" blobType="BLOB_RAW" blobSubItem="{$extraIndex}" rich="true" limit="250">
+                    <![CDATA[
+                        <tr>
+                            <td valign="top" align="right" style="width:0;white-space:nowrap;"><b>Upload Presentation Abstracts:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="2_submit" type="Checkbox" blobItem="2_SUBMIT" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like to apply for this session">
                     <![CDATA[
                         <tr>
