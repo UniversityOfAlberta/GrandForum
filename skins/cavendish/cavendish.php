@@ -1217,6 +1217,25 @@ class CavendishTemplate extends QuickTemplate {
 		    echo "<span class='highlights-text pBodyLogin en'>Login</span><span class='highlights-text pBodyLogin fr'>Connexion</span>";
 		    $userLogin = new SpecialSideUserLogin();
 		    $userLogin->render();
+		    if(isExtensionEnabled("Shibboleth")){
+                echo "
+                <script type='text/javascript'>
+                    $('.pBodyLogin').parent().hide();
+                    $('.pBodyLogin').parent().css('width', '100%');
+                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='ssoLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;' href='{$config->getValue('shibLoginUrl')}'>Login w CCID</a></div>\");
+                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='forumLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;'>Login w/out CCID</a></div>\");
+                    $('#forumLogin').click(function(){
+                        $(this).remove();
+                        $('.pBodyLogin').parent().slideDown();
+                    });
+                </script>
+                ";
+                if(isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword'])){
+                    echo "<script type='text/javascript'>
+                        $('#forumLogin').click();
+                    </script>";
+                }
+            }
         }
         Hooks::run( 'MonoBookTemplateToolboxEnd', array( &$this ) );
         Hooks::run( 'SkinTemplateToolboxEnd', array( &$this ) );
