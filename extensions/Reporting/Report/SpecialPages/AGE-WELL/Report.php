@@ -49,8 +49,8 @@ class Report extends AbstractReport {
         if($person->isRole(NI) || $person->isRole(NI.'-Candidate') ||
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') ||
            $person->isRole(STAFF)){
-            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "HACApplication") ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Catalyst - HAC", "{$url}HACApplication", $selected);
+            /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "HACApplication") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Catalyst - HAC", "{$url}HACApplication", $selected);*/
             
             /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CRP") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CRP", "{$url}CRP", $selected);*/
@@ -79,10 +79,10 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPICConference")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC Conference", "{$url}EPICConference", $selected);
         }*/
-        /*if($person->isRoleAtLeast(HQP)){
+        if($person->isRoleAtLeast(HQP) || $person->isRoleAtLeast(EXTERNAL.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ConferenceApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Conference Application", "{$url}ConferenceApplication", $selected);
-        }*/
+        }
         /*if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate') ||
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplication")) ? "selected" : false;
