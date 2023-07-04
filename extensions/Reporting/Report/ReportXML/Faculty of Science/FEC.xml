@@ -1015,10 +1015,10 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <!--ReportItem id="review" type="SimpleReviewSubmitReportItem" /-->
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[
-                <p>PDF Generation is not enabled right now, it will be enabled at a later date.</p>
+                <!--p>PDF Generation is not enabled right now, it will be enabled at a later date.</p-->
                 <h2>Preview</h2>
                 <p>The following is just a preview of what the PDF will look like, the generated PDF may appear differently so make sure to look it over after generating it.</p>
                 {$item}

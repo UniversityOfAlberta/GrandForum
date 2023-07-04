@@ -64,7 +64,7 @@
                 <Static>
                     <![CDATA[
                         {set(winterCourses, {add({get(winterCourses)}, 1)})}
-                        {set(winterEnrolled, {add({get(winterEnrolled)}, {getExtra(totEnrl)} )})}
+                        {set(winterEnrolled, {add({get(winterEnrolled)}, {getExtra(totEnrl)})})}
                     ]]>
                 </Static>
             </ReportItemSet>
