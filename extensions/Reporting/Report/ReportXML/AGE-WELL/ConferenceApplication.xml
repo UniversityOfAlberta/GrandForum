@@ -3,6 +3,8 @@
     <Permissions>
         <Role role="EXTERNAL+" />
         <Role role="HQP+" />
+        <Role role="EXTERNAL-Candidate+" />
+        <Role role="HQP-Candidate+" />
     </Permissions>
     <ReportSection id="description" tooltip="Conference Program at AGE-WELL 2023" name="Description" title="Conference Program at AGE-WELL 2023&lt;br />&lt;small>Shaping the Future of Healthy Aging&lt;/small>" type="ReportSection">
         <Static>
@@ -289,7 +291,7 @@
                         <table>
                     ]]>
                 </Static>
-                <ReportItem id="4_hqp" type="Checkbox" blobItem="4_HQP" blobSubItem="{$extraIndex}" options="poster is first authored and presented by an HQP">
+                <ReportItem id="4_hqp" type="Checkbox" blobItem="4_HQP" blobType="BLOB_ARRAY" blobSubItem="{$extraIndex}" options="poster is first authored and presented by an HQP">
                     <![CDATA[
                         <tr>
                             <td colspan='2'>

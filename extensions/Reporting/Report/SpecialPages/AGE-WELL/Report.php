@@ -79,7 +79,8 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPICConference")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC Conference", "{$url}EPICConference", $selected);
         }*/
-        if($person->isRoleAtLeast(HQP) || $person->isRoleAtLeast(EXTERNAL.'-Candidate')){
+        if($person->isRoleAtLeast(HQP) || $person->isRoleAtLeast(HQP.'-Candidate') || 
+           $person->isRoleAtLeast(HQP.'-Candidate') || $person->isRoleAtLeast(EXTERNAL.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ConferenceApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Conference Application", "{$url}ConferenceApplication", $selected);
         }
