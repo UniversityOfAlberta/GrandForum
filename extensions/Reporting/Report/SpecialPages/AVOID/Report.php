@@ -9,6 +9,7 @@ $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 $wgHooks['BeforePageDisplay'][] = 'Report::addFooter';
 $wgHooks['BeforePageDisplay'][] = 'Report::disableSubTabs';
+$wgHooks['PersonExtra'][] = 'Report::personExtra';
 
 require_once("AVOIDDashboard.php");
 require_once("FrailtyReport.php");
@@ -166,6 +167,11 @@ class Report extends AbstractReport{
                 display: none;
             }
         </style>");
+    }
+    
+    static function personExtra($person, &$extra){
+        $extra['postal'] = IntakeSummary::getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID");
+        return true;
     }
     
 }

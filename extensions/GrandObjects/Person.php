@@ -4935,10 +4935,12 @@ class Person extends BackboneModel {
     function getExtra($field=null, $default=""){
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
+            $extra = $this->extra;
+            Hooks::run('PersonExtra', array($this, &$extra));
             if($field != null){
-                return isset($this->extra[$field]) ? $this->extra[$field] : $default;
+                return isset($extra[$field]) ? $extra[$field] : $default;
             }
-            return $this->extra;
+            return $extra;
         }
         else{
             return array();

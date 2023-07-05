@@ -12,6 +12,14 @@ class GamificationAPI extends RESTAPI {
             $this->throwError("You are not allowed to access this api");
         }
         $person = Person::newFromId($userId);
+        if($this->getParam('list') != ""){
+            $actions = Gamification::newFromUserId($person->getId());
+            $json = array();
+            foreach($actions as $act){
+                $json[] = $act->toArray();
+            }
+            return json_encode($json);
+        }
         return Gamification::calculatePoints($person);
     }
     

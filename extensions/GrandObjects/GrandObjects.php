@@ -43,6 +43,7 @@ autoload_register('GrandObjects/API/Gamification');
 global $apiRequest;
 // Person
 
+$apiRequest->addAction('Hidden','person/current', 'PersonAPI');
 $apiRequest->addAction('Hidden','person/:id', 'PersonAPI');
 $apiRequest->addAction('Hidden','person/:id/projects', 'PersonProjectsAPI');
 $apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', 'PersonProjectsAPI');
@@ -232,6 +233,7 @@ $apiRequest->addAction('Hidden','actionplan/:id', 'ActionPlanAPI');
 // Gamification
 $apiRequest->addAction('Hidden', 'gamification/', 'GamificationAPI');
 $apiRequest->addAction('Hidden', 'gamification/:userId', 'GamificationAPI');
+$apiRequest->addAction('Hidden', 'gamification/:userId/list', 'GamificationAPI');
 
 function addScript($file){
     global $wgServer, $wgScriptPath;
