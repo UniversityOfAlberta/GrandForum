@@ -158,7 +158,8 @@ class Gamification {
         return array(
             'action' => $this->getAction(),
             'text' => $this->getText(),
-            'points' => $this->getPoints()
+            'points' => $this->getPoints(),
+            'date' => $this->getDate()
         );
     }
 }
