@@ -178,15 +178,18 @@ class ProjectKPITab extends AbstractEditableTab {
         $blb->load($addr, true);
         $xls = $blb->getData();
         $md5 = $blb->getMD5();
-        if($xls != null){
-            $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
-            $kpi = new Budget("XLS", $structure, $xls, 1, "ProjectKPITab::optimizeFn", array($project, $start_date, $end_date));
-            $kpi->xls[69][1]->style .= "white-space: initial;";
-            $kpi->xls[71][1]->style .= "white-space: initial;";
-            $kpi->xls[97][1]->style .= "white-space: initial;";
-            $kpi->xls[98][1]->style .= "white-space: initial;";
-            Cache::store("{$project->getId()}_{$id}", array($kpi, $md5), 86400*7);
+        if($xls == null){
+            $xls = file_get_contents("data/GIS KPIs.xlsx");
         }
+
+        $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
+        $kpi = new Budget("XLS", $structure, $xls, 1, "ProjectKPITab::optimizeFn", array($project, $start_date, $end_date));
+        $kpi->xls[69][1]->style .= "white-space: initial;";
+        $kpi->xls[71][1]->style .= "white-space: initial;";
+        $kpi->xls[97][1]->style .= "white-space: initial;";
+        $kpi->xls[98][1]->style .= "white-space: initial;";
+        Cache::store("{$project->getId()}_{$id}", array($kpi, $md5), 86400*7);
+
         return array($kpi, $md5);
     }
     
