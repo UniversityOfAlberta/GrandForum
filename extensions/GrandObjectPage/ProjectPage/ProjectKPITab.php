@@ -102,17 +102,50 @@ class ProjectKPITab extends AbstractEditableTab {
         
         // TODO: Add retrieving from LIMS
         if($project != null){
-            $userTypes = array('On site' => 0,
-                               'Remote' => 0,
-                               'Data' => 0);
+            $userTypes = array();
+            $userGeos = array();
+            $userSectors = array();
+             
+            $users = array();
             $requests = LIMSOpportunity::newFromProjectId($project->getId(), $start_date, $end_date);
             foreach($requests as $request){
-                $userTypes[$request->getUserType()]++;
+                $contact = $request->getContact();
+                $users[$contact->getId()] = $contact;
+                @$userTypes[$request->getUserType()]++;
             }
             
-            $cells[5][2] += $userTypes['On site'];
-            $cells[6][2] += $userTypes['Remote'];
-            $cells[7][2] += $userTypes['Data'];
+            foreach($users as $user){
+                $details = $user->getDetails();
+                @$userGeos[$details->geographic]++;
+                @$userSectors[$details->sector]++;
+            }
+            
+            // Section 1
+            $cells[5][2] += @$userTypes['On site'];
+            $cells[6][2] += @$userTypes['Remote'];
+            $cells[7][2] += @$userTypes['Data'];
+            
+            $cells[10][2] += @$userGeos['Alberta'];
+            $cells[11][2] += @$userGeos['British Columbia'];
+            $cells[12][2] += @$userGeos['Manitoba'];
+            $cells[13][2] += @$userGeos['New Brunswick'];
+            $cells[14][2] += @$userGeos['Newfoundland'];
+            $cells[15][2] += @$userGeos['Nova Scotia'];
+            $cells[16][2] += @$userGeos['Ontario'];
+            $cells[17][2] += @$userGeos['Quebec'];
+            $cells[18][2] += @$userGeos['Saskatchewan'];
+            $cells[19][2] += @$userGeos['North West Territories'];
+            $cells[20][2] += @$userGeos['Prince Edward Island'];
+            $cells[21][2] += @$userGeos['Nunavut'];
+            $cells[22][2] += @$userGeos['Yukon'];
+            $cells[23][2] += @$userGeos['Outside Canada: United States'];
+            $cells[24][2] += @$userGeos['Outside Canada: other than United States'];
+            
+            $cells[27][2] += @$userSectors['University, college, research hospital'];
+            $cells[28][2] += @$userSectors['Other public'];
+            $cells[29][2] += @$userSectors['Private'];
+            $cells[30][2] += @$userSectors['Not-for-profit'];
+
         }
         
         $cells = @$sheet->fromArray($cells);
