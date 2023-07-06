@@ -27,6 +27,23 @@ class LIMSOpportunity extends BackboneModel {
         $opportunity = new LIMSOpportunity($data);
         return $opportunity;
     }
+    
+    static function newFromProjectId($id, $start_date="0000-00-00", $end_date="2100-01-01"){
+        $data = DBFunctions::select(array('grand_lims_opportunity'),
+                                    array('*'),
+                                    array('project' => $id));
+        $opportunities = array();
+        foreach($data as $row){
+            $opportunity = new LIMSOpportunity(array($row));
+            if($opportunity->isAllowedToView()){
+                if($opportunity->getDate() >= $start_date &&
+                   $opportunity->getDate() <= $end_date){
+                    $opportunities[] = $opportunity;
+                }
+            }
+        }
+        return $opportunities;
+    }
 
     static function getOpportunities($contact_id){
         $data = DBFunctions::select(array('grand_lims_opportunity'),

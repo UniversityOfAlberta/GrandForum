@@ -40,6 +40,9 @@ class Budget extends QueryableTable{
             case 5: 
                 self::Budget($argv[1], $argv[2], $argv[3], $argv[4]);
                 break;
+            case 6: 
+                self::Budget($argv[1], $argv[2], $argv[3], $argv[4], $argv[5]);
+                break;
         }
     }
     
@@ -62,7 +65,7 @@ class Budget extends QueryableTable{
     }
     
     // Creates a new Budget instance with the given person ID, structure type, and data set
-    private function Budget($structure, $data, $sheet=0, $optimizeFn=null){
+    private function Budget($structure, $data, $sheet=0, $optimizeFn=null, $optimizeFnArgs=array()){
         global $budgetStructures;
         $this->QueryableTable();
         if(is_array($structure)){
@@ -71,7 +74,7 @@ class Budget extends QueryableTable{
         else{
             $this->structure = @$this->preprocessStructure($budgetStructures[$structure]);
         }
-        if(!$this->readCells($data, $sheet, $optimizeFn)){
+        if(!$this->readCells($data, $sheet, $optimizeFn, $optimizeFnArgs)){
             // Some error happened when reading the data, try to recover
             $data = array();
             foreach($this->structure as $rowN => $row){
@@ -143,7 +146,7 @@ class Budget extends QueryableTable{
     }
     
     // Reads the cells in the budget based on the specified structure
-    private function readCells($data, $sheet=0, $optimizeFn){
+    private function readCells($data, $sheet=0, $optimizeFn=null, $optimizeFnArgs=array()){
         $dir = dirname(__FILE__);
         require_once($dir . '/../../../Classes/PHPExcel/IOFactory.php');
         if(!($data instanceof PHPExcel)){
@@ -187,7 +190,7 @@ class Budget extends QueryableTable{
                 $obj = $objReader->load($tmpn);
                 
                 if(is_callable($optimizeFn)){
-                    call_user_func_array($optimizeFn, array(&$obj));
+                    call_user_func_array($optimizeFn, array_merge(array(&$obj), $optimizeFnArgs));
                 }
                 
                 $obj->setActiveSheetIndex($sheet);

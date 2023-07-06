@@ -52,7 +52,7 @@ class ProjectKPISummaryTab extends AbstractTab {
                     }
                     
                     // KPI
-                    list($kpi, $md5) = ProjectKPITab::getKPI($this->project, "KPI_{$i}_Q{$q}");
+                    list($kpi, $md5) = ProjectKPITab::getKPI($this->project, "KPI_{$i}_Q{$q}", $date, $enddate);
                     if($kpi != null){
                         $summary = ProjectKPITab::addKPI($summary, $kpi);
                         break; // Don't check older Quarterly uploads

@@ -61,7 +61,7 @@ class ProjectKPITab extends AbstractEditableTab {
         return $this->generateBody();
     }
     
-    static function optimizeFn($obj){
+    static function optimizeFn($obj, $project=null, $start_date="0000-00-00", $end_date="2100-01-01"){
         // Optimize formulas
         $sheets = $obj->getAllSheets();
         
@@ -99,6 +99,22 @@ class ProjectKPITab extends AbstractEditableTab {
                 }
             }
         }
+        
+        // TODO: Add retrieving from LIMS
+        if($project != null){
+            $userTypes = array('On site' => 0,
+                               'Remote' => 0,
+                               'Data' => 0);
+            $requests = LIMSOpportunity::newFromProjectId($project->getId(), $start_date, $end_date);
+            foreach($requests as $request){
+                $userTypes[$request->getUserType()]++;
+            }
+            
+            $cells[5][2] += $userTypes['On site'];
+            $cells[6][2] += $userTypes['Remote'];
+            $cells[7][2] += $userTypes['Data'];
+        }
+        
         $cells = @$sheet->fromArray($cells);
         return $obj;
     }
@@ -118,7 +134,7 @@ class ProjectKPITab extends AbstractEditableTab {
         return $summary;
     }
     
-    static function getKPI($project, $id){
+    static function getKPI($project, $id, $start_date, $end_date){
         global $config;
         if(Cache::exists("{$project->getId()}_{$id}")){
             return Cache::fetch("{$project->getId()}_{$id}");
@@ -131,7 +147,7 @@ class ProjectKPITab extends AbstractEditableTab {
         $md5 = $blb->getMD5();
         if($xls != null){
             $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
-            $kpi = new Budget("XLS", $structure, $xls, 1, "ProjectKPITab::optimizeFn");
+            $kpi = new Budget("XLS", $structure, $xls, 1, "ProjectKPITab::optimizeFn", array($project, $start_date, $end_date));
             $kpi->xls[69][1]->style .= "white-space: initial;";
             $kpi->xls[71][1]->style .= "white-space: initial;";
             $kpi->xls[97][1]->style .= "white-space: initial;";
@@ -212,7 +228,7 @@ class ProjectKPITab extends AbstractEditableTab {
                     }
                     
                     if(!$edit){
-                        list($kpi, $md5) = ProjectKPITab::getKPI($this->project, "KPI_{$i}_Q{$q}");
+                        list($kpi, $md5) = ProjectKPITab::getKPI($this->project, "KPI_{$i}_Q{$q}", $date, $enddate);
                         if($kpi != null){
                             $this->html .= $kpi->render()."<br />";
                             $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q{$q}_KPI.xlsx'>Download KPI</a><br />";
