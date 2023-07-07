@@ -107,6 +107,7 @@ class ProjectKPITab extends AbstractEditableTab {
             $userSectors = array();
             $section2 = array();
             $section5 = array();
+            $section8 = array();
             $prods = array();
              
             $users = array();
@@ -134,6 +135,18 @@ class ProjectKPITab extends AbstractEditableTab {
                     }
                     else{
                         @$prods[$product->type]++;
+                    }
+                }
+                
+                if($contact->getDetails()->hqp == "Yes"){
+                    $pCount = 0;
+                    foreach($products as $product){
+                        if($product->type == "Courses, Workshops & Training Sessions" ||
+                           $product->type == "Public Events Hosted by Facility (Symposia, Conferences, Open Houses, Tours)" ||
+                           $product->type == "Media Interviews, Press Conferences & Broadcasts" ||
+                           $product->type == "Stakeholder Events Attended by GIS Personnel Conferences, Tradeshows & Industry, Governments, Community Events"){
+                            @$section8[$contact->getDetails()->hqp_other]++;
+                        }
                     }
                 }
             }
@@ -190,6 +203,12 @@ class ProjectKPITab extends AbstractEditableTab {
             $cells[71][2] += @$prods['Stakeholder Events Attended by GIS Personnel Conferences, Tradeshows & Industry, Governments, Community Events'];
             
             // Section 8
+            $cells[76][2] += @$section8['College Students'];
+            $cells[77][2] += @$section8['University Undergrad Students'];
+            $cells[78][2] += @$section8['M.Sc. Students'];
+            $cells[79][2] += @$section8['Ph.D. Students'];
+            $cells[80][2] += @$section8['PDFs'];
+            $cells[81][2] += @$section8['Scientific & Technical Personnel (Outside GIS)'];
             
             // Section 9
             $cells[86][2] += @$prods['Technical & Consultancy Reports'];
