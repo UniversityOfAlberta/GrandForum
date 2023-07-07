@@ -272,9 +272,13 @@
                         });
                     });
                 </script>
-                <p>AGE-WELL 2023 will feature multiple poster sessions open to all network participants on Wednesday October 25 and Thursday October 26. Only one poster per project / individual is permitted. Posters with HQP first authors will automatically be entered in our poster competition. The Poster Session is a display presentation. Material is mounted on a poster board, which is staffed by the author (this is mandatory) for a designated period of time. Abstracts must be informational and must report on work completed.</p>
+                <p>AGE-WELL 2023 will feature multiple poster sessions open to all network participants on Wednesday October 25 and Thursday October 26. Only one poster per individual is permitted. It may not be possible to accept multiple posters from a single project; if multiple poster applications from the same project are submitted, please liaise with your team members to ensure poster submissions clearly articulate different aspects of the project.</p>
 
-                <p>Abstracts are not to exceed 250 words and should include the following information: a) full author details, b) a short statement of the objectives c) method d) results e) conclusions</p>
+                <p>All accepted posters with HQP first authors will be automatically entered into the poster competition; the first author will be required to present their poster during a specified time slot. Please note that in this instance, 'presenting' means to stand beside the poster and be available to respond to questions that may arise from viewers.</p>
+
+                <p>The Poster Session is a display presentation. Material is mounted on a poster board, which is staffed by the author (this is mandatory) for a designated period of time. Abstracts must be informational and must report on work completed.</p>
+
+                <p>Abstracts are not to exceed 250 words and should include the following information: a) full author details, b) a short statement of the objectives, c) method, d) results, e) conclusions.</p>
             ]]>
         </Static>
         <If id="4_if" if="{>(2024-08-18 00:00:00,{$timestamp})}">
