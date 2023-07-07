@@ -451,7 +451,7 @@ $budgetStructures[GLYCONET_KPI_STRUCTURE] =
           array(NA,         CENTRE,     CENTRE),
           array(NA,         RIGHT,      RIGHT),
           array(NA,         RIGHT,      RIGHT),
-          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      MONEY),
           array(NA,         RIGHT,      RIGHT)
     );
     

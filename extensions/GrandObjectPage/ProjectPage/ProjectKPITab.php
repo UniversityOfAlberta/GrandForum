@@ -106,19 +106,34 @@ class ProjectKPITab extends AbstractEditableTab {
             $userGeos = array();
             $userSectors = array();
             $section2 = array();
+            $section5 = array();
+            $prods = array();
              
             $users = array();
             $requests = LIMSOpportunity::newFromProjectId($project->getId(), $start_date, $end_date);
             foreach($requests as $request){
                 $contact = $request->getContact();
                 $tasks = $request->getTasks();
+                $products = $request->getProducts();
                 $users[$contact->getId()] = $contact;
                 @$userTypes[$request->getUserType()]++;
                 @$section2['requests']++;
+                if($request->getSurveyed() == "Yes"){
+                    @$section5['surveyed']++;
+                }
                 foreach($tasks as $task){
                     if($task->getStatus() == "Closed"){
                         @$section2['accommodated']++;
                         break;
+                    }
+                }
+                foreach($products as $product){
+                    if($product->type == "Total Value of Research Grants & Awards Held by Facility Staff and Faculty" ||
+                       $product->type == "Total Number of Research Grants and Awards Held by Facility Staff and Faculty"){
+                        @$prods[$product->type] += intval($product->text);
+                    }
+                    else{
+                        @$prods[$product->type]++;
                     }
                 }
             }
@@ -158,6 +173,36 @@ class ProjectKPITab extends AbstractEditableTab {
             // Section 2
             $cells[35][2] += @$section2['requests'];
             $cells[36][2] += @$section2['accommodated'];
+            
+            // Section 5
+            $cells[54][2] += @$section5['surveyed'];
+            
+            // Section 6
+            $cells[60][2] += @$prods['Peer Reviewed Publications'];
+            $cells[61][2] += @$prods['Other Publication (e.g. Trade Journal)'];
+            $cells[62][2] += @$prods['Conference Presentations (Oral and Poster)'];
+            $cells[63][2] += @$prods['Monographs, Books, Book Chapters'];
+            
+            // Section 7
+            $cells[68][2] += @$prods['Courses, Workshops & Training Sessions'];
+            $cells[69][2] += @$prods['Public Events Hosted by Facility (Symposia, Conferences, Open Houses, Tours)'];
+            $cells[70][2] += @$prods['Media Interviews, Press Conferences & Broadcasts'];
+            $cells[71][2] += @$prods['Stakeholder Events Attended by GIS Personnel Conferences, Tradeshows & Industry, Governments, Community Events'];
+            
+            // Section 8
+            
+            // Section 9
+            $cells[86][2] += @$prods['Technical & Consultancy Reports'];
+            $cells[87][2] += @$prods['Provisional Patent Applications Filed'];
+            $cells[88][2] += @$prods['PCT Application Filed & Patents Granted'];
+            $cells[89][2] += @$prods['Outlicenses'];
+            $cells[90][2] += @$prods['Spin-Off Companies Created'];
+            
+            // Section 10
+            $cells[95][2] += @$prods['Collaboration with Industry Partners'];
+            $cells[96][2] += @$prods['Collaborations with Scientific Institutions'];
+            $cells[97][2] += @$prods['Total Value of Research Grants & Awards Held by Facility Staff and Faculty'];
+            $cells[98][2] += @$prods['Total Number of Research Grants and Awards Held by Facility Staff and Faculty'];
         }
         
         $cells = @$sheet->fromArray($cells);
