@@ -6,6 +6,8 @@
 
 class LIMSOpportunity extends BackboneModel {
 
+    static $requestIds = null;
+
     var $id;
     var $contact;
     var $owner;
@@ -19,6 +21,27 @@ class LIMSOpportunity extends BackboneModel {
     var $date;
     var $files = array();
     var $products = array();
+    
+    static function generateRequestId(){
+        if(self::$requestIds == null){
+            $data = DBFunctions::select(array('grand_lims_opportunity'),
+                                        array('id', 'date'),
+                                        array(),
+                                        array('date' => 'ASC'));
+            $lastYear = "0000";
+            foreach($data as $row){
+                $year = substr($row['date'], 0, 4);
+                if($lastYear != $year){
+                    $increment = 1;
+                }
+                $number = sprintf('%03d', $increment);
+                self::$requestIds[$row['id']] = "GIS{$year}-{$number}";
+                
+                $increment++;
+                $lastYear = $year;
+            }
+        }
+    }
 
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_lims_opportunity'),
@@ -174,6 +197,7 @@ class LIMSOpportunity extends BackboneModel {
 
     function toArray(){
         if($this->isAllowedToView()){
+            self::generateRequestId();
             $person = $this->getPerson();
             $proj = $this->getProject();
             $owner = array('id' => $person->getId(),
@@ -186,6 +210,7 @@ class LIMSOpportunity extends BackboneModel {
                                  'url' => $proj->getUrl());
             }
             $json = array('id' => $this->getId(),
+                          'requestId' => self::$requestIds[$this->getId()],
                           'contact' => $this->getContact()->getId(),
                           'owner' => $owner,
                           'project' => $project,
@@ -220,6 +245,7 @@ class LIMSOpportunity extends BackboneModel {
                                       'date' => COL('CURRENT_TIMESTAMP')));
             $this->id = DBFunctions::insertId();
             $this->uploadFiles();
+            self::$requestIds = null;
         }
     }
 
@@ -245,6 +271,7 @@ class LIMSOpportunity extends BackboneModel {
                                       'products' => json_encode($this->products)),
                                 array('id' => $this->id));
             $this->uploadFiles();
+            self::$requestIds = null;
         }
     }
 

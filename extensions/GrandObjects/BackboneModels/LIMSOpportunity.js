@@ -26,6 +26,7 @@ LIMSOpportunity = Backbone.Model.extend({
     defaults: function() {
         return{
             id: null,
+            requestId: "",
             contact: "",
             owner: {id: "",
                     name: "",
