@@ -105,13 +105,22 @@ class ProjectKPITab extends AbstractEditableTab {
             $userTypes = array();
             $userGeos = array();
             $userSectors = array();
+            $section2 = array();
              
             $users = array();
             $requests = LIMSOpportunity::newFromProjectId($project->getId(), $start_date, $end_date);
             foreach($requests as $request){
                 $contact = $request->getContact();
+                $tasks = $request->getTasks();
                 $users[$contact->getId()] = $contact;
                 @$userTypes[$request->getUserType()]++;
+                @$section2['requests']++;
+                foreach($tasks as $task){
+                    if($task->getStatus() == "Closed"){
+                        @$section2['accommodated']++;
+                        break;
+                    }
+                }
             }
             
             foreach($users as $user){
@@ -146,6 +155,9 @@ class ProjectKPITab extends AbstractEditableTab {
             $cells[29][2] += @$userSectors['Private'];
             $cells[30][2] += @$userSectors['Not-for-profit'];
 
+            // Section 2
+            $cells[35][2] += @$section2['requests'];
+            $cells[36][2] += @$section2['accommodated'];
         }
         
         $cells = @$sheet->fromArray($cells);

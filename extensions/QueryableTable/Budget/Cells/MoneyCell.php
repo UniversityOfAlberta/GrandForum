@@ -41,8 +41,8 @@ class MoneyCell extends Cell{
     function render(){
         $str = "";
         if($this->value != ""){
-            if(strstr($this->style, "text-align:right;font-family:monospace !important;") === false){
-                $this->style .= "text-align:right;font-family:monospace !important;";
+            if(strstr($this->style, "text-align:right;") === false){
+                $this->style .= "text-align:right;";
             }
             if($this->totalX != -1 && $this->totalY != -1){
                 if(isset($this->table->xls[$this->totalY][$this->totalX])){

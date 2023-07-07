@@ -391,11 +391,11 @@ $budgetStructures[GLYCONET_KPI_STRUCTURE] =
           array(NA,         CENTRE,     CENTRE),
           array(NA,         RIGHT,      RIGHT),
           array(NA,         RIGHT,      RIGHT),
-          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      PERC),
           array(NA,         BLANK,      NA),
           array(NA,         HEAD,       NA),            // 3. Optimal User of the Facility
           array(NA,         CENTRE,     CENTRE),
-          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      PERC),
           array(NA,         BLANK,      NA),
           array(NA,         HEAD,       NA),            // 4. Management FTEs Contributing to O&M
           array(NA,         CENTRE,     CENTRE),
@@ -410,7 +410,7 @@ $budgetStructures[GLYCONET_KPI_STRUCTURE] =
           array(NA,         RIGHT,      RIGHT),
           array(NA,         RIGHT,      RIGHT),
           array(NA,         RIGHT,      RIGHT),
-          array(NA,         RIGHT,      RIGHT),
+          array(NA,         RIGHT,      PERC),
           array(NA,         BLANK,      NA),
           array(NA,         HEAD,       NA),            // 6. Research Outputs
           array(NA,         CENTRE,     CENTRE),

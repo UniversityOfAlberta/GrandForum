@@ -27,8 +27,8 @@ class SubPercCell extends PercCell{
     function render(){
         $str = "";
         if($this->value != ""){
-            if(strstr($this->style, "font-style:italic;text-align:right;font-family: monospace !important;") === false){
-                $this->style .= "font-style:italic;text-align:right;font-family: monospace !important;";
+            if(strstr($this->style, "font-style:italic;text-align:right;") === false){
+                $this->style .= "font-style:italic;text-align:right;";
             }
             $str = number_format($this->value*100, 0)."%";
         }

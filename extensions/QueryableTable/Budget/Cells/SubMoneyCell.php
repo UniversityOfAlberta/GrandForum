@@ -28,8 +28,8 @@ class SubMoneyCell extends MoneyCell{
     function render(){
         $str = "";
         if($this->value != ""){
-            if(strstr($this->style, "font-style: italic;text-align:right;font-family:monospace !important;") === false){
-                $this->style .= "font-style: italic;text-align:right;font-family:monospace !important;";
+            if(strstr($this->style, "font-style: italic;text-align:right;") === false){
+                $this->style .= "font-style: italic;text-align:right;";
             }
             if($this->totalX != -1 && $this->totalY != -1){
                 if(isset($this->table->xls[$this->totalY][$this->totalX])){

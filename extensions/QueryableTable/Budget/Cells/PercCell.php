@@ -32,8 +32,8 @@ class PercCell extends Cell{
     function render(){
         $str = "";
         if($this->value != ""){
-            if(strstr($this->style, "text-align:right;font-family: monospace !important;") === false){
-                $this->style .= "text-align:right;font-family: monospace !important;";
+            if(strstr($this->style, "text-align:right;") === false){
+                $this->style .= "text-align:right;";
             }
             $str = number_format($this->value*100, 0)."%";
         }
