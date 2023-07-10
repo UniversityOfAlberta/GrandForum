@@ -71,7 +71,20 @@ LIMSContactsTableView = Backbone.View.extend({
             'rowsGroup': rowsGroup,
             'dom': 'Blfrtip',
             'buttons': [
-                'excel'
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                    exportOptions: {
+                        format: {
+                            body: function (html, row, col, node) {
+                                var html = $("<div>" + html + "</div>");
+                                $("span", html).remove();
+                                $("br", html).remove();
+                                return $(html).text().trim().replaceAll("\n", "");
+                            }
+                        }
+                    }
+                }
             ]
         });
         table = this.table;
