@@ -65,6 +65,10 @@ class ProjectKPITab extends AbstractEditableTab {
         // Optimize formulas
         $sheets = $obj->getAllSheets();
         
+        if(count($sheets) == 1){
+            return $obj;
+        }
+        
         $max = 0;
         for($i=2; $i<count($sheets); $i++){
             $obj->setActiveSheetIndex($i);
@@ -264,6 +268,12 @@ class ProjectKPITab extends AbstractEditableTab {
         $kpi->xls[71][1]->style .= "white-space: initial;";
         $kpi->xls[97][1]->style .= "white-space: initial;";
         $kpi->xls[98][1]->style .= "white-space: initial;";
+        foreach(array_merge($kpi->xls[0],$kpi->xls[1]) as $i => $cell){
+            $cell->style .= "display:none;";
+        }
+        foreach($kpi->xls as $i => $row){
+            $row[0]->style .= "display:none;";
+        }
         Cache::store("{$project->getId()}_{$id}", array($kpi, $md5), 86400*7);
 
         return array($kpi, $md5);

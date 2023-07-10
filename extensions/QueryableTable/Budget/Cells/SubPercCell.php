@@ -10,6 +10,9 @@ class SubPercCell extends PercCell{
             $this->target = intval($params[0]);
         }
         if($cellValue != ""){
+            if(strstr($cellValue, "%") !== false){
+                $cellValue = str_replace('%', '', $cellValue)/100;
+            }
             $value = $cellValue;
         }
         $this->value = $value;

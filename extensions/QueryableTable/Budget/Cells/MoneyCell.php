@@ -18,6 +18,7 @@ class MoneyCell extends Cell{
                 $this->postText = $params[0];
             }
             $cellValue = str_replace(',', '', $cellValue);
+            $cellValue = str_replace('$', '', $cellValue);
             if(is_numeric($cellValue)){
                 $value = $cellValue;
             }

@@ -14,6 +14,7 @@ class SubMoneyCell extends MoneyCell{
                 $this->totalX = $params[1];
             }
             $cellValue = str_replace(',', '', $cellValue);
+            $cellValue = str_replace('$', '', $cellValue);
             $value = $cellValue;
         }
         $this->value = $value;

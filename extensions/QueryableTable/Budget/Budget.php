@@ -192,8 +192,7 @@ class Budget extends QueryableTable{
                 if(is_callable($optimizeFn)){
                     call_user_func_array($optimizeFn, array_merge(array(&$obj), $optimizeFnArgs));
                 }
-                
-                $obj->setActiveSheetIndex($sheet);
+                $obj->setActiveSheetIndex(min($sheet, count($obj->getAllSheets())-1));
             }
             else{
                 $obj = $data;
