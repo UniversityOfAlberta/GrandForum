@@ -104,7 +104,7 @@ class ProjectKPITab extends AbstractEditableTab {
             }
         }
         
-        // TODO: Add retrieving from LIMS
+        // Retrieving from LIMS
         if($project != null){
             $userTypes = array();
             $userGeos = array();
@@ -118,6 +118,7 @@ class ProjectKPITab extends AbstractEditableTab {
             $requests = LIMSOpportunity::newFromProjectId($project->getId(), $start_date, $end_date);
             foreach($requests as $request){
                 $contact = $request->getContact();
+                $details = $contact->getDetails();
                 $tasks = $request->getTasks();
                 $products = $request->getProducts();
                 $users[$contact->getId()] = $contact;
@@ -142,21 +143,17 @@ class ProjectKPITab extends AbstractEditableTab {
                     }
                 }
                 
-                if($contact->getDetails()->hqp == "Yes"){
+                if($details->hqp == "Yes"){
                     $pCount = 0;
                     foreach($products as $product){
                         if($product->type == "Courses, Workshops & Training Sessions" ||
                            $product->type == "Public Events Hosted by Facility (Symposia, Conferences, Open Houses, Tours)" ||
                            $product->type == "Media Interviews, Press Conferences & Broadcasts" ||
                            $product->type == "Stakeholder Events Attended by GIS Personnel Conferences, Tradeshows & Industry, Governments, Community Events"){
-                            @$section8[$contact->getDetails()->hqp_other]++;
+                            @$section8[$details->hqp_other]++;
                         }
                     }
                 }
-            }
-            
-            foreach($users as $user){
-                $details = $user->getDetails();
                 @$userGeos[$details->geographic]++;
                 @$userSectors[$details->sector]++;
             }
