@@ -342,18 +342,24 @@ class ProjectKPITab extends AbstractEditableTab {
                     if(!$edit){
                         list($kpi, $md5) = ProjectKPITab::getKPI($this->project, "KPI_{$i}_Q{$q}", $date, $enddate);
                         if($kpi != null){
-                            $this->html .= $kpi->render()."<br />";
+                            $this->html .= "<div id='KPI_{$i}_Q{$q}'>{$kpi->render()}</div><br />";
+                        }
+                        if($md5 != null){
                             $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q{$q}_KPI.xlsx'>Download KPI</a><br />";
                         }
                         else{
-                            $this->html .= "No KPI uploaded";
+                            $this->html .= "<a class='externalLink' style='cursor:pointer;' id='download_KPI_{$i}_Q{$q}'>Download KPI (Auto-Generated)</a>
+                            <script type='text/javascript'>
+                                $('#download_KPI_{$i}_Q{$q}').click(function(){
+                                    window.open('data:application/vnd.ms-excel;base64,' + base64Conversion($('#KPI_{$i}_Q{$q} table')[0].outerHTML));
+                                });
+                            </script>";
                         }
                     }
                     $this->html .="</div>";
                 }
             }
             $this->html .= "</div>";
-
         }
     }
 }    

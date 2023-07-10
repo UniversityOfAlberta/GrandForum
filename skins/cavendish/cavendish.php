@@ -351,6 +351,10 @@ class CavendishTemplate extends QuickTemplate {
 		        echo json_encode($structure);
 		    ?>;
 		    
+		    function base64Conversion(s){
+		        return window.btoa(unescape(encodeURIComponent(s)));
+		    }
+		    
 		    function changeImg(el, img){
                 $(el).attr('src', img);
             }
