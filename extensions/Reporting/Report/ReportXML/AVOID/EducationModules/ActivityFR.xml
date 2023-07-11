@@ -43,7 +43,13 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video2" tooltip="Frailty Exercise" name="Frailty Exercise" title="Frailty Exercise" type="VideoReportSection" delete="true" />
+    <ReportSection id="video2" tooltip="Exercice de fragilité" name="Exercice de fragilité" title="Exercice de fragilité" type="VideoReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/ActivityFR/Physical Activity.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     
     <ReportSection id="video3" tooltip="Recommandations" name="Recommandations" title="Recommandations" type="VideoReportSection">
         <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/ActivityFR/3.Recommandations.mp4">
@@ -53,7 +59,13 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video4" tooltip="Strength" name="Strength" title="Strength" type="VideoReportSection" delete="true" />
+    <ReportSection id="video4" tooltip="Force" name="Force" title="Force" type="VideoReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/ActivityFR/Force _ Exercices pour les aînés _ Niveau 1 de 4.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     
     <ReportSection id="video5" tooltip="Motivation" name="Motivation" title="Motivation" type="VideoReportSection">
         <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/ActivityFR/5.Motivation.mp4">

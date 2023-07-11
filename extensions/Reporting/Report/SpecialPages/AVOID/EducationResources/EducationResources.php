@@ -92,7 +92,7 @@ class EducationResources extends SpecialPage {
             }
             $wgOut->addHTML("<div id='resources{$category->id}' class='resources modules' style='display:none; position: relative; width: 100%;'>
             <div class='modules module-3cols-outer'>
-                <div class='program-box program-body' style='width:100%;'>Education Module</div>
+                <div class='program-box program-body' style='width:100%;'><en>Education Module</en><fr>Module d'éducation</fr></div>
                 <a id='module{$category->id}' class='module' title='".showLanguage($category->title, $category->titleFr)."' href='{$url}'>
                     <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/thumbnail.png' alt='".showLanguage($category->title, $category->titleFr)."' />
                     <div class='module-progress'>
@@ -103,7 +103,7 @@ class EducationResources extends SpecialPage {
             </div>");
             
             $wgOut->addHTML("<div class='modules module-3cols-outer program-body' style='width: 60%;'>
-                <div class='program-box' style='width:100%;'>Resource Library</div>");
+                <div class='program-box' style='width:100%;'><en>Resource Library</en><fr>Ressources externes</fr></div>");
                 if(count($category->resources) > 0){
                     $wgOut->addHTML("<ul style='margin-top: 0;'>");
                     foreach($category->resources as $resource){
