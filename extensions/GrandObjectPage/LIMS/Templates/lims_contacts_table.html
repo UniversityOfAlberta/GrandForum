@@ -13,8 +13,10 @@
                 <th width="1%">Edit</th>
             <% } %>
             <th>Customer/User</th>
+            <th>Geography</th>
             <th>Owner</th>
             <th>Request Id</th>
+            <th>Node</th>
             <th>Request</th>
             <th width="1%">Category</th>
             <th>Assignee</th>
@@ -47,10 +49,16 @@
                             <span style="display:none;"><%= contact.id %></span>
                         </td>
                         <td>
+                            <%= contact.get('details').geographic %>
+                        </td>
+                        <td>
                             <a href="<%= opportunity.owner.url %>"><%= opportunity.owner.name %></a><span style="display:none;"><%= contact.id %></span>
                         </td>
                         <td>
                             <%= opportunity.requestId %>
+                        </td>
+                        <td>
+                            <%= opportunity.project.name %>
                         </td>
                         <td>
                             <%= opportunity.description %><span style="display:none;"><%= opportunity.id %></span>
