@@ -789,7 +789,7 @@ class CavendishTemplate extends QuickTemplate {
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>
                     <span id='fontSizeContainer'>
-                        Font Size: <a class='fontSize fontSizeSmall'>A</a><a class='fontSize fontSizeMedium'>A</a><a class='fontSize fontSizeLarge'>A</a>
+                        Taille de la police: <a class='fontSize fontSizeSmall'>A</a><a class='fontSize fontSizeMedium'>A</a><a class='fontSize fontSizeLarge'>A</a>
                     </span>";
             if($config->getValue('bilingual')){
                 echo "<select name='lang' style='vertical-align:middle;'>";

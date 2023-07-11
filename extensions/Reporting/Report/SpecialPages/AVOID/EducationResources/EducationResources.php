@@ -56,7 +56,7 @@ class EducationResources extends SpecialPage {
     }
 	
 	function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $wgLang;
         $dir = dirname(__FILE__) . '/';
         $wgOut->setPageTitle(showLanguage("AVOID Education", "PROACTIF pour éviter la fragilisation – Éducation"));
         $categories = self::JSON();
@@ -82,7 +82,8 @@ class EducationResources extends SpecialPage {
         }
         
         foreach($categories as $category){
-            $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=EducationModules/{$category->id}";
+            $lang = ($wgLang->getCode() == "fr") ? "FR" : "";
+            $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=EducationModules/{$category->id}{$lang}";
             $wgOut->addHTML("");
             
             $percent = self::completion($category->id);
@@ -93,7 +94,7 @@ class EducationResources extends SpecialPage {
             <div class='modules module-3cols-outer'>
                 <div class='program-box program-body' style='width:100%;'>Education Module</div>
                 <a id='module{$category->id}' class='module' title='".showLanguage($category->title, $category->titleFr)."' href='{$url}'>
-                    <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}/thumbnail.png' alt='".showLanguage($category->title, $category->titleFr)."' />
+                    <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/thumbnail.png' alt='".showLanguage($category->title, $category->titleFr)."' />
                     <div class='module-progress'>
                         <div class='module-progress-bar' style='width:{$percent}%;'></div>
                         <div class='module-progress-text'>".number_format($percent)."% Complete</div>
