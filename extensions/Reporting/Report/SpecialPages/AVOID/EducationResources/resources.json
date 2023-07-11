@@ -136,7 +136,21 @@
             }
         ],
         "resourcesFr": [
-        
+            {
+                "file": "La vaccination au cours de la vie.pdf",
+                "title": "La vaccination au cours de la vie",
+                "tags": [ ]
+            },
+            {
+                "file": "Les vaccins fonctionnent.pdf",
+                "title": "Les vaccins fonctionnent",
+                "tags": [ ]
+            },
+            {
+                "file": "Programme de vaccination contre le zona.pdf",
+                "title": "Programme de vaccination contre le zona",
+                "tags": [ ]
+            }
         ]
     },
     {
@@ -179,7 +193,46 @@
             }
         ],
         "resourcesFr": [
-        
+            {
+                "file": "Ai-je encore besoin de ce médicament.pdf",
+                "title": "Ai-je encore besoin de ce médicament",
+                "tags": []
+            },
+            {
+                "file": "Bien connaître tous ses médicaments.pdf",
+                "title": "Bien connaître tous ses médicaments",
+                "tags": []
+            },
+            {
+                "file": "Guide des médicaments sédatifs-hypnotiques.pdf",
+                "title": "Guide des médicaments sédatifs-hypnotiques",
+                "tags": []
+            },
+            {
+                "file": "La déprescription.pdf",
+                "title": "La déprescription",
+                "tags": []
+            },
+            {
+                "file": "Les médicaments et les chutes.pdf",
+                "title": "Les médicaments et les chutes",
+                "tags": []
+            },
+            {
+                "file": "Outil de suivi des médicaments.pdf",
+                "title": "Outil de suivi des médicaments",
+                "tags": []
+            },
+            {
+                "file": "Qu_est-ce que la déprescription.pdf",
+                "title": "Qu'est-ce que la déprescription",
+                "tags": []
+            },
+            {
+                "file": "Utilisation sécuritaire de médicaments pour les adultes plus âgés.pdf",
+                "title": "Utilisation sécuritaire de médicaments pour les adultes plus âgés",
+                "tags": []
+            }
         ]
     },
     {
@@ -325,7 +378,56 @@
             }
         ],
         "resourcesFr": [
-        
+            {
+                "file": "Coup d_oeil sur l_alimentation pour les personnes vivant avec le diabète.pdf",
+                "title": "Coup d'oeil sur l'alimentation pour les personnes vivant avec le diabète",
+                "tags": [ ]
+            },
+            {
+                "file": "Guide des aliments à haute valeur nutritive.pdf",
+                "title": "Guide des aliments à haute valeur nutritive",
+                "tags": [ ]
+            },
+            {
+                "file": "Guide pour les personnes vivant avec la maladie coeliaque.pdf",
+                "title": "Guide pour les personnes vivant avec la maladie coeliaque",
+                "tags": [ ]
+            },
+            {
+                "file": "Guide vers une saine alimentation pour les adultes âgés.pdf",
+                "title": "Guide vers une saine alimentation pour les adultes âgés",
+                "tags": [ ]
+            },
+            {
+                "file": "La liste de courses imprimable.pdf",
+                "title": "La liste de courses imprimable",
+                "tags": [ ]
+            },
+            {
+                "file": "Le guide alimentaire.pdf",
+                "title": "Le guide alimentaire",
+                "tags": [ ]
+            },
+            {
+                "file": "Les aliments protéinés.pdf",
+                "title": "Les aliments protéinés",
+                "tags": [ ]
+            },
+            {
+                "file": "Recette de sandwich aux oeufs.pdf",
+                "title": "Recette de sandwich aux oeufs",
+                "tags": [ ]
+            },
+            {
+                "file": "Recette de sauté au tofu.pdf",
+                "title": "Recette de sauté au tofu",
+                "tags": [ ]
+            },
+            {
+                "file": "Recette de soupe poulet et nouilles.pdf",
+                "title": "Recette de soupe poulet et nouilles",
+                "tags": [ ]
+            }
         ]
     },
     {
@@ -393,7 +495,41 @@
             }
         ],
         "resourcesFr": [
-        
+            {
+                "file": "Comment obtenir une bonne nuit de sommeil sans médicaments.pdf",
+                "title": "Comment obtenir une bonne nuit de sommeil sans médicaments",
+                "tags": []
+            },
+            {
+                "file": "Insomnie et anxiété chez les personnes âgées.pdf",
+                "title": "Insomnie et anxiété chez les personnes âgées",
+                "tags": []
+            },
+            {
+                "file": "Le journal du sommeil.pdf",
+                "title": "Le journal du sommeil",
+                "tags": []
+            },
+            {
+                "file": "Le sommeil des canadiens.pdf",
+                "title": "Le sommeil des canadiens",
+                "tags": []
+            },
+            {
+                "file": "L_insomnie.pdf",
+                "title": "L'insomnie",
+                "tags": []
+            },
+            {
+                "file": "Quand le sommeil devient un problème.pdf",
+                "title": "Quand le sommeil devient un problème",
+                "tags": []
+            },
+            {
+                "file": "Trucs pour mieux dormir.pdf",
+                "title": "Trucs pour mieux dormir",
+                "tags": []
+            }
         ]
     },
     {
@@ -442,7 +578,66 @@
             }
         ],
         "resourcesFr": [
-        
+            {
+                "file": "14 exercices pour améliorer la force et l_équilibre.pdf",
+                "title": "14 exercices pour améliorer la force et l'équilibre",
+                "tags": []
+            },
+            {
+                "file": "Chute chez les ainés au Canada.pdf",
+                "title": "Chute chez les ainés au Canada",
+                "tags": []
+            },
+            {
+                "file": "Guide de prévention des chutes.pdf",
+                "title": "Guide de prévention des chutes",
+                "tags": []
+            },
+            {
+                "file": "IMP.pdf",
+                "title": "IMP",
+                "tags": []
+            },
+            {
+                "file": "La sécurité dans les escaliers.pdf",
+                "title": "La sécurité dans les escaliers",
+                "tags": []
+            },
+            {
+                "file": "Les chutes, comment réagir.pdf",
+                "title": "Les chutes, comment réagir",
+                "tags": []
+            },
+            {
+                "file": "Médicament et chutes.pdf",
+                "title": "Médicament et chutes",
+                "tags": []
+            },
+            {
+                "file": "Prévenir les chutes.pdf",
+                "title": "Prévenir les chutes",
+                "tags": []
+            },
+            {
+                "file": "Prévenir les chutes dans les escaliers.pdf",
+                "title": "Prévenir les chutes dans les escaliers",
+                "tags": []
+            },
+            {
+                "file": "Programme PIED.pdf",
+                "title": "Programme PIED",
+                "tags": []
+            },
+            {
+                "file": "Que faire en cas de chute.pdf",
+                "title": "Que faire en cas de chute",
+                "tags": []
+            },
+            {
+                "file": "Réduire le risque de chute.pdf",
+                "title": "Réduire le risque de chute",
+                "tags": []
+            }
         ]
     }
 ]
