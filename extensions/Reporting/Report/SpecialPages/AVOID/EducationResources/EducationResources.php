@@ -104,10 +104,11 @@ class EducationResources extends SpecialPage {
             
             $wgOut->addHTML("<div class='modules module-3cols-outer program-body' style='width: 60%;'>
                 <div class='program-box' style='width:100%;'><en>Resource Library</en><fr>Ressources externes</fr></div>");
-                if(count($category->resources) > 0){
+                $resources = ($wgLang->getCode() == "en") ? $category->resources : $category->resourcesFr;
+                if(count($resources) > 0){
                     $wgOut->addHTML("<ul style='margin-top: 0;'>");
-                    foreach($category->resources as $resource){
-                        $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}/Resources/{$resource->file}";
+                    foreach($resources as $resource){
+                        $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
                         $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
                     }
                     $wgOut->addHTML("</ul>");

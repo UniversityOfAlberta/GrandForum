@@ -6,7 +6,8 @@
         "videos": 5,
         "questions": 4,
         "tags": ["everything"],
-        "resources": []
+        "resources": [],
+        "resourcesFr": []
     },
     {
         "id": "Activity",
@@ -56,6 +57,38 @@
                 "title": "Tips to Get Active",
                 "tags": []
             }
+        ],
+        "resourcesFr": [
+            {
+                "file": "Conseils pour être actif.pdf",
+                "title": "Conseils pour être actif",
+                "tags": []
+            },
+            {
+                "file": "Programme en douceur.pdf",
+                "title": "Programme en douceur",
+                "tags": []
+            },
+            {
+                "file": "Programme posture et stabilité.pdf",
+                "title": "Programme posture et stabilité",
+                "tags": []
+            },
+            {
+                "file": "Programme sans limite.pdf",
+                "title": "Programme sans limite",
+                "tags": []
+            },
+            {
+                "file": "Programme sur chaise.pdf",
+                "title": "Programme sur chaise",
+                "tags": []
+            },
+            {
+                "file": "Programme vitalité.pdf",
+                "title": "Programme vitalité",
+                "tags": []
+            }
         ]
     },
     {
@@ -101,6 +134,9 @@
                 "title": "Vaccines Work",
                 "tags": [ ]
             }
+        ],
+        "resourcesFr": [
+        
         ]
     },
     {
@@ -141,6 +177,9 @@
                 "title": "Optimize Medication Video",
                 "tags": ["optimize med vid"]
             }
+        ],
+        "resourcesFr": [
+        
         ]
     },
     {
@@ -166,6 +205,9 @@
                 "title": "Interact Video",
                 "tags": ["interact vid"]
             }
+        ],
+        "resourcesFr": [
+        
         ]
     },
     {
@@ -281,6 +323,9 @@
                 "title": "Speak to a Registered Dietitian",
                 "tags": []
             }
+        ],
+        "resourcesFr": [
+        
         ]
     },
     {
@@ -346,6 +391,9 @@
                 "title": "The Road to Better Sleep",
                 "tags": []
             }
+        ],
+        "resourcesFr": [
+        
         ]
     },
     {
@@ -392,6 +440,9 @@
                 "title": "Online Fitness Exercises",
                 "tags": []
             }
+        ],
+        "resourcesFr": [
+        
         ]
     }
 ]
