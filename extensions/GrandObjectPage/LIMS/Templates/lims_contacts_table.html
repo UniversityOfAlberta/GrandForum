@@ -19,11 +19,12 @@
             <th>Node</th>
             <th>Request</th>
             <th style="white-space:nowrap;">User Type</th>
-            <th>Date</th>
+            <th width="1%" style="white-space:nowrap;">Request Date</th>
             <th width="1%">Category</th>
             <th>Assignee</th>
             <th>Task</th>
             <th width="1%">Status</th>
+            <th width="1%" style="white-space:nowrap;">Task Date</th>
             <th width="1%" style="white-space:nowrap;">Due Date</th>
         </tr>
     </thead>
@@ -82,6 +83,9 @@
                         </td>
                         <td style="white-space:nowrap;">
                             <%= task.status %><span style="display:none;"><%= task.id %></span>
+                        </td>
+                        <td align="center" style="white-space:nowrap;">
+                            <%= task.date.substr(0,10) %><span style="display:none;"><%= task.id %></span>
                         </td>
                         <td align="center" style="white-space:nowrap;">
                             <%= task.dueDate %><span style="display:none;"><%= task.id %></span>
