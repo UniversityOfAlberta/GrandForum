@@ -55,9 +55,9 @@ LIMSContactsTableView = Backbone.View.extend({
             order = this.table.order();
             searchStr = this.table.search();
         }
-        var rowsGroup = [1,0,2,3,4];
+        var rowsGroup = [1,0,2,3,4,5,6,7];
         if(isAllowedToCreateLIMSContacts){
-            rowsGroup = [1,0,2,3,4,5];
+            rowsGroup = [1,0,2,3,4,5,6,7,8];
         }
         if(this.groupBy != null){
             rowsGroup = [this.groupBy].concat(rowsGroup);
