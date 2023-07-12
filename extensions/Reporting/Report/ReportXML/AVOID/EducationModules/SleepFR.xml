@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Sommeil" reportType="RP_SLEEP" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'EducationResources-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Questionséclair").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair4").hasClass("selectedReportTab") ||
+                        $("#Answer4").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q4)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Questionséclair").text("Questions éclair").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/SleepFR/1.Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="Bénéfices" name="Bénéfices" title="Bénéfices" type="VideoReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/SleepFR/2.Bénéfices.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Sommeil et vieillissement" name="Sommeil et vieillissement" title="Sommeil et vieillissement" type="VideoReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/SleepFR/3.Sommeil et vieillissement.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Comment faire" name="Comment faire" title="Comment faire" type="VideoReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/SleepFR/4.Comment faire.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="La santé des aînés en situation de confinement - Sommeil" name="Vidéo de sommeil" title="La santé des aînés en situation de confinement - Sommeil" type="VideoReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/SleepFR/La santé des aînés en situation de confinement - Sommeil.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Questions éclair" name="Questions éclair"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'Sleep');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Maintenant que nous avons pris connaissance des nombreux avantages du sommeil, passons en revue cette information pour consolider nos connaissances.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3> Il est normal que le sommeil devienne plus difficile à mesure que l’on vieillit.</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q1', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Réponse 1" answer="Vrai">
+            <![CDATA[
+                {$item}
+                <p>Globalement, le cycle veille-sommeil se fragilise avec l’âge.</p>
+                <p>Il est normal de se coucher plus tôt et de se réveiller plus tôt, de dormir plus longtemps pendant la journée, de dormir moins longtemps pendant la nuit, d’avoir un sommeil plus léger et de se réveiller plus souvent.</p>
+                <p>Ces changements peuvent être normaux, et n’auront pas nécessairement d’incidence sur notre quotidien. Certaines personnes ont moins besoin de sommeil au fur et à mesure qu’elles avancent en âge.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Questions éclair" name="Questions éclair2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="a. Au moins 30 minutes avant le coucher|b. De 4 à 6 heures avant le coucher|c. De 2 à 4 heures avant le coucher|d. Au moins 6 heures avant le coucher">
+            <![CDATA[
+                <h3>À quel moment est-il préférable de boire notre dernière tasse de café ou notre boisson caféinée préférée?</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q2', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers1" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Réponse 2" answer="b. De 4 à 6 heures avant le coucher">
+            <![CDATA[
+                {$item}
+                <p>Cela permet d’éliminer la caféine de notre système et ainsi d’éviter d’être agité durant la nuit.</p>
+                
+                <p>En limitant la quantité de liquide ingéré avant d’aller au lit, nous diminuons les risques d’avoir envie d’uriner durant la nuit.</p>
+                
+                <p>Consultez la Bibliothèque de ressources pour plus d’information sur l’hygiène de sommeil.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Questions éclair" name="Questions éclair3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. Établir une routine constante à l’heure du coucher|b. Faire de l’exercice pendant la journée|c. Prendre un verre de vin juste avant d’aller se coucher|d. Garder sa chambre sombre et silencieuse">
+            <![CDATA[
+                <h3>Parmi les énoncés suivants, lequel n’est pas un exemple d’une bonne habitude de sommeil:</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q3', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers1" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Réponse 3" answer="c. Prendre un verre de vin juste avant d’aller se coucher">
+            <![CDATA[
+                {$item}
+                <p>L’alcool peut entraîner des troubles du sommeil, une baisse de la qualité du sommeil et peut nous obliger à nous lever plus souvent pour aller aux toilettes pendant la nuit.</p>
+                <p>Par ailleurs, une routine constante à l’heure du coucher, l’exercice physique et le maintien d’une pièce fraîche et calme pour dormir peuvent tous contribuer à la qualité du sommeil.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 4 -->
+    <ReportSection id="q4" tooltip="Questions éclair" name="Questions éclair4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3>Dans l’ensemble, une bonne santé est associée à un bon sommeil.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 4 -->
+    <ReportSection id="a4" tooltip="Answers1" name="Answer4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Réponse 4" answer="True">
+            <![CDATA[
+                {$item}
+                <b>Si vous respectez les éléments du programme Proactif, vous profiterez probablement d’un bon sommeil.</b>
+                <p>La pratique d’une activité régulière, la consultation annuelle de votre médecin ou de votre pharmacien pour la vérification de vos médicaments, la réduction du niveau de stress, la présence d’une personne sur qui nous pouvons compter pour obtenir du soutien et interagir, et le choix des moments où nous consommons de la caféine et de l’alcool peuvent contribuer à un sommeil de meilleure qualité.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/SleepFR/7.Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="backtomodules" name="Retour aux modules" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Nous vous redirigeons vers les modules éducatifs...
+                <script type="text/javascript">
+                    setTimeout(function(){
+                        document.location = wgServer + wgScriptPath + '/index.php/Special:EducationResources';
+                    }, 1000);
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+
+</Report>
