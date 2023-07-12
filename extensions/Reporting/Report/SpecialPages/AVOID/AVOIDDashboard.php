@@ -355,11 +355,12 @@ class AVOIDDashboard extends SpecialPage {
                                 <fr>Utilisez le modèle de plan d’action fourni pour élaborer des plans hebdomadaires, suivre vos progrès quotidiens et examiner vos réalisations dans votre journal de plans d’action.</fr>
                             </p>
                             <div id='fitbitMessages'></div>
-                            Connect with your <b>Fitbit</b> for easy monitoring&nbsp;&nbsp;&nbsp;
-                            Off <label class='switch'>
+                            <en>Connect with your <b>Fitbit</b> for easy monitoring&nbsp;&nbsp;&nbsp;</en>
+                            <fr>Connectez votre <b>FitBit</b> pour obtenir des informations&nbsp;&nbsp;&nbsp;</fr>
+                            <en>Off</en><fr>Désactiver</fr> <label class='switch'>
                                 <input type='checkbox' name='fitbitToggle' $fitbitEnabled />
                                 <span class='toggle round' style='border: none !important;'></span>
-                            </label> On
+                            </label> <en>On</en><fr>Activer</fr>
                             <p>
                                 <div id='newPlan' style='display: none;'>
                                     <a id='createActionPlan' href='#'>

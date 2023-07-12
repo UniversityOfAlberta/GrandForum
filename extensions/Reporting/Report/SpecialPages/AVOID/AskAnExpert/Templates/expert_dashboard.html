@@ -1,9 +1,13 @@
 <div class='program-body' style='overflow: auto;'>
     <div style='display:flex;'>
         <div class='program-header' style="text-align:center; width:800px;line-height:0.8em;">
-            ASK AN AVOID EXPERT
+            <en>ASK AN AVOID EXPERT</en>
+            <fr>ÉVÉNEMENTS</fr>
             <br />
-            <span style="font-size:0.4em;">A series of KFL&A community events to support a healthy lifestyle</span>
+            <span style="font-size:0.4em;">
+                <en>A series of KFL&A community events to support a healthy lifestyle</en>
+                <fr>Des événements offerts dans votre ville</fr>
+            </span>
         </div>
         <div class='' style='min-width: 200px;'>
             <img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style="float: right; height: 140px;" />
@@ -19,33 +23,35 @@
     <div id="registerDialog" style="display:none;"></div>
     <div id="detailsDialog" style="display:none;"></div>
     <div class="expert_announce"><b>
-        <span style="color:#005f9d;">Current Theme:</span> <%= output.theme  %><br />
-        <span style="color:#005f9d;">Host:</span> <%= output.host  %><br />
-        <span style="color:#005f9d;">Event:</span> <%= output.event  %><br />
-        <span style="color:#005f9d;">Description:</span></b> <%= output.description %> <br />
+        <span style="color:#005f9d;"><en>Current Theme</en><fr>Thème</fr>:</span> <%= output.theme %><br />
+        <span style="color:#005f9d;"><en>Host</en><fr>Hôte</fr>:</span> <%= output.host %><br />
+        <span style="color:#005f9d;"><en>Event</en><fr>Titre de l’événement</fr>:</span> <%= output.event %><br />
+        <span style="color:#005f9d;"><en>Description</en><fr>Description</fr>:</span></b> <%= output.description %> <br />
     </div>
     <div style='display:flex; clear: both;'>
         <div style='width:40%; padding-right:1em;'>
             <% if (output.end_of_event != '0000-00-00 00:00:00'){ %>
                 <div class='program-box' style="margin-left:0.5em; border-radius: 0em !important;">
                     <ul>
-                        <li><span style=""><%= output.date  %> @ <%= output.time %> - <%= output.end_time %></span></li>
-                        <li><%= output.location  %></li>
-                        <li><a id="registerevent" class="registerbtn" data-cat="register" href="#">REGISTER</a></li>
+                        <li><span style=""><%= output.date %> @ <%= output.time %> - <%= output.end_time %></span></li>
+                        <li><%= output.location %></li>
+                        <li><a id="registerevent" class="registerbtn" data-cat="register" href="#"><en>REGISTER</en><fr>S’INSCRIRE</fr></a></li>
                     </ul>
                 </div>
             <% } %>
         </div>
         <div style="width:60%; padding-left:1em;">
-            <div style="color:#005f9d;">
-                <b>Past Event Resources</b><br />
-                <ul>
-                    <li><a href="https://youtu.be/8pICPPnDVc0" target="_blank">Eating Well, Aging Well: A Community Conversation May 16, 2023</a></li>
-                    <li><a href="https://healthyagingcentres.ca/portal/EducationModules/Sleep/Resources/Sleep Presentation AVOID program.pdf" target="_blank">The Road to Better Sleep March 1, 2023</a></li>
-                    <li><a href="https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true" target="_blank">Transit Travel Training Jan 12, 2023</a></li>
-                    <li><a href="https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true" target="_blank">Kingston Access Bus Jan 12, 2023</a></li>
-                </ul>
-            </div>
+            <% if(wgScriptPath.indexOf('portal') != -1){ %>
+                <div style="color:#005f9d;">
+                    <b>Past Event Resources</b><br />
+                    <ul>
+                        <li><a href="https://youtu.be/8pICPPnDVc0" target="_blank">Eating Well, Aging Well: A Community Conversation May 16, 2023</a></li>
+                        <li><a href="https://healthyagingcentres.ca/portal/EducationModules/Sleep/Resources/Sleep Presentation AVOID program.pdf" target="_blank">The Road to Better Sleep March 1, 2023</a></li>
+                        <li><a href="https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true" target="_blank">Transit Travel Training Jan 12, 2023</a></li>
+                        <li><a href="https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true" target="_blank">Kingston Access Bus Jan 12, 2023</a></li>
+                    </ul>
+                </div>
+            <% } %>
         </div>
     </div>
 </div>
