@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Pour un changement réussi" reportType="RP_INGREDIENTS_FOR_CHANGE" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'EducationResources-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Questionséclair").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair4").hasClass("selectedReportTab") ||
+                        $("#Answer4").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q4)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Questionséclair").text("Questions éclair").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChangeFR/1.Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="Confiance en soi" name="Confiance en soi" title="Confiance en soi" type="VideoReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChangeFR/2.Confiance en soi.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Soutien" name="Soutien" title="Soutien" type="VideoReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChangeFR/3.Soutien.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Motivation" name="Motivation" title="Motivation" type="VideoReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChangeFR/4.Motivation.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Questions éclair" name="Questions éclair"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'IngredientsForChange');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Maintenant que nous avons pris connaissance des trois principaux ingrédients (ou facteurs) qui entrent en jeu dans l’adoption d’habitudes de vie saines, faisons un récapitulatif et voyons ce qui a été retenu.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="a. Confiance, soutien, motivation|b. Contrôle, espoir, détermination|c. Compétence, choix, confort">
+            <![CDATA[
+                <h3>Les trois facteurs en cause dans l’adoption de saines habitudes de vie sont les suivants:</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q1', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Réponse 1" answer="a. Confiance, soutien, motivation">
+            <![CDATA[
+                {$item}
+                <p>
+                    La recette du changement n’est pas simple, mais lorsque nous en connaissons les ingrédients, nous pouvons y arriver.  Il nous sera plus facile de réussir à adopter de saines habitudes de vie si nous avons confiance en nos choix, si nous bénéficions de soutien et d’un accès aux ressources, et si nous sommes motivés par des objectifs intrinsèques.
+Gardez-les à l’esprit. Si vous êtes confronté à un obstacle, revenez-y pour repenser à la façon dont ils s’appliquent à vous.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Questions éclair" name="Questions éclair2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="a. Connaître mon plan|b. Ne pas avoir peur, peu importe la situation|c. Ne jamais échouer dans mon plan">
+            <![CDATA[
+                <h3>La confiance c’est:</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q2', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers1" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Réponse 2" answer="a. Connaître mon plan">
+            <![CDATA[
+                {$item}
+                <p>
+                    La confiance peut signifier beaucoup de choses, mais dans le contexte de l’adoption de nouvelles habitudes de vie, elle désigne simplement une chose pour laquelle nous nous sentons prêts et prête, et pour laquelle nous avons un plan réaliste et gérable.<br /> 
+                    Lorsque vous êtes prêt et prête à réfléchir à votre niveau de confiance, vous pouvez vous demander : QU’EST-CE QUE suis-je prêt à commencer aujourd’hui?<br /> 
+                    Cela vous donnera une idée de la manière d’adopter un comportement adapté à votre niveau de confiance actuel.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Questions éclair" name="Questions éclair3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. Ne jamais être seul|b. Ne pas tomber|c. Avoir accès à de l’aide pendant mon parcours">
+            <![CDATA[
+                <h3>Le soutien c’est:</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q3', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers1" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Réponse 3" answer="c. Avoir accès à de l’aide pendant mon parcours">
+            <![CDATA[
+                {$item}
+                <p>
+                    Dans le contexte de l’adoption de nouvelles habitudes de vie, le soutien représente toutes les ressources qui peuvent être cruciales pour entreprendre et maintenir le changement.
+                </p>
+                <p>
+                    <b>Le soutien définit COMMENT nous faisons les choses que nous faisons.</b><br />
+                    Lorsque vous êtes sûr de vouloir changer les choses, vous pouvez accéder à une liste de ressources d’information allant des recettes aux plans d’activités en passant par d’autres recommandations en matière de santé.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 4 -->
+    <ReportSection id="q4" tooltip="Quiz" name="Quiz4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. Demeurer toujours actif et active|b. Savoir pourquoi je fais quelque chose|c. Avoir un plan">
+            <![CDATA[
+                <h3>La motivation, c’est:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 4 -->
+    <ReportSection id="a4" tooltip="Answers1" name="Answer4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Answer 4" answer="b. Savoir pourquoi je fais quelque chose">
+            <![CDATA[
+                {$item}
+                <p>
+                    La motivation, en particulier la motivation intrinsèque, peut être l’un des ingrédients les plus importants pour changer nos habitudes, car elle nous relie à nos objectifs et nous rappelle POURQUOI nous faisons ce que nous faisons.<br />
+                    Pensez à ce que vous faites pendant vos temps libres. Qu’est-ce que ces activités ont en commun?<br />
+                    Il s’agit probablement d’activités que vous aimez ou qui sont liées à une valeur personnelle importante. Pouvez-vous relier une nouvelle habitude saine à l’une de vos valeurs personnelles?
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChangeFR/6.Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="backtomodules" name="Retour aux modules" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Nous vous redirigeons vers les modules éducatifs...
+                <script type="text/javascript">
+                    setTimeout(function(){
+                        document.location = wgServer + wgScriptPath + '/index.php/Special:EducationResources';
+                    }, 1000);
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+
+</Report>
