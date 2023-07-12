@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="OptimizeMedication" reportType="RP_OPTIMIZE_MEDICATION" ajax="true" disabled="false">
+<Report name="Optimize Medication" reportType="RP_OPTIMIZE_MEDICATION" ajax="true" disabled="false">
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Optimisation des médicaments" reportType="RP_OPTIMIZE_MEDICATION" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <style>
+                #aboveTabs, #reportTabs {
+                    width: 240px;
+                    min-width: 240px;
+                }
+            </style>
+            <script type="text/javascript">
+                var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'EducationResources-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Questionséclair").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Questionséclair").text("Questions éclair").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedicationFR/1.Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="Qu'est-ce que l'optimisation des médicaments" name="Qu'est-ce que" title="Qu'est-ce que l'optimisation des médicaments" type="VideoReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedicationFR/2.Qu_est-ce que l_optimisation des médicaments.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Pourquoi optimiser nos médicaments" name="Pourquoi" title="Pourquoi optimiser nos médicaments" type="VideoReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedicationFR/3.Pourquoi optimiser nos médicaments.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Comment faire" name="Comment faire" title="Comment faire" type="VideoReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedicationFR/4.Comment faire.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="La déprescription de médicaments chez les aînés" name="La déprescription de médicaments" title="La déprescription de médicaments chez les aînés" type="VideoReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedicationFR/La déprescription de médicaments chez les aînés.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Questions éclair" name="Questions éclair"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'OptimizeMedication');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Maintenant que nous avons pris connaissance des bénéfices de l’optimisation des médicaments et de son importance dans notre plan pour adopter de nouvelles habitudes de vie, faisons un récapitulatif et voyons ce qui a été retenu.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3>Lors de l’examen annuel des médicaments, je n’ai pas besoin de mentionner les médicaments en vente libre ou les vitamines que je prends.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Réponse 1" answer="Faux">
+            <![CDATA[
+                {$item} 
+                <b>La vérité, c’est que toutes les formes de médicaments, qu’ils soient prescrits ou non, peuvent avoir des interactions négatives et des effets secondaires.</b>
+                <p>
+                    Les médicaments en vente libre et d’autres suppléments peuvent également causer des effets secondaires, interagir avec les médicaments sur ordonnance et avoir un impact sur les résultats de santé que nous espérons obtenir avec les médicaments sur ordonnance.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Questions éclair" name="Questions éclair2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3>Si je pense que mon médicament me donne des effets secondaires indésirables, je dois arrêter de le prendre.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Réponse 2" answer="Faux">
+            <![CDATA[
+                {$item}
+                <b>En réalité, vous devez toujours consulter votre professionnel de la santé avant d’apporter des changements.</b>
+                <p>
+                    Nous devons toujours informer notre professionnel de la santé de tout effet secondaire que nous pouvons ressentir. C’est pourquoi il est important d’assurer le suivi de nos médicaments, afin de pouvoir reconnaître les symptômes qui pourraient apparaître et le moment où nous avons commencé à les ressentir.
+                </p>
+                <p>
+                    Bien que votre médecin puisse décider que l’arrêt de votre traitement est la bonne approche, vous devez toujours lui en parler d’abord et suivre ses conseils sur la façon d’arrêter le traitement en toute sécurité.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Questions éclair" name="Questions éclair3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3>Il est normal de se sentir mal quand on prend de nombreux types de médicaments.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Réponse 3" answer="Faux">
+            <![CDATA[
+                {$item}
+                <b>En réalité, vous devez parler à votre professionnel de la santé de tout effet secondaire que vous pourriez avoir.</b>
+                <p>
+                    Bien que les médicaments puissent avoir des effets indésirables, il est toujours utile de discuter des difficultés que nous rencontrons avec notre professionnel de la santé. Il saura s’il est possible de gérer les effets secondaires ressentis en optimisant le traitement et en conseillant sur les mesures à prendre.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedicationFR/7.Conclusions.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="backtomodules" name="Retour aux modules" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Nous vous redirigeons vers les modules éducatifs...
+                <script type="text/javascript">
+                    setTimeout(function(){
+                        document.location = wgServer + wgScriptPath + '/index.php/Special:EducationResources';
+                    }, 1000);
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+</Report>
