@@ -30,9 +30,14 @@ class Programs extends SpecialPage {
     }
 	
 	function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $wgLang;
         $me = Person::newFromWgUser();
-        $wgOut->setPageTitle("AVOID Programs");
+        if($wgLang->getCode() == 'en'){
+            $wgOut->setPageTitle("AVOID Programs");
+        }
+        else{
+            $wgOut->setPageTitle("Programmes PROACTIF");
+        }
         $programs = self::getProgramsJSON();
         $categories = array();
         foreach($programs as $program){
@@ -40,7 +45,10 @@ class Programs extends SpecialPage {
         }
         
         $cols = 3;
-        $wgOut->addHTML("<p class='program-body'>The AVOID Frailty programs are designed to keep you connected with your peers and community as well as support the development of healthy behaviour. You can choose to participate as a volunteer or find the help you need to be empowered to take control of your health. Click on the program that you are interested in and sign up using the orange link at the bottom of the page.</p><div class='modules'>");
+        $wgOut->addHTML("<p class='program-body'>
+                            <en>The AVOID Frailty programs are designed to keep you connected with your peers and community as well as support the development of healthy behaviour. You can choose to participate as a volunteer or find the help you need to be empowered to take control of your health. Click on the program that you are interested in and sign up using the orange link at the bottom of the page.</en>
+                            <fr>Les programmes PROACTIF visent à renforcer le sentiment de communauté et l’entraide entre pairs, et à contribuer à l’adoption de saines habitudes de vie. Vous pouvez participer en tant que bénévole ou bien y trouvez l’aide dont vous avez besoin pour vous motiver à prendre le contrôle de votre santé. Cliquez sur le programme qui vous intéresse et inscrivez-vous ci-dessous.</fr>
+                        </p><div class='modules'>");
         foreach($categories as $category){
             $wgOut->addHTML("<div class='modules module-2cols-outer'>
             <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>{$category}</div>");
@@ -79,7 +87,7 @@ class Programs extends SpecialPage {
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-        $tabs["Programs"] = TabUtils::createTab("<span class='desktop-text'><span class='en'>AVOID Programs</span><span class='fr'>AVOID Programmes</span></span>
+        $tabs["Programs"] = TabUtils::createTab("<span class='desktop-text'><span class='en'>AVOID Programs</span><span class='fr'>Programmes PROACTIF</span></span>
                                                  <span class='mobile-text'><span class='en'>Programs</span><span class='fr'>Programmes</span></span>");
         return true;
     }
