@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Vaccination" reportType="RP_VACCINATION" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <style>
+                #aboveTabs, #reportTabs {
+                    width: 210px;
+                    min-width: 210px;
+                }
+            </style>
+            <script type="text/javascript">
+                var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'EducationResources-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Questionséclair").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Questionséclair").text("Questions éclair").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/VaccinationFR/1.Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="Fonctionnement des vaccins" name="Fonctionnement des vaccins" title="Fonctionnement des vaccins" type="VideoReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/VaccinationFR/Le fonctionnement d_un vaccin.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Bénéfices" name="Bénéfices" title="Bénéfices" type="VideoReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/VaccinationFR/4.Bénéfices.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Recommandations: 1" name="Recommandations: 1" title="Recommandations: 1" type="VideoReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/VaccinationFR/5.Recommandations.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="Recommandations: 2" name="Recommandations: 2" title="Recommandations: 2" type="VideoReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/VaccinationFR/vaccination.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Prochaines étapes" name="Prochaines étapes" title="Prochaines étapes" type="VideoReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/VaccinationFR/7.Prochaines étapes.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Questions éclair" name="Questions éclair"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'Vaccination');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Maintenant que nous en savons plus sur les avantages de la vaccination et que nous avons réfléchi aux raisons pour lesquelles il est important d’inclure les vaccins dans notre plan pour l’adoption d’un mode de vie sain, passons en revue ces renseignements pour consolider nos connaissances.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3>La vaccination ne protège que la personne qui reçoit l’injection.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Réponse 1" answer="Faux">
+            <![CDATA[
+                {$item} 
+                <b>La vérité, c’est que la vaccination protège non seulement la personne vaccinée, mais aussi son entourage.</b>
+                <p>
+                    La vaccination est une étape importante de notre parcours vers de saines habitudes de vie, mais elle peut aussi offrir une protection à notre entourage. Plus le nombre de personnes vaccinées est élevé, plus la probabilité de transmission de la maladie d’une personne à l’autre est faible. Cela est particulièrement important pour assurer la protection des personnes qui ne peuvent pas recevoir de vaccins en raison d’un système immunitaire affaibli.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Questions éclair" name="Questions éclair2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3>Les vaccins contre la COVID-19 étant de conception récente, nous demeurer être prudents et prudentes.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Réponse 2" answer="Faux">
+            <![CDATA[
+                {$item}
+                <b>La vérité est que les vaccins contre la COVID-19 ont suivi le même processus de développement et les mêmes règles de sécurité strictes que tous les autres vaccins.</b>
+                <p>
+                    Le vaccin contre la COVID-19 a été développé à un rythme plus rapide que les vaccins précédents, mais cela ne signifie pas que des étapes ont été sautées ou que la sécurité a été négligée. Il a suivi le même processus que tout autre développement de vaccin, mais comme tout le monde y travaillait en même temps, en mettant toutes leurs ressources dans ce seul vaccin, il a été développé et testé beaucoup plus rapidement que lorsque tout le monde se concentre sur le développement d’un vaccin différent.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Questions éclair" name="Questions éclair3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>Vous devez vous faire vacciner qu’une seule fois, car il s’agit du même vaccin chaque année.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Réponse 3" answer="False">
+            <![CDATA[
+                {$item}
+                <b>En réalité, le vaccin annuel contre la grippe change en fonction de la souche dominante de l’année. Pour une protection optimale, vous devez donc vous faire vacciner chaque année.</b>
+                <p>
+                    Chaque année, un nouveau vaccin contre la grippe est développé sur la base de la souche dominante de l’année. Comme la grippe comporte de nombreuses souches, cette correspondance n’est pas toujours parfaite. Toutefois, la vaccination annuelle contre la grippe offre une meilleure protection et réduit le risque de maladie grave par rapport à l’absence de vaccination.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video7" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/VaccinationFR/9.Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="backtomodules" name="Retour aux modules" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Nous vous redirigeons vers les modules éducatifs...
+                <script type="text/javascript">
+                    setTimeout(function(){
+                        document.location = wgServer + wgScriptPath + '/index.php/Special:EducationResources';
+                    }, 1000);
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+</Report>
