@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Vie sociale" reportType="RP_INTERACT" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'EducationResources-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Questionséclair").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Questionséclair").text("Questions éclair").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/InteractFR/1.Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="video2" tooltip="Vie sociale" name="Vie sociale" title="Vie sociale" type="VideoReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/InteractFR/2.Vie sociale.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Isolement" name="Isolement" title="Isolement" type="VideoReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/InteractFR/3.Isolement.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Bénéfices" name="Bénéfices" title="Bénéfices" type="VideoReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/InteractFR/4.Bénéfices.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="Avantages" name="Avantages" title="Avantages" type="VideoReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/InteractFR/interact.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Comment faire" name="Comment faire" title="Comment faire" type="VideoReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/InteractFR/6.Comment faire.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Questions éclair" name="Questions éclair"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'Interact');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3>L’isolement social est défini comme un isolement physique des autres.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Réponse 1" answer="Faux">
+            <![CDATA[
+                {$item}
+                <b>En réalité, l’isolement social ne se limite pas à la solitude physique.</b>
+                <p>
+                    Il peut effectivement inclure l’isolement physique, mais c’est beaucoup plus que cela. L’isolement social est subjectif, ce qui signifie que nous le vivons tous et toutes différemment. Certaines personnes peuvent se sentir seules même lorsqu’elles sont entourées d’autres personnes. Certaines personnes peuvent être seules sans toutefois vivre de la solitude; en fait, elles peuvent même préférer être seules.
+                </p>
+                <p>
+                    L’isolement social peut être à la fois physique et émotionnel.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Questions éclair" name="Questions éclair2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3>Chaque être humain a les mêmes besoins sociaux.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers1" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Réponse 2" answer="Faux">
+            <![CDATA[
+                {$item}
+                <b>La vérité, c’est que nous avons tous des besoins sociaux différents.</b>
+                <p>
+                    Tous les humains ont des besoins sociaux, mais nous avons tous des besoins différents. Les besoins d’interaction sociale peuvent être placés le long d’un continuum : certaines personnes sont stimulées par la présence d’autres personnes, tandis que d’autres préfèrent être seules. Les besoins sociaux de la plupart des gens se situent quelque part au milieu.
+                </p>
+                <p>Nous devons tous déterminer le niveau d’engagement social qui nous convient. Il est important d’être conscient et consciente de ses propres besoins; cette information vous aidera à prendre des mesures pour trouver le niveau d’interaction sociale avec lequel vous vous sentez bien.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Questions éclair" name="Questions éclair3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. Améliore le bien-être émotionnel, mais il n’y a pas de bénéfices physiques|b. Aide à rester jeune plus longtemps |c. Renforce le sentiment d’appartenance, peut réduire la tension artérielle et aide à maintenir les fonctions cognitives|d. Plus de rencontres pour manger une crème glacée">
+            <![CDATA[
+                <h3>Quels sont les avantages de l’interaction sociale pour un vieillissement en santé?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers1" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Réponse 3" answer="c. Renforce le sentiment d’appartenance, peut réduire la tension artérielle et aide à maintenir les fonctions cognitives">
+            <![CDATA[
+                {$item}
+                <p>
+                    L’interaction sociale présente des avantages tant physiques que mentaux pour un vieillissement en santé. Outre les avantages susmentionnés, le fait d’être socialement actif et active peut contribuer à améliorer votre humeur, à vous donner un sentiment d’utilité, à réduire votre risque de maladie d’Alzheimer et même à réduire votre risque de malnutrition.
+                </p>
+                <p>
+                    Ces avantages montrent à quel point l’interaction est importante pour vieillir en bonne santé et éviter la fragilité.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video7" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/InteractFR/7.Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="backtomodules" name="Retour aux modules" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Nous vous redirigeons vers les modules éducatifs...
+                <script type="text/javascript">
+                    setTimeout(function(){
+                        document.location = wgServer + wgScriptPath + '/index.php/Special:EducationResources';
+                    }, 1000);
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+
+</Report>

@@ -164,7 +164,7 @@ Gardez-les à l’esprit. Si vous êtes confronté à un obstacle, revenez-y pou
     </ReportSection>
     
     <!-- Question 4 -->
-    <ReportSection id="q4" tooltip="Quiz" name="Quiz4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+    <ReportSection id="q4" tooltip="Questions éclair" name="Questions éclair4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. Demeurer toujours actif et active|b. Savoir pourquoi je fais quelque chose|c. Avoir un plan">
             <![CDATA[
                 <h3>La motivation, c’est:</h3>
