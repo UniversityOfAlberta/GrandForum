@@ -31,13 +31,17 @@ function addReminder($id, $person){
 }
 
 function sendMail($subject, $message, $person){
-    global $config, $wgServer, $wgScriptPath;
+    global $config, $wgServer, $wgScriptPath, $wgLang;
     $message = nl2br($message);
     $headers  = "Content-type: text/html\r\n"; 
     $headers .= "From: AVOID Frailty <noreply@healthyagingcentres.ca>" . "\r\n";
     $hash = hash('sha256', $person->getId()."_".$person->getRegistration());
-    
-    $message .= "<p><a href='$wgServer$wgScriptPath/index.php?action=api.userunsub&code={$hash}'>Click here</a> to unsubscribe from AVOID notifications.</p>"; 
+    if($wgLang->getCode() == "en"){
+        $message .= "<p><a href='$wgServer$wgScriptPath/index.php?action=api.userunsub&code={$hash}'>Click here</a> to unsubscribe from AVOID notifications.</p>";
+    }
+    else{
+        $message .= "<p><a href='$wgServer$wgScriptPath/index.php?action=api.userunsub&code={$hash}'>Cliquez ici</a> pour vous désabonner des notifications du programme.</p>";
+    }
     mail($person->getEmail(), $subject, $message, $headers);
 }
 
@@ -52,8 +56,14 @@ foreach($people as $person){
     // Completed Assessment
     if($person->isRole(CI) && AVOIDDashboard::hasSubmittedSurvey($person->getId()) && getReminder("CompletedAssessment", $person)['count'] < 1){
         addReminder("CompletedAssessment", $person);
-        $subject = "Welcome to AVOID Frailty";
-        $message = "<p>Welcome to the AVOID Frailty for Healthy Aging program.  Thanks for completing the healthy aging assessment.  Have you had a chance to see your frailty status and report with personalized recommendations?  If you're not sure where to start, some people have found that going through the Ingredients for Change education module is a good place.  It will help you create behaviour changing goals and build habits for healthy aging.  Everything within this program is free for you.  Tour the site and let us know if you have any questions.  We can't wait to follow your healthy aging journey!</p>";
+        if($wgLang->getCode() == "en"){
+            $subject = "Welcome to AVOID Frailty";
+            $message = "<p>Welcome to the AVOID Frailty for Healthy Aging program.  Thanks for completing the healthy aging assessment.  Have you had a chance to see your frailty status and report with personalized recommendations?  If you're not sure where to start, some people have found that going through the Ingredients for Change education module is a good place.  It will help you create behaviour changing goals and build habits for healthy aging.  Everything within this program is free for you.  Tour the site and let us know if you have any questions.  We can't wait to follow your healthy aging journey!</p>";
+        }
+        else{
+            $subject = "Bienvenue dans le programme Proactif";
+            $message = "<p>Bienvenue dans le programme Proactif pour éviter la fragilisation. Merci d’avoir rempli le questionnaire. Avez-vous eu la chance de consulter votre statut de fragilité et votre rapport contenant des recommandations personnalisées? Si vous ne savez pas par où commencer, nous vous suggérons d’écouter le module éducatif « Ingrédients du changement ». Vous pourrez ainsi mieux établir vos objectifs afin de mettre en place de saines habitudes de vie, pour un vieillissement en santé. L’entièreté du programme est gratuite. Explorez le site et laissez-nous savoir si vous avez des questions. Nous avons hâte de suivre votre parcours!</p>";
+        }
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
