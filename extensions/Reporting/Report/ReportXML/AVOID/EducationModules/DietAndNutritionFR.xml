@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Alimentation" reportType="RP_DIET_AND_NUTRITION" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <style>
+                #aboveTabs, #reportTabs {
+                    width: 230px;
+                    min-width: 230px;
+                }
+            </style>
+            <script type="text/javascript">
+                var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'EducationResources-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Questionséclair").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Questionséclair4").hasClass("selectedReportTab") ||
+                        $("#Answer4").hasClass("selectedReportTab")){
+                        $("#Questionséclair").text("Questions éclair (Q4)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Questionséclair").text("Questions éclair").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/1.Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="Alimentation et vieillissement" name="Alimentation et vieillissement" title="Alimentation et vieillissement" type="VideoReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/2.Alimentation et vieillissement.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Protéines" name="Protéines" title="Protéines" type="VideoReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/3.Protéines.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Calcium et vitamine D" name="Calcium et vitamine D" title="Calcium et vitamine D" type="VideoReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/4.Calcium et vitamine D.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="Exemple de régime alimentaire" name="Exemple de régime alimentaire" title="Exemple de régime alimentaire" type="VideoReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/5.Exemple de régime alimentaire.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Régime alimentaire et fragilité" name="Régime alimentaire et fragilité" title="Régime alimentaire et fragilité" type="VideoReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/6.Régime alimentaire et fragilité.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video7" tooltip="Mangez-vous assez de protéines" name="Mangez-vous assez de protéines" title="Mangez-vous assez de protéines" type="VideoReportSection">
+        <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/Mangez-vous assez de protéines _.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video8" tooltip="Comment" name="Comment" title="Comment" type="VideoReportSection">
+        <ReportItem id="video8" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/8.Comment.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video9" tooltip="Chili Recipe" name="Chili Recipe" title="Chili Recipe" type="VideoReportSection">
+        <ReportItem id="video9" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/Chili Recipe.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video10" tooltip="Malnutrition" name="Malnutrition" title="Malnutrition" type="VideoReportSection">
+        <ReportItem id="video10" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/10.Malnutrition.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video11" tooltip="Hygiène buccale" name="Hygiène buccale" title="Hygiène buccale" type="VideoReportSection">
+        <ReportItem id="video11" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/11.Hygiène buccale.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Quiz" name="Questions éclair" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'DietAndNutrition');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Maintenant que nous nous sommes familiarisés avec certaines des recommandations en matière d’alimentation et de nutrition pour les personnes aînées, et que nous avons réfléchi à certains aliments que nous pouvons manger ainsi qu’aux mesures que nous pouvons prendre pour atteindre nos objectifs, passons en revue cette information et voyons ce que nous avons retenu.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3>Le régime alimentaire n’est lié qu’à la perte de poids.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Réponse 1" answer="Faux">
+            <![CDATA[
+                {$item} 
+                <b>La vérité, c’est que le régime alimentaire désigne tous les aliments que vous mangez.</b>
+                <p>
+                    On entend par « régime alimentaire » d’une personne, la somme des aliments que cette personne consomme. Ce sont les aliments que nous mangeons habituellement. Les modifications apportées à notre régime alimentaire peuvent entraîner une prise ou une perte de poids, mais une alimentation saine ne se limite pas à la gestion du poids.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Questions éclair" name="Questions éclair2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="a. 0,5 g par kg de poids corporel|b. De 100 à 120 mg|c. De 1 à 1,5 g par kg de poids|d. Au moins 50 mg">
+            <![CDATA[
+                <h3>Quel est l’apport quotidien recommandé en protéines pour les personnes aînées?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Réponse 2" answer="c. De 1 à 1,5 g par kg de poids">
+            <![CDATA[
+                {$item}
+                <p>
+                    Contrairement au calcium ou à la vitamine D, il n’existe pas de recommandation générale sur la quantité de protéines que toutes les personnes aînées devraient consommer chaque jour. La quantité de protéines doit plutôt être adaptée en fonction de notre poids. Pour chaque kilo de poids corporel, nous devons essayer d’inclure de 1 à 1,5 g de protéines dans notre régime alimentaire en consommant des aliments comme le poulet, les œufs, les noix, les légumineuses ou les produits laitiers.
+                </p>
+                <p>Consultez la Bibliothèque de ressources pour trouver des idées sur la façon d’inclure plus de protéines dans votre alimentation.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Questions éclair" name="Questions éclair3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="Vrai|Faux">
+            <![CDATA[
+                <h3>Quand on est végétarien ou végétarienne, il est impossible de consommer suffisamment de protéines dans votre alimentation.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Réponse 3" answer="Faux">
+            <![CDATA[
+                {$item}
+                <b>En vérité, c’est peut-être plus difficile, mais c’est possible</b>
+                <p>
+                    Si vous êtes végétarien ou végétarienne, les légumineuses, les épinards et les noix sont de bonnes options de protéines. Cependant, il peut être plus difficile d’obtenir la quantité de protéines dont vous avez besoin à partir de ces sources. Veillez à consulter un professionnel de la santé pour établir un plan permettant d’atteindre cet objectif dans le cadre de votre régime alimentaire. Envisagez de compléter votre alimentation avec des boissons, des puddings et des frappés riches en protéines.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 4 -->
+    <ReportSection id="q4" tooltip="Questions éclair" name="Questions éclair4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. Le maintien d’une alimentation équilibrée peut nous aider à éviter les caries|b. Des dents saines nous permettent de manger confortablement et en toute sécurité les aliments que nous désirons|c. Une bonne hygiène buccale peut nous aider à éviter la malnutrition|d. Toutes ces réponses">
+            <![CDATA[
+                <h3>Quel est le lien entre l’hygiène buccale et l’alimentation?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 4 -->
+    <ReportSection id="a4" tooltip="Answers" name="Answer4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Réponse 4" answer="d. Toutes ces réponses">
+            <![CDATA[
+                {$item}
+                <p>
+                    Une bonne hygiène buccale et un régime alimentaire sain se renforcent mutuellement. C’est important pour l’alimentation et la nutrition afin d’avoir une bonne santé buccale et de continuer à manger les aliments que nous aimons. Les soins bucco-dentaires appropriés comprennent le brossage et l’utilisation du fil dentaire deux fois par jour, des visites régulières chez le dentiste et une alimentation saine.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video12" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video12" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/12.Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="backtomodules" name="Retour aux modules" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Nous vous redirigeons vers les modules éducatifs...
+                <script type="text/javascript">
+                    setTimeout(function(){
+                        document.location = wgServer + wgScriptPath + '/index.php/Special:EducationResources';
+                    }, 1000);
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+</Report>

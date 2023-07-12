@@ -66,11 +66,13 @@ class EULAReportSection extends EditableReportSection {
         $wgOut->addHTML("</div>
                              <hr />
                              <div id='reportFooter'>
-                                <input type='submit' value='Next' name='submit' style='width:100px;' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
+                                <button type='submit' value='Next' name='submit' style='width:145px;' $disabled>
+                                    <en>Next</en><fr>Suivant</fr>
+                                </button>&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
                              </div>
                          </form></div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('input[name=submit][value=Next]').click(function(){
+            $('button[name=submit][value=Next]').click(function(){
                 _.defer(function(){
                     $('a.reportTab.selectedReportTab').nextAll('a:not(.disabled_lnk)').first().click();
                 });

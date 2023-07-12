@@ -65,27 +65,29 @@ class AvoidHealthReportSection extends EditableReportSection {
 			    <div id='reportFooter'>
 				<div class='trademark' style='text-align:center'>
 © EuroQol Research Foundation. EQ-5D™ is a trade mark of the EuroQol Research Foundation. Canada (English) v1.2</div>
-                                <input type='submit' value='Next' name='submit' style='width:100px;float:right;' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
+                                <button type='submit' value='Next' name='submit' style='width:145px;' $disabled>
+                                    <en>Next</en><fr>Suivant</fr>
+                                </button>&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
                              </div>
                          </form></div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('input[name=submit][value=Next]').click(function(){
+            $('button[name=submit][value=Next]').click(function(){
                 _.defer(function(){
                     $('a.reportTab.selectedReportTab').next().click();
                 });
             });
             $('#reportBody').after(\"<div id='reportMessages'></div>\");
-            $('input[name=submit][value=Next]').before(\"<input type='submit' value='Previous' name='submit' style='width:100px;' $disabled />&nbsp;&nbsp;\");
-            $('input[name=submit][value=Previous]').click(function(){
+            $('button[name=submit][value=Next]').before(\"<button type='submit' value='Previous' name='submit' style='width:145px;' $disabled><en>Previous</en><fr>Précédent</fr></button>&nbsp;&nbsp;\");
+            $('button[name=submit][value=Previous]').click(function(){
                 _.defer(function(){
                     $('a.reportTab.selectedReportTab').prev().click();
                 });
             });
             if($('a.reportTab.selectedReportTab').prev('a').length == 0){
-                $('input[name=submit][value=Previous]').prop('disabled', true);
+                $('button[name=submit][value=Previous]').prop('disabled', true);
             }
             if($('a.reportTab.selectedReportTab').next('a').length == 0){
-                $('input[name=submit][value=Next]').val('Submit');
+                $('button[name=submit][value=Next]').val('Submit');
                 $('input[name=submit][value=Submit]').mousedown(function(){
                     if(typeof submitInterval != 'undefined'){
                         clearInterval(submitInterval);

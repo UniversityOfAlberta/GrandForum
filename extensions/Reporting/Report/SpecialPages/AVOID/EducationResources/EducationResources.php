@@ -116,7 +116,7 @@ class EducationResources extends SpecialPage {
                 else{
                     $wgOut->addHTML("<p style='margin-top: 0;'>
                                         <en>This module does not have any additional education resources</en>
-                                        <fr>Ce module n'a pas de ressources éducatives supplémentaires</fr>
+                                        <fr>Ce module ne contient pas de ressources externes</fr>
                                      </p>");
                 }
             $wgOut->addHTML("
