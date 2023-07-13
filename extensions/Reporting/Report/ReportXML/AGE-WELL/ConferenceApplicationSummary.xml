@@ -332,5 +332,87 @@
                 </table>
             ]]>
         </Static>
+    
+    <!-- Application 3 -->
+        <Static>
+            <![CDATA[
+                <br />
+                <h1>HQP Travel Subsidy</h1>
+                <table class="wikitable">
+                    <tr>
+                        <th>Name</th><th>Application</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="people" type="AllPeopleWithConferenceApplications">
+            <For from="0" to="0">
+                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_SUBMIT,{$extraIndex},{$user_id},0,3_submit)},)}">
+                    <![CDATA[
+                        <tr>
+                            <td>
+                                {$user_name}
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>HQP Name:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_PRESENTER,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>Organization:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_ORGANIZATION,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>Email:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_EMAIL,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>Affiliation:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_AFFILIATION,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>Title:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_TITLE,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;" valign="top">
+                                            <b>Abstract:</b>
+                                        </td>
+                                        <td>
+                                            {getHTML(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_ABSTRACT,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    ]]>
+                </If>
+            </For>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
     </ReportSection>
 </Report>

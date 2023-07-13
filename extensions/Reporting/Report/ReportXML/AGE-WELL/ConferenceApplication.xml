@@ -502,4 +502,139 @@
             </Static>
         </If>
     </ReportSection>
+    <ReportSection id="application3" tooltip="HQP Travel Subsidy" name="HQP Travel Subsidy" title="HQP Travel Subsidy" blobSection="APPLICATIONS" type="EditableReportSection">
+        <!-- Application 3 -->
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("div.submit").each(function(i, div){
+                            $("input[type=button]", div).click(function(){
+                                $(".selectedReportTab").click();
+                            });
+                        });
+                    });
+                </script>
+                <p>All network HQP are invited to attend the conference and have access to a discounted registration rate. Project leads are reminded that AGE-WELL project funds can, and should, be used to support HQP conference participation.</p>
+
+                <p>A travel subsidy is available to a limited number of HQP to attend and present at the 2023 AGE-WELL Annual Conference. <b>HQP receiving a subsidy to attend must present a poster, demo or be part of a symposium or workshop at the AGE-WELL Conference.</b></p>
+                
+                <p>HQP are defined as trainees and research staff, such as undergraduate and graduate students, postdoctoral fellows, research associates, research assistants, and technicians.</p>
+                
+                Eligibility:
+                <ul>
+                    <li>AGE-WELL HQP in good standing with AGE-WELL have signed and returned all required documents and have made progress towards earning the Innovators of Tomorrow Certificate, if required for their HQP stream.</li>
+                    <li>Canadian Frailty Network (CFN) HQP submitting a poster as part of the AGE-WELL – CFN joint poster session on Thursday, October 26</li>
+                    <li>Only those who have not received funding from CAG to attend either AGE-WELL 2023 or CAG are eligible to apply for this subsidy.</li>
+                </ul>
+
+                Coverage:
+                <ul>
+                    <li>Travel costs up to the cost of return economy class airfare or ground transportation from the individual’s home city. Exceptions will require prior written approval. Cost of ground transportation cannot be greater than return economy class airfare at the time of the event.</li>
+                    <li>AGE-WELL HQP: Two (2) nights’ accommodation at a maximum room cost of $219 plus applicable taxes per night for</li>
+                    <li>CFN HQP: One night (1) accommodation at a maximum room cost of $219 plus applicable taxes per night to support participation in a joint poster session on Thursday, October 26,</li>
+                    <li>AGE-WELL HQP registered in trainee events on Tuesday, October 24 may be covered for an additional night where same-day travel is not possible. Pre-registration for HQP events is required to be considered for approval.</li>
+                </ul>
+                
+                <p>To apply for a travel subsidy, please outline the value of AGE-WELL conference attendance to your career in the space below (150 words max).</p>
+                
+            ]]>
+        </Static>
+        <If id="3_if" if="{>(2024-08-18 00:00:00,{$timestamp})}">
+            <Static>
+                <![CDATA[
+                    <div id="3_accordion">
+                ]]>
+            </Static>
+            <For id="3_for" from="0" to="0">
+                <Static>
+                    <![CDATA[
+                        <!--h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3-->
+                        <div>
+                        <table>
+                    ]]>
+                </Static>
+                <ReportItem id="3_presenter" type="Text" blobItem="3_PRESENTER" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>HQP Name:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="3_organization" type="Text" blobItem="3_ORGANIZATION" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Organization:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="3_email" type="Text" blobItem="3_EMAIL" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Contact email:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="3_affiliation" type="Select" blobItem="3_AFFILIATION" blobSubItem="{$extraIndex}" options="AGE-WELL|CFN|Other">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Affiliation:</b></td>
+                            <td><div id="3_affiliation{$extraIndex}">{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="3_title" type="Text" blobItem="3_TITLE" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Title of abstract submitted with this application:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="3_abstract" type="Textarea" blobItem="3_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="150">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Abstract:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="3_submit" type="Checkbox" blobItem="3_SUBMIT" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like to apply for a travel subsidy">
+                    <![CDATA[
+                        <tr>
+                            <td></td>
+                            <td>
+                                <div class="submit">
+                                    {$item}
+                                    <!--input type="button" value="Save" /-->
+                                </div>
+                            </td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        </table>
+                        </div>
+                    ]]>
+                </Static>
+            </For>
+            <Static>
+                <![CDATA[
+                    </div>
+                    <!--script type="text/javascript">
+                        $("#3_accordion").accordion({heightStyle: "content"});
+                        $(document).ready(function(){
+                            $("#3_accordion").accordion("resize");
+                            _.delay(function(){
+                                $("#3_accordion").accordion("resize");
+                            }, 1000);
+                        });
+                    </script-->
+                ]]>
+            </Static>
+        </If>
+    </ReportSection>
 </Report>
