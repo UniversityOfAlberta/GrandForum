@@ -356,7 +356,7 @@ class AVOIDDashboard extends SpecialPage {
                             </p>
                             <div id='fitbitMessages'></div>
                             <en>Connect with your <b>Fitbit</b> for easy monitoring&nbsp;&nbsp;&nbsp;</en>
-                            <fr>Connectez votre <b>FitBit</b> pour obtenir des informations&nbsp;&nbsp;&nbsp;</fr>
+                            <fr>Connectez votre FitBit pour obtenir des informations plus précises sur votre santé<br /></fr>
                             <en>Off</en><fr>Désactiver</fr> <label class='switch'>
                                 <input type='checkbox' name='fitbitToggle' $fitbitEnabled />
                                 <span class='toggle round' style='border: none !important;'></span>
