@@ -877,9 +877,9 @@ class AVOIDDashboard extends SpecialPage {
         $twelveMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($userId, "RP_AVOID_TWELVEMO")))/86400;
         
         if(!$baseLineSubmitted || 
-           (!$threeMonthSubmitted && $baseDiff >= 30*3) ||
-           (!$sixMonthSubmitted && $baseDiff >= 30*6) ||
-           (!$nineMonthSubmitted && $baseDiff >= 30*9) ||
+           (!$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*6) ||
+           (!$sixMonthSubmitted && $baseDiff >= 30*6 && $baseDiff < 30*9) ||
+           (!$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*12) ||
            (!$twelveMonthSubmitted && $baseDiff >= 30*12)){
             return false;
         }
@@ -892,7 +892,7 @@ class AVOIDDashboard extends SpecialPage {
         if($me->isLoggedIn()){
             if(AVOIDDashboard::checkAllSubmissions($me->getId())){
                 $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
-                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("<span class='en'>My Profile</span><span class='fr'>Mon Profil</span>", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
+                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("<en>My Profile</en><fr>Mon Profil</fr>", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
             }
         }
         return true;
