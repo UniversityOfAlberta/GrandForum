@@ -9,20 +9,6 @@ class EULAReportSection extends EditableReportSection {
             $wgOut->addHTML("<div><div id='reportHeader'>Permission Error</div><hr /><div id='reportBody'>You are not permitted to view this section</div></div>");
             return;
         }
-        $action = $wgTitle->getFullUrl()."?report=".urlencode($this->getParent()->xmlName)."&section=".urlencode($this->name)."&showSection";
-        if($this->getParent()->project != null){
-            if($this->getParent()->project instanceof Project){
-                if($this->getParent()->project->getName() == ""){
-                    $action .= "&project=".urlencode($this->getParent()->project->getId());
-                }
-                else{
-                    $action .= "&project=".urlencode($this->getParent()->project->getName());
-                }
-            }
-            else if($this->getParent()->project instanceof Theme){
-                $action .= "&project=".urlencode($this->getParent()->project->getAcronym());
-            }
-        }
         $autosave = " class='noautosave'";
         if($this->autosave && $this->checkPermission('w') && DBFunctions::DBWritable()){
             $autosave = " class='autosave'";
@@ -36,7 +22,7 @@ class EULAReportSection extends EditableReportSection {
             $number = implode(', ', $numbers).'. ';
         }
         
-        $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
+        $wgOut->addHTML("<div><form action='{$this->getAction()}' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
                             <div id='reportHeader'>{$number}{$this->title}</div>
                              <hr />
                              <div id='reportBody'>");
@@ -66,7 +52,7 @@ class EULAReportSection extends EditableReportSection {
         $wgOut->addHTML("</div>
                              <hr />
                              <div id='reportFooter'>
-                                <button type='submit' value='Next' name='submit' style='width:145px;' $disabled>
+                                <button type='submit' value='Next' name='submit' style='width:155px;' $disabled>
                                     <en>Next</en><fr>Suivant</fr>
                                 </button>&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
                              </div>

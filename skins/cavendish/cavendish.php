@@ -165,7 +165,7 @@ class CavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/sortable.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/switcheroo.js"></script>
         <script language="javascript" type="text/javascript" src="https://maps.google.com/maps/api/js?&libraries=places&key=<?php echo $config->getValue('googleAPI'); ?>"></script>
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script src="https://www.google.com/recaptcha/api.js?hl=<?php echo "{$wgLang->getCode()}"; ?>" async defer></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/raphael.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/spinner.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/filter.js"></script>
@@ -789,7 +789,7 @@ class CavendishTemplate extends QuickTemplate {
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>
                     <span id='fontSizeContainer'>
-                        Taille de la police: <a class='fontSize fontSizeSmall'>A</a><a class='fontSize fontSizeMedium'>A</a><a class='fontSize fontSizeLarge'>A</a>
+                        <en>Font Size</en><fr>Taille de la police</fr>: <a class='fontSize fontSizeSmall'>A</a><a class='fontSize fontSizeMedium'>A</a><a class='fontSize fontSizeLarge'>A</a>
                     </span>";
             if($config->getValue('bilingual')){
                 echo "<select name='lang' style='vertical-align:middle;'>";

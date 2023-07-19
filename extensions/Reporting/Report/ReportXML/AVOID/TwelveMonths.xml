@@ -3,5 +3,6 @@
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
-    <ReportSection id="behaviouralassess" title="Twelve Month Follow Up: Behavioural Self-Assessment" />
+    <ReportSection id="behaviouralassess" title="{showLanguage(Twelve Month Follow Up: Behavioural Self-Assessment,
+                                                               Suivi de douze mois: Auto-évaluer vos habitudes)}" />
 </Report>

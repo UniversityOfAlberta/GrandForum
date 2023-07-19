@@ -15,7 +15,8 @@
     <ReportSection id="clinicalfrailty" delete="true" />
     <ReportSection id="OnSiteEvaluation" delete="true" />
     <ReportSection id="FitBit" delete="true" />
-    <ReportSection id="behaviouralassess" title="Three Month Follow Up: Behavioural Self-Assessment">
+    <ReportSection id="behaviouralassess" title="{showLanguage(Three Month Follow Up: Behavioural Self-Assessment,
+                                                               Suivi de trois mois: Auto-évaluer vos habitudes)}">
         <Static>
             <![CDATA[
                 <script type="text/javascript">

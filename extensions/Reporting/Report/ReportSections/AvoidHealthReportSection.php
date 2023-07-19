@@ -9,20 +9,6 @@ class AvoidHealthReportSection extends EditableReportSection {
             $wgOut->addHTML("<div><div id='reportHeader'>Permission Error</div><hr /><div id='reportBody'>You are not permitted to view this section</div></div>");
             return;
         }
-        $action = $wgTitle->getFullUrl()."?report=".urlencode($this->getParent()->xmlName)."&section=".urlencode($this->name)."&showSection";
-        if($this->getParent()->project != null){
-            if($this->getParent()->project instanceof Project){
-                if($this->getParent()->project->getName() == ""){
-                    $action .= "&project=".urlencode($this->getParent()->project->getId());
-                }
-                else{
-                    $action .= "&project=".urlencode($this->getParent()->project->getName());
-                }
-            }
-            else if($this->getParent()->project instanceof Theme){
-                $action .= "&project=".urlencode($this->getParent()->project->getAcronym());
-            }
-        }
         $autosave = " class='noautosave'";
         if($this->autosave && $this->checkPermission('w') && DBFunctions::DBWritable()){
             $autosave = " class='autosave'";
@@ -36,7 +22,7 @@ class AvoidHealthReportSection extends EditableReportSection {
             $number = implode(', ', $numbers).'. ';
         }
         
-        $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
+        $wgOut->addHTML("<div><form action='{$this->getAction()}' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
                              <div id='reportBody' style='min-height: 400px;overflow:hidden;'>");
         if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){
             $wgOut->addHTML("<script type='text/javascript'>
@@ -63,9 +49,9 @@ class AvoidHealthReportSection extends EditableReportSection {
         }
         $wgOut->addHTML("</div>
 			    <div id='reportFooter'>
-				<div class='trademark' style='text-align:center'>
-© EuroQol Research Foundation. EQ-5D™ is a trade mark of the EuroQol Research Foundation. Canada (English) v1.2</div>
-                                <button type='submit' value='Next' name='submit' style='width:145px;' $disabled>
+				<div class='trademark' style='text-align:center; margin-bottom: 0.5em;'>
+© EuroQol Research Foundation. EQ-5D™ <en>is a trade mark of the</en><fr>est une marque de commerce de la</fr> EuroQol Research Foundation. Canada (<en>English</en><fr>Français</fr>) v1.2</div>
+                                <button type='submit' value='Next' name='submit' style='width:155px;' $disabled>
                                     <en>Next</en><fr>Suivant</fr>
                                 </button>&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
                              </div>
@@ -77,7 +63,7 @@ class AvoidHealthReportSection extends EditableReportSection {
                 });
             });
             $('#reportBody').after(\"<div id='reportMessages'></div>\");
-            $('button[name=submit][value=Next]').before(\"<button type='submit' value='Previous' name='submit' style='width:145px;' $disabled><en>Previous</en><fr>Précédent</fr></button>&nbsp;&nbsp;\");
+            $('button[name=submit][value=Next]').before(\"<button type='submit' value='Previous' name='submit' style='width:155px;' $disabled><en>Previous</en><fr>Précédent</fr></button>&nbsp;&nbsp;\");
             $('button[name=submit][value=Previous]').click(function(){
                 _.defer(function(){
                     $('a.reportTab.selectedReportTab').prev().click();

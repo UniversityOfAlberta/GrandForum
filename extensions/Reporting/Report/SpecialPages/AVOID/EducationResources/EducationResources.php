@@ -156,8 +156,8 @@ class EducationResources extends SpecialPage {
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         if(AVOIDDashboard::checkAllSubmissions($wgUser->getId())){
             $selected = @($wgTitle->getText() == "EducationResources" || ($wgTitle->getText() == "Report" && (strstr($_GET['report'], "EducationModules/") !== false))) ? "selected" : false;
-            $tabs["EducationResources"] = TabUtils::createTab("<span class='en'>Education</span>
-                                                               <span class='fr'>Éducation</span>", "{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources", $selected);
+            $tabs["EducationResources"] = TabUtils::createTab("<en>Education</en>
+                                                               <fr>Éducation</fr>", "{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources", $selected);
         }
         return true;
     }

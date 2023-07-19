@@ -4,7 +4,7 @@ class EditableReportSection extends AbstractReportSection {
     
     var $autosave;
     var $reportCharLimits = true;
-    var $saveText = "<span class='en'>Save</span><span class='fr'>Sauvegarder</span>";
+    var $saveText = "<en>Save</en><fr>Sauvegarder</fr>";
     
     // Creates a new EditableReportSection()
     function __construct(){
@@ -46,24 +46,6 @@ class EditableReportSection extends AbstractReportSection {
             $wgOut->addHTML("<div><div id='reportHeader'>Permission Error</div><hr /><div id='reportBody'>You are not permitted to view this section</div></div>");
             return;
         }
-        $action = $wgTitle->getFullUrl()."?report=".urlencode($this->getParent()->xmlName)."&section=".urlencode($this->name)."&showSection";
-        if($this->getParent()->project != null){
-            if($this->getParent()->project instanceof Project){
-                if($this->getParent()->project->getName() == ""){
-                    $action .= "&project=".urlencode($this->getParent()->project->getId());
-                }
-                else{
-                    $action .= "&project=".urlencode($this->getParent()->project->getName());
-                }
-            }
-            else if($this->getParent()->project instanceof Theme){
-                $action .= "&project=".urlencode($this->getParent()->project->getAcronym());
-            }
-        }
-        $candidate = (isset($_GET['candidate'])) ? "&candidate=".urlencode($_GET['candidate']) : "";
-        $id = (isset($_GET['id'])) ? "&id=".urlencode($_GET['id']) : "";
-        $personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
-        $action .= "{$candidate}{$id}{$personId}";
         $autosave = " class='noautosave'";
         if($this->autosave && $this->checkPermission('w') && DBFunctions::DBWritable()){
             $autosave = " class='autosave'";
@@ -77,9 +59,9 @@ class EditableReportSection extends AbstractReportSection {
             $number = implode(', ', $numbers).'. ';
         }
         
-        $showProgress = (strtolower($this->getAttr('showProgress', 'false')) == 'true') ? "<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;background-color: {$config->getValue('highlightColor')};' id='reportProgressBar'></span><span id='reportProgressLabel'><span class='en'>Section Progress</span><span class='fr'>Complétion de la section</span> ({$this->getPercentComplete()}%)</span></span>" : "";
+        $showProgress = (strtolower($this->getAttr('showProgress', 'false')) == 'true') ? "<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;background-color: {$config->getValue('highlightColor')};' id='reportProgressBar'></span><span id='reportProgressLabel'><en>Section Progress</en><fr>Complétion de la section</fr> ({$this->getPercentComplete()}%)</span></span>" : "";
         
-        $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
+        $wgOut->addHTML("<div><form action='{$this->getAction()}' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
                              <div id='reportHeader'>{$number}{$this->title}{$showProgress}</div>
                              <hr />
                              <div id='reportBody'>");

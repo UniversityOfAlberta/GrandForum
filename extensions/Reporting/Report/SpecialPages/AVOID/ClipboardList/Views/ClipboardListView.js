@@ -48,19 +48,17 @@ ClipboardListView = Backbone.View.extend({
             row.render();
             fragment.appendChild(row.el);
         }.bind(this));
-        this.$("#sopRows"+cat).html(fragment);
+        this.$("#sopRows"+$(cat).text()).html(fragment);
 
         // Show the DataTable
         this.$('#listTable').show();
         this.$('.dataTables_scrollHead table').show();
         this.$('.DTFC_LeftHeadWrapper table').show();
-
     },
-
 
     addTable: function(category, notes, category_str){
         if(notes != "No notes"){
-            var content = "<table id=\"listTable\" frame=\"box\" rules=\"all\" style='margin-bottom:2.5em;'><thead style=\"background-color:#c7c7c7;\"><tr><th><h3 style='margin-top: 0.3em;padding-top: 0.17em;'>"+category_str+"</h3></th></tr><tr><td align='center'><b style='margin-top:0.5em;display:inline-block;'>Questions to Consider</b> <div style='text-align:left;width:50%;margin-left:25%;'"+notes+"</div></td></tr></thead><tbody id=\"sopRows"+category+"\"></tbody></table>";
+            var content = "<table id=\"listTable\" frame=\"box\" rules=\"all\" style='margin-bottom:2.5em;'><thead style=\"background-color:#c7c7c7;\"><tr><th><h3 style='margin-top: 0.3em;padding-top: 0.17em;'>"+category_str+"</h3></th></tr><tr><td align='center'><b style='margin-top:0.5em;display:inline-block;'>Questions to Consider</b> <div style='text-align:left;width:50%;margin-left:25%;'>"+notes+"</div></td></tr></thead><tbody id=\"sopRows"+category+"\"></tbody></table>";
         }
         else{
             var content = "<table id=\"listTable\" frame=\"box\" rules=\"all\" style='margin-bottom:2.5em;'><thead style=\"background-color:#c7c7c7;\"><tr><th><h3 style='margin-top: 0.3em;padding-top: 0.17em;'>"+category_str+"</h3></th></tr></thead><tbody id=\"sopRows"+category+"\"></tbody></table>";
@@ -86,7 +84,7 @@ ClipboardListView = Backbone.View.extend({
         for(var i = 0; i < keys.length; i++){
             var object = data[keys[i]];
             var category = object.Category;
-            var category_key = category.replaceAll(" ", "");
+            var category_key = $(category).text().replaceAll(" ", "");
             if(newJSON.hasOwnProperty(category_key)){
                 newJSON[category_key].push(object);
             }

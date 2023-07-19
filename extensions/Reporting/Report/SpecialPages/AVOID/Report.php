@@ -43,7 +43,7 @@ class Report extends AbstractReport{
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle;
-        $tabs["Surveys"] = TabUtils::createTab("Healthy Aging Assessment");
+        $tabs["Surveys"] = TabUtils::createTab("<en>Healthy Aging Assessment</en><fr>Évaluation du vieillissement sain</fr>");
         return true;
     }
     
@@ -55,7 +55,7 @@ class Report extends AbstractReport{
             if(!AVOIDDashboard::hasSubmittedSurvey()){
                 $section = AVOIDDashboard::getNextIncompleteSection();
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey")) ? "selected" : false;
-                $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Healthy Aging Assessment", "{$url}IntakeSurvey&section={$section}", $selected);
+                $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("<en>Healthy Aging Assessment</en><fr>Évaluation du vieillissement sain</fr>", "{$url}IntakeSurvey&section={$section}", $selected);
             }
         }
         return true;

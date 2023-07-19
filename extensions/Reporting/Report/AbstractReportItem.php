@@ -9,9 +9,8 @@
  */
 
 // Other
-require_once("ReportItemCallback.php");
 
-abstract class AbstractReportItem {
+abstract class AbstractReportItem extends Callbackable {
     
     var $id;
     var $parent;
@@ -261,7 +260,7 @@ abstract class AbstractReportItem {
             $postId = @$parent->getPostId()."_person{$this->personId}_project{$this->projectId}_milestone{$this->milestoneId}_extra{$extraId}".$postId;
         }
         else{
-            $postId = str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($parent->name)))).$postId;
+            $postId = str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($parent->getPostId())))).$postId;
         }
         $postId = str_replace("-", "", $postId);
         $postId = str_replace(" ", "", $postId);
@@ -499,72 +498,6 @@ abstract class AbstractReportItem {
             $value = (isset($this->attributes[$attr])) ? $this->attributes[$attr] : $default;
         }
         return "$value";
-    }
-
-    //Function that finds all variables in CDATA (if any) and substitutes them by finding there values with the help of RI type-specific callbacks
-    function varSubstitute($cdata){
-        $matches = array();
-        preg_match_all('/{\$(.+?)}/', $cdata, $matches);
-        
-        foreach($matches[1] as $k => $m){
-            if(isset(ReportItemCallback::$callbacks[$m])){
-                $v = str_replace("$", "\\$", ReportItemCallback::call($this, $m));
-                $v = str_replace(",", "&#44;", $v);
-                $cdata = str_replace("{\$".$m."}", @nl2br($v), $cdata);
-            }
-        }
-        
-        // Support nested function calls
-        preg_match_all('/(?={((?:[^{}]++|{(?1)})++)})/', $cdata, $matches);
-        // Reverse the array so that it gets the inner most first
-        //print_r($matches[1]);
-        //$matches[1] = array_reverse($matches[1]);
-        $recursive = false;
-        $noLongerRecursive = false;
-        foreach($matches[1] as $k => $m){
-            $m = $matches[1][$k];
-            $e = explode('(', $m);
-            if(isset($e[1])){
-                // Function call
-                $f = $e[0];
-                $a = explode(",", str_replace(")", "", $e[1]));
-                foreach($a as $key => $arg){
-                    $arg = trim($arg);
-                    $a[$key] = AbstractReport::blobConstant($arg);
-                }
-                if(isset(ReportItemCallback::$callbacks[$f])){
-                    if(strstr($m, "{") !== false || strstr($m, "}") !== false){
-                        // Don't process yet if there are recursive calls
-                        $recursive = true;
-                        continue;
-                    }
-                    else{
-                        $v = ReportItemCallback::call($this, $f, $a);
-                        if(is_array($v)){
-                            foreach($matches[1] as $k2 => $m2){
-                                $matches[1][$k2] = str_replace("{".$m."}", serialize($v), $m2);
-                            }
-                            $cdata = str_replace("{".$m."}", serialize($v), $cdata);
-                        }
-                        else{
-                            $v = str_replace(",", "&#44;", $v);
-                            foreach($matches[1] as $k2 => $m2){
-                                $matches[1][$k2] = str_replace("{".$m."}", $v, $m2);
-                            }
-                            $cdata = str_replace("{".$m."}", $v, $cdata);
-                        }
-                        if($recursive){
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        if($recursive){
-            // There are recursive calls, now call them
-            $cdata = $this->varSubstitute($cdata);
-        }
-        return $cdata;
     }
     
     /**

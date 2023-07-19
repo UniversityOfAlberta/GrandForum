@@ -24,11 +24,14 @@ class RangeSliderReportItem extends TextReportItem {
 		    $font = "font-family: monospace;";
 		}
 		$item = "<div style='display: flex;'>
-		    <div class='label-health'>YOUR HEALTH TODAY=<br /> <span id='value'></span></div>";
+		    <div class='label-health'><en>YOUR HEALTH TODAY</en><fr>VOTRE SANTÉ AUJOURD'HUI</fr>=<br /> <span id='value'></span></div>";
 		if($orientation == "vertical"){
 			$item .= "
             <div class='slider-wrapper'>	
-	            <div class='label-top-slider'>The best health you can imagine</div>	 
+	            <div class='label-top-slider'>
+	                <en>The best health you can imagine</en>
+	                <fr>La meilleure santé que vous puissiez imaginer</fr>
+	            </div>	 
 	            <div style='height:{$width}; width: 150px;'>
 	                <input type='range' id='{$this->getPostId()}' class='slider' name='{$this->getPostId()}' size='$size' style='{$font}width:{$width};text-align:{$align};max-width: initial;' step='{$step}' min='{$min}' max='{$max}' value='{$value}' list='tickmarks' />
                     <datalist id='tickmarks'>
@@ -45,7 +48,10 @@ class RangeSliderReportItem extends TextReportItem {
                     <option value='100' label='100%'></option>
                     </datalist>
                 </div>
-                <div class='label-bottom-slider'>The worst health you can imagine</div>
+                <div class='label-bottom-slider'>
+                    <en>The worst health you can imagine</en>
+                    <fr>La pire santé que vous puissiez imaginer</fr>
+                </div>
             </div>";
 		}
 		else{

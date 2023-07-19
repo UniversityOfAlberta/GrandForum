@@ -73,7 +73,7 @@ class PharmacyMap extends BackbonePage {
     }
     
     static function createTab(&$tabs){
-        $tabs["Map"] = TabUtils::createTab("<span class='en'>Community Programs</span><span class='fr'>Répertoire des ressources</span>", "", "");
+        $tabs["Map"] = TabUtils::createTab("<en>Community Programs</en><fr>Répertoire des ressources</fr>", "", "");
         return true;
     }
     

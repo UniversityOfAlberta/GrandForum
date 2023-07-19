@@ -7,7 +7,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		$reportname = $this->getReport()->name;
 		$emails = $this->getAttr('emails', '');
 		$subject = $this->getAttr('subject', 'Report Submitted');
-		$text = $this->getAttr('text', "<span class='en'>By generating a PDF your application is automatically submitted</span><span class='fr'>En créant un PDF votre formulaire de demande sera soumis automatiquement.</span>");
+		$text = $this->getAttr('text', "<en>By generating a PDF your application is automatically submitted</en><fr>En créant un PDF votre formulaire de demande sera soumis automatiquement.</fr>");
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
 		if($this->getReport()->project != null){
@@ -98,12 +98,12 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		if(!$this->getReport()->isComplete() && $showWarning){
 		    $wgOut->addHTML("<div class='warning'>The report is not 100% complete.  Double check to make sure you did not miss any fields.</div>");
 		}
-		$wgOut->addHTML("<h3><span class='en'>Generate a new PDF</span><span class='fr'>Créer un nouveau PDF</span></h3>");
-		$wgOut->addHTML("<p><button id='generateButton' type='button' $disabled><span class='en'>Submit</span><span class='fr'>Soumettre</span></button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
+		$wgOut->addHTML("<h3><en>Generate a new PDF</en><fr>Créer un nouveau PDF</fr></h3>");
+		$wgOut->addHTML("<p><button id='generateButton' type='button' $disabled><en>Submit</en><fr>Soumettre</fr></button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
 		                    {$text}<br />
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
 
-		$wgOut->addHTML("<h3><span class='en'>Download the PDF</span><span class='fr'>Télécharger le PDF</span></h3>");
+		$wgOut->addHTML("<h3><en>Download the PDF</en><fr>Télécharger le PDF</fr></h3>");
 		
 		$gmt_date = date('P');
 		$temp_html =<<<EOF
@@ -159,7 +159,7 @@ EOF;
 		    $subm_table_row =<<<EOF
 		    <tr>
             <td>
-            	<button id='download_button_{$file}' type='button' name='{$tok}' onClick='clickButton(this)' {$style1}><span class='fr'>PDF pour le </span>{$report->name}<span class='en'> PDF</span></button>
+            	<button id='download_button_{$file}' type='button' name='{$tok}' onClick='clickButton(this)' {$style1}><fr>PDF pour le </fr>{$report->name}<en> PDF</en></button>
             </td>
 EOF;
 

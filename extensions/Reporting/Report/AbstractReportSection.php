@@ -1,6 +1,6 @@
 <?php
 
-abstract class AbstractReportSection {
+abstract class AbstractReportSection extends Callbackable {
     
     var $id;
     var $parent;
@@ -30,6 +30,7 @@ abstract class AbstractReportSection {
         $this->name = "";
         $this->title = "";
         $this->tooltip = "";
+        $this->postId = "";
         $this->sec = SEC_NONE;
         $this->items = array();
         $this->attributes = array();
@@ -56,6 +57,10 @@ abstract class AbstractReportSection {
             $value = (isset($this->attributes[$attr])) ? $this->attributes[$attr] : $default;
         }
         return "$value";
+    }
+    
+    function getPostId(){
+        return ($this->postId != "") ? $this->postId : $this->name;
     }
     
     function getParent(){
@@ -238,6 +243,11 @@ abstract class AbstractReportSection {
         $tooltip = $this->varSubstitute($tooltip);
         $this->tooltip = $tooltip;
     }
+    
+    function setPostId($postId){
+        //$postId = $this->varSubstitute($postId);
+        $this->postId = $postId;
+    }
 
     // Sets the disabled 
     function setDisabled($disabled){
@@ -325,6 +335,29 @@ abstract class AbstractReportSection {
         return isset($permissions[$perm]);
     }
     
+    function getAction(){
+        global $wgTitle;
+        $action = $wgTitle->getFullUrl()."?report=".urlencode($this->getParent()->xmlName)."&section=".urlencode($this->getPostId())."&showSection";
+        if($this->getParent()->project != null){
+            if($this->getParent()->project instanceof Project){
+                if($this->getParent()->project->getName() == ""){
+                    $action .= "&project=".urlencode($this->getParent()->project->getId());
+                }
+                else{
+                    $action .= "&project=".urlencode($this->getParent()->project->getName());
+                }
+            }
+            else if($this->getParent()->project instanceof Theme){
+                $action .= "&project=".urlencode($this->getParent()->project->getAcronym());
+            }
+        }
+        $candidate = (isset($_GET['candidate'])) ? "&candidate=".urlencode($_GET['candidate']) : "";
+        $id = (isset($_GET['id'])) ? "&id=".urlencode($_GET['id']) : "";
+        $personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
+        $action .= "{$candidate}{$id}{$personId}";
+        return $action;
+    }
+    
     // Renders the tab for this AbstractReportSection
     function renderTab(){
         global $wgOut, $wgServer, $wgScriptPath;
@@ -366,7 +399,7 @@ abstract class AbstractReportSection {
         $id = (isset($_GET['id'])) ? "&id=".urlencode($_GET['id']) : "";
         $hidden = (strtolower($this->getAttr("hidden", "false")) === "true") ? "style='display:none;'" : "";
         $personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
-        $wgOut->addHTML("<a title='{$this->tooltip}' $hidden class='reportTab$selected tooltip {$disabled}' id='".str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($this->name))))."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}{$personId}{$candidate}{$id}&section=".urlencode(strip_tags($this->name))."{$year}'>{$this->name}</a>\n");
+        $wgOut->addHTML("<a title='{$this->tooltip}' $hidden class='reportTab$selected tooltip {$disabled}' id='".str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($this->getPostId()))))."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}{$personId}{$candidate}{$id}&section=".urlencode(strip_tags($this->getPostId()))."{$year}'>{$this->name}</a>\n");
     }
     
     function render(){
@@ -432,21 +465,6 @@ abstract class AbstractReportSection {
                 }
             }
         }
-    }
-    
-    function varSubstitute($cdata){
-        $matches = array();
-        preg_match_all('/{\$(.+?)}/', $cdata, $matches);
-        
-        foreach($matches[1] as $k => $m){
-            if(isset(ReportItemCallback::$callbacks[$m])){
-                $v = ReportItemCallback::call($this, $m);
-                $regex = '/{\$'.$m.'}/';
-                $cdata = preg_replace($regex, $v, $cdata);
-            }
-        }
-        
-        return $cdata;
     }
     
     /**

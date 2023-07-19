@@ -196,7 +196,7 @@ body {
     background-color: rgba(0,0,0,0.10);
 }
 
-.top-nav-mid span {
+.top-nav-mid * {
     text-decoration: none !important;
 }
 

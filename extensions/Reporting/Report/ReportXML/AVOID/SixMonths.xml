@@ -7,7 +7,8 @@
     <ReportSection id="socio_info" delete="true"/>
     <ReportSection id="OnSiteEvaluation" delete="true" />
     <ReportSection id="FitBit" delete="true" />
-    <ReportSection id="behaviouralassess" title="Six Month Follow Up: Behavioural Self-Assessment">
+    <ReportSection id="behaviouralassess" title="{showLanguage(Six Month Follow Up: Behavioural Self-Assessment,
+                                                               Suivi de six mois: Auto-évaluer vos habitudes)}">
         <Static>
             <![CDATA[
                 <script type="text/javascript">

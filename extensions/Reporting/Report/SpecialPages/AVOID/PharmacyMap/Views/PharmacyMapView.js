@@ -121,7 +121,8 @@ PharmacyMapView = Backbone.View.extend({
             }
             else {
                 var id_cat = "#"+this.buttons[cat]["code"];
-                this.category_text = $(id_cat).text();
+                this.category_text = $(id_cat).html();
+                console.log(this.category_text);
                 this.refresh = false;
                 this.renderMap = true;
                 this.model.cat = this.buttons[cat]["code"];
@@ -272,10 +273,10 @@ PharmacyMapView = Backbone.View.extend({
             this.$('#treemap-container').append('<div id="treemap" class="modules"></div>');
             if (obj.hasOwnProperty('children')) {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + ' (+)"/>');
-                var r = $('<div class="module-3cols-outer"><a href="#' + hash + '" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a></div>');
+                var r = $('<div class="module-3cols-outer" style="height: 2.25em;"><a style="overflow:hidden;text-overflow:ellipsis;" href="#' + hash + '" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a></div>');
             } else {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + '"/>');
-                var r = $('<div class="module-3cols-outer"><a href="#' + hash + '" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '<span class="throbber" style="display:none;position:absolute;margin-left:5px;"></span></a></div>');
+                var r = $('<div class="module-3cols-outer" style="height: 2.25em;"><a style="overflow:hidden;text-overflow:ellipsis;" href="#' + hash + '" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '<span class="throbber" style="display:none;position:absolute;margin-left:5px;"></span></a></div>');
             }
             this.$('#treemap').append(r);
         }

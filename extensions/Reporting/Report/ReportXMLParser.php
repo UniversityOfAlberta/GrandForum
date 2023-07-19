@@ -443,6 +443,9 @@ class ReportXMLParser {
                 if(isset($attributes->tooltip)){
                     $section->setTooltip(str_replace("'", "&#39;", "{$attributes->tooltip}"));
                 }
+                if(isset($attributes->postId)){
+                    $section->setPostId("{$attributes->postId}");
+                }
                 if(isset($attributes->disabled)){
                     $section->setDisabled($attributes->disabled);
                 }

@@ -38,7 +38,7 @@ class Register extends SpecialPage{
                     $parseroutput->mText .= "<h2>New Applicant Registration</h2><p>If you are applying for the first time, please complete the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
                 else if($config->getValue('networkName') == "ELITE"){
-                    $parseroutput->mText .= "<h2><span class='en'>Registration</span><span class='fr'>Inscription</span></h2><p><span class='en'>If you are applying for the first time, please complete the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</span><span class='fr'>Si c’est la première fois que vous soumettez une demande, veuillez compléter le <a href='$wgServer$wgScriptPath/index.php/Special:Register'>formulaire d’inscription</a>.</span></p>";
+                    $parseroutput->mText .= "<h2><en>Registration</en><fr>Inscription</fr></h2><p><en>If you are applying for the first time, please complete the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</en><fr>Si c’est la première fois que vous soumettez une demande, veuillez compléter le <a href='$wgServer$wgScriptPath/index.php/Special:Register'>formulaire d’inscription</a>.</fr></p>";
                 }
                 else if($config->getValue('networkName') == "AVOID"){
                     // Do Nothing
@@ -85,7 +85,7 @@ class Register extends SpecialPage{
     }
     
     function createForm(){
-        global $config;
+        global $config, $wgLang;
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
         
@@ -122,22 +122,25 @@ class Register extends SpecialPage{
         $password2Row->append($password2Label)->append($password2Field);
         
         // These next fields for are for AVOID
-        $phoneLabel = new Label("phone_label", "<en>Phone Number</en><fr>Numéro de téléphone</fr>", "Phone Number", VALIDATE_NOT_NULL);
+        $phoneLabel = new Label("phone_label", "<en>Phone Number</en><fr>Numéro de téléphone</fr>", 
+                                               "<en>Phone Number</en><fr>Numéro de téléphone</fr>", VALIDATE_NOT_NULL);
         $phoneField = new TextField("phone_field", "Phone Number", "", VALIDATE_NOT_NULL);
         $phoneRow = new FormTableRow("phone_row");
         $phoneRow->append($phoneLabel)->append($phoneField->attr('size', 10));
         
-        $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "<en>or Age of loved one</en><fr>ou Âge de l'être cher</fr>", "The age of the loved one", VALIDATE_NOTHING);
+        $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "<en>or Age of loved one</en><fr>ou Âge de l'être cher</fr>", 
+                                                                  "<en>or Age of loved one</en><fr>ou Âge de l'être cher</fr>", VALIDATE_NOTHING);
         $ageOfLovedOneField = new TextField("age_of_loved_one_field", "Age of loved one", "", VALIDATE_NOTHING);
         $ageOfLovedOneRow = new FormTableRow("age_of_loved_one_row");
         $ageOfLovedOneRow->append($ageOfLovedOneLabel)->append($ageOfLovedOneField->attr('size', 3));
         
-        $ageLabel = new Label("age_label", "<en>Guest User Age</en><fr>Âge de l'utilisateur invité</fr>", "The age of the user", VALIDATE_NOTHING);
+        $ageLabel = new Label("age_label", "<en>Guest User Age</en><fr>Âge de l'utilisateur invité</fr>", 
+                                           "<en>Guest User Age</en><fr>Âge de l'utilisateur invité</fr>", VALIDATE_NOTHING);
         $ageField = new TextField("age_field", "Guest User Age", "", VALIDATE_NOTHING);
         $ageRow = new FormTableRow("age_row");
         $ageRow->append($ageLabel)->append($ageField->attr('size', 3));
         
-        $practiceLabel = new Label("practice_label", "<en>Practice</en><fr>Pratique</fr>", "The practice of the user", VALIDATE_NOT_NULL);
+        $practiceLabel = new Label("practice_label", "<en>Practice</en><fr>Pratique</fr>", "<en>Practice</en><fr>Pratique</fr>", VALIDATE_NOT_NULL);
         $practiceField = new TextField("practice_field", "Practice", "", VALIDATE_NOT_NULL);
         $practiceRow = new FormTableRow("practice_row");
         $practiceRow->append($practiceLabel)->append($practiceField->attr('size', 20));
@@ -147,18 +150,57 @@ class Register extends SpecialPage{
         $roleRow = new FormTableRow("role_row");
         $roleRow->append($roleLabel)->append($roleField->attr('size', 20));
         
-        $hearLabel = new Label("hear_label", "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr>", "How did you hear about the AVOID Frailty program?", VALIDATE_NOT_NULL);
+        $hearLabel = new Label("hear_label", "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr>", 
+                                             "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr>", VALIDATE_NOT_NULL);
         $hearLabel->colspan = 2;
         $hearLabel->colon = "";
         $hearLabel->attr('class', 'label tooltip left-align');
         $hearRow1 = new FormTableRow("hear_row1");
         $hearRow1->append($hearLabel);
-        $hearField = new SelectBox("hear_field", "Hear", "", array("", "Canadian Frailty Network website", "Poster, flyer, or pamphlet at community venue", "Newspaper", "Magazine or Newsletter", "Healthcare practitioner", "Social media", "Word of mouth", "Event", "Radio", "Mail", "Television", "Other"), VALIDATE_NOT_NULL);
+        $hearField = new SelectBox("hear_field", "Hear", "", 
+                                   array("", 
+                                         "Canadian Frailty Network website" => 
+                                            showLanguage("Canadian Frailty Network website", 
+                                                         "Site Internet du Réseau canadien des soins aux personnes fragilisées"), 
+                                         "Poster, flyer, or pamphlet at community venue" => 
+                                            showLanguage("Poster, flyer, or pamphlet at community venue",
+                                                         "Affiche, dépliant ou brochure dans un lieu communautaire"),
+                                         "Newspaper" =>
+                                            showLanguage("Newspaper", 
+                                                         "Journal"), 
+                                         "Magazine or Newsletter" =>
+                                            showLanguage("Magazine or Newsletter", 
+                                                         "Magazine ou bulletin d'information"),
+                                         "Healthcare practitioner" =>
+                                            showLanguage("Healthcare practitioner",
+                                                         "Fournisseur de soins de santé"), 
+                                         "Social media" =>
+                                            showLanguage("Social media",
+                                                         "Médias sociaux"), 
+                                         "Word of mouth" =>
+                                            showLanguage("Word of mouth",
+                                                         "Bouche-à-oreille"), 
+                                         "Event" => 
+                                            showLanguage("Event",
+                                                         "Evénement"), 
+                                         "Radio" =>
+                                            showLanguage("Radio",
+                                                         "À la radio"), 
+                                         "Mail" => 
+                                            showLanguage("Mail",
+                                                         "Courrier"), 
+                                         "Television" =>
+                                            showLanguage("Television",
+                                                         "Télévision"), 
+                                         "Other" => 
+                                            showLanguage("Other",
+                                                         "Autre")), VALIDATE_NOT_NULL);
         $hearField->colspan = 2;
         $hearRow2 = new FormTableRow("hear_row2");
         $hearRow2->append($hearField);
         
-        $hearLocationLabel = new Label("hear_label", "If you remember the location, please specify", "If you remember the location, please specify", VALIDATE_NOTHING);
+        $hearLocationLabel = new Label("hear_label", "<en>If you remember the location, please specify</en><fr>si vous vous souvenez de l’endroit, veuillez l’indiquer</fr>", 
+                                                     "<en>If you remember the location, please specify</en><fr>si vous vous souvenez de l’endroit, veuillez l’indiquer</fr>", VALIDATE_NOTHING);
         $hearLocationLabel->colspan = 2;
         $hearLocationLabel->attr('class', 'tooltip left-align');
         $hearRow3 = new FormTableRow("hear_row3");
@@ -168,7 +210,8 @@ class Register extends SpecialPage{
         $hearRow4 = new FormTableRow("hear_row4");
         $hearRow4->append($hearLocationField);
         
-        $hearPlatformLabel = new Label("hear_label", "Please specify platform", "Please specify platform", VALIDATE_NOTHING);
+        $hearPlatformLabel = new Label("hear_label", "<en>Please specify platform</en><fr>veuillez indiquer la plateforme</fr>", 
+                                                     "<en>Please specify platform</en><fr>veuillez indiquer la plateforme</fr>", VALIDATE_NOTHING);
         $hearPlatformLabel->colspan = 2;
         $hearPlatformLabel->attr('class', 'tooltip left-align');
         $hearRow5 = new FormTableRow("hear_row5");
@@ -178,7 +221,7 @@ class Register extends SpecialPage{
         $hearRow6 = new FormTableRow("hear_row6");
         $hearRow6->append($hearPlatformField);
         
-        $hearPlatformOtherLabel = new Label("hear_label", "Specify", "Specify", VALIDATE_NOTHING);
+        $hearPlatformOtherLabel = new Label("hear_label", "<en>Specify</en><fr>Précisez</fr>", "<en>Specify</en><fr>Précisez</fr>", VALIDATE_NOTHING);
         $hearPlatformOtherLabel->colspan = 2;
         $hearPlatformOtherLabel->attr('class', 'tooltip left-align');
         $hearRow7 = new FormTableRow("hear_row7");
@@ -188,7 +231,7 @@ class Register extends SpecialPage{
         $hearRow8 = new FormTableRow("hear_row8");
         $hearRow8->append($hearPlatformOtherField);
         
-        $hearOtherLabel = new Label("hear_label", "Please specify", "Please specify", VALIDATE_NOTHING);
+        $hearOtherLabel = new Label("hear_label", "<en>Please specify</en><fr>Précisez</fr>", "<en>Please specify</en><fr>Précisez</fr>", VALIDATE_NOTHING);
         $hearOtherLabel->colspan = 2;
         $hearOtherLabel->attr('class', 'tooltip left-align');
         $hearRow9 = new FormTableRow("hear_row9");
@@ -200,11 +243,11 @@ class Register extends SpecialPage{
         
         // End AVOID Fields
         
-        $typeLabel = new Label("type_label", "<span class='en'>Please select your role</span><span class='fr'>Veuillez sélectionner votre rôle</span>", "The role of user", VALIDATE_NOT_NULL);
-        $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "<span class='en'>Candidate (ELITE Program Intern, PhD Fellowship Candidate)</span>
-                                                                                   <span class='fr'>Candidat-e (Stagiaire du Programme ELITE, Candidat-e de bourse doctorale)</span>", 
-                                                                           EXTERNAL => "<span class='en'>Host (ELITE Program Internship Host, PhD Fellowship Supervisor)</span>
-                                                                                        <span class='fr'>Responsable (Responsable de stage du Programme ELITE, Superviseur-e de candidat-e de bourse doctorale)</span>"), VALIDATE_NOT_NULL);
+        $typeLabel = new Label("type_label", "<en>Please select your role</en><fr>Veuillez sélectionner votre rôle</fr>", "The role of user", VALIDATE_NOT_NULL);
+        $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "<en>Candidate (ELITE Program Intern, PhD Fellowship Candidate)</en>
+                                                                                   <fr>Candidat-e (Stagiaire du Programme ELITE, Candidat-e de bourse doctorale)</fr>", 
+                                                                           EXTERNAL => "<en>Host (ELITE Program Internship Host, PhD Fellowship Supervisor)</en>
+                                                                                        <fr>Responsable (Responsable de stage du Programme ELITE, Superviseur-e de candidat-e de bourse doctorale)</fr>"), VALIDATE_NOT_NULL);
         $typeRow = new FormTableRow("type_row");
         $typeRow->append($typeLabel)->append($typeField);
         
@@ -215,8 +258,8 @@ class Register extends SpecialPage{
         
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
-        $submitField->buttonText = "<span class='en'>Submit Request</span>
-                                    <span class='fr'>Soumettre la demande</span>";
+        $submitField->buttonText = "<en>Submit Request</en>
+                                    <fr>Soumettre la demande</fr>";
         $submitRow = new FormTableRow("submit_row");
         $submitRow->append($submitCell)->append($submitField);
         
@@ -281,10 +324,10 @@ class Register extends SpecialPage{
         }
         else if($config->getValue('networkName') == 'ELITE'){
             $wgOut->setPageTitle(showLanguage("Member Registration", "Inscription des membres"));
-            $wgOut->addHTML("<span class='en'>Your registration with {$config->getValue('networkName')} Program Application Portal will grant you access. You will receive a registration email within a few minutes after submission of your information. If you do not receive the registration email in your main inbox, please check your spam or junk mail folder. If you did not receive the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</span>
-                            <span class='fr'>
+            $wgOut->addHTML("<en>Your registration with {$config->getValue('networkName')} Program Application Portal will grant you access. You will receive a registration email within a few minutes after submission of your information. If you do not receive the registration email in your main inbox, please check your spam or junk mail folder. If you did not receive the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</en>
+                            <fr>
                                 Votre inscription au portail du formulaire de demande pour le Programme ELITE vous donnera accès au portail. Vous recevrez un courriel d'inscription quelques minutes après la soumission de vos informations. Si vous ne recevez pas le courriel d'inscription dans votre boîte de réception principale, veuillez vérifier votre dossier de courriels indésirables. Si vous n'avez pas reçu le courriel, veuillez contacter <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.
-                            </span><br /><br />");
+                            </fr><br /><br />");
         }
         else if($config->getValUE("networkName") == "AVOID"){
             $role = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? $_GET['role'] : CI; // Member

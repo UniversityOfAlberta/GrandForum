@@ -229,7 +229,12 @@
     <!--% } %-->
 </p>
 <div id='searchbar_key'>
-    <input id='keywordsearch' class='program-body hs-search-field__input' type="search" placeholder="Search by keyword.."><a style='font-size:2em;padding:0.5em;margin-left:0.5em;' id='keysearch_btn' class='program-button' title="Search">Search</a>
+    <% if(wgLang == "en"){ %>
+        <input id='keywordsearch' class="program-body hs-search-field__input" style="margin-bottom:0;vertical-align:middle;" type="search" placeholder="Search by keyword.." />
+    <% } else { %>
+        <input id='keywordsearch' class="program-body hs-search-field__input" style="margin-bottom:0;vertical-align:middle;" type="search" placeholder="Effectuez une recherche par mots-clés.." />
+    <% } %>
+    <a style='font-size:2em;padding:0.5em;margin-left:0.5em;vertical-align:middle;' id='keysearch_btn' class='program-button' title="Search"><en>Search</en><fr>Chercher</fr></a>
 </div>
 <div class='searches'>
 </div>
@@ -255,11 +260,17 @@
     </div>
     <div class="module-2cols-outer" style="flex: 1 1 auto;">
         <div id="address_bar">
-            <span class='en' style=''>Address</span><span class='fr' style='display:none'>Adresse</span> <input type="text"
-                id="lat" style="max-width:399px; width: 100%; box-sizing: border-box; margin-bottom: 2px;" />&nbsp<button id="findLocation"><span class='en' style=''>Find my
-                    Location</span><span class='fr' style='display:none'>Trouver mon Endroit</span></button>&nbsp&nbsp&nbsp<button
-                id="printMap"><span class='en' style=''>Print Map</span><span class='fr' style='display:none'>Imprimer
-                    le Plan</span></button>
+            <en>Address</en>
+            <fr>Adresse</fr> 
+            <input type="text" id="lat" style="max-width:399px; width: 100%; box-sizing: border-box; margin-bottom: 2px;" />&nbsp;
+            <button id="findLocation">
+                <en>Find my Location</en>
+                <fr>Trouver mon Endroit</fr>
+            </button>&nbsp&nbsp&nbsp
+            <button id="printMap">
+                <en>Print Map</en>
+                <fr>Imprimer le Plan</fr>
+            </button>
         </div>
         <br /><br />
         <div id="pharmacy-info">

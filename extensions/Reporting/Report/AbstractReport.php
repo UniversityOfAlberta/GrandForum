@@ -26,6 +26,8 @@ if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php
     require_once("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php");
 }
 
+require_once("ReportItemCallback.php");
+
 autoload_register('Reporting/Report');
 autoload_register('Reporting/Report/ApplicationTabs');
 autoload_register('Reporting/Report/ReportSections');
@@ -178,7 +180,7 @@ abstract class AbstractReport extends SpecialPage {
             
             $currentSection = @$_GET['section'];
             foreach($this->sections as $section){
-                if(strip_tags($section->name) == $currentSection && $currentSection != ""){
+                if(strip_tags($section->getPostId()) == $currentSection && $currentSection != ""){
                     $this->currentSection = $section;
                     break;
                 }
@@ -232,16 +234,16 @@ abstract class AbstractReport extends SpecialPage {
                     $register = "";
                     if(isExtensionEnabled('Register')){
                         $register = "or <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Register'>
-                                            <span class='en'>register</span>
-                                            <span class='fr'>inscrire</span>
+                                            <en>register</en>
+                                            <fr>inscrire</fr>
                                         </a>";
                     }
                     $wgOut->clearHTML();
                     $wgOut->setPageTitle("Not logged in");
-                    $wgOut->addHTML("<span class='en'>Please login {$register} in order to access this page.</span>
-                                     <span class='fr'>Veuillez vous connecter ou vous {$register} pour accéder au site web.</span>");
+                    $wgOut->addHTML("<en>Please login {$register} in order to access this page.</en>
+                                     <fr>Veuillez vous connecter ou vous {$register} pour accéder au site web.</fr>");
                     $wgOut->addHTML("<script type='text/javascript'>
-                        $('h1').html(\"<span class='en'>Not logged in</span><span class='fr'>Pas connecté</span>\");
+                        $('h1').html(\"<en>Not logged in</en><fr>Pas connecté</fr>\");
                     </script>");
                     return;
                 }
@@ -284,7 +286,7 @@ abstract class AbstractReport extends SpecialPage {
                 $prog = array();
                 foreach($this->sections as $section){
                     if($section instanceof EditableReportSection){
-                        $prog[str_replace("/", "", str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($section->name)))))] = $section->getPercentComplete();
+                        $prog[str_replace("/", "", str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($section->getPostId())))))] = $section->getPercentComplete();
                     }
                 }
                 header('Content-Type: text/json');
@@ -340,10 +342,10 @@ abstract class AbstractReport extends SpecialPage {
         else{
             // File not found
             $wgOut->setPageTitle("Report not Found");
-            $wgOut->addHTML("<span class='en'>The report specified does not exist</span>
-                             <span class='fr'>Le rapport spécifié n'existe pas.</span>");
+            $wgOut->addHTML("<en>The report specified does not exist</en>
+                             <fr>Le rapport spécifié n'existe pas.</fr>");
             $wgOut->addHTML("<script type='text/javascript'>
-                                $('h1').html(\"<span class='en'>Report not Found</span><span class='fr'>Rapport introuvable</span>\");
+                                $('h1').html(\"<en>Report not Found</en><fr>Rapport introuvable</fr>\");
                             </script>");
         }
     }
@@ -641,7 +643,7 @@ abstract class AbstractReport extends SpecialPage {
     function getPercentChars(){
         $percents = array();
         foreach($this->sections as $section){
-            $percents["{$section->name}"] = $section->getPercentChars();
+            $percents["{$section->getPostId()}"] = $section->getPercentChars();
         }
         return $percents;
     }
