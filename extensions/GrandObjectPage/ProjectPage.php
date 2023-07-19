@@ -107,13 +107,13 @@ class ProjectPage {
                 if($config->getValue('networkName') == "FES"){
                     $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
                 }
-                else{
+                else if($config->getValue('networkName') != "CIC"){
                     $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET')){
+                if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET') && $config->getValue('networkName') != "CIC"){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
