@@ -294,10 +294,11 @@ class AVOIDDashboard extends SpecialPage {
                             <div class='program-body {$membersOnly}' style='width: 100%;'>
                                 <p style='margin-bottom:0.5em;'>
                                     {$frailty}<br />
-                                    <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>
+                                    <a href='{$wgServer}{$wgScriptPath}/EducationModules/What is Frailty-".strtoupper($wgLang->getCode()).".pdf' target='_blank'>
                                         <en>What is Frailty?</en>
                                         <fr>Qu’est-ce que la fragilité?</fr>
-                                    </a> | 
+                                    </a>
+                                    | 
                                     <a href='https://www.youtube.com/watch?v=tzyYBp1v1WI&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE' target='_blank'>Frailty: Ask the Expert</a><br />
                                 </p>
                                 <a class='viewReport' href='#'><img src='{$wgServer}{$wgScriptPath}/skins/report.png' style='height:5em;max-height:100px;margin-right:0.5em;' /></a>
