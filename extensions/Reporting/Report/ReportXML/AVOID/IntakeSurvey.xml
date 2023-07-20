@@ -552,33 +552,28 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="living_environment" type="SelectReportItem" blobItem="living_environment" 
-                    options="Independent, at home|Private home with informal care|Private home with formal care|Naturally Occurring Retirement Community|Retirement home|Assisted living facility|Long-Term Care with 24/7 skilled nursing care|Other (specify):"
-                    labels="{showLanguage(Independent&amp;#44; at home|
-                                          Private home with informal care|
-                                          Private home with formal care|
-                                          Naturally Occurring Retirement Community|
-                                          Retirement home|
-                                          Assisted living facility|
-                                          Long-Term Care with 24/7 skilled nursing care|
-                                          Other &amp;#40;specify&amp;#41;:,
-                    
-                                          Independent&amp;#44; at home|
-                                          Private home with informal care|
-                                          Private home with formal care|
-                                          Naturally Occurring Retirement Community|
-                                          Retirement home|
-                                          Assisted living facility|
-                                          Long-Term Care with 24/7 skilled nursing care|
-                                          Other &amp;#40;specify&amp;#41;:)}">
-            <![CDATA[
-                    <h3>
-                        <en>What best describes your living environment?</en>
-                        <fr>Quel est votre plus haut niveau de scolarité?</fr>
-                    </h3>
-                    <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
+        <If if="{==({$wgLang},en)}">
+            <!-- English -->
+            <ReportItem id="living_environment" type="SelectReportItem" blobItem="living_environment" 
+                        options="Independent, at home|Private home with informal care|Private home with formal care|Naturally Occurring Retirement Community|Retirement home|Assisted living facility|Long-Term Care with 24/7 skilled nursing care|Other (specify):"
+                        labels="Independent, at home|Private home with informal care|Private home with formal care|Naturally Occurring Retirement Community|Retirement home|Assisted living facility|Long-Term Care with 24/7 skilled nursing care|Other">
+                <![CDATA[
+                        <h3>What best describes your living environment?</h3>
+                        <div class="requiredField" id='living_environment'>{$item}</div>
+                ]]>
+            </ReportItem>
+        </If>
+        <Else>
+            <!-- French -->
+            <ReportItem id="living_environment" type="SelectReportItem" blobItem="living_environment" 
+                        options="À domicile, autonome|À domicile avec du soutien de mon réseau|À domicile avec du soutien d’organisations de soins ou de services à domicile|Résidence privée pour aînés (RPAs)|Dans une résidence pour personnes âgées autonomes|Dans une résidence pour personnes âgées autonomes et semi-autonomes|Dans une résidence pour personnes âgées semi-autonomes|Ressource intermédiaire (RI)|Dans un centre d'hébergement et de soins de longue durée (CHSLD)|Autre"
+                        labels="À domicile, autonome|À domicile avec du soutien de mon réseau|À domicile avec du soutien d’organisations de soins ou de services à domicile|Résidence privée pour aînés (RPAs)|Dans une résidence pour personnes âgées autonomes|Dans une résidence pour personnes âgées autonomes et semi-autonomes|Dans une résidence pour personnes âgées semi-autonomes|Ressource intermédiaire (RI)|Dans un centre d'hébergement et de soins de longue durée (CHSLD)|Autre">
+                <![CDATA[
+                        <h3>Lequel des énoncés suivant décrit le mieux l'endroit où vous vivez?</h3>
+                        <div class="requiredField" id='living_environment'>{$item}</div>
+                ]]>
+            </ReportItem>
+        </Else>
         <ReportItem id="living_specify" type="Text" blobItem="LIVINGSPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id="living_specify">
@@ -659,13 +654,14 @@
                 
                 $('span#living_specify').hide();
                 function specifyLiving(){
-                    if($("select[name='GettingtoKnowYou_living_environment']").val() == "Other (specify):"){
+                    if($("#living_environment select").val() == "Other (specify):" || 
+                       $("#living_environment select").val() == "Autre"){
                             $('span#living_specify').show();
                     }
                     else{ $('span#living_specify').hide();}
                 }
                 _.defer(specifyLiving);
-                $("select[name='GettingtoKnowYou_living_environment']").change(specifyLiving);
+                $("#living_environment select").change(specifyLiving);
             </script>
         ]]>
         </Static>

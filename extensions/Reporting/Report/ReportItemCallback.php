@@ -223,6 +223,7 @@ class ReportItemCallback {
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
+            "wgLang" => "getWgLang",
             "GET" => "getGet",
             "networkName" => "getNetworkName",
             "id" => "getId",
@@ -1836,6 +1837,11 @@ class ReportItemCallback {
     function getWgScriptPath(){
         global $wgScriptPath;
         return $wgScriptPath;
+    }
+    
+    function getWgLang(){
+        global $wgLang;
+        return $wgLang->getCode();
     }
     
     function getGet($var1){
