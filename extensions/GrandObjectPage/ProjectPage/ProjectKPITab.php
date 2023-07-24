@@ -282,6 +282,9 @@ class ProjectKPITab extends AbstractEditableTab {
                 $kpi1->xls[$key][2]->value += $row[2]->value;
             }
         }
+        // Handle Percents differently
+        $kpi1->xls[37][2]->value = $kpi1->xls[36][2]->value/max(1, $kpi1->xls[35][2]->value);
+        $kpi1->xls[56][2]->value = $kpi1->xls[55][2]->value/max(1, $kpi1->xls[54][2]->value);
         return $kpi1;
     }
 
