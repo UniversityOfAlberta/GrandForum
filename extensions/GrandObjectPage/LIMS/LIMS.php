@@ -1,5 +1,7 @@
 <?php
 
+require_once("KPISummary.php");
+
 BackbonePage::register('LIMS', 'LIMS', 'network-tools', dirname(__FILE__));
 
 $wgHooks['ToolboxLinks'][] = 'LIMS::createSideBarLink';
