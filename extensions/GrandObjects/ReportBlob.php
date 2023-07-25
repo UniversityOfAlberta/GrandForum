@@ -221,7 +221,7 @@ class ReportBlob {
 	            $oldData = DBFunctions::escape($res[0]['data']);
 	            $impersonateId = $wgRealUser->getId();
 	            $sql = "INSERT INTO `grand_report_blobs_impersonated` (`blob_id`, `user_id`, `previous_value`, `current_value`)
-	                    VALUES ('{$this->_blob_id}', '{$impersonateId}', '{$oldData}', '{$this->_data_transformed}')";
+	                    VALUES ('{$this->_blob_id}', '{$impersonateId}', '{$oldData}', '".DBFunctions::escape($this->_data_transformed)."')";
 	            DBFunctions::execSQL($sql, true);
 	        }
 		}
@@ -234,7 +234,7 @@ class ReportBlob {
 			DBFunctions::execSQL("INSERT INTO grand_report_blobs " .
 				"(edited_by, year, user_id, proj_id, {$insert_keys}, changed, blob_type, data, md5, encrypted) " .
 				"VALUES ({$impersonateId}, {$this->_year}, {$this->_owner_id}, {$this->_proj_id}, " .
-				"{$insert_data}, CURRENT_TIMESTAMP, {$this->_type}, '{$this->_data_transformed}', '{$md5}', {$this->_encrypted});", true);
+				"{$insert_data}, CURRENT_TIMESTAMP, {$this->_type}, '".DBFunctions::escape($this->_data_transformed)."', '{$md5}', {$this->_encrypted});", true);
 			if($wgImpersonating){
 			    $res = DBFunctions::execSQL("SELECT blob_id FROM grand_report_blobs WHERE " .
 			                                "user_id = {$this->_owner_id} AND " .
@@ -245,7 +245,7 @@ class ReportBlob {
 			        $oldData = "";
 	                $impersonateId = $wgRealUser->getId();
 	                $sql = "INSERT INTO `grand_report_blobs_impersonated` (`blob_id`, `user_id`, `previous_value`, `current_value`)
-	                        VALUES ('$blob_id', '{$impersonateId}', '$oldData', '{$this->_data_transformed}')";
+	                        VALUES ('$blob_id', '{$impersonateId}', '$oldData', '".DBFunctions::escape($this->_data_transformed)."')";
 	                DBFunctions::execSQL($sql, true);
 	            }
 	        }
