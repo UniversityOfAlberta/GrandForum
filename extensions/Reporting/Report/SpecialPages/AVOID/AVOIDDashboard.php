@@ -298,8 +298,11 @@ class AVOIDDashboard extends SpecialPage {
                                         <en>What is Frailty?</en>
                                         <fr>Qu’est-ce que la fragilité?</fr>
                                     </a>
-                                    | 
-                                    <a href='https://www.youtube.com/watch?v=tzyYBp1v1WI&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE' target='_blank'>Frailty: Ask the Expert</a><br />
+                                    <en>
+                                        | 
+                                        <a href='https://www.youtube.com/watch?v=tzyYBp1v1WI&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE' target='_blank'>Frailty: Ask the Expert</a>
+                                    </en>
+                                    <br />
                                 </p>
                                 <a class='viewReport' href='#'><img src='{$wgServer}{$wgScriptPath}/skins/report.png' style='height:5em;max-height:100px;margin-right:0.5em;' /></a>
                                 <div style='display:inline-block;vertical-align:middle;'>
