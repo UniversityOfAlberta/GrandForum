@@ -61,7 +61,7 @@ class ProjectKPITab extends AbstractEditableTab {
         return $this->generateBody();
     }
     
-    static function optimizeFn($obj, $project=null, $start_date="0000-00-00", $end_date="2100-01-01", $min=200){
+    static function optimizeFn($obj, $project=null, $start_date="0000-00-00", $end_date="2100-01-01"){
         // Optimize formulas
         $sheets = $obj->getAllSheets();
         
@@ -80,20 +80,17 @@ class ProjectKPITab extends AbstractEditableTab {
                     $nRows++;
                 }
             }
-            $nRows = min($min, $nRows);
+            $nRows = min(200, $nRows);
             $max = max($max, $nRows);
             
             foreach($cells as $rowN => $row){
                 foreach($row as $colN => $col){
                     if(strstr($cells[$rowN][$colN], "=") !== false && strstr($cells[$rowN][$colN], "200") !== false){
                         $cells[$rowN][$colN] = str_replace("200", $nRows, $cells[$rowN][$colN]);
-                        if($min == 0){
-                            $cells[$rowN][$colN] = 0;
-                        }
                     }
                 }
             }
-            @$sheet->fromArray($cells, null, 'A1', true);
+            @$sheet->fromArray($cells, null, 'A1', false);
         }
 
         $obj->setActiveSheetIndex(1);
@@ -103,9 +100,6 @@ class ProjectKPITab extends AbstractEditableTab {
             foreach($row as $colN => $col){
                 if(strstr($cells[$rowN][$colN], "=") !== false && strstr($cells[$rowN][$colN], "200") !== false){
                     $cells[$rowN][$colN] = str_replace("200", $max, $cells[$rowN][$colN]);
-                    if($min == 0){
-                        $cells[$rowN][$colN] = 0;
-                    }
                 }
             }
         }
@@ -165,73 +159,73 @@ class ProjectKPITab extends AbstractEditableTab {
             }
             
             // Section 1
-            $cells[5][2] += @$userTypes['On site'];
-            $cells[6][2] += @$userTypes['Remote'];
-            $cells[7][2] += @$userTypes['Data'];
+            $cells[5][2] = (is_numeric($cells[5][2])) ? @$userTypes['On site'] : $cells[5][2];
+            $cells[6][2] = (is_numeric($cells[6][2])) ? @$userTypes['Remote'] : $cells[6][2];
+            $cells[7][2] = (is_numeric($cells[7][2])) ? @$userTypes['Data'] : $cells[7][2];
             
-            $cells[10][2] += @$userGeos['Alberta'];
-            $cells[11][2] += @$userGeos['British Columbia'];
-            $cells[12][2] += @$userGeos['Manitoba'];
-            $cells[13][2] += @$userGeos['New Brunswick'];
-            $cells[14][2] += @$userGeos['Newfoundland'];
-            $cells[15][2] += @$userGeos['Nova Scotia'];
-            $cells[16][2] += @$userGeos['Ontario'];
-            $cells[17][2] += @$userGeos['Quebec'];
-            $cells[18][2] += @$userGeos['Saskatchewan'];
-            $cells[19][2] += @$userGeos['North West Territories'];
-            $cells[20][2] += @$userGeos['Prince Edward Island'];
-            $cells[21][2] += @$userGeos['Nunavut'];
-            $cells[22][2] += @$userGeos['Yukon'];
-            $cells[23][2] += @$userGeos['Outside Canada: United States'];
-            $cells[24][2] += @$userGeos['Outside Canada: other than United States'];
+            $cells[10][2] = (is_numeric($cells[10][2])) ? @$userGeos['Alberta'] : $cells[10][2];
+            $cells[11][2] = (is_numeric($cells[11][2])) ? @$userGeos['British Columbia'] : $cells[11][2];
+            $cells[12][2] = (is_numeric($cells[12][2])) ? @$userGeos['Manitoba'] : $cells[12][2];
+            $cells[13][2] = (is_numeric($cells[13][2])) ? @$userGeos['New Brunswick'] : $cells[13][2];
+            $cells[14][2] = (is_numeric($cells[14][2])) ? @$userGeos['Newfoundland'] : $cells[14][2];
+            $cells[15][2] = (is_numeric($cells[15][2])) ? @$userGeos['Nova Scotia'] : $cells[15][2];
+            $cells[16][2] = (is_numeric($cells[16][2])) ? @$userGeos['Ontario'] : $cells[16][2];
+            $cells[17][2] = (is_numeric($cells[17][2])) ? @$userGeos['Quebec'] : $cells[17][2];
+            $cells[18][2] = (is_numeric($cells[18][2])) ? @$userGeos['Saskatchewan'] : $cells[18][2];
+            $cells[19][2] = (is_numeric($cells[19][2])) ? @$userGeos['North West Territories'] : $cells[19][2];
+            $cells[20][2] = (is_numeric($cells[20][2])) ? @$userGeos['Prince Edward Island'] : $cells[20][2];
+            $cells[21][2] = (is_numeric($cells[21][2])) ? @$userGeos['Nunavut'] : $cells[21][2];
+            $cells[22][2] = (is_numeric($cells[22][2])) ? @$userGeos['Yukon'] : $cells[22][2];
+            $cells[23][2] = (is_numeric($cells[23][2])) ? @$userGeos['Outside Canada: United States'] : $cells[23][2];
+            $cells[24][2] = (is_numeric($cells[24][2])) ? @$userGeos['Outside Canada: other than United States'] : $cells[24][2];
             
-            $cells[27][2] += @$userSectors['University, college, research hospital'];
-            $cells[28][2] += @$userSectors['Other public'];
-            $cells[29][2] += @$userSectors['Private'];
-            $cells[30][2] += @$userSectors['Not-for-profit'];
+            $cells[27][2] = (is_numeric($cells[27][2])) ? @$userSectors['University, college, research hospital'] : $cells[27][2];
+            $cells[28][2] = (is_numeric($cells[28][2])) ? @$userSectors['Other public'] : $cells[28][2];
+            $cells[29][2] = (is_numeric($cells[29][2])) ? @$userSectors['Private'] : $cells[29][2];
+            $cells[30][2] = (is_numeric($cells[30][2])) ? @$userSectors['Not-for-profit'] : $cells[30][2];
 
             // Section 2
-            $cells[35][2] += @$section2['requests'];
-            $cells[36][2] += @$section2['accommodated'];
+            $cells[35][2] = (is_numeric($cells[35][2])) ? @$section2['requests'] : $cells[35][2];
+            $cells[36][2] = (is_numeric($cells[36][2])) ? @$section2['accommodated'] : $cells[36][2];
             
             // Section 5
-            $cells[54][2] += @$section5['surveyed'];
+            $cells[54][2] = (is_numeric($cells[54][2])) ? @$section5['surveyed'] : $cells[54][2];
             
             // Section 6
-            $cells[60][2] += @$prods['Peer Reviewed Publications'];
-            $cells[61][2] += @$prods['Other Publication (e.g. Trade Journal)'];
-            $cells[62][2] += @$prods['Conference Presentations (Oral and Poster)'];
-            $cells[63][2] += @$prods['Monographs, Books, Book Chapters'];
+            $cells[60][2] = (is_numeric($cells[60][2])) ? @$prods['Peer Reviewed Publications'] : $cells[60][2];
+            $cells[61][2] = (is_numeric($cells[61][2])) ? @$prods['Other Publication (e.g. Trade Journal)'] : $cells[61][2];
+            $cells[62][2] = (is_numeric($cells[62][2])) ? @$prods['Conference Presentations (Oral and Poster)'] : $cells[62][2];
+            $cells[63][2] = (is_numeric($cells[63][2])) ? @$prods['Monographs, Books, Book Chapters'] : $cells[63][2];
             
             // Section 7
-            $cells[68][2] += @$prods['Courses, Workshops & Training Sessions'];
-            $cells[69][2] += @$prods['Public Events Hosted by Facility (Symposia, Conferences, Open Houses, Tours)'];
-            $cells[70][2] += @$prods['Media Interviews, Press Conferences & Broadcasts'];
-            $cells[71][2] += @$prods['Stakeholder Events Attended by GIS Personnel Conferences, Tradeshows & Industry, Governments, Community Events'];
+            $cells[68][2] = (is_numeric($cells[68][2])) ? @$prods['Courses, Workshops & Training Sessions'] : $cells[68][2];
+            $cells[69][2] = (is_numeric($cells[69][2])) ? @$prods['Public Events Hosted by Facility (Symposia, Conferences, Open Houses, Tours)'] : $cells[69][2];
+            $cells[70][2] = (is_numeric($cells[70][2])) ? @$prods['Media Interviews, Press Conferences & Broadcasts'] : $cells[70][2];
+            $cells[71][2] = (is_numeric($cells[71][2])) ? @$prods['Stakeholder Events Attended by GIS Personnel Conferences, Tradeshows & Industry, Governments, Community Events'] : $cells[71][2];
             
             // Section 8
-            $cells[76][2] += @$section8['College Students'];
-            $cells[77][2] += @$section8['University Undergrad Students'];
-            $cells[78][2] += @$section8['M.Sc. Students'];
-            $cells[79][2] += @$section8['Ph.D. Students'];
-            $cells[80][2] += @$section8['PDFs'];
-            $cells[81][2] += @$section8['Scientific & Technical Personnel (Outside GIS)'];
+            $cells[76][2] = (is_numeric($cells[76][2])) ? @$section8['College Students'] : $cells[76][2];
+            $cells[77][2] = (is_numeric($cells[77][2])) ? @$section8['University Undergrad Students'] : $cells[77][2];
+            $cells[78][2] = (is_numeric($cells[78][2])) ? @$section8['M.Sc. Students'] : $cells[78][2];
+            $cells[79][2] = (is_numeric($cells[79][2])) ? @$section8['Ph.D. Students'] : $cells[79][2];
+            $cells[80][2] = (is_numeric($cells[80][2])) ? @$section8['PDFs'] : $cells[80][2];
+            $cells[81][2] = (is_numeric($cells[81][2])) ? @$section8['Scientific & Technical Personnel (Outside GIS)'] : $cells[81][2];
             
             // Section 9
-            $cells[86][2] += @$prods['Technical & Consultancy Reports'];
-            $cells[87][2] += @$prods['Provisional Patent Applications Filed'];
-            $cells[88][2] += @$prods['PCT Application Filed & Patents Granted'];
-            $cells[89][2] += @$prods['Outlicenses'];
-            $cells[90][2] += @$prods['Spin-Off Companies Created'];
+            $cells[86][2] = (is_numeric($cells[86][2])) ? @$prods['Technical & Consultancy Reports'] : $cells[86][2];
+            $cells[87][2] = (is_numeric($cells[87][2])) ? @$prods['Provisional Patent Applications Filed'] : $cells[87][2];
+            $cells[88][2] = (is_numeric($cells[88][2])) ? @$prods['PCT Application Filed & Patents Granted'] : $cells[88][2];
+            $cells[89][2] = (is_numeric($cells[89][2])) ? @$prods['Outlicenses'] : $cells[89][2];
+            $cells[90][2] = (is_numeric($cells[90][2])) ? @$prods['Spin-Off Companies Created'] : $cells[90][2];
             
             // Section 10
-            $cells[95][2] += @$prods['Collaboration with Industry Partners'];
-            $cells[96][2] += @$prods['Collaborations with Scientific Institutions'];
-            $cells[97][2] += @$prods['Total Value of Research Grants & Awards Held by Facility Staff and Faculty'];
-            $cells[98][2] += @$prods['Total Number of Research Grants and Awards Held by Facility Staff and Faculty'];
+            $cells[95][2] = (is_numeric($cells[95][2])) ? @$prods['Collaboration with Industry Partners'] : $cells[95][2];
+            $cells[96][2] = (is_numeric($cells[96][2])) ? @$prods['Collaborations with Scientific Institutions'] : $cells[96][2];
+            $cells[97][2] = (is_numeric($cells[97][2])) ? @$prods['Total Value of Research Grants & Awards Held by Facility Staff and Faculty'] : $cells[97][2];
+            $cells[98][2] = (is_numeric($cells[98][2])) ? @$prods['Total Number of Research Grants and Awards Held by Facility Staff and Faculty'] : $cells[98][2];
         }
         
-        @$sheet->fromArray($cells, null, 'A1', true);
+        @$sheet->fromArray($cells, null, 'A1', false);
         return $obj;
     }
     
@@ -261,14 +255,12 @@ class ProjectKPITab extends AbstractEditableTab {
         $blb->load($addr, true);
         $xls = $blb->getData();
         $md5 = $blb->getMD5();
-        $min = 200;
         if($xls == null){
             $xls = file_get_contents("data/GIS KPIs.xlsx");
-            $min = 0;
         }
 
         $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
-        $kpi = new Budget("XLS", $structure, $xls, 1, "ProjectKPITab::optimizeFn", array($project, $start_date, $end_date, $min));
+        $kpi = new Budget("XLS", $structure, $xls, 1, "ProjectKPITab::optimizeFn", array($project, $start_date, $end_date));
         $kpi->xls[69][1]->style .= "white-space: initial;";
         $kpi->xls[71][1]->style .= "white-space: initial;";
         $kpi->xls[97][1]->style .= "white-space: initial;";
