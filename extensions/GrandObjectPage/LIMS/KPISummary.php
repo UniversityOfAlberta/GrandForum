@@ -69,6 +69,7 @@ class KPISummary extends SpecialPage{
                 foreach($adminProjects as $project){
                     if(substr($project->getCreated(), 0, 10) <= $enddate){
                         list($kpi, $md5) = ProjectKPITab::getKPI($project, "KPI_{$i}_Q{$q}", $date, $enddate);
+                        $kpi->xls[41][2]->value = $kpi->xls[41][2]->value/count($adminProjects);
                         $kpiSummary = ProjectKPITab::addKPI($kpiSummary, $kpi);
                     }
                 }
