@@ -568,13 +568,13 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_ADDITIONAL_INFO">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_STUDENTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
                         {$item} 
                 ]]>
             </ReportItem>
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_ADDITIONAL_INFO" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_STUDENTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
                 <![CDATA[
                         <b>({$product_type})</b> {$item}
                     </li>
@@ -608,7 +608,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_ADDITIONAL_INFO">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_STUDENTS">
                 <![CDATA[
                     <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
                         <td align='center'>{$presentation_type}</td>
@@ -704,7 +704,7 @@
             </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_ADDITIONAL_INFO">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_STUDENTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
                         {$item}
@@ -713,7 +713,7 @@
             </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_ADDITIONAL_INFO">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_STUDENTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
                         {$item}
