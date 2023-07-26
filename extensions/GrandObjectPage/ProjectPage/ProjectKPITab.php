@@ -256,7 +256,7 @@ class ProjectKPITab extends AbstractEditableTab {
         $xls = $blb->getData();
         $md5 = $blb->getMD5();
         if($xls == null){
-            $xls = file_get_contents("data/GIS KPIs.xlsx");
+            $xls = file_get_contents("data/KPI_Empty.xlsx");
         }
 
         $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_KPI_STRUCTURE');
