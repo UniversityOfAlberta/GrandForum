@@ -310,7 +310,7 @@ class ProjectKPITab extends AbstractEditableTab {
             $startYear = date('Y', strtotime($project->getCreated()) - (3 * 30 * 24 * 60 * 60));
             
             for($i=$endYear; $i >= $startYear; $i--){
-                foreach(array_reverse(self::$qMap, true) as $q => $quarter){
+                foreach(self::$qMap as $q => $quarter){
                     switch($q){
                         case 1:
                             $date = "{$i}-04-01";

@@ -39,7 +39,7 @@ class KPISummary extends SpecialPage{
         $endYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Roll-over kpi in April
         $phaseDates = $config->getValue("projectPhaseDates");
         for($i=$endYear; $i >= $startYear; $i--){
-            foreach(array_reverse(ProjectKPITab::$qMap, true) as $q => $quarter){
+            foreach(ProjectKPITab::$qMap as $q => $quarter){
                 switch($q){
                     case 1:
                         $date = "{$i}-04-01";
