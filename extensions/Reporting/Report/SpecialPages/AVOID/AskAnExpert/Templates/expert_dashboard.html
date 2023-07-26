@@ -14,8 +14,10 @@
         </div>
         <div style="position:absolute;top:0px;right:10px;">
             <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){%>
-                <!--a href="<%= wgServer+wgScriptPath%>/index.php/Special:AskAnExpert#/1/edit" id="editeventbtn" style="float:right" class="program-button" title="Edit">Edit Event</a-->
-                <a href="#" id="editeventbtn" style="float:right" class="editbutton" title="Edit">Edit Event</a>
+                <a href="#" id="editeventbtn" style="float:right" class="editbutton" title="Edit">
+                    <en>Edit Event</en>
+                    <fr>Modifier l'événement</fr>
+                </a>
             <% } %>
         </div>
     </div>

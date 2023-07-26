@@ -19,7 +19,7 @@ ExpertDashboardView = Backbone.View.extend({
         this.editDialog.dialog({
             height: $(window).height() * 0.60,
             width: 500,
-            title: "Edit Event",
+            title: "<en>Edit Event</en><fr>Modifier l'événement</fr>",
         });
         this.editDialog.dialog('open');
         view.render();
