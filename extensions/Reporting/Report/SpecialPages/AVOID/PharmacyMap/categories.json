@@ -127,6 +127,13 @@
                 "tags": ["trails"]
             },
             {
+                "text": "<en>Gentle</en><fr>Doux</fr>",
+                "value": 78,
+                "code": "CFN-ACT-GEN",
+                "description": "Gentle classes with increased support and modifications",
+                "tags": [""]
+            },
+            {
                 "text": "<en>Sleep</en><fr>Sommeil</fr>",
                 "value": 78,
                 "code": "CFN-ACT-SLEEP",
