@@ -42,7 +42,7 @@ class Messages {
         else{
             $this->errors[$this->errorIndex++] = $message;
         }
-        @setcookie('errors', serialize($this->errors), time()+3600);
+        @setcookie('errors', serialize($this->errors), time()+3600, '/');
     }
     
     // Adds a (yellow) warning message
@@ -64,7 +64,7 @@ class Messages {
         else{
             $this->success[$this->successIndex++] = $message;
         }
-        @setcookie('success', serialize($this->success), time()+3600);
+        @setcookie('success', serialize($this->success), time()+3600, '/');
     }
     
     // Adds a (blue) info message
@@ -89,11 +89,11 @@ class Messages {
     
     // Clears the message cookies
     function clearCookies(){
-        @setcookie('errors', serialize(array()), time()-3600);
-        @setcookie('warnings', serialize(array()), time()-3600);
-        @setcookie('success', serialize(array()), time()-3600);
-        @setcookie('info', serialize(array()), time()-3600);
-        @setcookie('purpleInfo', serialize(array()), time()-3600);
+        @setcookie('errors', serialize(array()), time()-3600, '/');
+        @setcookie('warnings', serialize(array()), time()-3600, '/');
+        @setcookie('success', serialize(array()), time()-3600, '/');
+        @setcookie('info', serialize(array()), time()-3600, '/');
+        @setcookie('purpleInfo', serialize(array()), time()-3600, '/');
     }
     
     // Empties all error messages
