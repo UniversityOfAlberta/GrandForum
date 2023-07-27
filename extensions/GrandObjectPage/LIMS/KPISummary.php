@@ -39,6 +39,7 @@ class KPISummary extends SpecialPage{
         $endYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Roll-over kpi in April
         $phaseDates = $config->getValue("projectPhaseDates");
         for($i=$endYear; $i >= $startYear; $i--){
+            $fullYear = ProjectKPITab::getKPITemplate();
             foreach(ProjectKPITab::$qMap as $q => $quarter){
                 switch($q){
                     case 1:
@@ -76,6 +77,8 @@ class KPISummary extends SpecialPage{
                 if($kpiSummary != null){
                     $wgOut->addHTML("<div id='KPI_{$i}_Q{$q}'>{$kpiSummary->render()}</div><br />");
                 }
+                
+                $fullYear = ProjectKPITab::addKPI($fullYear, $kpiSummary);
 
                 $wgOut->addHTML("<a class='externalLink' style='cursor:pointer;' id='download_KPI_{$i}_Q{$q}'>Download KPI</a>
                     <script type='text/javascript'>
@@ -85,6 +88,18 @@ class KPISummary extends SpecialPage{
                     </script>
                 </div>");
             }
+            
+            $wgOut->addHTML("<h3><a href='#'>".$i."/".substr($i+1,2,2)." Full Year</a></h3>");
+            $wgOut->addHTML("<div style='overflow: auto;'>");
+            $wgOut->addHTML("<div id='KPI_{$i}'>{$fullYear->render()}</div><br />");
+            $wgOut->addHTML("<a class='externalLink' style='cursor:pointer;' id='download_KPI_{$i}_Q{$q}'>Download KPI</a>
+                    <script type='text/javascript'>
+                        $('#download_KPI_{$i}_Q{$q}').click(function(){
+                            window.open('data:application/vnd.ms-excel;base64,' + base64Conversion($('#KPI_{$i} table')[0].outerHTML));
+                        });
+                    </script>
+                </div>");
+            
         }
         $wgOut->addHTML("</div>");
 	}

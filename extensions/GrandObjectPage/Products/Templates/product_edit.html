@@ -48,7 +48,7 @@
     <tr>
         <td class="label">Visibility:</td>
         <td class="field" colspan="2">
-            <%= HTML.Select(this, 'access', {options: ['Public','Forum']}) %>
+            <%= HTML.Select(this, 'access', {options: allowedVisibility}) %>
             <div style="display:inline-block;">
                 <ul style="margin-top:0;margin-bottom:0;font-size:smaller;">
                     <li style="margin-top:0;margin-bottom:0;"><b>Public:</b> Everyone including guests to the Forum will be able to view this product.</li>
@@ -64,7 +64,7 @@
         </tr>
     <% } %>
     <tr>
-        <td class="label">Date<% if(networkName == "FES"){ %> Published<% } %>:</td>
+        <td class="label"><% if(category == 'Grants'){ %> Start <% } %>Date<% if(networkName == "FES"){ %> Published<% } %>:</td>
         <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>
         <td valign="top" rowspan="<%= _.size(this.model.getPossibleFields()) + 1 %>" style="width:100%;">
             <h2 style="margin-top:0;padding-top:0;">Related Projects</h2>

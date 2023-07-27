@@ -292,6 +292,12 @@ class CavendishTemplate extends QuickTemplate {
 		    allowedRoles = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedRoles()); ?>;
 		    allowedProjects = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedProjects()); ?>;
 		    allowedThemes = <?php echo json_encode(Theme::getAllowedThemes()); ?>;
+		    allowedVisibility = <?php if($me->isRoleAtLeast(STAFF)){ 
+		                                  echo json_encode(array('Public','Forum','Manager')); 
+		                              } 
+		                              else { 
+		                                  echo json_encode(array('Public','Forum')); 
+		                              } ?>;
 		    isAllowedToCreateNewsPostings = <?php echo json_encode(NewsPosting::isAllowedToCreate()); ?>;
 		    isAllowedToCreateEventPostings = <?php echo json_encode(EventPosting::isAllowedToCreate()); ?>;
 		    isAllowedToCreateBSIPostings = <?php echo json_encode(BSIPosting::isAllowedToCreate()); ?>;

@@ -32,7 +32,7 @@ class Paper extends BackboneModel{
     var $projectsWaiting;
     var $deleted;
     var $access_id = 0;
-    var $access = "Forum"; // Either 'Public' or 'Forum'
+    var $access = "Forum"; // Either 'Public', 'Forum' or 'Manager'
     var $created_by = 0;
     var $ccv_id;
     var $bibtex_id;
@@ -52,7 +52,9 @@ class Paper extends BackboneModel{
                 FROM grand_products
                 WHERE id = '$id'
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+                AND (access = 'Public'
+                     OR (access = 'Forum' AND ".intVal($me->isLoggedIn()).")
+                     OR (access = 'Manager' AND ".intVal($me->isRoleAtLeast(STAFF))."))";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
         if(!$config->getValue('showNonNetwork')){
@@ -81,7 +83,9 @@ class Paper extends BackboneModel{
                 FROM grand_products
                 WHERE ccv_id = '$ccv_id'
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+                AND (access = 'Public'
+                     OR (access = 'Forum' AND ".intVal($me->isLoggedIn()).")
+                     OR (access = 'Manager' AND ".intVal($me->isRoleAtLeast(STAFF))."))";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
         if(!$config->getValue('showNonNetwork')){
@@ -116,7 +120,9 @@ class Paper extends BackboneModel{
                 FROM grand_products
                 WHERE bibtex_id = '$bibtex_id'
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
+                AND (access = 'Public'
+                     OR (access = 'Forum' AND ".intVal($me->isLoggedIn()).")
+                     OR (access = 'Manager' AND ".intVal($me->isRoleAtLeast(STAFF))."))
                 LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         if($title != ""){
@@ -161,7 +167,9 @@ class Paper extends BackboneModel{
         $sql = "SELECT *
                 FROM grand_products
                 WHERE id IN (".implode(",", $ids).")
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+                AND (access = 'Public'
+                     OR (access = 'Forum' AND ".intVal($me->isLoggedIn()).")
+                     OR (access = 'Manager' AND ".intVal($me->isRoleAtLeast(STAFF))."))";
         if(!$onlyPublic){
             $me = Person::newFromWgUser();
             $sql .= "\nAND (access_id = '{$me->getId()}' OR access_id = '0')";
@@ -214,7 +222,9 @@ class Paper extends BackboneModel{
                 AND `type` LIKE '$type'
                 AND `status` LIKE '$status'
                 AND (access_id = '0' OR access_id = '{$me->getId()}')
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
+                AND (access = 'Public'
+                     OR (access = 'Forum' AND ".intVal($me->isLoggedIn()).")
+                     OR (access = 'Manager' AND ".intVal($me->isRoleAtLeast(STAFF))."))
                 ORDER BY `id` desc";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
@@ -254,7 +264,9 @@ class Paper extends BackboneModel{
                     FROM grand_products
                     WHERE id IN (".implode(",", $ids).")
                     AND access_id = 0
-                    AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+                    AND (access = 'Public'
+                         OR (access = 'Forum' AND ".intVal($me->isLoggedIn()).")
+                         OR (access = 'Manager' AND ".intVal($me->isRoleAtLeast(STAFF))."))";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $paper = new Paper(array($row));
@@ -284,6 +296,9 @@ class Paper extends BackboneModel{
                        'deleted' => EQ(0));
         if(!$me->isLoggedIn()){
             $where['access'] = "Public";
+        }
+        else if(!$me->isRoleAtLeast(STAFF)){
+            $where['access'] = NEQ("Manager");
         }
         if($category != 'all'){
             $where['category'] = EQ($category);
@@ -359,7 +374,9 @@ class Paper extends BackboneModel{
             else {
                 $sql .= "\nWHERE 1";
             }
-            $sql .= "\nAND (access = '{$access}' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+            $sql .= "\nAND (access = 'Public'
+                            OR (access = 'Forum' AND ".intVal($me->isLoggedIn()).")
+                            OR (access = 'Manager' AND ".intVal($me->isRoleAtLeast(STAFF))."))";
             $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
                 $sql .= "\nAND p.`category` = '$category'";
@@ -468,7 +485,9 @@ class Paper extends BackboneModel{
             else {
                 $sql .= "\nWHERE 1";
             }
-            $sql .= "\nAND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+            $sql .= "\nAND (access = 'Public'
+                            OR (access = 'Forum' AND ".intVal($me->isLoggedIn()).")
+                            OR (access = 'Manager' AND ".intVal($me->isRoleAtLeast(STAFF))."))";
             $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
                 $sql .= "\nAND p.`category` = '$category'";
