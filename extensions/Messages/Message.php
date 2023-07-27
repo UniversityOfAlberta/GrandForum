@@ -36,35 +36,38 @@ class Messages {
     
     // Adds a (red) error message
     function addError($message, $index=false){
+        global $wgScriptPath;
         if($index !== false){
             $this->errors[$index] = $message;
         }
         else{
             $this->errors[$this->errorIndex++] = $message;
         }
-        @setcookie('errors', serialize($this->errors), time()+3600, '/');
+        @setcookie('errors', serialize($this->errors), time()+3600, $wgScriptPath);
     }
     
     // Adds a (yellow) warning message
     function addWarning($message, $index=false){
+        global $wgScriptPath;
         if($index !== false){
             $this->warnings[$index] = $message;
         }
         else{
             $this->warnings[$this->warningIndex++] = $message;
         }
-        @setcookie('warnings', serialize($this->warnings), time()+3600);
+        @setcookie('warnings', serialize($this->warnings), time()+3600, $wgScriptPath);
     }
     
     // Adds a (green) success message
     function addSuccess($message, $index=false){
+        global $wgScriptPath;
         if($index !== false){
             $this->success[$index] = $message;
         }
         else{
             $this->success[$this->successIndex++] = $message;
         }
-        @setcookie('success', serialize($this->success), time()+3600, '/');
+        @setcookie('success', serialize($this->success), time()+3600, $wgScriptPath);
     }
     
     // Adds a (blue) info message
@@ -89,11 +92,12 @@ class Messages {
     
     // Clears the message cookies
     function clearCookies(){
-        @setcookie('errors', serialize(array()), time()-3600, '/');
-        @setcookie('warnings', serialize(array()), time()-3600, '/');
-        @setcookie('success', serialize(array()), time()-3600, '/');
-        @setcookie('info', serialize(array()), time()-3600, '/');
-        @setcookie('purpleInfo', serialize(array()), time()-3600, '/');
+        global $wgScriptPath;
+        @setcookie('errors', serialize(array()), time()-3600, $wgScriptPath);
+        @setcookie('warnings', serialize(array()), time()-3600, $wgScriptPath);
+        @setcookie('success', serialize(array()), time()-3600, $wgScriptPath);
+        @setcookie('info', serialize(array()), time()-3600, $wgScriptPath);
+        @setcookie('purpleInfo', serialize(array()), time()-3600, $wgScriptPath);
     }
     
     // Empties all error messages
