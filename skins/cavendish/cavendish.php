@@ -871,7 +871,7 @@ class CavendishTemplate extends QuickTemplate {
 		        echo "<a id='status_profile_photo' class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' alt='Profile' /></a>";
 		        if(!$wgImpersonating && !$wgDelegating){
 		            $logoutUrl = urlencode("{$wgServer}{$_SERVER['REQUEST_URI']}");
-	                echo "<a id='status_logout' name='arrow_right_32x32' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$wgServer}{$wgScriptPath}/index.php?action=logout&returnto={$logoutUrl}'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_32x32.png' alt='Logout' style='height: 16px;' /></a>";
+	                echo "<a id='status_logout' name='arrow_right_32x32' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$wgServer}{$wgScriptPath}/index.php?action=logout'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_32x32.png' alt='Logout' style='height: 16px;' /></a>";
 	            }
 	        }
 	        echo "</div>";
