@@ -151,8 +151,7 @@ class FrailtyReport extends SpecialPage {
             
             ),
             "community" => array(
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr>" => "CFN-ACT-EX",
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr> ↴ <en>Movement and Mindfulness</en><fr>Mouvement et pleine conscience</fr>" => "CFN-ACT-EX-MOV",
+                "<en>Activity</en><fr>Activité physique</fr> → <en>Gentle</en><fr>Doux</fr>" => "CFN-ACT-GEN",
                 "<en>Transportation</en><fr>Transport</fr> → <en>Driving<br />Programs</en><fr>Programmes<br />d’accompagnement</fr>" => "CFN-TRANSPORT-DRIVP"
             )
         ),
@@ -173,8 +172,8 @@ class FrailtyReport extends SpecialPage {
                 "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
             ),
             "community" => array(
+                "<en>Activity</en><fr>Activité physique</fr> → <en>Gentle</en><fr>Doux</fr>" => "CFN-ACT-GEN",
                 "<en>Home & Care Partners</en><fr>Services de soutien<br />et de soins à domicile</fr> ↴ <en>Help at Home</en><fr>Aide à domicile</fr>" => "CFN-HOMECARE-HELP",
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr> ↴ <en>Movement and Mindfulness</en><fr>Mouvement et pleine conscience</fr>" => "CFN-ACT-EX-MOV",
                 "<en>Transportation</en><fr>Transport</fr> → <en>Driving<br />Programs</en><fr>Programmes<br />d’accompagnement</fr>" => "CFN-TRANSPORT-DRIVP"
             )
         ),
