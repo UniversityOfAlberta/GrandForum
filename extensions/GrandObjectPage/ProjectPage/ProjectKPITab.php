@@ -21,6 +21,16 @@ class ProjectKPITab extends AbstractEditableTab {
     function handleEdit(){
         global $config, $wgMessage;
         $me = Person::newFromWgUser();
+
+        if(isset($_POST['kpi_delete'])){
+            foreach($_POST['kpi_delete'] as $year_q => $del){
+                $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
+                $addr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$year_q}", 0);
+                $blb->delete($addr);
+                Cache::delete("{$this->project->getId()}_KPI_{$year_q}");
+            }
+        }
+        
         if(isset($_FILES)){
             foreach($_FILES as $key => $file){
                 foreach($file['tmp_name'] as $year_q => $tmp){
@@ -338,11 +348,11 @@ class ProjectKPITab extends AbstractEditableTab {
                     // KPI
                     if($edit){
                         $lastblb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
-                        $lastaddr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$i}_Q".($q-1), 0);
+                        $lastaddr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$i}_Q{$q}", 0);
                         $lastblb->load($lastaddr, true);
                         $lastmd5 = $lastblb->getMD5();
-                        if($q > 1 && $lastmd5 != ""){
-                            $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$lastmd5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q".($q-1)."_KPI.xlsx'>Download Q".($q-1)." KPI</a>";
+                        if($lastmd5 != ""){
+                            $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$lastmd5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q{$q}_KPI.xlsx'>Download KPI</a><br /><b>Delete?</b> <input type='checkbox' name='kpi_delete[{$i}_Q{$q}]' />";
                         }
                         else{
                             $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/GIS KPIs.xlsx'>Download Template</a>";
