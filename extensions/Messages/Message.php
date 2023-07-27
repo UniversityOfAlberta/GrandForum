@@ -31,7 +31,7 @@ class Messages {
         if(isset($_COOKIE['purpleInfo'])){
             $this->info = unserialize($_COOKIE['purpleInfo']);
         }
-        $this->clearCookies();
+        //$this->clearCookies();
     }
     
     // Adds a (red) error message
