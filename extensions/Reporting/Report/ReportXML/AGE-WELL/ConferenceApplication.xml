@@ -293,7 +293,7 @@
 
                 <p>The Poster Session is a display presentation. Material is mounted on a poster board, which is staffed by the author (this is mandatory) for a designated period of time. Abstracts must be informational and must report on work completed.</p>
 
-                <p>Abstracts are not to exceed 250 words and should include the following information: a) full author details, b) a short statement of the objectives, c) method, d) results, e) conclusions.</p>
+                <p>Abstracts are not to exceed 300 words and should include the following information: a) full author details, b) a short statement of the objectives, c) method, d) results, e) conclusions.</p>
             ]]>
         </Static>
         <If id="4_if" if="{>(2024-08-18 00:00:00,{$timestamp})}">
@@ -365,7 +365,7 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="4_abstract" type="Textarea" blobItem="4_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="250">
+                <ReportItem id="4_abstract" type="Textarea" blobItem="4_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="300">
                     <![CDATA[
                         <tr>
                             <td align="right" style="width:0;white-space:nowrap;"><b>Poster Abstract:</b></td>
