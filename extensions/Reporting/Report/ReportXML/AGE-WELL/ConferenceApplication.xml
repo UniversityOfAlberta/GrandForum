@@ -6,7 +6,7 @@
         <Role role="EXTERNAL-Candidate+" />
         <Role role="HQP-Candidate+" />
     </Permissions>
-    <ReportSection id="description" tooltip="Conference Program at AGE-WELL 2023" name="Description" title="Conference Program at AGE-WELL 2023&lt;br />&lt;small>Shaping the Future of Healthy Aging&lt;/small>" type="ReportSection">
+    <ReportSection id="description" tooltip="Conference Program at AGE-WELL 2023" name="Description" title="Conference Program at AGE-WELL 2023&lt;br />&lt;small>Shaping the Future of Healthy Aging&lt;/small>" type="ReportSection" saveText="Submit">
         <Static>
             <![CDATA[
                 <p>Join us in Toronto, ON for the AGE-WELL Annual Conference: Shaping the Future of Healthy Aging! Sessions are designed to maximize networking and knowledge exchange amongst network stakeholders. There are four program options available to showcase your work: symposia, workshops, posters, demos.</p>
@@ -31,16 +31,21 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="application2" tooltip="Symposia" name="Symposia" title="Symposia" blobSection="APPLICATIONS" type="EditableReportSection">
+    <ReportSection id="application2" tooltip="Symposia" name="Symposia" title="Symposia" blobSection="APPLICATIONS" type="EditableReportSection" saveText="Submit">
         <!-- Application 2 -->
         <Static>
             <![CDATA[
+                <div id='submitDialog' title='Submission' style='display:none;'>Thank you for submitting.</div>
                 <script type="text/javascript">
                     $(document).ready(function(){
                         $("div.submit").each(function(i, div){
                             $("input[type=button]", div).click(function(){
                                 $(".selectedReportTab").click();
                             });
+                        });
+                        
+                        $("[name=submit]").click(function(){
+                            $('#submitDialog').dialog();
                         });
                     });
                 </script>
@@ -151,16 +156,21 @@
             </Static>
         </If>
     </ReportSection>
-    <ReportSection id="application1" tooltip="Workshops (2-4)" name="Workshops" title="Workshops (2-4)" blobSection="APPLICATIONS" type="EditableReportSection">
+    <ReportSection id="application1" tooltip="Workshops (2-4)" name="Workshops" title="Workshops (2-4)" blobSection="APPLICATIONS" type="EditableReportSection" saveText="Submit">
         <!-- Application 1 -->
         <Static>
             <![CDATA[
+                <div id='submitDialog' title='Submission' style='display:none;'>Thank you for submitting.</div>
                 <script type="text/javascript">
                     $(document).ready(function(){
                         $("div.submit").each(function(i, div){
                             $("input[type=button]", div).click(function(){
                                 $(".selectedReportTab").click();
                             });
+                        });
+                        
+                        $("[name=submit]").click(function(){
+                            $('#submitDialog').dialog();
                         });
                     });
                 </script>
@@ -259,16 +269,21 @@
             </Static>
         </If>
     </ReportSection>
-    <ReportSection id="application4" tooltip="Poster Sessions" name="Poster Sessions" title="Poster Sessions" blobSection="APPLICATIONS" type="EditableReportSection">
+    <ReportSection id="application4" tooltip="Poster Sessions" name="Poster Sessions" title="Poster Sessions" blobSection="APPLICATIONS" type="EditableReportSection" saveText="Submit">
         <!-- Application 4 -->
         <Static>
             <![CDATA[
+                <div id='submitDialog' title='Submission' style='display:none;'>Thank you for submitting.</div>
                 <script type="text/javascript">
                     $(document).ready(function(){
                         $("div.submit").each(function(i, div){
                             $("input[type=button]", div).click(function(){
                                 $(".selectedReportTab").click();
                             });
+                        });
+                        
+                        $("[name=submit]").click(function(){
+                            $('#submitDialog').dialog();
                         });
                     });
                 </script>
@@ -394,16 +409,21 @@
             </Static>
         </If>
     </ReportSection>
-    <ReportSection id="application5" tooltip="Drinks &amp; Demos" name="Drinks &amp; Demos" title="Drinks &amp; Demos" blobSection="APPLICATIONS" type="EditableReportSection">
+    <ReportSection id="application5" tooltip="Drinks &amp; Demos" name="Drinks &amp; Demos" title="Drinks &amp; Demos" blobSection="APPLICATIONS" type="EditableReportSection" saveText="Submit">
         <!-- Application 5 -->
         <Static>
             <![CDATA[
+                <div id='submitDialog' title='Submission' style='display:none;'>Thank you for submitting.</div>
                 <script type="text/javascript">
                     $(document).ready(function(){
                         $("div.submit").each(function(i, div){
                             $("input[type=button]", div).click(function(){
                                 $(".selectedReportTab").click();
                             });
+                        });
+                        
+                        $("[name=submit]").click(function(){
+                            $('#submitDialog').dialog();
                         });
                     });
                 </script>
@@ -502,16 +522,21 @@
             </Static>
         </If>
     </ReportSection>
-    <ReportSection id="application3" tooltip="HQP Travel Subsidy" name="HQP Travel Subsidy" title="HQP Travel Subsidy" blobSection="APPLICATIONS" type="EditableReportSection">
+    <ReportSection id="application3" tooltip="HQP Travel Subsidy" name="HQP Travel Subsidy" title="HQP Travel Subsidy" blobSection="APPLICATIONS" type="EditableReportSection" saveText="Submit">
         <!-- Application 3 -->
         <Static>
             <![CDATA[
+                <div id='submitDialog' title='Submission' style='display:none;'>Thank you for submitting.</div>
                 <script type="text/javascript">
                     $(document).ready(function(){
                         $("div.submit").each(function(i, div){
                             $("input[type=button]", div).click(function(){
                                 $(".selectedReportTab").click();
                             });
+                        });
+                        
+                        $("[name=submit]").click(function(){
+                            $('#submitDialog').dialog();
                         });
                     });
                 </script>
@@ -536,7 +561,7 @@
                     <li>AGE-WELL HQP registered in trainee events on Tuesday, October 24 may be covered for an additional night where same-day travel is not possible. Pre-registration for HQP events is required to be considered for approval.</li>
                 </ul>
                 
-                <p>To apply for a travel subsidy, please outline the value of AGE-WELL conference attendance to your career in the space below (150 words max).</p>
+                <p><b>To apply for a travel subsidy, please outline the value of AGE-WELL conference attendance to your career in the space below (150 words max).</b></p>
                 
             ]]>
         </Static>
@@ -596,7 +621,7 @@
                 <ReportItem id="3_abstract" type="Textarea" blobItem="3_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="150">
                     <![CDATA[
                         <tr>
-                            <td align="right" style="width:0;white-space:nowrap;"><b>Abstract:</b></td>
+                            <td align="right" style="width:0;white-space:nowrap;"></td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
