@@ -383,6 +383,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,iamir@glyconet.ca,vsharko@glyconet.ca" />
     </ReportSection>
 </Report>
