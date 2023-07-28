@@ -8,10 +8,10 @@ $(document).ready(function(){
     $('#avoidButtons').append("<a id='scrollToTop' class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='#'><en>Top of Page</en><fr>Haut de la page</fr></a>");
     if(me.isLoggedIn()){
         var selected = $(".top-nav-element.selected a");
-        if(selected.text() != "My Profile"){
+        if(selected.text().indexOf("My Profile") == -1){
             $('#avoidButtons').append("<a class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='" + wgServer + wgScriptPath + "/index.php/Special:AVOIDDashboard'><en>Back to My Profile</en><fr>Retour à Mon Profil</fr></a>");
         }
-        if(selected.text() != "" && selected.text() != "My Profile"){
+        if(selected.text() != "" && selected.text().indexOf("My Profile") == -1){
             $('#avoidButtons').append("<a class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='" + selected.attr('href') + "'><en>Back to</en><fr>Retour à</fr> " + selected.html() + "</a>");
         }
     }
