@@ -93,10 +93,10 @@ class KPISummary extends SpecialPage{
             
             // Adjust FTE for full year
             $fullYear->xls[45][2]->value = $fullYear->xls[45][2]->value/4;
-            $fullYear->xls[45][2]->value = $fullYear->xls[46][2]->value/4;
-            $fullYear->xls[45][2]->value = $fullYear->xls[47][2]->value/4;
-            $fullYear->xls[45][2]->value = $fullYear->xls[48][2]->value/4;
-            $fullYear->xls[45][2]->value = $fullYear->xls[49][2]->value/4;
+            $fullYear->xls[46][2]->value = $fullYear->xls[46][2]->value/4;
+            $fullYear->xls[47][2]->value = $fullYear->xls[47][2]->value/4;
+            $fullYear->xls[48][2]->value = $fullYear->xls[48][2]->value/4;
+            $fullYear->xls[49][2]->value = $fullYear->xls[49][2]->value/4;
             
             // Adjust percent
             $fullYear->xls[41][2]->value = $fullYear->xls[41][2]->value/max(1, $nQuarters);
