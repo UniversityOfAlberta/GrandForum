@@ -40,6 +40,7 @@ class KPISummary extends SpecialPage{
         $phaseDates = $config->getValue("projectPhaseDates");
         for($i=$endYear; $i >= $startYear; $i--){
             $fullYear = ProjectKPITab::getKPITemplate();
+            $nQuarters = 0;
             foreach(ProjectKPITab::$qMap as $q => $quarter){
                 switch($q){
                     case 1:
@@ -62,6 +63,7 @@ class KPISummary extends SpecialPage{
                 if(date('Y-m-d') < $date){
                     continue;
                 }
+                $nQuarters++;
                 $wgOut->addHTML("<h3><a href='#'>".$i."/".substr($i+1,2,2)." Q{$q}</a></h3>");
                 $wgOut->addHTML("<div style='overflow: auto;'>");
                 
@@ -88,6 +90,16 @@ class KPISummary extends SpecialPage{
                     </script>
                 </div>");
             }
+            
+            // Adjust FTE for full year
+            $fullYear->xls[45][2]->value = $fullYear->xls[45][2]->value/4;
+            $fullYear->xls[45][2]->value = $fullYear->xls[46][2]->value/4;
+            $fullYear->xls[45][2]->value = $fullYear->xls[47][2]->value/4;
+            $fullYear->xls[45][2]->value = $fullYear->xls[48][2]->value/4;
+            $fullYear->xls[45][2]->value = $fullYear->xls[49][2]->value/4;
+            
+            // Adjust percent
+            $fullYear->xls[41][2]->value = $fullYear->xls[41][2]->value/max(1, $nQuarters);
             
             $wgOut->addHTML("<h3><a href='#'>".$i."/".substr($i+1,2,2)." Full Year</a></h3>");
             $wgOut->addHTML("<div style='overflow: auto;'>");
