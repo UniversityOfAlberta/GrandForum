@@ -255,7 +255,7 @@ class ProjectKPITab extends AbstractEditableTab {
     static function getKPI($project, $id, $start_date, $end_date){
         global $config;
         if(Cache::exists("{$project->getId()}_{$id}")){
-            //return Cache::fetch("{$project->getId()}_{$id}");
+            return Cache::fetch("{$project->getId()}_{$id}");
         }
         $kpi = null;
         $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $project->getId());
@@ -279,8 +279,9 @@ class ProjectKPITab extends AbstractEditableTab {
         foreach($kpi->xls as $i => $row){
             $row[0]->style .= "display:none;";
         }
-        //Cache::store("{$project->getId()}_{$id}", array($kpi, $md5), 86400*7);
-
+        if(!in_array($project->getName(), self::$autoProjects)){
+            Cache::store("{$project->getId()}_{$id}", array($kpi, $md5), 86400*7);
+        }
         return array($kpi, $md5);
     }
     
