@@ -76,10 +76,6 @@ class ProjectKPITab extends AbstractEditableTab {
     static function optimizeFn($obj, $project=null, $start_date="0000-00-00", $end_date="2100-01-01"){
         // Optimize formulas
         $sheets = $obj->getAllSheets();
-        
-        if(count($sheets) == 1){
-            return $obj;
-        }
 
         $max = 0;
         for($i=2; $i<count($sheets); $i++){
@@ -105,7 +101,7 @@ class ProjectKPITab extends AbstractEditableTab {
             @$sheet->fromArray($cells, null, 'A1', false);
         }
 
-        $obj->setActiveSheetIndex(1);
+        $obj->setActiveSheetIndex(min(1, count($sheets)-1));
         $sheet = $obj->getActiveSheet();
         $cells = @$sheet->toArray(null, false, false);
         foreach($cells as $rowN => $row){

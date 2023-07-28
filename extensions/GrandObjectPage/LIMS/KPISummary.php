@@ -109,7 +109,7 @@ class KPISummary extends SpecialPage{
 	    $person = Person::newFromWgUser($wgUser);
 	    if($person->isRoleAtLeast(MANAGER)){
 	        $selected = @($wgTitle->getText() == "KPISummary") ? "selected" : false;
-	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("KPI Summary", "$wgServer$wgScriptPath/index.php/Special:KPISummary", $selected);
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("CFI-MSI", "$wgServer$wgScriptPath/index.php/Special:KPISummary", $selected);
 	    }
 	    return true;
     }
