@@ -22,6 +22,7 @@ class AdminUsageStats extends SpecialPage {
         $this->showProgramStats();
         $this->showCommunityProgramStats();
         $this->showEducationStats();
+        $this->showResourcesStats();
         $this->showIntakeStats();
     }
     
@@ -315,7 +316,15 @@ class AdminUsageStats extends SpecialPage {
                            DataCollection::newFromPage('Interact'),
                            DataCollection::newFromPage('DietAndNutrition'),
                            DataCollection::newFromPage('Sleep'),
-                           DataCollection::newFromPage('FallsPrevention'));
+                           DataCollection::newFromPage('FallsPrevention'),
+                           DataCollection::newFromPage('IngredientsForChangeFR'), 
+                           DataCollection::newFromPage('ActivityFR'),
+                           DataCollection::newFromPage('VaccinationFR'),
+                           DataCollection::newFromPage('OptimizeMedicationFR'),
+                           DataCollection::newFromPage('InteractFR'),
+                           DataCollection::newFromPage('DietAndNutritionFR'),
+                           DataCollection::newFromPage('SleepFR'),
+                           DataCollection::newFromPage('FallsPreventionFR'));
         $moduleHits = 0;
         $users = array(0);
         foreach($dcs as $dc){
@@ -362,6 +371,52 @@ class AdminUsageStats extends SpecialPage {
             <tr>
                 <td class='label'>Completed modules</td>
                 <td align='right'>$completed</td>
+            </tr>
+        </table>");
+    }
+
+    function showResourcesStats(){
+        global $wgOut;
+        $wgOut->addHTML("<h1>AVOID Resources</h1>");
+        
+        $dcs = array_merge(DataCollection::newFromPage('IngredientsForChange-*'), 
+                           DataCollection::newFromPage('Activity-*'),
+                           DataCollection::newFromPage('Vaccination-*'),
+                           DataCollection::newFromPage('OptimizeMedication-*'),
+                           DataCollection::newFromPage('Interact-*'),
+                           DataCollection::newFromPage('DietAndNutrition-*'),
+                           DataCollection::newFromPage('Sleep-*'),
+                           DataCollection::newFromPage('FallsPrevention-*'),
+                           DataCollection::newFromPage('IngredientsForChangeFR-*'), 
+                           DataCollection::newFromPage('ActivityFR-*'),
+                           DataCollection::newFromPage('VaccinationFR-*'),
+                           DataCollection::newFromPage('OptimizeMedicationFR-*'),
+                           DataCollection::newFromPage('InteractFR-*'),
+                           DataCollection::newFromPage('DietAndNutritionFR-*'),
+                           DataCollection::newFromPage('SleepFR-*'),
+                           DataCollection::newFromPage('FallsPreventionFR-*'));
+        $topResources = array();
+        foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId())){ continue; }
+            @$topResources[$dc->page] += $dc->getField('count');
+        }
+
+        asort($topResources);
+        $topResources = array_reverse($topResources);
+        $topResourcesKeys = array_keys($topResources);
+        
+        @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Top 5 resources</td>
+                <td align='right'>
+                    <table>
+                        <tr><td style='font-weight: bold;'>{$topResourcesKeys[0]}&nbsp;</td><td align='right'>{$topResources[$topResourcesKeys[0]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topResourcesKeys[1]}&nbsp;</td><td align='right'>{$topResources[$topResourcesKeys[1]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topResourcesKeys[2]}&nbsp;</td><td align='right'>{$topResources[$topResourcesKeys[2]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topResourcesKeys[3]}&nbsp;</td><td align='right'>{$topResources[$topResourcesKeys[3]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topResourcesKeys[4]}&nbsp;</td><td align='right'>{$topResources[$topResourcesKeys[4]]}</td></tr>
+                    </table>
+                </td>
             </tr>
         </table>");
     }
