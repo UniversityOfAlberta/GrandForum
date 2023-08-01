@@ -20,9 +20,18 @@
 
         function callAPI($cat="CFN-ACT-EX-DANCE", $key=""){
             global $config;
+            $long = -77.2922286;
+            $lat = 45.1397821;
+            $distance = 10000;
+            if(isset($_GET['long']) && isset($_GET['lat'])){
+                $long = $_GET['long'];
+                $lat = $_GET['lat'];
+                $distance = 10;
+            }
+            $cacheKey = "$cat-$long-$lat";
             if($key == ""){
-                if(Cache::exists($cat)){
-                    return Cache::fetch($cat);
+                if(Cache::exists($cacheKey)){
+                    return Cache::fetch($cacheKey);
                 }
                 $postData = array(
                         "Dataset"=>"on",
@@ -31,9 +40,9 @@
                         "MatchMode"=>"category",
                         "MatchTerms"=>$cat,
                         "SearchType"=>"proximity",
-                        "Distance"=>10000,
-                        "Latitude"=>45.1397821,
-                        "Longitude"=>-77.2922286,
+                        "Distance"=>$distance,
+                        "Latitude"=>$lat,
+                        "Longitude"=>$long,
                         "SortOrder"=>"distance",
                         "PageIndex"=>0,
                         "PageSize"=>1000,
@@ -45,9 +54,9 @@
                     "Dataset"=>"on",
                     "Lang"=>"en",
                     "SearchType"=>"proximity",
-                    "Distance"=>10000,
-                    "Latitude"=>45.1397821,
-                    "Longitude"=>-77.2922286,
+                    "Distance"=>$distance,
+                    "Latitude"=>$lat,
+                    "Longitude"=>$long,
                     "SortOrder"=>"distance",
                     "PageIndex"=>0,
                     "PageSize"=>1000,
@@ -72,7 +81,7 @@
                 die('Error');
             }
             $responsedata = json_decode($response, TRUE);
-            Cache::store($cat, $responsedata["Records"]);
+            Cache::store($cacheKey, $responsedata["Records"]);
             return $responsedata["Records"];
         }
         

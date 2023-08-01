@@ -20,6 +20,7 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "defaultRoute", 
+        "mylocation": "mylocation", 
         ":category_code": "viewCategory"
     }
 });
@@ -33,10 +34,27 @@ pageRouter.on('route:defaultRoute', function (actions) {
         main.set('title', 'Localiser une Pharmacie');
     }
     this.closeCurrentView();
-    //var pharms = new Universities();
     var pharms = new AvoidResources();
     pharms.fetch();
     this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});
+});
+
+pageRouter.on('route:mylocation', function (actions) {
+    main.set('title', 'Locate a Community Resource');
+    if(wgLang == 'fr'){
+        main.set('title', 'Localiser une Pharmacie');
+    }
+    this.closeCurrentView();
+    var pharms = new AvoidResources();
+    navigator.geolocation.getCurrentPosition(function (position) {
+        pharms.lat = position.coords.latitude;
+        pharms.long = position.coords.longitude;
+        pharms.fetch();
+        this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});
+    }.bind(this), function () {
+        pharms.fetch();
+        this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});
+    }.bind(this));
 });
 
 
@@ -46,7 +64,6 @@ pageRouter.on('route:viewCategory', function(category_code) {
         main.set('title', 'Localiser une Pharmacie');
     }
     this.closeCurrentView();
-    //var pharms = new Universities();
     var pharms = new AvoidResources();
     pharms.cat = category_code;
     this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});

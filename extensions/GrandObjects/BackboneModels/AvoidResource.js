@@ -53,28 +53,33 @@ AvoidResource = Backbone.Model.extend({
         Custom_YouTube:"",
         Categories:"",
         LastVerifiedOn:"",
-	lat:"",
-	lon: "",
+        lat:"",
+        lon: "",
     }
 });
 
 AvoidResources = Backbone.Collection.extend({
-       model: AvoidResource,
+    model: AvoidResource,
+    cat: null,
+    lat: null,
+    long: null,
 
     url: function(){
          url = 'index.php?action=api.avoidResource/';
-	         url = 'index.php?action=api.callAvoidResourcesApi/';
+         url = 'index.php?action=api.callAvoidResourcesApi/';
 
         if(this.cat != null){
             url = 'index.php?action=api.avoidResources/'+this.cat;
-		url = 'index.php?action=api.callAvoidResourcesApi/&cat='+this.cat;
-
+            url = 'index.php?action=api.callAvoidResourcesApi/&cat='+this.cat;
         }
-	else if(this.key != null){
-		url='index.php?action=api.callAvoidResourcesApi/&key='+this.key;;
-
-	}
-
+        else if(this.key != null){
+            url='index.php?action=api.callAvoidResourcesApi/&key='+this.key;
+        }
+        if(this.lat != null && this.long){
+            url += "&lat="  + this.lat;
+            url += "&long=" + this.long;
+        }
         return url;
     }
+    
 }); 
