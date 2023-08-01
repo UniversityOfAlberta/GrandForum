@@ -394,7 +394,7 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>");
         if($progressReport != ""){
             $wgOut->addHTML("<h3 style='margin-top:0;margin-bottom:0;'><en>Progress Reports</en><fr>Rapports d'étape</fr></h3>
-                             {$progressReport}");
+                             {$progressReport}<br /><br />");
         }
         $wgOut->addHTML("   <div id='pastActionPlans'></div>
                         </div>
