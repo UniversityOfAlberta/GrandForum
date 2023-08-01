@@ -147,7 +147,7 @@
     
     <!-- Question 3 -->
     <ReportSection id="q3" tooltip="Questions éclair" name="Questions éclair3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="True|False">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="Vrai|Faux">
             <![CDATA[
                 <h3>Vous devez vous faire vacciner qu’une seule fois, car il s’agit du même vaccin chaque année.</h3>
                 {$item}
@@ -157,7 +157,7 @@
     
     <!-- Answer 3 -->
     <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Réponse 3" answer="False">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Réponse 3" answer="Faux">
             <![CDATA[
                 {$item}
                 <b>En réalité, le vaccin annuel contre la grippe change en fonction de la souche dominante de l’année. Pour une protection optimale, vous devez donc vous faire vacciner chaque année.</b>

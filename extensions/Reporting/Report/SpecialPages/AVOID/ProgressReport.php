@@ -68,7 +68,7 @@ class ProgressReport extends SpecialPage {
     }
     
     function generateReport(){
-        global $wgServer, $wgScriptPath, $config;
+        global $wgServer, $wgScriptPath, $config, $wgLang;
         $dir = dirname(__FILE__) . '/';
         require_once($dir . '/../../../../../Classes/SmartDomDocument/SmartDomDocument.php');
         $me = Person::newFromWgUser();
@@ -241,8 +241,15 @@ class ProgressReport extends SpecialPage {
                                 padding: 0;
                                 margin: 0;
                                 line-height: 1em;
-                            }
+                            }";
                             
+                    if($wgLang->getCode() == "en"){
+	                    $html .= "fr, .fr { display: none !important; }";
+	                }
+	                else if($wgLang->getCode() == "fr"){
+	                    $html .= "en, .en { display: none !important; }";
+	                }
+                    $html .= "     
                         </style>
                     </head>
                     <body>
@@ -251,7 +258,7 @@ class ProgressReport extends SpecialPage {
                         <div class='logos'>
                             <img src='{$wgServer}{$wgScriptPath}/skins/logo3.png' />
                             <img style='max-height: 100px;' src='{$wgServer}{$wgScriptPath}/skins/logo2.png' />
-                            <img src='{$wgServer}{$wgScriptPath}/skins/logo1.png' />
+                            <en><img src='{$wgServer}{$wgScriptPath}/skins/logo1.png' /></en><fr><img src='{$wgServer}{$wgScriptPath}/skins/logo1fr.png' /></fr>
                         </div>
                         <div class='title-box'>
                             <div class='title'>
@@ -338,7 +345,10 @@ class ProgressReport extends SpecialPage {
                         </div>
                         
                         <br />
-                        <div style='width:100%; text-align:center;'><a href='https://HealthyAgingCentres.ca' target='_blank'>HealthyAgingCentres.ca</a></div>
+                        <div style='width:100%; text-align:center;'>
+                            <en><a href='https://HealthyAgingCentres.ca' target='_blank'>HealthyAgingCentres.ca</a></en>
+                            <fr><a href='https://Proactifquebec.ca' target='_blank'>Proactifquebec.ca</a></fr>
+                        </div>
                         <br /><br /><br /><br /><br />
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_bottom.png' style='z-index: -2; position: absolute; bottom:0; left: 0; right:0; width: 216mm;' />
                         <script type='text/javascript'>

@@ -43,7 +43,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video2" tooltip="Qu'est-ce que" name="Qu'est-ce que" title="Qu'est-ce que la prévention des chutes" type="VideoReportSection">
+    <ReportSection id="video2" tooltip="Qu'est-ce que" name="Prévention des chutes" title="Qu'est-ce que la prévention des chutes" type="VideoReportSection">
         <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/FallsPreventionFR/2.Qu_est-ce que la prévention des chutes.mp4">
             <![CDATA[
                 {$item}

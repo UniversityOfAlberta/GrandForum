@@ -756,7 +756,7 @@ class FrailtyReport extends SpecialPage {
                         <div class='logos'>
                             <img src='{$wgServer}{$wgScriptPath}/skins/logo3.png' />
                             <img style='max-height: 100px;' src='{$wgServer}{$wgScriptPath}/skins/logo2.png' />
-                            <img src='{$wgServer}{$wgScriptPath}/skins/logo1.png' />
+                            <en><img src='{$wgServer}{$wgScriptPath}/skins/logo1.png' /></en><fr><img src='{$wgServer}{$wgScriptPath}/skins/logo1fr.png' /></fr>
                         </div>
                         <div class='title-box'>
                             <div class='title'>
@@ -767,7 +767,16 @@ class FrailtyReport extends SpecialPage {
                                 <en>My Frailty Status: <u>{$scores['Label']}</u></en>
                                 <fr>Mon état de fragilité: <u>{$scores["LabelFr"]}</u></fr>
                             </div>
-                            <div class='pdfnodisplay' style='margin-top:1em;'>Your recommendations with direct links to resources are below.<br />You can also print your personal report <a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'><b><u>here</u></b></a>.</div>
+                            <div class='pdfnodisplay' style='margin-top:1em;'>
+                                <en>
+                                    Your recommendations with direct links to resources are below.<br />
+                                    You can also print your personal report <a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'><b><u>here</u></b></a>.
+                                </en>
+                                <fr>
+                                    Vos recommandations et les liens qui mènent vers les ressources se trouvent ci-dessous.<br />
+                                    Vous pouvez également faire imprimer votre rapport <a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'><b><u>ici</u></b></a>.
+                                </fr>
+                            </div>
                         </div>
                         <div class='list'>
                             <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' /><en>This report shows the items that went into your frailty status. Where a need was identified from your answers, some recommended resources appear in that topic to address that specific item. If you do not see any recommendations, it means that no needs were identified from your answers.</en><fr>Ce rapport montre les domaines évalués pour mesurer votre état de fragilité. Lorsqu’un besoin est établi à partir de vos réponses, certaines ressources recommandées apparaissent dans cette rubrique concernant ce domaine précis. Si vous ne voyez pas de recommandations, cela signifie qu’aucun besoin n’a été établi à partir de vos réponses.</fr>
@@ -849,10 +858,14 @@ behaviour. They are not clinical recommendations, for which you should seek advi
         $actionPlan = ActionPlan::newFromUserId($person->getId());
         $actionPlanMessage = "";
         if(!isset($actionPlan[0]) || $actionPlan[0]->getSubmitted()){
-            $actionPlanMessage = "Are you ready to create a goal to improve your health?  <a href='#' onClick='parent.clickActionPlan();'>Create Action Plan Now</a> (closes Frailty Report)";
+            $actionPlanMessage = "<en>Are you ready to create a goal to improve your health?</en><fr>Voulez-vous améliorer votre santé globale?</fr>
+                                  <a href='#' onClick='parent.clickActionPlan();'><en>Create Action Plan Now</en><fr>Créez votre plan d’action maintenant</fr></a>
+                                  <en>(closes Frailty Report)</en><fr>(fermer le rapport d’évaluation)</fr>";
         }
         else{
-            $actionPlanMessage = "Are you ready to create a goal to improve your health?  <a href='#' onClick='parent.clickActionPlan();'>View Action Plan Now</a> (closes Frailty Report)";
+            $actionPlanMessage = "<en>Are you ready to create a goal to improve your health?</en><fr>Voulez-vous améliorer votre santé globale?</fr>  
+                                  <a href='#' onClick='parent.clickActionPlan();'><en>View Action Plan Now</en><fr>Créez votre plan d’action maintenant</fr></a>
+                                  <en>(closes Frailty Report)</en><fr>(fermer le rapport d’évaluation)</fr>";
         }
         
         $html .= "      </table>
@@ -862,7 +875,10 @@ behaviour. They are not clinical recommendations, for which you should seek advi
                         <br />
                         {$actionPlanMessage}
                         </p>
-                        <div style='width:100%; text-align:center;'><a href='https://HealthyAgingCentres.ca' target='_blank'>HealthyAgingCentres.ca</a></div>
+                        <div style='width:100%; text-align:center;'>
+                            <en><a href='https://HealthyAgingCentres.ca' target='_blank'>HealthyAgingCentres.ca</a></en>
+                            <fr><a href='https://Proactifquebec.ca' target='_blank'>Proactifquebec.ca</a></fr>
+                        </div>
                         <br /><br /><br /><br /><br />
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_bottom.png' style='z-index: -2; position: absolute; bottom:0; left: 0; right:0; width: 216mm;' />
                         <script type='text/javascript'>

@@ -36,7 +36,7 @@ function Autosave(value){
         //$('#submit_throbber').css('display', 'inline-block');
         this.auto.html("<b>Saving</b>&nbsp;<img width='16' height='16' src='../skins/Throbber.gif' />");
         if(dataStr == lastSaveString){
-            obj.auto.html("<b>Saved</b>");
+            obj.auto.html("<b><en>Saved</en><fr>Enregistré</fr></b>");
             obj.auto.fadeOut(2500);
             $(button).removeAttr('disabled');
             //$('#submit_throbber').css('display', 'none');
@@ -62,7 +62,7 @@ function Autosave(value){
                     }
                 }
                 lastSaveString = dataStr;
-                obj.auto.html("<b>Saved</b>");
+                obj.auto.html("<b><en>Saved</en><fr>Enregistré</fr></b>");
                 obj.auto.fadeOut(2500);
                 $(button).removeAttr('disabled');
                 $('#submit_throbber').css('display', 'none');

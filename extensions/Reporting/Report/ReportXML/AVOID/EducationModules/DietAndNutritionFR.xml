@@ -109,7 +109,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video9" tooltip="Chili Recipe" name="Chili Recipe" title="Chili Recipe" type="VideoReportSection">
+    <ReportSection id="video9" tooltip="Recette de chili" name="Recette de chili" title="Recette de chili" type="VideoReportSection">
         <ReportItem id="video9" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutritionFR/Chili Recipe.mp4">
             <![CDATA[
                 {$item}

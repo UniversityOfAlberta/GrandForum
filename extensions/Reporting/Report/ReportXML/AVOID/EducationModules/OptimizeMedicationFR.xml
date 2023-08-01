@@ -49,7 +49,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video2" tooltip="Qu'est-ce que l'optimisation des médicaments" name="Qu'est-ce que" title="Qu'est-ce que l'optimisation des médicaments" type="VideoReportSection">
+    <ReportSection id="video2" tooltip="Qu'est-ce que l'optimisation des médicaments" name="Optimisation des médicaments" title="Qu'est-ce que l'optimisation des médicaments" type="VideoReportSection">
         <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedicationFR/2.Qu_est-ce que l_optimisation des médicaments.mp4">
             <![CDATA[
                 {$item}

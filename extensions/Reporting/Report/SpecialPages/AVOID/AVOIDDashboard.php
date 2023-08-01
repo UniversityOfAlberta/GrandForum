@@ -229,7 +229,7 @@ class AVOIDDashboard extends SpecialPage {
         $tags = (new UserTagsAPI())->getTags($me->getId());
         
         $membersOnly = ($me->isRole("Provider")) ? "members-only" : "";
-        
+        /*
         $modules = EducationResources::JSON();
         $complete = array();
         $inProgress = array();
@@ -242,7 +242,8 @@ class AVOIDDashboard extends SpecialPage {
             else if($completion > 0){
                 $inProgress[] = $text;
             }
-        }
+        }*/
+        
         if($wgLang->getCode() == 'en'){
             $wgOut->setPageTitle("My Profile");
         }
@@ -258,28 +259,25 @@ class AVOIDDashboard extends SpecialPage {
         $label = $scores["Label"];
         $frailty = "";
         if($label == "very low risk"){ 
-            $frailty = "<en>Based on your answers in the assessment, you have a <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.</en>
+            $frailty = "<en>Based on your answers in the assessment, you have a <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.  Find out why below.</en>
                         <fr>Sur la base de vos réponses à l’évaluation, vous avez un <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</fr>
 ";
         }
         else if($label == "low risk"){
-            $frailty = "<en>Based on your answers in the assessment, you have a <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.</en>
+            $frailty = "<en>Based on your answers in the assessment, you have a <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.  Find out why below.</en>
                         <fr>Sur la base de vos réponses à l’évaluation, vous avez un <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</fr>
 ";
         }
         else if($label == "medium risk"){
-            $frailty = "<en>Based on your answers in the assessment, you have a <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.</en>
+            $frailty = "<en>Based on your answers in the assessment, you have a <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.  Find out why below.</en>
                         <fr>Sur la base de vos réponses à l’évaluation, vous avez un <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</fr>
 ";
         }
         else if($label == "high risk"){
-            $frailty = "<en>Based on your answers in the assessment, you have a <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.</en>
+            $frailty = "<en>Based on your answers in the assessment, you have a <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.  Find out why below.</en>
                         <fr>Sur la base de vos réponses à l’évaluation, vous avez un <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</fr>";
         }
 
-        
-        $progressReport = (AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO") ||
-                           AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? "<br /><a id='viewProgressReport' href='#'>Progress Report</a>" : "";
         $assessmentReport = "";
         if(AVOIDDashboard::isPersonAssessmentDone($me->getId())){
             // This might be a bit slow, but unlikely to be noticable.  If it becomes a problem, it should be moved to an ajax/api request
@@ -294,6 +292,15 @@ class AVOIDDashboard extends SpecialPage {
                             <div class='program-body {$membersOnly}' style='width: 100%;'>
                                 <p style='margin-bottom:0.5em;'>
                                     {$frailty}<br />
+                                </p>
+                                <a class='viewReport' href='#'><img src='{$wgServer}{$wgScriptPath}/skins/report.png' style='height:3.5em;max-height:100px;margin-right:0.5em;' /></a>
+                                <div style='display:inline-block;vertical-align:middle;'>
+                                    <a class='viewReport' href='#'>
+                                        <en>My Personal Report and Recommendations</en>
+                                        <fr>Mon rapport personnel et mes recommandations</fr>
+                                    </a>{$assessmentReport}
+                                </div>
+                                <p style='margin-bottom:0.5em;'>
                                     <a href='{$wgServer}{$wgScriptPath}/EducationModules/What is Frailty-".strtoupper($wgLang->getCode()).".pdf' target='_blank'>
                                         <en>What is Frailty?</en>
                                         <fr>Qu’est-ce que la fragilité?</fr>
@@ -304,27 +311,16 @@ class AVOIDDashboard extends SpecialPage {
                                     </en>
                                     <br />
                                 </p>
-                                <a class='viewReport' href='#'><img src='{$wgServer}{$wgScriptPath}/skins/report.png' style='height:5em;max-height:100px;margin-right:0.5em;' /></a>
-                                <div style='display:inline-block;vertical-align:middle;'>
-                                    <a class='viewReport' href='#'>
-                                        <en>My Personal Report and Recommendations</en>
-                                        <fr>Mon rapport personnel et mes recommandations</fr>
-                                    </a>{$assessmentReport}{$progressReport}
-                                </div>
                                 <p>
-                                    <b><en>How do I use this program?</en><fr>Utilisation du programme</fr></b><br />
-                                    <en>Step 1. Review your personal report above to learn about your risks and recommendations</en>
-                                    <fr>Étape 1. Consultez votre rapport personnel ci-dessus pour connaître vos risques et les recommandations à suivre.</fr><br />
-                                    
-                                    <en>Step 2. Use the action plan template below to create and track a healthy change <b>this week</b></en>
-                                    <fr>Étape 2. Utilisez le modèle de plan d’action ci-dessous pour choisir un changement sain et en faire le suivi <b>cette semaine</b></fr><br />
-                                    
-                                    <en>Step 3. Use the education, programs and resources to support your healthy aging goals</en>
+                                    <b><en>What’s Next?</en><fr>Utilisation du programme</fr></b><br />
+                                    <en>Frailty is preventable, and small changes make a difference. Address some of your risks using the resources found in this program.</en>
+                                    <fr>Étape 1. Consultez votre rapport personnel ci-dessus pour connaître vos risques et les recommandations à suivre.<br /></fr>
+                                    <fr>Étape 2. Utilisez le modèle de plan d’action ci-dessous pour choisir un changement sain et en faire le suivi <b>cette semaine</b><br /></fr>
                                     <fr>Étape 3. Utilisez les modules d’éducation, les programmes et les ressources pour soutenir vos objectifs de vieillissement sain.</fr>
                                 </p>
 
                                 <p style='margin-bottom:0;'>
-                                    <en>Still need help? Whether it’s navigating the site or something else, we are here to help you. Please click the button below for 1-on-1 assistance.</en>
+                                    <en>Need help navigating the site? Please click the button below for 1-on-1 assistance</en>
                                     <fr>Vous avez encore besoin d’aide? Qu’il s’agisse de la navigation sur le site ou d’autre chose, nous sommes là pour vous aider. Veuillez cliquer sur le bouton ci-dessous pour obtenir de l’assistance individuelle.</fr><br />
                                     <a id='helpButton' class='program-button' style='width: 4em; text-align: center;'><en>Help</en><fr>Aide</fr></a>
                                 </p>
@@ -351,15 +347,21 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("<div class='program-body $membersOnly' style='width: 100%;'>
                             <div id='actionPlanMessages'></div>
                             <p>
-                                <en>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan <a id='viewActionPlanOverview' href='#'>Overview</a> and review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a> to increase your chance of success.</en>
-                                <fr>Les plans d’action représentent de petits pas vers des objectifs de santé plus larges. Avant de vous lancer, veuillez lire l’<a id='viewActionPlanOverview' href='#'>aperçu</a> du plan d’action et passer en revue le <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>module « Pour un changement réussi »</a> afin d’augmenter vos chances de réussite.</fr>
+                                <en>
+                                    Action plans are small steps towards larger health goals.<br />
+                                    <a class='viewActionPlanOverview' href='#'>Overview</a><br />
+                                    Looking for motivation? Review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a>.
+                                </en>
+                                <fr>
+                                    Les plans d’action représentent de petits pas vers des objectifs de santé plus larges. Avant de vous lancer, veuillez lire l’<a class='viewActionPlanOverview' href='#'>aperçu</a> du plan d’action et passer en revue le <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChangeFR'>module « Pour un changement réussi »</a> afin d’augmenter vos chances de réussite.
+                                </fr>
                             </p>
                             <p>
-                                <en>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.  If you have a fitbit watch, you can allow this program to connect to it so that it will track your daily goals automatically.</en>
+                                <en>Use the action plan template provided to develop weekly plans, track your daily progress, then review your achievements in your action plans log.</en>
                                 <fr>Utilisez le modèle de plan d’action fourni pour élaborer des plans hebdomadaires, suivre vos progrès quotidiens et examiner vos réalisations dans votre journal de plans d’action.</fr>
                             </p>
                             <div id='fitbitMessages'></div>
-                            <en>Connect with your <b>Fitbit</b> for easy monitoring&nbsp;&nbsp;&nbsp;</en>
+                            <en>Connect with your <img src='{$wgServer}{$wgScriptPath}/skins/fitbit.png' style='height: 0.92em; margin-top: -0.2em;' alt='Fitbit' /> to track your goals automatically&nbsp;&nbsp;&nbsp;</en>
                             <fr>Connectez votre FitBit pour obtenir des informations plus précises sur votre santé<br /></fr>
                             <en>Off</en><fr>Désactiver</fr> <label class='switch'>
                                 <input type='checkbox' name='fitbitToggle' $fitbitEnabled />
@@ -382,33 +384,18 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</div>");
         
         // Progress
+        $progressReport = (AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO") ||
+                           AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? "<a id='viewProgressReport' href='#'>Progress Report</a>" : "";
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>
                             <en>My AVOID Progress</en>
                             <fr>Mon progrès</fr>
                          </h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
+                            <h3 style='margin-top:0;margin-bottom:0;'><en>Progress Reports</en><fr>Progress Reports</fr></h3>
+                            {$progressReport}
                             <div id='pastActionPlans'></div>
-                            <h3 style='margin-bottom: 0;margin-top:0;'>
-                                <en>Education Module Progress</en>
-                                <fr>Progression des Modules</fr>
-                            </h3>
-                            <div class='modules'>
-                                 <div class='module-2cols-outer'>
-                                    <b>
-                                        <en>Completed</en>
-                                        <fr>Achevé</fr>
-                                    </b>
-                                    <ul>".implode($complete)."</ul>
-                                 </div>
-                                 <div class='module-2cols-outer'>
-                                    <b>
-                                        <en>In Progress</en>
-                                        <fr>En cours</fr>
-                                    </b>
-                                    <ul>".implode($inProgress)."</ul>
-                                 </div>
-                            </div>
+                            
                         </div>");
         $wgOut->addHTML("</div>");
         
@@ -422,7 +409,7 @@ class AVOIDDashboard extends SpecialPage {
         <script type='text/javascript'>
             $('#bodyContent h1:not(.program-header)').hide();
             
-            $('#viewActionPlanOverview').click(function(){
+            $('.viewActionPlanOverview').click(function(){
                 $('#actionPlanOverview').html('<iframe style=\"width:100%;height:99%;border:none;\" src=\"{$wgServer}{$wgScriptPath}/data/Overview.pdf\"></iframe>');
                 $('#actionPlanOverview').dialog({
                     modal: true,
@@ -454,7 +441,7 @@ class AVOIDDashboard extends SpecialPage {
                         }
                     });
                     $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
-                    $('.ui-dialog-titlebar:visible').append(\"<a id='viewFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
+                    $('.ui-dialog-titlebar:visible').append(\"<a id='viewFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'><en>View as Full Screen</en><fr>Plein écran</fr></a>\");
                     $('#viewFullScreen', $('.ui-dialog')).click(function(){
                         viewFullScreen = !viewFullScreen;
                         $(window).resize();
@@ -483,7 +470,7 @@ class AVOIDDashboard extends SpecialPage {
                         }
                     });
                     $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
-                    $('.ui-dialog-titlebar:visible').append(\"<a id='viewAssessmentFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
+                    $('.ui-dialog-titlebar:visible').append(\"<a id='viewAssessmentFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'><en>View as Full Screen</en><fr>Plein écran</fr></a>\");
                     $('#viewAssessmentFullScreen', $('.ui-dialog')).click(function(){
                         viewAssessmentFullScreen = !viewAssessmentFullScreen;
                         $(window).resize();
@@ -516,7 +503,7 @@ class AVOIDDashboard extends SpecialPage {
                         }
                     });
                     $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
-                    $('.ui-dialog-titlebar:visible').append(\"<a id='viewProgressFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
+                    $('.ui-dialog-titlebar:visible').append(\"<a id='viewProgressFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'><en>View as Full Screen</en><fr>Plein écran</fr></a>\");
                     $('#viewProgressFullScreen', $('.ui-dialog')).click(function(){
                         viewProgressFullScreen = !viewProgressFullScreen;
                         $(window).resize();
@@ -651,7 +638,7 @@ class AVOIDDashboard extends SpecialPage {
             
             $(window).resize(function(){
                 if(viewFullScreen){
-                    $('#viewFullScreen', $('.ui-dialog')).text('Exit Full Screen').blur();
+                    $('#viewFullScreen', $('.ui-dialog')).html('<en>Exit Full Screen</en><fr>Quitter en plein écran</fr>').blur();
                     $('.ui-dialog').css('padding', 0)
                                    .css('border-width', 0);
                     $('#reportDialog').dialog({
@@ -666,7 +653,7 @@ class AVOIDDashboard extends SpecialPage {
                     $('.ui-dialog').css('padding', 2)
                                    .css('border-width', 1);
                                    
-                    $('#viewFullScreen', $('.ui-dialog')).text('View as Full Screen').blur();
+                    $('#viewFullScreen', $('.ui-dialog')).html('<en>View as Full Screen</en><fr>Plein écran</fr>').blur();
                     
                     var desiredWidth = $(window).width()*0.75;
                     if(window.matchMedia('(max-width: 767px)').matches){
@@ -689,7 +676,7 @@ class AVOIDDashboard extends SpecialPage {
                 }
                 
                 if(viewAssessmentFullScreen){
-                    $('#viewAssessmentFullScreen', $('.ui-dialog')).text('Exit Full Screen').blur();
+                    $('#viewAssessmentFullScreen', $('.ui-dialog')).html('<en>Exit Full Screen</en><fr>Quitter en plein écran</fr>').blur();
                     $('.ui-dialog').css('padding', 0)
                                    .css('border-width', 0);
                     $('#assessmentDialog').dialog({
@@ -704,7 +691,7 @@ class AVOIDDashboard extends SpecialPage {
                     $('.ui-dialog').css('padding', 2)
                                    .css('border-width', 1);
                                    
-                    $('#viewAssessmentFullScreen', $('.ui-dialog')).text('View as Full Screen').blur();
+                    $('#viewAssessmentFullScreen', $('.ui-dialog')).html('<en>View as Full Screen</en><fr>Plein écran</fr>').blur();
                     
                     var desiredWidth = $(window).width()*0.75;
                     if(window.matchMedia('(max-width: 767px)').matches){
@@ -727,7 +714,7 @@ class AVOIDDashboard extends SpecialPage {
                 }
                 
                 if(viewProgressFullScreen){
-                    $('#viewProgressFullScreen', $('.ui-dialog')).text('Exit Full Screen').blur();
+                    $('#viewProgressFullScreen', $('.ui-dialog')).html('<en>Exit Full Screen</en><fr>Quitter en plein écran</fr>').blur();
                     $('.ui-dialog').css('padding', 0)
                                    .css('border-width', 0);
                     $('#progressReportDialog').dialog({
@@ -742,7 +729,7 @@ class AVOIDDashboard extends SpecialPage {
                     $('.ui-dialog').css('padding', 2)
                                    .css('border-width', 1);
                                    
-                    $('#viewProgressFullScreen', $('.ui-dialog')).text('View as Full Screen').blur();
+                    $('#viewProgressFullScreen', $('.ui-dialog')).html('<en>View as Full Screen</en><fr>Plein écran</fr>').blur();
                     
                     var desiredWidth = $(window).width()*0.75;
                     if(window.matchMedia('(max-width: 767px)').matches){

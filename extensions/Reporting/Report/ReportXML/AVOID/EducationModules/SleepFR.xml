@@ -71,7 +71,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video5" tooltip="La santé des aînés en situation de confinement - Sommeil" name="Vidéo de sommeil" title="La santé des aînés en situation de confinement - Sommeil" type="VideoReportSection">
+    <ReportSection id="video5" tooltip="La santé des aînés en situation de confinement - Sommeil" name="Vidéo sur le sommeil" title="La santé des aînés en situation de confinement - Sommeil" type="VideoReportSection">
         <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/SleepFR/La santé des aînés en situation de confinement - Sommeil.mp4">
             <![CDATA[
                 {$item}
