@@ -345,14 +345,38 @@ class AdminUsageStats extends SpecialPage {
             }
         }
         
+        // Top Modules
+        $topModules = array();
+        foreach($modules as $module){
+            $dcs = DataCollection::newFromPage("*EducationModules/{$module->id}*");
+            foreach($dcs as $dc){
+                if($this->exclude($dc->getUserId())){ continue; }
+                @$topModules[$module->id] += $dc->getField('time')/60;
+            }
+        }
+        
+        asort($topModules);
+        $topModules = array_reverse($topModules);
+        $topModulesKeys = array_keys($topModules);
+        
         @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
             <tr>
-                <td class='label'>Top 3 topics</td>
+                <td class='label'>Top 3 Topics</td>
                 <td align='right'>
                     <table>
                         <tr><td style='font-weight: bold;'>{$topTopicsKeys[0]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[0]]}</td></tr>
                         <tr><td style='font-weight: bold;'>{$topTopicsKeys[1]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[1]]}</td></tr>
                         <tr><td style='font-weight: bold;'>{$topTopicsKeys[2]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[2]]}</td></tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class='label'>Top 3 Modules<br />(time in minutes)</td>
+                <td align='right'>
+                    <table>
+                        <tr><td style='font-weight: bold;'>{$topModulesKeys[0]}&nbsp;</td><td align='right'>".number_format($topModules[$topModulesKeys[0]])."</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topModulesKeys[1]}&nbsp;</td><td align='right'>".number_format($topModules[$topModulesKeys[1]])."</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topModulesKeys[2]}&nbsp;</td><td align='right'>".number_format($topModules[$topModulesKeys[2]])."</td></tr>
                     </table>
                 </td>
             </tr>
@@ -378,32 +402,6 @@ class AdminUsageStats extends SpecialPage {
     function showResourcesStats(){
         global $wgOut;
         $wgOut->addHTML("<h1>AVOID Resources</h1>");
-        
-        $dcs = array_merge(DataCollection::newFromPage('IngredientsForChange-*'), 
-                           DataCollection::newFromPage('Activity-*'),
-                           DataCollection::newFromPage('Vaccination-*'),
-                           DataCollection::newFromPage('OptimizeMedication-*'),
-                           DataCollection::newFromPage('Interact-*'),
-                           DataCollection::newFromPage('DietAndNutrition-*'),
-                           DataCollection::newFromPage('Sleep-*'),
-                           DataCollection::newFromPage('FallsPrevention-*'),
-                           DataCollection::newFromPage('IngredientsForChangeFR-*'), 
-                           DataCollection::newFromPage('ActivityFR-*'),
-                           DataCollection::newFromPage('VaccinationFR-*'),
-                           DataCollection::newFromPage('OptimizeMedicationFR-*'),
-                           DataCollection::newFromPage('InteractFR-*'),
-                           DataCollection::newFromPage('DietAndNutritionFR-*'),
-                           DataCollection::newFromPage('SleepFR-*'),
-                           DataCollection::newFromPage('FallsPreventionFR-*'));
-        $topResources = array();
-        foreach($dcs as $dc){
-            if($this->exclude($dc->getUserId())){ continue; }
-            @$topResources[$dc->page] += $dc->getField('count');
-        }
-
-        asort($topResources);
-        $topResources = array_reverse($topResources);
-        $topResourcesKeys = array_keys($topResources);
         
         @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
             <tr>
