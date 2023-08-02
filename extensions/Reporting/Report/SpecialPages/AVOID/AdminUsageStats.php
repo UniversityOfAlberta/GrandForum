@@ -401,9 +401,35 @@ class AdminUsageStats extends SpecialPage {
 
     function showResourcesStats(){
         global $wgOut;
-        $wgOut->addHTML("<h1>AVOID Resources</h1>");
         
-        @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+        $dcs = array_merge(DataCollection::newFromPage('IngredientsForChange-*'), 
+                           DataCollection::newFromPage('Activity-*'),
+                           DataCollection::newFromPage('Vaccination-*'),
+                           DataCollection::newFromPage('OptimizeMedication-*'),
+                           DataCollection::newFromPage('Interact-*'),
+                           DataCollection::newFromPage('DietAndNutrition-*'),
+                           DataCollection::newFromPage('Sleep-*'),
+                           DataCollection::newFromPage('FallsPrevention-*'),
+                           DataCollection::newFromPage('IngredientsForChangeFR-*'), 
+                           DataCollection::newFromPage('ActivityFR-*'),
+                           DataCollection::newFromPage('VaccinationFR-*'),
+                           DataCollection::newFromPage('OptimizeMedicationFR-*'),
+                           DataCollection::newFromPage('InteractFR-*'),
+                           DataCollection::newFromPage('DietAndNutritionFR-*'),
+                           DataCollection::newFromPage('SleepFR-*'),
+                           DataCollection::newFromPage('FallsPreventionFR-*'));
+        $topResources = array();
+        foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId())){ continue; }
+            @$topResources[$dc->page] += $dc->getField('count');
+        }
+
+        asort($topResources);
+        $topResources = array_reverse($topResources);
+        $topResourcesKeys = array_keys($topResources);
+
+        @$wgOut->addHTML("<h1>AVOID Resources</h1>
+        <table class='wikitable' frame='box' rules='all'>
             <tr>
                 <td class='label'>Top 5 resources</td>
                 <td align='right'>
