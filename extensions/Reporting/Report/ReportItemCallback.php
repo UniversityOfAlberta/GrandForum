@@ -240,6 +240,7 @@ class ReportItemCallback {
             "getProjectTitles" => "getProjectTitles",
             "getNProducts" => "getNProducts",
             "getBlobMD5" => "getBlobMD5",
+            "getRawText" => "getRawText",
             "getText" => "getText",
             "getNumber" => "getNumber",
             "getHTML" => "getHTML",
@@ -1981,9 +1982,7 @@ class ReportItemCallback {
     }
     
     function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", ", $year=null){
-        if($year == null){
-            $year = $this->reportItem->getReport()->year;
-        }
+        $year = ($year == null) ? $this->reportItem->getReport()->year : $year;
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_ARRAY, $year, $personId, $projectId);
         $result = $blb->load($addr);
@@ -2002,6 +2001,14 @@ class ReportItemCallback {
             }
             return $value;
         }
+    }
+    
+    function getRawText($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+        $year = ($year == null) ? $this->reportItem->getReport()->year : $year;
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
+        $result = $blb->load($addr);
+        return @str_replace(")", "&#41;", str_replace("(", "&#40;", $blb->getData()));
     }
     
     function getText($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
@@ -2215,8 +2222,14 @@ class ReportItemCallback {
         $tok = decrypt($tok, true);
         $data = DBFunctions::execSQL("SELECT user_id
                                       FROM grand_pdf_report
-                                      WHERE ((encrypted = 0 AND token = '{$tok}') OR 
-                                             (encrypted = 1 AND token = '".decrypt($tok, true)."'))");
+                                      WHERE ((encrypted = 0 AND token = '".DBFunctions::escape($tok)."') OR 
+                                             (encrypted = 1 AND token = '".DBFunctions::escape(decrypt($tok, true))."'))");
+        if(!count($data) > 0){
+            // PDF not found, check report blobs instead 
+            $data = DBFunctions::execSQL("SELECT user_id
+                                          FROM grand_report_blobs
+                                          WHERE (md5 = '".DBFunctions::escape($tok)."')");
+        }
         return @$data[0]['user_id'];
     }
     

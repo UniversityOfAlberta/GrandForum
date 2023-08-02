@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Progress Report" reportType="RP_PROGRESS_REPORT" pdfType="RPTP_PROGRESS_REPORT" pdfFiles="ProgressReportPDF" personId="0" ajax="true" year="2022" disabled="false">
+<Report name="Project Progress Report" reportType="RP_PROGRESS_REPORT" pdfType="RPTP_PROGRESS_REPORT" pdfFiles="ProgressReportPDF" personId="0" ajax="true" year="2023" disabled="false">
     <Permissions>
         <Role role="PL">
             <SectionPermission id="details" permissions="rw" />
@@ -32,7 +32,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" default="{$last_year}-05-01" width="70px">
+        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" default="{$last_year}-01-01" width="70px">
             <![CDATA[
                 <h3>Reporting Period:</h3>
                 {$item}
@@ -146,10 +146,10 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="budget_overview" type="Integer" blobItem="BUDGET_OVERVIEW" blobType="BLOB_TEXT" size="10">
+        <!--ReportItem id="budget_overview" type="Integer" blobItem="BUDGET_OVERVIEW" blobType="BLOB_TEXT" size="10">
             <![CDATA[
                 <h2>Budget Overview</h2>
-                <b>Funding received so far:</b> <br />
+                <b>Total Funding received so far:</b> <br />
                 <table class='wikitable' frame='box' rules='all'>
                     <tr>
                         <td><b>First Year:</b></td><td>${$item}</td>
@@ -168,6 +168,15 @@
             <![CDATA[
                     <tr>
                         <td><b>Third Year:</b></td><td>${$item}</td>
+                    </tr>
+            ]]> 
+        </ReportItem-->
+        <ReportItem id="budget_total" type="Integer" blobItem="BUDGET_TOTAL" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
+                <h2>Budget Overview</h2>
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <td><b>Total Funding received so far:</b></td><td>${$item}</td>
                     </tr>
             ]]> 
         </ReportItem>

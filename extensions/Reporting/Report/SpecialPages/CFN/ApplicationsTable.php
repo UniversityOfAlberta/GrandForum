@@ -59,6 +59,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ifp'>IFP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=kt'>KT</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=rcha'>RCHA</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ancillary'>Ancillary</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ecr'>Early Career</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
         }
@@ -79,6 +80,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "rcha" && $me->isRoleAtLeast(SD)){
             $this->generateRCHA();
+        }
+        else if($program == "ancillary" && $me->isRoleAtLeast(SD)){
+            $this->generateAncillary();
         }
         else if($program == "ecr" && $me->isRoleAtLeast(SD)){
             $this->generateECR();
@@ -167,6 +171,46 @@ class ApplicationsTable extends SpecialPage{
         $cis->setId("ci");
         $tabbedPage->addTab(new ApplicationTab("RCHA2021Application", $fullApplicants, 2021, "2021"));
         $tabbedPage->addTab(new ApplicationTab("RCHA2021Intent", null, 2021, "2021 Intent", array("PIs" => $pis, "CIs" => $cis)));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateAncillary(){
+        global $wgOut;
+        
+        $allPeople = array_merge(Person::getAllCandidates(), Person::getAllPeople());
+        $fullApplicants = array();
+        foreach($allPeople as $person){
+            if($person->isSubRole('AncillaryApplicant')){
+                $fullApplicants[$person->getId()] = $person;
+            }
+        }
+        
+        $tabbedPage = new InnerTabbedPage("reports");
+        $pis = new MultiTextReportItem();
+        $pis->setBlobType(BLOB_ARRAY);
+        $pis->setBlobItem("PI");
+        $pis->setBlobSection("INTENT");
+        $pis->setAttr("labels", "First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization");
+        $pis->setAttr("types", "text|text|text|text|text");
+        $pis->setAttr("multiple", "true");
+        $pis->setAttr("showHeader", "false");
+        $pis->setAttr("class", "wikitable");
+        $pis->setAttr("orientation", "list");
+        $pis->setId("pi");
+        
+        $cis = new MultiTextReportItem();
+        $cis->setBlobType(BLOB_ARRAY);
+        $cis->setBlobItem(CI);
+        $cis->setBlobSection("INTENT");
+        $cis->setAttr("labels", "First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization");
+        $cis->setAttr("types", "text|text|text|text|text");
+        $cis->setAttr("multiple", "true");
+        $cis->setAttr("showHeader", "false");
+        $cis->setAttr("class", "wikitable");
+        $cis->setAttr("orientation", "list");
+        $cis->setId("ci");
+        $tabbedPage->addTab(new ApplicationTab("AncilliaryStudiesApplication", $fullApplicants, 2022, "2022"));
+        $tabbedPage->addTab(new ApplicationTab("AncilliaryStudiesIntent", null, 2022, "2022 Intent", array("PIs" => $pis, "CIs" => $cis)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

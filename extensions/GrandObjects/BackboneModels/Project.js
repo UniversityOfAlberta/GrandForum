@@ -49,12 +49,18 @@ Project = Backbone.Model.extend({
  */
 Projects = RangeCollection.extend({
     model: Project,
+    type: '',
     
     newModel: function(){
         return new Projects();
     },
     
-    url: 'index.php?action=api.project'
+    url: function(){
+        if(this.type == 'administrative'){
+            return 'index.php?action=api.project/administrative';
+        }
+        return 'index.php?action=api.project';
+    }
 });
 
 /**

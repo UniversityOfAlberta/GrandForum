@@ -68,6 +68,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         
         $university_id = "";
         $position_id = "";
+        $faculty = $this->POST('faculty');
         $department = $this->POST('department');
         $start_date = $this->POST('startDate');
         $end_date = $this->POST('endDate');
@@ -87,6 +88,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         DBFunctions::insert('grand_user_university',
                             array('user_id' => $person->getId(),
                                   'university_id' => $university_id,
+                                  'faculty' => $faculty,
                                   'department' => $department,
                                   'position_id' => $position_id,
                                   'start_date' => $start_date,
@@ -136,6 +138,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         
         $university_id = "";
         $position_id = "";
+        $faculty = $this->POST('faculty');
         $department = $this->POST('department');
         $start_date = $this->POST('startDate');
         $end_date = $this->POST('endDate');
@@ -155,6 +158,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         DBFunctions::update('grand_user_university',
                             array('user_id' => $person->getId(),
                                   'university_id' => $university_id,
+                                  'faculty' => $faculty,
                                   'department' => $department,
                                   'position_id' => $position_id,
                                   'start_date' => $start_date,

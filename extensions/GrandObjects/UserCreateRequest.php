@@ -19,7 +19,9 @@ class UserCreateRequest {
     var $roles;
     var $subRoles;
     var $projects;
+    var $relation;
     var $university;
+    var $faculty;
     var $department;
     var $position;
     var $nationality;
@@ -78,7 +80,9 @@ class UserCreateRequest {
             $this->roles = $data[0]['wpUserType'];
             $this->subRoles = $data[0]['wpUserSubType'];
             $this->projects = $data[0]['wpNS'];
+            $this->relation = $data[0]['relation'];
             $this->university = $data[0]['university'];
+            $this->faculty = $data[0]['faculty'];
             $this->department = $data[0]['department'];
             $this->position = $data[0]['position'];
             $this->nationality = $data[0]['nationality'];
@@ -146,8 +150,16 @@ class UserCreateRequest {
         return $this->projects;
     }
     
+    function getRelation(){
+        return $this->relation;
+    }
+    
     function getUniversity(){
         return $this->university;
+    }
+    
+    function getFaculty(){
+        return $this->faculty;
     }
     
     function getDepartment(){

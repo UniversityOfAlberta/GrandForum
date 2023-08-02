@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Science PhD Fellowship Application" reportType="RP_SCI_PHD_ELITE" pdfType="RPTP_SCI_PHD_ELITE" pdfFiles="PhDScienceApplicationPDF" year="0" ajax="true" encrypt="true" disabled="true">
+    <Permissions>
+        <Role role="HQP">
+            <SectionPermission id="profile" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <!-- Personal Information -->
+    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Application" title="Science PhD Fellowship Application" showProgress="true">
+        <If if="{or({==({getText(RP_SCI_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},)},
+                    {==({getText(RP_SCI_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Submitted)},
+                    {==({getText(RP_SCI_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)},
+                )}">
+            <Static>
+                <![CDATA[
+                    <b>Welcome to the Science Black PhD Fellowship Application Portal sponsored by the <a href='https://www.ualberta.ca/science/index.html' target='_blank'>Faculty of Science</a> and the <a href='https://www.eliteprogram.ca/' target='_blank'>Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth</a> at the <a href='https://www.ualberta.ca/index.html' target='_blank'>University of Alberta</a>. Please read our Brochure for Applicants before completing your application: <a href="{$wgServer}{$wgScriptPath}/data/Science PhD Fellowship Candidate Brochure.pdf" target="_blank">DOWNLOAD IT HERE</a>. The complete Terms of Reference for the Fellowship Program are available <a href="{$wgServer}{$wgScriptPath}/data/Eng-IBET-ELITE Momentum Fellowship_ToR_FINAL.pdf?20221021" target="_blank">HERE</a>. Personal information submitted through this form will be held as confidential and will be stored, used, and disclosed only to the extent permitted by the <i>Freedom of Information and Protection of Privacy Act</i>, R.S.A. 2000, c. F-25 (as amended).<b>
+                ]]>
+            </Static>
+            <If if="{==({getText(RP_SCI_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)}">
+                <![CDATA[
+                    <div class="info">
+                        <b>{getText(RP_SCI_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)}</b><br />
+                        {getText(RP_SCI_PHD_ELITE, PROFILE, COMMENTS, 0, {$user_id}, 0)}
+                    </div>
+                ]]>
+            </If>
+            <Static>
+                <![CDATA[
+                    <p>All items with a <span style="color:red;">*</span> require mandatory responses</p>
+                    <table>
+                ]]>
+            </Static>
+            <ReportItem id="region" type="Select" blobItem="REGION" options="|Edmonton|Ottawa" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required" style="width: 100px;">Region:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="last_name" type="Text" blobItem="LAST_NAME" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2 style="margin-top:0;">Personal Information</h2></td>
+                    </tr>
+                    <tr>
+                        <td class="label required" style="width: 100px;">Last Name:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_name" type="Text" blobItem="FIRST_NAME" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required">First Name:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="middle_name" type="Text" blobItem="MIDDLE_NAME" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label">Middle Name:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="birthdate" type="Calendar" blobItem="BIRTHDATE" yearRange="c-50:{$year}" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required">Date of Birth:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="gender" type="Select" blobItem="GENDER" options="Male|Female|Non-Binary|Other" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required">Gender:</td>
+                        <td class="value" colspan="3">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="ethnic" type="Radio" blobItem="ETHNIC" options="Black|Indigenous|Other" labels="Black|Indigenous (First Nations, Inuit, and Métis)|Other" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required">Ethnic Group:</td>
+                        <td class="value" colspan="3">{$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="ethnic_other" type="Text" blobItem="ETHNIC_OTHER" optional="true" placeholder="Other...">
+                <![CDATA[
+                            <div style="position: absolute; margin-top: -28px; margin-left: 24px;">{$item}</div>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="immigration" type="Select" blobItem="IMMIGRATION" options="Citizen|Permanent Resident|Refugee|International Student|Other" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required">Canadian Immigration Status:</td>
+                        <td class="value" colspan="3">
+                            Only Canadian citizens, permanent residents, and refugees are eligible for this fellowship.{$item}
+                            <div id="immigrationWarning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the science department that offers training in your field of interest to learn more about applying to the PhD program.</div>
+                            <script type="text/javascript">
+                                $("select[name=Application_immigration]").change(function(){
+                                    var value = $("select[name=Application_immigration]").val();
+                                    if(value == "International Student" || value == "Other"){
+                                        $("#immigrationWarning").slideDown();
+                                    }
+                                    else{
+                                        $("#immigrationWarning").slideUp();
+                                    }
+                                }).change();
+                            </script>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            
+            <!-- Other Information -->
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2>Other Information</h2></td>
+                    </tr>
+                ]]>
+            </Static>
+            <ReportItem id="program" type="Radio" blobItem="PROGRAM" options="Yes|No" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label" style="text-align: left; white-space:normal;" colspan="4">Are you currently enrolled in a PhD program?<span style="display:inline-block;line-height:1em;" class="label required"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="value" colspan="4">
+                            {$item}
+                            <div id="programWarning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the science department that offers training in your field of interest to learn more about applying to the PhD program.</div>
+                            <script type="text/javascript">
+                                $("input[name=Application_program]").change(function(){
+                                    var value = $("input[name=Application_program]:checked").val();
+                                    if(value == "Yes"){
+                                        $("#programWarning").slideDown();
+                                    }
+                                    else{
+                                        $("#programWarning").slideUp();
+                                    }
+                                }).change();
+                            </script>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            
+            <!-- Contact Information -->
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2>Contact Information</h2></td>
+                    </tr>
+                ]]>
+            </Static>
+            <ReportItem id="address1" type="Text" blobItem="ADDRESS1" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label tooltip required" title="Street Name and number">Address Line 1:</td>
+                        <td class="value" style="width:200px">{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="email" type="Text" blobItem="EMAIL" encrypt="true">
+                <![CDATA[
+                        <td class="label required" style="width:1px;">E-mail:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="address2" type="Text" blobItem="ADDRESS2" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label tooltip" title="House, Apt, Suite">Address Line 2:</td>
+                        <td class="value">{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="phone" type="Text" blobItem="PHONE" encrypt="true">
+                <![CDATA[
+                        <td class="label tooltip required" title="Phone number of the individual">Cellphone Number:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="city" type="Text" blobItem="CITY" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label tooltip required" title="City">City:</td>
+                        <td class="value">{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="contact_name" type="Text" blobItem="CONTACT_NAME" encrypt="true">
+                <![CDATA[
+                        <td class="label tooltip required" title="Name of the individual's emergency contact">Emergency Contact Name:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="prov" type="Text" blobItem="PROV" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label tooltip required" title="Province">Province/State:</td>
+                        <td class="value">{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="contact" type="Text" blobItem="CONTACT" encrypt="true">
+                <![CDATA[
+                        <td class="label tooltip required" title="Phone number of the individual's emergency contact">Emergency Contact:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="zip" type="Text" blobItem="ZIP" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="label required">Zip/Postal Code:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            
+            <!-- Academic Background -->
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2>Academic Background<span style="display:inline-block;line-height:1em;" class="label required"></span> (include only current and past degree programs)</h2></td>
+                    </tr>
+                ]]>
+            </Static>
+            <ReportItem id="academic" type="MultiText" blobItem="ACADEMIC" blobType="BLOB_ARRAY" indices="degree|discipline|department|started|awarded" labels="Degree|Name of Discipline|Department, Institution, Country|Month and Year Started|Month and Year awarded/expected" types="Select(Bachelor's,Master's,Doctorate)|Text|Text|Text|Text" sizes="100|200|200|150|150" multiple="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="value" colspan="4">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            
+            <!-- Scholarships and Other Awards Offered -->
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2>Scholarships and Other Awards Offered (start with most recent)</h2></td>
+                    </tr>
+                ]]>
+            </Static>
+            <ReportItem id="scholarships" type="MultiText" blobItem="SCHOLARSHIPS" blobType="BLOB_ARRAY" indices="name|value|level|type|location|period" labels="Name of Award|Value ($CAD)|Level|Type|Location of Tenure|Period Held&lt;br />(yyyy/mm – yyyy/mm)" types="Text|Integer|Select(Institutional,Provincial/State,National,International)|Select(Academic,Research,Service,Leadership,Communication)|Text|Text" sizes="200|100|150|150|150|150" multiple="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="value" colspan="4">{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+            
+            <!-- Academic, Research and Other Relevant Work Experience -->
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td colspan="4"><h2>Academic, Research and Other Relevant Work Experience</h2></td>
+                    </tr>
+                ]]>
+            </Static>
+            <ReportItem id="experience" type="MultiText" blobItem="EXPERIENCE" blobType="BLOB_ARRAY" indices="positions|organization|supervisor|period" labels="Position Held and Nature of Work Full Time/Part Time (begin with current)|Organization and Department|Supervisor Name|Period&lt;br />(yyyy/mm – yyyy/mm)" types="Textarea|Textarea|Text|Text" sizes="200|200|200|150" multiple="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td class="value" colspan="4">{$item}</td>
+                    </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+            
+            <!-- Available Projects -->
+            <Static>
+                <![CDATA[
+                    <h2 class="required">Potential Science PhD Supervisor</h2>
+                ]]>
+            </Static>
+            <!--ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY" projectType="PhD" optional="true" limit="3">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem-->
+            <ReportItem id="apply_other" type="MultiText" blobItem="PROJECTS_OTHER" blobType="BLOB_ARRAY" labels="Name|Email" max="3" optional="true" multiple="true">
+                <![CDATA[
+                    <p>Please indicate the name(s) and email address(es) of the professor with whom you have arranged for a project. They will receive an email message to confirm participation.</p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="apply_other2" type="MultiText" blobItem="PROJECTS_OTHER2" blobType="BLOB_ARRAY" labels="Name" max="3" optional="true" multiple="true">
+                <![CDATA[
+                    <p>Or, please indicate the name(s) of any professor with whom you would consider working, if accepted for a Fellowship. If you do not have a name in mind yet, please indicate "None".</p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            
+            <!-- Attachments -->
+            <Static>
+                <![CDATA[
+                    <h2>Attachments</h2>
+                ]]>
+            </Static>
+            <ReportItem id="summary" type="Upload" blobItem="SUMMARY" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+                <![CDATA[
+                    <h3 class="required">Summary of Thesis or Research Project Work</h3>
+                    <p><b>Please attach a one-page summary of the most recent thesis or research project work completed or in progress.</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="statement" type="Upload" blobItem="STATEMENT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+                <![CDATA[
+                    <h3 class="required">Statement of Research, Service, Community, and Leadership Activities</h3>
+                    <p><b>Please attach a statement pertaining to research, service, community, leadership, and other relevant activities, not to exceed two pages.</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="transcripts1" type="Upload" blobItem="TRANSCRIPTS1" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+                <![CDATA[
+                    <h3 class="required">Please attach unofficial transcripts of grades from all post-secondary institutions attended.</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="transcripts2" type="Upload" blobItem="TRANSCRIPTS2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" optional="true" encrypt="true">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="transcripts3" type="Upload" blobItem="TRANSCRIPTS3" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" optional="true" encrypt="true">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="resume" type="Upload" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+                <![CDATA[
+                    <h3 class="required">Curriculum Vitae or Résumé</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="letter1" type="Upload" blobItem="LETTER1" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" optional="true" encrypt="true">
+                <![CDATA[
+                    <h3 class="required">Letters of Reference</h3>
+                    <p><b>Please attach two letters of reference.</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="letter2" type="Upload" blobItem="LETTER2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW"  optional="true" encrypt="true">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="letter_other" type="EliteLetters" blobItem="LETTER_OTHER" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2"  optional="true">
+                <![CDATA[
+                    <p><b>Or, please provide the names and email addresses of the referees. An automated request for reference letters will be issued to them.</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="acknowledgment1" type="Radio" blobItem="ACKNOWLEDGMENT1" options="Yes|No" encrypt="true">
+                <![CDATA[
+                    <h2 class="required">Acknowledgment and Agreement</h2>
+                    <h3>If accepted to the Fellowship Program, I will apply for admission to the PhD program with a Faculty of Science department at the University of Alberta by the departmental deadline.</h3>
+                    {$item}
+                    <div id="acknowledgment1Warning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the science department that offers training in your field of interest to learn more about applying to the PhD program.</div>
+                    <script type="text/javascript">
+                        $("input[name=Application_acknowledgment1]").change(function(){
+                            var value = $("input[name=Application_acknowledgment1]:checked").val();
+                            if(value == "No"){
+                                $("#acknowledgment1Warning").slideDown();
+                            }
+                            else{
+                                $("#acknowledgment1Warning").slideUp();
+                            }
+                        }).change();
+                    </script>
+                ]]>
+            </ReportItem>
+            <ReportItem id="acknowledgment2" type="Radio" blobItem="ACKNOWLEDGMENT2" options="Yes|No" encrypt="true">
+                <![CDATA[
+                    <h3>If accepted to the Fellowship Program, I will participate in the ELITE Program for Black Youth Entrepreneurship Design Series, if offered.</h3>
+                    {$item}
+                    <div id="acknowledgment2Warning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the science department that offers training in your field of interest to learn more about applying to the PhD program.</div>
+                    <script type="text/javascript">
+                        $("input[name=Application_acknowledgment2]").change(function(){
+                            var value = $("input[name=Application_acknowledgment2]:checked").val();
+                            if(value == "No"){
+                                $("#acknowledgment2Warning").slideDown();
+                            }
+                            else{
+                                $("#acknowledgment2Warning").slideUp();
+                            }
+                        }).change();
+                    </script>
+                ]]>
+            </ReportItem>
+        </If>
+        <Else>
+            <![CDATA[
+                Your application is marked as <b>{getText(RP_SCI_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)}</b> and can no longer make any modifications.
+            ]]>
+        </Else>
+    </ReportSection>
+    <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <If if="{or({==({getText(RP_SCI_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},)},
+                    {==({getText(RP_SCI_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Submitted)},
+                    {==({getText(RP_SCI_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)},
+                )}">
+            <If if="{or({==({getText(RP_SCI_PHD_ELITE, PROFILE, IMMIGRATION, 0, {$user_id}, 0)},International Student)}, 
+                        {==({getText(RP_SCI_PHD_ELITE, PROFILE, IMMIGRATION, 0, {$user_id}, 0)},Other)},
+                        {==({getText(RP_SCI_PHD_ELITE, PROFILE, PROGRAM, 0, {$user_id}, 0)},Yes)},
+                        {==({getText(RP_SCI_PHD_ELITE, PROFILE, ACKNOWLEDGMENT1, 0, {$user_id}, 0)},No)},
+                        {==({getText(RP_SCI_PHD_ELITE, PROFILE, ACKNOWLEDGMENT2, 0, {$user_id}, 0)},No)})}">
+                <![CDATA[
+                    You are not eligible for this fellowship. Please visit the website of the science department that offers training in your field of interest to learn more about applying to the PhD program.
+                ]]>
+            </If>
+            <Else>
+                <If if="{!=({getProgress(profile)},100)}">
+                    <![CDATA[
+                        You have not completed the application.
+                    ]]>
+                </If>
+                <Else>
+                    <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+                </Else>
+            </Else>
+        </If>
+        <Else>
+            <![CDATA[
+                Your application is marked as <b>{getText(RP_SCI_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)}</b> and can no longer make any modifications.
+            ]]>
+        </Else>
+    </ReportSection>
+</Report>

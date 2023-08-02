@@ -33,7 +33,8 @@ class HQPReviewTable extends SpecialPage{
         }
         $data = DBFunctions::select(array('grand_eval'),
                                     array('DISTINCT type', 'year'),
-                                    array('type' => LIKE('HQP-%')),
+                                    array('type' => LIKE('HQP-%'),
+                                          'year' => GTEQ(2020)), // Get rid of this to show all 
                                     array('type' => 'DESC'));
         $wgOut->addHTML("<div id='tabs'>");
         $wgOut->addHTML("<ul>");

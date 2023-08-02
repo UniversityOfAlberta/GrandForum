@@ -43,6 +43,7 @@ class ManagePeople extends BackbonePage {
         $positions = json_encode(array_values(Person::getAllPositions()));
 
         $departments = json_encode(array_values(Person::getAllDepartments()));
+        $faculties = json_encode(array_values(Person::getAllFaculties()));
         $organizations = array_unique($uniNames);
         sort($organizations);
         
@@ -54,6 +55,7 @@ class ManagePeople extends BackbonePage {
             var allUniversities = $organizations;
             var allPositions = $positions;
             var allDepartments = $departments;
+            var allFaculties = $faculties;
             
             var frozen = $frozen;
         </script>");

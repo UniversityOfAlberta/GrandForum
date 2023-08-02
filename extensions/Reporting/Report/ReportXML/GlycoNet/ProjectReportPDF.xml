@@ -170,12 +170,6 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="covid" type="TextareaReportItem" blobItem="COVID" rich="true">
-            <![CDATA[
-                <p><b>Impact of COVID-19</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
         <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" rich="true" limit="500" recommended="true">
             <![CDATA[
                 <p><b>Future Directions</b></p>

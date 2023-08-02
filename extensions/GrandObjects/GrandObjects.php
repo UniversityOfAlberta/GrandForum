@@ -39,6 +39,7 @@ autoload_register('GrandObjects/API/AvoidResource');
 autoload_register('GrandObjects/API/AskAnExpertEvent');
 autoload_register('GrandObjects/API/ActionPlan');
 autoload_register('GrandObjects/API/Gamification');
+autoload_register('GrandObjects/API/LIMS');
 
 global $apiRequest;
 // Person
@@ -81,6 +82,7 @@ $apiRequest->addAction('Hidden','theme/:id', 'ThemeAPI');
 $apiRequest->addAction('Hidden','theme/:id/projects', 'ThemeProjectsAPI');
 $apiRequest->addAction('Hidden','project', 'ProjectAPI');
 $apiRequest->addAction('Hidden','project/full', 'ProjectAPI');
+$apiRequest->addAction('Hidden','project/administrative', 'ProjectAPI');
 $apiRequest->addAction('Hidden','project/:id', 'ProjectAPI');
 $apiRequest->addAction('Hidden','project/:id/full', 'ProjectAPI');
 $apiRequest->addAction('Hidden','project/:id/members', 'ProjectMembersAPI');
@@ -211,6 +213,16 @@ $apiRequest->addAction('Hidden','crmopportunity/:id', 'CRMOpportunityAPI');
 $apiRequest->addAction('Hidden','crmopportunity/:opportunity_id/tasks', 'CRMTaskAPI');
 $apiRequest->addAction('Hidden','crmtask', 'CRMTaskAPI');
 $apiRequest->addAction('Hidden','crmtask/:id', 'CRMTaskAPI');
+// LIMS
+$apiRequest->addAction('Hidden','limscontact', 'LIMSContactAPI');
+$apiRequest->addAction('Hidden','limscontact/:id', 'LIMSContactAPI');
+$apiRequest->addAction('Hidden','limscontact/:contact_id/limsopportunities', 'LIMSOpportunityAPI');
+$apiRequest->addAction('Hidden','limsopportunity', 'LIMSOpportunityAPI');
+$apiRequest->addAction('Hidden','limsopportunity/:id', 'LIMSOpportunityAPI');
+$apiRequest->addAction('Hidden','limsopportunity/:id/files/:file_id', 'LIMSOpportunityAPI');
+$apiRequest->addAction('Hidden','limsopportunity/:opportunity_id/tasks', 'LIMSTaskAPI');
+$apiRequest->addAction('Hidden','limstask', 'LIMSTaskAPI');
+$apiRequest->addAction('Hidden','limstask/:id', 'LIMSTaskAPI');
 
 // DataCollection
 $apiRequest->addAction('Hidden','datacollection', 'DataCollectionAPI');
@@ -274,6 +286,9 @@ function createModels(){
     addScript("AvoidResource");
     addScript("AskAnExpertEvent");
     addScript("ActionPlan");
+    addScript("LIMSContact");
+    addScript("LIMSOpportunity");
+    addScript("LIMSTask");
     return true;
 }
 ?>

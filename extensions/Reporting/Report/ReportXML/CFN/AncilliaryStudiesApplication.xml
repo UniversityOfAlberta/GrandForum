@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="KFLA Regional Centre for Healthy Aging Ancillary Studies Competition" reportType="RP_ANCILLARY_APPLICATION" pdfType="RP_ANCILLARY_APPLICATION_FULL" pdfFiles="AncilliaryStudiesApplicationPDF" year="2022" disabled="true" ajax="true">
+    <Permissions>
+        <Role role="" subType="AncillaryApplicant">
+
+        </Role>
+    </Permissions>
+    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information" showProgress="true">
+        <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text">
+            <![CDATA[
+                <div style="text-align: center; width:100%;border: 1px solid black;">
+                    <p><b>Please review the Application Instructions and Program Guidelines.</b></p>
+                    <p><b>The application process requires submission of a LOI prior to submitting a Full Application.</b></p>
+                    <p><b>All information must be provided in English.</b></p>
+                </div><br />
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td>
+                            <b>CFN File Number:</b><br /><small>File number was provided via email<br />right after LOI submission.</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" blobItem="TITLE" type="Text" width="250px">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Title of Proposal:</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="term" blobItem="TERM" type="Integer" min="0" max="18" width="30px">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Term of Proposal:</b><br />
+                            <small>(Maximum 18 months)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" type="Integer" width="75px" max="75000">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Funding Requested from CFN:</b><br />
+                            <small>(Maximum $75,000)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds" blobItem="FUNDS" type="Integer" width="75px">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Total Partnership Contribution:</b><br />
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="first_name" blobItem="FIRST_NAME" type="Text">
+            <![CDATA[
+                <h2>Please provide information on the Principal Investigator who will act as Project Leader for proposal</h2>
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td align="right">
+                            <b>First Name:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="last_name" blobItem="LAST_NAME" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Last Name:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="designations" blobItem="DESIGNATIONS" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Designations:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" blobItem="EMAIL" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            <b>Email:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="day_phone" blobItem="DAY_PHONE" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Daytime Phone:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_phone" blobItem="OTHER_PHONE" type="Text" optional="true">
+            <![CDATA[
+                        <td align="right">
+                            <b>Other Phone (optional):</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" blobItem="INSTITUTION" type="Text" width='250px'>
+            <![CDATA[
+                    <tr>
+                        <td colspan='3' align="right">
+                            <b>Host Institution that will receive and administer funds:</b>
+                        </td>
+                        <td colspan='3'>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_name" blobItem="CONTACT_NAME" type="Text" width='250px'>
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            <b>Secondary Contact Name:</b>
+                        </td>
+                        <td colspan="2">
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_phone" blobItem="CONTACT_PHONE" type="Text">
+            <![CDATA[
+                        <td colspan="2" align="right">
+                            <b>Secondary Telephone Number:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_email" blobItem="CONTACT_EMAIL" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td colspan="3"></td>
+                        <td colspan="2" align="right">
+                            <b>Secondary Email:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" type="Radio" blobItem="ETHICS" blobType="BLOB_TEXT" options="Yes, I expect that this study will require an ethics review.|No, I do not expect that this study will require an ethics review.">
+            <![CDATA[
+                <h3>Research Ethics/Environmental Assessment</h3>
+                <p>Research Ethics: If the proposed study involves biohazards, humans, human embryonic stem cells or animals, certification of approval by your institutional certification committee must be provided to CFN prior to the release of funds.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Project Summary" title="Section 2 - Project Summary" showProgress="true">
+        <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h2>2.1: <u>Lay</u> Project Summary</h2>
+                <ul>
+                    <li>Provide a non-confidential project summary in lay terms.</li>
+                    <li>A lay summary is an overview of a project described in a way that can be easily understood by those without prior experience of the subject.</li>
+                    <li>This summary may be used externally in media releases, communications and will be posted on CFN’s website.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="sci_summary" blobItem="SCI_SUMMARY" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h2>2.2: <u>Scientific</u> Project Summary</h2>
+                <ul>
+                    <li>Provide a non-confidential scientific project summary, highlighting the objectives, milestones and deliverables, outputs and outcomes (impacts).</li>
+                    <li>This summary may be used externally in media releases, communications and CFN’s website.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="3 - Project Description" title="Section 3 - Project Description" showProgress="true">
+        <ReportItem id="proposal" blobItem="PROPOSAL" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <p>Upload a single PDF document named <b>Ancillary2022-##-Surname_ProjectDescription.pdf</b>.  The Surname refers to the Project Leader’s surname. The Project description cannot exceed 5 pages and must be single spaced in Calibri 12 font with 1-inch margins. </p>
+                The Project Description must address the following:
+                <h3>3.1 Background, Knowledge Gap(s) and Rationale</h3>
+                <ul>
+                    <li>Provide a comprehensive review of the background literature and identify the knowledge gaps relevant to the proposal as it relates to AVOID Frailty and the KFLA Regional Centre for Healthy Aging.</li>
+                    <li>Clearly state the rationale for the project and how the results of the study may be used to improve how older adults can age well in their community.</li>
+                </ul>
+                
+                <h3>3.2 Hypothesis and/or Study Question(s)</h3>
+                <ul>
+                    <li>State the proposed hypothesis and/or research question(s) to be addressed in the study.</li>
+                </ul>
+                
+                <h3>3.3 Overall Goal and Objectives</h3>
+                <ul>
+                    <li>Describe the overall goal and specific objectives of the study.</li>
+                </ul>
+                
+                <h3>3.4 Study Milestones, Deliverables, Outputs and Outcomes</h3>
+                <ul>
+                    <li>Describe all milestones, outputs and outcomes for the study.</li>
+                    <li>Provide a study schedule for all milestones, outputs, and outcomes for the duration of the study, including future plans if study is successful. The <u>project schedule is mandatory</u> and will be used to track progress of the study.</li>
+                </ul>
+                
+                <h3>3.5 Methodological Approach</h3>
+                <ul>
+                    <li>Describe the overall study design (approaches, procedures and methods) that will be used in the study and why they are appropriate to meet the goals and objectives and deliver upon the proposed outputs and outcomes.</li>
+                    <li>Describe how this project will be managed and evaluated for success.</li>
+                    <li>Note: The KFLA Centre for Healthy Aging has developed an intake questionnaire that collects participant information to assesses health and well-being, including frailty. Studies will either recruit their own participants, utilize participants already enrolled with the KFLA Centre for Healthy Aging and or a combination of the two. For additional information on specific aspects of the KFLA Centre for Healthy Aging click <a href='http://www.cfn-nce.ca/research/kfla-regional-centre-for-healthy-aging-ancillary-studies-competition/information-for-investigators/' target='_blank'>here</a>.</li>
+                </ul>
+                
+                <h3>3.6 Barriers and Challenges</h3>
+                <ul>
+                    <li>Identify all feasibility issues, barriers, challenges and limitations to the successful execution and completion of the study.  Specifically address issues related to budget constraints, time constraints, structural issues, and organizational and personnel challenges that may delay timely completion of the study.</li>
+                    <li>Describe plans on mitigating and overcoming these barriers, challenges and limitations.</li>
+                </ul>
+                
+                <h3>3.7 Description of Study Team</h3>
+                <ul>
+                    <li>Describe the expertise and experience of each team member to demonstrate that the team can achieve the goals and objectives of the study.</li>
+                    <li>Note: All Individual team members will need to be listed in the Project Team Information Excel document (see Application Instructions).</li>
+                </ul>
+                
+                <h3>3.8 Highly Qualified Personnel (HQP)</h3>
+                <ul>
+                    <li>Describe the role of each HQP trainee who will be directly involved in a meaningful way in the study.</li>
+                    <li>HQP can be part-time or full-time graduate/doctoral/post-doctoral or undergraduate students, residents, fellows or working professionals.</li>
+                </ul>
+                
+                <h3>3.9 Citizen Engagement</h3>
+                <ul>
+                    <li>Describe how knowledge users (e.g., older adults and their family or friend caregivers with lived experience, decision makers, stakeholders) are involved in the study in a meaningful and tightly integrated manner.</li>
+                    <li>For clarity, meaningfully involved participation of knowledge users includes being involved in the planning and execution of the project and/or in assisting in the interpretation and translation/mobilization of the findings.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="4 - Supporting Information" title="Section 4 - Supporting Information" showProgress="true">
+        <ReportItem id="supporting" blobItem="SUPPORTING" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <p>The Supporting Information document does not contribute to the 5-page limit of the Project Description.</p>
+                Upload a <b>single document named Ancillary2022-##-Surname_SupportingInformation.pdf</b> containing the following information (The Surname refers to the Project Leader’s surname):
+                <ul>
+                    <li>budget justification to support the budget Excel document (mandatory)</li>
+                    <li>references to support the project description (mandatory)</li>
+                    <li>figure and/or tables (optional)</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="5 - Partnerships Letters" title="Section 5 - Partnerships Letters" showProgress="true">
+        <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" indices="partner|coi|role|nature|amount" labels="Partner Organization/ Receptor Company|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true" optional="true">
+            <![CDATA[
+                <ul>
+                    <li>If you have partners, please complete the table below.</li>
+                    <li>Individuals from the partner organizations that will be participating as project team members must be listed in the submitted Project Team Information document.</li>
+                    <li>All financial information provided in the table below must also appear in the submitted Excel budget document.</li>
+                    <li>Where an investigator has a “financial interest” (as defined by NCE Conflict of Interest Guidelines) in a partner, the potential conflict of interest should be declared in the table.  This does not preclude the partnership in any way but provides transparency during the review process. Please see CFN Conflict of Interest Policy and Guidelines for additional guidance <a target='_blank' href='https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-conflict-of-interest-policy-1.pdf'>https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-conflict-of-interest-policy-1.pdf</a></li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf" optional="true">
+            <![CDATA[
+                <h3>Letters of Support</h3>
+                <p>Upload a single document named <b>Ancillary2022-##-Surname_PartnershipsLetters.pdf</b> containing the partnership letters of support in the order they appear in the table. The Surname refers to the Project Leader’s surname.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="other_funding" type="EditableReportSection" blobSection="OTHER_FUNDING" name="6 - Other Funding" title="Section 6 - Other Funding" showProgress="true">
+        <ReportItem id="funding" blobItem="FUNDING" blobType="BLOB_ARRAY" type="MultiText" indices="status|source|budget|pi|title|overlap1|overlap2" labels="Status of Grant|Funding Source|Budget Amount of Grant|Principal Investigator|Title of Grant|% Overlap with this application (Scientific)|% Overlap with this application (Financial)" types="Text|Text|Text|Text|Text|Text|Text" sizes="100|150|100|150|200|75|75" multiple="true" optional="true">
+            <![CDATA[
+                <p>For all Principal Investigators please provide details on grants currently planned, being applied for, pending and awarded, for the entire period covered by this application.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Additional Documents" title="Section 7 - Additional Documents" showProgress="true">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+            <![CDATA[
+                <p><b>Be sure to click on the Upload button to ensure that your chosen document is uploaded successfully</b></p>
+                <h3>Project Team Information</h3>
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/Ancillary RFP Project_Team_Information.xlsx'>template Excel team document</a>. Upload a single Excel file named <b>Ancillary2022-##-Surname_TeamList.xlsx</b>. Note: Unless otherwise noted, when naming documents, “Ancillary2022-##” refers to the CFN File # you will receive from CFN after submission of the LOI.  The Surname refers to the Project Leader’s surname.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/zip">
+            <![CDATA[
+                <h3>Project Budget</h3>
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/Ancillary RFP Budget.xlsx'>template Excel budget document</a>. If there are more than one Principal Investigators receiving funds, please upload a single ZIP file containing all completed Excel budget documents. Name the file <b>Ancillary2022-##-Surname_Budget.xlsx</b>. The Surname refers to the Project Leader’s surname.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv1" blobItem="CV1" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Principal & Co-Investigator Biosketch CVs</h3>
+                <p>Submit a single PDF file named <b>Ancillary2022-##-Surname_PI_CVs.pdf</b>.  The Surname refers to the Project Leader’s or Principal Investigator’s surname as applicable.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv2" blobItem="CV2" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>CV(s)/Resume(s) for Other Project Team Member(s)</h3>
+                <p>Submit single PDF file named <b>Ancillary2022-##-Surname_TeamCVs.pdf</b>.  The Surname refers to the Project Leader’s surname.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Required Signatures</h3>
+                <p>Please download and complete the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Ancillary RFP Required Signatures.pdf'>Required Signature PDF document</a>. Upload a single PDF containing signature documents for all Principal Investigators. Name the PDF document <b>Ancillary2022-##-Surname_Signatures.pdf</b>. The Surname refers to the Project Leader’s surname.
+
+</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" blobItem="ETHICS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Proof of Study Submission to Research Ethics Board</h3>
+                <p>Submit a single PDF containing proof of ethics submission for all investigators. If ethics submission is not permitted prior to funding approval or final funder review, please provide a letter from your REB stating that reviews will only take place after funding is confirmed. Name the PDF document <b>Ancillary2022-##-Surname_REB.pdf</b>.  The Surname refers to the Project Leader’s surname.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <If if="{or({!=({getProgress(information)},100)},
+                    {!=({getProgress(summary)},100)},
+                    {!=({getProgress(proposal)},100)},
+                    {!=({getProgress(supporting)},100)},
+                    {!=({getProgress(partnerships)},100)},
+                    {!=({getProgress(other_funding)},100)},
+                    {!=({getProgress(documents)},100)}
+                )}">
+            <![CDATA[
+                You have not completed the application.
+            ]]>
+        </If>
+        <Else>
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},research@cfn-nce.ca" />
+        </Else>
+    </ReportSection>
+</Report>

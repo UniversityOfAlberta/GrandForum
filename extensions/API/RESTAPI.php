@@ -58,12 +58,15 @@ abstract class RESTAPI extends API {
         }
         else if($method == "PUT" || ($method == "POST" && @$_POST['_method'] == "PUT")){
             $json = $this->doPUT();
+            DBFunctions::commit();
         }
         else if($method == "DELETE" || ($method == "POST" && @$_POST['_method'] == "DELETE")){
             $json = $this->doDELETE();
+            DBFunctions::commit();
         }
         else if($method == "POST"){
             $json = $this->doPOST();
+            DBFunctions::commit();
         }
         header('Content-Type: application/json');
         ob_start("ob_gzhandler");

@@ -30,11 +30,12 @@ class IndexTable {
         
         if(Project::areThereAdminProjects()){
             $project = Project::newFromHistoricName($wgTitle->getNSText());
+            $rome = rome(PROJECT_PHASE);
             $selected = ((($project != null && $project->getType() == 'Administrative') || strstr($wgTitle->getText(), "AdminProjects") !== false)) ? "selected" : "";
             $adminTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
-                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:AdminProjects", 
+                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:AdminProjects {$rome}", 
                                                                 "$selected");
-            if(PROJECT_PHASE > 1){
+            if(PROJECT_PHASE > 1 && $config->getValue('networkName') != 'GlycoNet'){
                 $phaseDates = $config->getValue('projectPhaseDates');
                 for($phase = PROJECT_PHASE; $phase > 0; $phase--){
                     $rome = rome($phase);
@@ -435,6 +436,11 @@ class IndexTable {
                 $leaders = array();
                 foreach($project->getLeaders() as $lead){
                     $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
+                }
+                if($config->getValue('networkName') == "GlycoNet"){
+                    foreach($project->getAllPeople("GIS Leader") as $leader){
+                        $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
+                    }
                 }
                 $leaderString = implode(", ", $leaders);
                 $wgOut->addHTML("<tr>

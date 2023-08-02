@@ -532,6 +532,7 @@ abstract class AbstractReportItem extends Callbackable {
                 $this->variables[$key] = $value;
                 return true;
             }
+            return $found;
         }
         return false;
     }

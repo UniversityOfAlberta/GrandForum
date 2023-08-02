@@ -16,9 +16,32 @@ class SpecialEventRegistration extends SpecialPage{
         parent::__construct("SpecialEventRegistration", '', true);
     }
     
+    function validateCaptcha(){
+        global $config;
+        
+        $post_data = array(
+            'secret' => $config->getValue('reCaptchaSecretKey'),
+            'response' => @$_POST['g-recaptcha-response']
+        );
+        
+        // Prepare new cURL resource
+        $crl = curl_init('https://www.google.com/recaptcha/api/siteverify');
+        curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($crl, CURLINFO_HEADER_OUT, true);
+        curl_setopt($crl, CURLOPT_POST, true);
+        curl_setopt($crl, CURLOPT_POSTFIELDS, $post_data);
+            
+        // Submit the POST request
+        $response = json_decode(curl_exec($crl));
+        return ($response->success);
+    }
+    
     function handleEdit(){
         global $wgServer, $wgScriptPath, $wgMessage, $config;
-        if(!isset($_POST['event']) || trim($_POST['event']) == ""){
+        if(!$this->validateCaptcha()){
+            $wgMessage->addError("The robot test failed");
+        }
+        else if(!isset($_POST['event']) || trim($_POST['event']) == ""){
             $wgMessage->addError("You must select and Event");
         }
         else if(!isset($_POST['email']) || trim($_POST['email']) == ""){
@@ -68,14 +91,28 @@ class SpecialEventRegistration extends SpecialPage{
             if($event->getImageUrl(4) != ""){
                 $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(4)}'></div>";
             }
-            $message .= "<p>Dear {$_POST['name']},</p>
-                        <p>Your registration has been confirmed to the following event: <a href='{$event->getUrl()}'>{$event->getTitle()}</a></p>";
+            $message .= "<p>Dear {$_POST['name']},</p>";
+            if($event != null && trim($event->title) == "3rd AI4IA Conference"){
+                // For 3rd AI4IA Conference
+                $message .= "<p>Your registration has been confirmed for the following event: <a href='https://www.ai4iaconference.com/'>{$event->getTitle()}</a></p>";
+            }
+            else{
+                // For the rest
+                $message .= "<p>Your registration has been confirmed for the following event: <a href='{$event->getUrl()}'>{$event->getTitle()}</a></p>";
+            }
             if($event->getArticleLink() != ""){
                 $link = (substr($event->getArticleLink(), 0, 4) == "http") ? "<a href='{$event->getArticleLink()}'>{$event->getArticleLink()}</a>" : $event->getArticleLink();
-                $message .= "<p>Please join us following dates and time shown on the aforementioned event using this link: {$link}</p>";
+                $message .= "<p>Please join us in person or online: {$link}</p>";
             }
-            $message .= "<p>Please save this email for future reference, we look forward to see you.</p>";
-            $message .= "<p>Contact <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions.</p>";
+            $message .= "<p>Please save this email for future reference, we look forward to seeing you.</p>";
+            if($event != null && trim($event->title) == "3rd AI4IA Conference"){
+                // For 3rd AI4IA Conference
+                $message .= "<p>Contact <a href='mailto:ai4ia2022@gmail.com'>ai4ia2022@gmail.com</a> or <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions.</p>";
+            }
+            else{
+                // For the rest
+                $message .= "<p>Contact <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions.</p>";
+            }
             if($event->getImageUrl(1) != ""){
                 $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(1)}'></div>";
             }
@@ -86,7 +123,12 @@ class SpecialEventRegistration extends SpecialPage{
                         'X-Mailer: PHP/' . phpversion();
             mail($to, $subject, $message, $headers);
             if($event != null && $event->title != ""){
-                redirect($event->getUrl());
+                if(trim($event->title) == "3rd AI4IA Conference"){
+                    redirect("https://www.ai4iaconference.com/");
+                }
+                else{
+                    redirect($event->getUrl());
+                }
             }
         }
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
@@ -209,6 +251,7 @@ class SpecialEventRegistration extends SpecialPage{
         
         $prepreamble = "<p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>";
         $preamble = "";
+        $appendix = "";
         $showOther = "style='display:block;'";
         if(trim($default->title) == "Replaying Japan Conference"){
             $preamble = "<p>Register for Replaying Japan 2021 Here!<br />
@@ -225,7 +268,13 @@ class SpecialEventRegistration extends SpecialPage{
         }
         else if(trim($default->title) == "3rd AI4IA Conference"){
             $showOther = "style='display:none;'";
-            $prepreamble = "<div style='font-size: 16px;'><p>The UNESCO Information For All Programme (IFAP) Working Group on Information Accessibility (WGIA), is hosting it's second online one-day conference on 28 September 2022. This event will be hosted in collaboration with the Kule Institute for Advanced Studies (KIAS) and AI4Society (AI4S), both at University of Alberta, Canada, the Centre for New Economic Diplomacy (CNED) in ORF, India and the Broadcasting Commission of Jamaica. It is being organised under the auspices of the UNESCO Cluster Office for the Caribbean, Kingston, Jamaica and the UNESCO Regional Office for Southern Africa, Harare, Zimbabwe.</p>
+            $prepreamble = "";
+            $preamble = "<div style='font-size: 16px;'>
+                         <p>Learn more about the conference here: <a target='_blank' href='https://www.ai4iaconference.com/'>www.AI4IAconference.com</a></p>
+
+                         <p>Register by filling the information below to receive the links to join the different sessions.</p>
+                         </div>";
+            $appendix = "<div style='font-size: 16px;'><p>The UNESCO Information For All Programme (IFAP) Working Group on Information Accessibility (WGIA), is hosting it's third online one-day conference on 28 September 2022. This event will be hosted in collaboration with the Kule Institute for Advanced Studies (KIAS) and AI4Society (AI4S), both at University of Alberta, Canada, the Centre for New Economic Diplomacy (CNED) in ORF, India and the Broadcasting Commission of Jamaica. It is being organised under the auspices of the UNESCO Cluster Office for the Caribbean, Kingston, Jamaica and the UNESCO Regional Office for Southern Africa, Harare, Zimbabwe.</p>
 
                         <p>AI can be very beneficial to society but if abused it can also be very harmful. The AI4IA Conference, therefore, raises a range of issues, including the relationship between Artificial Intelligence (AI) and Law, AI and Ethics, media and our right to know, creativity and innovation. It is necessary to understand how AI can be made inclusive, thereby enabling the widest cross-section of society.</p>
                          
@@ -243,10 +292,6 @@ class SpecialEventRegistration extends SpecialPage{
                            There will also be Live interactive sessions with the speakers on 28 September 2022 during the hours from 08:00 -10:00 (GMT) and 16:00-18:00 (GMT).<br />
                            If you have never used the Gather.town platform before, please review the user guide <a target='_blank' href='https://www.youtube.com/watch?v=89at5EvCEvk'>here</a>. We look forward to seeing everyone!
                         </p>
-                        
-                        <p>Learn more about the conference here: <a target='_blank' href='https://www.ai4iaconference.com/'>www.AI4IAconference.com</a></p>
-
-                        <p>Register by filling the information below to receive the links to join the different sessions.</p>
                         </div>
                         <script type='text/javascript'>
                             $('#sideToggle').html('&gt;');
@@ -321,7 +366,9 @@ class SpecialEventRegistration extends SpecialPage{
                             </tr>
                         </table>
                     </div></div>
+                    <div class='g-recaptcha' data-sitekey='{$config->getValue('reCaptchaSiteKey')}'></div>
                     <input type='submit' name='submit' value='Submit' style='margin-top: 1em;' />
+                    {$appendix}
                 </div>
                 <div id='banner2'>
                     {$banner2}

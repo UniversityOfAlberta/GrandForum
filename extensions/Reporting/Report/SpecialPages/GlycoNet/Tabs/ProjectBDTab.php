@@ -13,7 +13,8 @@ class ProjectBDTab extends AbstractTab {
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
-        $xml = simplexml_load_file(getcwd()."/extensions/Reporting/Report/ReportXML/{$config->getValue('networkName')}/BusinessDevelopment.xml");
+        $contents = file_get_contents(getcwd()."/extensions/Reporting/Report/ReportXML/{$config->getValue('networkName')}/BusinessDevelopment.xml");
+        $xml = simplexml_load_string($contents);
         $p1 = $xml->xpath("//If[@id='p1']/@if");
         $p2 = $xml->xpath("//If[@id='p2']/@if");
         $p3 = $xml->xpath("//If[@id='p3']/@if");

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="The EPIC Conference (2022)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2022">
+<Report name="The EPIC Conference (2023)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2023">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>The EPIC Conference (2022)</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>The EPIC Conference (2023)</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -34,12 +34,6 @@
                 </table>
             ]]>
         </Static>
-        <ReportItem id="cfn" type="Radio" blobType="BLOB_TEXT" blobItem="CFN" options="Yes|No">
-            <![CDATA[
-                <h3>Are you an HQP from CFN-NCE (Canadian Frailty Network):</h3>
-                {$item}<br />
-            ]]>
-        </ReportItem>
         <ReportItem id="challenge" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGE" delimiter="&lt;br />" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" limit="2">
             <![CDATA[
                 <h3>AGE-WELL Challenge area best fit (Max 2):</h3>
@@ -65,14 +59,20 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="consent" type="Radio" blobType="BLOB_TEXT" blobItem="CONSENT" options="Yes|No">
+        <ReportItem id="copresenting2" type="Textarea" blobType="BLOB_TEXT" blobItem="COPRESENTING2" rich="true" limit="100" optional="true">
             <![CDATA[
-                <h3>Consent Information</h3>
-                <p>Do you consent to your session being recorded by AGE-WELL? (Recordings may be distributed and used for educational or promotional purposes and uploaded to the AGE-WELL YouTube channel, external website, and intranet)</p>
+                <p>If yes, please include the stakeholder’s name, organizational affiliation, and their relationship to your project:</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="requirements" type="Checkbox" blobType="BLOB_ARRAY" blobItem="REQUIREMENTS" delimiter="&lt;br />" options="I agree that I have access to the devices, Twitter account and internet connection required for my presentation|I agree to join the AGE-WELL-HQP Slack Channel, if I have not already done so">
+        <ReportItem id="consent" type="Radio" blobType="BLOB_TEXT" blobItem="CONSENT" options="Yes|No">
+            <![CDATA[
+                <h3>Consent Information</h3>
+                <p>Do you consent to your session being recorded by AGE-WELL?</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="requirements" type="Checkbox" blobType="BLOB_ARRAY" blobItem="REQUIREMENTS" delimiter="&lt;br />" options="I agree that I have access to the devices and internet connection required for my presentation|I agree to join the AGE-WELL-HQP Slack Channel, if I have not already done so">
             <![CDATA[
                 <h3>Technology Requirements</h3>
                 {$item}

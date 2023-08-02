@@ -38,7 +38,7 @@ class Posting extends BackboneModel {
                                     array('id' => $id));
         $posting = new static($data);
         if(!$posting->isAllowedToView()){
-            $posting = new self(array());
+            $posting = new static(array());
         }
         self::$cache[static::$dbTable."_{$id}"] = $posting;
         return $posting;

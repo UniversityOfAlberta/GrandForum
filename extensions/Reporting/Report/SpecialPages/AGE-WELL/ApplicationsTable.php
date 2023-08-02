@@ -283,6 +283,7 @@ class ApplicationsTable extends SpecialPage{
     function generateECR(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ECR_FEB', null, 2023, "2023-02"));
         $tabbedPage->addTab(new ApplicationTab('RP_ECR_AUG', null, 2022, "2022-08"));
         $tabbedPage->addTab(new ApplicationTab('RP_ECR', null, 2022, "2022-04"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -290,7 +291,118 @@ class ApplicationsTable extends SpecialPage{
     
     function generateCatalyst(){
         global $wgOut;
+        
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem('TITLE');
+        $title->setBlobSection('APPLICATION_FORM');
+        
+        $lay = new TextareaReportItem();
+        $lay->setBlobType(BLOB_TEXT);
+        $lay->setBlobItem('SUMMARY');
+        $lay->setBlobSection('APPLICATION_FORM');
+        $lay->setAttr('rich', "true");
+        
+        $uni = new TextReportItem();
+        $uni->setBlobType(BLOB_TEXT);
+        $uni->setBlobItem('INSTITUTION');
+        $uni->setBlobSection('APPLICATION_FORM');
+        
+        $keywords = new MultiTextReportItem();
+        $keywords->setBlobType(BLOB_ARRAY);
+        $keywords->setBlobItem('KEYWORDS');
+        $keywords->setBlobSection('APPLICATION_FORM');
+        $keywords->setAttr('orientation', "list");
+        $keywords->setId("keywords");
+        
+        $challenges = new CheckboxReportItem();
+        $challenges->setBlobType(BLOB_ARRAY);
+        $challenges->setBlobItem('CHALLENGES');
+        $challenges->setBlobSection('APPLICATION_FORM');
+        $challenges->setId("challenges");
+        
+        $priorities = new CheckboxReportItem();
+        $priorities->setBlobType(BLOB_ARRAY);
+        $priorities->setBlobItem('PRIORITIES');
+        $priorities->setBlobSection('APPLICATION_FORM');
+        $priorities->setId("priorities");
+        
+        $special1 = new CheckboxReportItem();
+        $special1->setBlobType(BLOB_ARRAY);
+        $special1->setBlobItem('SPECIAL1');
+        $special1->setBlobSection('APPLICATION_FORM');
+        $special1->setId("special1");
+        
+        $special1a = new CheckboxReportItem();
+        $special1a->setBlobType(BLOB_ARRAY);
+        $special1a->setBlobItem('SPECIAL1A');
+        $special1a->setBlobSection('APPLICATION_FORM');
+        $special1a->setId("special1a");
+        
+        $special2 = new CheckboxReportItem();
+        $special2->setBlobType(BLOB_ARRAY);
+        $special2->setBlobItem('SPECIAL2');
+        $special2->setBlobSection('APPLICATION_FORM');
+        $special2->setId("special2");
+        
+        $age = new CheckboxReportItem();
+        $age->setBlobType(BLOB_ARRAY);
+        $age->setBlobItem('AGE');
+        $age->setBlobSection('APPLICATION_FORM');
+        $age->setId("age");
+        
+        $gender = new CheckboxReportItem();
+        $gender->setBlobType(BLOB_ARRAY);
+        $gender->setBlobItem('GENDER');
+        $gender->setBlobSection('APPLICATION_FORM');
+        $gender->setId("gender");
+        
+        $gender_other = new TextReportItem();
+        $gender_other->setBlobType(BLOB_TEXT);
+        $gender_other->setBlobItem('GENDER_OTHER');
+        $gender_other->setBlobSection('APPLICATION_FORM');
+        
+        $indigenous = new CheckboxReportItem();
+        $indigenous->setBlobType(BLOB_ARRAY);
+        $indigenous->setBlobItem('INDIGENOUS');
+        $indigenous->setBlobSection('APPLICATION_FORM');
+        $indigenous->setId("indigenous");
+        
+        $ethnicities = new CheckboxReportItem();
+        $ethnicities->setBlobType(BLOB_ARRAY);
+        $ethnicities->setBlobItem('ETHNICITIES');
+        $ethnicities->setBlobSection('APPLICATION_FORM');
+        $ethnicities->setId("ethnicities");
+        
+        $ethnicities_other = new TextReportItem();
+        $ethnicities_other->setBlobType(BLOB_TEXT);
+        $ethnicities_other->setBlobItem('ETHNICITIES_OTHER');
+        $ethnicities_other->setBlobSection('APPLICATION_FORM');
+        
+        $disability = new CheckboxReportItem();
+        $disability->setBlobType(BLOB_ARRAY);
+        $disability->setBlobItem('DISABILITY');
+        $disability->setBlobSection('APPLICATION_FORM');
+        $disability->setId("disability");
+        
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_HAC', null, 2023, "HAC 2023", array("Title" => $title,
+                                                                                       "Lay Summary" => $lay,
+                                                                                       "Institution" => $uni,
+                                                                                       "Keywords" => $keywords,
+                                                                                       "Challenge Areas" => $challenges,
+                                                                                       "Priorities" => $priorities,
+                                                                                       "Special1" => $special1,
+                                                                                       "Special1A" => $special1a,
+                                                                                       "Special2" => $special2,
+                                                                                       "Age" => $age,
+                                                                                       "Gender" => $gender,
+                                                                                       "Gender (Other)" => $gender_other,
+                                                                                       "Indigenous" => $indigenous,
+                                                                                       "Ethnicities" => $ethnicities,
+                                                                                       "Ethnicities (Other)" => $ethnicities_other,
+                                                                                       "Disability" => $disability
+                                                                                       )));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2017, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2016, "2017"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2015, "2016"));
@@ -300,6 +412,10 @@ class ApplicationsTable extends SpecialPage{
     function generateAccess(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2023', null, 2023, "2023-07"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2023', null, 2023, "2023-04"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2023', null, 2023, "2023-01"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2022', null, 2022, "2022-10"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2022', null, 2022, "2022-07"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2022', null, 2022, "2022-04"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2022', null, 2022, "2022-01"));
@@ -377,6 +493,12 @@ class ApplicationsTable extends SpecialPage{
         $ind->setBlobItem("HQP_APPLICATION_INDIGENOUS");
         $ind->setBlobSection(HQP_APPLICATION_FORM);
         $ind->setId("INDIGENOUS");
+        
+        $kob = new CheckboxReportItem();
+        $kob->setBlobType(BLOB_ARRAY);
+        $kob->setBlobItem("HQP_APPLICATION_KOBAYASHI");
+        $kob->setBlobSection(HQP_APPLICATION_FORM);
+        $kob->setId("KOBAYASHI");
              
         $bme = new CheckboxReportItem();
         $bme->setBlobType(BLOB_ARRAY);
@@ -426,6 +548,12 @@ class ApplicationsTable extends SpecialPage{
         $ubc->setBlobSection(HQP_APPLICATION_FORM);
         $ubc->setId("UBC");
         
+        $ubc2 = new CheckboxReportItem();
+        $ubc2->setBlobType(BLOB_ARRAY);
+        $ubc2->setBlobItem("HQP_APPLICATION_UBC2");
+        $ubc2->setBlobSection(HQP_APPLICATION_FORM);
+        $ubc2->setId("UBC2");
+        
         $shrf = new CheckboxReportItem();
         $shrf->setBlobType(BLOB_ARRAY);
         $shrf->setBlobItem("HQP_APPLICATION_SHRF");
@@ -444,9 +572,34 @@ class ApplicationsTable extends SpecialPage{
         $uofc->setBlobSection(HQP_APPLICATION_FORM);
         $uofc->setId("UOFC");
         
+        $refs = new EliteUploadedLettersReportItem();
+        $refs->setBlobType(BLOB_ARRAY);
+        $refs->setBlobItem("LETTERS");
+        $refs->setBlobSection(HQP_APPLICATION_DOCS);
+        $refs->setId("letters");
+        
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2023, "2023", array("Level" => $level,
+                                                                                             "Michael F. Harcourt" => $michael,
+                                                                                             "Indigenous" => $ind,
+                                                                                             "Kobayashi" => $kob,
+                                                                                             "MIRA" => $mira,
+                                                                                             "UofT" => $uoft,
+                                                                                             "UBC" => $ubc,
+                                                                                             "UBC2" => $ubc2,
+                                                                                             "SHRF" => $shrf,
+                                                                                             "UW" => $uw,
+                                                                                             "UOFC" => $uofc,
+                                                                                             "Supervisor" => $sup,
+                                                                                             "Institution" => $uni,
+                                                                                             "Status/Department" => $dept,
+                                                                                             "Project Title" => $title,
+                                                                                             "Keywords" => $keywords,
+                                                                                             "References" => $refs)));
+        
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2022, "2022", array("Level" => $level,
                                                                                              "Michael F. Harcourt" => $michael,
                                                                                              "Indigenous" => $ind,
+                                                                                             "Kobayashi" => $kob,
                                                                                              "MIRA" => $mira,
                                                                                              "UofT" => $uoft,
                                                                                              "UBC" => $ubc,
@@ -509,6 +662,7 @@ class ApplicationsTable extends SpecialPage{
     function generateSummer(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2023, "2023"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2020, "2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2019, "2019"));
@@ -521,6 +675,7 @@ class ApplicationsTable extends SpecialPage{
     function generateEpicConference(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2023, "2023"));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2021, "2021"));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2020, "2020"));
@@ -622,7 +777,40 @@ class ApplicationsTable extends SpecialPage{
         $postsecondary->setBlobSection(HQP_APPLICATION_FORM);
         $postsecondary->setId("postsecondary");
         
+        $refs = new EliteUploadedLettersReportItem();
+        $refs->setBlobType(BLOB_ARRAY);
+        $refs->setBlobItem("LETTERS");
+        $refs->setBlobSection(HQP_APPLICATION_DOCS);
+        $refs->setId("letters");
+        
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT2', null, 2023, "2023", array("Academic Status" => $stat,
+                                                                                        "Institution" => $uni,
+                                                                                        "Level" => $lvl,
+                                                                                        "Title" => $title,
+                                                                                        "Age" => $age,
+                                                                                        "Gender" => $gender,
+                                                                                        "Gender (Other)" => $gender_other,
+                                                                                        "Indigenous" => $indigenous,
+                                                                                        "Ethnicities" => $ethnicities,
+                                                                                        "Ethnicities (Other)" => $ethnicities_other,
+                                                                                        "Disability" => $disability,
+                                                                                        "Post-Secondary" => $postsecondary,
+                                                                                        "References" => $refs
+                                                                                       )));
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT', null, 2023, "2023-special", array("Academic Status" => $stat,
+                                                                                       "Institution" => $uni,
+                                                                                       "Level" => $lvl,
+                                                                                       "Title" => $title,
+                                                                                       "Age" => $age,
+                                                                                       "Gender" => $gender,
+                                                                                       "Gender (Other)" => $gender_other,
+                                                                                       "Indigenous" => $indigenous,
+                                                                                       "Ethnicities" => $ethnicities,
+                                                                                       "Ethnicities (Other)" => $ethnicities_other,
+                                                                                       "Disability" => $disability,
+                                                                                       "Post-Secondary" => $postsecondary
+                                                                                       )));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT', null, 2022, "2022", array("Academic Status" => $stat,
                                                                                        "Supervisor" => $sup,
                                                                                        "Institution" => $uni,
@@ -692,6 +880,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_PROJ_PLAN_UPDATE', $this->projects, 2022, "CRP-PPP Progress"));
         $tabbedPage->addTab(new ApplicationTab('RP_CRP_PPP_REPORT', $this->projects, 2022, "CRP-PPP Mid-Year"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_PLAN_UPDATE', $this->projects, 2021, "Progress Evaluation"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_PLAN_UPDATE', $this->projects, 2020, "Project Plan Update"));

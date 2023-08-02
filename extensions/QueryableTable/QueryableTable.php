@@ -17,6 +17,9 @@ define('HEAD2_ROW', -110);
 define('STRING', -111);
 define('WRAP', -112);
 define('WRAP_HEAD_ROW', -113);
+define('RIGHT', -114);
+define('RIGHT_BOLD', -115);
+define('CENTRE', -116);
 // Complex Structure Types
 define('GROUP_BY', -200);
 
@@ -34,6 +37,9 @@ $cellTypes[HEAD3] = "Head3Cell";
 $cellTypes[HEAD4] = "Head4Cell";
 $cellTypes[HEAD1_ROW] = "Head1RowCell";
 $cellTypes[HEAD2_ROW] = "Head2RowCell";
+$cellTypes[RIGHT] = "RightCell";
+$cellTypes[RIGHT_BOLD] = "RightBoldCell";
+$cellTypes[CENTRE] = "CentreCell";
 
 autoload_register('QueryableTable/Cells');
 autoload_register('QueryableTable');

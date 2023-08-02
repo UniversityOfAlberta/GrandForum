@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="ECR Grants" reportType="RP_ECR_AUG" pdfType="RPTP_ECR_AUG" pdfFiles="ECRPDF" year="2022" ajax="true" disabled="false">
+<Report name="ECR Grants" reportType="RP_ECR_FEB" pdfType="RPTP_ECR_FEB" pdfFiles="ECRPDF" year="2023" ajax="true" disabled="true">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
         <Static>
             <![CDATA[
@@ -92,7 +92,7 @@
         </ReportItem>
         
         <!-- INCLUSION OF OLDER ADULTS AND CAREGIVERS IN YOUR RESEARCH AND/OR TEACHING -->
-        <If if="{==({getText(RP_ECR_AUG, APPLICATION, TYPE, 0, {$user_id}, 0)}, Inclusion of older adults and caregivers in your research and/or teaching)}">
+        <If if="{==({getText(RP_ECR_FEB, APPLICATION, TYPE, 0, {$user_id}, 0)}, Inclusion of older adults and caregivers in your research and/or teaching)}">
             <ReportItem id="1_objectives1" type="Textarea" blobItem="1_OBJECTIVES1" rich="true" limit="200">
                 <![CDATA[
                     <h3>INCLUSION OF OLDER ADULTS AND CAREGIVERS IN YOUR RESEARCH AND/OR TEACHING</h3>
@@ -125,14 +125,14 @@
         </If>
         
         <!-- KNOWLEDGE MOBILIZATION OR COMMERCIALIZATION ACTIVITIES -->
-        <ElseIf if="{==({getText(RP_ECR_AUG, APPLICATION, TYPE, 0, {$user_id}, 0)}, Knowledge mobilization/commercialization activities)}">
+        <ElseIf if="{==({getText(RP_ECR_FEB, APPLICATION, TYPE, 0, {$user_id}, 0)}, Knowledge mobilization/commercialization activities)}">
             <ReportItem id="2_type" type="Radio" blobItem="2_TYPE" options="Knowledge mobilization activity|Commercialization activity">
                 <![CDATA[
                     <h3>KNOWLEDGE MOBILIZATION OR COMMERCIALIZATION ACTIVITIES</h3>
                     {$item}
                 ]]>
             </ReportItem>
-            <If if="{==({getText(RP_ECR_AUG, APPLICATION, 2_TYPE, 0, {$user_id}, 0)}, Knowledge mobilization activity)}">
+            <If if="{==({getText(RP_ECR_FEB, APPLICATION, 2_TYPE, 0, {$user_id}, 0)}, Knowledge mobilization activity)}">
                 <ReportItem id="2_ktee_objectives1" type="Textarea" blobItem="2_KTEE_OBJECTIVES1" rich="true" limit="200">
                     <![CDATA[
                         <h4>Objectives</h4>
@@ -161,7 +161,7 @@
                     ]]>
                 </ReportItem>
             </If>
-            <ElseIf if="{==({getText(RP_ECR_AUG, APPLICATION, 2_TYPE, 0, {$user_id}, 0)}, Commercialization activity)}">
+            <ElseIf if="{==({getText(RP_ECR_FEB, APPLICATION, 2_TYPE, 0, {$user_id}, 0)}, Commercialization activity)}">
                 <ReportItem id="2_comm_objectives1" type="Textarea" blobItem="2_COMM_OBJECTIVES1" rich="true" limit="200">
                     <![CDATA[
                         <h4>Objectives</h4>
@@ -197,7 +197,7 @@
         </ElseIf>
         
         <!-- SMALL SCALE RESEARCH OR PILOT PROJECT -->
-        <ElseIf if="{==({getText(RP_ECR_AUG, APPLICATION, TYPE, 0, {$user_id}, 0)}, Small scale research or pilot project to enable larger research grant applications)}">
+        <ElseIf if="{==({getText(RP_ECR_FEB, APPLICATION, TYPE, 0, {$user_id}, 0)}, Small scale research or pilot project to enable larger research grant applications)}">
             <ReportItem id="3_objectives1" type="Textarea" blobItem="3_OBJECTIVES1" rich="true" limit="200">
                 <![CDATA[
                     <h3>SMALL SCALE RESEARCH OR PILOT PROJECT</h3>

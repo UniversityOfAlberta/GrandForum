@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="PhD Fellowship Application" reportType="RP_PHD_ELITE" pdfType="RPTP_PHD_ELITE" year="0" ajax="true" encrypt="true">
+<Report name="Engineering PhD Fellowship Application" reportType="RP_PHD_ELITE" pdfType="RPTP_PHD_ELITE" year="0" ajax="true" encrypt="true">
     <!-- Personally identifying information -->
-    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Application" title="PhD Fellowship Application" showProgress="true" pagebreak="false">
+    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Application" title="Engineering PhD Fellowship Application" showProgress="true" pagebreak="false">
         <Static>
             <![CDATA[
                 <table width='100%'>

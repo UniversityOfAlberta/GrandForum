@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Elite Pre Evaluation Form" reportType="RP_ELITE_PREEVAL" pdfType="RPTP_ELITE_PREEVAL" pdfFiles="ElitePreEvalPDF" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    <ReportSection id="eula" name="Consent" title="Consent" tooltip="Consent" blobSection="ELITE_CHECK_EULA" type="EditableReportSection">
+        <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I consent to the participate"
+                                                          no="&lt;b&gt;No&lt;/b&gt;, I do not consent to participate">
+            <![CDATA[
+                <p>
+                    <b>Study Title:</b> RBC Wellness and RBC Pre Program Survey
+                </p>
+                <p>
+                    The RBC Foundation provided a grant for this program as part of RBC Future Launch.™ We want to understand the impact of this program. 
+                    One of the best ways to do this is to hear from participants like you.
+                </p>
+                <p>
+                    Your opinion matters to us and can help improve the program for future participants. Please fill out this short survey        
+                    which should take about 10 minutes to complete. The survey is anonymous and voluntary and your responses will not be used to identify you in any way.
+                </p>
+                <p>
+                    For more information about this study, please view our Letter of Information.
+                    For more information about RBC Future Launch, please visit us at <a href="http://www.rbc.com/dms/enterprise/futurelaunch/all14-all-or.html">http://www.rbc.com/dms/enterprise/futurelaunch/all14-all-or.html</a>.
+                </p>
+                <p>
+                    By clicking below, I am verifying that: I have read the Letter of Information and I consent to participate in this research study:
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="FirstSection" type="EditableReportSection" blobSection="Elite_Questions_tab0" name="Elite Pre-program Survey">
+        <ReportItem id="section1_age" type="SelectReportItem" options="Under 14|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|Over 30|Prefer not to answer" blobItem="elite_age">
+            <![CDATA[
+                <h3>1. I am the following age (Please note: you must be 14 years of age or older to participate)</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_socio" type="RadioReportItem" options="Enrolled in school or vocational training (in-school training for a skilled trade or occupation
+and/or on-the-job workplace training)|Employed full time (30 or more hours per week)|Employed full time (30 or more hours per week) and enrolled in school or vocational training
+(in-school training for a skilled trade or occupation and/or on-the-job workplace training)|Employed part time (less than 30 hours per week)|Employed part time (less than 30 hours per week) and enrolled in school or vocational
+training (in-school training for a skilled trade or occupation and/or on-the-job workplace
+training)|Not enrolled in school, vocational training (in-school training for a skilled trade or
+occupation and/or on-the-job workplace training) or employment (part time or full time)|Prefer not to answer" orientation="vertical" blobItem="elite_socio">
+            <![CDATA[
+                <h3>2. Which of the following options best describes you in the past three months?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('span#section1_school').hide();
+                    function hideSchool(){
+                        if($("input:radio[name='ElitePreprogramSurvey_section1_socio']:checked").val() == "Enrolled in school or vocational training (in-school training for a skilled trade or occupation and/or on-the-job workplace training)"){
+                            $('span#section1_school').show();
+                        }
+                        else if($("input:radio[name='ElitePreprogramSurvey_section1_socio']:checked").val() == "Employed full time (30 or more hours per week) and enrolled in school or vocational training (in-school training for a skilled trade or occupation and/or on-the-job workplace training)"){
+                            $('span#section1_school').show();
+                        }
+                        else if($("input:radio[name='ElitePreprogramSurvey_section1_socio']:checked").val() == "Employed part time (less than 30 hours per week) and enrolled in school or vocational training (in-school training for a skilled trade or occupation and/or on-the-job workplace training)"){
+                            $('span#section1_school').show();
+                        }
+                        else{ $('span#section1_school').hide();}
+                    }
+                    _.defer(hideSchool);
+                    $("input:radio[name='ElitePreprogramSurvey_section1_socio']").change(hideSchool);
+
+                </script>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('span#section1_career1').hide();
+                    function hideCareer(){
+                        if($("input:radio[name='ElitePreprogramSurvey_section1_socio']:checked").val() == "Employed full time (30 or more hours per week)"){
+                            $('span#section1_career1').show();
+                        }
+                        else if($("input:radio[name='ElitePreprogramSurvey_section1_socio']:checked").val() == "Employed full time (30 or more hours per week) and enrolled in school or vocational training (in-school training for a skilled trade or occupation and/or on-the-job workplace training)"){
+                            $('span#section1_career1').show();
+                        }
+                        else if($("input:radio[name='ElitePreprogramSurvey_section1_socio']:checked").val() == "Employed part time (less than 30 hours per week)"){
+                            $('span#section1_career1').show();
+                        }
+                        else if($("input:radio[name='ElitePreprogramSurvey_section1_socio']:checked").val() == "Employed part time (less than 30 hours per week) and enrolled in school or vocational training (in-school training for a skilled trade or occupation and/or on-the-job workplace training)"){
+                            $('span#section1_career1').show();
+                        }
+                        else{ $('span#section1_career1').hide();}
+                    }
+                    _.defer(hideCareer);
+                    $("input:radio[name='ElitePreprogramSurvey_section1_socio']").change(hideCareer);
+
+                </script>
+            ]]>
+        </Static>
+        <ReportItem id="section1_school" type="RadioReportItem" options="High school|Collège d'enseignement général et professionnel (CEGEP)|Technical and/or vocational education (in-school training for a skilled trade or occupation)
+working towards a certification, diploma or degree|University, working towards an undergraduate degree|University, working towards a post-graduate degree|Prefer not to answer|Other" orientation="vertical" blobItem="elite_school">
+            <![CDATA[
+                <span id="section1_school">
+                    <h3>3. Which of the following best describes the type of school or vocational training (in-school training 
+                    for a skilled trade or occupation and/or on-the-job workplace training) you are currently enrolled in?</h3>
+                    <div class="subquestion" style="padding-left:50px">
+                        <div class="requiredField">{$item}</div>
+                    </div>
+                </span>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_school_other" type="Text" blobItem="elite_school_other" width="400px" optional="true">
+            <![CDATA[
+                <span id="school_other">
+                    <div class="subquestion" style="padding-left:50px">
+                        Please Describe: {$item}
+                    </div>
+                </span> 
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+            <script type='text/javascript'>
+                $('span#school_other').hide();
+                function specifySchool(){
+                    if($('span#section1_school').is(":visible") && $("input:radio[name='ElitePreprogramSurvey_section1_school']:checked").val() == "Other"){
+                        $('span#school_other').show();
+                    }
+                    else{$('span#school_other').hide();}
+                }
+                _.defer(specifySchool);
+                $("input:radio[name='ElitePreprogramSurvey_section1_school']").change(specifySchool);
+                $("input:radio[name='ElitePreprogramSurvey_section1_socio']").change(specifySchool);
+
+            </script>
+        ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <br /><br />
+                <hr>
+                    <b><h3>
+                        4. Listed below are statements related to how you feel about your career/job path. 
+                        Please indicate to what extent you agree or disagree with the following statements.
+                    </b></h3>
+            ]]>
+        </Static>
+        <ReportItem id="section1_careerpath1" blobItem="section1_careerpath1" type="RadioReportItem" options="Strongly disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree|Prefer not to answer" >
+            <![CDATA[
+                <div class="subquestion" style="padding-left:50px">
+                <h3>I have the skills and/or knowledge to be successful in the workforce.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_careerpath2" blobItem="section1_careerpath2" type="RadioReportItem" options="Strongly disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree|Prefer not to answer">
+            <![CDATA[
+                <h3>I have a clear vision of what my ideal job looks like.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_careerpath3" blobItem="section1_careerpath3" type="RadioReportItem" options="Strongly disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree|Prefer not to answer">
+            <![CDATA[
+                <h3>I know what skills I need to develop in order to reach my career goals.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_careerpath4" blobItem="section1_careerpath4" type="RadioReportItem" options="Strongly disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree|Prefer not to answer">
+            <![CDATA[
+                <h3>I am optimistic about attaining the career/job path that I want in the future.</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <span id="section1_career1">
+                <br /><br />
+                <hr>
+                    <b><h3>
+                        5. Listed below are statements related to your current job. Please indicate to what extent you agree or disagree with each statement.
+                        [If you are NOT employed full-time or part-time, please proceed to Question 6].
+                    </b></h3>
+            ]]>
+        </Static>
+        <ReportItem id="section1_career1" blobItem="section1_career1" type="RadioReportItem" options="Strongly disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree|Prefer not to answer" >
+            <![CDATA[
+                <div class="subquestion" style="padding-left:50px">
+                <h3>In my current job, I have the opportunity to use the skills and/or knowledge learned through school and/or training.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_career2" blobItem="section1_career2" type="RadioReportItem" options="Strongly disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree|Prefer not to answer" >
+            <![CDATA[
+                <h3>My current job is related to what I studied in school and/or training.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_career3" blobItem="section1_career3" type="RadioReportItem" options="Strongly disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree|Prefer not to answer" >
+            <![CDATA[
+                <h3>Within the next six months, I plan to change jobs.</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br /><br />
+                <hr>
+                    <b><h3>
+                        6. Listed below are activities related to career planning and career development. Please indicate how often you do the following.
+                    </b></h3>
+            ]]>
+        </Static>
+        <ReportItem id="section1_careerplanning1" blobItem="section1_careerplanning1" type="RadioReportItem" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" >
+            <![CDATA[
+                <div class="subquestion" style="padding-left:50px">
+                <h3>Use LinkedIn to source job opportunities and information about careers.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_careerplanning2" blobItem="section1_careerplanning2" type="RadioReportItem" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" >
+            <![CDATA[
+                <h3>Attend professional networking events.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_careerplanning3" blobItem="section1_careerplanning3" type="RadioReportItem" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" >
+            <![CDATA[
+                <h3>Seek advice from a mentor, advisor or coach about education, training and/or career decisions (outside of my immediate family).</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_careerplanning4" blobItem="section1_careerplanning4" type="RadioReportItem" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" >
+            <![CDATA[
+                <h3>Talk to a professional career counsellor or career coach about your career plans or job path (e.g. job search strategies, interview prep, career transition)</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_careerplanning5" blobItem="section1_careerplanning5" type="RadioReportItem" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" >
+            <![CDATA[
+                <h3>Access online programs or tools that inform your career plans or job path (e.g. job search strategies, interview prep, career transition)</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+                </span>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_workexp" blobItem="section1_workexp" type="CheckboxReportItem" blobType="BLOB_ARRAY" orientation="vertical" options="Yes, co-op (periods of study alternating with work placements)|Yes, internship (paid or unpaid work experiences)|Yes, apprenticeship (a combination of in-school training for a skilled trade or occupation, and on-the-job workplace training)|Yes, entrepreneurships (business incubator program or course, and/or launching own business with an accelerator and/or incubator)|Yes, other|No|Prefer not to answer" optional="true">
+            <![CDATA[
+                <h3>7. Have you ever participated in a practical work experience (education-related opportunities to gain work-relevant skills in real workplaces) (select all that apply)?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_workexp_other" type="Text" blobItem="section1_workexp_other" width="400px" optional="true">
+            <![CDATA[
+                    <span id="section1_workexp_other">
+                        Specify: {$item}
+                    </span>
+                </div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+            <script type='text/javascript'>
+                $('span#section1_workexp_other').hide();
+                function workexpOther(){
+                    var flag = false;
+                    $('input[name="ElitePreprogramSurvey_section1_workexp[]"]:checked').each(function() {
+                        if(this.value == "Yes, other"){
+                            flag = true;
+                        }
+                    });
+                    if(flag){$('span#section1_workexp_other').show();}
+                    else{$('span#section1_workexp_other').hide();}
+                }
+                _.defer(workexpOther);
+                $("input:checkbox[name='ElitePreprogramSurvey_section1_workexp[]']").change(workexpOther);
+            </script>
+        ]]>
+        </Static>
+        <ReportItem id="section1_workexp_participation" blobItem="section1_workexp_participation" type="RadioReportItem" options="Strongly disagree|Disagree|Neither agree nor disagree|Agree|Strongly Agree|Prefer not to answer" >
+            <![CDATA[
+                <h3>8. Please indicate to what extent you agree or disagree with the following statement:<br />Participating in a practical work experience(s) helped better prepare me for the workforce.</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br /><br />
+                <hr>
+                <h2>The following questions ask about your confidence and experience with a number of different skills. Please answer these questions related to your life in general (e.g. includes personal life, work life, school life, extra-curricular activities etc.)</h2>
+            ]]>
+        </Static>
+        <ReportItem id="section1_confidence1" blobItem="section1_confidence1" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>9. Thinking about your life in general, please indicate how confident you are with the following activities.</h3>
+                <div class="subquestion" style="padding-left:50px">
+                <h3>Thinking through and identifying causes of problems.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence2" blobItem="section1_confidence2" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>Figuring out how different ideas fit together.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence3" blobItem="section1_confidence3" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>Considering viewpoints that are different from your own.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence4" blobItem="section1_confidence4" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>Considering the pros and cons of different options and deciding which one is the best.</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence5" blobItem="section1_confidence5" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>10. Thinking about your experience in groups (e.g. at school or work, sports teams, volunteering etc.), please indicate how confident you are with the following activities.</h3>
+                <div class="subquestion" style="padding-left:50px">
+                <h3>Working cooperatively in groups to complete tasks, projects, or activities.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence6" blobItem="section1_confidence6" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>Considering other people's perspectives in a group.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence7" blobItem="section1_confidence7" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>Contributing your ideas and suggestions to a group.</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_groupexp" blobItem="section1_groupexp" type="RadioReportItem" orientation="vertical" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" >
+            <![CDATA[
+                <hr>
+                <h3>11. Thinking about your life in general (e.g. at work or school, sports teams, volunteering etc.), how often do you work in a group to complete tasks, projects, or activities?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence8" blobItem="section1_confidence8" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>12. Thinking about your life in general, please indicate how confident you are with the following activities.</h3>
+                <div class="subquestion" style="padding-left:50px">
+                <h3>Speaking or presenting in front of groups.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence9" blobItem="section1_confidence9" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>Expressing your ideas and thoughts through writing.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence10" blobItem="section1_confidence10" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>Listening to others to understand their point of view.</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="section1_confidence11" blobItem="section1_confidence11" type="Radio" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>13. Please indicate how often you do each of the following activities.</h3>
+                <div class="subquestion" style="padding-left:50px">
+                <h3>Make speeches or give presentations in front of a group of people.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence12" blobItem="section1_confidence12" type="Radio" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>Advise people (e.g. clients, co-workers, classmates, teammates etc.)</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence13" blobItem="section1_confidence13" type="Radio" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>Persuade or influence people (e.g. clients, co-workers, classmates, teammates etc.)</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="section1_confidence14" blobItem="section1_confidence14" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>14. Thinking about your life in general, please indicate how confident you are with the following types of activities.</h3>
+                <div class="subquestion" style="padding-left:50px">
+                <h3>Brainstorming ideas in a group.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence15" blobItem="section1_confidence15" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>Thinking "outside the box" and developing unique ideas.</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="section1_confidence16" blobItem="section1_confidence16" type="Radio" options="Not like me at all|Not much like me|Somewhat like me|Mostly like me|Very much like me|Prefer not to answer">
+            <![CDATA[
+                <h3>15. Thinking about your life in general, please indicate the extent to which you think the following statements describe you.</h3>
+                <div class="subquestion" style="padding-left:50px">
+                <h3>Regardless of the obstacles, I finish whatever I begin.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence17" blobItem="section1_confidence17" type="Radio" options="Not like me at all|Not much like me|Somewhat like me|Mostly like me|Very much like me|Prefer not to answer">
+            <![CDATA[
+                <h3>I am a hard worker</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence18" blobItem="section1_confidence18" type="Radio" options="Not like me at all|Not much like me|Somewhat like me|Mostly like me|Very much like me|Prefer not to answer">
+            <![CDATA[
+                <h3>I get discouraged when I run into a setback.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence19" blobItem="section1_confidence19" type="Radio" options="Not like me at all|Not much like me|Somewhat like me|Mostly like me|Very much like me|Prefer not to answer">
+            <![CDATA[
+                <h3>I don't adapt to change very easily.</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <Static>
+            <![CDATA[
+                <br /><br />
+                <hr>
+                <h2>The following questions ask you about your experience with technology and technological devices.</h2>
+            ]]>
+        </Static>
+        <ReportItem id="section1_confidence20" blobItem="section1_confidence20" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>16. Thinking about technology (e.g. software programs) and technological devices (e.g. laptop, smartphone) please indicate how confident you are using technology for the following types of activities:</h3>
+                <div class="subquestion" style="padding-left:50px">
+                <h3>Managing and organizing information in spreadsheets.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence21" blobItem="section1_confidence21" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>Creating and formatting documents (e.g. different font types, bullets, numbered lists, bolded and underlined text etc.)</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence22" blobItem="section1_confidence22" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
+            <![CDATA[
+                <h3>Using software to create slides and charts for presentations.</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="section1_confidence23" blobItem="section1_confidence23" type="Radio" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>17. Please indicate how often you do each of the following activities.</h3>
+                <div class="subquestion" style="padding-left:50px">
+                <h3>Use a computer or other personal device to create information, for example a Word document.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence24" blobItem="section1_confidence24" type="Radio" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>Create and use a spreadsheet to organize information, for example in Excel.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence25" blobItem="section1_confidence25" type="Radio" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>Use the internet to buy or sell products and bank online.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence26" blobItem="section1_confidence26" type="Radio" options="Frequently|Sometimes|Rarely|Never|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>Use networking tools and cloud computing to complete a project, task, or activity (e.g. email, shared drives, the cloud).</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="section1_confidence27" blobItem="section1_confidence27" type="Radio" options="Not very knowledgeable|Somewhat knowledgeable|Very knowledgeable|Prefer not to answer">
+            <![CDATA[
+                <h3>18. How would you rate your level of financial knowledge?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="section1_confidence28" blobItem="section1_confidence28" type="Radio" options="Not relevant to me|Not very good|Fairly good|Good|Very good|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>19. How would you rate yourself on each of the following areas of financial management?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                <h3>Keeping track of money.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence29" blobItem="section1_confidence29" type="Radio" options="Not relevant to me|Not very good|Fairly good|Good|Very good|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>Saving money.</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence30" blobItem="section1_confidence30" type="Radio" options="Not relevant to me|Not very good|Fairly good|Good|Very good|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>Knowing which financial products I need (e.g. bank account, credit card, loan, line of credit)</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence31" blobItem="section1_confidence31" type="Radio" options="Not relevant to me|Not very good|Fairly good|Good|Very good|Prefer not to answer" orientation="horizontal">
+            <![CDATA[
+                <h3>Investing money</h3>
+                <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+
+        <Static>
+            <![CDATA[
+                <br /><br />
+                <hr>
+                <h2>The following questions ask about you and your background.</h2>
+            ]]>
+        </Static>
+        <ReportItem id="section1_confidence32" blobItem="section1_confidence32" type="Radio" options="Male|Female|Non-binary|Not listed above|Prefer not to answer">
+            <![CDATA[
+                <h3>20. Which of the following most closely reflects your gender identity?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence33" blobItem="section1_confidence33" type="Radio" options="Canada|Other|Prefer not to answer">
+            <![CDATA[
+                <h3>21. In what country were you born?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence34" blobItem="section1_confidence34" type="Radio" options="More than five years|Five years or less|Prefer not to answer">
+            <![CDATA[
+                <h3>22. How long have you been living in Canada?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence35" blobItem="section1_confidence35" type="Radio" options="Live comfortably|Meet needs with a little left|Just meet basic expenses|Don't meet basic expenses|Prefer not to answer">
+            <![CDATA[
+                <h3>23. Considering your own income and the income from any other people who help you, how would you describe your overall personal financial situation?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence36" blobItem="section1_confidence36" type="Radio" options="Remote|Rural|Suburban|Urban|On reserve|Prefer not to answer">
+            <![CDATA[
+                <h3>24. What kind of community do you live in?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence37" blobItem="section1_confidence37" type="Checkbox" blobType="BLOB_ARRAY" options="First Nations|Métis|Inuit|International Indigenous Peoples|White|South Asian (e.g. East Indian, Pakistani)|Chinese|Black|Filipino|Latin America|Arab|Southeast Asian (e.g. Vietnamese, Cambodian)|West Asian (e.g. Iranian)|Korean|Japanese|Not listed above|Prefer not to answer">
+            <![CDATA[
+                <h3>25. What kind of community do you live in?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence38" blobItem="section1_confidence38" type="Radio" options="Yes|No|Prefer not to answer">
+            <![CDATA[
+                <h3>26. Would you describe yourself as a person living with a disability (physical condition, mental condition, or health problem)?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence39" blobItem="section1_confidence39" type="Radio" options="Yes|No|Questioning/Not sure|Prefer not to answer">
+            <![CDATA[
+                <h3>27. Do you consider yourself to be a member of the LGBT+ (Lesbian, Gay, Bisexual, Transgender, Queer, Two-Spirited) community?</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    <div class="requiredField">{$item}</div>
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <Static>
+            <![CDATA[
+                <br /><br />
+                <hr>
+                <h2>The following questions will help match your pre-survey with your post survey. They will not be used to identify you in any way.</h2>
+            ]]>
+        </Static>
+        <ReportItem id="section1_confidence40" blobItem="section1_confidence40" type="Text" optional="true">
+            <![CDATA[
+                <h3>28. Please indicate your initials (2 letters only)</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence40_other" blobItem="section1_confidence40_other" type="Checkbox" blobType="BLOB_ARRAY" options="Prefer not to answer" optional="true">
+            <![CDATA[
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence41" blobItem="section1_confidence41" type="Text" optional="true">
+            <![CDATA[
+                <h3>29. On what day of the month were you born? (1 – 31)</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence41_other" blobItem="section1_confidence41_other" type="Checkbox" blobType="BLOB_ARRAY" options="Prefer not to answer" optional="true">
+            <![CDATA[
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence42" blobItem="section1_confidence42" type="Text" optional="true">
+            <![CDATA[
+                <h3>RBC, in partnership with the University of Waterloo's Youth & Innovation Project, is studying how the programs we support impact young people such as yourself, as well as Canada's economy and society, over the long term. If you would like to volunteer to participate in this important research please enter your first name, last name, email address, and the first three letters of your postal code below.</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    First Name:<br />{$item}<br style='margin-bottom: 1em;' />
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence43" blobItem="section1_confidence43" type="Text" optional="true">
+            <![CDATA[
+                    Last Name:<br />{$item}<br style='margin-bottom: 1em;' />
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence44" blobItem="section1_confidence44" type="Text" optional="true">
+            <![CDATA[
+                    Email:<br />{$item}<br style='margin-bottom: 1em;' />
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence45" blobItem="section1_confidence45" type="Text" optional="true">
+            <![CDATA[
+                    First three letters of your postal code:<br />{$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence46" blobItem="section1_confidence46" type="Checkbox" options="Relevant programs or opportunities offered by RBC, the RBC Foundation or its partners in
+which you may be interested.|Opportunities to participate in research studies related to the programs we support.|Opportunities to participate in RBC or RBC Foundation marketing and communications
+activities." optional="true">
+            <![CDATA[
+                <h3>By providing your email address you understand that your responses will no longer be anonymous. You agree that RBC and the RBC Foundation can contact you about the following: (select all that apply)</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <Static>
+            <![CDATA[
+                <h2>Thank you for taking the time to complete this survey. Your feedback and responses are appreciated.</h2>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

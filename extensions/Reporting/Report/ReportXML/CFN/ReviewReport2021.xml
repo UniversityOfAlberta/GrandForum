@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Review Report" ajax="true" disabled="false" personId="0" year="2021">
+    <Permissions>
+        <Role role="STAFF"></Role>
+    </Permissions>
+    <!-- RCHA -->
+    <ReportSection id="rcha_review" name="RCHA Review" tooltip="Review of RCHA Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="RCHA">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_RCHA_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <Static>
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(q6, 0)}
+                        {set(q7, 0)}
+                        {set(q8, 0)}
+                        {set(nReviewers, 0)}
+                    ]]>
+                </Static>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="RCHA" includeSelf="true">
+                    <If id="script" if="{and({!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_1,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_3,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_4,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_5,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_6,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_7,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_8,{$parent_id},{$user_id},0)},)})}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_3,{$parent_id},{$user_id},0)})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_4,{$parent_id},{$user_id},0)})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_5,{$parent_id},{$user_id},0)})})}
+                            {set(q6, {add({get(q6)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_6,{$parent_id},{$user_id},0)})})}
+                            {set(q7, {add({get(q7)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_7,{$parent_id},{$user_id},0)})})}
+                            {set(q8, {add({get(q8)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_8,{$parent_id},{$user_id},0)})})}
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </If>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        <table class='wikitable' id="{$user_id}_table">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4</th>
+                                    <th>Q5</th>
+                                    <th>Q6</th>
+                                    <th>Q1-6 Total</th>
+                                    <th>Q7</th>
+                                    <th>Q8</th>
+                                    <th>Q7-8 Total</th>
+                                    <th width='60%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </Static>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="RCHA" includeSelf="true">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right'>{getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_1,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_2,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_3,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_4,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_5,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_6,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>
+                                {add({getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_1,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_2,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_3,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_4,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_5,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_6,{$parent_id},{$user_id},0)}
+                                )}
+                            </td>
+                            <td align='right'>{getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_7,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_8,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>
+                                {add({getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_7,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_8,{$parent_id},{$user_id},0)}
+                                )}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>{round({divide({get(q1)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q2)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q3)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q4)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q5)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q6)},{get(nReviewers)})},2)}</th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)}, 
+                                                 {get(q2)},
+                                                 {get(q3)},
+                                                 {get(q4)},
+                                                 {get(q5)},
+                                                 {get(q6)}
+                                            )}
+                                        )}
+                                        {round({divide({get(total)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th>{round({divide({get(q7)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q8)},{get(nReviewers)})},2)}</th>
+                                    <th>
+                                        {set(total2, 
+                                            {add({get(q7)},
+                                                 {get(q8)}
+                                            )}
+                                        )}
+                                        {round({divide({get(total2)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="rcha_review_summary" name="RCHA Summary" tooltip="RCHA Summary" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <table class='wikitable' id="eval_table">
+                    <thead>
+                        <tr>
+                            <th>RCHA</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Q4</th>
+                            <th>Avg. Q5</th>
+                            <th>Avg. Q6</th>
+                            <th>Avg. Q1-6 Total</th>
+                            <th>Avg. Q7</th>
+                            <th>Avg. Q8</th>
+                            <th>Avg. Q7-8 Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="RCHA">
+            <Static>
+                <![CDATA[
+                    {set(q1,0)}
+                    {set(q2,0)}
+                    {set(q3,0)}
+                    {set(q4,0)}
+                    {set(q5,0)}
+                    {set(q6,0)}
+                    {set(q7,0)}
+                    {set(q8,0)}
+                    {set(nReviewers,0)}
+                ]]>
+            </Static>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="RCHA" includeSelf="true">
+                <If id="script" if="{and({!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_1,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_3,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_4,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_5,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_6,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_7,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_8,{$parent_id},{$user_id},0)},)})}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_3,{$parent_id},{$user_id},0)})})}
+                        {set(q4, {add({get(q4)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_4,{$parent_id},{$user_id},0)})})}
+                        {set(q5, {add({get(q5)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_5,{$parent_id},{$user_id},0)})})}
+                        {set(q6, {add({get(q6)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_6,{$parent_id},{$user_id},0)})})}
+                        {set(q7, {add({get(q7)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_7,{$parent_id},{$user_id},0)})})}
+                        {set(q8, {add({get(q8)},{getNumber(RP_RCHA_REVIEW,RCHA_REVIEW,RCHA_EX_8,{$parent_id},{$user_id},0)})})}
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </If>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_RCHA_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}</b></td>
+                        <td align='right'>{round({divide({get(q1)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q2)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q3)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q4)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q5)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q6)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>
+                            {set(total, 
+                                {add({get(q1)}, 
+                                     {get(q2)},
+                                     {get(q3)},
+                                     {get(q4)},
+                                     {get(q5)},
+                                     {get(q6)}
+                                )}
+                            )}
+                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                        </td>
+                        <td align='right'>{round({divide({get(q7)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q8)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>
+                            {set(total2, 
+                                {add({get(q7)},
+                                     {get(q8)}
+                                )}
+                            )}
+                            {round({divide({get(total2)},{get(nReviewers)})},2)}
+                        </td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

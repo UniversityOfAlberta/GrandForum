@@ -139,6 +139,42 @@ HTML.Value = function(model, attr){
     }
 }
 
+HTML.Hidden = function(view, attr, options){
+    var el = HTML.Element("input", "hidden", options);
+    el.setAttribute('type', 'hidden');
+    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('value', HTML.Value(view, attr));
+    view.events['change input[name=' + HTML.Name(attr) + '][type=hidden]'] = function(e){
+        if(attr.indexOf('.') != -1){
+            var elems = attr.split(".");
+            var recurse = function(data, depth) {
+                if (depth < elems.length) {
+                    if((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                        data = {};
+                        data[elems[depth]] = {};
+                    }
+                    data[elems[depth]] = recurse(data[elems[depth]], depth+1);
+                    return data;
+                } else {
+                    return $(e.target).val();
+                }
+            }
+            
+            var data = view.model.get(elems[0]);
+            data = recurse(data, 1);
+            view.model.set(elems[0], _.clone(data));
+            view.model.trigger('change', view.model);
+            view.model.trigger('change:' + elems[0], view.model);
+        }
+        else{
+            view.model.set(attr, $(e.target).val());
+        }
+    };
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + '][type=hidden]');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + '][type=hidden]', view.events['change input[name=' + HTML.Name(attr) + '][type=hidden]']);
+    return el.outerHTML;
+}
+
 HTML.TextBox = function(view, attr, options){
     var el = HTML.Element("input", "text", options);
     el.setAttribute('type', 'text');
@@ -213,7 +249,8 @@ HTML.TextArea = function(view, attr, options, model){
     return el.outerHTML;
 }
 
-HTML.CheckBox = function(view, attr, options){
+HTML.CheckBox = function(view, attr, options, model){
+    if(model == undefined){ model = view.model; }
     var el = HTML.Element("input", "checkbox", options);
     el.setAttribute('name', HTML.Name(attr));
     if(HTML.Value(view, attr) == options.value){
@@ -221,19 +258,30 @@ HTML.CheckBox = function(view, attr, options){
     }
     view.events['change input[name=' + HTML.Name(attr) + '][type=checkbox]'] = function(e){
         if(attr.indexOf('.') != -1){
-            var index = attr.indexOf('.');
             var elems = attr.split(".");
+            var recurse = function(data, depth) {
+                if (depth < elems.length) {
+                    if((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                        data = {};
+                        data[elems[depth]] = {};
+                    }
+                    data[elems[depth]] = recurse(data[elems[depth]], depth+1);
+                    return data;
+                } else {
+                    if($(e.currentTarget).is(":checked")){
+                        return $(e.target).val();
+                    }
+                    else{
+                        return options.default;
+                    }
+                }
+            }
             
-            var data = view.model.get(attr.substr(0, index));
-            if($(e.currentTarget).is(":checked")){
-                data[attr.substr(index+1)] = $(e.target).val();
-            }
-            else{
-                data[attr.substr(index+1)] = options.default;
-            }
-            view.model.set(attr.substr(0, index), _.clone(data));
-            view.model.trigger("change");
-            view.model.trigger('change:' + elems[0], view.model);
+            var data = model.get(elems[0]);
+            data = recurse(data, 1);
+            model.set(elems[0], _.clone(data));
+            model.trigger('change', model);
+            model.trigger('change:' + elems[0], model);
         }
         else{
             if($(e.currentTarget).is(":checked")){
@@ -410,21 +458,44 @@ HTML.Select = function(view, attr, options){
     el.setAttribute('name', HTML.Name(attr));
     var val = HTML.Value(view, attr);
     var foundSelected = false;
-    _.each(options.options, function(opt){
-        var selected = "";
-        if(val == null){
-            val = "";
-        }
-        if(val.split(":")[0] == opt || val == opt || 
-           (typeof opt == 'object' && val.split(":")[0] == opt.value) || (typeof opt == 'object' && val == opt.value)){
-            selected = "selected='selected'";
-            foundSelected = true;
-        }
-        if(typeof opt == 'object'){
-            $(el).append("<option " + selected + " value='" + opt.value + "'>" + opt.option + "</option>");
+    _.each(options.options, function(opt, i){
+        if(_.isString(i)){
+            $(el).append("<optgroup label='" + i + "' />");
+            var optgroup = $("optgroup", el).last();
+            _.each(opt, function(opt2){
+                var selected = "";
+                if(val == null){
+                    val = "";
+                }
+                if(val.split(":")[0] == opt2 || val == opt2 || 
+                   (typeof opt2 == 'object' && val.split(":")[0] == opt2.value) || (typeof opt2 == 'object' && val == opt2.value)){
+                    selected = "selected='selected'";
+                    foundSelected = true;
+                }
+                if(typeof opt2 == 'object'){
+                    $(optgroup).append("<option " + selected + " value='" + opt2.value + "'>" + opt2.option + "</option>");
+                }
+                else{
+                    $(optgroup).append("<option " + selected + ">" + opt2 + "</option>");
+                }
+            });
         }
         else{
-            $(el).append("<option " + selected + ">" + opt + "</option>");
+            var selected = "";
+            if(val == null){
+                val = "";
+            }
+            if(val.split(":")[0] == opt || val == opt || 
+               (typeof opt == 'object' && val.split(":")[0] == opt.value) || (typeof opt == 'object' && val == opt.value)){
+                selected = "selected='selected'";
+                foundSelected = true;
+            }
+            if(typeof opt == 'object'){
+                $(el).append("<option " + selected + " value='" + opt.value + "'>" + opt.option + "</option>");
+            }
+            else{
+                $(el).append("<option " + selected + ">" + opt + "</option>");
+            }
         }
     });
 
@@ -481,10 +552,25 @@ HTML.File = function(view, attr, options){
             };
             fileObj.filename = file.name;
             if(attr.indexOf('.') != -1){
-                var index = attr.indexOf('.');
-                var data = view.model.get(attr.substr(0, index));
-                data[attr.substr(index+1)] = fileObj;
-                view.model.set(attr.substr(0, index), _.clone(data));
+                var elems = attr.split(".");
+                var recurse = function(data, depth) {
+                    if (depth < elems.length) {
+                        if((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                            data = {};
+                            data[elems[depth]] = {};
+                        }
+                        data[elems[depth]] = recurse(data[elems[depth]], depth+1);
+                        return data;
+                    } else {
+                        return fileObj;
+                    }
+                }
+                
+                var data = view.model.get(elems[0]);
+                data = recurse(data, 1);
+                view.model.set(elems[0], _.clone(data));
+                view.model.trigger('change', view.model);
+                view.model.trigger('change:' + elems[0], view.model);
             }
             else{
                 view.model.set(attr, fileObj);

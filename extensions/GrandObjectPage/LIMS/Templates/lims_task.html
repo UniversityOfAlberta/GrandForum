@@ -1,0 +1,14 @@
+<td><%= task %></td>
+<td><a href="<%= assignee.url %>"><%= assignee.name %></td>
+<td align="center"><%= dueDate %></td>
+<td><%= status %></td>
+<td>
+    <table id="transactions" cellspacing="0" cellpadding="0">
+        <% _.each(transactions, function(transaction){ %>
+            <tr>
+                <td style="padding-right:15px;"><%= transaction.type %></td>
+                <td><%= transaction.date %></td>
+            </tr>
+        <% }) %>
+    </table>
+</td>

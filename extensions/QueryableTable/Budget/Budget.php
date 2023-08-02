@@ -37,6 +37,12 @@ class Budget extends QueryableTable{
             case 4:
                 self::Budget($argv[1], $argv[2], $argv[3]);
                 break;
+            case 5: 
+                self::Budget($argv[1], $argv[2], $argv[3], $argv[4]);
+                break;
+            case 6: 
+                self::Budget($argv[1], $argv[2], $argv[3], $argv[4], $argv[5]);
+                break;
         }
     }
     
@@ -59,7 +65,7 @@ class Budget extends QueryableTable{
     }
     
     // Creates a new Budget instance with the given person ID, structure type, and data set
-    private function Budget($structure, $data, $sheet=0){
+    private function Budget($structure, $data, $sheet=0, $optimizeFn=null, $optimizeFnArgs=array()){
         global $budgetStructures;
         parent::__construct();
         if(is_array($structure)){
@@ -68,7 +74,7 @@ class Budget extends QueryableTable{
         else{
             $this->structure = @$this->preprocessStructure($budgetStructures[$structure]);
         }
-        if(!$this->readCells($data, $sheet)){
+        if(!$this->readCells($data, $sheet, $optimizeFn, $optimizeFnArgs)){
             // Some error happened when reading the data, try to recover
             $data = array();
             foreach($this->structure as $rowN => $row){
@@ -140,7 +146,7 @@ class Budget extends QueryableTable{
     }
     
     // Reads the cells in the budget based on the specified structure
-    private function readCells($data, $sheet=0){
+    private function readCells($data, $sheet=0, $optimizeFn=null, $optimizeFnArgs=array()){
         $dir = dirname(__FILE__);
         if(!($data instanceof PhpOffice\PhpSpreadsheet\Spreadsheet)){
             // 1. Create a temporary file and write the spreadsheet data into the file,
@@ -182,7 +188,11 @@ class Budget extends QueryableTable{
                 }
                 $objReader->setReadDataOnly(true);
                 $obj = $objReader->load($tmpn);
-                $obj->setActiveSheetIndex($sheet);
+                
+                if(is_callable($optimizeFn)){
+                    call_user_func_array($optimizeFn, array_merge(array(&$obj), $optimizeFnArgs));
+                }
+                $obj->setActiveSheetIndex(min($sheet, count($obj->getAllSheets())-1));
             }
             else{
                 $obj = $data;
@@ -191,7 +201,7 @@ class Budget extends QueryableTable{
             $sheet = $obj->getActiveSheet();
             $maxCol = $sheet->getHighestColumn();
             $maxRow = $sheet->getHighestRow();
-            $cells = $sheet->toArray(null, true, false); // Explicitely read only values not style (3rd arg)
+            $cells = @$sheet->toArray(null, true, false);
             
             if($this->structure == null){
                 // Create a fake structure so that it doesn't fail

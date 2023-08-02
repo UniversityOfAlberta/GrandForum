@@ -123,6 +123,7 @@ class CreateUserAPI extends API{
                                         array('user_id' => $person->getId()));
                     
                     $universities = explode("\n", str_replace("\r", "", $_POST['university']));
+                    $faculties = explode("\n", str_replace("\r", "", $_POST['faculty']));
                     $departments = explode("\n", str_replace("\r", "", $_POST['department']));
                     $positions = explode("\n", str_replace("\r", "", $_POST['position']));
                     $startDates = explode("\n", str_replace("\r", "", $_POST['start_date']));
@@ -132,6 +133,7 @@ class CreateUserAPI extends API{
                     foreach($universities as $i => $university){
                         if(trim($universities[$i]) != "" || trim($departments[$i]) != "" || trim($positions[$i]) != ""){
                             $_POST['university'] = trim($universities[$i]);
+                            $_POST['faculty'] = trim($faculties[$i]);
                             $_POST['department'] = trim($departments[$i]);
                             $_POST['position'] = trim($positions[$i]);
                             $_POST['startDate'] = trim($startDates[$i]);
@@ -164,6 +166,17 @@ class CreateUserAPI extends API{
                         $_POST['employment_type'] = @str_replace("'", "&#39;", $_POST['employment']);
                         $_POST['effective_date'] = ($latestEndDate == "" || $latestEndDate == "0000-00-00") ? date('Y-m-d') : str_replace("'", "&#39;", $latestEndDate);
                         APIRequest::doAction('AddHQPMovedOn', true);
+                    }
+                    
+                    if($_POST['relation'] != ""){
+                        $relation = explode(":", $_POST['relation']);
+                        $user1 = Person::newFromName($relation[0]);
+                        DBFunctions::insert('grand_relations',
+                                            array('user1' => $user1->getId(),
+                                                  'user2' => $person->getId(),
+                                                  'type' => $relation[1],
+                                                  'start_date' => $earliestStartDate,
+                                                  'end_date' => $latestEndDate));
                     }
                     
                     if($_POST['recruitment'] != ""){

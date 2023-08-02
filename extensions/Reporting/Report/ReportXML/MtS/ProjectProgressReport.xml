@@ -14,6 +14,7 @@
 
         </Role>
         <Project />
+        <Project deleted="true" />
     </Permissions>
     <ReportSection id="introduction" type="EditableReportSection" blobSection="INTRODUCTION" name="1 - Intro and Consent" title="End of Year Progress Report: {$project_name}">
         <Static>

@@ -615,6 +615,22 @@
             </data>
         </Activity>
         
+        <Activity type="Courses">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizer" type="String">organizer</field>
+                <field label="Status" type="String">status</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Training sessions">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizer" type="String">organizer</field>
+                <field label="Status" type="String">status</field>
+            </data>
+        </Activity>
+        
         <Activity type="Misc" status="Invited|Not Invited">
             <data>
                 <field label="Location" type="String">location</field>
@@ -690,7 +706,6 @@
     </Artifacts>    
 
     <!-- Awards -->
-    
     <Awards category="Award">
         <Award type="Award">
             <data>
@@ -705,6 +720,29 @@
         </Award>
     </Awards>
     
+    <!-- Grants -->
+    <Grants category="Grants">
+        <Grant type="Research Grant">
+            <data>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Amount" type="String">amount</field>
+            </data>
+        </Grant>
+        
+        <Grant type="Technology Development Grant">
+            <data>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Amount" type="String">amount</field>
+            </data>
+        </Grant>
+        
+        <Grant type="Misc">
+            <data>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Amount" type="String">amount</field>
+            </data>
+        </Grant>
+    </Grants>
 
     <!-- Presentations -->
     <Presentations category="Presentation">

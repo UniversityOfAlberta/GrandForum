@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2021-22 Annual Project Progress Evaluation Report" reportType="RP_PROJ_PLAN_UPDATE" pdfType="RPTP_PROJ_PLAN_UPDATE" pdfFiles="ProjectPlanUpdatePDF" personId="0" ajax="true" year="2021" disabled="false">
+<Report name="2022-23 AGE-WELL Annual Project Progress Evaluation Form" reportType="RP_PROJ_PLAN_UPDATE" pdfType="RPTP_PROJ_PLAN_UPDATE" pdfFiles="ProjectPlanUpdatePDF" personId="0" ajax="true" year="2022" disabled="false">
     <Permissions>
         <Role role="SD+">
 
@@ -18,34 +18,39 @@
         </Role>
         <Project />
     </Permissions>
-    <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="2021-22 Annual Project Progress Evaluation Report: {$project_name}">
+    <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="2022-23 AGE-WELL Annual Project Progress Evaluation Form: {$project_name}">
         <Static>
             <![CDATA[
-                <p>The aim of this form is to allow AGE-WELL’s Research Management Committee (RMC) to assess project progress and performance against key impact objectives of the network. Given the disruption of COVID-19 to network research programs, this form also provides Project Leads with an opportunity to demonstrate project evolution following the January 2021 Project Update process.</p> 
+                <p>The aim of this form is to allow AGE-WELL’s Research Management Committee (RMC) to assess project progress and performance against key impact objectives of the network. This is the same process completed in January 2022.  If your project will be fully completed by March 31, 2023, complete only the progress report areas of Section D, leaving the planning scorecards blank.</p> 
 
                 <h2>Completing the Report</h2>
                 The report consists of four sections:
                 <ol type="A">
-                    <li><b>Project Status:</b> description of overall project status in light of disruptions of the past year.</li>
+                    <li><b>Project Status:</b> description of overall project status.</li>
                     <li><b>Product Development / Product Readiness:</b> assignment of current and projected product readiness levels associated with “products” of the research (i.e. technologies, services, practices, policies). Additional information on determining product readiness below.</li>
                     <li><b>Impact Statement and Case Study:</b> projected impact of the research against timelines—that is, within and beyond the funding period, and a short case study of project achievement.</li>
-                    <li><b>Progress Update / Planning Scorecards:</b> project progress and planning across the following network program criteria: scientific excellence, development of HQP, knowledge mobilization and commercialization, and networking and partnerships. Additional information below.</li>
+                    <li><b>Progress Update / Planning Scorecards:</b> project progress and planning across the following network program criteria Scientific Excellence, Networking and Partnerships, Knowledge Mobilization and Commercialization, and HQP Training. Additional information below.</li>
                 </ol>
 
                 <h2>Product Readiness Levels</h2>
-                <p>AGE-WELL produces a broad range of products or solutions (e.g. technologies, services and policies). Progress towards achieving impact can be defined and measured across all projects in a consistent fashion. The Product Readiness Levels (PRL) is a method of estimating maturity and progress across 5 stages that overlay the Technology Readiness Levels (TRL). The five stage progression is based on the funding continuum of the innovation pipeline developed for CIHR’s eHealth innovations Partnership Program.</p>
+                <p>AGE-WELL produces a broad range of products or solutions (e.g., technologies, services, practices, and policies). Progress towards achieving impact can be defined and measured across all projects in a consistent fashion. The Product Readiness Levels (PRL) is a method of estimating maturity and progress across 5 stages that overlay the Technology Readiness Levels (TRL). The five-stage progression is based on the funding continuum of the innovation pipeline developed for CIHR’s eHealth innovations Partnership Program.</p>
 
                 <p>AGE-WELL has adapted both scales to be inclusive of the types of technology-based solutions that are part of the network. Please refer to the <a href="https://members.agewell-nce.ca/wp-content/uploads/2021/10/AGE-WELL-PRL-Guidelines.docx">Product Readiness Levels Guideline</a> for definitions of the PRL levels, as well as example outputs at each level across product type.</p>
 
                 <p>Projects are required to justify the current PRL stage of each product and projected PRL stage one year later. It is expected that projects will progress through these stages at an appropriate pace. However it should be noted that it is expected that some products may remain at a specific PRL longer than others.</p>
 
                 <h2>Progress Report and Balanced Scorecard</h2>
-                <p>Each project is required to provide project detail in the form of a Progress Report and Planning Scorecard in the following areas: Scientific Excellence, Networking and Partnerships, Knowledge Mobilization and Commercialization, and HQP Training. The Progress Report should capture activity to date; the planning scorecard should capture proposed activity for 2022-23. All projects are asked to complete the sections of the tables that are relevant to their project; for example, not all projects may be able to complete both the knowledge mobilization and commercialization sections of the tables.  The tables were developed based on the <i>Balanced Scorecard</i> approach and will be used by the RMC to review projects progress from year to year.</p>
+                <p>Each project is required to provide project detail in the form of a Progress Report and Planning Scorecard in the following areas: Scientific Excellence, Networking and Partnerships, Knowledge Mobilization and Commercialization, and HQP Training. The Progress Report should capture activity to date; the planning scorecard should capture proposed activity for 2023-24. All projects are asked to complete the sections of the tables that are relevant to their project; for example, not all projects may be able to complete both the knowledge mobilization and commercialization sections of the tables.  The tables were developed based on the <i>Balanced Scorecard</i> approach and will be used by the RMC to review projects progress from year to year.</p>
             ]]>
         </Static>
     </ReportSection>
     <ReportSection id="status" type="EditableReportSection" blobSection="STATUS" tooltip="A. Project Status" name="Project Status" title="A. Project Status">
-        <ReportItem id="pdf" type="PDFReportItem" buttonName="{$this_year} Report PDF" project="true" reportType="ProjectPlanUpdate" year="{$last_year}">
+        <ReportItem id="pdf" type="PDFReportItem" buttonName="Jan 2022 Annual Project Progress Evaluation PDF" project="true" reportType="ProjectPlanUpdate" year="{$last_year}">
+            <![CDATA[
+                {$item}<br style='margin-bottom:1em;' />
+            ]]>
+        </ReportItem>
+        <ReportItem id="pdf2" type="PDFReportItem" buttonName="Sept 2022 Progress Report and Financial Update PDF" project="true" reportType="CRP-PPPReport" year="{$last_year}">
             <![CDATA[
                 {$item}
             ]]>
@@ -58,7 +63,7 @@
         </ReportItem>
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" height="400px">
             <![CDATA[
-                <p>Provide a brief summary of the status of this project in light of disruptions over the past 18 months. Please include 1) adaptations to challenges outlined in your January 2021 Project Progress Update (e.g. changes to partnerships, access to participants, HQP retention etc.) and 2) ongoing challenges and plans to address them.</p>
+                <p>Provide a brief summary of the status of this project. Please include any adaptations to challenges outlined in your January 2022 Project Progress Evaluation Form (e.g., changes to partnerships, access to participants, HQP retention etc.) and ongoing challenges and plans to address them, if relevant.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -134,6 +139,7 @@
     <ReportSection id="impact" type="EditableReportSection" blobSection="IMPACT" tooltip="C. Impact Statement and Case Study" name="Impact Statement" title="C. Impact Statement and Case Study">
         <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true">
             <![CDATA[
+                <p>In this section, we ask that you provide any relevant updates to the content provided in this section in January 2022.</p>
                 <h2>1. Impact Statement</h2>
                 <p>AGE-WELL is expected to deliver social and economic benefits to Canadians, including but not limited to improved health or quality of life; improved policy, practice and services; new products or enterprises; job creation; value-added training etc. To fulfill our mandate we invest in a variety of projects and programs ranging from multi-year research funding to policy engagement and startup support programs. Keeping the broader mandate of AGE-WELL in mind:</p>
                 <h3>What is the expected value and impact of this research within the timeframe of the funding term?</h3>
@@ -149,7 +155,7 @@
         <ReportItem id="case_study" type="Textarea" blobItem="case_studty" rich="true">
             <![CDATA[
                 <h2>2. Case Study</h2>
-                <p>Please provide a short <b>case study</b> of outstanding work or achievement in any of the above evaluation areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization and Commercialization, and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL. The following should be provided for the case study (500 words max):</p>
+                <p>Please provide a short <b>case study</b> of outstanding work or achievement in any of the above evaluation areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization and Commercialization or HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL. The following should be provided for the case study (500 words max):</p>
                 <ul>
                     <li>A clear explanation of the process or means through which the research led to, underpinned or made a contribution to the impact (for example, how it was disseminated, how it came to influence users or beneficiaries, or how it came to be exploited, taken up or applied).</li>
                     <li>Where the case study was part of a wider body of research that contributed to the impact (for example, where there has been research collaboration with other institutions or grants), the case study should specify the particular contribution of the case study and acknowledge other key research contributions.</li>
@@ -165,14 +171,14 @@
         <!-- Scientific Excellence - Progress Report -->
         <ReportItem id="progress" type="Textarea" blobItem="PROGRESS" rich="true">
             <![CDATA[
-                <h2>1. Scientific Excellence - Progress Report</h2>
-                <p>The AGE-WELL Core Research Program (CRP) must address Canadian needs and problems and demonstrate world-class scientific achievements. AGE-WELL is committed to a transdisciplinary approach and the involvement of stakeholders in all aspects of the project. In this section we ask that you document completed objectives, deliverables and project activities related to scientific excellence of this program of research. Include highlights from the project team with respect to national/international leadership (e.g. international collaborations, leadership positions held of relevance to the project), advancing knowledge (e.g. scientific and other publications and presentations etc.) and the project’s stakeholder-driven approach, including detail about the involvement of older adults, caregivers, policy makers, or partners in the project. Please specify the roles of stakeholders in this project) (e.g. advisory committee members, affiliated researchers, co-authors etc.). In addition, project Leads should include any other updates and metrics relevant to their specific projects.</p>
+                <h2>1. Scientific Excellence - Progress Report for Year Ending March 31, 2023</h2>
+                <p>The AGE-WELL Core Research Program (CRP) must address Canadian needs and problems and demonstrate world-class scientific achievements. AGE-WELL is committed to a transdisciplinary approach and the involvement of stakeholders in all aspects of the project. In this section we ask that you document completed objectives, deliverables and project activities related to scientific excellence of this program of research from 2022-23. Evaluation of this section will include review of last year’s planning scorecard to gauge the extent to which progress was made towards the previously stated plans (planned objectives, outputs and activities). Include highlights from the project team with respect to national/international leadership (e.g. international collaborations, leadership positions held of relevance to the project), advancing knowledge (e.g. scientific and other publications and presentations etc.) and the project’s stakeholder-driven approach, including detail about the involvement of older adults, caregivers, policy makers, or partners in the project. Please specify the roles of stakeholders in this project) (e.g. advisory committee members, affiliated researchers, co-authors etc.). In addition, project Leads should include any other updates and metrics relevant to their specific projects.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="progress_narrative" type="Textarea" blobItem="PROGRESS_NARRATIVE" rich="true" limit="250">
             <![CDATA[
-                <h3>Scientific Excellence - Planning Scorecard</h3>
+                <h3>Scientific Excellence - Planning Scorecard for Year Ending March 31, 2024</h3>
                 <p>In this section we ask you to complete the planning table below to outline objectives, outputs and activities for the next year in the same categories as above. Room is provided for Project Leads to include project-specific activities and metrics beyond those required in the planning template.</p>
                 
                 <p><b>Narrative:</b> Please provide any additional details needed to support the information in the table below (250 words max).</p>
@@ -271,14 +277,14 @@
         <!-- Networking and Partnerships – Progress Report -->
         <ReportItem id="networking" type="Textarea" blobItem="NETWORKING" rich="true">
             <![CDATA[
-                <h2>2. Networking and Partnerships – Progress Report</h2>
-                <p>The project must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex challenges it is designed to address. It must be built on relationships with partners and the receptor community that will accelerate the activities, outcomes and impact of the project. In this section we ask that you document completed objectives, deliverables and project activities related to networking and partnerships of this program of research, including examples of effective collaboration with the private, public and not-for-profit sectors in technology, market development, and public policy development, as well as national and international partnerships that are integral to this project’s success. Please specify <b>national or international partners by sector</b> (e.g. Industry, community, federal, provincial. Activity noted here must also be updated in Forum via the <i>Manage Outputs and Manage Contributions</i> modules. In addition, project Leads should include any other updates and metrics relevant to their specific projects.</p>
+                <h2>2. Networking and Partnerships – Progress Report for Year Ending March 31, 2023</h2>
+                <p>The project must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex challenges it is designed to address. It must be built on relationships with partners and the receptor community that will accelerate the activities, outcomes and impact of the project. In this section we ask that you document completed objectives, deliverables and project activities related to networking and partnerships of this program of research, including examples of effective collaboration with the private, public and not-for-profit sectors in technology, market development, and public policy development, as well as national and international partnerships that are integral to this project’s success. Please specify <b>national or international partners by sector</b> (e.g. Industry, community, federal, provincial. Activity noted here must also be updated in Forum via the <i>Manage Outputs and Manage Contributions</i> modules. In addition, project Leads should include any other updates and metrics relevant to their specific projects. Evaluation of this section will include review of last year’s planning scorecard to gauge the extent to which progress was made towards the previously stated plans (planned objectives, outputs and activities).</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="networking_narrative" type="Textarea" blobItem="NETWORKING_NARRATIVE" rich="true">
             <![CDATA[
-                <h3>Networking and Partnerships - Planning Scorecard</h3>
+                <h3>Networking and Partnerships - Planning Scorecard for Year Ending March 31, 2024</h3>
                 <p>In this section we ask you to complete the planning table below to outline objectives, outputs and activities for the next year in the same categories as above. Room is provided for Project Leads to include project-specific activities and metrics beyond those required in the planning template.</p>
                 <p><b>Narrative:</b> Please provide any additional details needed to support the information in the table below (250 words max).</p>
                 {$item}
@@ -340,14 +346,14 @@
         <!-- Knowledge Mobilization & Commercialization – Progress Report -->
         <ReportItem id="kmc" type="Textarea" blobItem="KMC" rich="true">
             <![CDATA[
-                <h2>3. Knowledge Mobilization & Commercialization – Progress Report</h2>
-                <p>NCE Networks are expected to generate social and economic benefits by ensuring the rapid flow of knowledge, ideas and innovations from researchers to Canadian receptors. Projects are expected to demonstrate that the appropriate activities will be undertaken and the appropriate resources allocated to maximize those benefits through effective stakeholder engagement and communication. In this section we ask that you document completed objectives, deliverables and project activities related to <b>knowledge mobilization</b> and/or commercialization, including examples of knowledge dissemination (e.g. academic and non-academic knowledge dissemination activities; media interviews; policy briefs etc.), <b>product development or management of intellectual property (IP)</b> (e.g. patents, provisional patents, IP disclosures, startup company development etc.). Activity noted here must also be updated in Forum via the <i>Manage Outputs</i> module. In addition, project Leads should include any other updates and metrics relevant to their specific projects.</p>
+                <h2>3. Knowledge Mobilization & Commercialization – Progress Report for Year Ending March 31, 2023</h2>
+                <p>NCE Networks are expected to generate social and economic benefits by ensuring the rapid flow of knowledge, ideas and innovations from researchers to Canadian receptors. Projects are expected to demonstrate that the appropriate activities will be undertaken and the appropriate resources allocated to maximize those benefits through effective stakeholder engagement and communication. In this section we ask that you document completed objectives, deliverables and project activities related to knowledge mobilization and/or commercialization from 2022-23, including examples of <b>knowledge dissemination</b> (e.g. academic and non-academic knowledge dissemination activities; media interviews; policy briefs etc.), <b>product development or management of intellectual property (IP)</b> (e.g. patents, provisional patents, IP disclosures, startup company development etc.). Activity noted here must also be updated in Forum via the <i>Manage Outputs</i> module. In addition, project Leads should include any other updates and metrics relevant to their specific projects. Evaluation of this section will include review of last year’s planning scorecard to gauge the extent to which progress was made towards the previously stated plans (planned objectives, outputs and activities).</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="kmc_narrative" type="Textarea" blobItem="KMC_NARRATIVE" rich="true">
             <![CDATA[
-                <h3>Knowledge Mobilization and Commercialization - Planning Scorecard</h3>
+                <h3>Knowledge Mobilization and Commercialization - Planning Scorecard for Year Ending March 31, 2024</h3>
                 <p>In this section we ask you to complete the planning table below to outline objectives, outputs and activities for the next year in the same categories as above. Room is provided for Project Leads to include project-specific activities and metrics beyond those required in the planning template.</p>
                 <p><b>Narrative:</b> Please provide any additional details needed to support the information in the table below (250 words max).</p>
                 {$item}
@@ -428,13 +434,13 @@
         <ReportItem id="hqp" type="Textarea" blobItem="HQP" rich="true">
             <![CDATA[
                 <h2>4. Training of HQP – Progress Report</h2>
-                <p>AGE-WELL’s EPIC training program is designed to add value to the formal training initiatives already available through the academic community and should aim at helping HQP find employment in the Canadian economy, particularly in sectors related to technology and aging.  HQP should be directly involved in the range of activities in a multi-disciplinary team research project and should have opportunities to collaborate with project partners and network members. In this section we ask that you document completed objectives, deliverables and project activities related to the development of HQP for this program of research, including a summary of the project’s training portfolio (e.g. recruitment and retention metrics, HQP-led publications, internships completed etc.) and engagement of HQP in network training opportunities (e.g. enrolment in EPIC training program).Activity noted here must also be updated in Forum via the Manage Outputs and EPIC modules. In addition, project Leads should include any other updates and metrics relevant to their specific projects.</p>
+                <p>AGE-WELL’s EPIC training program is designed to add value to the formal training initiatives already available through the academic community and should aim at helping HQP find employment in the Canadian economy, particularly in sectors related to technology and aging.  HQP should be directly involved in the range of activities in a multi-disciplinary team research project and should have opportunities to collaborate with project partners and network members. In this section we ask that you document completed objectives, deliverables and project activities related to the development of HQP for this program of research 2022-23, including a summary of the project’s <b>training portfolio</b> (e.g. recruitment and retention metrics, HQP-led publications, internships completed etc.) and engagement of HQP in network training opportunities (e.g. enrolment in EPIC training program).Activity noted here must also be updated in Forum via the Manage Outputs and EPIC modules. In addition, project Leads should include any other updates and metrics relevant to their specific projects. Evaluation of this section will include review of last year’s planning scorecard to gauge the extent to which progress was made towards the previously stated plans (planned objectives, outputs and activities). </p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="hqp_narrative" type="Textarea" blobItem="HQP_NARRATIVE" rich="true">
             <![CDATA[
-                <h3>HQP Training - Planning Scorecard</h3>
+                <h3>HQP Training - Planning Scorecard for Year Ending March 31, 2024</h3>
                 <p>In this section we ask you to complete the planning table below to outline objectives, outputs and activities for the next year in the same categories as above. Room is provided for Project Leads to include project-specific activities and metrics beyond those required in the planning template.</p>
                 <p><b>Narrative:</b> Please provide any additional details needed to support the information in the table below (250 words max).</p>
                 {$item}

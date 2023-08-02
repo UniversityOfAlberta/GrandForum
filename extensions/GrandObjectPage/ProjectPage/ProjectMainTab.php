@@ -423,6 +423,10 @@ class ProjectMainTab extends AbstractEditableTab {
             else { $this->html .= "\n<div style='display:flex;flex-wrap:wrap;width:100%;'>"; }
             $this->showRole(PL);
             $this->showRole(PA);
+            if($config->getValue('networkName') == "GlycoNet" && $this->project->getType() == "Administrative"){
+                $this->showRole("GIS Leader");
+                $this->showRole("GIS Manager");
+            }
             if($this->project->getType() == "Innovation Hub"){
                 $this->showRole(null, 'Innovation Hub Team');
             }

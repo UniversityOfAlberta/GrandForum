@@ -77,10 +77,13 @@ class TabbedPage {
             </script>");
         $wgOut->addHTML("<div style='display:none;' id='{$this->id}'>");
         $wgOut->addHTML("<ul>");
+        $pdftabs = @explode(",", $_GET['tab']);
         foreach($this->tabs as $tab){
             if(isset($_GET['generatePDF']) && $me->isLoggedIn()){
                 if($tab->canGeneratePDF()){
-                    $tab->generatePDFBody();
+                    if(@$_GET['tab'] == "" || array_search($tab->id, $pdftabs) !== false){
+                        $tab->generatePDFBody();
+                    }
                 }
                 continue;
             }

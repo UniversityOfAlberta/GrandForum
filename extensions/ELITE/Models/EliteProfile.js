@@ -82,7 +82,7 @@ PhDScienceEliteProfile = EliteProfile.extend({
     
 });
 
-PhDScienceEliteProfile = EliteProfiles.extend({
+PhDScienceEliteProfiles = EliteProfiles.extend({
     
     model: PhDScienceEliteProfile,
     

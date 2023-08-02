@@ -35,16 +35,21 @@ class Report extends AbstractReport{
         }
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
 
-        foreach($person->getProjects() as $project){
-            if($person->isRole(PL, $project) || $person->isRole(PA, $project) || $person->isRole(RP, $project)){
-                if($project->getName() == "P11" || $project->getName() == "P12"){
+        foreach($person->getProjects(true) as $project){
+            if($person->isRole(PL, $project) || 
+               $person->isRole(PA, $project) || 
+               $person->isRole(RP, $project) ||
+               $person->isRoleDuring(PL, $project->getStartDate(), $project->getEndDate(), $project) || 
+               $person->isRoleDuring(PA, $project->getStartDate(), $project->getEndDate(), $project) || 
+               $person->isRoleDuring(RP, $project->getStartDate(), $project->getEndDate(), $project)){
+                $date_diff = date_diff(date_create(date('Y-m-d')), date_create($project->getEndDate()), false);
+                if(intval($date_diff->format('%R%a')) <= 60){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectCompletionReport") && isset($_GET['project']) && $_GET['project'] == $project->getName()) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Completion)", "{$url}ProjectCompletionReport&project={$project->getName()}", $selected);
                 }
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectProgressReport") && isset($_GET['project']) && $_GET['project'] == $project->getName()) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Progress)", "{$url}ProjectProgressReport&project={$project->getName()}", $selected);
-            }
-            if($person->isRole(PL, $project) || $person->isRole(PA, $project) || $person->isRole(EXTERNAL, $project)){
+
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectImpactReport") && isset($_GET['project']) && $_GET['project'] == $project->getName()) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Impact)", "{$url}ProjectImpactReport&project={$project->getName()}", $selected);
             }

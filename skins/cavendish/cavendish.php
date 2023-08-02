@@ -126,7 +126,7 @@ class CavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.limit-1.2.source.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.multiLimit.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.combobox.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.chosen.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.chosen.js?version=1.8.3"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.caret.1.02.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.triggeredAutocomplete.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.filterByText.js"></script>
@@ -149,7 +149,7 @@ class CavendishTemplate extends QuickTemplate {
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
         <script type="text/javascript"  src="//cdn.zingchart.com/zingchart.min.js"></script>
-
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.qtip.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.forceNumeric.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.form.min.js"></script>
@@ -276,10 +276,17 @@ class CavendishTemplate extends QuickTemplate {
 		    allowedRoles = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedRoles()); ?>;
 		    allowedProjects = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedProjects()); ?>;
 		    allowedThemes = <?php echo json_encode(Theme::getAllowedThemes()); ?>;
+		    allowedVisibility = <?php if($me->isRoleAtLeast(STAFF)){ 
+		                                  echo json_encode(array('Public','Forum','Manager')); 
+		                              } 
+		                              else { 
+		                                  echo json_encode(array('Public','Forum')); 
+		                              } ?>;
 		    isAllowedToCreateNewsPostings = <?php echo json_encode(NewsPosting::isAllowedToCreate()); ?>;
 		    isAllowedToCreateEventPostings = <?php echo json_encode(EventPosting::isAllowedToCreate()); ?>;
 		    isAllowedToCreateBSIPostings = <?php echo json_encode(BSIPosting::isAllowedToCreate()); ?>;
 		    isAllowedToCreateCRMContacts = <?php echo json_encode(CRMContact::isAllowedToCreate()); ?>;
+		    isAllowedToCreateLIMSContacts = <?php echo json_encode(LIMSContact::isAllowedToCreate()); ?>;
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    roleDefs = <?php echo json_encode($config->getValue('roleDefs')); ?>;
 		    subRoles = <?php $subRoles = $config->getValue('subRoles'); asort($subRoles); echo json_encode($subRoles); ?>;
@@ -293,6 +300,7 @@ class CavendishTemplate extends QuickTemplate {
 		    skin = "<?php echo $config->getValue('skin'); ?>";
 		    orcidId = "<?php echo $config->getValue('orcidId'); ?>";
 		    fitbitId = "<?php echo $config->getValue('fitbitId'); ?>";
+		    currentTimestamp = "<?php echo currentTimestamp(); ?>";
 		    projectPhase = <?php echo PROJECT_PHASE; ?>;
 		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
 		    showNonNetwork = <?php var_export($config->getValue("showNonNetwork")) ?>;
@@ -317,7 +325,7 @@ class CavendishTemplate extends QuickTemplate {
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
 		    showSideBar = <?php var_export($config->getValue('showSideBar')) ?>;
 		    
-		    var today = new Date().toLocaleDateString('en-CA');
+		    var today = new Date().toISOString().split('T')[0];
 		
 		    function isExtensionEnabled(ext){
 		        return (extensions.indexOf(ext) != -1);
@@ -334,6 +342,10 @@ class CavendishTemplate extends QuickTemplate {
 		        $structure = Product::structure();
 		        echo json_encode($structure);
 		    ?>;
+		    
+		    function base64Conversion(s){
+		        return window.btoa(unescape(encodeURIComponent(s)));
+		    }
 		    
 		    function changeImg(el, img){
                 $(el).attr('src', img);

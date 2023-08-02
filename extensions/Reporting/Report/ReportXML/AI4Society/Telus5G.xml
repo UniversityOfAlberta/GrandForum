@@ -11,24 +11,24 @@
                 <ul>
                     <li>Be led by a full-time faculty member of the University of Alberta</li>
                     <li>Be relevant to the focus of the Telus 5G Living lab</li>
-                    <li>Have a budget between of at most $100K</li>
+                    <li>Have a budget between 50K and $100K</li>
                     <li>Must have a commercial potential</li>
                     <li>Indicate a potential customer/receptor to guide the research and innovation</li>
                 </ul>
                 
-                <p><b>Submission Deadline: September 30, 2022</b></p>
+                <p><b>Submission Deadline: June 30, 2023</b></p>
                 
                 <p><b>Purpose:</b></p>
-                <p>The purpose of this call is to assemble a set of research proposals that can exploit the UAlberta 5G Living Lab infrastructure to full commercial potential.  We are seeking funding from Prairies Can and Alberta Innovates through this new innovation pathway.</p>
+                <p>The purpose of this call is to assemble a set of research proposals that can exploit the UAlberta 5G Living Lab infrastructure to its full commercial potential. We are seeking funding from Prairies Can and Alberta Innovates through this new innovation pathway.</p>
                 
-                <p>The 5G UAlberta Living Lab model will utilize a unique approach to developing and commercializing technologies.  The UAlberta Living Lab will use a design thinking approach by involving end-users early in the project. The end-user will help define the problem and design the solution, and will be the ‘first customer’ for the product.</p>
+                <p>The 5G UAlberta Living Lab model will utilize a unique approach to developing and commercializing technologies. The UAlberta Living Lab will use a design thinking approach by involving end-users early in the project. The end-user will help define the problem and design the solution and will be the ‘first customer’ for the product.</p>
                 
-                <p>Design thinking is a powerful process of problem solving that begins with understanding unmet customer needs. From that insight emerges a process for innovation that encompasses concept development, applied creativity, prototyping, and experimentation. When design thinking approaches are applied to business, the success rate for solving for the customer improves substantially.</p>
+                <p>Design thinking is a powerful process of problem-solving that begins with understanding unmet customer needs. From that insight emerges a process for innovation that encompasses concept development, applied creativity, prototyping, and experimentation. When design thinking approaches are applied to business, the success rate for solving for the customer improves substantially.</p>
                 
-                <p>Together with commercialization partners like TELUS, strong technology candidates will be ushered through the UAlberta Living Lab using this approach.  Chosen projects will transform Alberta’s digital infrastructure and sustainability.  Initial use cases have specific customers in mind - however the development and prototyping of these solutions can be expanded across multiple industry verticals and impact markets, thus creating a <b>sustainable IP and technology future for Alberta</b>.</p>
+                <p>Together with commercialization partners like TELUS, strong technology candidates will be ushered through the UAlberta Living Lab using this approach. Chosen projects will transform Alberta’s digital infrastructure and sustainability. Initial use cases have specific customers in mind - however, the development and prototyping of these solutions can be expanded across multiple industry verticals and impact markets, thus creating a <b>sustainable IP and technology future for Alberta</b>.</p>
                 
                 <p><b>Process:</b></p>
-                <p>The submissions will be reviewed by the CNAS ADRs.  All submissions will receive feedback from the committee.</p>
+                <p>The submissions will be reviewed by the CNAS ADRs. Up to 4 submissions will be selected as use cases to be included in a University of Alberta submission to Prairies Can and Alberta Innovates Ecosystem Development and Partnerships Program (https://albertainnovates.ca/programs/ecosystem-development-partnerships-program/). All submissions will receive feedback from the committee.</p>
                 
                 <p>Once the Prairies Can proposal has been funded a new call for complete proposals will be issued.</p>
                 
@@ -54,6 +54,27 @@
         <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true" limit="500">
             <![CDATA[
                 <h2>Overview - Scientific Rationale and Fit with the Telus 5G Living Lab</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="commercialization" type="Textarea" blobItem="COMMERCIALIZATION" rich="true" limit="200" height="150px">
+            <![CDATA[
+                <h3>Commercialization Opportunities</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+         <ReportItem id="existing_ip" type="Radio" blobItem="EXISTING_IP" options="Yes|No">
+            <![CDATA[
+                <h3>Indicate if your research will make use of existing IP</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_ip_explain" type="Textarea" blobItem="EXISTING_IP_EXPLAIN" rich="true" limit="200" height="150px">
+            <![CDATA[
+                <p><b>Explanation</b></p>
                 {$item}
             ]]>
         </ReportItem>
@@ -121,17 +142,11 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="existing_ip" type="Radio" blobItem="EXISTING_IP" options="Yes|No">
+        <ReportItem id="telus_funding" type="Radio" blobItem="TELUS_FUNDING" options="Yes|No">
             <![CDATA[
-                <h3>Indicate if your research will make use of existing IP</h3>
+                <h3>Indicate if you want TELUS to consider this application for their possible funding</h3>
                 {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="existing_ip_explain" type="Textarea" blobItem="EXISTING_IP_EXPLAIN" rich="true" limit="200" height="150px">
-            <![CDATA[
-                <p><b>Explanation</b></p>
-                {$item}
+                <small>Note: for a research project that is solely sponsored by TELUS whether by cash or in-kind contributions, where there are no other sources of funding. After the completion of the project, TELUS will have an exclusive royalty-free license for 18 months, after which TELUS will have the option of negotiating an exclusive royalty-based license agreement.</small>
             ]]>
         </ReportItem>
     </ReportSection>

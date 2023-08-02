@@ -471,7 +471,7 @@ class Person extends BackboneModel {
      */
     static function generateUniversityCache(){
         if(empty(self::$universityCache)){
-            $sql = "SELECT user_id, university_name, department, position, end_date
+            $sql = "SELECT user_id, university_name, faculty, department, position, start_date, end_date
                     FROM grand_user_university uu, grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
@@ -481,8 +481,11 @@ class Person extends BackboneModel {
                 if(!isset(self::$universityCache[$row['user_id']])){
                     self::$universityCache[$row['user_id']] = 
                         array("university" => $row['university_name'],
+                              "faculty"    => $row['faculty'],
                               "department" => $row['department'],
                               "position"   => $row['position'],
+                              "start"      => $row['start_date'],
+                              "end"        => $row['end_date'],
                               "date"       => $row['end_date']);
                 }
             }
@@ -560,13 +563,29 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns an array of all Faculty names
+     * @return array An array of all Faculty names
+     */
+    static function getAllFaculties(){
+        //TODO: This should eventually be extracted to a new Class
+        $data = DBFunctions::select(array('grand_user_university'),
+                                    array('faculty'),
+                                    array());
+        $faculties = array();
+        foreach($data as $row){
+            $faculties[$row['faculty']] = $row['faculty'];
+        }
+        return $faculties;
+    }
+    
+    /**
      * Returns an array of all Department names
      * @return array An array of all Department names
      */
     static function getAllDepartments(){
         //TODO: This should eventually be extracted to a new Class
         $data = DBFunctions::select(array('grand_user_university'),
-                                    array('*'),
+                                    array('department'),
                                     array());
         $departments = array();
         foreach($data as $row){
@@ -2007,12 +2026,17 @@ class Person extends BackboneModel {
      */
     function getNameForForms($sep = ' ') {
         global $config;
+        $name = "";
         if($config->getValue('includeMiddleName') && $this->getMiddleName() != "")
-            return str_replace("\"", "<span class='noshow'>&quot;</span>", trim("{$this->getFirstName()} {$this->getMiddleName()} {$this->getLastName()}"));
+            $name = str_replace("\"", "<span class='noshow'>&quot;</span>", trim("{$this->getFirstName()} {$this->getMiddleName()} {$this->getLastName()}"));
         else if (!empty($this->realname))
-            return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
+            $name = str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
         else
-            return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
+            $name = str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
+        if(empty($name)){
+            $name = "";
+        }
+        return $name;
     }
 
     private function formatName($matches){
@@ -2022,9 +2046,9 @@ class Person extends BackboneModel {
             $match1 = str_replace("%first", $this->getFirstName(), $match1);
             $match1 = str_replace("%middle", str_replace(".","",$this->getMiddleName()), $match1);
             $match1 = str_replace("%last", $this->getLastName(), $match1);
-            $match1 = str_replace("%f", substr($this->getFirstName(), 0,1), $match1);
-            $match1 = str_replace("%m", substr($this->getMiddleName(), 0,1), $match1);
-            $match1 = str_replace("%l", substr($this->getLastName(),0,1), $match1);
+            $match1 = str_replace("%f", mb_substr($this->getFirstName(), 0,1), $match1);
+            $match1 = str_replace("%m", mb_substr($this->getMiddleName(), 0,1), $match1);
+            $match1 = str_replace("%l", mb_substr($this->getLastName(), 0,1), $match1);
 
             $match2 = str_replace("%first", "", $match2);
             $match2 = str_replace("%middle", "", $match2);
@@ -2054,6 +2078,9 @@ class Person extends BackboneModel {
         $format = strtolower($format);
         $format = preg_replace_callback($regex,"self::formatName",$format);
         $format = str_replace("\"", "<span class='noshow'>&quot;</span>", $format);
+        if(empty($format)){
+            $format = "";
+        }
         return $format;
     }
 
@@ -2298,8 +2325,13 @@ class Person extends BackboneModel {
      * @return string The name of the faculty
      */
     function getFaculty(){
+        global $config;
+        $university = $this->getUniversity();
         $department = $this->getDepartment();
-        if(isset(Person::$facultyMap[$department])){
+        if(isset($university['faculty']) && $university['faculty'] != ""){
+            return $university['faculty'];
+        }
+        else if(isset(Person::$facultyMap[$department])){
             return Person::$facultyMap[$department];
         }
         return "";
@@ -2321,7 +2353,17 @@ class Person extends BackboneModel {
     function getPosition(){
         $university = $this->getUniversity();
         return (isset($university['position'])) ? $university['position'] : "Unknown";
-    }    
+    }
+    
+    function getUniStart(){
+        $university = $this->getUniversity();
+        return (isset($university['start'])) ? $university['start'] : "";
+    }
+    
+    function getUniEnd(){
+        $university = $this->getUniversity();
+        return (isset($university['end'])) ? $university['end'] : "";
+    }   
     
     /**
      * Used by CCVExport to determine the current position of active/inactive HQP
@@ -2414,6 +2456,7 @@ class Person extends BackboneModel {
                 foreach($data as $row){
                     if($row['university_name'] != "Unknown"){
                         $universities[] = array("university" => $row['university_name'],
+                                                "faculty"    => $row['faculty'],
                                                 "department" => $row['department'],
                                                 "position"   => $row['position'],
                                                 "start" => $row['start_date'],
@@ -2426,6 +2469,23 @@ class Person extends BackboneModel {
         return $this->universityDuring[$startRange.$endRange];
     }
     
+    function getPreviousUniversity(){
+        $universities = $this->getUniversitiesDuring("0000-00-00", "2100-01-01");
+        if(count($universities) > 1){
+            usort($universities, function($a, $b){
+                return ($a['start'] < $b['start']);
+            });
+            return @$universities[1];
+        }
+        // None found, use the 'default' values
+        return array("university" => "",
+                     "faculty"    => "",
+                     "department" => "",
+                     "position"   => "",
+                     "start"      => "",
+                     "end"        => "");
+    }
+    
     function getFirstUniversity(){
         $universities = $this->getUniversitiesDuring("0000-00-00", "2100-01-01");
         if(count($universities) > 0){
@@ -2436,10 +2496,11 @@ class Person extends BackboneModel {
         }
         // None found, use the 'default' values
         return array("university" => $this->getUni(),
+                     "faculty"    => $this->getFaculty(),
                      "department" => $this->getDepartment(),
                      "position"   => $this->getPosition(),
-                     "start" => "",
-                     "end" => "");
+                     "start" => $this->getUniStart(),
+                     "end" => $this->getUniEnd());
     }
     
     /**
@@ -2458,6 +2519,7 @@ class Person extends BackboneModel {
         if(count($data) > 0){
             foreach($data as $row){
                 $array[] = array("university" => $row['university_name'],
+                                 "faculty"    => $row['faculty'],
                                  "department" => $row['department'],
                                  "position"   => $row['position'],
                                  "start" => $row['start_date'],
@@ -3069,7 +3131,7 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_user_university' => 'uu',
                                           'grand_universities' => 'u',
                                           'grand_positions' => 'p'),
-                                    array('uu.id', 'uu.user_id', 'u.university_name', 'uu.department', 'p.position', 'uu.start_date', 'uu.end_date'),
+                                    array('uu.id', 'uu.user_id', 'u.university_name', 'uu.faculty', 'uu.department', 'p.position', 'uu.start_date', 'uu.end_date'),
                                     array('uu.user_id' => EQ($this->id),
                                           'u.university_id' => EQ(COL('uu.university_id')),
                                           'p.position_id' => EQ(COL('uu.position_id'))),
@@ -3079,6 +3141,7 @@ class Person extends BackboneModel {
                 'id' => $row['id'],
                 'university' => $row['university_name'],
                 'personId' => $this->getId(),
+                'faculty' => $row['faculty'],
                 'department' => $row['department'],
                 'position' => $row['position'],
                 'startDate' => $row['start_date'],
@@ -3575,13 +3638,13 @@ class Person extends BackboneModel {
         if(count($role_objs) > 0){
             $defaultSkip = false;
             foreach($role_objs as $r){
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $defaultSkip = true;
                 }
             }
             foreach($role_objs as $r){
                 $skip = $defaultSkip;
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $skip = true;
                     foreach($r->getProjects() as $p){
                         if($p != null && $p->getId() == $project->getId()){
@@ -3635,13 +3698,13 @@ class Person extends BackboneModel {
         if(count($role_objs) > 0){
             $defaultSkip = false;
             foreach($role_objs as $r){
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $defaultSkip = true;
                 }
             }
             foreach($role_objs as $r){
                 $skip = $defaultSkip;
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $skip = true;
                     foreach($r->getProjects() as $p){
                         if($p->getId() == $project->getId()){
@@ -3709,13 +3772,13 @@ class Person extends BackboneModel {
         if(count($role_objs) > 0){
             $defaultSkip = false;
             foreach($role_objs as $r){
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $defaultSkip = true;
                 }
             }
             foreach($role_objs as $r){
                 $skip = $defaultSkip;
-                if($project != null && count($r->getProjects()) > 0){
+                if($project != null){
                     $skip = true;
                     foreach($r->getProjects() as $p){
                         if($p->getId() == $project->getId()){

@@ -4,12 +4,12 @@
         <% if(!splitDept){ %>
             <tr><td align="right"><b><%= deptsTerm %>:</b></td><td><%= HTML.Select(this, 'department', {options: allDepartments}) %></td></tr>
         <% } else { %>
-            <tr><td align="right"><b>Faculty:</b></td><td><%= HTML.TextBox(this, 'department_fac', {}) %></td></tr>
-            <tr><td align="right"><b>Department:</b></td><td><%= HTML.TextBox(this, 'department_dept', {}) %></td></tr>
+            <tr><td align="right"><b>Faculty:</b></td><td><%= HTML.Select(this, 'faculty', {options: allFaculties}) %></td></tr>
+            <tr><td align="right"><b>Department:</b></td><td><%= HTML.Select(this, 'department', {options: allDepartments}) %></td></tr>
         <% } %>
         <tr><td align="right"><b>Position:</b></td><td>
-        <% if(_.where(this.person.roles.toJSON(), {role: HQP}).length > 0 && 
-              _.filter(this.person.roles.toJSON(), function(r){ return !(r.role == HQP || r.role == PL || r.role == PS); }).length == 0){ %>
+        <% if(_.where(currentRoles.toJSON(), {role: HQP}).length > 0 && 
+              _.filter(currentRoles.toJSON(), function(r){ return !(r.role == HQP || r.role == PL || r.role == PS); }).length == 0){ %>
             <%= HTML.Select(this, 'position', {options: ["Other", 
                                                          "Graduate Student - Master's", 
                                                          "Graduate Student - Doctoral", 

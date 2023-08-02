@@ -253,7 +253,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
         </ReportItem>
         <Static>
             <![CDATA[
-                <h3>4.5 Please attach or link to any knowledge mobilization products you developed.</h3>
+                <h4>Please attach or link to any knowledge mobilization products you developed.</h4>
             ]]>
         </Static>
         <For from="1" to="20">
@@ -269,30 +269,17 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 {$item}<br />
             ]]>
         </ReportItem>
-        <!--ReportItem id="topics" type="Checkbox" blobItem="TOPICS" blobType="BLOB_ARRAY" limit="5" options="Graphic design (e.g. report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Collaborative data analysis with stakeholders|Stakeholder/Partner engagement|Partnership building (e.g. resources and activities for enhancing action in partnership)|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other" delimiter="&lt;br />">
+        <ReportItem id="findings" type="Radio" blobItem="FINDINGS" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <h3>4.6 What knowledge mobilization outputs might you need MtS’s support within the next six months?</h3>
+                <h3>4.5 Do you have any preliminary findings you would be willing to share with the network for possible synergies?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="topics_other" type="Text" width="200px" blobItem="TOPICS_OTHER">
+        <ReportItem id="findings_describe" type="Textarea" rich="true" blobType="BLOB_TEXT" blobItem="FINDINGS_DESCRIBE">
             <![CDATA[
-                <br />
-                <i>{$item}</i>
+                {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="Checkbox" blobItem="SUPPORT" blobType="BLOB_ARRAY" limit="3" options="Live webinar presentations (webinars are presentations on a specific topic featuring a guest speaker and a Q&amp;A session)|Live web-workshops (web-workshops are interactive sessions on a specific topic that involve sharing of practical tools, methods or strategies and provide participants with an opportunity to apply tools and template during small group work)|Webinar and workshops recordings|Web-exchange sessions with other researchers (web-exchange sessions feature one or two presenters sharing a story illustrating a specific topic/challenge and a group dialogue involving other participants sharing their experiences and insights in relation to the featured topic)|Co-creation workshops (topic-focused sessions tailored to the needs of the project team, e.g. evaluation planning, strategic planning, consensus building, product design, etc. and facilitated by MtS/COH staff with an appropriate level of expertise)|Individual coaching sessions with MtS KMb and Communications staff (one-on-one consultations on a specific issue, e.g. online facilitation, partnership building, etc)|Curated online content (a collection of resources on a broad range of topics in the context of youth homelessness prevention research)|Other" delimiter="&lt;br />">
-            <![CDATA[
-                <h3>4.7 How do you like us to deliver our support to you?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="support_other" type="Text" width="200px" blobItem="SUPPORT_OTHER">
-            <![CDATA[
-                <br />
-                <i>{$item}</i><br /><br />
-            ]]>
-        </ReportItem-->
     </ReportSection>
     <ReportSection id="learning" type="EditableReportSection" blobSection="SECTION5" name="5 - Learning" title="SECTION 5 LEARNING FROM YOUR PROJECT (Optional)" tooltip="SECTION 5 LEARNING FROM YOUR PROJECT (Optional)" pagebreak="false">
         <Static>

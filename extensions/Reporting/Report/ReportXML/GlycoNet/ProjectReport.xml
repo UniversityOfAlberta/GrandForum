@@ -91,7 +91,7 @@
         <If id="is_pl" if="{contains({$my_full_roles},PL)}">
             <!-- Project Leader View -->
             <![CDATA[
-                <p><b>Deadline: April 15, 2022</b></p>
+                <p><b>Deadline: April 15, 2023</b></p>
                 <p><b>Before completing the report:</b></p>
                 <ul>
                     <li>Update the personal information on your Forum profile</li>
@@ -128,7 +128,7 @@
         <If id="not_pl1" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
             <![CDATA[
-                <p><b>Deadline: April 15, 2022</b></p>
+                <p><b>Deadline: April 15, 2023</b></p>
                 <p><b>Before completing the report:</b></p>
                 <ul>
                     <li>Update the personal information on your Forum profile</li>
@@ -361,7 +361,6 @@
                     {set(deliverables,)}
                     {set(edi,)}
                     {set(lay_summary,)}
-                    {set(covid,)}
                     {set(impact,)}
                     {set(benefits,)}
                 ]]>
@@ -390,12 +389,6 @@
                         {set(lay_summary,{concat({get(lay_summary)}, 
                             {concat(<h3>{$user_name}</h3>,
                                 {getText(RP_PROGRESS,ACHIEVEMENTS,LAY_SUMMARY,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(covid,{concat({get(covid)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,COVID,{$user_id},0,{$project_id})}
                             )}
                         )})}
                         
@@ -459,18 +452,6 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="covid_popup" type="PopupReportItem" title="NI Comments" text="{get(covid)}">
-                <![CDATA[
-                    <p><b>Impact of COVID-19</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="covid" type="Textarea" blobItem="COVID" rich="true">
-                <![CDATA[
-                    <small><br />Describe the impact of the COVID-19 pandemic on your project.</small>
-                    {$item}
-                ]]>
-            </ReportItem>
             <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(impact)}">
                 <![CDATA[
                     <p><b>Future Directions</b></p>
@@ -521,13 +502,6 @@
                 <![CDATA[
                     <p><b>Lay Summary</b></p>
                     <small>Highlight the impact of the project over the past year in five sentences.  This summary may be included in the GlycoNet Annual Report.</small>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="covid" type="Textarea" blobItem="COVID" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Impact of COVID-19</b></p>
-                    <small>Describe the impact of the COVID-19 pandemic on your project.</small>
                     {$item}
                 ]]>
             </ReportItem>

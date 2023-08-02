@@ -10,6 +10,9 @@ class PercCell extends Cell{
             $this->target = intval($params[0]);
         }
         if($cellValue != ""){
+            if(strstr($cellValue, "%") !== false){
+                $cellValue = str_replace('%', '', $cellValue)/100;
+            }
             if(is_numeric($cellValue)){
                 $value = $cellValue;
             }
@@ -32,8 +35,8 @@ class PercCell extends Cell{
     function render(){
         $str = "";
         if($this->value != ""){
-            if(strstr($this->style, "text-align:right;font-family: monospace !important;") === false){
-                $this->style .= "text-align:right;font-family: monospace !important;";
+            if(strstr($this->style, "text-align:right;") === false){
+                $this->style .= "text-align:right;";
             }
             $str = number_format($this->value*100, 0)."%";
         }

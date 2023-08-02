@@ -87,6 +87,12 @@ class UserCreate {
         DBFunctions::update('mw_user',
 	                        array('candidate' => $_POST['candidate']),
 	                        array('user_id' => EQ($wgUser->getId())));
+	                        
+	    if(isset($_POST['nationality']) && $_POST['nationality'] != ""){
+	        DBFunctions::update('mw_user',
+	                            array('user_nationality' => $_POST['nationality']),
+	                            array('user_id' => EQ($wgUser->getId())));
+	    }
         
         UserCreate::addNewUserPage($wgUser);
         DBFunctions::commit();

@@ -3,6 +3,9 @@
 class PersonReportItemSet extends ReportItemSet {
     
     function getData(){
+        global $wgUser;
+        $wgUserBefore = $wgUser;
+        $wgUser = User::newFromId(1); // This is needed for EliteLetters
         $data = array();
         $person = null;
         
@@ -20,7 +23,7 @@ class PersonReportItemSet extends ReportItemSet {
             $tuple['person_id'] = $person->getId();
             $data[] = $tuple;
         }
-
+        $wgUser = $wgUserBefore;
         return $data;
     }
 }

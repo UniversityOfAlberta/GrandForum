@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Science PhD Fellowship Application" reportType="RP_SCI_PHD_ELITE" pdfType="RPTP_SCI_PHD_ELITE" year="0" ajax="true" encrypt="true">
+    <!-- Personally identifying information -->
+    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Application" title="Science PhD Fellowship Application" showProgress="true" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <table width='100%'>
+                    
+            ]]>
+        </Static>
+        <ReportItem id="region" type="Select" blobItem="REGION" options="|Edmonton|Ottawa" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label required">Region:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="last_name" type="Text" blobItem="LAST_NAME" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td colspan="4"><h2 style="margin-top:0;">Personal Information</h2></td>
+                </tr>
+                <tr>
+                    <td class="label">Last Name:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="first_name" type="Text" blobItem="FIRST_NAME" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">First Name:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="middle_name" type="Text" blobItem="MIDDLE_NAME" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Middle Name:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="birthdate" type="Calendar" blobItem="BIRTHDATE" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Date of Birth:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="gender" type="Select" blobItem="GENDER" options="Male|Female|Non-Binary|Other" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Gender:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethnic" type="Radio" blobItem="ETHNIC" options="Black|Indigenous|Other" labels="Black|Indigenous (First Nations, Inuit, and Métis)|Other" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Ethnic Group:</td>
+                    <td class="value" colspan="3"><i>{replace(Other,,{getText(RP_SCI_PHD_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id})})}</i>
+            ]]>
+        </ReportItem>
+        <If if="{contains({getText(RP_SCI_PHD_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id})},Other)}">
+            <ReportItem id="ethnic_other" type="Text" blobItem="ETHNIC_OTHER" placeholder="Other...">
+                <![CDATA[
+                    <i>{$item}</i>
+                ]]>
+            </ReportItem>
+        </If>
+        <Static>
+            <![CDATA[
+                        </td>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="immigration" type="Select" blobItem="IMMIGRATION" options="Citizen|Permanent Resident|Refugee|International Student|Other" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label required">Canadian Immigration Status:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <!-- Other Information -->
+        <Static>
+            <![CDATA[
+                <tr>
+                    <td colspan="4"><h2>Other Information</h2></td>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItem id="program" type="Radio" blobItem="PROGRAM" options="Yes|No" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">Are you currently enrolled in a PhD program?<span style="display:inline-block;line-height:1em;" class="label required"></span></td>
+                </tr>
+                <tr>
+                    <td class="value" colspan="4">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <!-- Contact Information -->
+        <Static>
+            <![CDATA[
+                <tr>
+                    <td colspan="4"><h2>Contact Information</h2></td>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItem id="address1" type="Text" blobItem="ADDRESS1" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label tooltip" title="Street Name and number">Address Line 1:</td>
+                    <td class="value">{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" type="Text" blobItem="EMAIL" encrypt="true">
+            <![CDATA[
+                    <td class="label">E-mail:</td>
+                    <td class="value">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="address2" type="Text" blobItem="ADDRESS2" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label tooltip" title="House, Apt, Suite">Address Line 2:</td>
+                    <td class="value">{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="phone" type="Text" blobItem="PHONE" encrypt="true">
+            <![CDATA[
+                    <td class="label tooltip" title="Phone number of the individual">Cellphone Number:</td>
+                    <td class="value">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="city" type="Text" blobItem="CITY" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label tooltip" title="City">City:</td>
+                    <td class="value">{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_name" type="Text" blobItem="CONTACT_NAME" encrypt="true">
+            <![CDATA[
+                    <td class="label tooltip" title="Name of the individual's emergency contact">Emergency Contact Name:</td>
+                    <td class="value">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="prov" type="Text" blobItem="PROV" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label tooltip" title="Province">Province/State:</td>
+                    <td class="value">{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact" type="Text" blobItem="CONTACT" encrypt="true">
+            <![CDATA[
+                    <td class="label tooltip" title="Phone number of the individual's emergency contact">Emergency Contact:</td>
+                    <td class="value">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="zip" type="Text" blobItem="ZIP" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Zip/Postal Code:</td>
+                    <td class="value">{$item}</td>
+                </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        
+        <!-- Academic Background -->
+        <Static>
+            <![CDATA[
+                <h2>Academic Background</h2>
+            ]]>
+        </Static>
+        <ReportItem id="academic" type="MultiText" blobItem="ACADEMIC" blobType="BLOB_ARRAY" indices="degree|discipline|department|started|awarded" labels="Degree|Name of Discipline|Department, Institution, Country|Month and Year Started|Month and Year awarded/expected" types="Select(Bachelor's,Master's,Doctorate)|Text|Text|Text|Text" multiple="true" class="wikitable" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Scholarships and Other Awards Offered -->
+        <Static>
+            <![CDATA[
+                <h2>Scholarships and Other Awards Offered</h2>
+            ]]>
+        </Static>
+        <ReportItem id="scholarships" type="MultiText" blobItem="SCHOLARSHIPS" blobType="BLOB_ARRAY" indices="name|value|level|type|location|period" labels="Name of Award|Value ($CAD)|Level|Type|Location of Tenure|Period Held" types="Text|Integer|Select(Institutional,Provincial/State,National,International)|Select(Academic,Research,Service,Leadership,Communication)|Text|Text" multiple="true" optional="true" class="wikitable" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Academic, Research and Other Relevant Work Experience -->
+        <Static>
+            <![CDATA[
+                <h2>Academic, Research and Other Relevant Work Experience</h2>
+            ]]>
+        </Static>
+        <ReportItem id="experience" type="MultiText" blobItem="EXPERIENCE" blobType="BLOB_ARRAY" indices="positions|organization|supervisor|period" labels="Position Held and Nature of Work Full Time/Part Time|Organization and Department|Supervisor Name|Period" types="Textarea|Textarea|Text|Text" multiple="true" optional="true" class="wikitable" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Attachments -->
+        <ReportItem id="summary" type="UploadPDF" blobItem="SUMMARY" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
+        <ReportItem id="statement" type="UploadPDF" blobItem="STATEMENT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
+        <ReportItem id="transcripts1" type="UploadPDF" blobItem="TRANSCRIPTS1" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
+        <ReportItem id="transcripts2" type="UploadPDF" blobItem="TRANSCRIPTS2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" optional="true" encrypt="true" />
+        <ReportItem id="transcripts3" type="UploadPDF" blobItem="TRANSCRIPTS3" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" optional="true" encrypt="true" />
+        <ReportItem id="resume" type="UploadPDF" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
+        <ReportItem id="letter1" type="UploadPDF" blobItem="LETTER1" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
+        <ReportItem id="letter2" type="UploadPDF" blobItem="LETTER2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
+        <ReportItem id="letter_other" type="EliteLetters" blobItem="LETTER_OTHER" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2" />
+        
+        <ReportItem id="acknowledgment1" type="Radio" blobItem="ACKNOWLEDGMENT1" options="Yes|No" encrypt="true">
+            <![CDATA[
+                <h2 class="required">Acknowledgment and Agreement</h2>
+                <h3>If accepted to the Fellowship Program, I will apply for admission to the PhD program with a Faculty of Science department at the University of Alberta by the departmental deadline.</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="acknowledgment2" type="Radio" blobItem="ACKNOWLEDGMENT2" options="Yes|No" encrypt="true">
+            <![CDATA[
+                <h3>If accepted to the Fellowship Program, I will participate in the ELITE Program for Black Youth Entrepreneurship Design Series, if offered.</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="elite" type="EliteSubmit" />
+    </ReportSection>
+</Report>

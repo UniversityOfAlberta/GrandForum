@@ -1082,4 +1082,283 @@
             ]]>
         </Static>
     </ReportSection>
+    
+    
+    
+    
+    
+    
+    <ReportSection id="ancillary_review" name="Ancillary Review" tooltip="Review of Ancillary Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="ANCILLARY">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_ANCILLARY_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <Static>
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(q6, 0)}
+                        {set(q7, 0)}
+                        {set(q8, 0)}
+                        {set(q9, 0)}
+                        {set(q10, 0)}
+                        {set(nReviewers, 0)}
+                    ]]>
+                </Static>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="ANCILLARY" includeSelf="true">
+                    <If id="script" if="{and({!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_1,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_3,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_4,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_5,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_6,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_7,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_8,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_9,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_10,{$parent_id},{$user_id},0)},)})}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_3,{$parent_id},{$user_id},0)})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_4,{$parent_id},{$user_id},0)})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_5,{$parent_id},{$user_id},0)})})}
+                            {set(q6, {add({get(q6)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_6,{$parent_id},{$user_id},0)})})}
+                            {set(q7, {add({get(q7)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_7,{$parent_id},{$user_id},0)})})}
+                            {set(q8, {add({get(q8)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_8,{$parent_id},{$user_id},0)})})}
+                            {set(q9, {add({get(q9)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_9,{$parent_id},{$user_id},0)})})}
+                            {set(q10, {add({get(q10)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_10,{$parent_id},{$user_id},0)})})}
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </If>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        <table class='wikitable' id="{$user_id}_table">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4</th>
+                                    <th>Q5</th>
+                                    <th>Q6</th>
+                                    <th>Q7</th>
+                                    <th>Q8</th>
+                                    <th>Q9</th>
+                                    <th>Q10</th>
+                                    <th>Total</th>
+                                    <th width='20%'>Fundability</th>
+                                    <th width='50%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </Static>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="ANCILLARY" includeSelf="true">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right'>{getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_1,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_2,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_3,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_4,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_5,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_6,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_7,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_8,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_9,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_10,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>
+                                {add({getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_1,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_2,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_3,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_4,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_5,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_6,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_7,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_8,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_9,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_10,{$parent_id},{$user_id},0)}
+                                )}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,FUNDABILITY,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>{round({divide({get(q1)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q2)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q3)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q4)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q5)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q6)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q7)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q8)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q9)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q10)},{get(nReviewers)})},2)}</th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)}, 
+                                                 {get(q2)},
+                                                 {get(q3)},
+                                                 {get(q4)},
+                                                 {get(q5)},
+                                                 {get(q6)},
+                                                 {get(q7)},
+                                                 {get(q8)},
+                                                 {get(q9)},
+                                                 {get(q10)},
+                                            )}
+                                        )}
+                                        {round({divide({get(total)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="ancillary_review_summary" name="Ancillary Summary" tooltip="Ancillary Summary" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <table class='wikitable' id="eval_table">
+                    <thead>
+                        <tr>
+                            <th>ECR</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Q4</th>
+                            <th>Avg. Q5</th>
+                            <th>Avg. Q6</th>
+                            <th>Avg. Q7</th>
+                            <th>Avg. Q8</th>
+                            <th>Avg. Q9</th>
+                            <th>Avg. Q10</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="ANCILLARY">
+            <Static>
+                <![CDATA[
+                    {set(q1,0)}
+                    {set(q2,0)}
+                    {set(q3,0)}
+                    {set(q4,0)}
+                    {set(q5,0)}
+                    {set(q6,0)}
+                    {set(q7,0)}
+                    {set(q8,0)}
+                    {set(q9,0)}
+                    {set(q10,0)}
+                    {set(nReviewers,0)}
+                    {set(fundability,)}
+                ]]>
+            </Static>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="ANCILLARY" includeSelf="true">
+                <If id="script" if="{and({!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_1,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_3,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_4,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_5,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_6,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_7,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_8,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_9,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_10,{$parent_id},{$user_id},0)},)})}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_3,{$parent_id},{$user_id},0)})})}
+                        {set(q4, {add({get(q4)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_4,{$parent_id},{$user_id},0)})})}
+                        {set(q5, {add({get(q5)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_5,{$parent_id},{$user_id},0)})})}
+                        {set(q6, {add({get(q6)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_6,{$parent_id},{$user_id},0)})})}
+                        {set(q7, {add({get(q7)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_7,{$parent_id},{$user_id},0)})})}
+                        {set(q8, {add({get(q8)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_8,{$parent_id},{$user_id},0)})})}
+                        {set(q9, {add({get(q9)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_9,{$parent_id},{$user_id},0)})})}
+                        {set(q10, {add({get(q10)},{getNumber(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,ANCILLARY_10,{$parent_id},{$user_id},0)})})}
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </If>
+                <If if="{contains({getText(RP_ANCILLARY_REVIEW,ANCILLARY_REVIEW,FUNDABILITY,{$parent_id},{$user_id},0)},Should not be funded)}">
+                    <![CDATA[
+                        {set(fundability,red)}
+                    ]]>
+                </If>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap; background: {get(fundability)} !important;'><b>{getText(RP_ANCILLARY_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}</b></td>
+                        <td align='right'>{round({divide({get(q1)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q2)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q3)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q4)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q5)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q6)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q7)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q8)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q9)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q10)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>
+                            {set(total, 
+                                {add({get(q1)}, 
+                                     {get(q2)},
+                                     {get(q3)},
+                                     {get(q4)},
+                                     {get(q5)},
+                                     {get(q6)},
+                                     {get(q7)},
+                                     {get(q8)},
+                                     {get(q9)},
+                                     {get(q10)}
+                                )}
+                            )}
+                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                        </td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
 </Report>

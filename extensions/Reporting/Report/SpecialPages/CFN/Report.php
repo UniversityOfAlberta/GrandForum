@@ -76,23 +76,23 @@ class Report extends AbstractReport{
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("ECR Application", "{$url}EarlyCareerApplication", $selected);
         }*/
         if($person->isSubRole("RCHA2021Applicant")){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Intent")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Intent", "{$url}RCHA2021Intent", $selected);
+            /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Intent")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Intent", "{$url}RCHA2021Intent", $selected);*/
         
             /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Application")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Application", "{$url}RCHA2021Application", $selected);*/
         }
-        if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate")){
+        /*if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AncilliaryStudiesIntent")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Ancillary LOI", "{$url}AncilliaryStudiesIntent", $selected);
-        }
+        }*/
+        /*if($person->isSubRole("AncillaryApplicant")){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AncilliaryStudiesApplication")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Ancillary", "{$url}AncilliaryStudiesApplication", $selected);
+        }*/
         /*if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EarlyCareerIntent")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Early Career LOI", "{$url}EarlyCareerIntent", $selected);
-        }*/
-        /*if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate") || $person->getId() == "3124"){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Intent")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Intent", "{$url}RCHA2021Intent", $selected);
         }*/
         if(($person->isRole(HQP) || $person->isRole(HQP."-Candidate")) && $person->isSubRole("IFP2020Applicant")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPApplication")) ? "selected" : false;
@@ -277,6 +277,16 @@ class Report extends AbstractReport{
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
             }
         }
+        // RCHA
+        if(count($person->getEvaluates("ANCILLARY", 2022)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AncillaryReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Ancillary Review", "{$url}AncillaryReview", $selected);
+        }
+        // RCHA
+        if(count($person->getEvaluates("RCHA", 2021)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Review")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("RCHA Review", "{$url}RCHA2021Review", $selected);
+        }
         // ECR
         if(count($person->getEvaluates("ECR-ALONE", 2022)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ECRAloneReview")) ? "selected" : false;
@@ -321,6 +331,9 @@ class Report extends AbstractReport{
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2022")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2022", "{$url}ReviewReport2022", $selected);
+            
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2021")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2021", "{$url}ReviewReport2021", $selected);
             
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2020")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2020", "{$url}ReviewReport2020", $selected);

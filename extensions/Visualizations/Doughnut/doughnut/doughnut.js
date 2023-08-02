@@ -316,13 +316,11 @@ $.fn.doughnut = function(data, clickable, fn){
         var minDim = Math.min(width, height);
         
         this.css('position', 'relative');
-        this.append("<div style='padding-top:" + (minDim - (75+40)*2) + "px;text-align:center;width:" + minDim + "px;height:" + minDim + "px;vertical-align:top;display:inline-block;' id='" + this.attr('id') + "spinner'></div>");
+        this.append("<div class='spinner' style='padding-top:" + (minDim - (75+40)*2) + "px;text-align:center;vertical-align:top;display:inline-block;' id='" + this.attr('id') + "spinner'></div>");
         
-        spin = spinner($(this).attr('id') + 'spinner', 40, 75, 12, 10, '#888');
         var id = $(this).attr('id');
         $.get(data, function(response){
             if(response[0].levels[0].values.length > 0){
-                spin();
                 $("#" + id).empty();
                 if(response[0].width == "100%"){
                     $("#" + id).width("100%");

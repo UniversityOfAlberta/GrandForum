@@ -81,7 +81,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
             
                             <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. FES envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
                             
-                            <p>To learn more about the FES EDI program, <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>visit the EDI pages</a> on our website, or contact FES EDI Coordinator, <a href='mailto:ctays@ualberta.ca'>Dr. Catherine Tays</a>.</p>";
+                            <p>To learn more about the FES EDI program or visit the EDI pages on our <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>website</a>.</p>";
         }
         
         return $this->html;
@@ -122,11 +122,17 @@ class PersonDemographicsTab extends AbstractEditableTab {
         $me = Person::newFromWgUser();
         if($me->isAllowedToEditDemographics($person)){
             $pronounsField = new ComboBox("pronouns", "Pronouns", $person->getPronouns(), array("", "she/her", "he/him", "they/them"));
-            $genderField = new SelectBox("gender", "Gender", $person->getGender(), array("", "Female", "Male", "Gender-Fluid", "Non-Binary", "Two-Spirit", "Other (not listed)", "I prefer not to answer"));
-            $indigenousField = new SelectBox("indigenousStatus", "Indigenous", $person->getIndigenousStatus(), array("", "Yes", "No", "I prefer not to answer"));
-            $disabilityField = new SelectBox("disabilityStatus", "Disability", $person->getDisabilityStatus(), array("", "Yes", "No", "I prefer not to answer"));
-            $minorityField = new SelectBox("minorityStatus", "Minority", $person->getMinorityStatus(), array("", "Yes", "No", "I prefer not to answer"));
-            $ethnicityField = new SelectBox("ethnicity", "Ethnicity", $person->getEthnicity(), array("", "South Asian", "Chinese", "Black", "Filipino", "Latin American", "Arab", "Southeast Asian", "West Asian", "Korean", "Japanese", "Other visible minority (not listed)", "Multiple visible minorities", "Prefer not to answer"));
+            $genderField = new SelectBox("gender", "Gender", $person->getGender(), array("Female", "Male", "Gender-Fluid", "Non-Binary", "Two-Spirit", "Other (not listed)", "I prefer not to answer"));
+            $indigenousField = new SelectBox("indigenousStatus", "Indigenous", $person->getIndigenousStatus(), array("Yes", "No", "I prefer not to answer"));
+            $disabilityField = new SelectBox("disabilityStatus", "Disability", $person->getDisabilityStatus(), array("Yes", "No", "I prefer not to answer"));
+            $minorityField = new SelectBox("minorityStatus", "Minority", $person->getMinorityStatus(), array("Yes", "No", "I prefer not to answer"));
+            $ethnicityField = new SelectBox("ethnicity", "Ethnicity", $person->getEthnicity(), array("South Asian", "Chinese", "Black", "Filipino", "Latin American", "Arab", "Southeast Asian", "West Asian", "Korean", "Japanese", "Other visible minority (not listed)", "Multiple visible minorities", "Prefer not to answer"));
+            
+            $genderField->emptyIfEmpty = true;
+            $indigenousField->emptyIfEmpty = true;
+            $disabilityField->emptyIfEmpty = true;
+            $minorityField->emptyIfEmpty = true;
+            $ethnicityField->emptyIfEmpty = true;
             
             $this->html .= "<h3>Pronouns</h3>
                             {$pronounsField->render()}
@@ -152,7 +158,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
             
                             <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. FES envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
                             
-                            <p>To learn more about the FES EDI program, <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>visit the EDI pages</a> on our website, or contact FES EDI Coordinator, <a href='mailto:ctays@ualberta.ca'>Dr. Catherine Tays</a>.</p>
+                            <p>To learn more about the FES EDI program or visit the EDI pages on our <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>website</a>.</p>
                             
                             <script type='text/javascript'>
                                 $('[name=minorityStatus]').change(function(){

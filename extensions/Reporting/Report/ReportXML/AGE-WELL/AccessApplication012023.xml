@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL Access Award" reportType="RP_ACCESS_01_2023" pdfType="RPTP_ACCESS_01_2023" pdfFiles="AccessApplication012023PDF" year="2023" ajax="true" disabled="true">
+    <Permissions>
+        <Role role="HQP">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="description" tooltip="AGE-WELL Access Award" name="Program Description" type="ReportSection" title="AGE-WELL Access Award">
+        <Static>
+            <![CDATA[
+                <p>The AGE-WELL ACCESS Award offers funding of up to $5000 to support AGE-WELL HQP in experiential learning opportunities such as internships and exchanges as well as to support travel, conference and course fees.</p>
+                <p>The proposed learning activities should be in line with the goals of the AGE-WELL EPIC program (<a href='https://agewell-nce.ca/epic' target='_blank'>https://agewell-nce.ca/epic</a>), such as:</p>
+                <ul>
+                    <li>Experiential learning such as working with industrial or community partners in applied settings</li>
+                    <li>Transdisciplinary learning such as exchanges with labs and research centres in different academic fields from the home department/degree</li>
+                    <li>Conference participation that "extends the reach" of the HQP and of the AGE-WELL Network, including new areas or research, new approaches, new methods</li>
+                    <li>Courses or summer institute participation that will expand the HQP's career path and that are innovation focused</li>
+                </ul>
+
+                <p>Funding will not normally be given for learning and training that falls within the HQP's routine disciplinary training.</p>
+
+                <p>Preference will be given to those HQP seeking funding to undertake activities toward completing the EPIC training program and earning the Innovators of Tomorrow certificate.</p>
+                
+                <h3>Award Term</h3>
+                
+                <table class="wikitable">
+                    <tr>
+                        <th>Applications Due</th>
+                        <th>Award Notifications Sent</th>
+                        <th>Award Activity & Blog Complete By:</th>
+                    </tr>
+                    <tr>
+                        <td>January 13</td>
+                        <td>January 15</td>
+                        <td>May 15</td>
+                    </tr>
+                    <tr>
+                        <td>April 13</td>
+                        <td>April 15</td>
+                        <td>August 15</td>
+                    </tr>
+                    <tr>
+                        <td>July 13</td>
+                        <td>July 15</td>
+                        <td>November 15</td>
+                    </tr>
+                    <tr>
+                        <td>October 13</td>
+                        <td>October 15</td>
+                        <td>February 15 (of the following year)</td>
+                    </tr>
+                </table>
+
+                <h3>Eligibility:</h3> 
+                <ul>
+                    <li>ACCESS awards are only available to AGE-WELL HQP</li>
+                    <li>HQP may only hold only one ACCESS award each calendar year.</li>
+                    <li>ACCESS funds may not be used toward salaries or course fees that are part of your academic degree program.</li>
+                    <li>ACCESS funds may only be used towards an activity scheduled within the 4 month subsequent to award notification (e.g. a January 15 award must be used towards an activity scheduled between January 15 and May 15).</li>
+                </ul>
+                
+                <h3>Terms and Conditions of Funding:</h3>
+                <ol>
+                    <li>All HQP awarded ACCESS funds must use it toward the activity proposed in the application within 4 months of award notification.</li> 
+                    <li>ACCESS award recipients must write and post an 800-1000 word blog post that reflects meaningfully upon the activity undertaken within 4 months of award notification.  These blog posts will be posted on the AGE-WELL members’ intranet.</li>
+                    <li>Highly qualified personnel awarded ACCESS funds will receive the funding directly via reimbursement through University Health Network, our host institution. AGE-WELL will provide a reimbursement up to the specified total amount of award.</li>
+                </ol>
+                
+                <h3>Application Review Criteria:</h3>
+                ACCESS applications will be reviewed using the following criteria:
+                <ol>
+                    <li>Value-add or benefit of the proposed activity to HQP career goals.</li>
+                    <li>Fit with AGE-WELL goal and priorities.</li>
+                    <li>Appropriate budget justification for the proposed activity.</li>
+                </ol>
+                
+                <h3>Required Documents:</h3>
+                <ol>
+                    <li>A brief statement that describes the activity to be undertaken, how much funding you request (up to $5000), and a justification of the funding request that includes both the value to your career and a budget.</li>
+                    <li>Curriculum vitae.</li>
+                </ol>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <h3>Applicant Information</h3>
+                <table>
+                    <tr>
+                        <td><b>Name:&nbsp;</b></td>
+                        <td>{$user_name}</td>
+                    </tr>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <tr>
+                    <td><b>Institution:&nbsp;</b></td>
+                    <td>{$user_uni}</td>
+                </tr>
+                <tr>
+                    <td><b>Program of study/Title:&nbsp;</b></td>
+                    <td>{$user_dept} / {$user_level}</td>
+                </tr>
+                <tr>
+                    <td><b>E-mail:&nbsp;</b></td>
+                    <td>{$user_email}</td>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItem id="telephone" type="TextReportItem" blobItem="TELEPHONE">
+            <![CDATA[
+                <tr>
+                    <td><b>Telephone:&nbsp;</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="address" type="TextReportItem" blobItem="ADDRESS">
+            <![CDATA[
+                <tr>
+                    <td><b>Address:&nbsp;</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+                <h3>Supervisor Information</h3>
+            ]]>
+        </Static>
+        <ReportItemSet id="supervisors" type="PersonSupervisors" startDate="2022-01-31" endDate="2023-01-31">
+            <Static>
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td><b>Name:&nbsp;</b></td>
+                            <td>{$user_name}</td>
+                        </tr>
+                        <tr>
+                            <td><b>University/Institution:&nbsp;</b></td>
+                            <td>{$user_uni}</td>
+                        </tr>
+                        <tr>
+                            <td><b>E-mail:&nbsp;</b></td>
+                            <td>{$user_email}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <ReportItem id="activity" type="TextReportItem" blobItem="ACTIVITY">
+            <![CDATA[
+                <h3>Activity Information</h3>
+                <table>
+                    <tr>
+                        <td><b>Activity type:&nbsp;</b><br />(e.g. conference, lab exchange, internship)</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="TextReportItem" blobItem="TITLE" width="250px">
+            <![CDATA[
+                <tr>
+                    <td><b>Title:&nbsp;</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="date" type="CalendarReportItem" blobItem="DATE" format="dd/mm/yy">
+            <![CDATA[
+                <tr>
+                    <td><b>Date:&nbsp;</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="location" type="TextReportItem" blobItem="LOCATION">
+            <![CDATA[
+                <tr>
+                    <td><b>Location:&nbsp;</b></td>
+                    <td>{$item}</td>
+                </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="transdisciplinary" type="TextareaReportItem" blobItem="TRANSDISCIPLINARY" limit="750" rich="true">
+            <![CDATA[
+                <h2>Statement</h2>
+                <p>Please provide a brief statement (750 words maximum) that describes the activity to be undertaken, how much funding is requested, and a justification of the funding request that includes the value to your career, alignment with the EPIC training program, and a budget. In particular, please describe your intended career path and how an ACCESS award and participation in the proposed activity will advance your studies and/or career.</p>
+                <p>N.B.:  A limited number of ACCESS awards are available.  Preference is given to HQP who are proposing activities toward completing the EPIC program and earning the Innovators of Tomorrow certificate.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h2>Current CV</h2>
+                <p>Go to your <a target='_blank' href='{$user_url}?tab=hqp-profile'>HQP Profile</a> to upload your current CV.</p>
+            ]]>
+        </Static>
+        <If id="cv_if" if="{!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)}">
+            <![CDATA[
+                {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)})}
+                <a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
+            ]]>
+        </If>
+        <If id="cv_ifelse" if="{and({==({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)},
+                                    {!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)},)})}">
+            <![CDATA[
+                {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)})}
+                <a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
+            ]]>
+        </If>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+    </ReportSection>
+</Report>

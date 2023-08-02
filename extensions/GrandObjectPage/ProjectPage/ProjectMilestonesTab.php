@@ -428,11 +428,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $deleteActivity = "<td align='center' style='white-space: nowrap;'><input type='checkbox' name='milestone_activity_delete[$activityId]' style='vertical-align:middle;' /></td>";
                 $deleteColspan = 1;
             }
-            if($this instanceof ProjectFESMilestonesTab){
-                $deleteColspan += 2;
-            }
             $yearOffset = ($this->nYears < $this->maxNYears) ? 2 : 0;
-            $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
+            $this->html .= str_replace("<tr", "<tr id='{$activityId}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
             $this->html .= "<tr class='top_border' data-id='$activityId'>
                                 <td style='background:#555555;color:white;font-weight:bold;' colspan='".($statusColspan+$titleColspan-$deleteColspan+($this->nYears*4) + $yearOffset)."'>{$activity}</td>{$deleteActivity}
                             </tr>";
@@ -560,21 +557,23 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 var colors = ".json_encode(Milestone::$statuses).";
                 
                 var scrollScheduleFn = function(){
+                    var bodyContent = $('#bodyContent');
                     $('table.milestones thead').hide();
                     $('table.milestones').css('overflow-anchor', 'none');
                     $('table.milestones').each(function(i, table){
                         var found = false;
                         var toHide = [];
                         var toShow = [];
-                        $('tr.top_border', table).each(function(i, el){
+                        var topBorder = $('tr.top_border', table);
+                        topBorder.each(function(i, el){
                             var activityId = $(el).attr('data-id');
-                            var extraHeight = $('#bodyContent').position().top - 20;
-                            if(!found && (($(el).offset().top - 100 - extraHeight - window.scrollY) > - $(el).height() || $('tr.top_border', table).length-1 == i)){
-                                toShow.push($('tr[data-activity=' + activityId + ']', table));
+                            var extraHeight = bodyContent.position().top - 20;
+                            if(!found && (($(el).offset().top - 100 - extraHeight - window.scrollY) > - $(el).height() || topBorder.length-1 == i)){
+                                toShow.push($('tr#' + activityId));
                                 found = true;
                             }
                             else{
-                                toHide.push($('tr[data-activity=' + activityId + ']', table));
+                                toHide.push($('tr#' + activityId));
                             }
                         });
                         $(toShow).each(function(){ $(this).show(); });
@@ -582,7 +581,20 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     });
                 };
                 
-                $('#bodyContent').scroll(_.throttle(scrollScheduleFn, 50));
+                $(document).ready(function(){
+                    var nMilestones = $('.milestones tr').length;
+                    var freq = 50;
+                    if(nMilestones >= 250){
+                        freq = 100;
+                    }
+                    else if(nMilestones >= 500){
+                        freq = 200;
+                    }
+                    else if(nMilestones >= 1000){
+                        freq = 250;
+                    }
+                    $('#bodyContent').scroll(_.throttle(scrollScheduleFn, freq));
+                });
                 
                 $('#project').bind('tabsselect', function(event, ui){
                     _.defer(scrollScheduleFn);

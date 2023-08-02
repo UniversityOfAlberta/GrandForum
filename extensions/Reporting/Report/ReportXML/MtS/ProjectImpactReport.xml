@@ -14,6 +14,7 @@
 
         </Role>
         <Project />
+        <Project deleted="true" />
     </Permissions>
     <ReportSection id="introduction" type="EditableReportSection" blobSection="INTRODUCTION" name="1 - Intro &amp; Consent" title="Project Impact Report&lt;div style='margin-top:5px;'>SECTION 1 Introduction and Informed Consent&lt;/div>">
         <Static>
@@ -306,30 +307,19 @@ research partners|Designing interview and/or survey questions|Collecting primar
         <ReportItem id="venues" type="Checkbox" blobItem="VENUES" blobType="BLOB_ARRAY" rich="true" options="Blog post|Summary report|MtS Newsletter entry|Fact sheet or FAQ|Infographic|Handbook|Press release|Promotional material|Report|Research summary|Success story|Partner profile|Toolkit|Video|Webinar|Conference presentation|Workshop report|Lunch and learn event|Media event (e.g. TV, podcast, or radio segment)|Panel or symposium|Training session|Community of practice|Social media|Other">
             <![CDATA[
                 <h3>4.4 What knowledge mobilization outputs (finalized or in the making) that you would like to share with us or promote? (Refer to <a href="https://www.dropbox.com/sh/7lz1ld7r2vn3so6/AAAbXtaQTpQ_ogwl8po1k1FOa?dl=0" target="_blank">Network members manual</a> section 6 for more details). Select all that apply.</h3>
-                {$item}
+                <div style="display:flex;">
+                    <div style='white-space:nowrap;margin-right:15px;'>{$item}</div>
+                    <div>
+                        <h4 style='margin-top:0; padding-top:0;'>Please attach or link to any knowledge mobilization products (finalized or in the making). Please note that the materials you share will be promoted through different MtS communication platforms.</h4>
             ]]>
         </ReportItem>
-        <ReportItem id="venues_other" type="Text" width="200px" blobItem="VENUES_OTHER">
+        <ReportItem id="links" type="Textarea" blobItem="LINKS" rich="true">
             <![CDATA[
-                <div id='venues_other'>Other: {$item}</div>
-                <script type="text/javascript">
-                    $("[name='4KnowledgeMobilization_venues[]']").change(function(){
-                        if($("[name='4KnowledgeMobilization_venues[]'][value='Other']").is(":checked")){
-                            $("#venues_other").show();
-                        }
-                        else{
-                            $("#venues_other").hide();
-                        }
-                    }).change();
-                </script>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                <h3>4.5 Please attach or link to any knowledge mobilization products (finalized or in the making). Please note that the materials you share will be promoted through different MtS communication platforms.</h3>
+                <b>Links (videos, websites)</b>
+                {$item}<br /><br />
                 <b>Files (.doc, .docx, .pdf, .jpg)</b>
             ]]>
-        </Static>
+        </ReportItem>
         <For from="1" to="20">
             <ReportItem id="file{$index}" type="Upload" blobItem="FILES{$index}" blobType="BLOB_RAW" fileSize="5">
                 <![CDATA[
@@ -359,55 +349,51 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 <br /><br />
             ]]>
         </Static>
-        <ReportItem id="links" type="Textarea" blobItem="LINKS" rich="true">
+        <Static>
             <![CDATA[
-                <b>Links (videos, websites)</b>
-                {$item}
+                    </div>
+                </div>
             ]]>
-        </ReportItem>
-        <!--ReportItem id="topics" type="Checkbox" blobItem="TOPICS" blobType="BLOB_ARRAY" limit="5" options="Graphic design (e.g. report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Collaborative data analysis with stakeholders|Stakeholder/Partner engagement|Partnership building (e.g. resources and activities for enhancing action in partnership)|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other">
+        </Static>
+        <ReportItem id="venues_other" type="Text" width="200px" blobItem="VENUES_OTHER">
             <![CDATA[
-                <h3>4.6 What knowledge mobilization outputs might you need MtS’s support within the next six months?  Please select up to five items</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="topics_other" type="Text" width="200px" blobItem="TOPICS_OTHER">
-            <![CDATA[
-                <div id='topics_other'>Other: {$item}</div>
+                <div id='venues_other'>Other: {$item}</div>
                 <script type="text/javascript">
-                    $("[name='4KnowledgeMobilization_topics[]']").change(function(){
-                        if($("[name='4KnowledgeMobilization_topics[]'][value='Other']").is(":checked")){
-                            $("#topics_other").show();
+                    $("[name='4KnowledgeMobilization_venues[]']").change(function(){
+                        if($("[name='4KnowledgeMobilization_venues[]'][value='Other']").is(":checked")){
+                            $("#venues_other").show();
                         }
                         else{
-                            $("#topics_other").hide();
+                            $("#venues_other").hide();
                         }
                     }).change();
                 </script>
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="Checkbox" blobItem="SUPPORT" blobType="BLOB_ARRAY" limit="3" options="Live webinar presentations (webinars are presentations on a specific topic featuring a guest speaker and a Q&amp;A session)|Live web-workshops (web-workshops are interactive sessions on a specific topic that involve sharing of practical tools, methods or strategies and provide participants with an opportunity to apply tools and template during small group work)|Webinar and workshops recordings|Web-exchange sessions with other researchers (web-exchange sessions feature one or two presenters sharing a story illustrating a specific topic/challenge and a group dialogue involving other participants sharing their experiences and insights in relation to the featured topic)|Co-creation workshops (topic-focused sessions tailored to the needs of the project team, e.g. evaluation planning, strategic planning, consensus building, product design, etc. and facilitated by MtS/COH staff with an appropriate level of expertise)|Individual coaching sessions with MtS KMb and Communications staff (one-on-one consultations on a specific issue, e.g. online facilitation, partnership building, etc)|Curated online content (a collection of resources on a broad range of topics in the context of youth homelessness prevention research)|Other">
+        <ReportItem id="findings" type="Radio" blobItem="FINDINGS" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <h3>4.7 How do you like us to deliver our support to you? Please select one to three items</h3>
+                <h3>4.5 Do you have any preliminary findings you would be willing to share with the network for possible synergies?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="support_other" type="Text" width="200px" blobItem="SUPPORT_OTHER">
+        <ReportItem id="findings_describe" type="Textarea" rich="true" blobType="BLOB_TEXT" blobItem="FINDINGS_DESCRIBE">
             <![CDATA[
-                <div id='support_other'>Other: {$item}</div>
-                <p>Disclaimer: pending availability of MtS and AWHC/COH staff</p>
+                <div id='findings_describe'>
+                    <b>Please describe them using bullet points below.</b>
+                    {$item}
+                </div>
                 <script type="text/javascript">
-                    $("[name='4KnowledgeMobilization_support[]']").change(function(){
-                        if($("[name='4KnowledgeMobilization_support[]'][value='Other']").is(":checked")){
-                            $("#support_other").show();
+                    $("[name='4KnowledgeMobilization_findings']").change(function(){
+                        if($("[name='4KnowledgeMobilization_findings'][value='Yes']").is(":checked")){
+                            $("#findings_describe").show();
                         }
                         else{
-                            $("#support_other").hide();
+                            $("#findings_describe").hide();
                         }
                     }).change();
                 </script>
             ]]>
-        </ReportItem-->
+        </ReportItem>
     </ReportSection>
     <ReportSection id="learning" type="EditableReportSection" blobSection="SECTION5" name="5 - Learning" title="SECTION 5 LEARNING FROM YOUR PROJECT (Optional)" tooltip="SECTION 5 LEARNING FROM YOUR PROJECT (Optional)">
         <Static>

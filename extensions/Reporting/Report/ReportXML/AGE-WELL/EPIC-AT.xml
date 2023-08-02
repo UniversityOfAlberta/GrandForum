@@ -1,87 +1,93 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC-AT Award 2022" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT" pdfType="RPTP_EPIC_AT" pdfFiles="EPIC-ATPDF" ajax="true" disabled="true" year="2022">
+<Report name="EPIC-AT Award 2023" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT2" pdfType="RPTP_EPIC_AT2" pdfFiles="EPIC-ATPDF" ajax="true" disabled="true" year="2023">
     <Permissions>
         <Role role="INACTIVE+" />
         <Role role="INACTIVE-Candidate+" />
     </Permissions>
-    <ReportSection id="background" tooltip="Information" name="Information" title="EPIC-AT Health Research Training Platform Fellowships (2022)" type="ReportSection" renderpdf="false">
+    <ReportSection id="background" tooltip="Information" name="Information" title="EPIC-AT Health Research Training Platform Fellowships (2023)" type="ReportSection" renderpdf="false">
         <Static>
             <![CDATA[
                 <h2>Information Package</h2>
-                <h3>Instructions</h3>
-                <ul>
-                    <li>The application is comprised of an online application form and supporting documents detailed below. Late or incomplete applications will not be reviewed. Please note that this includes letters of reference.</li>
-                    <li>Applicants are strongly recommended to complete the EPIC-AT HRTP Fellowship application (Section C of this package in either English or French) using preferred word processing software. The online application portal will open on 23 May, 2022.</li>
-                    <li>Once you are ready to submit your application online, if you have not already done so, you must register with the AGE-WELL Forum Research Portal at https://forum.agewell-nce.ca/index.php/Special:HQPRegister (the form will ask for your name and email). After you submit the registration form, the system will create an account and send your credentials to the email address you provided. Once you login, you will have to reset your temporary password.</li>
-                    <li>The “My Applications” link is in the top right of the page you will reach after resetting your password. Please select “EPIC-AT Award 2022.” Copy your application material and upload supporting documents to the AGE-WELL Forum Research Portal website by 5pm ET on 13 June, 2022.</li>
-                    <li>Letters of support must be sent directly to training@agewell-nce.ca (details in Section B of this package).</li>
-                    <li>Notice of Admissions will be received by August, 2022. Expected start date of fellowship is 1 September, 2022</li>
-                </ul>
-                <p>Contact Information:<br />
-                <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a></p>
+                <h3>A. Instructions</h3>
+                <ol>
+                    <li>The application is comprised of an online application form and supporting documents detailed below. Late or incomplete applications will not be reviewed. Please note that this includes letters of reference which must be uploaded by your referees into the Forum system.</li>
+                    <li>Applicants are strongly recommended to complete the EPIC-AT HRTP Fellowship application (in either English or French) using preferred word processing software.</li>
+                    <li>If you have not already done so, you must register with the AGE-WELL Forum Research Portal at https://forum.agewell-nce.ca/index.php/Special:HQPRegister (the form will ask for your name and email). After you submit the registration form, the system will create an account and send your credentials to the email address you provided. Once you login, you will have to reset your temporary password.</li>
+                    <li>The “My Applications” link is in the top right of the page you will reach after resetting your password. Please select “EPIC-AT Award 2023” navigate to the "Documents" section and enter your referee names and email addresses. Letters of support must be uploaded to the Forum Research Portal by you referees by 5pm ET May 12, 2023.</li>
+                    <li>Once you are ready to submit your application, copy your application material and upload supporting documents to the AGE-WELL Forum Research Portal website by 5pm ET May 12, 2023.</li>
+                    <li>Notice of Admissions will be received in August 2023. Expected start date of fellowship is 1 September, 2023.</li>
+                </ol>
                 
-                <h3>Background Information</h3>
+                Contact Information:<br />
+                <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a>
+                
+                <h3>B. Background Information</h3>
                 <p><b>About EPIC-AT HRTP</b></p>
                 <p>The Early Professionals, Inspired Careers in AgeTech Health Research Training Platform (EPIC-AT HRTP) is a national training platform that will prepare graduate students, postdoctoral fellows and early career researchers to be future leaders in digital health solutions for older adults with complex health needs.</p>
-
+                
                 <p>Powered by AGE-WELL, EPIC-AT is led by researchers from 11 universities and research hospitals across 6 Canadian provinces. It is hosted at the University of Toronto. This unique platform is funded by the Canadian Institutes of Health Research (CIHR) with additional support provided by 41 collaborating organizations from across Canada.</p>
-
+                
                 <p>The competency-based, experiential learning platform is an extension of AGE-WELL’s globally-leading EPIC training program and will provide one-year fellowships to graduate students, postdoctoral fellows and early career researchers at Canadian institutions.</p>
                 
                 <p><b>FELLOWSHIP PROGRAM</b></p>
-                <p>EPIC-AT Fellowships provide a minimum of $8000 to trainees and $10,000 to Early Career Researchers. Fellowships are intended to enable promising new scholars to participate fully in an exclusive 1 year training program. The program will focus on developing new skills and providing a breadth of experience in transdisciplinary working, stakeholder engagement and co-creation, the research-policy dynamic and the innovation and implementation process. The program will equip fellows to develop, implement and evaluate digital technologies that help older Canadians with complex health needs age safely, independently and with dignity in the setting of their choice.</p>
-
+                <p>EPIC-AT Fellowships provide a minimum of $8,000 to trainees and $10,000 to Early Career Researchers. Fellowships are intended to enable promising new scholars to participate fully in an exclusive 1 year training program. The program will focus on developing new skills and providing a breadth of experience in transdisciplinary working, stakeholder engagement and co-creation, the research-policy dynamic and the innovation and implementation process. The program will equip fellows to develop, implement and evaluate digital technologies that help older Canadians with complex health needs age safely, independently and with dignity in the setting of their choice.</p>
+                
                 <p>EPIC-AT is built on a foundation of equity, diversity, inclusion, and accessibility. We welcome and strongly encourage applications from all individuals including women, Indigenous peoples, visible minorities, persons with disabilities, members of the LGBTQ2S+ communities, mature students and all others who can contribute to the diversification of ideas to better support an increasingly diverse older Canadian population. You are encouraged to self-identify if you wish to do so.</p>
-
-                <p>Indigenous older adults are one of the most rapidly growing group of seniors in Canada. Due to the continued effects of colonization and systemic biases, Indigenous older adults face a higher and rising prevalence of complex health needs including multimorbidity. It is imperative to swiftly develop and implement culturally safe and appropriate solutions. As such, EPIC-AT welcomes applications from those who explicitly use Indigenous Ways of Knowing and will award a minimum of 2 Fellowships to self-identified Indigenous trainees or ECRs.</p>
-
-                We expect to offer the following 1 year fellowships in this 2022 call:
+                
+                <p>Indigenous older adults are one of the most rapidly growing group of seniors in Canada. Due to the continued effects of colonization and systemic biases, Indigenous older adults face a higher and rising prevalence of complex health needs including multimorbidity. It is imperative to swiftly develop and implement culturally safe and appropriate solutions. As such, EPIC-AT welcomes applications from those who explicitly use Indigenous Ways of Knowing and will award a <u>minimum</u> of 2 Fellowships to self-identified Indigenous trainees or ECRs.</p>
+                
+                <i>We expect to offer the following 1 year fellowships in this 2023 call:</i>
                 <ul>
                     <li>20 Master’s, PhD, and Postdoctoral Fellowships at minimum $8,000</li>
                     <li>3 Early Career Researcher Fellowships at minimum $10,000</li>
                 </ul>
-
-                <p>This represents the minimum value of fellowships. A number of postsecondary institutions and research institutes have agreed provide top up funding and/or travel funds to successful applicants from their institutions. Eligible applicants will automatically be considered for these additional funds; no additional application is required.</p>
+                
+                <p>This represents the <u>minimum</u> value of fellowships. A number of postsecondary institutions and research institutes have agreed provide top up funding and/or travel funds to successful applicants from their institutions. Eligible applicants will automatically be considered for these additional funds; no additional application is required.</p>
                 
                 <p><b>Benefits</b></p>
                 These fellowships are an opportunity for trainees and early career researchers to:
-                <ul>
+                <ol>
                     <li>gain in-depth, specialized expertise in developing, implementing and evaluating digital health solutions for seniors with complex health needs</li>
                     <li>access to multi-sectoral mentors and sponsors</li>
                     <li>participate in value-added professional development training, internship and lab exchange opportunities</li>
                     <li>network with a community of AgeTech researchers and professionals</li>
                     <li>receive support to identify and attain career goals</li>
-                </ul>
+                </ol>
                 
                 <p><b>Eligibility</b></p>
-                <ul>
+                <ol>
                     <li>Domestic and international graduate students or postdoctoral fellows must participate full-time in their respective program at a Canadian post-secondary institution or research institute.</li>
                     <li>Early career researcher applicants must be within the first 5 years (60 months) of a full-time academic appointment at a Canadian post-secondary institution or research institute.</li>
                     <li>All applicants must be engaged in academic study/research aligned with the mission and vision of EPIC-AT and willing to participate fully in the training platform program.</li>
                     <li>Applicants may not hold an AGE-WELL Annual Graduate and Postdoctoral Award concurrently with an EPIC-AT Fellowship.</li>
-                </ul>
+                </ol>
                 
                 <p><b>Program Requirements</b></p>
-                <p><i>Training</i></p>
+                
+                <p><u>Training</u></p>
+                
                 <p>Fellowship holders will be automatically enrolled in the 1-year EPIC-AT training and mentorship program and are expected to participate actively in online courses, seminar series, professional development activities, a capstone project and annual meeting. The expected time commitment of the training and mentorship program is approximately 50-60 hours over the course of 1 year.</p>
                 
-                <p><i>Reporting</i></p>
+                <p><u>Reporting</u></p>
+                
                 <p>Fellowship holders are required to complete Individual Development Plans and report on their publications, presentations, and progress made towards goals.</p>
-
+                
                 <p>Fellow institutions will report on expenditures of EPIC-AT funds by submitting a Form 300 to training@agewell-nce.ca no later than April 30 of each year for the duration of the fellowship.</p>
                 
                 <p><i>Acknowledging EPIC-AT</i></p>
+                
                 <p>EPIC-AT fellows will acknowledge the fellowship program in their presentations, publications, and other knowledge translation activities related to research conducted during their fellowship period.</p>
                 
                 <p><b>Adjudication Criteria</b></p>
-                <p>All applications will undergo an administrative round of review to confirm eligibility and relevance of the applicant’s research to stakeholders’ lived experiences.</p>
                 
-                <p>Eligible applications will then be reviewed by a team of field experts using the following criteria:</p>
+                <p>All applications will undergo an administrative round of review to confirm eligibility and relevance of the applicant’s research to stakeholders’ lived experiences.</p>
+
+                Eligible applications will then be reviewed by a team of field experts using the following criteria:
                 <table class="wikitable">
                     <tr>
                         <td valign="top">Alignment with EPIC-AT Program Goals</td>
                         <td valign="top">25%</td>
-                        <td>
+                        <td valign="top">
                             <ul>
                                 <li>the applicant’s research is relevant to EPIC-AT values and mission</li>
                                 <li>the applicant seeks to go beyond traditional disciplinary boundaries</li>
@@ -92,7 +98,7 @@
                     <tr>
                         <td valign="top">Personal Statement</td>
                         <td valign="top">25%</td>
-                        <td>
+                        <td valign="top">
                             <ul>
                                 <li>achievements of the applicant relative to other researchers at the same career stage</li>
                                 <li>the applicant demonstrates a vested interest in their research and career development</li>
@@ -103,7 +109,7 @@
                     <tr>
                         <td valign="top">Scholarly Merit</td>
                         <td valign="top">25%</td>
-                        <td>
+                        <td valign="top">
                             <ul>
                                 <li>the applicant’s research is original or novel</li>
                                 <li>the appropriateness of the methods and theoretical approach</li>
@@ -116,7 +122,7 @@
                     <tr>
                         <td valign="top">Potential Impact and Feasibility</td>
                         <td valign="top">25%</td>
-                        <td>
+                        <td valign="top">
                             <ul>
                                 <li>the applicant’s research has potential positive impact on the lives of older adults and caregivers</li>
                                 <li>the associated benefits to older adults and caregivers feasibly described</li>
@@ -127,20 +133,25 @@
                 </table>
                 
                 <p><b>Required Documents Checklist</b></p>
-                <p>Award applicants must submit the following:</p> 
+                Completed applications consist of the following:
                 <ul>
                     <li>Online application form in Forum</li>
-                    <li>Two confidential letters of support (one must be from your current or proposed supervisor; in the case of ECRs one letter must be from a department head or equivalent)</li>
+                    <li>Two confidential letters of support on institutional letterhead uploaded to Forum by the referee.
+                        <ul>
+                            <li>Graduate students and postdoctoral fellow applicants: please ensure that one of these letters is from your current or proposed supervisor.</li>
+                            <li>ECR applicants: please ensure one of these letters is from a department head or equivalent.</li>
+                        </ul>
+                    </li>
                     <li>Trainee applicants must provide formal evidence of enrolment in a Master’s or Doctoral program or Post-Doctoral position</li>
                     <li>Curriculum Vitae (no specified format)</li>
                 </ul>
                 
-                <p><b>Important Dates</b></p>
-                Forum Application Opens: 23 May, 2022<br />
-                Completed Applications Due: 13 June, 2022<br />
-                Results Available: August, 2022<br />
-                Fellowship Term: 1 September 2022 - 31 August 2022<br />
-                Funding Disbursement Schedule: 1 September 2022, 1 March 2022
+                <p><b>Important Dates</b> 
+                Forum Application Opens: 3 April, 2023<br />
+                Completed Applications Due: 12 May, 2023<br />
+                Results Available: August 2023<br />
+                Fellowship Term: 1 September 2023 - 31 August 2024<br />
+                Funding Disbursement Schedule: September 2023 via CIHR subgrant</p>
             ]]>
         </Static>
     </ReportSection>
@@ -181,21 +192,21 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="memberships" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MEMBERSHIPS" orientation="vertical" options="AGE-WELL NCE|Centre de recherche Institut universitaire de gériatrie de Montréal (CRIUGM)|Reseau provincial de recherche en adaptation-réadaptation (REPAR)|Réseau Québécois de recherche sur le viellissement (RQRV)" optional="true">
+        <ReportItem id="memberships" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MEMBERSHIPS" orientation="vertical" options="AGE-WELL NCE|Bruyère Continuing Care|Centre for Aging + Brain Health Innovation (CABHI)|Centre de recherche Institut universitaire de gériatrie de Montréal (CRIUGM)|Faculty of Applied Science and Engineering, University of Toronto|Faculty of Health, Dalhousie University|Faculty of Medicine and Health Sciences, McGill University|Faculty of Social Sciences, University of Victoria|McMaster Institute for Research on Aging (MIRA)|Reseau provincial de recherche en adaptation-réadaptation (REPAR)|Réseau Québécois de recherche sur le viellissement (RQRV)|Rotman Research Institute, Baycrest|Temerty Faculty of Medicine, University of Toronto" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Memberships:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Memberships and Affiliations:</b><br /><small>Please indicate all of your memberships and affiliations in order to be considered for institutional supplements and matching funds.</small></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
         <ReportItem id="project_title" type="TextReportItem" blobType="BLOB_TEXT" blobItem="PROJECT_TITLE" width="400px">
             <![CDATA[
-                <tr><td align='right'><b>Research Project Title:</b></td><td>{$item}</td></tr>
+                <tr><td align='right' class='required label'><b>Research Project Title:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         
         <ReportItem id="keywords" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_KEYWORDS" multiple="true" max="6" sizes="180">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Keywords (maximum 6):</b></td><td>{$item}</td></tr>
+                <tr><td class='required label' align='right' valign='top' style='padding-top:5px;'><b>Keywords (maximum 6):</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         
@@ -465,7 +476,7 @@ This is defined as an individual whose parents did not complete postsecondary ed
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="documents" type="ReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS">
+    <ReportSection id="documents" type="EditableReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS">
         <ReportItem id="admission" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_ADMISSION" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <h2>Formal evidence of admission to a Master's or Doctoral program or Postdoctoral position</h2>
@@ -480,6 +491,30 @@ This is defined as an individual whose parents did not complete postsecondary ed
             <![CDATA[
                 <h2>Curriculum Vitae</h2>
                 <p>All applicants are required to upload a CV.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letters" type="EliteLetters" blobItem="LETTERS" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2" showSendEmails="true" optional="true">
+            <![CDATA[
+                <h2>Reference Letters</h2>
+                {$item}
+                <p><input id='sendReferenceEmails' type='button' value='Send Notification Emails' />&nbsp;<span id='referenceThrobber' style='display:none;' class='throbber'></span></p>
+                <div id='referenceMessages'></div>
+                <script type='text/javascript'>
+                    $('#sendReferenceEmails').click(function(){
+                        clearSuccess('#referenceMessages');
+                        $('#referenceThrobber').show();
+                        $.get(wgServer + wgScriptPath + '/index.php/Special:Report?report=EPIC-AT&section=Documents&sendEmails', function(){
+                            $('#referenceThrobber').hide();
+                            addSuccess('Emails sent', false, '#referenceMessages');
+                        });
+                    });
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem arrayId="letters" type="EliteUploadedLetters" blobItem="LETTERS" blobType="BLOB_ARRAY" showStatus="true" optional="true">
+            <![CDATA[
+                <h3>Reference Status</h3>
                 {$item}
             ]]>
         </ReportItem>

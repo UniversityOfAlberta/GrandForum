@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" pdfFiles="ProjectMilestonesReportPDF" personId="0" ajax="true" year="2020" disabled="false">
+<Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" pdfFiles="ProjectMilestonesReportPDF" personId="0" ajax="true" year="2022" disabled="false">
     <Permissions>
         <Role role="PL">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Project />
     </Permissions>
     <ReportSection id="report" name="Milestones Report" title="Milestones Report" tooltip="Milestones Report" type="EditableReportSection" blobSection="REPORT">
         <ReportItem id="success" type="Textarea" blobType="BLOB_TEXT" blobItem="SUCCESS" rich="true">
@@ -23,12 +24,6 @@
         <ReportItem id="products" type="Textarea" blobType="BLOB_TEXT" blobItem="PRODUCTS"  rich="true">
             <![CDATA[
                 <h2>Publications, patents, and reports of invention issued since the annual report</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="covid" type="Textarea" blobType="BLOB_TEXT" blobItem="COVID" rich="true">
-            <![CDATA[
-                <h2>Describe the impact of the COVID-19 pandemic on your project <small style="color: red;">(Minimum 3 sentences)</small></h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -54,8 +49,7 @@
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <If if="{and(
                     {!=({getText(RP_MILE_REPORT,REPORT,SUCCESS,0,0,{$project_id})},)},
-                    {!=({getText(RP_MILE_REPORT,REPORT,CHALLENGE,0,0,{$project_id})},)},
-                    {!=({getText(RP_MILE_REPORT,REPORT,COVID,0,0,{$project_id})},)}
+                    {!=({getText(RP_MILE_REPORT,REPORT,CHALLENGE,0,0,{$project_id})},)}
                 )}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" text="By generating a PDF your report is automatically submitted" />
         </If>
@@ -65,7 +59,6 @@
                 <ul>
                     <li>Top 3 successes</li>
                     <li>Top 3 challenges</li>
-                    <li>Describe the impact of the COVID-19 pandemic on your project</li>
                 </ul>
             ]]>
         </Else>

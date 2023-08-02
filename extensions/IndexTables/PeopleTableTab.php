@@ -98,7 +98,7 @@ class PeopleTableTab extends AbstractTab {
             $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
         }
         else if($me->isLoggedIn()){
-            $emailHeader = "<th style='white-space: nowrap;'>Email</th>";
+            $emailHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Website</th>";
         }
         if($this->table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>";
@@ -151,7 +151,9 @@ class PeopleTableTab extends AbstractTab {
         if(!isExtensionEnabled("Shibboleth")){
             $uniHeader = "<th style='white-space: nowrap; width:20%;'>Institution</th>";
         }
-        $facultyHead = (count(Person::$facultyMap) > 0) ? " / Faculty" : "";
+        $facultyHead = ($config->getValue("splitDept")) ? "<th style='white-space: nowrap; width:20%;'>Faculty</th>" : "";
+        $firstFacultyHead = ($config->getValue("splitDept")) ? "<th style='display:none;'>First Faculty</th>" : "";
+        
         $html .= "<table class='indexTable {$this->id}' frame='box' rules='all'>
                             <thead>
                                 <tr>
@@ -161,11 +163,22 @@ class PeopleTableTab extends AbstractTab {
                                     {$subRoleHeader}
                                     {$projectsHeader}
                                     {$uniHeader}
-                                    <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}{$facultyHead}</th>
+                                    {$facultyHead}
+                                    <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap; width:20%;'>Title / Rank</th>
+                                    <th style='display:none;'>Start Date</th>
+                                    <th style='display:none;'>End Date</th>
+                                    <th style='display:none;'>Prev University</th>
+                                    <th style='display:none;'>Prev {$config->getValue('deptsTerm')}</th>
+                                    <th style='display:none;'>Prev Title / Rank</th>
+                                    <th style='display:none;'>Prev Start Date</th>
+                                    <th style='display:none;'>Prev End Date</th>
                                     <th style='display:none;'>First University</th>
-                                    <th style='display:none;'>First {$config->getValue('deptsTerm')}{$facultyHead}</th>
+                                    {$firstFacultyHead}
+                                    <th style='display:none;'>First {$config->getValue('deptsTerm')}</th>
                                     <th style='display:none;'>First Title / Rank</th>
+                                    <th style='display:none;'>First Start Date</th>
+                                    <th style='display:none;'>First End Date</th>
                                     {$hqpHeader}
                                     <th style='white-space: nowrap; width:40%;'>Keywords / Bio</th>
                                     {$statusHeader}
@@ -237,25 +250,39 @@ class PeopleTableTab extends AbstractTab {
                         $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
                     }
                 }
-                $html .= "<td align='left' style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
+                $html .= "<td align='left'>".implode(", ", $projs)."</td>";
             }
             // Current University
             $university = $person->getUniversity();
             if($uniHeader != ''){
                 $html .= "<td align='left'>{$university['university']}</td>";
             }
-            if($person->getFaculty() != ""){
-                $html .= "<td align='left'>{$person->getDepartment()} / {$person->getFaculty()}</td>";
+            if($facultyHead != ""){
+                $html .= "<td align='left'>{$person->getFaculty()}</td>";
             }
-            else{
-                $html .= "<td align='left'>{$person->getDepartment()}</td>";
-            }
+            $html .= "<td align='left'>{$person->getDepartment()}</td>";
             $html .= "<td align='left'>{$university['position']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$university['start']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$university['end']}</td>";
+            
+            // Previous University
+            $prevuniversity = $person->getPreviousUniversity();
+            $html .= "<td style='display:none;' align='left'>{$prevuniversity['university']}</td>";
+            $html .= "<td style='display:none;' align='left'>{$prevuniversity['department']}</td>";
+            $html .= "<td style='display:none;' align='left'>{$prevuniversity['position']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$prevuniversity['start']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$prevuniversity['end']}</td>";
+            
             // First University
             $firstuniversity = $person->getFirstUniversity();
             $html .= "<td style='display:none;' align='left'>{$firstuniversity['university']}</td>";
+            if($firstFacultyHead != ""){
+                $html .= "<td style='display:none;' align='left'>{$firstuniversity['faculty']}</td>";
+            }
             $html .= "<td style='display:none;' align='left'>{$firstuniversity['department']}</td>";
             $html .= "<td style='display:none;' align='left'>{$firstuniversity['position']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$firstuniversity['start']}</td>";
+            $html .= "<td align='left' style='display:none;'>{$firstuniversity['end']}</td>";
             if($hqpHeader != ''){
                 $supervisors = array();
                 foreach($person->getSupervisorsDuring($start, $end) as $supervisor){
@@ -325,21 +352,11 @@ class PeopleTableTab extends AbstractTab {
                 $html .= "<td align='center'><span style='font-size:2em;'>{$doc3}</span></td>";
             }
             if($contactHeader != ''){
-                if($person->getEmail() == ""){
-                    $html .= "<td></td>";
-                }
-                else {
-                    $html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
-                }
                 $html .= "<td align='left'>{$person->getPhoneNumber()}</td>";
             }
             if($emailHeader != ''){
-                if($person->getEmail() == ""){
-                    $html .= "<td></td>";
-                }
-                else {
-                    $html .= "<td><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
-                }
+                $html .= ($person->getEmail() != "") ? "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>" : "<td></td>";
+                $html .= ($person->getWebsite() != "http://" && $person->getWebsite() != "https://") ? "<td align='left'><a href='{$person->getWebsite()}'>{$person->getWebsite()}</a></td>" : "<td></td>";
             }
             if($idHeader != ''){
                 $html .= "<td>{$person->getId()}</td>";

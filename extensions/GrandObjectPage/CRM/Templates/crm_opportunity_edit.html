@@ -9,7 +9,7 @@
         <%= HTML.Select(this, 'owner.id', {style: 'width:200px;vertical-align:middle;', options: _.union([{option: owner.name, value: owner.id}], _.filter(_.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != owner.id; }))}) %>
     </div>
 </div>
-<%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:100%; margin-left:0;margi-right:0;'}) %>
+<%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:100%; margin-left:0;margin-right:0;'}) %>
 <h4>Tasks</h4>
 <table id="tasks" class="wikitable" style="width:100%;">
     <thead>

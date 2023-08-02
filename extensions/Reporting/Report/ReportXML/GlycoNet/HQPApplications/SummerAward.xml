@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="GlycoNet Summer Awards" reportType="RP_HQP_SUMMER" pdfType="HQP_SUMMER" pdfFiles="HQPApplications/SummerAwardPDF" ajax="true" disabled="false" year="2022">
+<Report name="GlycoNet Summer Awards" reportType="RP_HQP_SUMMER" pdfType="HQP_SUMMER" pdfFiles="HQPApplications/SummerAwardPDF" ajax="true" disabled="false" year="2023">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
@@ -383,6 +383,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,iamir@glyconet.ca,vsharko@glyconet.ca" />
     </ReportSection>
 </Report>

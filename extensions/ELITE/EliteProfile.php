@@ -209,8 +209,9 @@ abstract class EliteProfile extends BackboneModel {
         $to = $this->person->getEmail();
         if($this->status == "Accepted"){
             list($subject, $message) = $this->acceptedMessage();
+            $matches = $this->getBlobValue('MATCHES', BLOB_ARRAY);
             foreach($this->hires as $key => $hire){
-                if($hire == "Accepted"){
+                if($hire == "Accepted" && in_array($key, $matches)){
                     $posting = ElitePosting::newFromId($key);
                     $host = $posting->getUser();
                     $to .= ",{$host->getEmail()}";
@@ -256,7 +257,6 @@ abstract class EliteProfile extends BackboneModel {
                 $message .= @chunk_split($exploded[1]).$eol.$eol;
             }
             $message .= "--".$uid."--";
-            
             mail($to, $subject, $message, $headers);
         }
     }

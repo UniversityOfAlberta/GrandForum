@@ -43,10 +43,12 @@ class EliteProjectSelectorReportItem extends CheckboxReportItem {
             if(is_array($blob)){
                 foreach(@$blob as $row){
                     $posting = ElitePosting::newFromId($row);
-                    $output .= "<li>
-                                    <input type='checkbox' name='{$this->getPostId()}[]' value='{$posting->getId()}' checked />
-                                    <a id='{$posting->getId()}' class='elite_link' style='cursor:pointer;'>{$posting->getExtra('companyName')} - {$posting->getTitle()} ({$posting->getExtra('region')})</a>
-                                </li>";
+                    if($posting->getId() != 0){
+                        $output .= "<li>
+                                        <input type='checkbox' name='{$this->getPostId()}[]' value='{$posting->getId()}' checked />
+                                        <a id='{$posting->getId()}' class='elite_link' style='cursor:pointer;'>{$posting->getExtra('companyName')} - {$posting->getTitle()} ({$posting->getExtra('region')})</a>
+                                    </li>";
+                    }
                 }
             }
             

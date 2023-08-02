@@ -185,9 +185,10 @@ Programme ELITE pour la Jeunesse Noire
         
         // Now send email to coordinator
         $subject = "Engineering-IBET-ELITE PhD Fellowship – Feedback Submitted";
+        $match = @ElitePosting::newFromId($_POST['hire']->match);
         if(@$_POST['hire']->action == "Accepted"){
             $message = "Dear Program Coordinator,
-                        A PhD supervisor has accepted a candidate. Please proceed to review and finalize the position.
+                        A PhD supervisor ({$person->getNameForForms()} - {$match->getTitle()}) has accepted a candidate ({$this->person->getNameForForms()}). Please proceed to review and finalize the position.
 
                         Thank you.
 
@@ -198,7 +199,7 @@ Programme ELITE pour la Jeunesse Noire
         }
         else{
             $message = "Dear Program Coordinator,
-                        A PhD supervisor has declined a candidate. Please proceed to review and finalize the position.
+                        A PhD supervisor ({$person->getNameForForms()} - {$match->getTitle()}) has declined a candidate ({$this->person->getNameForForms()}). Please proceed to review and finalize the position.
 
                         Thank you.
 

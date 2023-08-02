@@ -65,18 +65,19 @@ class AddMember extends SpecialPage{
                 $form->getElementById('employment_field')->setPOST('employment');
                 $form->getElementById('rec_field')->setPOST('recruitment');
                 $form->getElementById('rec_country_field')->setPOST('recruitmentCountry');
+                $form->getElementById("reluser_field")->setPOST("relUser");
+                $form->getElementById('reltype_field')->setPOST('relType');
                 for($i = 0; $i < 3; $i++){
                     $form->getElementById("university_field{$i}")->setPOST("university{$i}");
                     if(!$config->getValue('splitDept')){
                         $form->getElementById("dept_field{$i}")->setPOST("department{$i}");
+                        $_POST["faculty{$i}"] = "";
                     }
                     else{
                         $form->getElementById("dept_fac_field{$i}")->setPOST("department_fac{$i}");
                         $form->getElementById("dept_dept_field{$i}")->setPOST("department_dept{$i}");
-                        $_POST["department{$i}"] = $_POST["department_fac{$i}"] . " / " . $_POST["department_dept{$i}"];
-                        if($_POST["department{$i}"] == " / "){
-                            $_POST["department{$i}"] = "";
-                        }
+                        $_POST["faculty{$i}"] = $_POST["department_fac{$i}"];
+                        $_POST["department{$i}"] = $_POST["department_dept{$i}"];
                     }
                     if($form->getElementById("hqp_position_field{$i}")->value != ""){
                         // For HQP Role
@@ -90,13 +91,13 @@ class AddMember extends SpecialPage{
                 }
                 
                 $_POST['university'] = "{$_POST["university0"]}\n{$_POST["university1"]}\n{$_POST["university2"]}";
+                $_POST['faculty'] = "{$_POST["faculty0"]}\n{$_POST["faculty1"]}\n{$_POST["faculty2"]}";
                 $_POST['department'] = "{$_POST["department0"]}\n{$_POST["department1"]}\n{$_POST["department2"]}";
                 $_POST['position'] = "{$_POST["position0"]}\n{$_POST["position1"]}\n{$_POST["position2"]}";
                 $_POST['end_date'] = "{$_POST["end_date0"]}\n{$_POST["end_date1"]}\n{$_POST["end_date2"]}";
                 $_POST['start_date'] = "{$_POST["start_date0"]}\n{$_POST["start_date1"]}\n{$_POST["start_date2"]}";
                 
                 $form->getElementById('cand_field')->setPOST('candidate');
-
                 $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
                 $_POST['wpName'] = str_replace(" ", "", str_replace("&#39;", "", $_POST['wpFirstName']).".".str_replace("&#39;", "", $_POST['wpLastName']));
                 $_POST['user_name'] = $user->getName();
@@ -134,6 +135,7 @@ class AddMember extends SpecialPage{
                             <th>Roles</th>
                             <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
                             <th>Projects</th>
+                            <th>Relation</th>
                             <th>Institution</th>
                             <th>Candidate</th>
                             <th>Action</th>
@@ -149,6 +151,7 @@ class AddMember extends SpecialPage{
                             <th>Roles</th>
                             <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
                             <th>Projects</th>
+                            <th>Relation</th>
                             <th>Institution</th>
                             {$hqpType}
                             <th>Candidate</th>
@@ -203,7 +206,9 @@ class AddMember extends SpecialPage{
             $wgOut->addHTML("<td>{$request->getRoles()}</td>
                              <td>{$request->getSubRoles()}</td>
                              <td align='left'>{$request->getProjects()}</td>
+                             <td align='left' style='white-space:nowrap;'>".str_replace(":", "<br />", $request->getRelation())."</td>
                              <td>".str_replace("\n", ", ", trim($request->getUniversity()))."<br />
+                                 ".str_replace("\n", ", ", trim($request->getFaculty()))."<br />
                                  ".str_replace("\n", ", ", trim($request->getDepartment()))."<br />
                                  ".str_replace("\n", ", ", trim($request->getPosition()))."</td> ");
             if(count($config->getValue('subRoles')) > 0 && !$history){
@@ -227,11 +232,13 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpUserSubType' value='{$request->getSubRoles()}' />
                             <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
                             <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
+                            <input type='hidden' name='relation' value='{$request->getRelation()}' />
                             <input type='hidden' name='nationality' value='".str_replace("'", "&#39;", $request->getNationality())."' />
                             <input type='hidden' name='employment' value='".str_replace("'", "&#39;", $request->getEmployment())."' />
                             <input type='hidden' name='recruitment' value='".str_replace("'", "&#39;", $request->getRecruitment())."' />
                             <input type='hidden' name='recruitmentCountry' value='".str_replace("'", "&#39;", $request->getRecruitmentCountry())."' />
                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
+                            <input type='hidden' name='faculty' value='".str_replace("'", "&#39;", $request->getFaculty())."' />
                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
                             <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
                             <input type='hidden' name='start_date' value='".str_replace("'", "&#39;", $request->getStartDate())."' />
@@ -393,6 +400,11 @@ class AddMember extends SpecialPage{
         $recCountryRow = new FormTableRow("rec_country_row");
         $recCountryRow->append($recCountryLabel)->append($recCountryField);
         $recCountryRow->attr('id', "rec_country_row");
+        
+        $fundedLabel = new Label("funded_label", "Is this person compensated out of {$config->getValue('networkName')} funds?", "Is this person compensated out of {$config->getValue('networkName')} funds?", VALIDATE_NOTHING);
+        $fundedField = new SelectBox("funded_field", "{$config->getValue('networkName')} Funded", "Yes", array('Yes', 'No'), VALIDATE_NOTHING);
+        $fundedRow = new FormTableRow("funded_row");
+        $fundedRow->append($fundedLabel)->append($fundedField);
 
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
@@ -408,6 +420,43 @@ class AddMember extends SpecialPage{
         if($me->isRoleAtLeast(STAFF) || $config->getValue('networkName') == "FES"){
             $formTable->append($subRolesRow);
         }
+        
+        $people = array("");
+        foreach(Person::getAllPeople() as $person){
+            if($person->isRoleAtLeast(NI)){
+                $people[$person->getName()] = $person->getNameForForms();
+            }
+        }
+        
+        $relLabel = new Label("rel_label", "Main {$config->getValue('networkName')} relationship of New User", "", VALIDATE_NOTHING);
+        $relLabel->colon = "";
+        $relLabel->colspan = 2;
+        $relLabel->attr('style', 'text-align:left;max-width:400px;');
+        $relRow = new FormTableRow("rel_row");
+        $relRow->append($relLabel);
+        $relRow->attr('id', "rel_row");
+        
+        $relUserLabel = new Label("reluser_label", "Relation User", "The name of the user in the relation", VALIDATE_NOTHING);
+        $relUserField = new SelectBox("reluser_field", "Relation User", "", $people, VALIDATE_NOTHING);
+        $relUserField->attr("style", "width: 250px;");
+        $relUserRow = new FormTableRow("reluser_row");
+        $relUserRow->append($relUserLabel)->append($relUserField);
+        $relUserRow->attr('id', "reluser_row");
+        
+        $relTypeLabel = new Label("reltype_label", "Relation Type", "The type of the relation", VALIDATE_NOTHING);
+        $relTypeField = new SelectBox("reltype_field", "Relation Type", "", array_merge(array(""), $config->getValue('relationTypes')), VALIDATE_NOTHING);
+        $relTypeField->attr("style", "width: 250px;");
+        $relTypeRow = new FormTableRow("reltype_row");
+        $relTypeRow->append($relTypeLabel)->append($relTypeField);
+        $relTypeRow->attr('id', "reltype_row");
+        
+        $relHelpLabel1 = new TextLabel("rel_label1", "", "", VALIDATE_NOTHING);
+        $relHelpLabel2 = new TextLabel("rel_label2", "<b>Legend:</b> (Relation User) &#8594; (".implode("/", $config->getValue('relationTypes')).") &#8594; (New User)", "", VALIDATE_NOTHING);
+        $relHelpLabel2->attr('style', 'text-align:left;');
+        $relHelpRow = new FormTableRow("rel_row");
+        $relHelpRow->append($relHelpLabel1)->append($relHelpLabel2);
+        $relHelpRow->attr('id', "rel_row");
+        
         $formTable->append($projectsRow)
                   ->append($nationalityRow);
         for($i = 0; $i < 3; $i++){
@@ -464,14 +513,14 @@ class AddMember extends SpecialPage{
                 $deptDeptRow->attr('id', "dept_dept_row$i");
             }
             
-            $hqpPositionLabel = new Label("hqp_position_label$i", "Position", "The academic title of this user (only required for HQP)", $validation);
+            $hqpPositionLabel = new Label("hqp_position_label$i", "Position", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
             $hqpPositionField = new SelectBox("hqp_position_field$i", "Position", "", $hqpPositions, VALIDATE_NOTHING);
             $hqpPositionField->attr("style", "width: 260px;");
             $hqpPositionRow = new FormTableRow("hqp_position_row$i");
             $hqpPositionRow->append($hqpPositionLabel)->append($hqpPositionField);
             $hqpPositionRow->attr('id', "hqp_position_row$i");
             
-            $positionLabel = new Label("position_label$i", "Position", "The title of this user", $validation);
+            $positionLabel = new Label("position_label$i", "Position", "The title of this user", VALIDATE_NOTHING);
             $positionField = new ComboBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
             $positionField->attr("style", "width: 250px;");
             $positionRow = new FormTableRow("position_row$i");
@@ -504,9 +553,17 @@ class AddMember extends SpecialPage{
                       ->append($startRow)
                       ->append($endRow);
         }
-        $formTable->append($recruitmentRow)
+        
+        $formTable->append($relRow)
+                  ->append($relUserRow)
+                  ->append($relTypeRow)
+                  ->append($relHelpRow)
+                  ->append($recruitmentRow)
                   ->append($recRow)
                   ->append($recCountryRow);
+        if($config->getValue('networkName') == "FES"){
+            $formTable->append($fundedRow);
+        }
         $formTable->append($employmentRow1)
                   ->append($employmentRow2)
                   ->append($candRow)
@@ -652,6 +709,15 @@ class AddMember extends SpecialPage{
             $('input[name=\"role_field[]\"]').change(fn);
             $('#rec_field').change(fn);
             fn();
+            $('select[name=funded_field]').change(function(){
+                if($('select[name=funded_field] option:selected').val() == 'No'){
+                    $('#subrole_field_ExtFunded').prop('checked', true);
+                }
+                else{
+                    $('#subrole_field_ExtFunded').prop('checked', false);
+                }
+            }).change();
+            $('#reluser_field').chosen();
         </script>");
         $wgOut->addHTML("</form>");
     }

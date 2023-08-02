@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="2023 Catalyst Program in Healthy Aging Evaluation Form" reportType="RP_HAC_REVIEW" ajax="true" disabled="false" year="2023">
+    <Permissions>
+        <Role role="EVALUATOR" />
+    </Permissions>
+    <ReportSection id="REVIEW" name="Evaluation Form" title="2023 Catalyst Program in Healthy Aging Evaluation Form" blobSection="REVIEW" tooltip="AGE-WELL/CFN Funding Stream" type="EditableReportSection" saveText="Save &amp; Submit">
+        <Instructions>
+            <![CDATA[
+                <p><b>Application Review Criteria and Instructions</b></p>
+                
+                <p>The following criteria and scoring scheme are used to evaluate all applications for the 2023 Catalyst Funding Program in Healthy Aging.</p>
+                
+                <p><b>Alignment to the call for proposals:</b> Please select Yes or No (from dropdown menu) to indicate whether the proposal meets the core application requirements number i, ii, iii, adding comments to support your choice as needed.</p>
+                
+                <p><b>Research Plan, Innovation and Impact, and Team:</b> Please rate each of the three sections listed based on the evaluation criteria on a scale of 1 -10, where:<br />
+                    1 - 2 = "Poor"<br />
+                    3 - 4 = "Fair"<br />
+                    5 - 6 = "Good"<br />
+                    7 - 8 = "Very Good"<br />
+                    9 - 10 = "Excellent"<br />
+</p>
+
+                <p>Weighting is noted on the form for each section and built into the formula to provide the <b>Total Weighted Score</b> (maximum of 10).</p>
+
+                <p><b>Budget and Budget Justification:</b> Applicants were was asked to submit a brief budget justification in the body of the proposal (Section B. 4.) and a separate budget spreadsheet. Please indicate Yes or No (from dropdown menu) whether the budget and proposed expenditures are appropriate for the project as described.</p>
+
+                <p><b>Special Funding Streams:</b> Two special funding streams are part of this funding call, 1) proposals that focus on novel and innovative ways to  mitigate frailty and 2) another for proposals involving underrepresented groups with specific requirements where the proposal involves Indigenous populations. Special funding streams are not mutually exclusive. Applications not funded through a special stream will be considered for funding in the general pool of applications. The special funding streams serve to earmark minimum funding available in each category. If an application checked a special funding stream under A. Administrative Information, please complete the appropriate section(s) under the evaluation form.</p>
+ 
+            ]]>
+        </Instructions>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="HAC" class="Person">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_HAC,APPLICATION_FORM,TITLE,0,{$user_id},0)} - {$user_name}">
+                <ReportItem id="table" type="PDFReportItem" reportType="HACApplication" buttonName="Download Application">
+                    <![CDATA[
+                        <style>
+                            .wikitable th {
+                                background: #e8e8e8 !important;
+                            }
+                        </style>
+                        <div id="proj{$user_id}">
+                        <table class='wikitable'>
+                            <tr><td><b>Project Title:</b></td><td>{getText(RP_HAC,INFORMATION,FIRST_NAME,0,{$user_id},0)} {getText(RP_HAC,APPLICATION_FORM,TITLE,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Project Lead(s):</b></td><td>{getText(RP_HAC,APPLICATION_FORM,PL,0,{$user_id},0)} {getText(RP_HAC,INFORMATION,LAST_NAME,0,{$user_id},0)}</td></tr>
+                        </table>
+                        {$item}
+                        <table class="wikitable">
+                            <tr>
+                                <th style="width:60%;text-align:left;">ALIGNMENT TO THE CALL FOR PROPOSALS</th>
+                                <th style="width:5%;">Rating</th>
+                                <th style="width:55%;">Comments</th>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_0a" blobType="BLOB_TEXT" blobItem="REVIEW_0A" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No" inline="true">
+                    <![CDATA[
+                            <tr>
+                                <td>Project relates to the development of technology-enabled solution or a novel technology to support healthy aging, which may include complementary social and healthcare innovations (e.g., new service-delivery models, policy recommendations, and prevention strategies) related to the solution.</td>
+                                <td>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_0a_comments" type="Textarea" blobItem="REVIEW_0A_COMMENTS" blobSubItem="{$user_id}" height="64px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_0b" blobType="BLOB_TEXT" blobItem="REVIEW_0B" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No" inline="true">
+                    <![CDATA[
+                            <tr>
+                                <td>Plans to engage older adults and/or care partners in the project is well described. (Section B. 2. of proposal)</td>
+                                <td>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_0b_comments" type="Textarea" blobItem="REVIEW_0B_COMMENTS" blobSubItem="{$user_id}" height="64px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_0c" blobType="BLOB_TEXT" blobItem="REVIEW_0C" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No" inline="true">
+                    <![CDATA[
+                            <tr>
+                                <td>Project considers equity, diversity and inclusion (EDI) , indigeneity and sex and gender, in terms of research design, team composition and impact of proposed solution. Projects not including these considerations describe and justify bona fide reasons for their exclusion. (Section B. 2. of proposal)</td>
+                                <td>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_0c_comments" type="Textarea" blobItem="REVIEW_0C_COMMENTS" blobSubItem="{$user_id}" height="64px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_1" blobType="BLOB_TEXT" blobItem="REVIEW_1" blobSubItem="{$user_id}" type="SelectReportItem" options="|1|2|3|4|5|6|7|8|9|10" inline="true">
+                    <![CDATA[
+                            <tr>
+                                <th style="text-align:left;">RESEARCH PLAN (60%)<br /><small>(Section B. 2.)</small></th>
+                                <th id='proj{$user_id}_ex_1'>{$item}</th>
+                                <th>Comments</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Background and Rationale (Section B. 1.)</b>
+                                    <ul style='line-height: 1.25em;list-style-type:square'>
+                                        <li>Proposed research is significant in terms of the need(s) or gap(s) addressed and in relation to the state-of-the art in the field.</li>
+                                    </ul>
+                                    <b>Objectives, Methods and Deliverables (Section B. 2.)</b>
+                                    <ul style='line-height: 1.25em;list-style-type:square'>
+                                        <li>Clarity and coherence of short and longer-term objectives.</li>
+                                        <li>Methodology is well described and justified.</li>
+                                        <li>Feasibility of the research plan with respect to milestones, timelines and deliverables.</li>
+                                        <li>The extent to which project clearly addresses one or more priority areas identified for this call (applicants were instructed to select one or more priority area in Section A. and describe how the priority area will be met in Section B.2.)</li>
+                                    </ul>
+                                </td>
+                                <td></td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_1_comments" type="Textarea" blobItem="REVIEW_1_COMMENTS" blobSubItem="{$user_id}" height="64px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_2" blobType="BLOB_TEXT" blobItem="REVIEW_2" blobSubItem="{$user_id}" type="SelectReportItem" options="|1|2|3|4|5|6|7|8|9|10" inline="true">
+                    <![CDATA[
+                            <tr>
+                                <th style="text-align:left;">INNOVATION AND IMPACT (30%)<br /><small>(Section B. 2.)</small></th>
+                                <th id='proj{$user_id}_ex_2'>{$item}</th>
+                                <th>Comments</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul style='line-height: 1.25em;list-style-type:square'>
+                                        <li>Potential positive impact on the lives of older adults or care partners is obvious and well described.</li>
+                                        <li>Scientific outputs for this project will meaningfully impact the current state of knowledge.</li>
+                                        <li>Novelty and originality of the proposed project i.e. participant population, technology, methods, knowledge translation.</li>
+                                    </ul>
+                                </td>
+                                <td></td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_2_comments" type="Textarea" blobItem="REVIEW_2_COMMENTS" blobSubItem="{$user_id}" height="64px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_3" blobType="BLOB_TEXT" blobItem="REVIEW_3" blobSubItem="{$user_id}" type="SelectReportItem" options="|1|2|3|4|5|6|7|8|9|10" inline="true">
+                    <![CDATA[
+                            <tr>
+                                <th style="text-align:left;">TEAM (10%)<br /><small>(Section B. 3.)</small></th>
+                                <th id='proj{$user_id}_ex_3'>{$item}</th>
+                                <th>Comments</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul style='line-height: 1.25em;list-style-type:square'>
+                                        <li>Expertise and qualifications of Project Lead(s) to complete the project as described.</li>
+                                        <li>Appropriateness of the team (where more than one team member identified)  to carry out the proposed research in terms of complementarity of expertise and synergistic potential.</li>
+                                        <li>Identification of an appropriate Knowledge User (KU) with relevant lived experience or expertise, or well described plan to identify a KU (Section 2: Team and Partnerships).</li>
+                                    </ul>
+                                </td>
+                                <td></td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_3_comments" type="Textarea" blobItem="REVIEW_3_COMMENTS" blobSubItem="{$user_id}" height="64px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_budget" blobType="BLOB_TEXT" blobItem="REVIEW_BUDGET" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No" inline="true">
+                    <![CDATA[
+                            <tr>
+                                <th style="text-align:left;">BUDGET AND BUDGET JUSTIFICATION<br /><small>(Section B. 4.)</small></th>
+                                <th></th>
+                                <th>Comments</th>  
+                            </tr>
+                            <tr>                                                                              
+                                <td>Budget and proposed expenditures are appropriate.</td>
+                                <td>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_budget_comments" type="Textarea" blobItem="REVIEW_BUDGET_COMMENTS" blobSubItem="{$user_id}" height="64px">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: right; font-size: 1.5em; background: #333 !important; color: #eee; border-color: #333;">Total Weighted Score:</th>
+                                <th id='proj{$user_id}_total' style="font-size: 1.5em; background: #333 !important; color: #eee; border-color: #333;"></th>
+                                <th style="background: #333 !important; border-color: #333;"></th>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_spec1" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC1" blobSubItem="{$user_id}" type="SelectReportItem" options="|1|2|3|4|5|6|7|8|9|10" inline="true" optional="true">
+                    <![CDATA[
+                            <tr>
+                                <th style="text-align:left;">SPECIAL FUNDING STREAMS (If applicable, bold italicized text indicating special funding stream will appear in Section A. under Priority Areas)</th>
+                                <th>Rating</th>
+                                <th></th>  
+                            </tr>
+                            <tr>
+                                <th style="text-align:left;">Under-represented Groups<p style='margin-bottom:0;font-weight:normal;'>Alignment to special funding stream is coherent, compelling and well described throughout Section B of the application. This rating will be used to help funders decide whether the submission should be considered as part of a special funding stream or within the general pool of applications</p></th>
+                                <th>{$item}</th>
+                                <th>Comments</th>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_spec1a" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC1A" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No|NA" inline="true" optional="true">
+                    <![CDATA[
+                            <tr>
+                                <td>For projects involving indigenous populations, research team composition requirements are met or there is clear and compelling evidence that the team has a track record of meaningful and culturally safe involvement with indigenous peoples</td>
+                                <td>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_spec1a_comments" type="Textarea" blobItem="REVIEW_SPEC1A_COMMENTS" blobSubItem="{$user_id}" height="64px" optional="true">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_spec2" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC2" blobSubItem="{$user_id}" type="SelectReportItem" options="|1|2|3|4|5|6|7|8|9|10" inline="true" optional="true">
+                    <![CDATA[
+                            <tr>
+                                <th style="text-align:left;">Frailty<p style='margin-bottom:0;font-weight:normal;'>Alignment to special funding stream is coherent, compelling and well described throughout Section B of the application. This rating will be used to help funders decide whether the submission should be considered as part of a special funding stream or within the general pool of applications</p></th>
+                                <th>{$item}</th>
+                                <th>Comments</th>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_spec2a" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC2A" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No" inline="true" optional="true">
+                    <![CDATA[
+                            <tr>
+                                <td>Project meaningfully integrates those living with frailty and/or their families and caregivers in planning, designing and executing the study, and interpreting study findings.</td>
+                                <td>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_spec2a_comments" type="Textarea" blobItem="REVIEW_SPEC2A_COMMENTS" blobSubItem="{$user_id}" height="64px" optional="true">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_spec2b" blobType="BLOB_TEXT" blobItem="REVIEW_SPEC2B" blobSubItem="{$user_id}" type="SelectReportItem" options="|Yes|No" inline="true" optional="true">
+                    <![CDATA[
+                            <tr>
+                                <td><b>IF APPROPRIATE:</b> frailty assessment utilizes a published and validated instrument appropriate for the care setting(s).</td>
+                                <td>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_spec2b_comments" type="Textarea" blobItem="REVIEW_SPEC2B_COMMENTS" blobSubItem="{$user_id}" height="64px" optional="true">
+                    <![CDATA[
+                                <td>{$item}</td>
+                            </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_comments" type="Textarea" blobItem="REVIEW_COMMENTS" blobSubItem="{$user_id}" height="64px" optional="true">
+                    <![CDATA[
+                        <tr>
+                            <td colspan='3'><b>Feedback to be shared with the applicant to help to improve/clarify the application and/or project:</b></td>
+                        </tr>
+                        <tr>
+                            <td colspan='3'>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+
+                <Static>
+                    <![CDATA[
+                        </table>
+                        <script type="text/javascript">
+                            $("#proj{$user_id} select").change(function(){
+                                var total = ((parseInt($("#proj{$user_id}_ex_1 select option:selected").val()) || 0)*6 + 
+                                             (parseInt($("#proj{$user_id}_ex_2 select option:selected").val()) || 0)*3 +
+                                             (parseInt($("#proj{$user_id}_ex_3 select option:selected").val()) || 0)*1)/10;
+                                $("#proj{$user_id}_total").html(Math.round(total*100)/100);
+                            }).trigger('change');
+                        </script>
+                        </div>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+        <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your Review.">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

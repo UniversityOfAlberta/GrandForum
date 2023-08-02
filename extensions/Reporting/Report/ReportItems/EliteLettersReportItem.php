@@ -2,10 +2,21 @@
 
 class EliteLettersReportItem extends MultiTextReportItem {
     
-    function sendEmail($sto){
+    function render(){
+        if(isset($_GET['sendEmails'])){
+            $this->sendEmail();
+            exit;
+        }
+        parent::render();
+    }
+    
+    function sendEmail($sto=null){
         global $wgServer, $wgScriptPath, $config;
         $data = $this->getBlobValue();
         $report = $this->getReport();
+        if(!is_array($data)){
+            return true;
+        }
         foreach($data as $row){
             $name = @trim($row['name']);
             $email = @trim($row['email']);
@@ -23,8 +34,21 @@ class EliteLettersReportItem extends MultiTextReportItem {
 	            }
 	            
 	            // Continue if not yet uploaded
-                $tok = urlencode(encrypt(urldecode($sto->metadata('token')), true));
-                $url = "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ReferenceLetter&candidate={$tok}&id={$id}";
+	            if($sto != null){
+                    $tok = urlencode(encrypt(urldecode($sto->metadata('token')), true));
+                }
+                else{
+                    $tok = urlencode(encrypt(urldecode($this->getMD5())));
+                }
+                if($report->reportType == "RP_PHD_ELITE"){
+                    $url = "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ReferenceLetter&candidate={$tok}&id={$id}";
+                }
+                else if($report->reportType == "RP_SCI_PHD_ELITE"){
+                    $url = "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ScienceReferenceLetter&candidate={$tok}&id={$id}";
+                }
+                else{
+                    $url = "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=".str_replace("PDF", "", $report->xmlName)."-ReferenceLetter&candidate={$tok}&id={$id}";
+                }
                 $headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "Content-type:text/html;charset=UTF-8\r\n" .

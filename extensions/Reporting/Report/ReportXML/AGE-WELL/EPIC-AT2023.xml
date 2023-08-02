@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="EPIC-AT Award 2023" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT" pdfType="RPTP_EPIC_AT" pdfFiles="EPIC-AT2023PDF" ajax="true" disabled="true" year="2023">
+    <Permissions>
+        <Role role="INACTIVE+" />
+        <Role role="INACTIVE-Candidate+" />
+    </Permissions>
+    <ReportSection id="background" tooltip="Information" name="Information" title="EPIC-AT Early Career Researcher Awards in Patient-Oriented Research" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <h2>Information Package</h2>
+                <h3>Instructions</h3>
+                <ol>
+                    <li>The application is comprised of an online application form and supporting documents detailed below. Late or incomplete applications will not be reviewed.</li>
+                    <li>Applicants are strongly recommended to complete the EPIC-AT HRTP Fellowship application (Section C of this package in either English or French) using preferred word processing software.</li>
+                    <li>Once you are ready to submit your application online, if you have not already done so, you must register with the AGE-WELL Forum Research Portal at https://forum.agewell-nce.ca/index.php/Special:HQPRegister (the form will ask for your name and email). After you submit the registration form, the system will create an account and send your credentials to the email address you provided. Once you login, you will have to reset your temporary password.</li>
+                    <li>The “My Applications” link is in the top right of the page you will reach after resetting your password.</li>
+                    <li>The Forum is open and you will be able to see and select “EPIC-AT 2023.” Copy your application material and upload supporting documents to the AGE-WELL Forum Research Portal website by 5pm ET on 31 January, 2023.</li>
+                    <li>Notice of Admissions will be received in March 2023. Expected start date of fellowship is 1 April, 2023.</li>
+                </ol>
+
+                Contact Information: 
+                <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a>
+            
+                <h3>Background Information</h3>
+                <p><b>About EPIC-AT HRTP</b></p>
+
+                <p>The Early Professionals, Inspired Careers in AgeTech Health Research Training Platform (EPIC-AT HRTP) is a national training platform that will prepare graduate students, postdoctoral fellows and early career researchers to be future leaders in digital health solutions for older adults with complex health needs.</p>
+
+                <p>Powered by AGE-WELL, EPIC-AT is led by researchers from 11 universities and research hospitals across 6 Canadian provinces. It is hosted at the University of Toronto. This unique platform is funded by the Canadian Institutes of Health Research (CIHR) with additional support provided by 41 collaborating organizations from across Canada.</p>
+
+                <p>The competency-based, experiential learning platform is an extension of AGE-WELL’s globally-leading EPIC training program.</p>
+            
+                <p><b>EPIC-AT Early Career Researcher Awards in Patient-Oriented Research</b></p>
+            
+                <p>EPIC-AT is pleased offer Black, Indigenous, and racialized early career researchers funding to support patient-oriented research and patient engagement. Funding for these awards was made available through the Strategy for Patient-Oriented Research (SPOR) Supplement to CIHR Health Research Training Platforms.</p>
+
+                <p>EPIC-AT is built on a foundation of equity, diversity, inclusion, and accessibility. Racialized people comprise over one-fifth of the Canadian population, yet are significantly under-represented as both faculty members and senior university leaders (Cukier, 2021). Moreover, as found by an Innovation, Science, and Economic Development Canada sponsored survey, tenured faculty tend to be less racially diverse and more likely to be male.</p>
+
+                <p>These awards are meant to increase financial support for Black, Indigenous, and other racialized early career researchers to pursue patient-oriented research and patient engagement activities and help build their independent research programs as they pertain to digital health solutions for older adults with complex health needs.</p>
+
+                <p>Applicants are encouraged to review the Use of Grant Funds section of the <a href='http://www.nserc-crsng.gc.ca/Professors-Professeurs/FinancialAdminGuide-GuideAdminFinancier/index_eng.asp'>Tri-Agency (CIHR, NSERC and SSHRC) Financial Administration Guide</a> for a complete listing and description of allowable costs and activities.</p>
+            
+                <p><i>Priority Research Areas</i></p>
+                
+                <p>Visible minority and immigrant older adults are particularly susceptible to the digital divide due to the intersecting identity markers of race, class, age, and gender.</p>
+
+                <p>Moreover, Indigenous older adults are one of the most rapidly growing group of seniors in Canada. Due to the continued effects of colonization and systemic biases, Indigenous older adults face a higher and rising prevalence of complex health needs including multimorbidity. It is imperative to swiftly develop and implement culturally safe and appropriate solutions.</p>
+
+                <p>As such, EPIC-AT welcomes especially applications from those who will explicitly serve equity-deserving groups.</p>
+
+                <i>We expect to offer the following 1 year awards in this call:</i>
+                <ul><li>2 EPIC-AT Early Career Researcher Awards in Patient-Oriented Research at $20,000</li></ul>
+            
+                <p><b>Benefits</b></p>
+                
+                In addition to funding, recipients will be granted access to the EPIC-AT training and mentorship program and have an opportunity to:
+                <ol>
+                    <li>gain in-depth, specialized expertise in developing, implementing and evaluating digital health solutions for seniors with complex health needs</li>
+                    <li>access to multi-sectoral mentors and sponsors</li>
+                    <li>participate in value-added professional development training, internship and lab exchange opportunities</li>
+                    <li>network with a community of AgeTech researchers and professionals</li>
+                    <li>receive support to identify and attain career goals</li>
+                </ol>
+            
+                <p><b>Eligibility</b></p>
+                <ol>
+                    <li>Indigenous, Black, and Racialized early career researcher applicants must be within the first 5 years (60 months) of a full-time academic appointment at a Canadian post-secondary institution or research institute.</li>
+                    <li>All applicants must be engaged in academic study/research aligned with the mission and vision of EPIC-AT.</li>
+                    <li>Applicants may not hold an EPIC-AT Fellowship or be part of the EPIC-AT leadership including Platform Advisory Committee members, Principle Applicants, or Co-Applicants.</li>
+                </ol>
+            
+                <p><b>Program Requirements</b></p>
+                
+                <p><i>Reporting</i></p>
+                
+                <p>Award holders are required to report on their publications, presentations, and progress made towards goals.</p>
+
+                <p>Recipient institutions will report on expenditures of EPIC-AT funds by submitting a Form 300 to training@agewell-nce.ca no later than April 30 of each year for the duration of the award term.</p>
+            
+                <p><i>Acknowledging EPIC-AT</i></p>
+                
+                <p>Recipients will acknowledge the EPIC-AT Health Research Training Platform in their presentations, publications, and other knowledge translation activities related to research conducted during their award term.</p>
+                
+                <p><b>Adjudication Criteria</b></p>
+                
+                <p>All applications will undergo an administrative round of review to confirm eligibility and relevance of the applicant’s research to stakeholders’ lived experiences.</p>
+
+                <p>Eligible applications will then be reviewed by a team of field experts using the following criteria:</p>
+            
+                <p><b>Application Review Criteria</b></p>
+                
+                <p>The following criteria and scoring scheme are used to evaluate the applications:</p>
+                
+                <table class="wikitable">
+                    <tr>
+                        <td valign="top">Objectives & Rationale</td>
+                        <td valign="top">30%</td>
+                        <td valign="top">
+                            <ul style='margin-top:0;'>
+                                <li style='margin-top:0;'>the activity or project’s relevance to EPIC-AT values and mission</li>
+                                <li>originality or novelty of proposed activity or project</li>
+                                <li>proposal demonstrates how EDI principles and best practices inform activities</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Deliverables & Feasibility</td>
+                        <td valign="top">40%</td>
+                        <td valign="top">
+                            <ul style='margin-top:0;'>
+                                <li style='margin-top:0;'>appropriateness of the methods and theoretical approach</li>
+                                <li>probability that the objectives will be met within the timeline proposed</li>
+                                <li>involvement of partners or stakeholders in the design and conduct of proposed activities</li>
+                                <li>appropriateness of requested budget and justification of proposed costs</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Potential Impact</td>
+                        <td valign="top">30%</td>
+                        <td valign="top">
+                            <ul style='margin-top:0;'>
+                                <li style='margin-top:0;'>potential positive impact on the lives of older adults and caregivers</li>
+                                <li>the associated benefits to older adults and caregivers is feasibly described</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+                
+                <p>EPIC-AT ECR Awards in Patient-Oriented Research applications will be assigned a score for each of the three criteria above, based on the following scoring table. The appropriate weighting is then applied to arrive at a final score. Applications must receive a score of 6 or higher for each of the three criteria to be recommended for funding.</p>
+                
+                <table class="wikitable">
+                    <tr>
+                        <th align="left" style="width:6em;">Score</th>
+                        <th align="left">Descriptor</th>
+                    </tr>
+                    <tr>
+                        <td>8-9</td>
+                        <td>Very good to excellent</td>
+                    </tr>
+                    <tr>
+                        <td>6-7</td>
+                        <td>Good to very good</td>
+                    </tr>
+                    <tr>
+                        <td>4-5</td>
+                        <td>Satisfactory to good</td>
+                    </tr>
+                    <tr>
+                        <td>Below 4</td>
+                        <td>Unsatisfactory</td>
+                    </tr>
+                </table>
+                
+                <b>Important Dates</b><br />
+                Forum Application is open<br />
+                Completed Applications Due: 31 January, 2023<br />
+                Results Available: March 2023<br />
+                Fellowship Term: 1 April 2023 – 31 March 2024
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <table style='width: 100%;'>
+                    <tr>
+                        <td colspan='2'><h3>1. ADMINISTRATIVE INFORMATION<br /><small>Please note that the information provided here is not used to adjudicate applications and will not affect your ranking.</small></h3></td>
+                    </tr>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <tr><td style='width:22em;' align='right'><b>Applicant Name:</b></td><td>{$user_name}</td></tr>
+                <tr><td align='right'><b>Email Address:</b></td><td>{$user_email}</td></tr>
+            ]]>
+        </Static>
+        <ReportItem id="status" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_STAT" width="425px" placeholder="e.g., PhD Year 1, Occupational therapy or Assistant Professor, Year 3">
+            <![CDATA[
+                <tr><td align='right'><b>Academic Status and Department:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI" width="325px" placeholder="Please list the institution where funds will be held">
+            <![CDATA[
+                <tr><td align='right'><b>Institution/University:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_title" type="TextReportItem" blobType="BLOB_TEXT" blobItem="PROJECT_TITLE" width="400px">
+            <![CDATA[
+                <tr><td align='right'><b>Research Project Title:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_value" type="Integer" blobType="BLOB_TEXT" blobItem="PROJECT_VALUE" min="0" max="20000" width="3em">
+            <![CDATA[
+                    <tr><td align='right'><b>Total Value of EPIC-AT Investment Requested:<br />(max $20,000)</b></td><td valign='top'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_another_source" type="Radio" blobType="BLOB_TEXT" blobItem="PROJECT_ANOTHER_SOURCE" options="Yes|No" orientation="horizontal">
+            <![CDATA[
+                    <tr><td align='right' valign='top'><b>Is this Project/Activity Supported by Another Source of Funding? If yes, please list.</b></td><td>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_another_source_other" type="Textarea" blobType="BLOB_TEXT" blobItem="PROJECT_ANOTHER_SOURCE_OTHER" height="65px" width="425px">
+            <![CDATA[
+                    {$item}
+                </td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_ethics" type="Radio" blobType="BLOB_TEXT" blobItem="PROJECT_ETHICS" options="Yes|No" orientation="horizontal">
+            <![CDATA[
+                    <tr><td align='right' valign='top'><b>Is Research Ethics Review Required For This Project?</b></td><td>{$item}If yes, please note that you will be required to submit approval to training@agewell-nce.ca.</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="lay_summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="LAY_SUMMARY" rich="true" limit="200">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'>
+                        <b>Lay Summary</b><br />
+
+                        The lay summary should address each of the following questions:
+                        <ol>
+                            <li>Background: What do we already know about the problem?</li>
+                            <li>Objective: What question does your study address?</li>
+                            <li>Method: How will the research be carried out? How is this different from previous studies?</li>
+                            <li>Implications: How will the anticipated results improve the lives of older adults with complex health needs and/or their caregivers?</li>
+                        </ol>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="obj1" type="Textarea" blobType="BLOB_TEXT" blobItem="OBJ1" rich="true" limit="300">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'><h3>2. OBJECTIVES AND RATIONALE</h3>
+                    EPIC-AT is passionate about achieving real-world impact through practical and useful technologies or technology-based services and policies. We are committed to involving older people, caregivers and other relevant stakeholders in all stages of our research and development and throughout our programs.
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <b>Please describe your proposed project or activity, its goals or objectives.  Describe the rationale for this activity. Why is this work important?</b>
+                        {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="obj2" type="Textarea" blobType="BLOB_TEXT" blobItem="OBJ2" rich="true" limit="200">
+            <![CDATA[
+                        <b>Who are your stakeholders?  How will you include them in your activities? Please discuss here your consideration of EDI and implementation of best practices.</b>
+                        {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="obj3" type="Textarea" blobType="BLOB_TEXT" blobItem="OBJ3" rich="true" limit="100">
+            <![CDATA[
+                        <b>How does your research connect to research foci of EPIC-AT?  How will you include them in your activities? Please discuss here your consideration of EDI and implementation of best practices.</b>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="deliv1" type="Textarea" blobType="BLOB_TEXT" blobItem="DELIV1" rich="true" limit="250">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'><h3>3. DELIVERABLES AND FEASIBILITY</h3>
+                    Clearly describe your methodological approach and describe your research project deliverables mapped to its associated timeline. Please clearly articulate how you intend to accomplish your deliverables.
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <b>Methodological Approach</b><br />
+                        <p>Describe the type of research being undertaken e.g. technology development, review, feasibility study, pilot study, requirements analysis, prototype development, intervention study, evaluation study, etc.</p>
+
+                        <p>Provide an overview of the approach (design/methods) you will use to meet your project objectives. Why is this an appropriate method?</p>
+                        {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="deliv2" type="Textarea" blobType="BLOB_TEXT" blobItem="DELIV2" rich="true" limit="250">
+            <![CDATA[
+                        <b>Study Milestones, Deliverables, Outputs and Outcomes</b><br />
+                        <p>Describe the tasks and activities planned (provide detail on specific tasks to be carried out to meet the project objectives you identified above). “Activities” may include research activities, KT, innovation, commercialization, team-building and training, etc.</p>
+
+                        <p>Provide specific timing of the various tasks, activities and milestones, where milestones are critical points in the project (e.g., completion of a task)</p>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="outcomes1" type="Textarea" blobType="BLOB_TEXT" blobItem="OUTCOMES1" rich="true" limit="250">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'><h3>4. POTENTIAL OUTCOMES & IMPACT</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <b>Potential Impact</b><br />
+                        <p>In this section, please provide a brief statement of the potential positive impact your work will have on the lives of older adults with complex health needs and their caregivers.</p>
+
+                        <p>As applicable, address the following:</p>
+
+                        <p><b>Social innovation</b><br />
+                        What are practical benefits of your research to the wider community?</p>
+
+                        <p><b>Technological innovation</b><br />
+                        What are the novel aspects and contributions of your research from a technical point of view?</p>
+
+                        <p><b>Policy and practice innovation</b><br />
+                        How might policies, services and care be transformed by your research?</p>
+
+                        <p><b>Scientific innovation</b><br />
+                        What are the key scientific outputs from this research?</p>
+                        {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="outcomes2" type="Textarea" blobType="BLOB_TEXT" blobItem="OUTCOMES2" rich="true" limit="250">
+            <![CDATA[
+                        <b>Impact Plan</b><br />
+                        <p>EPIC-AT seeks to equip trainees and ECRs with the skills to translate their work into real-world impact.</p>
+
+                        <p>While the success ultimately depends on the rate of uptake and meaningful application of knowledge or products by end users, non-traditional academic knowledge mobilization, commercialization and effective implementation of solutions are a platform goal.</p>
+
+                        <p>Not every Fellowship or grant recipient is expected to be directly responsible for a commercial outcome or uptake of knowledge, but all projects should be actively contributing to these overall goals.</p>
+
+                        <p>Please address your plan to ensure your work achieves the impact described in the previous section.</p>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+    <ReportSection id="budget" tooltip="Budget and Justification" name="Budget and Justification" type="EditableReportSection" title="Budget and Justification" blobSection="BUDGET">
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" fileSize="2" mimeType=".xls,.xlsx">
+            <![CDATA[
+                <h2>Budget</h2>
+                <p>Please use the <a href='{$wgServer}{$wgScriptPath}/data/EPIC-AT ECR SPOR Grant Budget Template.xlsx'>template</a> provided to create a 1 year budget.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Upload" blobItem="JUSTIFICATION" fileSize="5" mimeType=".pdf">
+            <![CDATA[
+                <h2>Justification</h2>
+                <p>Write and upload a maximum 1 page free-form budget justification.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="documents" type="ReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS">
+        <ReportItem id="cv" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h2>Curriculum Vitae</h2>
+                <p>All applicants are required to upload a CV.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="identification" tooltip="Self-Identification Form" name="Self-Identification Form" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="age" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="AGE" orientation="vertical" options="18-24 years old|25-34 years old|35-44 years old|45-54 years old|55-64 years old|65-74 years old|75+ years old|I prefer not to answer" optional="true">
+            <![CDATA[
+                <table>
+                <tr>
+                    <td colspan='2'>
+                        <p>Please note that the information provided here will not be shared. It will not be used to adjudicate applications and will not affect your ranking. This information is solely collected so the platform can monitor the equity performance of programs and design new measures that achieve greater equity, diversity and inclusion in the research enterprise.</p>
+                        
+                        <p>All applications for fellowships require you to complete a self-identification form; however, if you would prefer not to self-identify and/or provide the requested information, you may select “I prefer not to answer" for any or all of the questions.</p>
+                        
+                        <p>Any self-identification statistics shared will always be reported in aggregate form to ensure protection of the identity of any individual.</p>
+                        
+                        <p>The collection of this information is an essential part of efforts to improve EDI in science and research. For further information, please see the Tri-Agency's policy on Self-Identification Data Collection in Support of EDI and Canada's 50-30 Challenge.</p>
+                        
+                        <p>See the Tri-Agency's policy on Self-Identification Data Collection in Support of EDI here: <a href='https://science.gc.ca/eic/site/063.nsf/eng/h_97615.html' target='_blank'>https://science.gc.ca/eic/site/063.nsf/eng/h_97615.html</a></p>
+                    </td>
+                </tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Age:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="gender" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="GENDER" orientation="vertical" options="Woman|Man|Gender fluid, nonbinary and/or Two Spirit|LGBTQ2IA+|My gender identity and/or sexual orientation is not listed above.|I prefer not to answer" optional="true">
+            <![CDATA[
+                <tr>
+                    <td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Self-Identified Gender Identity and Sexual Orientation:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="gender_other" type="Text" width="300px" blobType="BLOB_TEXT" blobItem="GENDER_OTHER" optional="true">
+            <![CDATA[
+                    If your gender identity or sexual orientation were not listed, and you would like to specify, please do so here:<br />
+                    {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="INDIGENOUS" orientation="vertical" options="First Nations (Includes status, treaty or registered Indians, as well as non-status and non-registered Indians)|Métis|Inuit/Inuk|I prefer not to answer|Not applicable" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Do you identify as a member of any of the following Indigenous populations:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="ethnicities" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ETHNICITIES" orientation="vertical" options="Black|Persons of mixed origin (with one parent in one of the Visible Minority communities listed)|Japanese|Filipino|Non-white West Asian, North African/Arab (includes Egyptian; Libyan; Lebanese; Iranian; etc.)|Non-white Latin American (includes Indigenous peoples from Central and South America, etc.)|Chinese|Korean|South Asian/East Indian (includes Indian from India; Bangladeshi; Pakistani; East Indian from Guyana, Trinidad, East Africa; etc.)|Southeast Asian (includes Burmese, Cambodian, Laotian; Thai; Vietnamese; etc.)|White|My ethnicity is not listed here|I prefer not to answer|Not applicable" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Do you identify with any of the following ethnicities:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="ethnicities_other" type="Text" width="300px" blobType="BLOB_TEXT" blobItem="ETHNICITIES_OTHER" optional="true">
+            <![CDATA[
+                    If your ethnicity was not listed above, and you would like to specify, please do so here:<br />
+                    {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="disability" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="DISABILITY" orientation="vertical" options="Yes|No|I prefer not to answer" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Are you a person living with a disability?</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="postsecondary" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="POSTSECONDARY" orientation="vertical" options="Yes|No|I prefer not to answer" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Are you a first generation postsecondary student?<br />
+This is defined as an individual whose parents did not complete postsecondary education. </b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+    </ReportSection>
+</Report>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AVOID Frailty Regional Centres for Healthy Aging (RCHA) Grants Competition" reportType="RP_RCHA_APPLICATION" pdfType="RP_RCHA_INTENT" pdfFiles="RCHA2021IntentPDF" year="2021" ajax="true" disabled="false">
+<Report name="AVOID Frailty Regional Centres for Healthy Aging (RCHA) Grants Competition" reportType="RP_RCHA_APPLICATION" pdfType="RP_RCHA_INTENT" pdfFiles="RCHA2021IntentPDF" year="2021" ajax="true" disabled="true">
     <Permissions>
         <!--Role role="NI">
             <SectionPermission id="intent" permissions="rw" />
@@ -53,10 +53,10 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="term" type="Integer" width="20px" blobItem="TERM" min="0" max="12">
+        <ReportItem id="term" type="Integer" width="20px" blobItem="TERM" min="0" max="18">
             <![CDATA[
                 <tr>
-                    <td><b style='white-space:nowrap;'>Term of RCHA Proposal</b><br /><small>(Maximum 12 months)</small></td>
+                    <td><b style='white-space:nowrap;'>Term of RCHA Proposal</b><br /><small>(Maximum 18 months)</small></td>
                     <td>{$item}</td>
                 </tr>
             ]]>
