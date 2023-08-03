@@ -177,6 +177,8 @@ function ShibUserLoadFromSession($user, $result)
 		$user->setCookies();
 		ShibAddGroups($user);
 		$wgUser = $user;
+		$request = RequestContext::getMain();
+		$request->setUser($wgUser);
 		startImpersonate($wgUser);
 		return true;
 	}
