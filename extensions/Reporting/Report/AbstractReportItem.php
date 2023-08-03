@@ -191,7 +191,8 @@ abstract class AbstractReportItem extends Callbackable {
         global $wgOut;
         $oldWgOut = $wgOut;
         $oldValue = $this->value;
-        $wgOut = new OutputPage();
+        $context = new RequestContext();
+        $wgOut = $context->getOutput();
         $this->value = '{$item}';
         $this->renderForPDF();
         $this->value = $oldValue;
