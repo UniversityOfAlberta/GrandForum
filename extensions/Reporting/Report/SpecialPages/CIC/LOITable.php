@@ -91,7 +91,9 @@ class LOITable extends SpecialPage{
                                       FROM grand_pdf_report 
                                       WHERE user_id = '{$person->getId()}'
                                       AND proj_id = '{$projectId}'
-                                      AND type = 'RP_LOI'");
+                                      AND type = 'RP_LOI'
+                                      ORDER BY report_id DESC
+                                      LIMIT 1");
         if(isset($data[0])){   
             $sto = new ReportStorage(new Person(array()), $project);
             $rpData = "";
