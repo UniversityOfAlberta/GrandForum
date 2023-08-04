@@ -36,6 +36,9 @@ PharmacyMapView = Backbone.View.extend({
                     position: { 'my': 'center', 'at': 'center' }
                 });
             }
+            if($('#how').is(':visible')){
+                $(".ui-dialog").css("top", "25%");
+            }
         });
     },
 
@@ -48,6 +51,19 @@ PharmacyMapView = Backbone.View.extend({
         "click #questions": "clickQuestions",
         "keypress #keywordsearch": "keywordSearch",
         "click #keysearch_btn": "keywordSearch",
+        "click #howLink": "clickHow"
+    },
+    
+    clickHow: function(){
+        $('#how').dialog({
+            title: "<en>How do I use this page?</en><fr>Comment puis-je utiliser cette page?</fr>",
+            modal: false,
+            resizable: false,
+            position: { 'my': 'center', 'at': 'center' },
+            width: '50%'
+        });
+        $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
+        $(window).resize();
     },
 
     keywordSearch(e){
@@ -485,6 +501,7 @@ PharmacyMapView = Backbone.View.extend({
             }
             $(".searches").append("<br /><b>"+data.length+"</b> Results for Keyword Search: <b>"+this.model.key+"</b>");
         }
+        
         return this.$el;
     }
 
