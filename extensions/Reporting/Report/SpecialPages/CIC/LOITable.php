@@ -147,8 +147,11 @@ class LOITable extends SpecialPage{
             while(true){
                 $projectId++;
                 $report = new DummyReport("LOI", $person, $projectId, 0, true);
-                if(!$report->isGenerated()){
+                if(!$report->hasStarted()){
                     break;
+                }
+                if(!$report->isGenerated()){
+                    continue;
                 }
                 $pdf = $report->getPDF();
                 $status = $this->getBlobValue('PROJ_STATUS', $person, $projectId);
