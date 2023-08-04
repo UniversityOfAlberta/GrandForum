@@ -348,14 +348,17 @@ class ProjectKPITab extends AbstractEditableTab {
                         $lastaddr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$i}_Q{$q}", 0);
                         $lastblb->load($lastaddr, true);
                         $lastmd5 = $lastblb->getMD5();
+                        $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/GIS KPIs.xlsx'>Download Template</a><br />";
+                        
+                        $this->html .= "<h3 style='margin-top: 0;'>Upload KPI Report</h3>";
+                        $this->html .= "<input type='file' name='kpi[{$i}_Q{$q}]' accept='.xlsx' /><br />";
                         if($lastmd5 != ""){
-                            $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$lastmd5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q{$q}_KPI.xlsx'>Download KPI</a><br /><b>Delete?</b> <input type='checkbox' name='kpi_delete[{$i}_Q{$q}]' />";
+                            $this->html .= "<p style='margin-bottom: 0.5em;'><b>Delete?</b> <input type='checkbox' name='kpi_delete[{$i}_Q{$q}]' /></p>";
+                            if($me->isRoleAtLeast(STAFF)){
+                                $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$lastmd5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q{$q}_KPI.xlsx'>Download KPI Report</a>";
+                            }
                         }
-                        else{
-                            $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/GIS KPIs.xlsx'>Download Template</a>";
-                        }
-                        $this->html .= "<h3 style='margin-top: 0;'>Upload KPI</h3>
-                                        <input type='file' name='kpi[{$i}_Q{$q}]' accept='.xlsx' />";
+                        
                     }
                     
                     if(!$edit){
