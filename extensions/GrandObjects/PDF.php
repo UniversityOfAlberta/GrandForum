@@ -122,7 +122,7 @@ class PDF extends BackboneModel {
     
     function getUrl(){
         global $wgScriptPath, $wgServer;
-        return "$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$this->id}";
+        return "$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=".urlencode($this->id);
     }
     
     function getProjectId(){
