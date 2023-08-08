@@ -116,8 +116,21 @@ DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_text` 
 $wgDBname = $wgTestDBname;
 $dbw = wfGetDB(DB_PRIMARY);
 $dbr = wfGetDB(DB_REPLICA);
-$dbw->open($wgDBserver, $wgDBuser, $wgDBpassword, $wgDBname);
-$dbr->open($wgDBserver, $wgDBuser, $wgDBpassword, $wgDBname);
+
+$dbw->connectionParams['host'] = $wgDBserver;
+$dbw->connectionParams['user'] = $wgDBuser;
+$dbw->connectionParams['password'] = $wgDBpassword;
+$dbw->connectionParams['dbname'] = $wgDBname;
+
+$dbr->connectionParams['host'] = $wgDBserver;
+$dbr->connectionParams['user'] = $wgDBuser;
+$dbr->connectionParams['password'] = $wgDBpassword;
+$dbr->connectionParams['dbname'] = $wgDBname;
+
+//$dbw->close();
+//$dbr->close();
+$dbw->initConnection();
+$dbr->initConnection();
 
 DBFunctions::$dbr = null;
 DBFunctions::$dbw = null;
