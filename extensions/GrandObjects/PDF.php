@@ -38,11 +38,13 @@ class PDF extends BackboneModel {
      * @return PDF The PDF that matches the token
      */
     static function newFromToken($tok){
+        $decTok = DBFunctions::escape(decrypt(urldecode($tok), true));
         $tok = DBFunctions::escape($tok);
+        
         $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id, r.encrypted
                                       FROM `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
                                       WHERE ((r.encrypted = 0 AND r.token = '{$tok}') OR 
-                                             (r.encrypted = 1 AND r.token = '".decrypt($tok, true)."'))");
+                                             (r.encrypted = 1 AND r.token = '{$decTok}'))");
         return new PDF($data);
     }
     
