@@ -424,6 +424,7 @@
                         <tr>
                             <th>User</th>
                             <th>Type</th>
+                            <th>Date Submitted</th>
                             <th>HQP Authored?</th>
                             <th>Presenter(s)</th>
                             <th>Organization</th>
@@ -446,6 +447,7 @@
                             <tr>
                                 <td>{$user_name}</td>
                                 <td>Symposia</td>
+                                <td style='white-space:nowrap;'>{getBlobDate(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_SUBMIT,{$extraIndex},{$user_id},0)}</td>
                                 <td>{getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_HQP,{$extraIndex},{$user_id},0,2_hqp)}</td>
                                 <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PRESENTER,{$extraIndex},{$user_id},0)}</td>
                                 <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_ORGANIZATION,{$extraIndex},{$user_id},0)}</td>
@@ -465,6 +467,7 @@
                             <tr>
                                 <td>{$user_name}</td>
                                 <td>Workshops</td>
+                                <td style='white-space:nowrap;'>{getBlobDate(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_SUBMIT,{$extraIndex},{$user_id},0)}</td>
                                 <td>{getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_HQP,{$extraIndex},{$user_id},0,1_hqp)}</td>
                                 <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_PRESENTER,{$extraIndex},{$user_id},0)}</td>
                                 <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_ORGANIZATION,{$extraIndex},{$user_id},0)}</td>
@@ -484,6 +487,7 @@
                             <tr>
                                 <td>{$user_name}</td>
                                 <td>Poster Sessions</td>
+                                <td style='white-space:nowrap;'>{getBlobDate(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_SUBMIT,{$extraIndex},{$user_id},0)}</td>
                                 <td>{getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_HQP,{$extraIndex},{$user_id},0,4_hqp)}</td>
                                 <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PRESENTER,{$extraIndex},{$user_id},0)}</td>
                                 <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_ORGANIZATION,{$extraIndex},{$user_id},0)}</td>
@@ -503,6 +507,7 @@
                             <tr>
                                 <td>{$user_name}</td>
                                 <td>Drinks & Demos</td>
+                                <td style='white-space:nowrap;'>{getBlobDate(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_SUBMIT,{$extraIndex},{$user_id},0)}</td>
                                 <td>{getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_HQP,{$extraIndex},{$user_id},0,5_hqp)}</td>
                                 <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_PRESENTER,{$extraIndex},{$user_id},0)}</td>
                                 <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_ORGANIZATION,{$extraIndex},{$user_id},0)}</td>
@@ -522,6 +527,7 @@
                             <tr>
                                 <td>{$user_name}</td>
                                 <td>HQP Travel Subsidy</td>
+                                <td style='white-space:nowrap;'>{getBlobDate(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_SUBMIT,{$extraIndex},{$user_id},0)}</td>
                                 <td>{getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_HQP,{$extraIndex},{$user_id},0,3_hqp)}</td>
                                 <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_PRESENTER,{$extraIndex},{$user_id},0)}</td>
                                 <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_ORGANIZATION,{$extraIndex},{$user_id},0)}</td>

@@ -167,6 +167,7 @@ class ReportItemCallback {
             "getProjectTitles" => "getProjectTitles",
             "getNProducts" => "getNProducts",
             "getBlobMD5" => "getBlobMD5",
+            "getBlobDate" => "getBlobDate",
             "getRawText" => "getRawText",
             "getText" => "getText",
             "getNumber" => "getNumber",
@@ -1875,6 +1876,19 @@ class ReportItemCallback {
         $blb = new ReportBlob(BLOB_RAW, $year, $personId, $projectId);
         $result = $blb->load($addr, true);
         return $blb->getMD5();
+    }
+    
+    function getBlobDate($rp="", $section="", $blobId="", $subId="", $personId="", $projectId="", $year=null){
+        if($rp == ""){
+            return $this->reportItem->getMD5();
+        }
+        if($year == null){
+            $year = $this->reportItem->getReport()->year;
+        }
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_RAW, $year, $personId, $projectId);
+        $result = $blb->load($addr, true);
+        return $blb->getLastChanged();
     }
     
     function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", ", $year=null){
