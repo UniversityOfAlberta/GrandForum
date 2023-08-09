@@ -126,7 +126,7 @@
                             $("#avoid_caregiver_fup_recommended").hide();
                             $("#avoid_bowel_fup_recommended").hide();
                             $("#avoid_meds_fup_recommended").hide();
-                             $("#avoid_immunization_fup_recommended").hide();
+                            $("#avoid_immunization_fup_recommended").hide();
                             $("#avoid_fatigue_fup_recommended").hide();
                             $("#avoid_nutrition_fup_recommended").hide();
                             $("#avoid_osteo_fup_recommended").hide();
@@ -184,25 +184,24 @@
         <Static>
             <![CDATA[
                 <script type='text/javascript'>
-		    $('span#recommend_hearing').hide();
-		    function hideHearingRec(){
-			var count = 0;
-			if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper1']:checked").val() == "Fail"){
-			    count += 1;
-                        }
-			if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper2']:checked").val() == "Fail"){
+                    $('span#recommend_hearing').hide();
+                    function hideHearingRec(){
+                        var count = 0;
+                        if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper1']:checked").val() == "Fail"){
                             count += 1;
                         }
-			if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper3']:checked").val() == "Fail"){
+                        if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper2']:checked").val() == "Fail"){
                             count += 1;
-				
-			}
-			if($("select[name='InPersonAssessment_avoid_hearing']").val() == "Yes"){
+                        }
+                        if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper3']:checked").val() == "Fail"){
+                            count += 1;
+                        }
+                        if($("select[name='InPersonAssessment_avoid_hearing']").val() == "Yes"){
                             $('span#recommend_hearing').show();
-			}
-			else if(count == 3){
+                        }
+                        else if(count == 3){
                             $('span#recommend_hearing').show();
-			}
+                        }
                         else{ $('span#recommend_hearing').hide();}
                     }
                     _.defer(hideHearingRec);
@@ -738,27 +737,27 @@
                 <br />
                 <table>
                 <tr>
-		<td>Time:</td><td>{$item}seconds</td></tr></table>
+                <td>Time:</td><td>{$item}seconds</td></tr></table>
             ]]>
         </ReportItem>
         <ReportItem id="avoid_balance8" blobItem="avoid_balance8" type="Textarea" rich="false">
             <![CDATA[
-			<br />Comments:<br />
-			<i>
-			<10 seconds = freely independent<br />
-			<20 seconds = independent in basic tub/shower transfers, able to climb most stairs and go outside alone<br />
-			<30 seconds = dependent in most activities<br /></i>
+                <br />Comments:<br />
+                <i>
+                <10 seconds = freely independent<br />
+                <20 seconds = independent in basic tub/shower transfers, able to climb most stairs and go outside alone<br />
+                <30 seconds = dependent in most activities<br /></i>
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="avoid_balance2" blobItem="avoid_balance2" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
-		<br />
-		<b>In regards to Timed Get up and Go Test, any concern regarding feelings of unsteadiness in times when:</b><br />
-		Standing?
+                <br />
+                <b>In regards to Timed Get up and Go Test, any concern regarding feelings of unsteadiness in times when:</b><br />
+                Standing?
                 <div class="requiredField">{$item}</div>
             ]]>
-	</ReportItem>
+        </ReportItem>
         <ReportItem id="avoid_balance12" blobItem="avoid_balance12" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
@@ -799,9 +798,9 @@
                 <br />
                 <table>
                 <tr>
-		<td>Time:</td><td>{$item}seconds</td>
-		</tr>
-		</table>
+                    <td>Time:</td><td>{$item}seconds</td>
+                </tr>
+                </table>
             ]]>
         </ReportItem>
         <ReportItem id="avoid_balance11" blobItem="avoid_balance11" type="Textarea" rich="false">
@@ -969,10 +968,10 @@
         </ReportItem>
         <ReportItem id="avoid_caregiver_fup" blobItem="avoid_caregivere_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
-		<br />
-		Assistance needs not being met and follow up required
-		<br /><br />
-		Follow up?
+                <br />
+                Assistance needs not being met and follow up required
+                <br /><br />
+                Follow up?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
@@ -1457,57 +1456,46 @@
             <![CDATA[
                 <td><span id="avoid_nutrition2_2_2">{$item}inches</span></td>
             ]]>
-	</ReportItem>
+        </ReportItem>
         <Static>
             <![CDATA[
                 <script type='text/javascript'>
-			function calcBMI(){
-			    var BMI = 0;
-			    var height = 0;
-			    var weight = $("input[type='text'][name='InPersonAssessment_avoid_nutrition1']").val();
-			    if($("select[name='InPersonAssessment_avoid_nutrition1_2']").val() == "lbs"){
-				weight = weight * 0.453592;
-			    }
-			    console.log(weight);
-                            if($("select[name='InPersonAssessment_avoid_nutrition2_2']").val() == "feet"){
-				console.log("feet");
-				height =  $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_1']").val() * 30.48;
-				height =  height + $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_2_2']").val() * 2.54;
-
-			    }
-			    else if($("select[name='InPersonAssessment_avoid_nutrition2_2']").val() == "inches"){
-				console.log("inches");
-                                height =  $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_1']").val() * 2.54;
-			    }
-			    else{
-				console.log("cm");
-			    }
-			    console.log(height);
-			    BMI = (weight/height/height) * 10000;
-			    BMI = Math.round(BMI * 10) / 10;
-		 	    console.log("BMI");
-			    console.log(BMI);
-			    $("input[type='text'][name='InPersonAssessment_avoid_nutrition5']").val(BMI);
-
+                    function calcBMI(){
+                        var BMI = 0;
+                        var height = 0;
+                        var weight = $("input[type='text'][name='InPersonAssessment_avoid_nutrition1']").val();
+                        if($("select[name='InPersonAssessment_avoid_nutrition1_2']").val() == "lbs"){
+                            weight = weight * 0.453592;
                         }
-			$("select[name='InPersonAssessment_avoid_nutrition2_2']").change(calcBMI);
-                        $("select[name='InPersonAssessment_avoid_nutrition1_2']").change(calcBMI);
-                        $("input[type='text'][name='InPersonAssessment_avoid_nutrition1']").change(calcBMI);
-                        $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_1']").change(calcBMI);
-                        $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_2_2']").change(calcBMI);
+                        if($("select[name='InPersonAssessment_avoid_nutrition2_2']").val() == "feet"){
+                            height = $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_1']").val() * 30.48;
+                            height = height + $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_2_2']").val() * 2.54;
+                        }
+                        else if($("select[name='InPersonAssessment_avoid_nutrition2_2']").val() == "inches"){
+                            height = $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_1']").val() * 2.54;
+                        }
 
+                        BMI = (weight/height/height) * 10000;
+                        BMI = Math.round(BMI * 10) / 10;
+                        $("input[type='text'][name='InPersonAssessment_avoid_nutrition5']").val(BMI);
+                    }
+                    $("select[name='InPersonAssessment_avoid_nutrition2_2']").change(calcBMI);
+                    $("select[name='InPersonAssessment_avoid_nutrition1_2']").change(calcBMI);
+                    $("input[type='text'][name='InPersonAssessment_avoid_nutrition1']").change(calcBMI);
+                    $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_1']").change(calcBMI);
+                    $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_2_2']").change(calcBMI);
                 </script>
             ]]>
         </Static>
 
         <Static>
             <![CDATA[
-		</tr></table>
-		<br />
-		<b>Waist Circumference (cm)</b><br />
-		WC M ≥102cm W ≥88cm (North America)<br />
-		WC M ≥94cm W ≥80cm (Europids; Middle-Eastern; Sub-Saharan African; Mediterranean)<br />
-		WC M ≥90cm W ≥80cm (Asians; Japanese; South and Central Americans)<br /><br />
+                </tr></table>
+                <br />
+                <b>Waist Circumference (cm)</b><br />
+                WC M ≥102cm W ≥88cm (North America)<br />
+                WC M ≥94cm W ≥80cm (Europids; Middle-Eastern; Sub-Saharan African; Mediterranean)<br />
+                WC M ≥90cm W ≥80cm (Asians; Japanese; South and Central Americans)<br /><br />
             ]]>
         </Static>
         <Static>
@@ -1617,7 +1605,7 @@
         </ReportItem>
         <ReportItem id="avoid_osteo_fup" blobItem="avoid_osteo_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
-		<br /><br />
+                <br /><br />
                 Follow up?
                 <div class="requiredField">{$item}</div>
             ]]>
@@ -2178,14 +2166,14 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-	<ReportItem id="avoid_chronic_2" type="Text" blobItem="avoid_chronic_2" width="400px" optional="true">
+        <ReportItem id="avoid_chronic_2" type="Text" blobItem="avoid_chronic_2" width="400px" optional="true">
             <![CDATA[
-        <span id="avoid_chronic_2">
-            Specify: {$item}
-        </span>
-                ]]>
-	</ReportItem>
-	<Static>
+                <span id="avoid_chronic_2">
+                    Specify: {$item}
+                </span>
+            ]]>
+        </ReportItem>
+        <Static>
             <![CDATA[
             <script type='text/javascript'>
                 $('span#avoid_chronic_2').hide();
@@ -2197,7 +2185,6 @@
                 }
                 _.defer(specifyChronic);
                 $("input:checkbox[name='InPersonAssessment_avoid_chronic[]']").change(specifyChronic);
-
             </script>
         ]]>
         </Static>
