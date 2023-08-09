@@ -86,7 +86,7 @@ class UploadCCVAPI extends API{
         $product->date = "{$paper['date_year']}-{$paper['date_month']}-01";
         $product->acceptance_date = "{$paper['date_year']}-{$paper['date_month']}-01";
         $product->data = array();
-        if(!isset($_POST['id'])){
+        if(!isset($_POST['id']) && !$product->exists()){
             $product->access_id = $person->getId();
         }
         else{

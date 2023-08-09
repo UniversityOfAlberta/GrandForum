@@ -2,7 +2,9 @@
     <span class="edit-icon" style="margin-right:3px;" title="Edit"></span><span class="copy-icon" title="Duplicate" style="margin-right:3px;"><span class="throbber" style="display:none;" ></span></span><% if(canDelete){ %><span class="delete-icon" style="margin-left:8px;" title="Delete"></span><% } %>
 </td>
 <td align="center" style="<% if(access_id == me.get('id')){ %>background: #FFD118;<% } %>">
-    <span style="display:none;">-<%= access_id %></span><%= HTML.CheckBox(this, 'access_id', {value: me.get('id'), default: 0}) %>
+    <% if((canDelete && created_by == me.get('id')) || access_id == me.get('id')){ %>
+        <span style="display:none;">-<%= access_id %></span><%= HTML.CheckBox(this, 'access_id', {value: me.get('id'), default: 0}) %>
+    <% } %>
 </td>
 <td align="center">
     <span style="display:none;">-<%= exclude %></span><%= HTML.CheckBox(this, 'exclude', {value: 1, default: 0}) %>
