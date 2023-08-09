@@ -118,6 +118,7 @@ class AdminDataCollection extends SpecialPage{
                                         <th>Hear about us</th>
                                         <th>In person opportunity</th>
                                         <th>Fitbit</th>
+                                        <th>Connected Fitbit</th>
                                         <th>Attendance</th>
                                         <th>Submitted Intake Survey</th>
                                         <th>Submitted 3Month Survey</th>
@@ -156,6 +157,7 @@ class AdminDataCollection extends SpecialPage{
                 $evaluation2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation2", $person->getId());
                 $fitbit1 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "FITBIT", "fitbit1", $person->getId());
                 $fitbit2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "FITBIT", "fitbit2", $person->getId());
+                $connectedFitbit = ($person->getExtra('fitbit') != "") ? "Yes" : "No";
                 
                 $submitted = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID")) ? "Yes" : "No");
                 $submitted3 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")) ? "Yes" : "No");
@@ -215,6 +217,7 @@ class AdminDataCollection extends SpecialPage{
                     <b>Q1:</b> {$fitbit1}<br />
                     <b>Q2:</b> {$fitbit2}
                 </td>
+                <td>{$connectedFitbit}</td>
                 <td align='center'><a href='#' class='viewUsage'>View</a></td>
                 <td>{$submitted}</td>
                 <td>{$submitted3}</td>
