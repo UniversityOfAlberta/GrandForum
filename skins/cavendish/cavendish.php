@@ -1022,6 +1022,9 @@ class CavendishTemplate extends QuickTemplate {
 		         } ?>
 		    </ul>
         </div>
+        <div id=''>
+            
+        </div>
 	</div>
     
     <?php global $dropdownScript; echo "<script type='text/javascript'>$dropdownScript</script>"; ?>
