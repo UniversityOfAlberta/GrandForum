@@ -48,7 +48,7 @@ ClipboardListView = Backbone.View.extend({
             row.render();
             fragment.appendChild(row.el);
         }.bind(this));
-        this.$("#sopRows"+$(cat).text()).html(fragment);
+        this.$("#sopRows"+cat).html(fragment);
 
         // Show the DataTable
         this.$('#listTable').show();
@@ -75,7 +75,6 @@ ClipboardListView = Backbone.View.extend({
         }));
 
         //creating an array from the model TODO:figure out why this isnt working
-        var newModel = [];
         var keys = _.keys(this.model.get('objs'));
         if(keys.length == 0){
             this.$('#empty').show();
@@ -92,7 +91,6 @@ ClipboardListView = Backbone.View.extend({
                 newJSON[category_key] = [];
                 newJSON[category_key].push(object);
             }
-            newModel.push(object);
         }
         for (var key in newJSON) {
             notes = newJSON[key][0]["Notes"];
