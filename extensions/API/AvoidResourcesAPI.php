@@ -96,7 +96,8 @@
                     $cats = explode(";", $row[18]);
                     $category = $cats[count($cats)-1];
                     $website = (strstr($row[12], "http") === false) ? "http://{$row[12]}" : $row[12];
-                    if(trim($cat) == trim($category)){
+                    if(($cat != "" && trim($cat) == trim($category)) ||
+                       ($key != "" && strstr(strtolower(trim($row[0])." (".trim($row[1]).")". $row[3]), strtolower($key)) !== false)){
                         $programs[] = array(
                             "id"                        => md5($row[18].$row[0].$row[1]),
                             "PublicName"                => trim($row[0])." (".trim($row[1]).")",
