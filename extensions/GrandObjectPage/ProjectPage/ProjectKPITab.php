@@ -265,7 +265,8 @@ class ProjectKPITab extends AbstractTab {
         $me = Person::newFromWgUser();
         $project = $this->project;
         
-        if($me->isMemberOf($this->project) || $this->visibility['isLead']){
+        if($me->isRoleAtLeast(STAFF)){
+        //if($me->isMemberOf($this->project) || $this->visibility['isLead']){
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#kpiAccordion').accordion({autoHeight: false,
