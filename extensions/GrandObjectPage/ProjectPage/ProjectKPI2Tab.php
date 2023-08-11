@@ -36,7 +36,7 @@ class ProjectKPI2Tab extends ProjectKPITab {
                 }
             }
         }
-        redirect($this->project->getUrl()."?tab=kpi");
+        redirect($this->project->getUrl()."?tab=kpi-report");
     }
     
     function canEdit(){
