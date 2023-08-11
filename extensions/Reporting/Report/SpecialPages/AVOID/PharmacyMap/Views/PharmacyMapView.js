@@ -447,8 +447,13 @@ PharmacyMapView = Backbone.View.extend({
                     long += parseFloat(val.Longitude);
                 }
             }
-            map.fitBounds(bounds);
             map.setCenter({ lat: lat/i, lng: long/i });
+            if(i == 1){
+                map.setZoom(15);
+            }
+            else{
+                map.fitBounds(bounds);
+            }
         }.bind(this));
     },
 
