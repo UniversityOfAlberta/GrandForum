@@ -75,3 +75,4 @@ extensions/GlobalSearch/ExpertSearch/CommunityBasedEF/conf/queryConf/klSmooth.su
 extensions/GlobalSearch/ExpertSearch/CommunityBasedEF/conf/queryConf/query.ldf
 extensions/GlobalSearch/ExpertSearch/CommunityBasedEF/conf/queryConf/query.trectext
 extensions/GlobalSearch/ExpertSearch/CommunityBasedEF/output/
+extensions/Reporting/Report/SpecialPages/AVOID/PharmacyMap/programs.csv
