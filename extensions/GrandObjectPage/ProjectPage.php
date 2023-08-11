@@ -116,6 +116,7 @@ class ProjectPage {
                 }
                 if(strstr($project->getName(), "GIS-") !== false){
                     $tabbedPage->addTab(new ProjectKPITab($project, $visibility));
+                    $tabbedPage->addTab(new ProjectKPI2Tab($project, $visibility));
                     //$tabbedPage->addTab(new ProjectKPISummaryTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){

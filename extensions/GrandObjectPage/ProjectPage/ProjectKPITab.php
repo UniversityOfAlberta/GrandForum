@@ -1,6 +1,6 @@
 <?php
 
-class ProjectKPITab extends AbstractEditableTab {
+class ProjectKPITab extends AbstractTab {
 
     static $autoProjects = array("GIS-03", "GIS-07", "GIS-13");
 
@@ -13,42 +13,9 @@ class ProjectKPITab extends AbstractEditableTab {
     var $visibility;
 
     function ProjectKPITab($project, $visibility){
-        parent::AbstractTab("KPI");
+        parent::AbstractTab("KPI Summary");
         $this->project = $project;
         $this->visibility = $visibility;
-    }
-    
-    function handleEdit(){
-        global $config, $wgMessage;
-        $me = Person::newFromWgUser();
-
-        if(isset($_POST['kpi_delete'])){
-            foreach($_POST['kpi_delete'] as $year_q => $del){
-                $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
-                $addr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$year_q}", 0);
-                $blb->delete($addr);
-                Cache::delete("{$this->project->getId()}_KPI_{$year_q}");
-            }
-        }
-        
-        if(isset($_FILES)){
-            foreach($_FILES as $key => $file){
-                foreach($file['tmp_name'] as $year_q => $tmp){
-                    if($tmp != ""){
-                        $contents = file_get_contents($tmp);
-                        $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
-                        $addr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$year_q}", 0);
-                        $blb->store($contents, $addr);
-                        Cache::delete("{$this->project->getId()}_KPI_{$year_q}");
-                    }
-                }
-            }
-        }
-        redirect($this->project->getUrl()."?tab=kpi");
-    }
-    
-    function canEdit(){
-        return ($this->visibility['isLead']);
     }
     
     function canGeneratePDF(){
@@ -67,10 +34,6 @@ class ProjectKPITab extends AbstractEditableTab {
         $this->showKPI();
         
         return $this->html;
-    }
-    
-    function generateEditBody(){
-        return $this->generateBody();
     }
     
     static function optimizeFn($obj, $project=null, $start_date="0000-00-00", $end_date="2100-01-01"){
@@ -300,7 +263,6 @@ class ProjectKPITab extends AbstractEditableTab {
     function showKPI(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
         $me = Person::newFromWgUser();
-        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
         if($me->isMemberOf($this->project) || $this->visibility['isLead']){
@@ -343,41 +305,21 @@ class ProjectKPITab extends AbstractEditableTab {
                     $this->html .= "<div style='overflow: auto;'>";
                     
                     // KPI
-                    if($edit){
-                        $lastblb = new ReportBlob(BLOB_EXCEL, 0, 0, $this->project->getId());
-                        $lastaddr = ReportBlob::create_address("RP_KPI", "KPI", "KPI_{$i}_Q{$q}", 0);
-                        $lastblb->load($lastaddr, true);
-                        $lastmd5 = $lastblb->getMD5();
-                        $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/GIS KPIs.xlsx'>Download Template</a><br />";
-                        
-                        $this->html .= "<h3 style='margin-top: 0;'>Upload KPI Report</h3>";
-                        $this->html .= "<input type='file' name='kpi[{$i}_Q{$q}]' accept='.xlsx' /><br />";
-                        if($lastmd5 != ""){
-                            $this->html .= "<p style='margin-bottom: 0.5em;'><b>Delete?</b> <input type='checkbox' name='kpi_delete[{$i}_Q{$q}]' /></p>";
-                            if($me->isRoleAtLeast(STAFF)){
-                                $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$lastmd5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q{$q}_KPI.xlsx'>Download KPI Report</a>";
-                            }
-                        }
-                        
+                    list($kpi, $md5) = ProjectKPITab::getKPI($this->project, "KPI_{$i}_Q{$q}", $date, $enddate);
+                    if($kpi != null){
+                        $this->html .= "<div id='KPI_{$i}_Q{$q}'>{$kpi->render()}</div><br />";
                     }
-                    
-                    if(!$edit){
-                        list($kpi, $md5) = ProjectKPITab::getKPI($this->project, "KPI_{$i}_Q{$q}", $date, $enddate);
-                        if($kpi != null){
-                            $this->html .= "<div id='KPI_{$i}_Q{$q}'>{$kpi->render()}</div><br />";
-                        }
-                        if($md5 != null){
-                            $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q{$q}_KPI.xlsx'>Download KPI</a><br />";
-                        }
-                        else{
-                            if(in_array($this->project->getName(), self::$autoProjects)){
-                                $this->html .= "<a class='externalLink' style='cursor:pointer;' id='download_KPI_{$i}_Q{$q}'>Download KPI (Auto-Generated)</a>
-                                <script type='text/javascript'>
-                                    $('#download_KPI_{$i}_Q{$q}').click(function(){
-                                        window.open('data:application/vnd.ms-excel;base64,' + base64Conversion($('#KPI_{$i}_Q{$q} table')[0].outerHTML));
-                                    });
-                                </script>";
-                            }
+                    if($md5 != null){
+                        $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Q{$q}_KPI.xlsx'>Download KPI</a><br />";
+                    }
+                    else{
+                        if(in_array($this->project->getName(), self::$autoProjects)){
+                            $this->html .= "<a class='externalLink' style='cursor:pointer;' id='download_KPI_{$i}_Q{$q}'>Download KPI (Auto-Generated)</a>
+                            <script type='text/javascript'>
+                                $('#download_KPI_{$i}_Q{$q}').click(function(){
+                                    window.open('data:application/vnd.ms-excel;base64,' + base64Conversion($('#KPI_{$i}_Q{$q} table')[0].outerHTML));
+                                });
+                            </script>";
                         }
                     }
                     $this->html .="</div>";
