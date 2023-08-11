@@ -356,6 +356,9 @@ PharmacyMapView = Backbone.View.extend({
             new google.maps.Point(0, 0),
             new google.maps.Point(12, 35));
         var i = 0;
+        var lat = 0;
+        var long = 0;
+        var bounds = new google.maps.LatLngBounds();
         _.each(group, function (val) {
             if (val.Longitude != "" && val.Latitude != "") {
                 var pharmLoc = null;
@@ -370,6 +373,7 @@ PharmacyMapView = Backbone.View.extend({
                         icon: pinImage,
                         shadow: pinShadow
                     });
+                    bounds.extend(pharmLoc);
                     this.arrmarkers.push(marker);
                     i++;
                     var phoneNumber = "";
@@ -438,8 +442,13 @@ PharmacyMapView = Backbone.View.extend({
                         var e = $.Event("keyup", { keyCode: 13 });
                         input.trigger(e);
                     });
+                    
+                    lat += parseFloat(val.Latitude);
+                    long += parseFloat(val.Longitude);
                 }
             }
+            map.fitBounds(bounds);
+            map.setCenter({ lat: lat/i, lng: long/i });
         }.bind(this));
     },
 
