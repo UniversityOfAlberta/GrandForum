@@ -172,7 +172,7 @@ class FECReflections extends SpecialPage {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
-        if($person->isRole(DEAN) || $person->isRole(DEANEA) || $person->isRole(VDEAN)){
+        if(self::userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "FECReflections") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("FEC Reflections", "$wgServer$wgScriptPath/index.php/Special:FECReflections", $selected);
         }
