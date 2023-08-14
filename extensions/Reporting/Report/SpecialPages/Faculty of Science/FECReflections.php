@@ -25,12 +25,13 @@ class FECReflections extends SpecialPage {
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
 	    
-        if(date('Y-m-d') >= ($year+1)."01-01" && is_array($blob_data)){
+        if(date('Y-m-d') >= ($year+1)."-01-01" && is_array($blob_data)){
             $nPeople = $blob_data['nPeople'];
             $publications = $blob_data['publications'];
             $rankings = $blob_data['rankings'];
         }
         else{
+            echo $year;
             $people = Person::getAllPeopleDuring(NI, "2000-01-01", "2100-01-01");
             $publications = array('pr' => array(),
                                   'nonpr' => array());
@@ -112,7 +113,7 @@ class FECReflections extends SpecialPage {
                 }
             }
             
-            if(date('Y-m-d') >= ($year+1)."01-01"){
+            if(date('Y-m-d') >= ($year+1)."-01-01"){
                 $data = array('nPeople' => $nPeople,
 	                          'publications' => $publications,
 	                          'rankings' => $rankings);
