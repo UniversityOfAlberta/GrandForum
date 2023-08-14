@@ -10,6 +10,7 @@ $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 
 require_once("GraduateStudents.php");
 require_once("AnnualReportTable.php");
+require_once("FECReflections.php");
 
 class Report extends AbstractReport{
     
