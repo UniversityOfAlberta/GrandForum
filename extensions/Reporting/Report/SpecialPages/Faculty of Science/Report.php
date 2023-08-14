@@ -76,9 +76,9 @@ class Report extends AbstractReport{
             $tabs["Dean"]['subtabs'][] = TabUtils::createSubTab("Publications", "{$url}FacultyPublications", $selected);
         }
         
-        if($person->isRole(DEAN) || $person->isRole(DEANEA) || $person->isRole(VDEAN)){
+        if($person->isRole(DEAN) || $person->isRole(DEANEA) || $person->isRole(VDEAN) || $person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CoursesTable")) ? "selected" : false;
-            $tabs["Dean"]['subtabs'][] = TabUtils::createSubTab("Courses", "{$url}CoursesTable", $selected);
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Courses", "{$url}CoursesTable", $selected);
         }
         
         return true;
