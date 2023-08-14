@@ -31,7 +31,6 @@ class FECReflections extends SpecialPage {
             $rankings = $blob_data['rankings'];
         }
         else{
-            echo $year;
             $people = Person::getAllPeopleDuring(NI, "2000-01-01", "2100-01-01");
             $publications = array('pr' => array(),
                                   'nonpr' => array());
