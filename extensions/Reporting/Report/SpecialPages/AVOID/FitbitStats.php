@@ -43,7 +43,7 @@ class FitbitStats extends SpecialPage {
                                 <td>{$row['steps']}</td>
                                 <td>{$row['distance']}</td>
                                 <td>{$row['active']}</td>
-                                <td>".($row['sleep']/1000/60/60)."</td>
+                                <td>".number_format($row['sleep']/1000/60/60, 2)."</td>
                                 <td>{$row['water']}</td>
                                 <td>{$row['fibre']}</td>
                                 <td>{$row['protein']}</td>
