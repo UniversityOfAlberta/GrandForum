@@ -77,7 +77,7 @@ foreach($people as $person){
         // Fibre & Protein
         $data = executeFitBitAPI("https://api.fitbit.com/1/user/-/foods/log/date/{$date}.json", $person);
         $fibre = floatval($data['summary']['fiber']);
-        $protein = floatval($data['summary']['fiber']);
+        $protein = floatval($data['summary']['protein']);
         
         DBFunctions::insert('grand_fitbit_data',
                             array('user_id' => $person->getId(),
