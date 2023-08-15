@@ -18,6 +18,7 @@ require_once("InPersonAssessment.php");
 require_once("InPersonFollowup.php");
 require_once("AdminDataCollection.php");
 require_once("AdminUsageStats.php");
+require_once("FitbitStats.php");
 require_once("Descriptors.php");
 require_once("IntakeSummary.php");
 require_once("ThreeMonthSummary.php");
