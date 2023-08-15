@@ -25,12 +25,12 @@ class FitbitStats extends SpecialPage {
                                     <th>User</th>
                                     <th>Date</th>
                                     <th>Steps</th>
-                                    <th>Distance</th>
-                                    <th>Active</th>
-                                    <th>Sleep</th>
-                                    <th>Water</th>
-                                    <th>Fibre</th>
-                                    <th>Protein</th>
+                                    <th>Distance (km)</th>
+                                    <th>Active (m)</th>
+                                    <th>Sleep (h)</th>
+                                    <th>Water (mL)</th>
+                                    <th>Fibre (g)</th>
+                                    <th>Protein (g)</th>
                                 </tr>
                             </thead>
                             <tbody>");
@@ -43,7 +43,7 @@ class FitbitStats extends SpecialPage {
                                 <td>{$row['steps']}</td>
                                 <td>{$row['distance']}</td>
                                 <td>{$row['active']}</td>
-                                <td>{$row['sleep']}</td>
+                                <td>".($row['sleep']/1000/60/60)."</td>
                                 <td>{$row['water']}</td>
                                 <td>{$row['fibre']}</td>
                                 <td>{$row['protein']}</td>
