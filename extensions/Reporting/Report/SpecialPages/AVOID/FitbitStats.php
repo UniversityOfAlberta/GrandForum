@@ -36,8 +36,9 @@ class FitbitStats extends SpecialPage {
                             <tbody>");
         foreach($data as $row){
             if($this->exclude($row['user_id'])){ continue; }
+            $person = Person::newFromId($row['user_id']);
             $wgOut->addHTML("<tr>
-                                <td>{$person->getId()}</td>
+                                <td>{$person->getNameForForms()}</td>
                                 <td>{$row['date']}</td>
                                 <td>{$row['steps']}</td>
                                 <td>{$row['distance']}</td>
