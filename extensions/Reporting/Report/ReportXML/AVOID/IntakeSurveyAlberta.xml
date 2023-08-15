@@ -30,8 +30,7 @@
                             options="1|2|3|4|5|6|7|8|9">
             <![CDATA[
                 <p>Please read the following statements and select the one that best describes you.</p>
-                
-                {$item}
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <Static>
@@ -58,28 +57,29 @@
                                                                        I am active to complete shopping, errands, banking or personal care.|
                                                                        I am only active within my home.|
                                                                        I am unable to be out of my bed or chair."
-                                                               options="0|1|2|3">
+                                                               options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>How would you describe your physical activity/exercise level?</h3>
-                {$item}
+                <h3>Physical Health</h3>
+                <h4>How would you describe your physical activity/exercise level?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
         <!-- Question 2 -->
-        <ReportItem id="haai_2a" type="Radio" blobItem="haai_2a" options="Yes|No" orientation="horizontal">
+        <ReportItem id="haai_2a" type="Radio" blobItem="haai_2a" options="Yes|No" orientation="horizontal" optional="true">
             <![CDATA[
-                <h3>How would you describe your physical activity/exercise level?</h3>
-                {$item}
+                <h4>Is your health negatively affecting your life activities?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="haai_2b" type="Radio" blobItem="haai_2b" labels="My level of health mildly affects my activities, but is reasonably managed.|
                                                                          My level of health is interfering with my activities and requires the help of health experts.|
                                                                          My level of health is severely limiting my activities and requires complex help."
-                                                                 options="1|2|3">
+                                                                 options="1|2|3" optional="true">
             <![CDATA[
                 <div id="haai_2b" style="display:none;">
-                    <h3>How significantly is your life affected by your physical health?</h3>
-                    {$item}
+                    <h4>How significantly is your life affected by your physical health?</h4>
+                    <div class="requiredField">{$item}</div>
                 </div>
                 <script type="text/javascript">
                     $("[name=VirtualFrailtyScreen_haai_2a]").change(function(){
@@ -92,21 +92,21 @@
         </ReportItem>
         
         <!-- Question 3 -->
-        <ReportItem id="haai_3a" type="Radio" blobItem="haai_3a" options="Yes|No" orientation="horizontal">
+        <ReportItem id="haai_3a" type="Radio" blobItem="haai_3a" options="Yes|No" orientation="horizontal" optional="true">
             <![CDATA[
-                <h3>Do you take medications or supplements?</h3>
-                {$item}
+                <h4>Do you take medications or supplements?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="haai_3b" type="Radio" blobItem="haai_3b" labels="I take 5 or less medications and know what each one does.|
                                                                          I take 5 or less medications and don't remember what each one does.|
                                                                          I take more than 5 medications and don't know exactly how to take them properly.|
                                                                          I take more than 5 medications and they include sleeping or pain pills."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
                 <div id="haai_3b" style="display:none;">
-                    <h3>How many medications do you take, and are you comfortable with them?</h3>
-                    {$item}
+                    <h4>How many medications do you take, and are you comfortable with them?</h4>
+                    <div class="requiredField">{$item}</div>
                 </div>
                 <script type="text/javascript">
                     $("[name=VirtualFrailtyScreen_haai_3a]").change(function(){
@@ -123,12 +123,12 @@
                                                                        I have a primary care provider, but I go to a walk in clinic or ER for some primary care.|
                                                                        I seldom see a primary care provider, and go to walk in or ER instead for my primary care.|
                                                                        I have no primary care provider, and get any required care at walk in or ER."
-                                                               options="0|1|2|3">
+                                                               options="0|1|2|3" optional="true">
             <![CDATA[
-                <hr style="margin-top:1em;" />
+                <h3>Personal Well-being</h3>
                 <p style="margin-top: 1em; margin-bottom: 0;"><i>Access to a primary care provider (someone who knows you and helps with your day-to-day care) can help keep people healthy, well, and prevent hospitalization.</i></p>
-                <h3 style="margin-top:0;">Do you have good access to a primary care provider, so you can access the non-emergency care that you need?</h3>
-                {$item}
+                <h4 style="margin-top:0;">Do you have good access to a primary care provider, so you can access the non-emergency care that you need?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -137,10 +137,10 @@
                                                                        My primary care provider has some awareness of my language and we sometime struggle to understand each other.|
                                                                        My primary care provider does not speak my language and uses a professional interpreter to communicate.|
                                                                        My primary care provider does not speak my language. My family translates when they can be there."
-                                                               options="0|1|2|3">
+                                                               options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Are you able to talk with your primary care provider in your own language, and can you understand each other?</h3>
-                {$item}
+                <h4>Are you able to talk with your primary care provider in your own language, and can you understand each other?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -149,12 +149,11 @@
                                                                        I am able to reach out to supports when I need support to feel that I belong.|
                                                                        I usually don't reach out to these types of supports to feel that I belong, only if there is a crisis.|
                                                                        I have no supports and do not feel that I belong."
-                                                               options="0|1|2|3">
+                                                               options="0|1|2|3" optional="true">
             <![CDATA[
-                <hr style="margin-top:1em;" />
                 <p style="margin-top: 1em; margin-bottom: 0;"><i>Many people find identity and a sense of belonging in things like extended family, religion, culture, or gender supports.</i></p>
-                <h3 style="margin-top:0;">Are you able to connect to supports in these areas that give you a sense of belonging?</h3>
-                {$item}
+                <h4 style="margin-top:0;">Are you able to connect to supports in these areas that give you a sense of belonging?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -163,10 +162,11 @@
                                                                        I have mild mental health issues and they impact my life or wellness occasionally.|
                                                                        I have moderate mental health issues which impact my life and wellness most of the time.|
                                                                        I have severe mental health issues which are causing danger to me or to others."
-                                                                options="0|1|2|3">
+                                                                options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Do you have any mental health concerns that affect your life and wellness?</h3>
-                {$item}
+                <h3>Mental Health</h3>
+                <h4>Do you have any mental health concerns that affect your life and wellness?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -175,11 +175,11 @@
                                                                        I have mild mental health issues and I am easily able to manage them myself.|
                                                                        I have moderate mental health issues which need the help of more than one professional.|
                                                                        I have significant mental health issues, and need urgent support from professionals."
-                                                               options="0|1|2|3">
+                                                               options="0|1|2|3" optional="true">
             <![CDATA[
                 <div id="haai_8" style="display:none;">
-                    <h3>How do you take care of your mental health?</h3>
-                    {$item}
+                    <h4>How do you take care of your mental health?</h4>
+                    <div class="requiredField">{$item}</div>
                 </div>
                 <script type="text/javascript">
                     $("[name=VirtualFrailtyScreen_haai_7]").change(function(){
@@ -196,10 +196,10 @@
                                                                        I use substances occasionally, but they are not impacting my wellness.|
                                                                        I use substances to help me cope regularly, and they sometimes impact my wellness.|
                                                                        I use too many substances, and they are causing risk to me and interfering with my life."
-                                                               options="0|1|2|3">
+                                                               options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Do you ever feel that your use of substances like alcohol, drugs, or marijuana has affected your wellness?</h3>
-                {$item}
+                <h4>Do you ever feel that your use of substances like alcohol, drugs, or marijuana has affected your wellness?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -208,10 +208,11 @@
                                                                          I have help with my daily activities from a friend, neighbour, family member, or caregiver.|
                                                                          I have help with my daily activities, but my friend, neighbour, family member, or caregiver is overwhelmed.|
                                                                          I need help with daily activities, but I have no one available to help me."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Do you rely on anyone to help you with daily activities, like a friend, neighbour, family member, or caregiver?</h3>
-                {$item}
+                <h3>Social Support</h3>
+                <h4>Do you rely on anyone to help you with daily activities, like a friend, neighbour, family member, or caregiver?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -220,10 +221,10 @@
                                                                          I am confident managing my own finances, and I have someone to help me if needed.|
                                                                          I am not confident managing my own finances, but I do have someone to help me.|
                                                                          I am not confident managing my finances, and I have no one to help me."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Are you confident managing your own finances?</h3>
-                {$item}
+                <h4>Are you confident managing your own finances?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -232,12 +233,11 @@
                                                                          I have help from organizations, programs, or workers, but I'm uncertain if I can trust them all.|
                                                                          I have help from one organization, program, or worker that I trust, and others which I don't trust.|
                                                                          I need help from an organization, program, or worker, but don't have any I can trust."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <hr style="margin-top:1em;" />
-                <p style="margin-top: 1em; margin-bottom: 0;"><i>Some individuals need to access support from social workers, community organizations or government programs.</i></p>
-                <h3 style="margin-top:0;">Do you regularly access support from any organizations, programs or workers?</h3>
-                {$item}
+                <p style="margin-top: 1em; margin-bottom: 0;"><i>Some individuals require to access support from social workers, community organizations or government programs.</i></p>
+                <h4 style="margin-top:0;">Do you regularly access support from any organizations, programs or workers?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -246,10 +246,11 @@
                                                                          I struggle to afford my home. It might be temporary, but the neighbourhood is safe and I would like to stay there.|
                                                                          I have issues with the cost of my home, the safety of my neighbourhood, and I may not be able to stay there.|
                                                                          My neighbourhood is unsafe OR I have nowhere to live right now."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Are you confident managing your own finances?</h3>
-                {$item}
+                <h3>Physical Environment</h3>
+                <h4>Do you have a safe, affordable place to live?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -258,10 +259,10 @@
                                                                          I have difficulty making ends meet in some months.|
                                                                          I have difficulty making ends meet most months.|
                                                                          I have difficulty making ends meet all of the time OR have no income."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Is it hard to make ends meet each month with your current income?</h3>
-                {$item}
+                <h4>Is it hard to make ends meet each month with your current income?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -270,10 +271,10 @@
                                                                          I depend on driving services to get where I need to go, such as Drive Happiness or taxis.|
                                                                          I depend on friends or family to drive me where I need to go.|
                                                                          I am unable to access transportation."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>How do you normally get to appointments or shopping?</h3>
-                {$item}
+                <h4>How do you normally get to appointments or shopping?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -282,10 +283,11 @@
                                                                          My home is cluttered or I have difficulty getting around in it because of my mobility needs.|
                                                                          My home has maintenance and mobility concerns.|
                                                                          My home has multiple safety hazards."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Is your home poorly maintained or cluttered?</h3>
-                {$item}
+                <h3>Safety and Security</h3>
+                <h4>Is your home poorly maintained or cluttered?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -294,10 +296,10 @@
                                                                          No one in my life is causing me emotional, financial or physical harm but some relationships are difficult.|
                                                                          Someone in my life is causing me emotional or financial harm.|
                                                                          Someone in my life is causing me physical harm."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Is anyone in your life causing you harm (physical, emotional, financial)?</h3>
-                {$item}
+                <h4>Is anyone in your life causing you harm (physical, emotional, financial)?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -306,10 +308,10 @@
                                                                          I am struggling with one of my home upkeep or personal tasks.|
                                                                          I am struggling with two of my home upkeep or personal tasks.|
                                                                          I am struggling with three or more of my home upkeep or personal tasks."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>How able are you to manage your home's upkeep and your personal tasks (bathing, cooking, laundry, cleaning)?</h3>
-                {$item}
+                <h4>How able are you to manage your home's upkeep and your personal tasks (bathing, cooking, laundry, cleaning)?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -318,10 +320,11 @@
                                                                          I am involved but I have some barriers. For example, I may struggle with transportation to events.|
                                                                          I am not involved much with any community and I don't know how to get more involved.|
                                                                          I am not involved with my community and I'm not interested in being more involved."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Are you regularly involved in any communities, like a neighbourhood group, religious group, or a hobby?</h3>
-                {$item}
+                <h3>Social Engagement</h3>
+                <h4>Are you regularly involved in any communities, like a neighbourhood group, religious group, or a hobby?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -330,10 +333,10 @@
                                                                          I am not involved with one of these groups/activities.|
                                                                          I am not involved with two of these groups/activities.|
                                                                          I am not involved, or unable to be involved in any of these groups/activities."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>Are you involved with family, friends, and some kind of volunteering/work?</h3>
-                {$item}
+                <h4>Are you involved with family, friends, and some kind of volunteering/work?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
@@ -342,10 +345,10 @@
                                                                          I am willing to make changes but feel a bit unsure about the process.|
                                                                          I don't believe that changes are necessary right now, even though I'm not as healthy as I could be.|
                                                                          I think my health is just fine as it is and do not want to change anything now."
-                                                                 options="0|1|2|3">
+                                                                 options="0|1|2|3" optional="true">
             <![CDATA[
-                <h3>How ready are you to make changes in your life to improve your overall health?</h3>
-                {$item}
+                <h4>How ready are you to make changes in your life to improve your overall health?</h4>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         
