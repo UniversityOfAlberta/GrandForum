@@ -19,16 +19,18 @@ class FECReflections extends SpecialPage {
     }
     
     function showStats($year){
-        global $wgOut;
+        global $wgOut, $wgServer, $wgScriptPath;
         $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
 	    $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
+	    //$blob_data = null;
 	    
         if(date('Y-m-d') >= ($year+1)."-01-01" && is_array($blob_data)){
-            $nPeople = $blob_data['nPeople'];
-            $publications = $blob_data['publications'];
-            $rankings = $blob_data['rankings'];
+            $nPeople = @$blob_data['nPeople'];
+            $nProfs = @$blob_data['nProfs'];
+            $publications = @$blob_data['publications'];
+            $rankings = @$blob_data['rankings'];
         }
         else{
             $people = Person::getAllPeopleDuring(NI, "2000-01-01", "2100-01-01");
@@ -36,6 +38,8 @@ class FECReflections extends SpecialPage {
                                   'nonpr' => array());
             $rankings = array();
             $nPeople = 0;
+            $nProfs = 0;
+            $nFullProfs = 0;
             foreach($people as $person){
                 $case = $person->getCaseNumber($year);
                 if($case == "" ||
@@ -43,7 +47,22 @@ class FECReflections extends SpecialPage {
                    strstr($case, "E") !== false ||
                    strstr($case, "F") !== false ||
                    strstr($case, "T") !== false){
-                    continue;
+                    continue; // Skip
+                }
+                if(!$person->isSubRole("Dean's Decision") &&
+                   !$person->isRoleOn(DEAN, "{$year}-07-01") &&
+                   !$person->isRoleOn(VDEAN, "{$year}-07-01") &&
+                   (strstr($case, "N") !== false ||
+                    strstr($case, "A") !== false ||
+                    strstr($case, "B") !== false ||
+                    strstr($case, "C") !== false)){
+                    // Professor
+                    $nProfs++;
+                    if(strstr($case, "C") !== false){
+                        // Full Professor
+                        $nFullProfs++;
+                        
+                    }
                 }
                 $nPeople++;
                 $report = new Report();
@@ -112,15 +131,14 @@ class FECReflections extends SpecialPage {
                 }
             }
             
-            if(date('Y-m-d') >= ($year+1)."-01-01"){
-                $data = array('nPeople' => $nPeople,
-	                          'publications' => $publications,
-	                          'rankings' => $rankings);
-                
-                $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
-	            $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
-	            $blob->store($data, $blob_address, false);
-	        }
+            $data = array('nPeople' => $nPeople,
+                          'nProfs' => $nProfs,
+                          'publications' => $publications,
+                          'rankings' => $rankings);
+            
+            $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
+            $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
+            $blob->store($data, $blob_address, false);
         }
         
         $n1_10 = 0;
@@ -149,22 +167,31 @@ class FECReflections extends SpecialPage {
         
         $totalRefereed = @(count($publications['pr']['journals']) + count($publications['pr']['conference']) + count($publications['pr']['book_chapters']) + count($publications['pr']['others']));
 
-        $wgOut->addHTML("Journals: ".@count($publications['pr']['journals'])."<br />");
-        $wgOut->addHTML("Conferences: ".@count($publications['pr']['conference'])."<br />");
-        $wgOut->addHTML("Book Chapters: ".@count($publications['pr']['book_chapters'])."<br />");
-        $wgOut->addHTML("Other Refereed: ".@count($publications['pr']['others'])."<br />");
-        $wgOut->addHTML("Total Refereed: ".($totalRefereed)."<br />");
-        $wgOut->addHTML("# Faculty: $nPeople<br />");
-        $wgOut->addHTML("Average/Faculty: ".($totalRefereed/$nPeople)."<br />");
-        $wgOut->addHTML("Non-refereed: ".@count($publications['nonpr']['journals'])."<br />");
-        $wgOut->addHTML("Books: ".@count($publications['nonpr']['books'])."<br />");
-        $wgOut->addHTML("Patents: ".@count($publications['nonpr']['patents'])."<br />");
-        $wgOut->addHTML("<br />");
-        $wgOut->addHTML("1-10%: ".($n1_10/count($rankings))."<br />");
-        $wgOut->addHTML("10-30%: ".($n10_30/count($rankings))."<br />");
-        $wgOut->addHTML("30-50%: ".($n30_50/count($rankings))."<br />");
-        $wgOut->addHTML("50-100%: ".($n50_100/count($rankings))."<br />");
-        $wgOut->addHTML("Unranked: ".($unranked/count($rankings))."<br />");
+        $wgOut->addHTML("<table class='wikitable'>");
+        $wgOut->addHTML("   <tr><td><b>Journals:</b></td><td>".@count($publications['pr']['journals'])."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Conferences:</b></td><td>".@count($publications['pr']['conference'])."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Book Chapters:</b></td><td>".@count($publications['pr']['book_chapters'])."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Other Refereed:</b></td><td>".@count($publications['pr']['others'])."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Total Refereed:</b></td><td>".($totalRefereed)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b># Faculty:</b></td><td>$nPeople</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Average/Faculty:</b></td><td>".number_format($totalRefereed/$nPeople, 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Non-refereed:</b></td><td>".@count($publications['nonpr']['journals'])."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Books:</b></td><td>".@count($publications['nonpr']['books'])."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Patents:</b></td><td>".@count($publications['nonpr']['patents'])."</td></tr>");
+        $wgOut->addHTML("   <tr><th colspan='2'>Ranking Percentiles</th></tr>");
+        $wgOut->addHTML("   <tr><td><b>1-10%:</b></td><td>".number_format($n1_10/count($rankings), 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>10-30%:</b></td><td>".number_format($n10_30/count($rankings), 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>30-50%:</b></td><td>".number_format($n30_50/count($rankings), 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>50-100%:</b></td><td>".number_format($n50_100/count($rankings), 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Unranked:</b></td><td>".number_format($unranked/count($rankings), 4)."</td></tr>");
+        $wgOut->addHTML("</table>");
+        
+        $wgOut->addHTML("<table class='wikitable'>");
+        $wgOut->addHTML("   <tr><td style='width:250px;' valign='top'><b>Promotion from assistant to associate professor (with tenure)</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Promotion from associate to full professor.</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Number of professoriate cases considered by FEC.</b><br /><small>This does not include the Dean, Vice Dean, and Department Chairs.</small></td><td valign='top'>{$nProfs}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for a full professor.</b></td><td valign='top'></td></tr>");
+        $wgOut->addHTML("</table>");
     }
     
     function execute($par){
@@ -187,6 +214,13 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("<script type='text/javascript'>
             $('#tabs').tabs();
         </script>");
+    }
+    
+    static function getBlobValue($rpType, $rpSection, $rpItem, $rpSubItem=0, $year=YEAR, $userId){
+        $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
+	    $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
+	    $blob->load($blob_address);
+	    $blob_data = $blob->getData();
     }
     
     static function createSubTabs(&$tabs){
