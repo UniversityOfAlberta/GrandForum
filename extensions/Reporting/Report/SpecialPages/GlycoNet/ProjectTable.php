@@ -112,6 +112,7 @@ class ProjectTable extends SpecialPage{
             $tabbedPage->addTab(new ProjectMilestonesROTab($project, array('edit' => false)));
             //$tabbedPage->addTab(new ProjectGlyconetBudgetTab($project));
             $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Budget", "BUDGET"));
+            $tabbedPage->addTab(new ProjectCRMTab($project, "CRM"));
             $tabbedPage->addTab(new ProjectBDTab($project));
             $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Additional Info", "ADDITIONAL", true));
             $tabbedPage->showPage();
