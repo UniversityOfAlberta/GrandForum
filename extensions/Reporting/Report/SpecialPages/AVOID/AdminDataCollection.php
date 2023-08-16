@@ -114,6 +114,7 @@ class AdminDataCollection extends SpecialPage{
                                         <th>Role</th>
                                         <th>Date Registered</th>
                                         <th>Last Logged In</th>
+                                        <th>Logins after Intake</th>
                                         <th>Extra</th>
                                         <th>Hear about us</th>
                                         <th>In person opportunity</th>
@@ -175,6 +176,20 @@ class AdminDataCollection extends SpecialPage{
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $touched_str = $person->getTouched();
                 $touched_date = substr($touched_str,0,4)."-".substr($touched_str,4,2)."-".substr($touched_str,6,2);
+                
+                $logins = DataCollection::newFromUserId($person->getId(), 'loggedin');
+                $nLoginsAfterIntake = 0;
+                //foreach($logins as $login){
+                    $log = $logins->getField('log');
+                    if(is_array($log)){
+                        foreach($log as $d){
+                            if($date != "N/A" && $d >= $date){
+                                $nLoginsAfterIntake++;
+                            }
+                        }
+                    }
+                //}
+                
                 $wgOut->addHTML("<tr style='background:#FFFFFF;' data-id='{$person->getId()}' VALIGN=TOP>
                                     <td>$name</td>
                                     <td class='emailCell'>$email</td>
@@ -182,7 +197,8 @@ class AdminDataCollection extends SpecialPage{
                                     <td>$postal_code</td>
                                     <td>{$person->getRoleString()}</td>
                                     <td nowrap>{$registration_date}</td>
-                                    <td nowrap>{$touched_date}</td>");
+                                    <td nowrap>{$touched_date}</td>
+                                    <td>{$nLoginsAfterIntake}</td>");
 
                 $phone = $person->getExtra('phone', $person->getPhoneNumber());
                 //grab clinician data
