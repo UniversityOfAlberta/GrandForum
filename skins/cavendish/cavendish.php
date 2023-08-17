@@ -394,6 +394,7 @@ class CavendishTemplate extends QuickTemplate {
 		            $("#submenu").css("margin-top", "-45px");
 		            $("#sideToggle").css("line-height", ($("#submenu").height() - 6) + "px");
 		        }
+		        var top = 90;
 	            if(window.matchMedia('(max-width: 1024px)').matches){
 	                if(me.isLoggedIn()){
 		                $("#side").hide();
@@ -406,22 +407,21 @@ class CavendishTemplate extends QuickTemplate {
 	                    sideOuterHeight = 0;
 	                }
 	                if($("#submenu").is(":visible")){
-	                    $("#side").css("top", $("#submenu").offset().top + $("#submenu").outerHeight());
-                        $("#bodyContent").css("top", sideOuterHeight + $("#submenu").offset().top + $("#submenu").outerHeight());
+	                    top = $("#submenu").offset().top + $("#submenu").outerHeight();
                     }
-                    else{
-                        $("#side").css("top", 90);
-                        $("#bodyContent").css("top", sideOuterHeight + 90);
+                    $("#mobileMenu").css("top", sideOuterHeight + top);
+                    if($("#mobileMenu").is(":visible")){
+                        top += $("#mobileMenu").outerHeight();
                     }
+                    $("#side").css("top", top);
+                    $("#bodyContent").css("top", sideOuterHeight + top);
                 }
                 else{
                     $("#submenu").css('border-width', "0 0 0 1px");
                     if($("#submenu").is(":visible")){
-                        $("#bodyContent").css('top', $("#submenu").offset().top + $("#submenu").height());
+                        top = $("#submenu").offset().top + $("#submenu").height();
                     }
-                    else{
-                        $("#bodyContent").css('top', 90);
-                    }
+                    $("#bodyContent").css('top', top);
                     if(me.isLoggedIn() && showSideBar){
                         $("#side").show();
                     }
@@ -1022,9 +1022,6 @@ class CavendishTemplate extends QuickTemplate {
 		         } ?>
 		    </ul>
         </div>
-        <div id=''>
-            
-        </div>
 	</div>
     
     <?php global $dropdownScript; echo "<script type='text/javascript'>$dropdownScript</script>"; ?>
@@ -1050,6 +1047,16 @@ class CavendishTemplate extends QuickTemplate {
 		</div><!-- end of SIDE div -->
 		<div id="allTabsDropdown" style="display:none;"></div>
 	<div id="mBody">
+	    <div id="mobileMenu">
+	        <?php if(isExtensionEnabled("ContactUs")){ ?>
+	            <?php if($config->getValue('networkName') == "AVOID"){ ?>
+	                <button class="helpButton" type="button" style="width:180px;"><en>Help</en><fr>Aide</fr></button>&nbsp;&nbsp;&nbsp;
+	            <?php } else { ?>
+	                <button class="contactUs" type="button" style="width:180px;"><en>Contact Us</en><fr>Contactez-nous</fr></button>&nbsp;&nbsp;&nbsp;
+	            <?php } ?>
+	        <?php } ?>
+	        <button class="reportIssue" type="button" style="width:180px;"><en>Report Issue</en><fr>Signaler un problème</fr></button>
+	    </div>
 		<div id="bodyContent" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 			<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
 			<h1><?php $this->text('title') ?></h1>

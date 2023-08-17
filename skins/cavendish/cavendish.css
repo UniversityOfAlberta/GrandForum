@@ -145,6 +145,10 @@ body {
     box-sizing: border-box;
 }
 
+#mobileMenu {
+    display:none;
+}
+
 #spacer {
     min-width:29px;
     max-width:29px;
@@ -2237,9 +2241,8 @@ div.program-text {
         top: 2px  !important;
     }
 
-    #reportIssue, #contactUs {
-        margin-left: 5px !important;
-        margin-right: 5px !important;
+    #reportIssue, #contactUs, #helpButton {
+        display: none !important;
     }
 
     #bodyContent {
@@ -2258,6 +2261,17 @@ div.program-text {
     
     #submenu > ul {
         margin-left: 0 !important;
+    }
+    
+    #mobileMenu {
+        display: block;
+        min-height: 25px;
+        padding: 5px;
+        text-align: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 998;
     }
     
     #side {

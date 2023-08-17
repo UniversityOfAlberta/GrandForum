@@ -1,4 +1,4 @@
-#reportIssue, #contactUs {
+#reportIssue, #contactUs, #helpButton {
     text-align: center;
     margin-bottom: 15px;
     position: relative;
@@ -10,12 +10,12 @@
     top: 6px;
 }
 
-#reportIssue button, #contactUs button {
+#reportIssue button, #contactUs button, #helpButton button {
     text-align: center !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
 
-#reportIssue button, #contactUs button {
+#reportIssue button, #contactUs button, #helpButton button {
     width: 132px;
 }

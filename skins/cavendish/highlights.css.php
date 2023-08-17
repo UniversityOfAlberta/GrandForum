@@ -82,7 +82,7 @@ h1 {
     background: $sc;
 }
 
-#header {
+#header, #mobileMenu {
     background: $sc;
 }
 

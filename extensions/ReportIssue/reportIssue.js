@@ -140,7 +140,7 @@ $(document).ready(function(){
         }
     });
    
-    $("div#reportIssue button").click(function(){
+    $("div#reportIssue button, #mobileMenu .reportIssue").click(function(){
         $("div#reportIssue .throbber").show();
         html2canvas(document.body).then(function(canvas) {
             dataToSend = {
@@ -156,7 +156,7 @@ $(document).ready(function(){
         });
     });
     
-    $("div#contactUs button").click(function(){
+    $("div#contactUs button, .contactUs").click(function(){
         dataToSend = {
             topic: '',
             comments: '',
@@ -168,7 +168,7 @@ $(document).ready(function(){
         $(window).resize();
     });
     
-    $("#helpButton").click(function(){
+    $("#helpButton, #mobileMenu .helpButton").click(function(){
         dataToSend = {
             phone: '',
             comments: '',
