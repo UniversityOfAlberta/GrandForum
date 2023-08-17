@@ -47,7 +47,12 @@ class ServiceRoles extends SpecialPage {
             $('#serviceRoles').DataTable({
                 'order': [[ 3, 'desc' ], [4, 'desc']],
                 'autoWidth': false,
-                'iDisplayLength': -1
+                'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, 'All']],
+                'iDisplayLength': -1,
+                'dom': 'Blfrtip',
+                'buttons': [
+                    'excel', 'pdf'
+                ]
             });
         </script>");
     }
