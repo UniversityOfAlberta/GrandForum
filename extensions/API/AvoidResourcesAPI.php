@@ -98,9 +98,10 @@
                     $website = (strstr($row[12], "http") === false) ? "http://{$row[12]}" : $row[12];
                     if(($cat != "" && trim($cat) == trim($category)) ||
                        ($key != "" && strstr(strtolower(trim($row[0])." (".trim($row[1]).")". $row[3]), strtolower($key)) !== false)){
+                        $publicName = (trim($row[1]) != "") ? trim($row[0])." (".trim($row[1]).")" : trim($row[0]);
                         $programs[] = array(
                             "id"                        => md5($row[18].$row[0].$row[1]),
-                            "PublicName"                => trim($row[0])." (".trim($row[1]).")",
+                            "PublicName"                => $publicName,
                             "Description"               => $row[3],
                             "AgencyDescription"         => $row[3],
                             "Latitude"                  => $row[10],
