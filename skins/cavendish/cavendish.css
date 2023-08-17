@@ -149,6 +149,10 @@ body {
     display:none;
 }
 
+#mobileMenu button {
+    margin: 5px !important;
+}
+
 #spacer {
     min-width:29px;
     max-width:29px;
