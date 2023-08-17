@@ -3977,12 +3977,24 @@ class Person extends BackboneModel {
         return $gsMetric;
     }
     
+    static function getAllServiceRoles(){
+        $data = DBFunctions::select(array('grand_services'),
+                                    array('*'),
+                                    array(),
+                                    array('start' => 'DESC',
+                                          'end' => 'DESC'));
+        foreach($data as $key => $row){
+            $data[$key]['start'] = substr($row['start'], 0, 10);
+            $data[$key]['end'] = substr($row['end'], 0, 10);
+        }
+        return $data;
+    }
+    
     /**
      * Returns an array of Service Roles
      * @return array This Person's Service Roles
      */
     function getServiceRoles(){
-        // TODO: Should maybe be cached in APC?
         $data = DBFunctions::select(array('grand_services'),
                                     array('*'),
                                     array('user_id' => EQ($this->getId())),
