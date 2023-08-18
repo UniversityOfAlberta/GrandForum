@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Conference Applications Summary" year="2023">
+<Report name="AGE-WELL Conference Applications Summary" year="2023" ajax="true">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="table" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="summary" type="ReportSection" tooltip="Summary" name="Summary">
@@ -412,6 +413,154 @@
         <Static>
             <![CDATA[
                 </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="table" type="ReportSection" tooltip="Table" name="Table">
+        <Static>
+            <![CDATA[
+                <table id='table' class='wikitable'>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Type</th>
+                            <th>Date Submitted</th>
+                            <th>HQP Authored?</th>
+                            <th>Presenter(s)</th>
+                            <th>Organization</th>
+                            <th>Email</th>
+                            <th>Affiliation</th>
+                            <th>Project</th>
+                            <th>Title</th>
+                            <th>Abstract</th>
+                            <th>File</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="people" type="AllPeopleWithConferenceApplications">
+            <For from="0" to="0">
+                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_SUBMIT,{$extraIndex},{$user_id},0,2_submit)},)}">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                                <td>{$user_name}</td>
+                                <td>Symposia</td>
+                                <td style='white-space:nowrap;'>{getBlobDate(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_SUBMIT,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_HQP,{$extraIndex},{$user_id},0,2_hqp)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PRESENTER,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_ORGANIZATION,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_EMAIL,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_AFFILIATION,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PROJECT,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_TITLE,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getHTML(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_ABSTRACT,{$extraIndex},{$user_id},0)}</td>
+                                <td><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_FILE,{$extraIndex},{$user_id},0)}'>Download</a></td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </If>
+                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_SUBMIT,{$extraIndex},{$user_id},0,1_submit)},)}">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                                <td>{$user_name}</td>
+                                <td>Workshops</td>
+                                <td style='white-space:nowrap;'>{getBlobDate(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_SUBMIT,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_HQP,{$extraIndex},{$user_id},0,1_hqp)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_PRESENTER,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_ORGANIZATION,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_EMAIL,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_AFFILIATION,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_PROJECT,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_TITLE,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getHTML(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_ABSTRACT,{$extraIndex},{$user_id},0)}</td>
+                                <td></td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </If>
+                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_SUBMIT,{$extraIndex},{$user_id},0,4_submit)},)}">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                                <td>{$user_name}</td>
+                                <td>Poster Sessions</td>
+                                <td style='white-space:nowrap;'>{getBlobDate(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_SUBMIT,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_HQP,{$extraIndex},{$user_id},0,4_hqp)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PRESENTER,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_ORGANIZATION,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_EMAIL,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_AFFILIATION,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PROJECT,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_TITLE,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getHTML(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_ABSTRACT,{$extraIndex},{$user_id},0)}</td>
+                                <td></td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </If>
+                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_SUBMIT,{$extraIndex},{$user_id},0,5_submit)},)}">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                                <td>{$user_name}</td>
+                                <td>Drinks & Demos</td>
+                                <td style='white-space:nowrap;'>{getBlobDate(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_SUBMIT,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_HQP,{$extraIndex},{$user_id},0,5_hqp)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_PRESENTER,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_ORGANIZATION,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_EMAIL,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_AFFILIATION,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_PROJECT,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_TITLE,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getHTML(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_ABSTRACT,{$extraIndex},{$user_id},0)}</td>
+                                <td></td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </If>
+                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_SUBMIT,{$extraIndex},{$user_id},0,3_submit)},)}">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                                <td>{$user_name}</td>
+                                <td>HQP Travel Subsidy</td>
+                                <td style='white-space:nowrap;'>{getBlobDate(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_SUBMIT,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_HQP,{$extraIndex},{$user_id},0,3_hqp)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_PRESENTER,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_ORGANIZATION,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_EMAIL,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_AFFILIATION,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_PROJECT,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_TITLE,{$extraIndex},{$user_id},0)}</td>
+                                <td>{getHTML(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_ABSTRACT,{$extraIndex},{$user_id},0)}</td>
+                                <td></td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </If>
+            </For>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#table').dataTable({
+                        autoWidth: false,
+                        aLengthMenu: [
+                            [25, 50, 100, -1],
+                            [25, 50, 100, 'All']
+                        ],
+                        iDisplayLength: -1,
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            'excel', 'pdf'
+                        ]
+                    });
+                </script>
             ]]>
         </Static>
     </ReportSection>

@@ -14,6 +14,7 @@ class CRM extends BackbonePage {
     function getTemplates(){
         return array('Backbone/*',
                      'crm_contacts_table',
+                     'crm_project_contacts_table',
                      'crm_contact',
                      'crm_contact_edit',
                      'crm_opportunity',
@@ -25,6 +26,7 @@ class CRM extends BackbonePage {
     function getViews(){
         return array('Backbone/*',
                      'CRMContactsTableView',
+                     'CRMProjectContactsTableView',
                      'CRMContactView',
                      'CRMContactEditView',
                      'CRMOpportunityView',

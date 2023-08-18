@@ -1,0 +1,59 @@
+<table id="contacts" frame="box" rules="all">
+    <thead>
+            <th>Contact</th>
+            <th>Owner</th>
+            <th>Opportunity</th>
+            <th width="1%">Category</th>
+            <th>Assignee</th>
+            <th>Task</th>
+            <th width="1%">Status</th>
+            <th width="1%" style="white-space:nowrap;">Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(contact){
+            console.log((_.pluck(contact.get('projects'), 'id').indexOf(this.projectId) != -1));
+            if(_.pluck(contact.get('projects'), 'id').indexOf(this.projectId) == -1){
+                return;
+            }
+            if(contact.get('opportunities').length == 0){
+                contact.get('opportunities').push(new CRMOpportunity().toJSON());
+            }
+            _.each(contact.get('opportunities'), function(opportunity){
+                if(opportunity.tasks == undefined || opportunity.tasks.length == 0){
+                    opportunity.tasks = [new CRMTask().toJSON()];
+                }
+                _.each(opportunity.tasks, function(task){ %>
+                    <tr>
+                        <td>
+                            <a href="<%= contact.get('url') %>"><%= contact.get('title') %></a><br />
+                            <%= contact.get('details').email %>
+                            <span style="display:none;"><%= contact.id %></span>
+                        </td>
+                        <td>
+                            <a href="<%= opportunity.owner.url %>"><%= opportunity.owner.name %></a><span style="display:none;"><%= contact.id %></span>
+                        </td>
+                        <td>
+                            <%= opportunity.description %><span style="display:none;"><%= opportunity.id %></span>
+                        </td>
+                        <td style="white-space:nowrap;">
+                            <%= opportunity.category %><span style="display:none;"><%= opportunity.id %></span>
+                        </td>
+                        <td>
+                            <a href="<%= task.assignee.url %>"><%= task.assignee.name %></a><span style="display:none;"><%= opportunity.id %></span>
+                        </td>
+                        <td>
+                            <%= task.task %><span style="display:none;"><%= task.id %></span>
+                        </td>
+                        <td style="white-space:nowrap;">
+                            <%= task.status %><span style="display:none;"><%= task.id %></span>
+                        </td>
+                        <td align="center" style="white-space:nowrap;">
+                            <%= task.dueDate %><span style="display:none;"><%= task.id %></span>
+                        </td>
+                    </tr>
+        <%      })
+            })
+          }.bind(this)) %>
+    </tbody>
+</table>
