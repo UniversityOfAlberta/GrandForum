@@ -29,8 +29,19 @@ class FECReflections extends SpecialPage {
         if(date('Y-m-d') >= ($year+1)."-01-01" && is_array($blob_data)){
             $nPeople = @$blob_data['nPeople'];
             $nProfs = @$blob_data['nProfs'];
+            $nFSO = @$blob_data['nFSO'];
+            $nUncappedFSO = @$blob_data['nUncappedFSO'];
             $publications = @$blob_data['publications'];
             $rankings = @$blob_data['rankings'];
+            $nAssistProfs = @$blob_data['nAssistProfs'];
+            $nAssocProfs = @$blob_data['nAssocProfs'];
+            $nFullProfs = @$blob_data['nFullProfs'];
+            $sumAssistProfs = @$blob_data['sumAssistProfs'];
+            $sumAssocProfs = @$blob_data['sumAssocProfs'];
+            $sumFullProfs = @$blob_data['sumFullProfs'];
+            $sumFSO = @$blob_data['sumFSO'];
+            $nLowered = @$blob_data['nLowered'];
+            $nRaised = @$blob_data['nRaised'];
         }
         else{
             $people = Person::getAllPeopleDuring(NI, "2000-01-01", "2100-01-01");
@@ -39,14 +50,59 @@ class FECReflections extends SpecialPage {
             $rankings = array();
             $nPeople = 0;
             $nProfs = 0;
+            $nFSO = 0;
+            $nUncappedFSO = 0;
+            $nAssistProfs = 0;
+            $nAssocProfs = 0;
             $nFullProfs = 0;
+            $sumAssistProfs = 0;
+            $sumAssocProfs = 0;
+            $sumFullProfs = 0;
+            $sumFSO = 0;
+            $nLowered = 0;
+            $nRaised = 0;
             foreach($people as $person){
                 $case = $person->getCaseNumber($year);
+                if($case != ""){
+                    $increment = self::getBlobValue("RP_CHAIR", "FEC_REVIEW", "INCREMENT", $person->getId(), $year, 0);
+                    $revisedIncrement = self::getBlobValue("RP_FEC_TABLE", "TABLE", "INCREMENT", $person->getId(), $year, 1);
+
+                    if($increment != "" &&
+                       $increment != "N/A" &&
+                       $increment != "0.00" &&
+                       $increment != "0.00 (PTC)" &&
+                       $increment != "0A" &&
+                       $revisedIncrement == ""){
+                        $revisedIncrement = $increment;
+                    }
+                }
                 if($case == "" ||
                    strstr($case, "D") !== false ||
                    strstr($case, "E") !== false ||
                    strstr($case, "F") !== false ||
+                   strstr($case, "M") !== false ||
                    strstr($case, "T") !== false){
+                    if(!$person->isSubRole("Dean's Decision") &&
+                       !$person->isRoleOn(DEAN, "{$year}-07-01") &&
+                       !$person->isRoleOn(VDEAN, "{$year}-07-01") &&
+                       (strstr($case, "N") !== false ||
+                        strstr($case, "A") !== false ||
+                        strstr($case, "B") !== false ||
+                        strstr($case, "C") !== false)){
+                        // FSO
+                        $nFSO++;
+                        
+                        if($revisedIncrement != "" &&
+                           $revisedIncrement != "N/A" &&
+                           $revisedIncrement != "0.00" &&
+                           $revisedIncrement != "0.00 (PTC)" &&
+                           $revisedIncrement != "0A"){
+                            if(strstr($case, "A") !== false){
+                                $sumFSO += floatval($revisedIncrement);
+                                $nUncappedFSO++;
+                            }
+                        }
+                    }
                     continue; // Skip
                 }
                 if(!$person->isSubRole("Dean's Decision") &&
@@ -58,10 +114,31 @@ class FECReflections extends SpecialPage {
                     strstr($case, "C") !== false)){
                     // Professor
                     $nProfs++;
-                    if(strstr($case, "C") !== false){
-                        // Full Professor
-                        $nFullProfs++;
-                        
+
+                    if($revisedIncrement != "" &&
+                       $revisedIncrement != "N/A" &&
+                       $revisedIncrement != "0.00" &&
+                       $revisedIncrement != "0.00 (PTC)" &&
+                       $revisedIncrement != "0A"){
+                        if(strstr($case, "A") !== false){
+                            $sumAssistProfs += floatval($revisedIncrement);
+                            $nAssistProfs++;
+                        }
+                        else if(strstr($case, "B") !== false){
+                            $sumAssocProfs += floatval($revisedIncrement);
+                            $nAssocProfs++;
+                        }
+                        else if(strstr($case, "C") !== false){
+                            $sumFullProfs += floatval($revisedIncrement);
+                            $nFullProfs++;
+                        }
+                    }
+                    
+                    if($revisedIncrement > $increment){
+                        $nRaised++;
+                    }
+                    else if($revisedIncrement < $increment){
+                        $nLowered++;
                     }
                 }
                 $nPeople++;
@@ -133,8 +210,19 @@ class FECReflections extends SpecialPage {
             
             $data = array('nPeople' => $nPeople,
                           'nProfs' => $nProfs,
+                          'nFSO' => $nFSO,
+                          'nUncappedFSO' => $nUncappedFSO,
                           'publications' => $publications,
-                          'rankings' => $rankings);
+                          'rankings' => $rankings,
+                          'nAssistProfs' => $nAssistProfs,
+                          'nAssocProfs' => $nAssocProfs,
+                          'nFullProfs' => $nFullProfs,
+                          'subAssistProfs' => $sumAssistProfs,
+                          'sumAssocProfs' => $sumAssocProfs,
+                          'sumFullProfs' => $sumFullProfs,
+                          'sumFSO' => $sumFSO,
+                          'nLowered' => $nLowered,
+                          'nRaised' => $nRaised);
             
             $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
             $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
@@ -190,7 +278,14 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("   <tr><td style='width:250px;' valign='top'><b>Promotion from assistant to associate professor (with tenure)</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
         $wgOut->addHTML("   <tr><td valign='top'><b>Promotion from associate to full professor.</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
         $wgOut->addHTML("   <tr><td valign='top'><b>Number of professoriate cases considered by FEC.</b><br /><small>This does not include the Dean, Vice Dean, and Department Chairs.</small></td><td valign='top'>{$nProfs}</td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for a full professor.</b></td><td valign='top'></td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for a full professor.</b></td><td valign='top'>".number_format($sumFullProfs/max($nFullProfs, 1), 2)."</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for an uncapped associate professor.</b><br /><small>Note that this number has been lowered by the “almost-capped” professors.</small></td><td valign='top'>".number_format($sumAssocProfs/max($nAssocProfs, 1), 2)."</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for an assistant professor.</b></td><td valign='top'>".number_format($sumAssistProfs/max($nAssistProfs, 1), 2)."</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Number of increment recommendations that were lowered by FEC.</b></td><td valign='top'>{$nLowered}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Number of increment recommendations that were raised by FEC.</b></td><td valign='top'>{$nRaised}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>FSO promotions.</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Number of FSO cases considered.</b></td><td valign='top'>{$nFSO}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Average increments received by non-capped FSOs.</b></td><td valign='top'>".number_format($sumFSO/max($nUncappedFSO, 1), 2)."</td></tr>");
         $wgOut->addHTML("</table>");
     }
     
@@ -216,11 +311,12 @@ class FECReflections extends SpecialPage {
         </script>");
     }
     
-    static function getBlobValue($rpType, $rpSection, $rpItem, $rpSubItem=0, $year=YEAR, $userId){
-        $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
-	    $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
+    static function getBlobValue($rpType, $rpSection, $rpItem, $rpSubItem=0, $year=YEAR, $userId=0){
+        $blob = new ReportBlob(BLOB_TEXT, $year, $userId, 0);
+	    $blob_address = ReportBlob::create_address($rpType, $rpSection, $rpItem, $rpSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
+	    return $blob_data;
     }
     
     static function createSubTabs(&$tabs){
