@@ -134,10 +134,10 @@ class FECReflections extends SpecialPage {
                         }
                     }
                     
-                    if($revisedIncrement > $increment){
+                    if(floatval($revisedIncrement) > floatval($increment)){
                         $nRaised++;
                     }
-                    else if($revisedIncrement < $increment){
+                    else if(floatval($revisedIncrement) < floatval($increment)){
                         $nLowered++;
                     }
                 }
