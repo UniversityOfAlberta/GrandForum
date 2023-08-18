@@ -916,7 +916,7 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="vaccinate3_avoid" blobItem="vaccinate3_avoid"  type="RadioReportItem" orientation="horizontal"
+        <ReportItem id="vaccinate3_avoid" blobItem="vaccinate3_avoid"  type="RadioReportItem" orientation="horizontal" optional="true"
                     options="Yes|No"
                     labels="{showLanguage(Yes|No, Oui|Non)}">
             <![CDATA[
