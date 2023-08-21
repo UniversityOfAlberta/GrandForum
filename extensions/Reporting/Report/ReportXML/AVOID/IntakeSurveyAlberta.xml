@@ -229,13 +229,13 @@
         </ReportItem>
         
         <!-- Question 12 -->
-        <ReportItem id="haai_12" type="Radio" blobItem="haai_12" labels="I don't need help from any organizations, programs, or workers.|
+        <ReportItem id="haai_12" type="Radio" blobItem="haai_12" labels="I don't require help from any organizations, programs, or workers.|
                                                                          I have help from organizations, programs, or workers, but I'm uncertain if I can trust them all.|
                                                                          I have help from one organization, program, or worker that I trust, and others which I don't trust.|
                                                                          I need help from an organization, program, or worker, but don't have any I can trust."
                                                                  options="0|1|2|3" optional="true">
             <![CDATA[
-                <p style="margin-top: 1em; margin-bottom: 0;"><i>Some individuals require to access support from social workers, community organizations or government programs.</i></p>
+                <p style="margin-top: 1em; margin-bottom: 0;"><i>Some individuals need to access support from social workers, community organizations or government programs.</i></p>
                 <h4 style="margin-top:0;">Do you regularly access support from any organizations, programs or workers?</h4>
                 <div class="requiredField">{$item}</div>
             ]]>

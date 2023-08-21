@@ -1050,12 +1050,12 @@ class CavendishTemplate extends QuickTemplate {
 	    <div id="mobileMenu">
 	        <?php if(isExtensionEnabled("ContactUs")){ ?>
 	            <?php if($config->getValue('networkName') == "AVOID"){ ?>
-	                <button class="helpButton" type="button" style="width:175px;"><en>Help</en><fr>Aide</fr></button>
+	                <button class="helpButton" type="button" style="width:132px; padding-left:0; padding-right: 0;"><en>Help</en><fr>Aide</fr></button>
 	            <?php } else { ?>
-	                <button class="contactUs" type="button" style="width:175px;"><en>Contact Us</en><fr>Contactez-nous</fr></button>
+	                <button class="contactUs" type="button" style="width:132px; padding-left:0; padding-right: 0;"><en>Contact Us</en><fr>Contactez-nous</fr></button>
 	            <?php } ?>
 	        <?php } ?>
-	        <button class="reportIssue" type="button" style="width:175px;"><en>Report Issue</en><fr>Signaler un problème</fr></button>
+	        <button class="reportIssue" type="button" style="width:132px; padding-left:0; padding-right: 0;"><en>Report Issue</en><fr style='font-size:0.85em;line-height:1em;'>Signaler un problème</fr></button>
 	    </div>
 		<div id="bodyContent" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 			<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
