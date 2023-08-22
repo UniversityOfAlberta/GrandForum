@@ -372,6 +372,7 @@ class IntakeSummary extends SpecialPage {
                 $page_data = json_decode($page["data"], true);
                 if($page_name == $key){
                     $html .= "<table class='wikitable' style='border-collapse: collapse; table-layout: auto; width: 100%; margin-top:0px; margin-bottom:0;'>";
+                    $totalTime = 0;
                     foreach($page_data as $key => $value){
                         if(strlen($key) < 4){
                             continue;
@@ -383,14 +384,17 @@ class IntakeSummary extends SpecialPage {
                         $key = str_replace("PageCount", " Views", $key);
                         $key = str_replace("Time", " Time", $key);
                         if(strpos($key, "Time")){
-                            $init = $value;
-                            $hours = floor($init / 3600);
-                            $minutes = floor(($init / 60) % 60);
-                            $seconds = $init % 60;
-                            $value = "$hours:$minutes:$seconds";
+                            $totalTime += $value;
                         }
-                        $html .= "<tr style=''><td nowrap>$key:</td> <td align='right'>$value</td></tr>\n";
+                        else{
+                            $html .= "<tr style=''><td nowrap>$key:</td> <td align='right'>$value</td></tr>\n";
+                        }
                     }
+                    $hours = floor($totalTime / 3600);
+                    $minutes = floor(($totalTime / 60) % 60);
+                    $seconds = $totalTime % 60;
+                    $value = str_pad($hours,2,"0", STR_PAD_LEFT).":".str_pad($minutes,2,"0", STR_PAD_LEFT).":".str_pad($seconds,2,"0", STR_PAD_LEFT);
+                    $html .= "<tr><td>Time:</td> <td align='right'>{$value}</td></tr>\n";
                     $html .= "</table>";
                     break;
                 }
