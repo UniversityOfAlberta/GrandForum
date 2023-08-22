@@ -81,7 +81,7 @@ class AdminDataCollection extends SpecialPage{
         $people = array();
         foreach(Person::getAllPeople() as $person){
             if($person->isRoleAtLeast(STAFF)){
-                continue;
+                //continue;
             }
             $people[] = $person;
         }
@@ -258,13 +258,24 @@ class AdminDataCollection extends SpecialPage{
                         <div id='adminDataCollectionMessages'></div>
                         <div id='usageDialog' style='display:none;'></div>
                         <script type='text/javascript'>
+                            var buttons = {
+                                exportOptions: {
+                                    format: {
+                                        body: function ( data, row, column, node ) {
+                                            return $('<div>' + data.replaceAll('<br>', String.fromCharCode(10)) + '</div>').text().trim();
+                                        }
+                                    }
+                                }
+                            };
                             table = $('#data').DataTable({
                                 aLengthMenu: [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
                                 iDisplayLength: -1,
                                 'dom': 'Blfrtip',
-                                'buttons': [
-                                    'excel'
-                                ],
+                                'buttons': [ $.extend( true, {}, buttons, {
+                                        extend: 'excelHtml5',
+                                        text: 'Excel'
+                                    }
+                                )],
                                 scrollX: true,
                                 scrollY: $('#bodyContent').height() - 400
                             });

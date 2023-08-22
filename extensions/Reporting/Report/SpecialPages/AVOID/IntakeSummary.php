@@ -358,10 +358,7 @@ class IntakeSummary extends SpecialPage {
             }
         }
         
-        $html .= "<td style='white-space:nowrap;'>
-                    <b>Created:</b> ".count($plans)."<br />
-                    <b>Submitted:</b> ".count($submittedPlans)."<br />
-                </td>";
+        $html .= "<td style='white-space:nowrap;'><b>Created:</b> ".count($plans)."<br /><b>Submitted:</b> ".count($submittedPlans)."<br /></td>";
     
         $resource_data = DBFunctions::select(array('grand_data_collection'),
                                              array('*'),
@@ -392,7 +389,7 @@ class IntakeSummary extends SpecialPage {
                             $seconds = $init % 60;
                             $value = "$hours:$minutes:$seconds";
                         }
-                        $html .= "<tr style=''><td nowrap>$key</td><td align='right'>$value</td></tr>";
+                        $html .= "<tr style=''><td nowrap>$key:</td> <td align='right'>$value</td></tr>\n";
                     }
                     $html .= "</table>";
                     break;
@@ -410,11 +407,7 @@ class IntakeSummary extends SpecialPage {
                 $page_data = json_decode($page["data"],true);
                 $views = isset($page_data["pageCount"]) ? $page_data["pageCount"] : 0;
                 $websiteClicks = isset($page_data["websiteClicks"]) ? $page_data["websiteClicks"] : 0;
-                $html .= "
-                    <tr>
-                        <td style='white-space:nowrap;'>$page_name</td>
-                        <td nowrap>Views: $views</td>
-                    </tr>";
+                $html .= "<tr><td style='white-space:nowrap;'>$page_name</td> <td nowrap>Views: $views</td></tr>\n";
             }
         }
             
