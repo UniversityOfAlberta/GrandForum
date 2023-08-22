@@ -135,6 +135,15 @@ class IntakeSummary extends SpecialPage {
         'evaluation2' => 'In person opportunity2'
     );
     
+    static $topics = array("IngredientsForChange" => "Ingredients For Change",
+                           "Activity" => "Activity",
+                           "Vaccination" => "Vaccination",
+                           "OptimizeMedication" => "Optimize Medication",
+                           "Interact" => "Interact",
+                           "DietAndNutrition" => "Diet And Nutrition",
+                           "Sleep" => "Sleep",
+                           "FallsPrevention" => "Falls Prevention");
+    
     function __construct() {
         SpecialPage::__construct("IntakeSummary", null, true, 'runIntakeSummary');
     }
@@ -300,34 +309,30 @@ class IntakeSummary extends SpecialPage {
                         </table>");
     }
     
-    function dataCollectionTable($person){
-        global $wgServer, $wgScriptPath;
-        $topics = array("IngredientsForChange" => "Ingredients For Change",
-                        "Activity" => "Activity",
-                        "Vaccination" => "Vaccination",
-                        "OptimizeMedication" => "Optimize Medication",
-                        "Interact" => "Interact",
-                        "DietAndNutrition" => "Diet And Nutrition",
-                        "Sleep" => "Sleep",
-                        "FallsPrevention" => "Falls Prevention");
-                          
-        $html = "<div id='data_{$person->getId()}' style='display:none;'><table class='wikitable data_collection' cellpadding='5' cellspacing='1' style='width:100%;'>
-                    <thead>
-                        <tr>
-                            <th rowspan='2'>Action Plans</th>
-                            <th colspan='".count($topics)."'>Education</th>
-                            <th colspan='4'>Data Collected</th>
-                        </tr>
-                        <tr>
-                            <th style='width:1px;'>".implode("</th><th style='width:1px;'>", $topics)."</th>
-                            <th style='width:1px;'>Program Library</th>
-                            <th style='width:1px;'>Frailty Report Views</th>
-                            <th style='width:1px;'>Progress Report Views</th>
-                            <th style='width:1px;'>Logins</th>
-                        </tr>
-                    </thead>
-                    <tbody>";
+    static function usageHeaderTop(){
+        return "<th rowspan='2'>Action Plans</th>
+                <th colspan='".count(self::$topics)."'>Education</th>
+                <th colspan='4'>Data Collected</th>";
+    }
     
+    static function usageHeaderBottom(){
+        return "<th style='width:1px;'>".implode("</th><th style='width:1px;'>", self::$topics)."</th>
+                <th style='width:1px;'>Program Library</th>
+                <th style='width:1px;'>Frailty Report Views</th>
+                <th style='width:1px;'>Progress Report Views</th>
+                <th style='width:1px;'>Logins</th>";
+    }
+    
+    static function programAttendanceHeaderTop(){
+        return "<th colspan='".count(array_column(AdminDataCollection::$programs, 'text'))."'>Program Attendance</th>";
+    }
+    
+    static function programAttendanceHeaderBottom(){
+        return "<th>".implode("</th><th>", array_column(AdminDataCollection::$programs, 'text'))."</th>";
+    }
+    
+    static function usageRow($person){
+        $html = "";
         // Action Plans
         $plans = array();
         foreach(ActionPlan::newFromUserId($person->getId()) as $plan){
@@ -353,8 +358,7 @@ class IntakeSummary extends SpecialPage {
             }
         }
         
-        $html .= "<tr>
-                <td style='white-space:nowrap;'>
+        $html .= "<td style='white-space:nowrap;'>
                     <b>Created:</b> ".count($plans)."<br />
                     <b>Submitted:</b> ".count($submittedPlans)."<br />
                 </td>";
@@ -364,7 +368,7 @@ class IntakeSummary extends SpecialPage {
                                              array('user_id' => $person->getId()));
 
         // Topics
-        foreach($topics as $key => $topic){
+        foreach(self::$topics as $key => $topic){
             $html .= "<td style='padding:0;' valign='top'>";
             foreach($resource_data as $page){
                 $page_name = trim($page["page"]);
@@ -444,23 +448,11 @@ class IntakeSummary extends SpecialPage {
             $html .= "<td align='right'>N/A</td>";
         }
         $html .= "<td align='right'>$logins</td>";
-        $html .= "</tr>";
-        $html .= "</tbody></table>";
-        
-        // Programs
-        $html .= "<table class='wikitable program_attendance' cellpadding='5' cellspacing='1' style='width:100%;'>
-                    <thead>
-                        <tr>
-                            <th colspan='".count(array_column(AdminDataCollection::$programs, 'text'))."'>Program Attendance</th>
-                        </tr>
-                        <tr>
-                            <th>".implode("</th><th>", array_column(AdminDataCollection::$programs, 'text'))."</th>
-                        </tr>
-                    </thead>
-                    <tbody>";
-        
-        $html .= "<tr>";
-        
+        return $html;
+    }
+    
+    static function programAttendanceRow($person){
+        $html = "";
         foreach(AdminDataCollection::$programs as $key => $program){
             $checked = array((IntakeSummary::getBlobData("ATTENDANCE", "{$key}", $person, 0, "RP_SUMMARY") == 1) ? "checked" : "");
             $span = array();
@@ -486,9 +478,31 @@ class IntakeSummary extends SpecialPage {
             }
             $html .= "</td>";
         }
+        return $html;
+    }
+    
+    function dataCollectionTable($person){
+        global $wgServer, $wgScriptPath;
+        $html = "<div id='data_{$person->getId()}' style='display:none;'><table class='wikitable data_collection' cellpadding='5' cellspacing='1' style='width:100%;'>
+                    <thead>
+                        <tr>".self::usageHeaderTop()."</tr>
+                        <tr>".self::usageHeaderBottom()."</tr>
+                    </thead>
+                    <tbody>";
         
-        $html .= "</tr></tbody></table>";
+        $html .= "<tr>".self::usageRow($person)."</tr>";
+        $html .= "</tbody></table>";
         
+        // Programs
+        $html .= "<table class='wikitable program_attendance' cellpadding='5' cellspacing='1' style='width:100%;'>
+                    <thead>
+                        <tr>".self::programAttendanceHeaderTop()."</tr>
+                        <tr>".self::programAttendanceHeaderBottom()."</tr>
+                    </thead>
+                    <tbody>
+                        <tr>".self::programAttendanceRow($person)."</tr>
+                    </tbody>
+                  </table>";
         $html .= "</div>";
         return $html;
     }

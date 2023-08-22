@@ -107,6 +107,10 @@ class AdminDataCollection extends SpecialPage{
             $wgOut->addHTML("<table id='data' class='wikitable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>
                                 <thead>
                                     <tr style='background:#EEEEEE;'>
+                                        <th colspan='24'>User Data</th>
+                                        ".IntakeSummary::usageHeaderTop().IntakeSummary::programAttendanceHeaderTop()."
+                                    </tr>
+                                    <tr>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Age</th>
@@ -131,6 +135,7 @@ class AdminDataCollection extends SpecialPage{
                                         <th>6Month Survey Date</th>
                                         <th>9Month Survey Date</th>
                                         <th>12Month Survey Date</th>
+                                        ".IntakeSummary::usageHeaderBottom().IntakeSummary::programAttendanceHeaderBottom()."
                                     </tr>
                                 </thead>
                                 <tbody>");
@@ -245,6 +250,7 @@ class AdminDataCollection extends SpecialPage{
                 <td>{$date6}</td>
                 <td>{$date9}</td>
                 <td>{$date12}</td>
+                ".IntakeSummary::usageRow($person).IntakeSummary::programAttendanceRow($person)."
                 </tr>");
             }
             $wgOut->addHTML("</tbody>
