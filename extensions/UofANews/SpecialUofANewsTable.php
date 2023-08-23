@@ -25,7 +25,7 @@ class SpecialUofANewsTable extends SpecialPage{
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $this->getOutput()->setPageTitle("University of Alberta News Table");
-        $searchEngines = json_decode(file_get_contents("maintenance/searchEngines.json"), true);
+        $searchEngines = (file_exists("maintenance/searchEngines.json")) ? json_decode(file_get_contents("maintenance/searchEngines.json"), true) : array();
         $allNews = UofANews::getAllNews();
         $wgOut->addHTML("<table id='table' class='wikitable'>
             <thead>
@@ -40,9 +40,9 @@ class SpecialUofANewsTable extends SpecialPage{
             <tbody>");
         foreach($allNews as $news){
             if(strstr($news->getUrl(), "folio") !== false){
-                $google = ($searchEngines[$news->getUrl()]['google']) ? "Found\n" : (($searchEngines[$news->getUrl()]['google'] === false) ? "Not Found\n" : "Error\n");
-                $bing   = ($searchEngines[$news->getUrl()]['bing'])   ? "Found\n" : (($searchEngines[$news->getUrl()]['bing'] === false)   ? "Not Found\n" : "Error\n");
-                $yahoo  = ($searchEngines[$news->getUrl()]['yahoo'])  ? "Found\n" : (($searchEngines[$news->getUrl()]['yahoo'] === false)  ? "Not Found\n" : "Error\n");
+                $google = @($searchEngines[$news->getUrl()]['google']) ? "Found\n" : @(($searchEngines[$news->getUrl()]['google'] === false) ? "Not Found\n" : "Error\n");
+                $bing   = @($searchEngines[$news->getUrl()]['bing'])   ? "Found\n" : @(($searchEngines[$news->getUrl()]['bing'] === false)   ? "Not Found\n" : "Error\n");
+                $yahoo  = @($searchEngines[$news->getUrl()]['yahoo'])  ? "Found\n" : @(($searchEngines[$news->getUrl()]['yahoo'] === false)  ? "Not Found\n" : "Error\n");
                 $wgOut->addHTML("<tr>
                     <td><a href='{$news->getUrl()}' target='_blank'>{$news->getTitle()}</a></td>
                     <td><span style='display:none;'>{$news->date} </span>{$news->getDate()}</td>
