@@ -7,7 +7,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $dept = $this->getAttr("department", "");
         $uni = $this->getAttr("university", "University of Alberta");
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
-        $end = $this->getAttr("end", REPORTING_CYCLE_END);
+        $end = $this->getAttr("end", (YEAR)."-07-01");
         $includeDeansPeople = (strtolower($this->getAttr("includeDeansPeople", "false")) == "true");
         $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
         $me = Person::newFromWgUser();

@@ -2238,6 +2238,8 @@ class Person extends BackboneModel {
      * @return array The Universities that this Person was at between the given range
      */ 
     function getUniversitiesDuring($startRange, $endRange){
+        $startRange = substr($startRange,0,10);
+        $endRange = substr($endRange,0,10);
         if(empty(self::$allUniversityCache)){
             if(Cache::exists("user_university")){
                 $data = Cache::fetch("user_university");
@@ -2266,10 +2268,10 @@ class Person extends BackboneModel {
         $unis = array();
         if(isset(self::$allUniversityCache[$this->getId()])){
             foreach(self::$allUniversityCache[$this->getId()] as $uni){
-                if(($uni['end'] != "0000-00-00 00:00:00" && (($uni['start'] >= $startRange && $uni['start'] <= $endRange) || 
-                                                             ($uni['end'] >= $startRange && $uni['end'] <= $endRange) ||
-                                                             ($uni['start'] <= $endRange && $uni['end'] >= $endRange))) || 
-                   ($uni['end'] == "0000-00-00 00:00:00" && $uni['start'] <= $endRange)){
+                if(($uni['end'] != "0000-00-00 00:00:00" && ((substr($uni['start'],0,10) >= $startRange && substr($uni['start'],0,10) <= $endRange) || 
+                                                             (substr($uni['end'],0,10) >= $startRange && substr($uni['end'],0,10) <= $endRange) ||
+                                                             (substr($uni['start'],0,10) <= $endRange && substr($uni['end'],0,10) >= $endRange))) || 
+                   ($uni['end'] == "0000-00-00 00:00:00" && substr($uni['start'],0,10) <= $endRange)){
                     $unis[] = $uni;
                 }
             }
