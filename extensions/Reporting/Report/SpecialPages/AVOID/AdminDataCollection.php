@@ -165,18 +165,33 @@ class AdminDataCollection extends SpecialPage{
                 $fitbit2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "FITBIT", "fitbit2", $person->getId());
                 $connectedFitbit = ($person->getExtra('fitbit') != "") ? "Yes" : "No";
                 
+                $baseDiff = (time() - strtotime(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID")))/86400;
+                
+                                
                 $submitted = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID")) ? "Yes" : "No");
-                $submitted3 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")) ? "Yes" : "No");
-                $submitted6 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")) ? "Yes" : "No");
-                $submitted9 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_NINEMO")) ? "Yes" : "No");
-                $submitted12 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")) ? "Yes" : "No");
+                $submitted3 = $person->isRole("Provider") ? "N/A" : (
+                    (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")) ? "Yes" : (
+                        ($baseDiff >= 30*3 && $baseDiff < 30*6) ? "Due" : "No"
+                ));
+                $submitted6 = $person->isRole("Provider") ? "N/A" : (
+                    (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")) ? "Yes" : (
+                        ($baseDiff >= 30*6 && $baseDiff < 30*9) ? "Due" : "No"
+                ));
+                $submitted9 = $person->isRole("Provider") ? "N/A" : (
+                    (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_NINEMO")) ? "Yes" : (
+                        ($baseDiff >= 30*9 && $baseDiff < 30*12) ? "Due" : "No"
+                ));
+                $submitted12 = $person->isRole("Provider") ? "N/A" : (
+                    (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")) ? "Yes" : (
+                        ($baseDiff >= 30*12) ? "Due" : "No"
+                ));
                 
                 $date = ($submitted == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID"), 0, 10) : "N/A";
                 $date3 = ($submitted3 == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_THREEMO"), 0, 10) : "N/A";
                 $date6 = ($submitted6 == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_SIXMO"), 0, 10) : "N/A";
                 $date9 = ($submitted9 == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_NINEMO"), 0, 10) : "N/A";
                 $date12 = ($submitted12 == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_TWELVEMO"), 0, 10) : "N/A";
-                
+
                 $registration_str = $person->getRegistration();
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $touched_str = $person->getTouched();
