@@ -574,12 +574,27 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     // Adds a new section to this Report
-    function addSection($section, $position=null){
+    function addSection($section, $position=null, $after=null){
         $section->setParent($this);
         if($position == null){
-            $this->sections[] = $section;
+            if($after == null){
+                // Next section as normal
+                $this->sections[] = $section;
+            }
+            else{
+                // Insert after section
+                $sections = $this->sections;
+                $this->sections = array();
+                foreach($sections as $sect){
+                    $this->sections[] = $sect;
+                    if($sect->id == $after){
+                        $this->sections[] = $section;
+                    }
+                }
+            }
         }
         else{
+            // Insert at specific position
             array_splice($this->sections, $position, 0, array($section));
         }
     }

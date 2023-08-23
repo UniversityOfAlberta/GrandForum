@@ -16,7 +16,7 @@
     <ReportSection id="healthquestions7" />
     <ReportSection id="clinicalfrailty" />
     
-    <ReportSection id="alberta" name="Virtual Frailty Screen" type="NextPrevReportSection" blobSection="ALBERTA" position="12">
+    <ReportSection id="alberta" name="Virtual Frailty Screen" type="NextPrevReportSection" blobSection="ALBERTA" after="clinicalfrailty">
         <ReportItem id="statement" type="Radio" blobType="BLOB_TEXT" blobItem="VFS_SCORE"
                     labels="I am active, energetic, and exercise regularly|
                             I am well, but only occasionally active. I can manage finances/transportation/ heavy housework on my own.|

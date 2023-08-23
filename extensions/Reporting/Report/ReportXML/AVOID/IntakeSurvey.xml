@@ -2509,7 +2509,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="OnSiteEvaluation" tooltip="In person opportunity" name="In person opportunity" blobSection="ONSITE_EVALUATION" type="NextPrevReportSection" pagebreak="false">
+    <!--ReportSection id="OnSiteEvaluation" tooltip="In person opportunity" name="In person opportunity" blobSection="ONSITE_EVALUATION" type="NextPrevReportSection" pagebreak="false">
         <ReportItem id="evaluation1" blobItem="evaluation1" type="RadioReportItem" orientation="vertical" options="Yes (You are not obligated to participate if you indicate yes. Final consent to participate would come once you have the opportunity to review further information)|Unsure, I need more information|No">
             <![CDATA[
                 <h3>There is an opportunity for further assessment, coaching, and subsequent follow-up with a Geriatric clinic including a Geriatrician at Providence Care. Would you be interested in participating?</h3>
@@ -2536,7 +2536,7 @@
                 </script>
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <!--ReportSection id="FitBit" tooltip="Fitbit givaway" name="Fitbit givaway" blobSection="FITBIT" type="NextPrevReportSection" pagebreak="false">
         <ReportItem id="fitbit1" blobItem="fitbit1" type="RadioReportItem" orientation="vertical" options="Yes|No">
             <![CDATA[
