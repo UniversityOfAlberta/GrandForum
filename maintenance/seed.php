@@ -128,8 +128,6 @@ DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_uni
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_provinces` SELECT * FROM `{$config->getValue('dbName')}`.`grand_provinces`", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_positions` SELECT * FROM `{$config->getValue('dbName')}`.`grand_positions`", true);
 DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_partners` SELECT * FROM `{$config->getValue('dbName')}`.`grand_partners`", true);
-DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_page` SELECT * FROM `{$config->getValue('dbName')}`.`mw_page` WHERE page_id < 10", true);
-DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_revision` SELECT * FROM `{$config->getValue('dbName')}`.`mw_revision` WHERE rev_page < 10", true);
 
 // Start populating custom data
 
@@ -153,7 +151,52 @@ DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`,`
 DBFunctions::execSQL("INSERT INTO grand_boards (`title`,`description`) VALUES ('General', 'General Description')", true);
 DBFunctions::execSQL("INSERT INTO grand_boards (`title`,`description`) VALUES ('Other Topics', 'Other Topics Description')", true);
 
+//Initialize Custom Namespaces
+$id = 100;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Cal', 'public' => '0'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => $config->getValue('networkName'), 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Mail', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Survey', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Student_Committee', 'public' => '0'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Poster', 'public' => '0'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Conference', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Presentation', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'FeatureRequest', 'public' => '0'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Feedback', 'public' => '0'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Publication', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Artifact', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Activity', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Press', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Contribution', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Award', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'ConferenceOrganization', 'public' => '1'));
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id+1, 'nsName' => 'ConferenceOrganization_Talk', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Multimedia', 'public' => '1'));
+$id += 2;
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Form', 'public' => '1'));
+$id += 2;
 
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Inactive', 'public' => '1'));
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id+1, 'nsName' => 'Inactive_Talk', 'public' => '1'));
+
+// Create Users
 createUser("Admin.User1", "Admin.Pass1", "admin.user1@behat-test.com");
 createUser("Manager.User1", "Manager.Pass1", "manager.user1@behat-test.com");
 createUser("Staff.User1", "Staff.Pass1", "staff.user1@behat-test.com");

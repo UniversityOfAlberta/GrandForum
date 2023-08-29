@@ -13,14 +13,15 @@ exec(sprintf("%s > %s 2>&1 & echo $! >> %s",
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
     Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
+    Behat\Behat\Exception\PendingException,
+    Behat\Gherkin\Node\PyStringNode,
+    Behat\Gherkin\Node\TableNode,
+    PHPUnit\Framework\Assert;
 
 //
 // Require 3rd-party libraries here:
 //
-require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
+//require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
 
 /**
  * Features context.
@@ -99,7 +100,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         global $currentSession;
         // Delay the session so that it doesn't process futher while the page is still loading
         try{
-            //$currentSession->getSession()->wait(0);
+            $currentSession->getSession()->wait(25);
         }
         catch(Exception $e){
             
@@ -242,7 +243,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
                     $found = true;
                 }
             }
-            assertTrue($found);
+            Assert::assertTrue($found);
         }
     }
     
@@ -259,7 +260,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
                     $found = true;
                 }
             }
-            assertFalse($found);
+            Assert::assertFalse($found);
         }
     }
     
@@ -270,7 +271,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         if(file_exists("/usr/lib/mailman/bin/remove_members")){
             $command =  "/usr/lib/mailman/bin/remove_members -n -N $list $email";
 		    exec($command, $output);
-		    assertTrue(count($output) == 0 || (count($output) > 0 && $output[0] == ""));
+		    Assert::assertTrue(count($output) == 0 || (count($output) > 0 && $output[0] == ""));
 		}
     }
     
@@ -280,7 +281,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public function theLoadTimeShouldBeNoGreaterThan($maxTime)
     {
         $time = $this->getSession()->evaluateScript('return window.performance.timing.domContentLoadedEventEnd- window.performance.timing.navigationStart;');
-        assertFalse($time > $maxTime);
+        Assert::assertFalse($time > $maxTime);
     }
     
     /**
@@ -343,7 +344,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $text = str_replace("&#39;", "'", $this->getSession()->getPage()->getText());
         $strpos1 = strpos($text, stripslashes($string1));
         $strpos2 = strpos($text, stripslashes($string2));
-        assertTrue($strpos1 < $strpos2);
+        Assert::assertTrue($strpos1 < $strpos2);
     }
     
     /**
@@ -353,7 +354,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $text = str_replace("&#39;", "'", $this->getSession()->getPage()->getText());
         $strpos1 = strpos($text, stripslashes($string1));
         $strpos2 = strpos($text, stripslashes($string2));
-        assertFalse($strpos1 < $strpos2);
+        Assert::assertFalse($strpos1 < $strpos2);
     }
     
     /**
@@ -370,7 +371,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public function fillInTinyMCEWith($id, $text){
         $text = addslashes($text);
         $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().setContent('$text');");
-        $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().fire('keyup');");
+        $this->getSession()->evaluateScript("_.defer(function(){ $('textarea[name=$id]').tinymce().fire('keyup'); });");
     }
     
     /**
@@ -386,15 +387,14 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function selectFromChosenWith($id, $text){
         $text = addslashes($text);
-        $this->getSession()->evaluateScript("
-            var text = '$text';
-            $('select[name=$id] option').each(function(i, el){
-                if($(el).val() == text ||
-                   $(el).text() == text){
-                    text = $(el).val();
-                }
-            });
-            $('select[name=$id]').val(text).trigger('chosen:updated').change()");
+        $this->getSession()->evaluateScript("chosenText = '$text';");
+        $this->getSession()->evaluateScript("$('select[name=$id] option').each(function(i, el){
+                                                if($(el).val() == chosenText ||
+                                                   $(el).text() == chosenText){
+                                                    chosenText = $(el).val();
+                                                }
+                                            });");
+        $this->getSession()->evaluateScript("$('select[name=$id]').val(chosenText).trigger('chosen:updated').change();");
     }
     
     /**
@@ -469,7 +469,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     {
         $value = $this->getSession()->evaluateScript('return '.$js);
         $json = json_encode($value);
-        assertTrue((strpos($json, $text) !== false));
+        Assert::assertTrue((strpos($json, $text) !== false));
     }
     
     /**
@@ -479,7 +479,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     {
         $value = $this->getSession()->evaluateScript('return '.$js);
         $json = json_encode($value);
-        assertTrue((strpos($json, $text) === false));
+        Assert::assertTrue((strpos($json, $text) === false));
     }
     
     static function listFiles($dir){

@@ -865,7 +865,7 @@ class CavendishTemplate extends QuickTemplate {
 	                  </a>";
 	        }
 	        echo "</div>";
-            echo "<a id='status_help_faq' name='question_mark_16x32' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_16x32.png' alt='Help/FAQ' style='height: 16px;' />&nbsp;&nbsp;<span class='en'>Help/FAQ</span><span class='fr'>Aide/FAQ</span></a>";
+            echo "<a id='status_help_faq' name='question_mark_16x32' class='menuTooltip' title='FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_16x32.png' alt='FAQ' style='height: 16px;' />&nbsp;&nbsp;<span class='en'>FAQ</span><span class='fr'>FAQ</span></a>";
             if(count($config->getValue("socialLinks")) > 0){
 	            echo "<a id='share' style='cursor:pointer;' name='share_32x32' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_32x32.png' style='height: 16px;' />&nbsp;▼</a>";
 	        }

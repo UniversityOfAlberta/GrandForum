@@ -132,7 +132,6 @@ class ProjectWikiTab extends AbstractTab {
         $this->html .= "<tbody>\n";
         foreach($pages as $page){
             if($page->getTitle()->getText() != "Main"){
-                $this->html .= "<tr>\n";
                 $revId = $page->getRevIdFetched();
                 $revision = Revision::newFromId($revId);
 			    $date = $revision->getTimestamp();
@@ -143,6 +142,8 @@ class ProjectWikiTab extends AbstractTab {
 			    $minute = substr($date, 10, 2);
 			    $second = substr($date, 12, 2);
 			    $editor = Person::newFromId($revision->getUser());
+			    
+			    $this->html .= "<tr>\n";
                 $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>{$page->getTitle()->getText()}</a></td>\n";
                 $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
                 $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";

@@ -8,7 +8,7 @@
         "behat/mink-selenium2-driver": "*",
         "robmorgan/phinx": "*",
         "google/apiclient": "^2.8",
-        "emuse/behat-html-formatter": "^2.0"
+        "dwt/behat-html-formatter": "^2.0"
     },
 
     "config": {
