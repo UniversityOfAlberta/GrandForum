@@ -135,6 +135,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
             $ethnicityField->emptyIfEmpty = true;
             
             $this->html .= "<h3>Pronouns</h3>
+                            Select your pronouns <b>OR</b> type them in manually if not listed.<br />
                             {$pronounsField->render()}
                             
                             <h3>Date of birth</h3>
