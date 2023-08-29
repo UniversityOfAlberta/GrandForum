@@ -86,7 +86,7 @@ $wgListAdminPassword    = $config->getValue("listAdminPassword");
 
 $wgFavicon          = "$wgServer$wgScriptPath/favicon.ico";
 
-if(TESTING){
+if(TESTING && !defined('INIT_TESTING')){
     $wgDBname = $wgTestDBname;
 }
 

@@ -24,7 +24,7 @@
         var $constants = array();
         
         function setValue($key, $value){
-            if(!TESTING || $this->default || strpos($key, "db") === 0 || $key == "path"){
+            if(!TESTING || $this->default || strpos($key, "db") === 0 || $key == "path" || $key == "server"){
                 $this->config[$key] = $value;
             }
         }

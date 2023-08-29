@@ -336,7 +336,7 @@ class GlobalSearchAPI extends RESTAPI {
                     // forward current cookies to curl
                     $cookies = array();
                     foreach($_COOKIE as $key => $value){
-                        if ($key != 'Array'){
+                        if ($key != 'Array' && !is_array($value)){
                             $cookies[] = $key . '=' . $value;
                         }
                     }
