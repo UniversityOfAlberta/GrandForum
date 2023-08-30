@@ -2116,7 +2116,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="avoid_lifestyle7" blobItem="avoid_lifestyle7" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
+        <ReportItem id="avoid_lifestyle_ex" blobItem="avoid_lifestyle_ex" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
             <![CDATA[
                 <br />
                 Do you exercise regularly?
@@ -2147,13 +2147,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_lifestyle8').hide();
                     function hideLife8(){
-                        if($("select[name='InPersonAssessment_avoid_lifestyle7']").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_lifestyle_ex']").val() == "Yes"){
                             $('span#avoid_lifestyle8').show();
                         }
                         else{ $('span#avoid_lifestyle8').hide();}
                     }
                     _.defer(hideLife8);
-                    $("select[name='InPersonAssessment_avoid_lifestyle7']").change(hideLife8);
+                    $("select[name='InPersonAssessment_avoid_lifestyle_ex']").change(hideLife8);
 
                 </script>
             ]]>
