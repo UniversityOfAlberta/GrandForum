@@ -742,7 +742,25 @@
                         columnDefs: [
                            {type: 'natural', targets: 0}
                         ],
-                        iDisplayLength: -1
+                        iDisplayLength: -1,
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            {
+                                extend: 'excel',
+                                text: 'Excel',
+                                exportOptions: {
+                                    format: {
+                                        body: function (html, row, col, node) {
+                                            var html = $("<div>" + html + "</div>");
+                                            if($("select", html).length > 0){
+                                                $(html).text($("select option:selected", html).text());
+                                            }
+                                            return $(html).text().trim();
+                                        }
+                                    }
+                                }
+                            }
+                        ]
                     });
                     
                     $('select').change(function(){
@@ -757,7 +775,7 @@
                             $(this).closest("td").css("background-color", "");
                         }
                     });
-                    $('select').change();
+                    $('table select').change();
                     
                     $("#tabs").tabs();
                     $('#tabs').bind('tabsselect', function(event, ui) {
