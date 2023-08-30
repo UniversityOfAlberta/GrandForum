@@ -16,7 +16,7 @@
     <ReportSection id="healthquestions7" />
     <ReportSection id="clinicalfrailty" />
     
-    <ReportSection id="alberta" name="Virtual Frailty Screen" type="NextPrevReportSection" blobSection="ALBERTA" after="clinicalfrailty">
+    <ReportSection id="alberta" name="Healthy Aging Asset Index" type="NextPrevReportSection" blobSection="ALBERTA" after="clinicalfrailty">
         <ReportItem id="statement" type="Radio" blobType="BLOB_TEXT" blobItem="VFS_SCORE"
                     labels="I am active, energetic, and exercise regularly|
                             I am well, but only occasionally active. I can manage finances/transportation/ heavy housework on my own.|
@@ -36,7 +36,6 @@
         <Static>
             <![CDATA[
                 <div id="haai" style="display:none;">
-                <h2>Healthy Aging Asset Index</h2>
                 <p>Welcome to the Healthy Aging Asset Index (HAAI) self-assessment! Our goal is to understand what makes you feel strong and supported, and where you might need extra help for healthy aging.</p>
 
                 <p>The assessment looks at different areas that affect your well-being, like your physical and mental health, social connections, and the safety of your environment.</p>
@@ -82,8 +81,8 @@
                     <div class="requiredField">{$item}</div>
                 </div>
                 <script type="text/javascript">
-                    $("[name=VirtualFrailtyScreen_haai_2a]").change(function(){
-                        var val = $("[name=VirtualFrailtyScreen_haai_2a]:checked").val();
+                    $("[name=HealthyAgingAssetIndex_haai_2a]").change(function(){
+                        var val = $("[name=HealthyAgingAssetIndex_haai_2a]:checked").val();
                         if(val == "Yes"){ $("#haai_2b").show(); }
                         else{ $("#haai_2b").hide(); }
                     }).change();
@@ -109,8 +108,8 @@
                     <div class="requiredField">{$item}</div>
                 </div>
                 <script type="text/javascript">
-                    $("[name=VirtualFrailtyScreen_haai_3a]").change(function(){
-                        var val = $("[name=VirtualFrailtyScreen_haai_3a]:checked").val();
+                    $("[name=HealthyAgingAssetIndex_haai_3a]").change(function(){
+                        var val = $("[name=HealthyAgingAssetIndex_haai_3a]:checked").val();
                         if(val == "Yes"){ $("#haai_3b").show(); }
                         else{ $("#haai_3b").hide(); }
                     }).change();
@@ -182,9 +181,9 @@
                     <div class="requiredField">{$item}</div>
                 </div>
                 <script type="text/javascript">
-                    $("[name=VirtualFrailtyScreen_haai_7]").change(function(){
-                        var val = $("[name=VirtualFrailtyScreen_haai_7]:checked").val();
-                        if(val == 0 || val == ""){ $("#haai_8").hide(); $("[name=VirtualFrailtyScreen_haai_8][value=0]").click(); }
+                    $("[name=HealthyAgingAssetIndex_haai_7]").change(function(){
+                        var val = $("[name=HealthyAgingAssetIndex_haai_7]:checked").val();
+                        if(val == 0 || val == ""){ $("#haai_8").hide(); $("[name=HealthyAgingAssetIndex_haai_8][value=0]").click(); }
                         else{ $("#haai_8").show(); }
                     }).change();
                 </script>
@@ -356,8 +355,8 @@
             <![CDATA[
                 </div>
                 <script type="text/javascript">
-                    $("[name=VirtualFrailtyScreen_statement]").change(function(){
-                        var val = $("[name=VirtualFrailtyScreen_statement]:checked").val();
+                    $("[name=HealthyAgingAssetIndex_statement]").change(function(){
+                        var val = $("[name=HealthyAgingAssetIndex_statement]:checked").val();
                         if(val >= 1 && val <= 3){
                             $("#haai").show();
                         }
