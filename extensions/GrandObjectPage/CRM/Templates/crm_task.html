@@ -2,6 +2,7 @@
 <td><a href="<%= assignee.url %>"><%= assignee.name %></td>
 <td align="center"><%= dueDate %></td>
 <td><%= status %></td>
+<td style="background: <%= CRMTask.priorityMap[this.model.get('priority')] %>;"><%= priority %></td>
 <td>
     <table id="transactions" cellspacing="0" cellpadding="0">
         <% _.each(transactions, function(transaction){ %>

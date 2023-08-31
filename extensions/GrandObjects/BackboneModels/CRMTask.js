@@ -21,12 +21,20 @@ CRMTask = Backbone.Model.extend({
             task: "",
             dueDate: "",
             transactions: new Array(),
+            priority: "",
             status: "",
             isAllowedToEdit: true
         };
     }
 
 });
+
+CRMTask.priorityMap = {
+    '': 'transparent',
+    'High': '#ff6666',
+    'Medium': '#ff8800',
+    'Low': '#ffdd00'
+};
 
 /**
  * CRMTasks Collection

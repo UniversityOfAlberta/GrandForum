@@ -12,6 +12,7 @@ class CRMTask extends BackboneModel {
     var $task;
     var $dueDate;
     var $transactions;
+    var $priority;
     var $status;
 	
 	static function newFromId($id){
@@ -44,6 +45,7 @@ class CRMTask extends BackboneModel {
 		    $this->task = $data[0]['task'];
 		    $this->dueDate = $data[0]['due_date'];
 		    $this->transactions = json_decode($data[0]['transactions']);
+		    $this->priority = $data[0]['priority'];
 		    $this->status = $data[0]['status'];
 		}
 	}
@@ -74,6 +76,10 @@ class CRMTask extends BackboneModel {
 	
 	function getTransactions(){
 	    return $this->transactions;
+	}
+	
+	function getPriority(){
+	    return $this->priority;
 	}
 	
 	function getStatus(){
@@ -148,6 +154,7 @@ class CRMTask extends BackboneModel {
 	                      'task' => $this->getTask(),
 	                      'dueDate' => $this->getDueDate(),
 	                      'transactions' => $this->getTransactions(),
+	                      'priority' => $this->getPriority(),
 	                      'status' => $this->getStatus(),
 	                      'isAllowedToEdit' => $this->isAllowedToEdit());
 	        return $json;
@@ -163,6 +170,7 @@ class CRMTask extends BackboneModel {
 	                                  'task' => $this->task,
 	                                  'due_date' => $this->dueDate,
 	                                  'transactions' => json_encode($this->transactions),
+	                                  'priority' => $this->priority,
 	                                  'status' => $this->status));
 	        $this->id = DBFunctions::insertId();
 	        // Send mail to assignee
@@ -192,6 +200,7 @@ class CRMTask extends BackboneModel {
 	                                  'task' => $this->task,
 	                                  'due_date' => $this->dueDate,
 	                                  'transactions' => json_encode($this->transactions),
+	                                  'priority' => $this->priority,
 	                                  'status' => $this->status),
 	                            array('id' => $this->id));
 	    }
