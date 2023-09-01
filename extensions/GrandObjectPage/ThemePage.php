@@ -31,9 +31,7 @@ class ThemePage {
                 if($theme != null && $theme->getId() != 0 &&
                    !$theme->userCanEdit()){
                     TabUtils::clearActions();
-                    $wgOut->clearHTML();
-                    $wgOut->permissionRequired('');
-                    $wgOut->output();
+                    permissionError();
                     exit;
                 }
                 return true;

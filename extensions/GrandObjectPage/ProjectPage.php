@@ -47,9 +47,7 @@ class ProjectPage {
                         !($project->isSubProject() && ($me->isThemeLeaderOf($project->getParent()) || 
                                                        $me->isThemeCoordinatorOf($project->getParent())))){
                     TabUtils::clearActions();
-                    $wgOut->clearHTML();
-                    $wgOut->permissionRequired('');
-                    $wgOut->output();
+                    permissionError();
                     exit;
                 }
                 return true;

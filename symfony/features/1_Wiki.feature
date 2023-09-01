@@ -39,13 +39,13 @@ Feature: Wiki
         When I go to "index.php/Phase2Project1:TestWikiPage?action=edit"
         Then I should see "Editing Phase2Project1:TestWikiPage"
         And I fill in "wpTextbox1" with "Edited TestText"
-        And I press "Save page"
+        And I press "Save changes"
         Then I should see "Edited TestText"
         
-    Scenario: Admin editing main page
+    Scenario: Admin creating main page
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I go to "index.php/Main_Page?action=edit"
-        Then I should see "Editing Main Page"
+        Then I should see "Creating Main Page"
         When I fill in "wpTextbox1" with "[public]Testing[/public]"
         And I press "Save page"
         Then I should see "Testing"
@@ -58,7 +58,7 @@ Feature: Wiki
     Scenario: Admin creating a template
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I go to "index.php/Template:NewTemplate"
-        And I follow "edit this page"
+        And I follow "create this page"
         And I fill in "wpTextbox1" with:
         """
         == Testing ==

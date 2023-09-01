@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 require_once("$IP/includes/specials/SpecialSearch.php");
 
 /*
@@ -23,7 +26,7 @@ class CustomSpecialSearch extends SpecialSearch {
 	function powerSearch( &$request ) {
 		global $egAnnokiNamespaces, $wgUser;
 	
-		$searchableNS = SearchEngine::searchableNamespaces();
+		$searchableNS = MediaWikiServices::getInstance()->getSearchEngineConfig()->searchableNamespaces();
 		$accessibleNS = array_flip(AnnokiNamespaces::getNamespacesForUser($wgUser));
 		
 		
@@ -45,7 +48,7 @@ class CustomSpecialSearch extends SpecialSearch {
 		$groups = AnnokiNamespaces::getNamespacesForUser($wgUser);
 		$groups = array_flip($groups);
 		
-		foreach( SearchEngine::searchableNamespaces() as $ns => $name ) {
+		foreach( MediaWikiServices::getInstance()->getSearchEngineConfig()->searchableNamespaces() as $ns => $name ) {
 			$name = str_replace( '_', ' ', $name );
 			if( '' == $name ) {
 				$name = wfMsg( 'blanknamespace' );

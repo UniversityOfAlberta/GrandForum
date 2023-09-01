@@ -14,7 +14,7 @@ Feature: User Profile
         And I press "Add Institution"
         And I fill in "combo_university" with "Test University"
         And I fill in "combo_department" with "Test Department"
-        And I select "Graduate Student - Master's" from "position"
+        And I fill in "combo_position" with "Graduate Student - Master's"
         And I press "Save Bio"
         And I wait until I see "'Bio' updated successfully." up to "2000"
         Then I should see "Test University"
