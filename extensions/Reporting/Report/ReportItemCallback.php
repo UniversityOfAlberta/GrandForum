@@ -261,7 +261,6 @@ class ReportItemCallback {
             "getArrayCount" => "getArrayCount",
             "isArrayComplete" => "isArrayComplete",
             "replace" => "replace",
-            "substr" => "substr",
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
             "substr" => "substr",
@@ -2125,10 +2124,6 @@ class ReportItemCallback {
     
     function replace($pattern, $replacement, $string){
         return str_replace($pattern, $replacement, $string);
-    }
-    
-    function substr($string, $start, $length){
-        return substr($string, $start, $length);
     }
     
     function strtolower($str){
