@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class GlobalSearchAPI extends RESTAPI {
     
     function doGET(){
@@ -295,6 +297,7 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
             case 'events':
                 $data = array();
+                $results = array();
                 $events = EventPosting::getAllPostings();
                 foreach($events as $event){
                     $title = unaccentChars($event->getTitle());
@@ -357,7 +360,7 @@ class GlobalSearchAPI extends RESTAPI {
                 if(isset($results->query)){
                     foreach($results->query->pages as $page){
                         $article = Article::newFromId($page->pageid);
-                        if($article != null && $article->getTitle()->userCanRead() && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
+                        if($article != null && MediaWikiServices::getInstance()->getPermissionManager()->userCan('read', $wgUser, $article->getTitle()) && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
                             $project = Project::newFromName($article->getTitle()->getNSText());
                             if($project != null && $project->getName() != ""){
                                 // Namespace belongs to a project

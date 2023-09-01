@@ -152,6 +152,7 @@ DBFunctions::execSQL("INSERT INTO grand_boards (`title`,`description`) VALUES ('
 DBFunctions::execSQL("INSERT INTO grand_boards (`title`,`description`) VALUES ('Other Topics', 'Other Topics Description')", true);
 
 //Initialize Custom Namespaces
+DBFunctions::execSQL("TRUNCATE mw_an_extranamespaces", true);
 $id = 100;
 DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Cal', 'public' => '0'));
 $id += 2;
@@ -195,6 +196,14 @@ $id += 2;
 
 DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Inactive', 'public' => '1'));
 DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id+1, 'nsName' => 'Inactive_Talk', 'public' => '1'));
+$id += 2;
+foreach($wgRoles as $role){
+    DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => $role, 'public' => '1'));
+    DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id+1, 'nsName' => $role.'_Talk', 'public' => '1'));
+    $id += 2;
+    DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => $role.'_Wiki', 'public' => '0'));
+    $id += 2;
+}
 
 // Create Users
 createUser("Admin.User1", "Admin.Pass1", "admin.user1@behat-test.com");

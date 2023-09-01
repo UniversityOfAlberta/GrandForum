@@ -5,6 +5,8 @@ use MediaWiki\MediaWikiServices;
 $wgSearchType = "CustomSearchEngine";
 
 class CustomSearchEngine extends SearchMySQL {
+    protected $strictMatching = false;
+
 	public static function allowedSearchableNS() {
 		global $egAnnokiNamespaces, $wgUser, $wgExtraNamespaces;
 
@@ -13,9 +15,9 @@ class CustomSearchEngine extends SearchMySQL {
 
 		$namespaces = array();
 		foreach ($searchableNS as $id => $nsName) {
-			if ($id < 100)
+			if ($id < 100){
 				$namespaces[$id] = $nsName;
-
+            }
 			else if (isset($accessibleNS[$nsName])) {
 				$namespaces[$id] = $nsName;
 			}
