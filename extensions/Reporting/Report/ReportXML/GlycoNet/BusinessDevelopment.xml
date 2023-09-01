@@ -187,8 +187,11 @@
                 <For array="PROOF_1|PROOF_2|PROOF_3|PROOF_5|PROOF_4|PRE_2|PRE_3|PRE_4|PRE_1|PRE_5">
                     <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
                         <![CDATA[
-                            <td><span style="display:none;">{$value}</span>{$item}</td>
+                            <td align='center'><span style="display:none;">{$value}</span>{$item}
                         ]]>
+                    </ReportItem>
+                    <ReportItem id="{strtolower({getExtra()})}_COMMENT" type="Textarea" height="65px" blobItem="{getExtra()}_COMMENT">
+                        <![CDATA[ {$item}{substr({getBlobDate(RP_BD_REPORT, BD, {getExtra()}, 0, 0, {$project_id}, 0)}, 0, 10)}</td> ]]>
                     </ReportItem>
                 </For>
                 <ReportItem id="targets" type="Text" blobItem="TARGETS">
@@ -316,8 +319,11 @@
                 <For array="BIO_1|BIO_2|BIO_3|BIO_4|BIO_5|BIO_6">
                     <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
                         <![CDATA[
-                            <td><span style="display:none;">{$value}</span>{$item}</td>
+                            <td align='center'><span style="display:none;">{$value}</span>{$item}
                         ]]>
+                    </ReportItem>
+                    <ReportItem id="{strtolower({getExtra()})}_COMMENT" type="Textarea" height="65px" blobItem="{getExtra()}_COMMENT">
+                        <![CDATA[ {$item}{substr({getBlobDate(RP_BD_REPORT, BD, {getExtra()}, 0, 0, {$project_id}, 0)}, 0, 10)}</td> ]]>
                     </ReportItem>
                 </For>
                 <ReportItem id="targets" type="Text" blobItem="TARGETS">
@@ -428,8 +434,11 @@
                 <For array="SYNTH_1|SYNTH_2|SYNTH_3|SYNTH_4">
                     <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
                         <![CDATA[
-                            <td><span style="display:none;">{$value}</span>{$item}</td>
+                            <td align='center'><span style="display:none;">{$value}</span>{$item}
                         ]]>
+                    </ReportItem>
+                    <ReportItem id="{strtolower({getExtra()})}_COMMENT" type="Textarea" height="65px" blobItem="{getExtra()}_COMMENT">
+                        <![CDATA[ {$item}{substr({getBlobDate(RP_BD_REPORT, BD, {getExtra()}, 0, 0, {$project_id}, 0)}, 0, 10)}</td> ]]>
                     </ReportItem>
                 </For>
                 <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px">
@@ -559,16 +568,24 @@
                     <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
+            
             <ReportItem id="co_1" type="Select" blobItem="CO_1" blobSubItem="COMPANY{$index}" options="|Completed|In Progress|N/A">
                 <![CDATA[
-                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                    <td align='center'><span style="display:none;">{$value}</span>{$item}
                 ]]>
+            </ReportItem>
+            <ReportItem id="co_1_COMMENT" type="Textarea" height="65px" blobItem="CO_1_COMMENT">
+                <![CDATA[ {$item}{substr({getBlobDate(RP_BD_REPORT, BD, CO_1, COMPANY{$index}, 0, {$project_id}, 0)}, 0, 10)}</td> ]]>
             </ReportItem>
             <ReportItem id="co_2" type="Select" blobItem="CO_2" blobSubItem="COMPANY{$index}" options="|Completed|In Progress|N/A">
                 <![CDATA[
-                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                    <td align='center'><span style="display:none;">{$value}</span>{$item}
                 ]]>
             </ReportItem>
+            <ReportItem id="co_2_COMMENT" type="Textarea" height="65px" blobItem="CO_2_COMMENT">
+                <![CDATA[ {$item}{substr({getBlobDate(RP_BD_REPORT, BD, CO_2, COMPANY{$index}, 0, {$project_id}, 0)}, 0, 10)}</td> ]]>
+            </ReportItem>
+            
             <ReportItem id="legal" type="Text" blobItem="LEGAL" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td><span style="display:none;">{$value}</span>{$item}</td>
@@ -684,8 +701,11 @@
                 <For array="TOOLS_1|TOOLS_2|TOOLS_3|TOOLS_4|TOOLS_5">
                     <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
                         <![CDATA[
-                            <td><span style="display:none;">{$value}</span>{$item}</td>
+                            <td align='center'><span style="display:none;">{$value}</span>{$item}
                         ]]>
+                    </ReportItem>
+                    <ReportItem id="{strtolower({getExtra()})}_COMMENT" type="Textarea" height="65px" blobItem="{getExtra()}_COMMENT">
+                        <![CDATA[ {$item}{substr({getBlobDate(RP_BD_REPORT, BD, {getExtra()}, 0, 0, {$project_id}, 0)}, 0, 10)}</td> ]]>
                     </ReportItem>
                 </For>
                 <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px">
@@ -742,7 +762,25 @@
                         columnDefs: [
                            {type: 'natural', targets: 0}
                         ],
-                        iDisplayLength: -1
+                        iDisplayLength: -1,
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            {
+                                extend: 'excel',
+                                text: 'Excel',
+                                exportOptions: {
+                                    format: {
+                                        body: function (html, row, col, node) {
+                                            var html = $("<div>" + html + "</div>");
+                                            if($("select", html).length > 0){
+                                                $("select", html).remove();
+                                            }
+                                            return $(html).text().trim();
+                                        }
+                                    }
+                                }
+                            }
+                        ]
                     });
                     
                     $('select').change(function(){
@@ -757,7 +795,7 @@
                             $(this).closest("td").css("background-color", "");
                         }
                     });
-                    $('select').change();
+                    $('table select').change();
                     
                     $("#tabs").tabs();
                     $('#tabs').bind('tabsselect', function(event, ui) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Emerging Entrepreneur Award (2022)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2022" ajax="true" disabled="true">
+<Report name="AGE-WELL Emerging Entrepreneur Award (2023)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2023" ajax="true" disabled="false">
     <Permissions>
         <Role role="STAFF">
             <SectionPermission id="description" permissions="rw" />
@@ -23,7 +23,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="Background Information" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2022)">
+    <ReportSection id="description" tooltip="Background Information" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2023)">
         <Static>
             <![CDATA[
                 <h3>About AGE-WELL</h3>
@@ -32,7 +32,7 @@
                 <h3>Description</h3>
                 <p>The AGE-WELL Emerging Entrepreneur Award supports the development of emerging entrepreneurs to create and grow an innovative start-up with potential social and economic impact in Canada. The innovation must address one of <a href="https://agewell-nce.ca/wp-content/uploads/2019/01/Booklet_8_Challenges_English_5_final_PROOF_rev.pdf" target="_blank">AGE-WELL’s 8 Challenge Areas</a> to shape the future of technology and aging research in Canada.</p>
                 
-                <p>This $25,000 award is designed to give a new entrepreneur the financial resources to focus on making their ideas viable and rapidly deployable in service to our stakeholders.</p>
+                <p>This $50,000 award is designed to give a new entrepreneur the financial resources to focus on making their ideas viable and rapidly deployable in service to our stakeholders.</p>
                 
                 <h3>Eligibility</h3>
                 In order to be considered for the AGE-WELL Emerging Entrepreneur Award funding applicants must:
@@ -44,7 +44,7 @@
                 </ol>
                 
                 <h3>The Awards</h3>
-                <p>$25,000 (1 year award; not renewable). Award funds will flow as salary support in compliance with AGE-WELL grant administration guidelines and practices.</p>
+                <p>$50,000 (1 year award; not renewable). Award funds will flow as salary support in compliance with AGE-WELL grant administration guidelines and practices.</p>
                 
                 <p>The Emerging Entrepreneur program will also provide recipients with additional mentorship and training from various members within the AGE-WELL network including <a href="http://agewell-nce.ca/archives/7320" target="_blank">AGE-WELL's Chief Entrepreneur and CEO of Rakuten Kobo, Michael Tamblyn</a>. Recipients will be matched to key mentors who will work with and support the funded entrepreneur in building or growing their business.</p>
                 
@@ -53,9 +53,9 @@
                 <h3>Program Requirements</h3>
                 <ul>
                     <li>Award recipients are expected to participate actively in the network, including cooperation in the publicizing of any success stories arising from this award.</li>
-                    <li>Recipients are required to complete AGE-WELL’s <a href="https://agewell-nce.ca/epic" target="_blank">Innovators of Tomorrow Certificate Program</a> within one calendar year of accepting the award (20-25 hour total commitment).</li>
+                    <li>Recipients are required to participate in and complete AGE-WELL’s Early Entrepreneur Training Program within the Award Term.</li>
                     <li>Award recipients are expected to hold, at minimum, quarterly meetings with their assigned mentors to ensure ongoing progress towards project goals.</li>
-                    <li>Recipients are required to complete a final report on outcomes and impact in June 2022.</li>
+                    <li>Recipients are required to complete a final report on outcomes and impact in November 2024.</li>
                     <li>Recipients will acknowledge the AGE-WELL Emerging Entrepreneur Award program in their presentations, publications, and other knowledge translation activities related to research conducted during their funding period.  Recipients are required to use the AGE-WELL logo on their posters and other materials related to research conducted during their funding period and cooperate in the publicising of any success stories arising from this award.</li>
                 </ul>
                 
@@ -79,9 +79,9 @@
                 
                 <h3>Important Dates</h3>
                 
-                Applications Open: 11 April, 2022<br />
-                Completed Applications Due:  16 May, 2022<br />
-                Funding Commences: June 2022
+                Applications Open:  1 September, 2023<br />
+                Completed Applications Due:  30 September, 2023<br />
+                Funding Commences:  November 2023
             ]]>
         </Static>
     </ReportSection>

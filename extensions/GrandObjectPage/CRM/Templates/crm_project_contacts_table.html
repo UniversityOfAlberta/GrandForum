@@ -7,6 +7,7 @@
             <th>Assignee</th>
             <th>Task</th>
             <th width="1%">Status</th>
+            <th width="1%">Priority</th>
             <th width="1%" style="white-space:nowrap;">Due Date</th>
         </tr>
     </thead>
@@ -47,6 +48,9 @@
                         </td>
                         <td style="white-space:nowrap;">
                             <%= task.status %><span style="display:none;"><%= task.id %></span>
+                        </td>
+                        <td style="white-space:nowrap;background: <%= CRMTask.priorityMap[task.priority] %>;">
+                            <%= task.priority %><span style="display:none;"><%= task.id %></span>
                         </td>
                         <td align="center" style="white-space:nowrap;">
                             <%= task.dueDate %><span style="display:none;"><%= task.id %></span>

@@ -81,8 +81,20 @@ class ProjectTable extends SpecialPage{
                                         columnDefs: [
                                            {type: 'natural', targets: 0}
                                         ],
-                                        buttons: [
-                                            'excel', 'pdf'
+                                        'buttons': [
+                                            {
+                                                extend: 'excel',
+                                                text: 'Excel',
+                                                exportOptions: {
+                                                    format: {
+                                                        body: function (html, row, col, node) {
+                                                            var html = $('<div>' + html + '</div>');
+                                                            $('span[style=\"display:none;\"]', html).remove();
+                                                            return $(html).text().trim();
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         ]
                                      });
         </script>");

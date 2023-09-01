@@ -14,6 +14,7 @@ CRMTaskEditView = Backbone.View.extend({
     initialize: function(){
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "change:priority", this.changePriority);
         this.selectTemplate();
     },
     
@@ -31,7 +32,7 @@ CRMTaskEditView = Backbone.View.extend({
     events: {
         "click #deleteTask": "deleteTask",
         "click #addTransaction": "addTransaction",
-        "click #transactions .delete-icon": "deleteTransaction"
+        "click #transactions .delete-icon": "deleteTransaction",
     },
     
     addTransaction: function(){
@@ -51,6 +52,10 @@ CRMTaskEditView = Backbone.View.extend({
         var id = $(el.currentTarget).attr('data-id');
         this.model.get('transactions').splice(id, 1);
         this.renderTransactions();
+    },
+    
+    changePriority: function(){
+        this.$("#priority").css('background', CRMTask.priorityMap[this.model.get('priority')]);
     },
     
     renderTransactions: function(){
@@ -75,6 +80,7 @@ CRMTaskEditView = Backbone.View.extend({
                 this.renderTransactions();
             }
         }
+        this.changePriority();
         return this.$el;
     }
 

@@ -62,13 +62,76 @@ CRMContactsTableView = Backbone.View.extend({
         if(this.groupBy != null){
             rowsGroup = [this.groupBy].concat(rowsGroup);
         }
+        this.$("table#contacts thead tr")
+            .clone(true)
+            .addClass('filters')
+            .appendTo('table#contacts thead');
         this.table = this.$("table#contacts").DataTable({
             "autoWidth": true,
             'bPaginate': false,
             'iDisplayLength': -1,
             'order': [[ 1, "asc" ]],
             'aLengthMenu': [[-1], ['All']],
-            'rowsGroup': rowsGroup
+            'rowsGroup': rowsGroup,
+            'dom': 'Blfrtip',
+            'orderCellsTop': true,
+            'buttons': [
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                    exportOptions: {
+                        format: {
+                            body: function (html, row, col, node) {
+                                var html = $("<div>" + html + "</div>");
+                                $("span", html).remove();
+                                $("br", html).remove();
+                                return $(html).text().trim().replaceAll("\n", "");
+                            }
+                        }
+                    }
+                }
+            ],
+            initComplete: function () {
+                var api = this.api();
+                // For each column
+                api
+                    .columns()
+                    .eq(0)
+                    .each(function (colIdx) {
+                        // Set the header cell to contain the input element
+                        var cell = $('.filters th').eq(
+                            $(api.column(colIdx).header()).index()
+                        );
+                        var title = $(cell).text();
+                        $(cell).html('<input type="text" placeholder="' + title + '" style="width:100%;" />');
+     
+                        // On every keypress in this input
+                        $(
+                            'input',
+                            $('.filters th').eq($(api.column(colIdx).header()).index())
+                        )
+                            .off('keyup change')
+                            .on('change', function (e) {
+                                // Get the search value
+                                $(this).attr('title', $(this).val());
+     
+                                cursorPosition = this.selectionStart;
+                                // Search the column for that value
+                                api
+                                    .column(colIdx)
+                                    .search(this.value, false, false)
+                                    .draw();
+                            })
+                            .on('keyup', function (e) {
+                                e.stopPropagation();
+     
+                                $(this).trigger('change');
+                                $(this)
+                                    .focus()[0]
+                                    .setSelectionRange(cursorPosition, cursorPosition);
+                            });
+                    });
+            }
         });
         table = this.table;
         this.table.order(order);
@@ -86,6 +149,10 @@ CRMContactsTableView = Backbone.View.extend({
         this.$('#contacts_wrapper').prepend("<div id='contacts_length' class='dataTables_length'></div>");
 	    this.$("#contacts_length").empty();
 	    this.$("#contacts_length").append(this.$("#addContact").detach());
+	    this.$("#contacts_length").append(this.$(".dt-buttons button").detach());
+	    this.$(".dt-buttons").remove();
+	    
+	    this.$("#addContact").css("margin-right", "5px");
     },
     
     render: function(){

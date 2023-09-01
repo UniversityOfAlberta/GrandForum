@@ -23,6 +23,7 @@ class CRMTaskAPI extends RESTAPI {
             $task->task = $this->POST('task');
             $task->dueDate = $this->POST('dueDate');
             $task->transactions = $this->POST('transactions');
+            $task->priority = $this->POST('priority');
             $task->status = $this->POST('status');
             $task->create();
             return $task->toJSON();
@@ -39,6 +40,7 @@ class CRMTaskAPI extends RESTAPI {
             $task->task = $this->POST('task');
             $task->dueDate = $this->POST('dueDate');
             $task->transactions = $this->POST('transactions');
+            $task->priority = $this->POST('priority');
             $task->status = $this->POST('status');
             $task->update();
             return $task->toJSON();
