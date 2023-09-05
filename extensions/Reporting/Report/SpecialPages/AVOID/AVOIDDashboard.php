@@ -410,7 +410,7 @@ class AVOIDDashboard extends SpecialPage {
         if($reportType == "RP_AVOID_TWELVEMO" && AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")){
             $pastReports .= "<a class='viewReport' data-href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview&reportType=RP_AVOID_SIXMO' href='#'>Six Month Report</a><br />";
         }
-        if($reportType == "RP_AVOID_SIXMO" && AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID")){
+        if(($reportType == "RP_AVOID_SIXMO" || $reportType == "RP_AVOID_TWELVEMO") && AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID")){
             $pastReports .= "<a class='viewReport' data-href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview&reportType=RP_AVOID' href='#'>First Report</a><br />";
         }
         if($pastReports){
