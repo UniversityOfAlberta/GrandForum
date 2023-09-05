@@ -262,7 +262,7 @@ HTML.Pages = function(view, attr, options){
 }
 
 HTML.DatePicker = function(view, attr, options){
-    options.style = (options.style != undefined) ? 'width:72px;' + options.style : 'width:72px;';
+    options.style = (options.style != undefined) ? 'width:6em;' + options.style : 'width:6em;';
     var id = _.uniqueId(HTML.Name(attr) + "_");
     var el = HTML.Element("input", "datepicker", options);
     el.setAttribute('name', HTML.Name(attr));
