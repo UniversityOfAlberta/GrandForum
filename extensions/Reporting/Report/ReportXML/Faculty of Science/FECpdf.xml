@@ -524,7 +524,7 @@
             </ReportItem>
         </If>
         
-        <ReportItem id="edibookmark" type="BookmarkReportItem" title="EDI and Indigenous Initiatives">
+        <!--ReportItem id="edibookmark" type="BookmarkReportItem" title="EDI and Indigenous Initiatives">
             <![CDATA[
                 <h2>EDI and Indigenous Initiatives</h2>
             ]]>
@@ -533,7 +533,7 @@
             <![CDATA[
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
         
         <ReportItem id="committeesbookmark" type="BookmarkReportItem" title="Additional Info">
             <![CDATA[

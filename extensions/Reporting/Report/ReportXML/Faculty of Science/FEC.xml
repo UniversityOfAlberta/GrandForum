@@ -922,14 +922,14 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="edi" tooltip="EDI and Indigenous Initiatives" name="EDI &amp; II" title="EDI and Indigenous Initiatives" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+    <!--ReportSection id="edi" tooltip="EDI and Indigenous Initiatives" name="EDI &amp; II" title="EDI and Indigenous Initiatives" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="edi" type="Textarea" blobItem="EDI" optional="true" encrypt="true">
             <![CDATA[
                 <p>The Faculty of Science recognizes the efforts and contributions of our faculty, FSOs and ATS members to EDI and Indigenous Initiatives in their teaching, research, and service. In this section of your annual report, please describe any of these activities that you have undertaken during this past reporting year.</p>
                 {$item}
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info &lt;span class='clicktooltip' title='Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.&lt;br />
 &lt;br />
 (Include publications from Graduate Student theses (not co-authored), details of special interest on invited presentations or non-refereed publications, important information about refereed publication venues, distinctions, projects initiated, special details about grants and contracts, unpaid consulting, etc.)'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
