@@ -445,7 +445,7 @@ class FrailtyReport extends SpecialPage {
         $education = "";
         $programs = "";
         $community = "";
-        if($scores[$key] > 0){
+        if(@$scores[$key] > 0){
             $need = "<en>Y</en><fr>O</fr>";
             foreach($row['education'] as $k => $e){
                 if(is_array($e)){
@@ -498,7 +498,8 @@ class FrailtyReport extends SpecialPage {
         $dir = dirname(__FILE__) . '/';
         require_once($dir . '/../../../../../Classes/SmartDomDocument/SmartDomDocument.php');
         $api = new UserFrailtyIndexAPI();
-        $scores = $api->getFrailtyScore($person->getId());
+        $reportType = (isset($_GET['reportType'])) ? $_GET['reportType'] : "RP_AVOID";
+        $scores = $api->getFrailtyScore($person->getId(), $reportType);
 
         $margins = array('top'     => 1,
                          'right'   => 1,
@@ -770,11 +771,11 @@ class FrailtyReport extends SpecialPage {
                             <div class='pdfnodisplay' style='margin-top:1em;'>
                                 <en>
                                     Your recommendations with direct links to resources are below.<br />
-                                    You can also print your personal report <a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'><b><u>here</u></b></a>.
+                                    You can also print your personal report <a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?reportType={$reportType}' target='_blank'><b><u>here</u></b></a>.
                                 </en>
                                 <fr>
                                     Vos recommandations et les liens qui mènent vers les ressources se trouvent ci-dessous.<br />
-                                    Vous pouvez également faire imprimer votre rapport <a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'><b><u>ici</u></b></a>.
+                                    Vous pouvez également faire imprimer votre rapport <a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?reportType={$reportType}' target='_blank'><b><u>ici</u></b></a>.
                                 </fr>
                             </div>
                         </div>

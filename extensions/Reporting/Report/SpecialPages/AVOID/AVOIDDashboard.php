@@ -253,8 +253,17 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("<div class='modules'>");
         
         // Frailty Status
+        if(AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_TWELVEMO")){
+            $reportType = "RP_AVOID_TWELVEMO";
+        }
+        else if(AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")){
+            $reportType = "RP_AVOID_SIXMO";
+        }
+        else {
+            $reportType = "RP_AVOID";
+        }
         $api = new UserFrailtyIndexAPI();
-        $scores = $api->getFrailtyScore($me->getId());
+        $scores = $api->getFrailtyScore($me->getId(), $reportType);
         $score = $scores["Total"];
         $label = $scores["Label"];
         $frailty = "";
@@ -277,6 +286,9 @@ class AVOIDDashboard extends SpecialPage {
             $frailty = "<en>Based on your answers in the assessment, you have a <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.  Find out why below.</en>
                         <fr>Sur la base de vos réponses à l’évaluation, vous avez un <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</fr>";
         }
+        
+        $progressReport = (AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO") ||
+                           AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? "<br /><a id='viewProgressReport' href='#'>My Lifestyle Changes</a>" : "";
 
         $assessmentReport = "";
         if(AVOIDDashboard::isPersonAssessmentDone($me->getId())){
@@ -295,10 +307,12 @@ class AVOIDDashboard extends SpecialPage {
                                 </p>
                                 <a class='viewReport' href='#'><img src='{$wgServer}{$wgScriptPath}/skins/report.png' style='height:3.5em;max-height:100px;margin-right:0.5em;' /></a>
                                 <div style='display:inline-block;vertical-align:middle;'>
-                                    <a class='viewReport' href='#'>
-                                        <en>My Personal Report and Recommendations</en>
+                                    <a class='viewReport' data-href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview&reportType={$reportType}' href='#'>
+                                        <en>My Current Recommendations</en>
                                         <fr>Mon rapport personnel et mes recommandations</fr>
-                                    </a>{$assessmentReport}
+                                    </a>
+                                    {$progressReport}
+                                    {$assessmentReport}
                                 </div>
                                 <p style='margin-bottom:0.5em;'>
                                     <a href='{$wgServer}{$wgScriptPath}/EducationModules/What is Frailty-".strtoupper($wgLang->getCode()).".pdf' target='_blank'>
@@ -384,17 +398,24 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</div>");
         
         // Progress
-        $progressReport = (AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO") ||
-                           AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? "<a id='viewProgressReport' href='#'>Progress Report</a>" : "";
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>
                             <en>My AVOID Progress</en>
                             <fr>Mon progrès</fr>
                          </h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>");
-        if($progressReport != ""){
-            $wgOut->addHTML("<h3 style='margin-top:0;margin-bottom:0;'><en>Progress Reports</en><fr>Rapports d'étape</fr></h3>
-                             {$progressReport}<br /><br />");
+
+        // Past Reports
+        $pastReports = "";
+        if($reportType == "RP_AVOID_TWELVEMO" && AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")){
+            $pastReports .= "<a class='viewReport' data-href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview&reportType=RP_AVOID_SIXMO' href='#'>Six Month Report</a><br />";
+        }
+        if($reportType == "RP_AVOID_SIXMO" && AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID")){
+            $pastReports .= "<a class='viewReport' data-href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview&reportType=RP_AVOID' href='#'>First Report</a><br />";
+        }
+        if($pastReports){
+            $wgOut->addHTML("<h3 style='margin-top:0;margin-bottom:0;'><en>Past Reports</en><fr>Rapports d'étape</fr></h3>
+                             {$pastReports}<br />");
         }
         $wgOut->addHTML("   <div id='pastActionPlans'></div>
                         </div>
@@ -402,7 +423,7 @@ class AVOIDDashboard extends SpecialPage {
         
         $wgOut->addHTML("</div>
         <div title='Frailty Report' style='display:none; overflow: hidden; padding:0 !important; background: white;' id='reportDialog'>
-            <iframe id='frailtyFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' data-src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview'></iframe>
+            <iframe id='frailtyFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' data-src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview&reportType={$reportType}'></iframe>
         </div>
         <div title='Progress Report' style='display:none; overflow: hidden; padding:0 !important; background: white;' id='progressReportDialog'>
             <iframe id='progressFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' data-src='{$wgServer}{$wgScriptPath}/index.php/Special:ProgressReport?preview'></iframe>
@@ -424,6 +445,9 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             $('.viewReport').click(function(){
+                var href = $(this).attr('data-href');
+                $('#frailtyFrame').attr('data-src', href);
+                $('#frailtyFrame')[0].src = href;
                 var reportClick = new DataCollection();
                     reportClick.init(me.get('id'), 'Special:FrailtyReport');
                     reportClick.increment('hits');
