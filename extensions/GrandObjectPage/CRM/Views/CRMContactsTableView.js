@@ -17,6 +17,7 @@ CRMContactsTableView = Backbone.View.extend({
         "click #addContact": "addContact",
         "click .edit-icon": "editContact",
         "click .delete-icon": "deleteContact",
+        "change .task-priority": "changePriority",
     },
     
     addContact: function(e){
@@ -45,6 +46,20 @@ CRMContactsTableView = Backbone.View.extend({
         var id = $(e.currentTarget).attr("data-id");
         this.deleteDialog.model = this.model.get(id);
         this.deleteDialog.dialog('open');
+    },
+    
+    changePriority: function(e){
+        $(e.currentTarget).prop('disabled', true);
+        var id = $(e.currentTarget).attr("data-id");
+        var priority = $("option:selected", e.currentTarget).val();
+        var model = new CRMTask({id: id});
+        model.fetch().then(function(){
+            model.set('priority', priority);
+            model.save().then(function(){
+                $(e.currentTarget).prop('disabled', false);
+            });
+        });
+        $(e.currentTarget).closest("td").css("background", CRMTask.priorityMap[priority]);
     },
     
     initTable: function(){
@@ -85,6 +100,9 @@ CRMContactsTableView = Backbone.View.extend({
                                 var html = $("<div>" + html + "</div>");
                                 $("span", html).remove();
                                 $("br", html).remove();
+                                if($("select", html).length > 0){
+                                    $(html).text($("select option:selected", html).val());
+                                }
                                 return $(html).text().trim().replaceAll("\n", "");
                             }
                         }
