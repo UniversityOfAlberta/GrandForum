@@ -270,113 +270,124 @@
         "videos": 12,
         "questions": 4,
         "tags": ["diet and nutrition module"],
-        "resources": [
-            {
-                "file": "20. Chili Recipe with Hal _ Joanne.mp4",
-                "title": "Chili Recipe Video with Hal & Joanne",
-                "tags": [ "protein" ]
-            },
-            {
-                "file": "20. Protein with Hal _ Joanne.mp4",
-                "title": "The Importance of Protein Video with Hal & Joanne",
-                "tags": [ "protein" ]
-            },
-            {
-                "file": "22. AVOID Frailty Grocery List.pdf",
-                "title": "Grocery Shopping List",
-                "tags": [ "diet and nutrition", "protein", "calcium", "vitamin d" ]
-            },
-            {
-                "file": "Nutrition & Aging Q&A.mp4",
-                "title": "Nutrition and Aging Q&A Video",
-                "tags": [ "diet and nutrition" ]
-            },
-            {
-                "file": "A Guide to Healthy Eating for Older Adults.pdf",
-                "title": "A Guide to Healthy Eating for Older Adults",
-                "tags": [ ]
-            },
-            {
-                "file": "Canada_s Food Guide snap shot image.pdf",
-                "title": "Canada's Food Guide snap shot image",
-                "tags": [ ]
-            },
-            {
-                "file": "Canadian Celiac gluten free diet booklet.pdf",
-                "title": "Canadian Celiac gluten free diet booklet",
-                "tags": [ ]
-            },
-            {
-                "file": "Diet_Nutrition Vid.mp4",
-                "title": "Why Protein Video",
-                "tags": ["diet and nutrition vid"]
-            },
-            {
-                "file": "https://youtu.be/8pICPPnDVc0",
-                "title": "Eating Well, Aging Well: A Community Conversation",
-                "tags": [ ]
-            },
-            {
-                "file": "Gluten-Free Lemon Blueberry Muffins Recipe.pdf",
-                "title": "Gluten-Free Lemon Blueberry Muffins Recipe",
-                "tags": [ ]
-            },
-            {
-                "file": "Healthy Eating, Healthy Ageing_Slides.pdf",
-                "title": "Healthy Eating, Healthy Aging",
-                "tags": [ ]
-            },
-            {
-                "file": "Hearty Chicken Noodle Soup Recipe.pdf",
-                "title": "Hearty Chicken Noodle Soup Recipe",
-                "tags": [ ]
-            },
-            {
-                "file": "how-to-manage-your-cholesterol-en.pdf",
-                "title": "How to manage your Cholesterol",
-                "tags": [ ]
-            },
-            {
-                "file": "Meet Your Iron Needs on a Gluten-Free Diet.pdf",
-                "title": "Meet Your Iron Needs on a Gluten-Free Diet",
-                "tags": [ ]
-            },
-            {
-                "file": "Open-Faced Egg Salad Sandwiches.pdf",
-                "title": "Open-Faced Egg Salad Sandwiches",
-                "tags": [ ]
-            },
-            {
-                "file": "Protein Foods for Older Adults.pdf",
-                "title": "Protein Foods for Older Adults",
-                "tags": [ ]
-            },
-            {
-                "file": "Protein serves and nutrition risk handout-2.pdf",
-                "title": "Protein serves and nutrition risk handout",
-                "tags": [ ] 
-            },
-            {
-                "file": "Tofu and Vegetable Stir Fry Recipe.pdf",
-                "title": "Tofu and Vegetable Stir Fry Recipe",
-                "tags": [ ]
-            },
-            {
-                "file": "Vegetarian Tacos.pdf",
-                "title": "Vegetarian Tacos",
-                "tags": [ ]
-            },
-            {
-                "file": "vitamind_patient_guide.pdf",
-                "title": "Vitamin D Guide",
-                "tags": [ ]
-            },
-            {
-                "file": "https://healthconnectontario.health.gov.on.ca/static/guest/related-articles/hcns-nutrition-program",
-                "title": "Speak to a Registered Dietitian",
-                "tags": []
-            }
-        ],
+        "resources": {
+            "Recipes" : [
+                {
+                    "file": "20. Chili Recipe with Hal _ Joanne.mp4",
+                    "title": "Chili Recipe Video with Hal & Joanne",
+                    "tags": [ "protein" ]
+                },
+                {
+                    "file": "Hearty Chicken Noodle Soup Recipe.pdf",
+                    "title": "Hearty Chicken Noodle Soup Recipe",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Open-Faced Egg Salad Sandwiches.pdf",
+                    "title": "Open-Faced Egg Salad Sandwiches",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Tofu and Vegetable Stir Fry Recipe.pdf",
+                    "title": "Tofu and Vegetable Stir Fry Recipe",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Vegetarian Tacos.pdf",
+                    "title": "Vegetarian Tacos",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Gluten-Free Lemon Blueberry Muffins Recipe.pdf",
+                    "title": "Gluten-Free Lemon Blueberry Muffins Recipe",
+                    "tags": [ ]
+                }
+            ],
+            "Nutrition Recommendations": [
+                {
+                    "file": "20. Protein with Hal _ Joanne.mp4",
+                    "title": "The Importance of Protein Video with Hal & Joanne",
+                    "tags": [ "protein" ]
+                },
+                {
+                    "file": "Nutrition & Aging Q&A.mp4",
+                    "title": "Nutrition and Aging Q&A Video",
+                    "tags": [ "diet and nutrition" ]
+                },
+                {
+                    "file": "Canada_s Food Guide snap shot image.pdf",
+                    "title": "Canada's Food Guide snap shot image",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Diet_Nutrition Vid.mp4",
+                    "title": "Why Protein Video",
+                    "tags": ["diet and nutrition vid"]
+                },
+                {
+                    "file": "https://youtu.be/8pICPPnDVc0",
+                    "title": "Eating Well, Aging Well: A Community Conversation",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Healthy Eating, Healthy Ageing_Slides.pdf",
+                    "title": "Healthy Eating, Healthy Aging",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Protein Foods for Older Adults.pdf",
+                    "title": "Protein Foods for Older Adults",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Protein serves and nutrition risk handout-2.pdf",
+                    "title": "Protein serves and nutrition risk handout",
+                    "tags": [ ] 
+                },
+                {
+                    "file": "vitamind_patient_guide.pdf",
+                    "title": "Vitamin D Guide",
+                    "tags": [ ]
+                }
+            ],
+            "Food Accessibility": [
+                
+            ],
+            "Healthy Eating Routines": [
+                {
+                    "file": "22. AVOID Frailty Grocery List.pdf",
+                    "title": "Grocery Shopping List",
+                    "tags": [ "diet and nutrition", "protein", "calcium", "vitamin d" ]
+                },
+                {
+                    "file": "A Guide to Healthy Eating for Older Adults.pdf",
+                    "title": "A Guide to Healthy Eating for Older Adults",
+                    "tags": [ ]
+                },
+                {
+                    "file": "https://healthconnectontario.health.gov.on.ca/static/guest/related-articles/hcns-nutrition-program",
+                    "title": "Speak to a Registered Dietitian",
+                    "tags": []
+                }
+            ],
+            "Dietary Restrictions": [
+                {
+                    "file": "Canadian Celiac gluten free diet booklet.pdf",
+                    "title": "Canadian Celiac gluten free diet booklet",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Meet Your Iron Needs on a Gluten-Free Diet.pdf",
+                    "title": "Meet Your Iron Needs on a Gluten-Free Diet",
+                    "tags": [ ]
+                },
+                {
+                    "file": "how-to-manage-your-cholesterol-en.pdf",
+                    "title": "How to manage your Cholesterol",
+                    "tags": [ ]
+                }
+            ]
+        },
         "resourcesFr": [
             {
                 "file": "Coup d_oeil sur l_alimentation pour les personnes vivant avec le diabète.pdf",

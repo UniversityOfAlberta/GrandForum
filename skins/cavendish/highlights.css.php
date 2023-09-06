@@ -194,6 +194,16 @@ input:focus + .toggle {
     background-image: url(../smoothness/images/ui-icons_222222_256x240.png);
 }
 
+.toggleHeader, .ui-accordion-header {
+    background: #cfcfcf !important;
+    padding-left: 35px !important;
+    border: none !important;
+}
+
+.toggleHeader, .ui-accordion-header:hover {
+    background: #bfbfbf !important;
+}
+
 /* Icons */
 .edit-icon {
     cursor: pointer;

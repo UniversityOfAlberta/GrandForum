@@ -105,13 +105,30 @@ class EducationResources extends SpecialPage {
             $wgOut->addHTML("<div class='modules module-3cols-outer program-body' style='width: 60%;'>
                 <div class='program-box' style='width:100%;'><en>Resource Library</en><fr>Ressources externes</fr></div>");
                 $resources = ($wgLang->getCode() == "en") ? $category->resources : $category->resourcesFr;
-                if(count($resources) > 0){
-                    $wgOut->addHTML("<ul style='margin-top: 0;'>");
-                    foreach($resources as $resource){
-                        $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
-                        $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
+                if(@count($resources) > 0){
+                    if(is_object($resources)){
+                        $wgOut->addHTML("<div class='accordion' style='width: 100%;'>");
+                        foreach($resources as $subCategory => $subResources){
+                            if(count($subResources) > 0){
+                                $wgOut->addHTML("<h4 style='margin-top: 0; padding-top: 0;'>{$subCategory}</h4>");
+                                $wgOut->addHTML("<div style='padding:1em !important;'><ul style='margin-top: 0;'>");
+                                foreach($subResources as $resource){
+                                    $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
+                                    $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
+                                }
+                                $wgOut->addHTML("</ul></div>");
+                            }
+                        }
+                        $wgOut->addHTML("</div>");
                     }
-                    $wgOut->addHTML("</ul>");
+                    else{
+                        $wgOut->addHTML("<ul style='margin-top: 0;'>");
+                        foreach($resources as $resource){
+                            $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
+                            $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
+                        }
+                        $wgOut->addHTML("</ul>");
+                    }
                 }
                 else{
                     $wgOut->addHTML("<p style='margin-top: 0;'>
@@ -134,6 +151,11 @@ class EducationResources extends SpecialPage {
                 
                 var scrollTop = $('#resources' + id).position().top + $('#bodyContent').scrollTop();
                 $('#bodyContent').scrollTop(scrollTop);
+                $('.accordion:visible').accordion({
+                    autoHeight: false,
+                    collapsible: true,
+                    active: false
+                });
             });
             
             $('a.resource').click(function(){
