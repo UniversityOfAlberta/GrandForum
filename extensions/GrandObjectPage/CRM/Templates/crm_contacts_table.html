@@ -24,15 +24,15 @@
         </tr>
     </thead>
     <tbody>
-        <% this.model.each(function(contact){
+        <% this.model.each(function(contact, i){
             if(contact.get('opportunities').length == 0){
                 contact.get('opportunities').push(new CRMOpportunity().toJSON());
             }
-            _.each(contact.get('opportunities'), function(opportunity){
+            _.each(contact.get('opportunities'), function(opportunity, j){
                 if(opportunity.tasks == undefined || opportunity.tasks.length == 0){
                     opportunity.tasks = [new CRMTask().toJSON()];
                 }
-                _.each(opportunity.tasks, function(task){ %>
+                _.each(opportunity.tasks, function(task, k){ %>
                     <tr>
                         <% if(isAllowedToCreateCRMContacts){ %>
                             <td align="center" style="white-space:nowrap;">
@@ -65,14 +65,23 @@
                             <%= task.status %><span style="display:none;"><%= task.id %></span>
                         </td>
                         <td style="white-space:nowrap;background: <%= CRMTask.priorityMap[task.priority] %>;">
-                            <%= task.priority %><span style="display:none;"><%= task.id %></span>
+                            <% if(task.id != null){ %>
+                                <select class="task-priority" data-id="<%= task.id %>">
+                                    <% _.each(_.keys(CRMTask.priorityMap), function(option){ %>
+                                        <option <% if(option == task.priority){ %>selected<% } %> >
+                                            <%= option %>
+                                        </option>
+                                    <% }) %>
+                                </select>
+                            <% } %>
+                            <span style="display:none;"><%= task.priority %> <%= task.id %></span>
                         </td>
                         <td align="center" style="white-space:nowrap;">
                             <%= task.dueDate %><span style="display:none;"><%= task.id %></span>
                         </td>
                     </tr>
-        <%      })
-            })
-          }) %>
+        <%      }.bind(this))
+            }.bind(this))
+          }.bind(this)) %>
     </tbody>
 </table>
