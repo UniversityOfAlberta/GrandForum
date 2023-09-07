@@ -288,7 +288,7 @@ class AVOIDDashboard extends SpecialPage {
         }
         
         $progressReport = (AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO") ||
-                           AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? "<br /><a id='viewProgressReport' href='#'>My Lifestyle Changes</a>" : "";
+                           AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? "<br /><a id='viewProgressReport' href='#'>My Recent Mini Assessment Results</a>" : "";
 
         $assessmentReport = "";
         if(AVOIDDashboard::isPersonAssessmentDone($me->getId())){
@@ -308,7 +308,7 @@ class AVOIDDashboard extends SpecialPage {
                                 <a class='viewReport' href='#'><img src='{$wgServer}{$wgScriptPath}/skins/report.png' style='height:3.5em;max-height:100px;margin-right:0.5em;' /></a>
                                 <div style='display:inline-block;vertical-align:middle;'>
                                     <a class='viewReport' data-href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview&reportType={$reportType}' href='#'>
-                                        <en>My Current Recommendations</en>
+                                        <en>My Recent Full Assessment Results</en>
                                         <fr>Mon rapport personnel et mes recommandations</fr>
                                     </a>
                                     {$progressReport}
