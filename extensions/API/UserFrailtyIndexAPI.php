@@ -4,7 +4,7 @@ class UserFrailtyIndexAPI extends API{
 
     static $checkanswers = array(
         "Physical Activity" => array(
-            array( //Question: During the last 7 days, how much time did you spend sitting during the day?
+            "behave1_avoid" => array( //Question: During the last 7 days, how much time did you spend sitting during the day?
                 "ReportSection"=>"behaviouralassess", 
                 "blobItem"=>"behave1_avoid",
                 "answer_scores"=> array(
@@ -13,7 +13,7 @@ class UserFrailtyIndexAPI extends API{
                     "All day"=>1,
                 )
             ),
-            array( //Question: During the last 7 days, on how many days did you walk for at least 10 minutes at a time?
+            "behave0_avoid" => array( //Question: During the last 7 days, on how many days did you walk for at least 10 minutes at a time?
                 "ReportSection"=>"behaviouralassess",
                 "blobItem"=>"behave0_avoid",
                 "answer_scores"=> array(
@@ -22,7 +22,7 @@ class UserFrailtyIndexAPI extends API{
                     "Rarely or not at all"=>1,
                 )
             ),
-            array( //During the last 7 days, on how many days did you do moderate physical ... or other fitness activities?
+            "behave2_avoid" => array( //During the last 7 days, on how many days did you do moderate physical ... or other fitness activities?
                 "ReportSection"=>"behaviouralassess",
                 "blobItem"=>"behave2_avoid",
                 "answer_scores"=> array(
@@ -33,7 +33,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Multiple Medications" => array(
-            array( //Question: How many prescription medications do you take?
+            "meds1_avoid" => array( //Question: How many prescription medications do you take?
                 "ReportSection"=>"behaviouralassess",
                 "blobItem"=>"meds1_avoid",
                 "answer_scores"=> array(
@@ -43,7 +43,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Fatigue" => array(
-            array( //Question: During the past week, how often have you felt that everything was an effort or you could not get going?
+            "symptoms_avoid1" => array( //Question: During the past week, how often have you felt that everything was an effort or you could not get going?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid1",
                 "answer_scores"=> array(
@@ -52,7 +52,7 @@ class UserFrailtyIndexAPI extends API{
                     "Most of the time"=>1,
                 )
             ),
-            array( //Question: During your waking time, how often do you feel tired or fatigued?
+            "symptoms_avoid2" => array( //Question: During your waking time, how often do you feel tired or fatigued?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid2",
                 "answer_scores"=> array(
@@ -61,7 +61,7 @@ class UserFrailtyIndexAPI extends API{
                     "Most of the time"=>1,
                 )
             ),
-            array( //Question: During the past month how would you rate your sleep quality overall?
+            "symptoms_avoid9" => array( //Question: During the past month how would you rate your sleep quality overall?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid9",
                 "answer_scores"=> array(
@@ -71,7 +71,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Mental Health" => array(
-            array( //Question: Over the past two weeks have you been bothered by not being able to stop or control worrying?
+            "symptoms_avoid3" => array( //Question: Over the past two weeks have you been bothered by not being able to stop or control worrying?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid3",
                 "answer_scores"=> array(
@@ -80,7 +80,7 @@ class UserFrailtyIndexAPI extends API{
                     "More days than not"=>1,
                 )
             ),
-            array( //Question: Over the past two weeks have you been bothered by little interest or pleasure in doing things?
+            "symptoms_avoid4" => array( //Question: Over the past two weeks have you been bothered by little interest or pleasure in doing things?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid4",
                 "answer_scores"=> array(
@@ -91,7 +91,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Memory" => array(
-            array( //Question: How would you rate your memory overall?
+            "symptoms_avoid5" => array( //Question: How would you rate your memory overall?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid5",
                 "answer_scores"=> array(
@@ -102,7 +102,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Falls and Balance" => array(
-            array( //Question: How many falls (including slips, trips, and falls to the ground) did you have in the last year?
+            "symptoms_avoid6" => array( //Question: How many falls (including slips, trips, and falls to the ground) did you have in the last year?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid6",
                 "answer_scores"=> array(
@@ -111,7 +111,7 @@ class UserFrailtyIndexAPI extends API{
                     "2 or more falls"=> 1,
                 )
             ),
-            array( //Question: Do you have any problems keeping your balance?
+            "symptoms_avoid21" => array( //Question: Do you have any problems keeping your balance?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid21",
                 "answer_scores"=> array(
@@ -121,7 +121,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Walking Speed" => array(
-            array( //Question: Which of the following best describes your walking speed?
+            "symptoms_avoid7" => array( //Question: Which of the following best describes your walking speed?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid7",
                 "answer_scores"=> array(
@@ -130,7 +130,7 @@ class UserFrailtyIndexAPI extends API{
                     "Very slow/unable to walk"=>1,
                 )
             ),
-            array( //Question: Is the distance that you are able to walk limited by your health?
+            "SYMPTOMS8SPECIFY" => array( //Question: Is the distance that you are able to walk limited by your health?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"SYMPTOMS8SPECIFY",
                 "answer_scores"=> array(
@@ -142,7 +142,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Nutritional Status" => array(
-            array( //Question: Has your food intake decreased over the last 3 months due to loss of appetite, digestive problems, chewing or swallowing difficulties?
+            "symptoms_avoid10" => array( //Question: Has your food intake decreased over the last 3 months due to loss of appetite, digestive problems, chewing or swallowing difficulties?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid10",
                 "answer_scores"=> array(
@@ -150,7 +150,7 @@ class UserFrailtyIndexAPI extends API{
                     "Yes"=>1,
                 )
             ),
-            array( //Question: Have you lost more than 3kg in weight over the last 3 months?
+            "symptoms_avoid11" => array( //Question: Have you lost more than 3kg in weight over the last 3 months?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid11",
                 "answer_scores"=> array(
@@ -161,7 +161,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Oral Health" => array(
-            array( //Question: Have you had any pain in your mouth while chewing?
+            "symptoms_avoid12" => array( //Question: Have you had any pain in your mouth while chewing?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid12",
                 "answer_scores"=> array(
@@ -169,7 +169,7 @@ class UserFrailtyIndexAPI extends API{
                     "Yes"=>1,
                 )
             ),
-            array( //Question: Have you had to interrupt meals because of problems with poorly fitting dentures, not enough teeth, or a dry mouth?
+            "symptoms_avoid13" => array( //Question: Have you had to interrupt meals because of problems with poorly fitting dentures, not enough teeth, or a dry mouth?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid13",
                 "answer_scores"=> array(
@@ -179,7 +179,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Pain" => array(
-            array( //Question: How much bodily pain have you had during the past four weeks?
+            "symptoms_avoid14" => array( //Question: How much bodily pain have you had during the past four weeks?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid14",
                 "answer_scores"=> array(
@@ -188,7 +188,7 @@ class UserFrailtyIndexAPI extends API{
                     "Severe"=>1,
                 )
             ),
-            array( //Question: Do you have pain in your feet:
+            "symptoms_avoid15" => array( //Question: Do you have pain in your feet:
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid15",
                 "answer_scores"=> array(
@@ -199,7 +199,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Strength" => array(
-            array( //Question: Do you experience problems in your daily life due to weakness in your hands?
+            "symptoms_avoid16" => array( //Question: Do you experience problems in your daily life due to weakness in your hands?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid16",
                 "answer_scores"=> array(
@@ -208,7 +208,7 @@ class UserFrailtyIndexAPI extends API{
                     "Yes"=>1,
                 )
             ),
-            array( //Question: Do you experience problems in your daily life due to weakness in your legs or feet?
+            "symptoms_avoid17" => array( //Question: Do you experience problems in your daily life due to weakness in your legs or feet?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid17",
                 "answer_scores"=> array(
@@ -219,7 +219,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Urinary Continence" => array(
-            array( //Question: During the last 3 months, have you leaked urine (even a small amount)? 
+            "symptoms_avoid18" => array( //Question: During the last 3 months, have you leaked urine (even a small amount)? 
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid18",
                 "answer_scores"=> array(
@@ -229,7 +229,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Sensory: Hearing and Vision" => array(
-            array( //Question: In the past month, how much has your eyesight interfered with your life in general?
+            "symptoms_avoid19" => array( //Question: In the past month, how much has your eyesight interfered with your life in general?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid19",
                 "answer_scores"=> array(
@@ -238,7 +238,7 @@ class UserFrailtyIndexAPI extends API{
                     "A fair amount"=>1,
                 )
             ),
-            array( //Question: In the past month, how much has your hearing interfered with your life in general?
+            "symptoms_avoid20" => array( //Question: In the past month, how much has your hearing interfered with your life in general?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid20",
                 "answer_scores"=> array(

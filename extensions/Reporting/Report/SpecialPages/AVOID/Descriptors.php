@@ -24,6 +24,28 @@ class Descriptors extends SpecialPage {
         return $person->isRoleAtLeast(STAFF);
     }
     
+    function compareProgress(&$aggregates, $val1, $rp, $blobItem, $category, $person){
+        if(@UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] == 
+           min(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"])){
+            // Already max, exclude from dataset
+            return $val1;
+        }
+        $val2 = $this->getBlobData("behaviouralassess", $blobItem, $person, YEAR, $rp);
+        if($val2 != ""){
+            if(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] > 
+               UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val2]){
+                // Improvement
+                $aggregates[] = 1;
+            }
+            else{
+                // No Improvement
+                $aggregates[] = 0;
+            }
+            $val1 = $val2;
+        }
+        return $val1;
+    }
+    
     function execute($par){
         global $wgServer, $wgScriptPath, $wgOut, $EQ5D5L;
         $me = Person::newFromWgUser();
@@ -81,6 +103,18 @@ class Descriptors extends SpecialPage {
         $incomes = array(0,0,0,0,0,0,0);
         $livings = array(0,0,0,0);
         $educations = array(0,0,0,0,0,0,0);
+        
+        $aggregates = array(
+            array(array(),array(),array(),array()),
+            array(array(),array(),array(),array()),
+            array(array(),array(),array(),array()),
+            array(array(),array(),array(),array()),
+            array(array(),array(),array(),array()),
+            array(array(),array(),array(),array()),
+            array(array(),array(),array(),array()),
+            array(array(),array(),array(),array()),
+            array(array(),array(),array(),array())
+        );
         
         foreach($people as $person){
             if(!$person->isRoleAtMost(CI)){
@@ -343,9 +377,27 @@ class Descriptors extends SpecialPage {
                 else if($selfHealth > 75 && $selfHealth <= 100){
                     $srh6[3]++;
                 }
-                
                 $n6Month++;
             }
+            
+            // Aggregate Stats
+            $sit = $this->getBlobData("behaviouralassess", "behave1_avoid", $person, YEAR, "RP_AVOID"); // Some of the day|Most of the day|All day
+            $sit = $this->compareProgress($aggregates[0][0], $sit, "RP_AVOID_THREEMO", "behave1_avoid", "Physical Activity", $person);
+            $sit = $this->compareProgress($aggregates[0][1], $sit, "RP_AVOID_SIXMO", "behave1_avoid", "Physical Activity", $person);
+            $sit = $this->compareProgress($aggregates[0][2], $sit, "RP_AVOID_NINEMO", "behave1_avoid", "Physical Activity", $person);
+            $sit = $this->compareProgress($aggregates[0][3], $sit, "RP_AVOID_TWELVEMO", "behave1_avoid", "Physical Activity", $person);
+            
+            $walk = $this->getBlobData("behaviouralassess", "behave0_avoid", $person, YEAR, "RP_AVOID"); // Most days (5-7 days)|Some days(2-4 days)|Rarely or not at all
+            $walk = $this->compareProgress($aggregates[1][0], $walk, "RP_AVOID_THREEMO", "behave0_avoid", "Physical Activity", $person);
+            $walk = $this->compareProgress($aggregates[1][1], $walk, "RP_AVOID_SIXMO", "behave0_avoid", "Physical Activity", $person);
+            $walk = $this->compareProgress($aggregates[1][2], $walk, "RP_AVOID_NINEMO", "behave0_avoid", "Physical Activity", $person);
+            $walk = $this->compareProgress($aggregates[1][3], $walk, "RP_AVOID_TWELVEMO", "behave0_avoid", "Physical Activity", $person);
+            
+            $activity = $this->getBlobData("behaviouralassess", "behave2_avoid", $person, YEAR, "RP_AVOID"); // Most days (5-7 days)|Some days(2-4 days)|Rarely or not at all
+            $activity = $this->compareProgress($aggregates[2][0], $activity, "RP_AVOID_THREEMO", "behave2_avoid", "Physical Activity", $person);
+            $activity = $this->compareProgress($aggregates[2][1], $activity, "RP_AVOID_SIXMO", "behave2_avoid", "Physical Activity", $person);
+            $activity = $this->compareProgress($aggregates[2][2], $activity, "RP_AVOID_NINEMO", "behave2_avoid", "Physical Activity", $person);
+            $activity = $this->compareProgress($aggregates[2][3], $activity, "RP_AVOID_TWELVEMO", "behave2_avoid", "Physical Activity", $person);
         }
         $wgOut->addHTML("<div class='modules'>");
         @$wgOut->addHTML("<div class='module-3cols-outer'>
@@ -693,256 +745,333 @@ class Descriptors extends SpecialPage {
             </div>
         </div>
         
-        <h2>Member Characteristics Distribution</h2>
-        <table class='wikitable'>
-            <thead>
-                <tr>
-                    <th>Dimension</th>
-                    <th>n (%)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><th colspan='2' style='text-align: left;'>Sub-Roles</th></tr>
-                <tr>
-                    <td>Online Independant</td>
-                    <td>{$subroles[0]} (".number_format($subroles[0]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Phone-Based</td>
-                    <td>{$subroles[1]} (".number_format($subroles[1]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>In-Person with volunteer</td>
-                    <td>{$subroles[2]} (".number_format($subroles[2]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Paper Copy</td>
-                    <td>{$subroles[3]} (".number_format($subroles[3]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
+        <div class='modules'>
+            <div class='module-3cols-outer'>
+                <h2>Member Characteristics Distribution</h2>
+                <table class='wikitable'>
+                    <thead>
+                        <tr>
+                            <th>Dimension</th>
+                            <th>n (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><th colspan='2' style='text-align: left;'>Sub-Roles</th></tr>
+                        <tr>
+                            <td>Online Independant</td>
+                            <td>{$subroles[0]} (".number_format($subroles[0]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Phone-Based</td>
+                            <td>{$subroles[1]} (".number_format($subroles[1]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>In-Person with volunteer</td>
+                            <td>{$subroles[2]} (".number_format($subroles[2]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Paper Copy</td>
+                            <td>{$subroles[3]} (".number_format($subroles[3]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        
+                        <tr><th colspan='2' style='text-align: left;'>Age</th></tr>
+                        <tr>
+                            <td><60-64</td>
+                            <td>{$ages[0]} (".number_format($ages[0]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>65-74</td>
+                            <td>{$ages[1]} (".number_format($ages[1]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>75+</td>
+                            <td>{$ages[2]} (".number_format($ages[2]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        
+                        <tr><th colspan='2' style='text-align: left;'>Gender</th></tr>
+                        <tr>
+                            <td>Man</td>
+                            <td>{$genders[0]} (".number_format($genders[0]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Woman</td>
+                            <td>{$genders[1]} (".number_format($genders[1]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Prefer not to say</td>
+                            <td>{$genders[2]} (".number_format($genders[2]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Prefer to self describe myself</td>
+                            <td>{$genders[3]} (".number_format($genders[3]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        
+                        <tr><th colspan='2' style='text-align: left;'>Ethnicity</th></tr>
+                        <tr>
+                            <td>Black</td>
+                            <td>{$ethnicities[0]} (".number_format($ethnicities[0]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>East/Southeast Asian</td>
+                            <td>{$ethnicities[1]} (".number_format($ethnicities[1]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Indigenous</td>
+                            <td>{$ethnicities[2]} (".number_format($ethnicities[2]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Latino</td>
+                            <td>{$ethnicities[3]} (".number_format($ethnicities[3]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Middle Eastern</td>
+                            <td>{$ethnicities[4]} (".number_format($ethnicities[4]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>South Asian</td>
+                            <td>{$ethnicities[5]} (".number_format($ethnicities[5]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>White</td>
+                            <td>{$ethnicities[6]} (".number_format($ethnicities[6]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Other</td>
+                            <td>{$ethnicities[7]} (".number_format($ethnicities[7]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Prefer not to answer</td>
+                            <td>{$ethnicities[8]} (".number_format($ethnicities[8]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        
+                        <tr><th colspan='2' style='text-align: left;'>Income</th></tr>
+                        <tr>
+                            <td>Under $10,000</td>
+                            <td>{$incomes[0]} (".number_format($incomes[0]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>$10,000 to $24,999</td>
+                            <td>{$incomes[1]} (".number_format($incomes[1]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>$25,000 to $49,999</td>
+                            <td>{$incomes[2]} (".number_format($incomes[2]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>$50,000 to $74,999</td>
+                            <td>{$incomes[3]} (".number_format($incomes[3]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>$75,000 to $99,999</td>
+                            <td>{$incomes[4]} (".number_format($incomes[4]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>$100,000 or more</td>
+                            <td>{$incomes[5]} (".number_format($incomes[5]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Prefer not to say</td>
+                            <td>{$incomes[6]} (".number_format($incomes[6]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        
+                        <tr><th colspan='2' style='text-align: left;'>Living Arrangement</th></tr>
+                        <tr>
+                            <td>Living alone</td>
+                            <td>{$livings[0]} (".number_format($livings[0]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Living with partner</td>
+                            <td>{$livings[1]} (".number_format($livings[1]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Living with relatives & non-relatives</td>
+                            <td>{$livings[2]} (".number_format($livings[2]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Prefer not to say</td>
+                            <td>{$livings[3]} (".number_format($livings[3]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        
+                        <tr><th colspan='2' style='text-align: left;'>Education Level</th></tr>
+                        <tr>
+                            <td>No certificate, diploma, or degree</td>
+                            <td>{$educations[0]} (".number_format($educations[0]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Secondary (highschool) diploma or equivalency certificate</td>
+                            <td>{$educations[1]} (".number_format($educations[1]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Apprenticeship or trades certificate or diploma</td>
+                            <td>{$educations[2]} (".number_format($educations[2]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>College, CEGEP, or non-university certificate or diploma</td>
+                            <td>{$educations[3]} (".number_format($educations[3]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>University certificate of diploma below bachelor level</td>
+                            <td>{$educations[4]} (".number_format($educations[4]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>University certificate, diploma, or degree at bachelor level or above</td>
+                            <td>{$educations[5]} (".number_format($educations[5]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Prefer not to say</td>
+                            <td>{$educations[6]} (".number_format($educations[6]/max(1, $nIntake)*100, 1).")</td>
+                        </tr>
+                    </tbody>
+                </table>
                 
-                <tr><th colspan='2' style='text-align: left;'>Age</th></tr>
-                <tr>
-                    <td><60-64</td>
-                    <td>{$ages[0]} (".number_format($ages[0]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>65-74</td>
-                    <td>{$ages[1]} (".number_format($ages[1]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>75+</td>
-                    <td>{$ages[2]} (".number_format($ages[2]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
+                <b>Baseline: Mean (SD) EQ-5D-5L Utilities and EQ-VAS by Age Group</b>
+                <table class='wikitable' style='margin-top:0;'>
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Utilities</th>
+                            <th>EQ Vas</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>RCHA Total (N=".count($eqByAge["All"]).")</th>
+                            <th>RCHA Total (N=".count($selfHealthByAge["All"]).")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>All</td>
+                            <td>".number_format(array_sum($eqByAge['All'])/max(1,count($eqByAge['All'])), 3)." (".number_format(stdev($eqByAge['All']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge['All'])/max(1,count($selfHealthByAge['All'])), 2)." (".number_format(stdev($selfHealthByAge['All']), 2).")</td>
+                        </tr>
+                        <tr>
+                            <td><60-64</td>
+                            <td>".number_format(array_sum($eqByAge['<60-64'])/max(1,count($eqByAge['<60-64'])), 3)." (".number_format(stdev($eqByAge['<60-64']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge['<60-64'])/max(1,count($selfHealthByAge['<60-64'])), 2)." (".number_format(stdev($selfHealthByAge['<60-64']), 2).")</td>
+                        </tr>
+                        <tr>
+                            <td>65-74</td>
+                            <td>".number_format(array_sum($eqByAge['65-74'])/max(1,count($eqByAge['65-74'])), 3)." (".number_format(stdev($eqByAge['65-74']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge['65-74'])/max(1,count($selfHealthByAge['65-74'])), 2)." (".number_format(stdev($selfHealthByAge['65-74']), 2).")</td>
+                        </tr>
+                        <tr>
+                            <td>75+</td>
+                            <td>".number_format(array_sum($eqByAge['75+'])/max(1,count($eqByAge['75+'])), 3)." (".number_format(stdev($eqByAge['75+']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge['75+'])/max(1,count($selfHealthByAge['75+'])), 2)." (".number_format(stdev($selfHealthByAge['75+']), 2).")</td>
+                        </tr>
+                    </tbody>
+                </table>
                 
-                <tr><th colspan='2' style='text-align: left;'>Gender</th></tr>
-                <tr>
-                    <td>Man</td>
-                    <td>{$genders[0]} (".number_format($genders[0]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Woman</td>
-                    <td>{$genders[1]} (".number_format($genders[1]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Prefer not to say</td>
-                    <td>{$genders[2]} (".number_format($genders[2]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Prefer to self describe myself</td>
-                    <td>{$genders[3]} (".number_format($genders[3]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                
-                <tr><th colspan='2' style='text-align: left;'>Ethnicity</th></tr>
-                <tr>
-                    <td>Black</td>
-                    <td>{$ethnicities[0]} (".number_format($ethnicities[0]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>East/Southeast Asian</td>
-                    <td>{$ethnicities[1]} (".number_format($ethnicities[1]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Indigenous</td>
-                    <td>{$ethnicities[2]} (".number_format($ethnicities[2]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Latino</td>
-                    <td>{$ethnicities[3]} (".number_format($ethnicities[3]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Middle Eastern</td>
-                    <td>{$ethnicities[4]} (".number_format($ethnicities[4]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>South Asian</td>
-                    <td>{$ethnicities[5]} (".number_format($ethnicities[5]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>White</td>
-                    <td>{$ethnicities[6]} (".number_format($ethnicities[6]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Other</td>
-                    <td>{$ethnicities[7]} (".number_format($ethnicities[7]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Prefer not to answer</td>
-                    <td>{$ethnicities[8]} (".number_format($ethnicities[8]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                
-                <tr><th colspan='2' style='text-align: left;'>Income</th></tr>
-                <tr>
-                    <td>Under $10,000</td>
-                    <td>{$incomes[0]} (".number_format($incomes[0]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>$10,000 to $24,999</td>
-                    <td>{$incomes[1]} (".number_format($incomes[1]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>$25,000 to $49,999</td>
-                    <td>{$incomes[2]} (".number_format($incomes[2]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>$50,000 to $74,999</td>
-                    <td>{$incomes[3]} (".number_format($incomes[3]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>$75,000 to $99,999</td>
-                    <td>{$incomes[4]} (".number_format($incomes[4]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>$100,000 or more</td>
-                    <td>{$incomes[5]} (".number_format($incomes[5]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Prefer not to say</td>
-                    <td>{$incomes[6]} (".number_format($incomes[6]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                
-                <tr><th colspan='2' style='text-align: left;'>Living Arrangement</th></tr>
-                <tr>
-                    <td>Living alone</td>
-                    <td>{$livings[0]} (".number_format($livings[0]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Living with partner</td>
-                    <td>{$livings[1]} (".number_format($livings[1]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Living with relatives & non-relatives</td>
-                    <td>{$livings[2]} (".number_format($livings[2]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Prefer not to say</td>
-                    <td>{$livings[3]} (".number_format($livings[3]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                
-                <tr><th colspan='2' style='text-align: left;'>Education Level</th></tr>
-                <tr>
-                    <td>No certificate, diploma, or degree</td>
-                    <td>{$educations[0]} (".number_format($educations[0]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Secondary (highschool) diploma or equivalency certificate</td>
-                    <td>{$educations[1]} (".number_format($educations[1]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Apprenticeship or trades certificate or diploma</td>
-                    <td>{$educations[2]} (".number_format($educations[2]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>College, CEGEP, or non-university certificate or diploma</td>
-                    <td>{$educations[3]} (".number_format($educations[3]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>University certificate of diploma below bachelor level</td>
-                    <td>{$educations[4]} (".number_format($educations[4]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>University certificate, diploma, or degree at bachelor level or above</td>
-                    <td>{$educations[5]} (".number_format($educations[5]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Prefer not to say</td>
-                    <td>{$educations[6]} (".number_format($educations[6]/max(1, $nIntake)*100, 1).")</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <b>Baseline: Mean (SD) EQ-5D-5L Utilities and EQ-VAS by Age Group</b>
-        <table class='wikitable' style='margin-top:0;'>
-            <thead>
-                <tr>
-                    <th>Variable</th>
-                    <th>Utilities</th>
-                    <th>EQ Vas</th>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th>RCHA Total (N=".count($eqByAge["All"]).")</th>
-                    <th>RCHA Total (N=".count($selfHealthByAge["All"]).")</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>All</td>
-                    <td>".number_format(array_sum($eqByAge['All'])/max(1,count($eqByAge['All'])), 3)." (".number_format(stdev($eqByAge['All']), 3).")</td>
-                    <td>".number_format(array_sum($selfHealthByAge['All'])/max(1,count($selfHealthByAge['All'])), 2)." (".number_format(stdev($selfHealthByAge['All']), 2).")</td>
-                </tr>
-                <tr>
-                    <td><60-64</td>
-                    <td>".number_format(array_sum($eqByAge['<60-64'])/max(1,count($eqByAge['<60-64'])), 3)." (".number_format(stdev($eqByAge['<60-64']), 3).")</td>
-                    <td>".number_format(array_sum($selfHealthByAge['<60-64'])/max(1,count($selfHealthByAge['<60-64'])), 2)." (".number_format(stdev($selfHealthByAge['<60-64']), 2).")</td>
-                </tr>
-                <tr>
-                    <td>65-74</td>
-                    <td>".number_format(array_sum($eqByAge['65-74'])/max(1,count($eqByAge['65-74'])), 3)." (".number_format(stdev($eqByAge['65-74']), 3).")</td>
-                    <td>".number_format(array_sum($selfHealthByAge['65-74'])/max(1,count($selfHealthByAge['65-74'])), 2)." (".number_format(stdev($selfHealthByAge['65-74']), 2).")</td>
-                </tr>
-                <tr>
-                    <td>75+</td>
-                    <td>".number_format(array_sum($eqByAge['75+'])/max(1,count($eqByAge['75+'])), 3)." (".number_format(stdev($eqByAge['75+']), 3).")</td>
-                    <td>".number_format(array_sum($selfHealthByAge['75+'])/max(1,count($selfHealthByAge['75+'])), 2)." (".number_format(stdev($selfHealthByAge['75+']), 2).")</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <b>Baseline: Loneliness by Age Group (N={$nIntake})</b>
-        <table class='wikitable' style='margin-top:0;'>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>All</th>
-                    <th><60-64</th>
-                    <th>65-74</th>
-                    <th>75+</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>3-5 (Not Lonely) Total (%)</td>
-                    <td>".count($lonelinessByAge['All']["3-5"])." (".number_format(count($lonelinessByAge['All']["3-5"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
-                    <td>".count($lonelinessByAge['<60-64']["3-5"])." (".number_format(count($lonelinessByAge['<60-64']["3-5"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
-                    <td>".count($lonelinessByAge['65-74']["3-5"])." (".number_format(count($lonelinessByAge['65-74']["3-5"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
-                    <td>".count($lonelinessByAge['75+']["3-5"])." (".number_format(count($lonelinessByAge['75+']["3-5"])/max(1,count(array_flatten($lonelinessByAge['75+'])))*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>6-9 (Lonely) Total (%)</td>
-                    <td>".count($lonelinessByAge['All']["6-9"])." (".number_format(count($lonelinessByAge['All']["6-9"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
-                    <td>".count($lonelinessByAge['<60-64']["6-9"])." (".number_format(count($lonelinessByAge['<60-64']["6-9"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
-                    <td>".count($lonelinessByAge['65-74']["6-9"])." (".number_format(count($lonelinessByAge['65-74']["6-9"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
-                    <td>".count($lonelinessByAge['75+']["6-9"])." (".number_format(count($lonelinessByAge['75+']["6-9"])/max(1,count(array_flatten($lonelinessByAge['75+'])))*100, 1).")</td>
-                </tr>
-                <tr>
-                    <td>Mean (SD)</td>
-                    <td>".number_format(array_sum(array_flatten($lonelinessByAge['All']))/max(1,count(array_flatten($lonelinessByAge['All']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['All'])), 2).")</td>
-                    <td>".number_format(array_sum(array_flatten($lonelinessByAge['<60-64']))/max(1,count(array_flatten($lonelinessByAge['<60-64']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['<60-64'])), 2).")</td>
-                    <td>".number_format(array_sum(array_flatten($lonelinessByAge['65-74']))/max(1,count(array_flatten($lonelinessByAge['65-74']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['65-74'])), 2).")</td>
-                    <td>".number_format(array_sum(array_flatten($lonelinessByAge['75+']))/max(1,count(array_flatten($lonelinessByAge['75+']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['75+'])), 2).")</td>
-                </tr>
-            </tbody>
-        </table>");
+                <b>Baseline: Loneliness by Age Group (N={$nIntake})</b>
+                <table class='wikitable' style='margin-top:0;'>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>All</th>
+                            <th><60-64</th>
+                            <th>65-74</th>
+                            <th>75+</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>3-5 (Not Lonely) Total (%)</td>
+                            <td>".count($lonelinessByAge['All']["3-5"])." (".number_format(count($lonelinessByAge['All']["3-5"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
+                            <td>".count($lonelinessByAge['<60-64']["3-5"])." (".number_format(count($lonelinessByAge['<60-64']["3-5"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
+                            <td>".count($lonelinessByAge['65-74']["3-5"])." (".number_format(count($lonelinessByAge['65-74']["3-5"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
+                            <td>".count($lonelinessByAge['75+']["3-5"])." (".number_format(count($lonelinessByAge['75+']["3-5"])/max(1,count(array_flatten($lonelinessByAge['75+'])))*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>6-9 (Lonely) Total (%)</td>
+                            <td>".count($lonelinessByAge['All']["6-9"])." (".number_format(count($lonelinessByAge['All']["6-9"])/max(1,count(array_flatten($lonelinessByAge['All'])))*100, 1).")</td>
+                            <td>".count($lonelinessByAge['<60-64']["6-9"])." (".number_format(count($lonelinessByAge['<60-64']["6-9"])/max(1,count(array_flatten($lonelinessByAge['<60-64'])))*100, 1).")</td>
+                            <td>".count($lonelinessByAge['65-74']["6-9"])." (".number_format(count($lonelinessByAge['65-74']["6-9"])/max(1,count(array_flatten($lonelinessByAge['65-74'])))*100, 1).")</td>
+                            <td>".count($lonelinessByAge['75+']["6-9"])." (".number_format(count($lonelinessByAge['75+']["6-9"])/max(1,count(array_flatten($lonelinessByAge['75+'])))*100, 1).")</td>
+                        </tr>
+                        <tr>
+                            <td>Mean (SD)</td>
+                            <td>".number_format(array_sum(array_flatten($lonelinessByAge['All']))/max(1,count(array_flatten($lonelinessByAge['All']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['All'])), 2).")</td>
+                            <td>".number_format(array_sum(array_flatten($lonelinessByAge['<60-64']))/max(1,count(array_flatten($lonelinessByAge['<60-64']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['<60-64'])), 2).")</td>
+                            <td>".number_format(array_sum(array_flatten($lonelinessByAge['65-74']))/max(1,count(array_flatten($lonelinessByAge['65-74']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['65-74'])), 2).")</td>
+                            <td>".number_format(array_sum(array_flatten($lonelinessByAge['75+']))/max(1,count(array_flatten($lonelinessByAge['75+']))), 2)." (".number_format(stdev(array_flatten($lonelinessByAge['75+'])), 2).")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h2>Progress Aggregate Report</h2>
+                <table class='wikitable' style='width:100%;'>
+                    <tr>
+                        <th colspan='2'></th>
+                        <th>3 Month</th>
+                        <th>6 Month</th>
+                        <th>9 Month</th>
+                        <th>12 Month</th>
+                    </tr>
+                    <tr>
+                        <th rowspan='3'>A</th>
+                        <td>time spent sitting</td>
+                        <td>".array_sum($aggregates[0][0])." (".number_format(array_sum($aggregates[0][0])/max(1, count($aggregates[0][0])), 2).")</td>
+                        <td>".array_sum($aggregates[0][1])." (".number_format(array_sum($aggregates[0][1])/max(1, count($aggregates[0][1])), 2).")</td>
+                        <td>".array_sum($aggregates[0][2])." (".number_format(array_sum($aggregates[0][2])/max(1, count($aggregates[0][2])), 2).")</td>
+                        <td>".array_sum($aggregates[0][3])." (".number_format(array_sum($aggregates[0][3])/max(1, count($aggregates[0][3])), 2).")</td>
+                    </tr>
+                    <tr>
+                        <td>Walking 10 min at a time</td>
+                        <td>".array_sum($aggregates[1][0])." (".number_format(array_sum($aggregates[1][0])/max(1, count($aggregates[1][0])), 2).")</td>
+                        <td>".array_sum($aggregates[1][1])." (".number_format(array_sum($aggregates[1][1])/max(1, count($aggregates[1][1])), 2).")</td>
+                        <td>".array_sum($aggregates[1][2])." (".number_format(array_sum($aggregates[1][2])/max(1, count($aggregates[1][2])), 2).")</td>
+                        <td>".array_sum($aggregates[1][3])." (".number_format(array_sum($aggregates[1][3])/max(1, count($aggregates[1][3])), 2).")</td>
+                    </tr>
+                    <tr>
+                        <td>Moderate activity</td>
+                        <td>".array_sum($aggregates[2][0])." (".number_format(array_sum($aggregates[2][0])/max(1, count($aggregates[2][0])), 2).")</td>
+                        <td>".array_sum($aggregates[2][1])." (".number_format(array_sum($aggregates[2][1])/max(1, count($aggregates[2][1])), 2).")</td>
+                        <td>".array_sum($aggregates[2][2])." (".number_format(array_sum($aggregates[2][2])/max(1, count($aggregates[2][2])), 2).")</td>
+                        <td>".array_sum($aggregates[2][3])." (".number_format(array_sum($aggregates[2][3])/max(1, count($aggregates[2][3])), 2).")</td>
+                    </tr>
+                    <tr>
+                        <th rowspan='1'>V</th>
+                        <td>missing vaccinations</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th rowspan='1'>O</th>
+                        <td>medication review</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th rowspan='2'>I</th>
+                        <td>Seeing family and friends improvement</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Loneliness score improvement</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th rowspan='1'>D</th>
+                        <td>Nutrition deficit</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>");
     }
     
     static function createSubTabs(&$tabs){
