@@ -25,7 +25,8 @@ class Descriptors extends SpecialPage {
     }
     
     function compareProgress(&$aggregates, $val1, $rp, $blobItem, $category, $person){
-        if(@UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] == 
+        if($val1 != "" && 
+           UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] == 
            min(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"])){
             // Already max, exclude from dataset
             return $val1;
@@ -1011,17 +1012,17 @@ class Descriptors extends SpecialPage {
                     <tr>
                         <th rowspan='3'>A</th>
                         <td>time spent sitting</td>
-                        <td>".number_format(array_sum($aggregates[0][0])/max(1, count($aggregates[0][0]))*100, 1)."% (N=".count($aggregates[2][0]).")</td>
-                        <td>".number_format(array_sum($aggregates[0][1])/max(1, count($aggregates[0][1]))*100, 1)."% (N=".count($aggregates[2][1]).")</td>
-                        <td>".number_format(array_sum($aggregates[0][2])/max(1, count($aggregates[0][2]))*100, 1)."% (N=".count($aggregates[2][2]).")</td>
-                        <td>".number_format(array_sum($aggregates[0][3])/max(1, count($aggregates[0][3]))*100, 1)."% (N=".count($aggregates[2][3]).")</td>
+                        <td>".number_format(array_sum($aggregates[0][0])/max(1, count($aggregates[0][0]))*100, 1)."% (N=".count($aggregates[0][0]).")</td>
+                        <td>".number_format(array_sum($aggregates[0][1])/max(1, count($aggregates[0][1]))*100, 1)."% (N=".count($aggregates[0][1]).")</td>
+                        <td>".number_format(array_sum($aggregates[0][2])/max(1, count($aggregates[0][2]))*100, 1)."% (N=".count($aggregates[0][2]).")</td>
+                        <td>".number_format(array_sum($aggregates[0][3])/max(1, count($aggregates[0][3]))*100, 1)."% (N=".count($aggregates[0][3]).")</td>
                     </tr>
                     <tr>
                         <td>Walking 10 min at a time</td>
-                        <td>".number_format(array_sum($aggregates[1][0])/max(1, count($aggregates[1][0]))*100, 1)."% (N=".count($aggregates[2][0]).")</td>
-                        <td>".number_format(array_sum($aggregates[1][1])/max(1, count($aggregates[1][1]))*100, 1)."% (N=".count($aggregates[2][1]).")</td>
-                        <td>".number_format(array_sum($aggregates[1][2])/max(1, count($aggregates[1][2]))*100, 1)."% (N=".count($aggregates[2][2]).")</td>
-                        <td>".number_format(array_sum($aggregates[1][3])/max(1, count($aggregates[1][3]))*100, 1)."% (N=".count($aggregates[2][3]).")</td>
+                        <td>".number_format(array_sum($aggregates[1][0])/max(1, count($aggregates[1][0]))*100, 1)."% (N=".count($aggregates[1][0]).")</td>
+                        <td>".number_format(array_sum($aggregates[1][1])/max(1, count($aggregates[1][1]))*100, 1)."% (N=".count($aggregates[1][1]).")</td>
+                        <td>".number_format(array_sum($aggregates[1][2])/max(1, count($aggregates[1][2]))*100, 1)."% (N=".count($aggregates[1][2]).")</td>
+                        <td>".number_format(array_sum($aggregates[1][3])/max(1, count($aggregates[1][3]))*100, 1)."% (N=".count($aggregates[1][3]).")</td>
                     </tr>
                     <tr>
                         <td>Moderate activity</td>
