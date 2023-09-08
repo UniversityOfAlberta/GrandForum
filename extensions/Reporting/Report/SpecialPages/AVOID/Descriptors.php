@@ -1011,24 +1011,24 @@ class Descriptors extends SpecialPage {
                     <tr>
                         <th rowspan='3'>A</th>
                         <td>time spent sitting</td>
-                        <td>".array_sum($aggregates[0][0])." (".number_format(array_sum($aggregates[0][0])/max(1, count($aggregates[0][0])), 2).")</td>
-                        <td>".array_sum($aggregates[0][1])." (".number_format(array_sum($aggregates[0][1])/max(1, count($aggregates[0][1])), 2).")</td>
-                        <td>".array_sum($aggregates[0][2])." (".number_format(array_sum($aggregates[0][2])/max(1, count($aggregates[0][2])), 2).")</td>
-                        <td>".array_sum($aggregates[0][3])." (".number_format(array_sum($aggregates[0][3])/max(1, count($aggregates[0][3])), 2).")</td>
+                        <td>".number_format(array_sum($aggregates[0][0])/max(1, count($aggregates[0][0]))*100, 1)."% (N=".count($aggregates[2][0]).")</td>
+                        <td>".number_format(array_sum($aggregates[0][1])/max(1, count($aggregates[0][1]))*100, 1)."% (N=".count($aggregates[2][1]).")</td>
+                        <td>".number_format(array_sum($aggregates[0][2])/max(1, count($aggregates[0][2]))*100, 1)."% (N=".count($aggregates[2][2]).")</td>
+                        <td>".number_format(array_sum($aggregates[0][3])/max(1, count($aggregates[0][3]))*100, 1)."% (N=".count($aggregates[2][3]).")</td>
                     </tr>
                     <tr>
                         <td>Walking 10 min at a time</td>
-                        <td>".array_sum($aggregates[1][0])." (".number_format(array_sum($aggregates[1][0])/max(1, count($aggregates[1][0])), 2).")</td>
-                        <td>".array_sum($aggregates[1][1])." (".number_format(array_sum($aggregates[1][1])/max(1, count($aggregates[1][1])), 2).")</td>
-                        <td>".array_sum($aggregates[1][2])." (".number_format(array_sum($aggregates[1][2])/max(1, count($aggregates[1][2])), 2).")</td>
-                        <td>".array_sum($aggregates[1][3])." (".number_format(array_sum($aggregates[1][3])/max(1, count($aggregates[1][3])), 2).")</td>
+                        <td>".number_format(array_sum($aggregates[1][0])/max(1, count($aggregates[1][0]))*100, 1)."% (N=".count($aggregates[2][0]).")</td>
+                        <td>".number_format(array_sum($aggregates[1][1])/max(1, count($aggregates[1][1]))*100, 1)."% (N=".count($aggregates[2][1]).")</td>
+                        <td>".number_format(array_sum($aggregates[1][2])/max(1, count($aggregates[1][2]))*100, 1)."% (N=".count($aggregates[2][2]).")</td>
+                        <td>".number_format(array_sum($aggregates[1][3])/max(1, count($aggregates[1][3]))*100, 1)."% (N=".count($aggregates[2][3]).")</td>
                     </tr>
                     <tr>
                         <td>Moderate activity</td>
-                        <td>".array_sum($aggregates[2][0])." (".number_format(array_sum($aggregates[2][0])/max(1, count($aggregates[2][0])), 2).")</td>
-                        <td>".array_sum($aggregates[2][1])." (".number_format(array_sum($aggregates[2][1])/max(1, count($aggregates[2][1])), 2).")</td>
-                        <td>".array_sum($aggregates[2][2])." (".number_format(array_sum($aggregates[2][2])/max(1, count($aggregates[2][2])), 2).")</td>
-                        <td>".array_sum($aggregates[2][3])." (".number_format(array_sum($aggregates[2][3])/max(1, count($aggregates[2][3])), 2).")</td>
+                        <td>".number_format(array_sum($aggregates[2][0])/max(1, count($aggregates[2][0]))*100, 1)."% (N=".count($aggregates[2][0]).")</td>
+                        <td>".number_format(array_sum($aggregates[2][1])/max(1, count($aggregates[2][1]))*100, 1)."% (N=".count($aggregates[2][1]).")</td>
+                        <td>".number_format(array_sum($aggregates[2][2])/max(1, count($aggregates[2][2]))*100, 1)."% (N=".count($aggregates[2][2]).")</td>
+                        <td>".number_format(array_sum($aggregates[2][3])/max(1, count($aggregates[2][3]))*100, 1)."% (N=".count($aggregates[2][3]).")</td>
                     </tr>
                     <tr>
                         <th rowspan='1'>V</th>
