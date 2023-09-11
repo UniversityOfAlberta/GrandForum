@@ -13,7 +13,7 @@ function runTwelveMonthSummary($par) {
 
 class TwelveMonthSummary extends IntakeSummary {
     
-    static $pageTitle = "6 Month Summary";
+    static $pageTitle = "12 Month Summary";
     static $reportName = "TwelveMonths";
     static $rpType = "RP_AVOID_TWELVEMO";
     
