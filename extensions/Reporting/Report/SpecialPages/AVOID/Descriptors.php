@@ -28,9 +28,10 @@ class Descriptors extends SpecialPage {
         $val2 = $this->getBlobData("behaviouralassess", $blobItem, $person, YEAR, $rp);
         if($val1 != "" && 
            UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] == 
-           min(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"])){
+           min(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"]) &&
+           ($val2 == "" || $val2 == $val1)){
             // Already max, exclude from dataset
-            return ($val2 != "") ? $val2 : $val1;
+            return $val1;
         }
         if($val2 != ""){
             if(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] > 
