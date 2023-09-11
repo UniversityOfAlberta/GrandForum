@@ -112,6 +112,35 @@ class Descriptors extends SpecialPage {
         return $val1;
     }
     
+    function compareLoneliness(&$aggregates, $score1, $rp, $person){
+        $options = array("Hardly ever","Some of the time","Often");
+        $score2 = 0;
+        $v1 = $this->getBlobData("behaviouralassess", "interact7_avoid", $person, YEAR, $rp);
+        $v2 = $this->getBlobData("behaviouralassess", "interact8_avoid", $person, YEAR, $rp);
+        $v3 = $this->getBlobData("behaviouralassess", "interact9_avoid", $person, YEAR, $rp);
+        
+        $score2 += array_search($v1, $options);
+        $score2 += array_search($v2, $options);
+        $score2 += array_search($v3, $options);
+        
+        if($score1 == 0 && ($v1 == "" || $score2 == $score1)){
+            // Already max, exclude from dataset
+            return $score1;
+        }
+        
+        if($v1 != ""){
+            if($score2 < $score1){
+                $aggregates[] = 1;
+            }
+            else{
+                // No Improvement
+                $aggregates[] = 0;
+            }
+            $score1 = $score2;
+        }
+        return $score1;
+    }
+    
     function compareNutrition(&$aggregates, $count1, $rp, $person){
         $MAX = 3;
         $count2 = 0;
@@ -508,6 +537,14 @@ class Descriptors extends SpecialPage {
             $meds = $this->compareMeds($aggregates[4][1], $meds, "RP_AVOID_SIXMO", $person);
             $meds = $this->compareMeds($aggregates[4][2], $meds, "RP_AVOID_NINEMO", $person);
             $meds = $this->compareMeds($aggregates[4][3], $meds, "RP_AVOID_TWELVEMO", $person);
+            
+            // Loneliness
+            $count = 0;
+            $count = $this->compareLoneliness($aggregates[6][-1], $count, "RP_AVOID", $person);
+            $count = $this->compareLoneliness($aggregates[6][0], $count, "RP_AVOID_THREEMO", $person);
+            $count = $this->compareLoneliness($aggregates[6][1], $count, "RP_AVOID_SIXMO", $person);
+            $count = $this->compareLoneliness($aggregates[6][2], $count, "RP_AVOID_NINEMO", $person);
+            $count = $this->compareLoneliness($aggregates[6][3], $count, "RP_AVOID_TWELVEMO", $person);
             
             // Nutrition
             $count = 0;
