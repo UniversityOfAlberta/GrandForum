@@ -47,7 +47,7 @@ class Descriptors extends SpecialPage {
         return $val1;
     }
     
-    function nVaccines(&$aggregates, $count1, $rp, $person){
+    function compareVaccines(&$aggregates, $count1, $rp, $person){
         $MAX = 5;
         $count2 = 0;
         $v1 = $this->getBlobData("behaviouralassess", "vaccinate1_avoid", $person, YEAR, $rp);
@@ -84,6 +84,32 @@ class Descriptors extends SpecialPage {
             $count1 = $count2;
         }
         return $count1;
+    }
+    
+    function compareMeds(&$aggregates, $val1, $rp, $person){
+        $val2 = $this->getBlobData("behaviouralassess", "meds3_avoid", $person, YEAR, $rp);
+        
+        $score1 = ($val1 == "Yes") ? 0 : 1;
+        $score2 = ($val2 == "Yes") ? 0 : 1;
+        
+        if($val1 != "" && 
+           ($val2 == "" || $val2 == $val1) &&
+           $score1 == 0){
+            // Already max, exclude from dataset
+            return $val1;
+        }
+        if($val2 != ""){
+            if($score1 > $score2){
+                // Improvement
+                $aggregates[] = 1;
+            }
+            else{
+                // No Improvement
+                $aggregates[] = 0;
+            }
+            $val1 = $val2;
+        }
+        return $val1;
     }
     
     function execute($par){
@@ -421,19 +447,19 @@ class Descriptors extends SpecialPage {
             }
             
             // Aggregate Stats
-            $sit = $this->getBlobData("behaviouralassess", "behave1_avoid", $person, YEAR, "RP_AVOID"); // Some of the day|Most of the day|All day
+            $sit = $this->getBlobData("behaviouralassess", "behave1_avoid", $person, YEAR, "RP_AVOID");
             $sit = $this->compareProgress($aggregates[0][0], $sit, "RP_AVOID_THREEMO", "behave1_avoid", "Physical Activity", $person);
             $sit = $this->compareProgress($aggregates[0][1], $sit, "RP_AVOID_SIXMO", "behave1_avoid", "Physical Activity", $person);
             $sit = $this->compareProgress($aggregates[0][2], $sit, "RP_AVOID_NINEMO", "behave1_avoid", "Physical Activity", $person);
             $sit = $this->compareProgress($aggregates[0][3], $sit, "RP_AVOID_TWELVEMO", "behave1_avoid", "Physical Activity", $person);
             
-            $walk = $this->getBlobData("behaviouralassess", "behave0_avoid", $person, YEAR, "RP_AVOID"); // Most days (5-7 days)|Some days(2-4 days)|Rarely or not at all
+            $walk = $this->getBlobData("behaviouralassess", "behave0_avoid", $person, YEAR, "RP_AVOID");
             $walk = $this->compareProgress($aggregates[1][0], $walk, "RP_AVOID_THREEMO", "behave0_avoid", "Physical Activity", $person);
             $walk = $this->compareProgress($aggregates[1][1], $walk, "RP_AVOID_SIXMO", "behave0_avoid", "Physical Activity", $person);
             $walk = $this->compareProgress($aggregates[1][2], $walk, "RP_AVOID_NINEMO", "behave0_avoid", "Physical Activity", $person);
             $walk = $this->compareProgress($aggregates[1][3], $walk, "RP_AVOID_TWELVEMO", "behave0_avoid", "Physical Activity", $person);
             
-            $activity = $this->getBlobData("behaviouralassess", "behave2_avoid", $person, YEAR, "RP_AVOID"); // Most days (5-7 days)|Some days(2-4 days)|Rarely or not at all
+            $activity = $this->getBlobData("behaviouralassess", "behave2_avoid", $person, YEAR, "RP_AVOID");
             $activity = $this->compareProgress($aggregates[2][0], $activity, "RP_AVOID_THREEMO", "behave2_avoid", "Physical Activity", $person);
             $activity = $this->compareProgress($aggregates[2][1], $activity, "RP_AVOID_SIXMO", "behave2_avoid", "Physical Activity", $person);
             $activity = $this->compareProgress($aggregates[2][2], $activity, "RP_AVOID_NINEMO", "behave2_avoid", "Physical Activity", $person);
@@ -441,11 +467,18 @@ class Descriptors extends SpecialPage {
             
             // Vaccine Stats
             $count = 0;
-            $count = $this->nVaccines($aggregates[3][-1], $count, "RP_AVOID", $person);
-            $count = $this->nVaccines($aggregates[3][0], $count, "RP_AVOID_THREEMO", $person);
-            $count = $this->nVaccines($aggregates[3][1], $count, "RP_AVOID_SIXMO", $person);
-            $count = $this->nVaccines($aggregates[3][2], $count, "RP_AVOID_NINEMO", $person);
-            $count = $this->nVaccines($aggregates[3][3], $count, "RP_AVOID_TWELVEMO", $person);
+            $count = $this->compareVaccines($aggregates[3][-1], $count, "RP_AVOID", $person);
+            $count = $this->compareVaccines($aggregates[3][0], $count, "RP_AVOID_THREEMO", $person);
+            $count = $this->compareVaccines($aggregates[3][1], $count, "RP_AVOID_SIXMO", $person);
+            $count = $this->compareVaccines($aggregates[3][2], $count, "RP_AVOID_NINEMO", $person);
+            $count = $this->compareVaccines($aggregates[3][3], $count, "RP_AVOID_TWELVEMO", $person);
+            
+            // Meds
+            $meds = $this->getBlobData("behaviouralassess", "meds3_avoid", $person, YEAR, "RP_AVOID");
+            $meds = $this->compareVaccines($aggregates[4][0], $meds, "RP_AVOID_THREEMO", $person);
+            $meds = $this->compareVaccines($aggregates[4][1], $meds, "RP_AVOID_SIXMO", $person);
+            $meds = $this->compareVaccines($aggregates[4][2], $meds, "RP_AVOID_NINEMO", $person);
+            $meds = $this->compareVaccines($aggregates[4][3], $meds, "RP_AVOID_TWELVEMO", $person);
         }
         $wgOut->addHTML("<div class='modules'>");
         @$wgOut->addHTML("<div class='module-3cols-outer'>
