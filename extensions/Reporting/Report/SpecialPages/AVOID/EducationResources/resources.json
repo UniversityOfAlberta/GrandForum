@@ -19,22 +19,22 @@
         "resources": [
             {
                 "file": "9. Balance with Hal _ Joanne.mp4",
-                "title": "Balance Video with Hal & Joanne",
+                "title": "Video: Balance with Hal & Joanne",
                 "tags": [ "balance" ]
             },
             {
                 "file": "9. Staying Active with Hal _ Joanne.mp4",
-                "title": "Staying Active Video with Hal & Joanne",
+                "title": "Video: Staying Active with Hal & Joanne",
                 "tags": [ "activity", "aerobic" ]
             },
             {
                 "file": "9. Strength with Hal _ Joanne.mp4",
-                "title": "Strength Video with Hal & Joanne",
+                "title": "Video: Strength with Hal & Joanne",
                 "tags": [ "strength" ]
             },
             {
                 "file": "Activity Vid.mp4",
-                "title": "Exercise at Home Video",
+                "title": "Video: Exercise at Home",
                 "tags": [ "activity vid" ]
             },
             {
@@ -101,7 +101,7 @@
         "resources": [
             {
                 "file": "11. Vaccinate with Hal _ Joanne.mp4",
-                "title": "Vaccinate Video with Hal & Joanne",
+                "title": "Video: Vaccinate with Hal & Joanne",
                 "tags": [ "vaccination" ]
             },
             {
@@ -126,7 +126,7 @@
             },
             {
                 "file": "Vaccinate Vid.mp4",
-                "title": "Vaccination Video",
+                "title": "Video: Vaccination",
                 "tags": [ "vaccinate vid" ]
             },
             {
@@ -163,12 +163,12 @@
         "resources": [
             {
                 "file": "15. Optimize Medication with Hal _ Joanne.mp4",
-                "title": "Optimize Medication Video with Hal & Joanne",
+                "title": "Video: Optimize Medication with Hal & Joanne",
                 "tags": [ "optimize medication" ]
             },
             {
                 "file": "Optimize Medication Q&A.mp4",
-                "title": "Pharmacists Q&A Video",
+                "title": "Video: Pharmacists Q&A",
                 "tags": [ "optimize medication" ]
             },
             {
@@ -188,7 +188,7 @@
             },
             {
                 "file": "Optimize Med Vid.mp4",
-                "title": "Optimize Medication Video",
+                "title": "Video: Optimize Medication",
                 "tags": ["optimize med vid"]
             }
         ],
@@ -255,7 +255,7 @@
             },
             {
                 "file": "Interact Vid.mp4",
-                "title": "Interact Video",
+                "title": "Video: Interact",
                 "tags": ["interact vid"]
             }
         ],
@@ -274,12 +274,12 @@
             "Recipes" : [
                 {
                     "file": "20. Chili Recipe with Hal _ Joanne.mp4",
-                    "title": "Chili Recipe Video with Hal & Joanne",
+                    "title": "Video: Chili with Hal & Joanne",
                     "tags": [ "protein" ]
                 },
                 {
                     "file": "Hearty Chicken Noodle Soup Recipe.pdf",
-                    "title": "Hearty Chicken Noodle Soup Recipe",
+                    "title": "Hearty Chicken Noodle Soup",
                     "tags": [ ]
                 },
                 {
@@ -289,7 +289,7 @@
                 },
                 {
                     "file": "Tofu and Vegetable Stir Fry Recipe.pdf",
-                    "title": "Tofu and Vegetable Stir Fry Recipe",
+                    "title": "Tofu and Vegetable Stir Fry",
                     "tags": [ ]
                 },
                 {
@@ -299,29 +299,34 @@
                 },
                 {
                     "file": "Gluten-Free Lemon Blueberry Muffins Recipe.pdf",
-                    "title": "Gluten-Free Lemon Blueberry Muffins Recipe",
+                    "title": "Gluten-Free Lemon Blueberry Muffins",
                     "tags": [ ]
                 }
             ],
             "Nutrition Recommendations": [
                 {
+                    "file": "https://food-guide.canada.ca/en/",
+                    "title": "Canada's Food Guide",
+                    "tags": [ ]
+                },
+                {
+                    "file": "vitamind_patient_guide.pdf",
+                    "title": "Vitamin D Guide",
+                    "tags": [ ]
+                },
+                {
                     "file": "20. Protein with Hal _ Joanne.mp4",
-                    "title": "The Importance of Protein Video with Hal & Joanne",
+                    "title": "Video: The Importance of Protein with Hal & Joanne",
                     "tags": [ "protein" ]
                 },
                 {
                     "file": "Nutrition & Aging Q&A.mp4",
-                    "title": "Nutrition and Aging Q&A Video",
+                    "title": "Video: Nutrition and Aging Q&A",
                     "tags": [ "diet and nutrition" ]
                 },
                 {
-                    "file": "Canada_s Food Guide snap shot image.pdf",
-                    "title": "Canada's Food Guide snap shot image",
-                    "tags": [ ]
-                },
-                {
                     "file": "Diet_Nutrition Vid.mp4",
-                    "title": "Why Protein Video",
+                    "title": "Video: Why Protein",
                     "tags": ["diet and nutrition vid"]
                 },
                 {
@@ -345,8 +350,8 @@
                     "tags": [ ] 
                 },
                 {
-                    "file": "vitamind_patient_guide.pdf",
-                    "title": "Vitamin D Guide",
+                    "file": "Meet Your Iron Needs on a Gluten-Free Diet.pdf",
+                    "title": "Meet Your Iron Needs",
                     "tags": [ ]
                 }
             ],
@@ -356,7 +361,7 @@
             "Healthy Eating Routines": [
                 {
                     "file": "22. AVOID Frailty Grocery List.pdf",
-                    "title": "Grocery Shopping List",
+                    "title": "AVOID Frailty Eat Well Grocery Shopping List",
                     "tags": [ "diet and nutrition", "protein", "calcium", "vitamin d" ]
                 },
                 {
@@ -374,11 +379,6 @@
                 {
                     "file": "Canadian Celiac gluten free diet booklet.pdf",
                     "title": "Canadian Celiac gluten free diet booklet",
-                    "tags": [ ]
-                },
-                {
-                    "file": "Meet Your Iron Needs on a Gluten-Free Diet.pdf",
-                    "title": "Meet Your Iron Needs on a Gluten-Free Diet",
                     "tags": [ ]
                 },
                 {
