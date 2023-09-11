@@ -475,10 +475,10 @@ class Descriptors extends SpecialPage {
             
             // Meds
             $meds = $this->getBlobData("behaviouralassess", "meds3_avoid", $person, YEAR, "RP_AVOID");
-            $meds = $this->compareVaccines($aggregates[4][0], $meds, "RP_AVOID_THREEMO", $person);
-            $meds = $this->compareVaccines($aggregates[4][1], $meds, "RP_AVOID_SIXMO", $person);
-            $meds = $this->compareVaccines($aggregates[4][2], $meds, "RP_AVOID_NINEMO", $person);
-            $meds = $this->compareVaccines($aggregates[4][3], $meds, "RP_AVOID_TWELVEMO", $person);
+            $meds = $this->compareMeds($aggregates[4][0], $meds, "RP_AVOID_THREEMO", $person);
+            $meds = $this->compareMeds($aggregates[4][1], $meds, "RP_AVOID_SIXMO", $person);
+            $meds = $this->compareMeds($aggregates[4][2], $meds, "RP_AVOID_NINEMO", $person);
+            $meds = $this->compareMeds($aggregates[4][3], $meds, "RP_AVOID_TWELVEMO", $person);
         }
         $wgOut->addHTML("<div class='modules'>");
         @$wgOut->addHTML("<div class='module-3cols-outer'>
