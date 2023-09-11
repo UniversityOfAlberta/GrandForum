@@ -27,9 +27,8 @@ class Descriptors extends SpecialPage {
     function compareProgress(&$aggregates, $val1, $rp, $blobItem, $category, $person){
         $val2 = $this->getBlobData("behaviouralassess", $blobItem, $person, YEAR, $rp);
         if($val1 != "" && 
-           UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] == 
-           min(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"]) &&
-           ($val2 == "" || $val2 == $val1)){
+           ($val2 == "" || $val2 == $val1) &&
+           UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] == min(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"])){
             // Already max, exclude from dataset
             return $val1;
         }
@@ -46,6 +45,45 @@ class Descriptors extends SpecialPage {
             $val1 = $val2;
         }
         return $val1;
+    }
+    
+    function nVaccines(&$aggregates, $count1, $rp, $person){
+        $MAX = 5;
+        $count2 = 0;
+        $v1 = $this->getBlobData("behaviouralassess", "vaccinate1_avoid", $person, YEAR, $rp);
+        $v2 = $this->getBlobData("behaviouralassess", "vaccinate2_avoid", $person, YEAR, $rp);
+        $v3 = $this->getBlobData("behaviouralassess", "vaccinate3_avoid", $person, YEAR, $rp);
+        $v4 = $this->getBlobData("behaviouralassess", "vaccinate4_avoid", $person, YEAR, $rp);
+        $v5 = $this->getBlobData("behaviouralassess", "vaccinate5_avoid", $person, YEAR, $rp);
+        $v6 = $this->getBlobData("behaviouralassess", "vaccinate6_avoid", $person, YEAR, $rp);
+        
+        if($v1 == "Yes"){
+            // Exclude from dataset
+            return 0;
+        }
+        
+        $count2 += ($v2 == "Yes") ? 1 : 0;
+        $count2 += ($v3 == "Yes") ? 1 : 0;
+        $count2 += ($v4 == "Yes") ? 1 : 0;
+        $count2 += ($v5 == "Yes") ? 1 : 0;
+        $count2 += ($v6 == "Yes") ? 1 : 0;
+        
+        if($count1 == $MAX && ($v1 == "" || $count2 == $count1)){
+            // Already max, exclude from dataset
+            return $count1;
+        }
+        
+        if($v1 != ""){
+            if($count2 > $count1){
+                $aggregates[] = 1;
+            }
+            else{
+                // No Improvement
+                $aggregates[] = 0;
+            }
+            $count1 = $count2;
+        }
+        return $count1;
     }
     
     function execute($par){
@@ -400,6 +438,14 @@ class Descriptors extends SpecialPage {
             $activity = $this->compareProgress($aggregates[2][1], $activity, "RP_AVOID_SIXMO", "behave2_avoid", "Physical Activity", $person);
             $activity = $this->compareProgress($aggregates[2][2], $activity, "RP_AVOID_NINEMO", "behave2_avoid", "Physical Activity", $person);
             $activity = $this->compareProgress($aggregates[2][3], $activity, "RP_AVOID_TWELVEMO", "behave2_avoid", "Physical Activity", $person);
+            
+            // Vaccine Stats
+            $count = 0;
+            $count = $this->nVaccines($aggregates[3][-1], $count, "RP_AVOID", $person);
+            $count = $this->nVaccines($aggregates[3][0], $count, "RP_AVOID_THREEMO", $person);
+            $count = $this->nVaccines($aggregates[3][1], $count, "RP_AVOID_SIXMO", $person);
+            $count = $this->nVaccines($aggregates[3][2], $count, "RP_AVOID_NINEMO", $person);
+            $count = $this->nVaccines($aggregates[3][3], $count, "RP_AVOID_TWELVEMO", $person);
         }
         $wgOut->addHTML("<div class='modules'>");
         @$wgOut->addHTML("<div class='module-3cols-outer'>
