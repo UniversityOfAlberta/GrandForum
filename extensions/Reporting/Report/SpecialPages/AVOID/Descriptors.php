@@ -25,13 +25,13 @@ class Descriptors extends SpecialPage {
     }
     
     function compareProgress(&$aggregates, $val1, $rp, $blobItem, $category, $person){
+        $val2 = $this->getBlobData("behaviouralassess", $blobItem, $person, YEAR, $rp);
         if($val1 != "" && 
            UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] == 
            min(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"])){
             // Already max, exclude from dataset
-            return $val1;
+            return ($val2 != "") ? $val2 : $val1;
         }
-        $val2 = $this->getBlobData("behaviouralassess", $blobItem, $person, YEAR, $rp);
         if($val2 != ""){
             if(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] > 
                UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val2]){
@@ -119,7 +119,7 @@ class Descriptors extends SpecialPage {
         
         foreach($people as $person){
             if(!$person->isRoleAtMost(CI)){
-                continue;
+                //continue;
             }
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
@@ -1011,7 +1011,7 @@ class Descriptors extends SpecialPage {
                     </tr>
                     <tr>
                         <th rowspan='3'>A</th>
-                        <td>time spent sitting</td>
+                        <td>Time spent sitting</td>
                         <td>".number_format(array_sum($aggregates[0][0])/max(1, count($aggregates[0][0]))*100, 1)."% (N=".count($aggregates[0][0]).")</td>
                         <td>".number_format(array_sum($aggregates[0][1])/max(1, count($aggregates[0][1]))*100, 1)."% (N=".count($aggregates[0][1]).")</td>
                         <td>".number_format(array_sum($aggregates[0][2])/max(1, count($aggregates[0][2]))*100, 1)."% (N=".count($aggregates[0][2]).")</td>
@@ -1024,51 +1024,51 @@ class Descriptors extends SpecialPage {
                         <td>".number_format(array_sum($aggregates[1][2])/max(1, count($aggregates[1][2]))*100, 1)."% (N=".count($aggregates[1][2]).")</td>
                         <td>".number_format(array_sum($aggregates[1][3])/max(1, count($aggregates[1][3]))*100, 1)."% (N=".count($aggregates[1][3]).")</td>
                     </tr>
-                    <tr>
+                    <tr style='border-bottom: 2px solid #ddd;'>
                         <td>Moderate activity</td>
                         <td>".number_format(array_sum($aggregates[2][0])/max(1, count($aggregates[2][0]))*100, 1)."% (N=".count($aggregates[2][0]).")</td>
                         <td>".number_format(array_sum($aggregates[2][1])/max(1, count($aggregates[2][1]))*100, 1)."% (N=".count($aggregates[2][1]).")</td>
                         <td>".number_format(array_sum($aggregates[2][2])/max(1, count($aggregates[2][2]))*100, 1)."% (N=".count($aggregates[2][2]).")</td>
                         <td>".number_format(array_sum($aggregates[2][3])/max(1, count($aggregates[2][3]))*100, 1)."% (N=".count($aggregates[2][3]).")</td>
                     </tr>
-                    <tr>
+                    <tr style='border-bottom: 2px solid #ddd;'>
                         <th rowspan='1'>V</th>
-                        <td>missing vaccinations</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>Missing vaccinations</td>
+                        <td>".number_format(array_sum($aggregates[3][0])/max(1, count($aggregates[3][0]))*100, 1)."% (N=".count($aggregates[3][0]).")</td>
+                        <td>".number_format(array_sum($aggregates[3][1])/max(1, count($aggregates[3][1]))*100, 1)."% (N=".count($aggregates[3][1]).")</td>
+                        <td>".number_format(array_sum($aggregates[3][2])/max(1, count($aggregates[3][2]))*100, 1)."% (N=".count($aggregates[3][2]).")</td>
+                        <td>".number_format(array_sum($aggregates[3][3])/max(1, count($aggregates[3][3]))*100, 1)."% (N=".count($aggregates[3][3]).")</td>
                     </tr>
-                    <tr>
+                    <tr style='border-bottom: 2px solid #ddd;'>
                         <th rowspan='1'>O</th>
-                        <td>medication review</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>Medication review</td>
+                        <td>".number_format(array_sum($aggregates[4][0])/max(1, count($aggregates[4][0]))*100, 1)."% (N=".count($aggregates[4][0]).")</td>
+                        <td>".number_format(array_sum($aggregates[4][1])/max(1, count($aggregates[4][1]))*100, 1)."% (N=".count($aggregates[4][1]).")</td>
+                        <td>".number_format(array_sum($aggregates[4][2])/max(1, count($aggregates[4][2]))*100, 1)."% (N=".count($aggregates[4][2]).")</td>
+                        <td>".number_format(array_sum($aggregates[4][3])/max(1, count($aggregates[4][3]))*100, 1)."% (N=".count($aggregates[4][3]).")</td>
                     </tr>
                     <tr>
                         <th rowspan='2'>I</th>
                         <td>Seeing family and friends improvement</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>".number_format(array_sum($aggregates[5][0])/max(1, count($aggregates[5][0]))*100, 1)."% (N=".count($aggregates[5][0]).")</td>
+                        <td>".number_format(array_sum($aggregates[5][1])/max(1, count($aggregates[5][1]))*100, 1)."% (N=".count($aggregates[5][1]).")</td>
+                        <td>".number_format(array_sum($aggregates[5][2])/max(1, count($aggregates[5][2]))*100, 1)."% (N=".count($aggregates[5][2]).")</td>
+                        <td>".number_format(array_sum($aggregates[5][3])/max(1, count($aggregates[5][3]))*100, 1)."% (N=".count($aggregates[5][3]).")</td>
                     </tr>
-                    <tr>
+                    <tr style='border-bottom: 2px solid #ddd;'>
                         <td>Loneliness score improvement</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>".number_format(array_sum($aggregates[6][0])/max(1, count($aggregates[6][0]))*100, 1)."% (N=".count($aggregates[6][0]).")</td>
+                        <td>".number_format(array_sum($aggregates[6][1])/max(1, count($aggregates[6][1]))*100, 1)."% (N=".count($aggregates[6][1]).")</td>
+                        <td>".number_format(array_sum($aggregates[6][2])/max(1, count($aggregates[6][2]))*100, 1)."% (N=".count($aggregates[6][2]).")</td>
+                        <td>".number_format(array_sum($aggregates[6][3])/max(1, count($aggregates[6][3]))*100, 1)."% (N=".count($aggregates[6][3]).")</td>
                     </tr>
                     <tr>
                         <th rowspan='1'>D</th>
                         <td>Nutrition deficit</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>".number_format(array_sum($aggregates[7][0])/max(1, count($aggregates[7][0]))*100, 1)."% (N=".count($aggregates[7][0]).")</td>
+                        <td>".number_format(array_sum($aggregates[7][1])/max(1, count($aggregates[7][1]))*100, 1)."% (N=".count($aggregates[7][1]).")</td>
+                        <td>".number_format(array_sum($aggregates[7][2])/max(1, count($aggregates[7][2]))*100, 1)."% (N=".count($aggregates[7][2]).")</td>
+                        <td>".number_format(array_sum($aggregates[7][3])/max(1, count($aggregates[7][3]))*100, 1)."% (N=".count($aggregates[7][3]).")</td>
                     </tr>
                 </table>
             </div>
