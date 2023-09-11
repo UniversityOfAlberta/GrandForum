@@ -112,6 +112,35 @@ class Descriptors extends SpecialPage {
         return $val1;
     }
     
+    function compareNutrition(&$aggregates, $count1, $rp, $person){
+        $MAX = 3;
+        $count2 = 0;
+        $v1 = $this->getBlobData("behaviouralassess", "diet1_avoid", $person, YEAR, $rp);
+        $v2 = $this->getBlobData("behaviouralassess", "diet2_avoid", $person, YEAR, $rp);
+        $v3 = $this->getBlobData("behaviouralassess", "diet3_avoid", $person, YEAR, $rp);
+        
+        $count2 += ($v1 == "Yes") ? 1 : 0;
+        $count2 += ($v2 == "Yes") ? 1 : 0;
+        $count2 += ($v3 == "Yes") ? 1 : 0;
+        
+        if($count1 == $MAX && ($v1 == "" || $count2 == $count1)){
+            // Already max, exclude from dataset
+            return $count1;
+        }
+        
+        if($v1 != ""){
+            if($count2 > $count1){
+                $aggregates[] = 1;
+            }
+            else{
+                // No Improvement
+                $aggregates[] = 0;
+            }
+            $count1 = $count2;
+        }
+        return $count1;
+    }
+    
     function execute($par){
         global $wgServer, $wgScriptPath, $wgOut, $EQ5D5L;
         $me = Person::newFromWgUser();
@@ -479,6 +508,14 @@ class Descriptors extends SpecialPage {
             $meds = $this->compareMeds($aggregates[4][1], $meds, "RP_AVOID_SIXMO", $person);
             $meds = $this->compareMeds($aggregates[4][2], $meds, "RP_AVOID_NINEMO", $person);
             $meds = $this->compareMeds($aggregates[4][3], $meds, "RP_AVOID_TWELVEMO", $person);
+            
+            // Nutrition
+            $count = 0;
+            $count = $this->compareNutrition($aggregates[7][-1], $count, "RP_AVOID", $person);
+            $count = $this->compareNutrition($aggregates[7][0], $count, "RP_AVOID_THREEMO", $person);
+            $count = $this->compareNutrition($aggregates[7][1], $count, "RP_AVOID_SIXMO", $person);
+            $count = $this->compareNutrition($aggregates[7][2], $count, "RP_AVOID_NINEMO", $person);
+            $count = $this->compareNutrition($aggregates[7][3], $count, "RP_AVOID_TWELVEMO", $person);
         }
         $wgOut->addHTML("<div class='modules'>");
         @$wgOut->addHTML("<div class='module-3cols-outer'>
