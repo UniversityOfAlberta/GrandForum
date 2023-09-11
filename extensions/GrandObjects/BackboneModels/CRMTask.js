@@ -31,9 +31,9 @@ CRMTask = Backbone.Model.extend({
 
 CRMTask.priorityMap = {
     '': 'transparent',
-    'High': '#ff6666',
-    'Medium': '#ff8800',
-    'Low': '#ffdd00'
+    'High': '#ed1b23',
+    'Medium': '#008800',
+    'Low': '#0066ff'
 };
 
 /**
