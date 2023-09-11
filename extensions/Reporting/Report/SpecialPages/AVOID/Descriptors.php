@@ -120,7 +120,7 @@ class Descriptors extends SpecialPage {
         
         foreach($people as $person){
             if(!$person->isRoleAtMost(CI)){
-                //continue;
+                continue;
             }
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
