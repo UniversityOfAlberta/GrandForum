@@ -348,7 +348,7 @@ class UserFrailtyIndexAPI extends API{
         foreach($answers as $answer){
             $score += self::interactScore($answer);
         }
-        $scores["Interact"] = ($score >= 12) ? 1 : 0;
+        $scores["Interact"] = ($score < 12) ? 1 : 0;
         
         // Diet and Nutrition
         $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "diet1_avoid", $user_id),

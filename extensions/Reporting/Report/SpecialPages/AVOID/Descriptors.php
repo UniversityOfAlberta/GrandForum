@@ -112,6 +112,38 @@ class Descriptors extends SpecialPage {
         return $val1;
     }
     
+    function compareInteract(&$aggregates, $score1, $rp, $person){
+        $score2 = 0;
+        $v1 = $this->getBlobData("behaviouralassess", "interact1_avoid", $person, YEAR, $rp);
+        $v2 = $this->getBlobData("behaviouralassess", "interact2_avoid", $person, YEAR, $rp);
+        $v3 = $this->getBlobData("behaviouralassess", "interact3_avoid", $person, YEAR, $rp);
+        $v4 = $this->getBlobData("behaviouralassess", "interact4_avoid", $person, YEAR, $rp);
+        $v5 = $this->getBlobData("behaviouralassess", "interact5_avoid", $person, YEAR, $rp);
+        $v6 = $this->getBlobData("behaviouralassess", "interact6_avoid", $person, YEAR, $rp);
+        $answers = array($v1, $v2, $v3, $v4, $v5, $v6);
+
+        foreach($answers as $answer){
+            $score2 += UserFrailtyIndexAPI::interactScore($answer);
+        }
+        
+        if($score1 >= 12 && ($v1 == "" || $score2 >= 12)){
+            // Already max, exclude from dataset
+            return $score1;
+        }
+        
+        if($v1 != ""){
+            if($score2 >= 12){
+                $aggregates[] = 1;
+            }
+            else{
+                // No Improvement
+                $aggregates[] = 0;
+            }
+            $score1 = $score2;
+        }
+        return $score1;
+    }
+    
     function compareLoneliness(&$aggregates, $score1, $rp, $person){
         $options = array("Hardly ever","Some of the time","Often");
         $score2 = 0;
@@ -537,6 +569,14 @@ class Descriptors extends SpecialPage {
             $meds = $this->compareMeds($aggregates[4][1], $meds, "RP_AVOID_SIXMO", $person);
             $meds = $this->compareMeds($aggregates[4][2], $meds, "RP_AVOID_NINEMO", $person);
             $meds = $this->compareMeds($aggregates[4][3], $meds, "RP_AVOID_TWELVEMO", $person);
+            
+            // Interact
+            $count = 0;
+            $count = $this->compareInteract($aggregates[5][-1], $count, "RP_AVOID", $person);
+            $count = $this->compareInteract($aggregates[5][0], $count, "RP_AVOID_THREEMO", $person);
+            $count = $this->compareInteract($aggregates[5][1], $count, "RP_AVOID_SIXMO", $person);
+            $count = $this->compareInteract($aggregates[5][2], $count, "RP_AVOID_NINEMO", $person);
+            $count = $this->compareInteract($aggregates[5][3], $count, "RP_AVOID_TWELVEMO", $person);
             
             // Loneliness
             $count = 0;
