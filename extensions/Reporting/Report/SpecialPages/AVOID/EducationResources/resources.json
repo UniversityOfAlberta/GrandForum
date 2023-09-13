@@ -242,23 +242,52 @@
         "videos": 7,
         "questions": 3,
         "tags": ["interact module"],
-        "resources": [
-            {
-                "file": "19. Isolation Tip Sheet (without Technology).pdf",
-                "title": "Isolation Tip Sheet (without Technology)",
-                "tags": ["interact"]
-            },
-            {
-                "file": "19. Isolation Tip Sheet (with Technology).pdf",
-                "title": "Isolation Tip Sheet (with Technology)",
-                "tags": ["interact"]
-            },
-            {
-                "file": "Interact Vid.mp4",
-                "title": "Video: Interact",
-                "tags": ["interact vid"]
-            }
-        ],
+        "resources": {
+            "Addressing Isolation": [
+                {
+                    "file": "19. Isolation Tip Sheet (without Technology).pdf",
+                    "title": "Isolation Tip Sheet (without Technology)",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "19. Isolation Tip Sheet (with Technology).pdf",
+                    "title": "Isolation Tip Sheet (with Technology)",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "Interact Vid.mp4",
+                    "title": "Video: Interact",
+                    "tags": ["interact vid"]
+                }
+            ],
+            "Mental Health": [
+                {
+                    "file": "Understanding your Care Options.pdf",
+                    "title": "Understanding your Care Options",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "Positive Mental Health in Later Life.pdf",
+                    "title": "Positive Mental Health in Later Life",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "Mental Health & Well-being.pdf",
+                    "title": "Mental Health & Well-being",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "Depression in Later Life.pdf",
+                    "title": "Depression in Later Life",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "Anxiety in Later Life.pdf",
+                    "title": "Anxiety in Later Life",
+                    "tags": ["interact"]
+                }
+            ]
+        },
         "resourcesFr": [
         
         ]
