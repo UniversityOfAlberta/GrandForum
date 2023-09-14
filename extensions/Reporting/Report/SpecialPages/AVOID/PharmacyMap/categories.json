@@ -279,6 +279,13 @@
                 "code": "CFN-INT-VOL",
                 "description": "Meet new people while contributing to your community",
                 "tags": ["volunteering programs"]
+            },
+            {
+                "text": "<en>Communication</en><fr>Communication</fr>",
+                "value": 88,
+                "code": "CFN-INT-COM",
+                "description": "",
+                "tags": ["library"]
             }
         ]
     },
