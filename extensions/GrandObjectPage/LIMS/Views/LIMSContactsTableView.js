@@ -61,7 +61,6 @@ LIMSContactsTableView = Backbone.View.extend({
         }
         if(this.groupBy != null){
             rowsGroup = [this.groupBy].concat(rowsGroup);
-            console.log(rowsGroup);
         }
         this.table = this.$("table#contacts").DataTable({
             "autoWidth": true,
