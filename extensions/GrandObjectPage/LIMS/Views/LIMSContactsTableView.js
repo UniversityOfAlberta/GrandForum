@@ -3,7 +3,7 @@ LIMSContactsTableView = Backbone.View.extend({
     table: null,
     editDialog: null,
     deleteDialog: null,
-    groupBy: null,
+    groupBy: 4,
 
     initialize: function(){
         this.model.fetch();
@@ -50,7 +50,7 @@ LIMSContactsTableView = Backbone.View.extend({
     initTable: function(){
         // Initialize order/filter
         var searchStr = "";
-        var order = [1, "asc"];
+        var order = [4, "asc"];
         if(this.table != undefined){
             order = this.table.order();
             searchStr = this.table.search();
@@ -61,6 +61,7 @@ LIMSContactsTableView = Backbone.View.extend({
         }
         if(this.groupBy != null){
             rowsGroup = [this.groupBy].concat(rowsGroup);
+            console.log(rowsGroup);
         }
         this.table = this.$("table#contacts").DataTable({
             "autoWidth": true,
