@@ -3,7 +3,7 @@
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
-    <ReportSection id="program_submit" tooltip="Program Submission Details" name="Program Submission Details" title="&lt;en>Program Submission Details&lt;/en>&lt;fr>Détails de la soumission du programme&lt;/fr>" blobSection="AVOID_PROGRAM_SUBMIT" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="program_submit" tooltip="Program Submission Details" name="Program Submission Details" title="&lt;en>Program Submission Details&lt;/en>&lt;fr>Formulaire de soumission d’une ressource&lt;/fr>" blobSection="AVOID_PROGRAM_SUBMIT" type="EditableReportSection" pagebreak="false">
         <Static>
             <![CDATA[
                 <style>
@@ -18,7 +18,7 @@
                 </p>
                 <p>
                     <en>Please fill in the form to the best of your knowledge and ability to submit a new program to the library. Once submitted, we will make sure that it is ongoing and suitable for the community before adding it to the library.</en>
-                    <fr>Veuillez remplir le formulaire au mieux de vos connaissances et de vos capacités pour soumettre un nouveau programme à ajouter au Répertoire. Une fois soumis, nous nous assurerons qu’elle est toujours offerte et adaptée à la communauté avant de l’ajouter au Répertoire.</fr>
+                    <fr>Veuillez remplir le formulaire au mieux de vos connaissances et de vos capacités pour soumettre une nouvelle ressource à ajouter au Répertoire. Une fois soumise, nous nous assurerons qu’elle est toujours offerte et adaptée à la communauté avant de l’ajouter au Répertoire.</fr>
                 </p>
 
                 <a id="clear" href="#">
@@ -158,7 +158,7 @@
             <![CDATA[
                 <h3>
                     <en>TTY:</en>
-                    <fr>ATS:</fr>
+                    <fr>Téléimprimeur:</fr>
                 </h3>
                 {$item}
             ]]>
@@ -195,7 +195,7 @@
                 <br/><br/>
                 <div id="reportHeader">
                     <en>Program Primary Contact</en>
-                    <fr>Personne-ressource principale du service</fr>
+                    <fr>Personne responsable de la ressource</fr>
                 </div><hr>
             ]]>
         </Static>
@@ -240,7 +240,7 @@
                 <br/><br/>
                 <div id="reportHeader">
                     <en>Director or Senior Contact</en>
-                    <fr>Direction ou personne-ressource principale</fr>
+                    <fr>Direction ou personne-ressource de l'organisation</fr>
                 </div><hr>
             ]]>
         </Static>
@@ -264,7 +264,7 @@
         </ReportItem>
         <ReportItem id="directorseniorcontactphone" type="Text" blobItem="DIRECTORSENIORCONTACTPHONE" width="400px">
             <![CDATA[
-                <h3
+                <h3>
                     <en>Phone:</en>
                     <fr>Téléphone:</fr>
                 </h3>

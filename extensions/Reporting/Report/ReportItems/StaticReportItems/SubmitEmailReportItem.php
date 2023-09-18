@@ -10,11 +10,11 @@ class SubmitEmailReportItem extends StaticReportItem {
         }
         $report = $this->getReport();
         $section = $this->getSection();
-        $message = str_replace("'", "&#39;", $this->getAttr('message', "Thank you for submitting"));
+        $message = str_replace("'", "&#39;", $this->getAttr('message', "<en>Thank you for submitting</en><fr>Merci de votre suggestion</fr>"));
         $html = "<iframe id='programFrame' style='width:100%;display:none;' src=''></iframe>
                  <div id='program-messages'></div>
                  <div>
-                     <a id='programSubmit' class='program-button' style='min-width: 100px; text-align: center;' id='{$this->getPostId()}' type='button' value='Submit'>Submit <span style='display:none;' class='throbber'></span></a>
+                     <a id='programSubmit' class='program-button' style='min-width: 100px; text-align: center;' id='{$this->getPostId()}' type='button' value='Submit'><en>Submit</en><fr>Soumettre</fr> <span style='display:none;' class='throbber'></span></a>
                  </div>
                  <script type='text/javascript'>
                     function programSubmitted(){

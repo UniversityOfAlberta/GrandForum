@@ -110,7 +110,7 @@ class EducationResources extends SpecialPage {
                         $wgOut->addHTML("<div class='accordion' style='width: 100%;'>");
                         foreach($resources as $subCategory => $subResources){
                             if(count($subResources) > 0){
-                                $wgOut->addHTML("<h4 style='margin-top: 0; padding-top: 0;'>{$subCategory}</h4>");
+                                $wgOut->addHTML("<h4 id='resources".str_replace(" ", "", $subCategory)."' style='margin-top: 0; padding-top: 0;'>{$subCategory}</h4>");
                                 $wgOut->addHTML("<div style='padding:1em !important;'><ul style='margin-top: 0;'>");
                                 foreach($subResources as $resource){
                                     $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
@@ -171,7 +171,16 @@ class EducationResources extends SpecialPage {
             var pageDC = new DataCollection();
             pageDC.init(me.get('id'), 'EducationResources-Hit');
             pageDC.append('log', new Date().toISOString().slice(0, 10), false);
-        </script>");
+            ");
+            
+        @$wgOut->addHTML("
+            $(document).ready(function(){
+                $('#category{$_GET['topic']}').click();
+                $('#resources{$_GET['resources']}').click();
+            });"
+        );
+            
+        $wgOut->addHTML("</script>");
     }
 
     static function createTab(&$tabs){
