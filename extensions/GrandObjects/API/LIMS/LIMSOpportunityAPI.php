@@ -38,6 +38,7 @@ class LIMSOpportunityAPI extends RESTAPI {
             $opportunity->surveyed = $this->POST('surveyed');
             $opportunity->responded = $this->POST('responded');
             $opportunity->satisfaction = $this->POST('satisfaction');
+            $opportunity->status = $this->POST('status');
             $opportunity->description = $this->POST('description');
             $opportunity->products = $this->POST('products');
             $opportunity->files = $this->POST('files');
@@ -59,6 +60,7 @@ class LIMSOpportunityAPI extends RESTAPI {
             $opportunity->surveyed = $this->POST('surveyed');
             $opportunity->responded = $this->POST('responded');
             $opportunity->satisfaction = $this->POST('satisfaction');
+            $opportunity->status = $this->POST('status');
             $opportunity->description = $this->POST('description');
             $opportunity->products = $this->POST('products');
             $opportunity->files = $this->POST('files');

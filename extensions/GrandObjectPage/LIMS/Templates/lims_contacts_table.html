@@ -16,6 +16,7 @@
             <th>Geography</th>
             <th>Owner</th>
             <th style="white-space:nowrap;">Request Id</th>
+            <th>Status</th>
             <th>Node</th>
             <th>Request</th>
             <th style="white-space:nowrap;">User Type</th>
@@ -59,6 +60,17 @@
                         </td>
                         <td>
                             <%= opportunity.requestId %><span style="display:none;"><%= opportunity.id %></span>
+                        </td>
+                        <td>
+                            <span style="display:none;"><%= opportunity.status %></span>
+                            <% if(opportunity.id != null){ %>
+                                <select class="opportunity-status" data-id="<%= opportunity.id %>">
+                                    <option <% if("" == opportunity.status){ %>selected<% } %> ></option>
+                                    <option <% if("Open" == opportunity.status){ %>selected<% } %> >Open</option>
+                                    <option <% if("Closed" == opportunity.status){ %>selected<% } %> >Closed</option>
+                                </select>
+                            <% } %>
+                            <span style="display:none;"><%= opportunity.id %></span>
                         </td>
                         <td>
                             <%= opportunity.project.name %><span style="display:none;"><%= opportunity.id %></span>

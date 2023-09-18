@@ -17,6 +17,7 @@ LIMSContactsTableView = Backbone.View.extend({
         "click #addContact": "addContact",
         "click .edit-icon": "editContact",
         "click .delete-icon": "deleteContact",
+        "change .opportunity-status": "changeStatus",
     },
     
     addContact: function(e){
@@ -47,6 +48,19 @@ LIMSContactsTableView = Backbone.View.extend({
         this.deleteDialog.dialog('open');
     },
     
+    changeStatus: function(e){
+        $(e.currentTarget).prop('disabled', true);
+        var id = $(e.currentTarget).attr("data-id");
+        var status = $("option:selected", e.currentTarget).val();
+        var model = new LIMSOpportunity({id: id});
+        model.fetch().then(function(){
+            model.set('status', status);
+            model.save().then(function(){
+                this.model.fetch();
+            }.bind(this));
+        }.bind(this));
+    },
+    
     initTable: function(){
         // Initialize order/filter
         var searchStr = "";
@@ -55,9 +69,9 @@ LIMSContactsTableView = Backbone.View.extend({
             order = this.table.order();
             searchStr = this.table.search();
         }
-        var rowsGroup = [1,0,2,3,4,5,6,7,8];
+        var rowsGroup = [1,0,2,3,4,5,6,7,8,9];
         if(isAllowedToCreateLIMSContacts){
-            rowsGroup = [1,0,2,3,4,5,6,7,8,9];
+            rowsGroup = [1,0,2,3,4,5,6,7,8,9,10];
         }
         if(this.groupBy != null){
             rowsGroup = [this.groupBy].concat(rowsGroup);
@@ -80,12 +94,15 @@ LIMSContactsTableView = Backbone.View.extend({
                                 var html = $("<div>" + html + "</div>");
                                 $("span", html).remove();
                                 $("br", html).remove();
+                                if($("select", html).length > 0){
+                                    $(html).text($("select option:selected", html).val());
+                                }
                                 return $(html).text().trim().replaceAll("\n", "");
                             }
                         }
                     }
                 }
-            ]
+            ],
         });
         table = this.table;
         this.table.order(order);
