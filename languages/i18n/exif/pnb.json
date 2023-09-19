@@ -1,7 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Khalid Mahmood"
+			"Khalid Mahmood",
+			"Abbas dhothar",
+			"Bgo eiu"
 		]
 	},
 	"exif-imagewidth": "چوڑائی",
@@ -52,7 +54,7 @@
 	"exif-exposureprogram": "ایکسپویر پروگرام",
 	"exif-spectralsensitivity": "سپیکٹرل سنسیٹیوٹی",
 	"exif-isospeedratings": "ISO  سپیڈ ریٹنگ",
-	"exif-shutterspeedvalue": "!!!!شٹر دی تیزی",
+	"exif-shutterspeedvalue": "ایپیکس شٹر دی تیزی",
 	"exif-aperturevalue": "!!اپیکس!!اپرچر",
 	"exif-brightnessvalue": "اپیکس چانن",
 	"exif-exposurebiasvalue": "اپیکس کھلن بیاس",
@@ -157,7 +159,7 @@
 	"exif-label": "لیبل",
 	"exif-datetimemetadata": "تریخ جدون میٹاڈیٹا بدلے گۓ۔",
 	"exif-nickname": "مورت دا انفورمل ناں",
-	"exif-rating": "سعاب (5 چوں)",
+	"exif-rating": "ریٹنگ (5 چوں)",
 	"exif-rightscertificate": "حق دے سعاب کتاب دا سرٹیفیکیٹ",
 	"exif-copyrighted": "کاپی رائٹ سٹیٹس",
 	"exif-copyrightowner": "کاپی رائٹ مالک",
@@ -172,7 +174,7 @@
 	"exif-disclaimer": "منکرنا",
 	"exif-contentwarning": "لکھت توں خبردار",
 	"exif-giffilecomment": "جی آئی ایف شائل کومنٹ",
-	"exif-intellectualgenre": "آئیٹم ٹائپ",
+	"exif-intellectualgenre": "مد دی قسم",
 	"exif-subjectnewscode": "سبجیکٹ کوڈ",
 	"exif-scenecode": "آئی پی ٹی سی سین کوڈ",
 	"exif-event": "ہوند دسی گئی۔",
@@ -198,7 +200,7 @@
 	"exif-planarconfiguration-1": "چنکی فارمیٹ",
 	"exif-planarconfiguration-2": "پلانر فارمیٹ",
 	"exif-colorspace-65535": "ناں ناپیا گیا",
-	"exif-componentsconfiguration-0": "ہے نئیں",
+	"exif-componentsconfiguration-0": "موجود نہیں اے",
 	"exif-exposureprogram-0": "بیان نئیں کیتا گیا",
 	"exif-exposureprogram-1": "ول",
 	"exif-exposureprogram-2": "عام پروگرام",
@@ -225,7 +227,7 @@
 	"exif-lightsource-9": "چنگا موسم",
 	"exif-lightsource-10": "بدل آلا موسم",
 	"exif-lightsource-11": "سایہ",
-	"exif-lightsource-12": "در چانن فلورسنٹ (D 5700 – 7100K)",
+	"exif-lightsource-12": "دن چانن فلورسنٹ (D 5700 – 7100K)",
 	"exif-lightsource-13": "دن دا چانن فلورسنٹ (N 4600 – 5400K)",
 	"exif-lightsource-14": "ٹھنڈی چٹی فلورسنٹ",
 	"exif-lightsource-15": "چٹی فلورسنٹ (WW 3200 – 3700K)",
@@ -293,7 +295,7 @@
 	"exif-gpsstatus-v": "ناپ انٹراوپریٹبلٹی",
 	"exif-gpsmeasuremode-2": "دو پاسیاں دا ناپ",
 	"exif-gpsmeasuremode-3": "تن پاسیاں دا ناپ",
-	"exif-gpsspeed-k": "کلومیٹر فی کینٹہ",
+	"exif-gpsspeed-k": "کلومیٹر فی گھینٹہ",
 	"exif-gpsspeed-m": "میل فی کینٹہ",
 	"exif-gpsspeed-n": "ناٹ",
 	"exif-gpsdestdistance-k": "کلومیٹر",

@@ -13,7 +13,9 @@
 			"Triple-ADHD-AS",
 			"Vlad5250",
 			"Игорь Бродский",
-			"아라"
+			"아라",
+			"McDutchie",
+			"Amire80"
 		]
 	},
 	"tog-underline": "Jonoštada kosketused:",
@@ -178,7 +180,7 @@
 	"protect_change": "toižetada",
 	"unprotect": "Toižetada kaičend",
 	"newpage": "Uz’ lehtpol’",
-	"talkpagelinktext": "Lodu",
+	"talkpagelinktext": "lodu",
 	"specialpage": "Specialine lehtpol'",
 	"personaltools": "Personaližed azeged",
 	"talk": "Diskussii",
@@ -717,7 +719,7 @@
 	"default": "augotižjärgendusen mödhe",
 	"prefs-files": "Failad",
 	"prefs-custom-css": "Ičeze CSS",
-	"prefs-custom-js": "Ičeze JS",
+	"prefs-custom-js": "Ičeze JavaScript",
 	"prefs-common-config": "Ühthižed CSS/JavaScript kaikiden temiden täht:",
 	"prefs-reset-intro": "Tö sat kävutada nece lehtpol', miše pördutada teiden järgendused saitan ezijärgendusidennoks.\nNecidä tegendad ei sa toižetada.",
 	"prefs-emailconfirm-label": "E-počtan vahvištand:",

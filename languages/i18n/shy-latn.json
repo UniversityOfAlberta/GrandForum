@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"DannyS712",
-			"Vikoula5"
+			"Vikoula5",
+			"Amire80"
 		]
 	},
 	"tog-underline": "Aderrer n iseɣwan:",
@@ -181,7 +182,7 @@
 	"protect_change": "beddel tiḥḥerzi",
 	"unprotect": "Beddel amesten",
 	"newpage": "Asebter amaynut",
-	"talkpagelinktext": "Mmeslay",
+	"talkpagelinktext": "mmeslay",
 	"specialpage": "Asebter uslig",
 	"personaltools": "Dduzan inu",
 	"talk": "Asqerdec",
@@ -1041,6 +1042,8 @@
 	"rightslog": "Aɣmis n yizerfan n wemseqdac",
 	"action-edit": "beddel asebter agi",
 	"action-createaccount": "snulfud amiḍan agi n useqdac",
+	"action-move": "Snifel isem",
+	"action-delete": "Mḥu",
 	"enhancedrc-history": "amazray",
 	"recentchanges": "Ibeddilen imaynuten",
 	"recentchanges-legend": "Tifranin n ibeddilen imaynuten",

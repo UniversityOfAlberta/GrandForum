@@ -30,6 +30,13 @@ interface IResultWrapper extends Iterator {
 	public function numRows();
 
 	/**
+	 * Get the number of rows in a result object
+	 *
+	 * @return int
+	 */
+	public function count(): int;
+
+	/**
 	 * Fetch the next row from the given result object, in object form. Fields can be retrieved with
 	 * $row->fieldname, with fields acting like member variables. If no more rows are available,
 	 * false is returned.
@@ -54,7 +61,7 @@ interface IResultWrapper extends Iterator {
 	 *
 	 * @param int $pos
 	 */
-	public function seek( $pos );
+	public function seek( $pos ): void;
 
 	/**
 	 * Free a result object
@@ -67,16 +74,18 @@ interface IResultWrapper extends Iterator {
 	/**
 	 * @return stdClass|array|bool
 	 */
+	#[\ReturnTypeWillChange]
 	public function current();
 
 	/**
 	 * @return int
 	 */
-	public function key();
+	public function key(): int;
 
 	/**
 	 * @return stdClass
 	 * @suppress PhanParamSignatureMismatchInternal
 	 */
+	#[\ReturnTypeWillChange]
 	public function next();
 }
