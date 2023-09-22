@@ -332,10 +332,10 @@ class FrailtyReport extends SpecialPage {
         $community = array();
         $nos = array();
         foreach($topics as $key => $topic){
+            if(isset($scores[$key])){
+                $subTopics[$key] = "<p><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$topic['img']}' alt='{$key}' /><br />{$topic['text']}</p>";
+            }
             if(@$scores[$key] > 0 || @$scores["Behavioral"][$key] > 0){
-                if(isset($scores[$key])){
-                    $subTopics[$key] = "<p><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$topic['img']}' alt='{$key}' /><br />{$topic['text']}</p>";
-                }
                 foreach($topic['education'] as $k => $e){
                     if(is_array($e)){
                         $links = array();
