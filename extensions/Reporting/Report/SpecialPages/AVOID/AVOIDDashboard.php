@@ -298,48 +298,86 @@ class AVOIDDashboard extends SpecialPage {
             /*$wgOut->addHTML("<form style='display:none;' action='{$wgServer}{$wgScriptPath}/index.php?action=api.DownloadWordHtmlApi' enctype='multipart/form-data' id='downloadword' method='post' target='_blank'><input type='hidden' name='content' value='{$content}'><input type='hidden' name='filename' value='{$me->getNameForForms()} In-Person Assessment Download'><input id='downloadWord' type='submit' style='display:none;' value='Download Word'></form>");*/
             $assessmentReport = "<br /><a id='viewAssessmentReport' href='#'>In-Person Frailty Report</a>";
         }
-        
-        $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'><en>My Frailty Status</en><fr>Mon état de fragilité</fr></h1>
-                            <div class='program-body {$membersOnly}' style='width: 100%;'>
-                                <p style='margin-bottom:0.5em;'>
-                                    {$frailty}<br />
-                                </p>
-                                <a class='viewReport' href='#'><img src='{$wgServer}{$wgScriptPath}/skins/report.png' style='height:3.5em;max-height:100px;margin-right:0.5em;' /></a>
-                                <div style='display:inline-block;vertical-align:middle;'>
-                                    <a class='viewReport' data-href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview&reportType={$reportType}' href='#'>
-                                        <en>My Recent Full Assessment Results</en>
-                                        <fr>Mon rapport personnel et mes recommandations</fr>
-                                    </a>
-                                    {$progressReport}
-                                    {$assessmentReport}
-                                </div>
-                                <p style='margin-bottom:0.5em;'>
-                                    <a href='{$wgServer}{$wgScriptPath}/EducationModules/What is Frailty-".strtoupper($wgLang->getCode()).".pdf' target='_blank'>
-                                        <en>What is Frailty?</en>
-                                        <fr>Qu’est-ce que la fragilité?</fr>
-                                    </a>
-                                    <en>
-                                        | 
-                                        <a href='https://www.youtube.com/watch?v=tzyYBp1v1WI&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE' target='_blank'>Frailty: Ask the Expert</a>
-                                    </en>
-                                    <br />
-                                </p>
-                                <p>
-                                    <b><en>What’s Next?</en><fr>Utilisation du programme</fr></b><br />
-                                    <en>Frailty is preventable, and small changes make a difference. Address some of your risks using the resources found in this program.</en>
-                                    <fr>Étape 1. Consultez votre rapport personnel ci-dessus pour connaître vos risques et les recommandations à suivre.<br /></fr>
-                                    <fr>Étape 2. Utilisez le modèle de plan d’action ci-dessous pour choisir un changement sain et en faire le suivi <b>cette semaine</b><br /></fr>
-                                    <fr>Étape 3. Utilisez les modules d’éducation, les programmes et les ressources pour soutenir vos objectifs de vieillissement sain.</fr>
-                                </p>
+        //if($membersOnly == ""){
+            // Member Frailty Status
+            $facebookLink = "<img src='{$wgServer}{$wgScriptPath}/skins/icons/avoid/glyphicons_social_30_facebook.png' />
+                             <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Join the discussion in the <a target='_blank' href='https://www.google.com/url?q=http://www.facebook.com/groups/1751174705081179/&sa=D&source=docs&ust=1695153573203163&usg=AOvVaw0fs1TtiaBpCTLqwXQtPZMk'>member's only facebook group</a></span>";
+            $gamificationLink = ($me->isSubRole("Gamification")) 
+                              ? "<img src='{$wgServer}{$wgScriptPath}/skins/goldstar.png' style='height:24px;' />
+                                 <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Create or join a team in the <a href='https://healthyagingcentres.ca/awards/'>Healthy Lifestyle Rewards game</a> and start earning points for using the program. Compete for prizes and bragging rights!</span>"
+                              : "";
+            $wgOut->addHTML("<div class='$membersOnly modules module-2cols-outer'>
+                                <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'><en>My Frailty Status</en><fr>Mon état de fragilité</fr></h1>
+                                <div class='program-body' style='width: 100%;'>
+                                    <p style='margin-bottom:0.5em;'>
+                                        {$frailty}<br />
+                                    </p>
+                                    <a class='viewReport' href='#'><img src='{$wgServer}{$wgScriptPath}/skins/report.png' style='height:3.5em;max-height:100px;margin-right:0.5em;' /></a>
+                                    <div style='display:inline-block;vertical-align:middle;'>
+                                        <a class='viewReport' data-href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview&reportType={$reportType}' href='#'>
+                                            <en>My Recent Full Assessment Results</en>
+                                            <fr>Mon rapport personnel et mes recommandations</fr>
+                                        </a>
+                                        {$progressReport}
+                                        {$assessmentReport}
+                                    </div>
+                                    <p style='margin-bottom:0.5em;'>
+                                        <a href='{$wgServer}{$wgScriptPath}/EducationModules/What is Frailty-".strtoupper($wgLang->getCode()).".pdf' target='_blank'>
+                                            <en>What is Frailty?</en>
+                                            <fr>Qu’est-ce que la fragilité?</fr>
+                                        </a>
+                                        <en>
+                                            | 
+                                            <a href='https://www.youtube.com/watch?v=tzyYBp1v1WI&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE' target='_blank'>Frailty: Ask the Expert</a>
+                                        </en>
+                                        <br />
+                                    </p>
+                                    <p style='margin-bottom: 0;'>
+                                        <b><en>What’s Next?</en><fr>Utilisation du programme</fr></b><br />
+                                        <en>Frailty is preventable, and small changes make a difference. Address some of your risks using the resources found in this program.</en>
+                                        <fr>Étape 1. Consultez votre rapport personnel ci-dessus pour connaître vos risques et les recommandations à suivre.<br /></fr>
+                                        <fr>Étape 2. Utilisez le modèle de plan d’action ci-dessous pour choisir un changement sain et en faire le suivi <b>cette semaine</b><br /></fr>
+                                        <fr>Étape 3. Utilisez les modules d’éducation, les programmes et les ressources pour soutenir vos objectifs de vieillissement sain.</fr>
+                                    </p>
 
-                                <p style='margin-bottom:0;'>
-                                    <en>Need help navigating the site? Please click the button below for 1-on-1 assistance</en>
-                                    <fr>Vous avez encore besoin d’aide? Qu’il s’agisse de la navigation sur le site ou d’autre chose, nous sommes là pour vous aider. Veuillez cliquer sur le bouton ci-dessous pour obtenir de l’assistance individuelle.</fr><br />
-                                    <a id='helpButton' class='program-button' style='width: 4em; text-align: center;'><en>Help</en><fr>Aide</fr></a>
-                                </p>
-                            </div>
-                         </div>");
+                                    <div>
+                                        <en>
+                                            <div class='modules' style='margin-top: 0.5em;'>
+                                                <div class='module-2cols-outer'>{$facebookLink}</div>
+                                                <div class='module-2cols-outer'>{$gamificationLink}</div>
+                                            </div>
+                                        </en>
+                                    </div>
+                                </div>
+                             </div>");
+        /*}
+        else{
+            // Clinician 
+            $wgOut->addHTML("<div class='modules module-2cols-outer'>
+                                <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'><en>My Toolkit</en><fr>Ma boîte à outils</fr></h1>
+                                <div class='program-body' style='width: 100%;'>
+                                    <div class='modules'>
+                                        <div class='module-2cols-outer'>
+                                            <b><en>Resources for Clinic</en><fr>Ressources pour la clinique</fr></b>
+                                            <ul>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/AVOID Frailty Logo.jpg'>AVOID Frailty Logo</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/AVOID Frailty Rack Card.pdf'>AVOID Frailty Rack Card</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/AVOID FRAILTY video.mp4'>AVOID FRAILTY video</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/CFN_Logo.jpg'>CFN_Logo</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/Poster 1.jpg'>Poster 1 (JPG)</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/Poster 1.pdf'>Poster 1 (PDF)</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/Poster 2.jpg'>Poster 2 (JPG)</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/Poster 2.pdf'>Poster 2 (PDF)</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/Waiting room slide.jpg'>Waiting room slide</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class='module-2cols-outer'>
+                                            <b><en>Patient Resources</en><fr>Ressources pour les patients</fr></b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>");
+        }*/
         
         // Upcoming Events
         $events = Wiki::newFromTitle("UpcomingEvents");
@@ -455,6 +493,7 @@ class AVOIDDashboard extends SpecialPage {
                 if($('#reportDialog', $('.ui-dialog')).length == 0){
                     $('#reportDialog').dialog({
                         modal: true,
+                        title: '<en>Frailty Report</en><fr>Recommandation du programme Proactif</fr>',
                         draggable: false,
                         resizable: false,
                         width: 'auto',

@@ -11,81 +11,237 @@ function runFrailtyReport($par) {
 
 class FrailtyReport extends SpecialPage {
     
-    static $healthRows = array(
-        "Nutritional Status" => array(
-            "img" => "diet.png",
-            "text" => "<en>Nutritional Status</en><fr>État nutritionnel</fr>",
-            "no" => "<en>
-                        Great job, keep it up!<br />
-                        Protein, calcium and vitamin D are particularly important to maintain strong bones and muscles.
-                     </en>
-                     <fr>
-                        Bon travail, continuez!<br />
-                        Les protéines, le calcium et la vitamine D sont particulièrement importants pour maintenir des os sains et des muscles forts. 
-                     </fr>",
-            "education" => array(
-                "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "DietAndNutrition"
+    static $rows = array(
+        "A" => array(
+            "Activity" => array(
+                "img" => "Activity.png",
+                "text" => "<en>Activity</en><fr>Activité physique</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Activity</en><fr>Activité physique</fr>" => "Activity"
+                ),
+                "programs" => array(
+                    "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
+                ),
+                "community" => array(
+                    "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT"
+                )
             ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
+            "Falls and Balance" => array(
+                "img" => "falling.png",
+                "text" => "<en>Falls and Balance</en><fr>Chutes et équilibre</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Falls Prevention</en><fr>Prévention des chutes</fr>" => "FallsPrevention",
+                    "<en>Resources</en><fr>Ressources</fr>" => "index.php/Special:EducationResources?topic=FallsPrevention"
+                ),
+                "programs" => array(
+                    "<en>Otago Exercise Program</en><fr>Coaching par les pairs</fr>" => "Otago"
+                ),
+                "community" => array(
+                    "<en>Activity</en><fr>Activité physique</fr> → <en>Gentle</en><fr>Doux</fr>" => "CFN-ACT-GEN",
+                    "<en>Home & Care Partners</en><fr>Services de soutien<br />et de soins à domicile</fr> ↴ <en>Help at Home</en><fr>Aide à domicile</fr>" => "CFN-HOMECARE-HELP"
+                )
             ),
-            "community" => array(
-                "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "CFN-DIET",
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr>" => "CFN-ACT-EX"
+            "Fatigue" => array(
+                "img" => "tiredness.png",
+                "text" => "<en>Fatigue</en><fr>Fatigue</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Sleep</en><fr>Sommeil</fr>" => "Sleep"
+                ),
+                "programs" => array(
+                    "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
+                ),
+                "community" => array(
+                    "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr> ↴ <en>Movement and Mindfulness</en><fr>Mouvement et pleine conscience</fr>" => "CFN-ACT-EX-MOV",
+                    "<en>Activity</en><fr>Activité physique</fr> → <en>Sleep</en><fr>Sommeil</fr>" => "CFN-ACT-SLEEP",
+                    "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr>" => "CFN-ACT-EX"
+                )
+            ),
+            "Strength" => array(
+                "img" => "muscle.png",
+                "text" => "<en>Strength</en><fr>Force physique</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Resources</en><fr>Ressources</fr>" => "index.php/Special:EducationResources?topic=Activity"
+                ),
+                "programs" => array(
+
+                ),
+                "community" => array(
+                    "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr> → <en>Fitness</en><fr>Conditionnement physique</fr>" => "CFN-ACT-EX-FIT"
+                )
+            ),
+            "Walking Speed" => array(
+                "img" => "marathon.png",
+                "text" => "<en>Walking Speed</en><fr>Vitesse de marche</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Activity</en><fr>Activité physique</fr>" => "Activity"
+                ),
+                "programs" => array(
+                    "<en>Otago Exercise Program</en><fr>Coaching par les pairs</fr>" => "Otago"
+                ),
+                "community" => array(
+                    "<en>Activity</en><fr>Activité physique</fr> → <en>Gentle</en><fr>Doux</fr>" => "CFN-ACT-GEN"
+                )
             )
         ),
-        "Oral Health" => array(
-            "img" => "dental-care.png",
-            "text" => "<en>Oral Health</en><fr>Santé bucco-dentaire</fr>",
-            "no" => "<en>
-                        Way to go! <br />
-                        Good oral hygiene practices can help you to avoid tooth pain that makes it difficult to eat. Make sure you continue with regular visits to your dentist.
-                     </en>
-                     <fr>
-                        Bravo!<br />
-                        De bonnes pratiques d’hygiène buccale peuvent vous aider à éviter les douleurs dentaires qui nuisent à l’alimentation. Veillez à visiter régulièrement votre dentiste.
-                     </fr>",
-            "education" => array(
-                "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "DietAndNutrition"
-            ),
-            "programs" => array(
-            
-            ),
-            "community" => array(
-                "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "CFN-DIET"
+        "V" => array(
+            "Vaccinate" => array(
+                "img" => "Vaccination.png",
+                "text" => "<en>Vaccination</en><fr>Vaccination</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Vaccination</en><fr>Vaccination</fr>" => "Vaccination",
+                    "<en>Resources</en><fr>Ressources</fr>" => "index.php/Special:EducationResources?topic=Vaccination"
+                ),
+                "programs" => array(
+
+                ),
+                "community" => array(
+                    "<en>Vaccination/Optimize Medication</en><fr>Vaccination et optimisation des médicaments</fr>" => "CFN-VAC"
+                )
             )
         ),
-        "Fatigue" => array(
-            "img" => "tiredness.png",
-            "text" => "<en>Fatigue</en><fr>Fatigue</fr>",
-            "no" => "<en>
-                        Getting older means your sleep will change, but not necessarily impact your daily living. It looks like you’ve got this under control!
-                     </en>
-                     <fr>
-                        En vieillissant, votre sommeil va changer, mais cela n’aura pas nécessairement d’impact sur votre vie quotidienne. On dirait que tout va bien!
-                     </fr>",
-            "education" => array(
-                "<en>Sleep</en><fr>Sommeil</fr>" => "Sleep"
+        "O" => array(
+            "Optimize Medication" => array(
+                "img" => "OptimizeMedication.png",
+                "text" => "<en>Optimize Medication</en><fr>Optimisation des médicaments</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                     "<en>Optimize Medication</en><fr>Optimisation des médicaments</fr>" => "OptimizeMedication",
+                     "<en>Resources</en><fr>Ressources</fr>" => "index.php/Special:EducationResources?topic=OptimizeMedication"
+                ),
+                "programs" => array(
+                    "Cyber Seniors Webinar(s):" => array(
+                        "How to Fill Prescriptions Online" => "https://cyberseniors.org/previous-webinars/exercise-health/how-to-fill-prescriptions-online/",
+                        "Medisafe Pill Reminder App" => "https://cyberseniors.org/previous-webinars/apps-and-online-services/medisafe-pill-reminder-app/"
+                    )
+                ),
+                "community" => array(
+                    "<en>Vaccination/Optimize Medication</en><fr>Vaccination et optimisation des médicaments</fr>" => "CFN-VAC"
+                )
             ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching",
-                "<en>Community Connectors</en><fr>Connecteurs communautaires</fr>" => "CommunityConnectors"
-            ),
-            "community" => array(
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr> ↴ <en>Movement and Mindfulness</en><fr>Mouvement et pleine conscience</fr>" => "CFN-ACT-EX-MOV",
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Sleep</en><fr>Sommeil</fr>" => "CFN-ACT-SLEEP",
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr>" => "CFN-ACT-EX"
+            "Multiple Medications" => array(
+                "img" => "syringe.png",
+                "text" => "<en>Multiple Medications</en><fr>Médicaments multiples</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "Optimize Medication" => "OptimizeMedication"
+                ),
+                "programs" => array(
+                    "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
+                ),
+                "community" => array(
+                    "<en>Vaccination/Optimize Medication</en><fr>Vaccination et optimisation des médicaments</fr>" => "CFN-VAC",
+                    "<en>Chronic Conditions</en><fr>Maladies chroniques</fr>" => "CFN-CHRONIC"
+                )
             )
         ),
+        "I" => array(
+            "Interact" => array(
+                "img" => "Interact.png",
+                "text" => "<en>Interact</en><fr>Vie sociale</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Interact</en><fr>Vie sociale</fr>" => "Interact"
+                ),
+                "programs" => array(
+                    "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
+                ),
+                "community" => array(
+                    "<en>Interact</en><fr>Vie sociale</fr>" => "CFN-INT",
+                    "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT"
+                )
+            ),
+            "Mental Health" => array(
+                "img" => "mental-health.png",
+                "text" => "<en>Mental Health</en><fr>Santé mentale</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Interact</en><fr>Vie sociale</fr>" => "Interact",
+                    "<en>Resources</en><fr>Ressources</fr>" => "index.php/Special:EducationResources?topic=Interact&resources=MentalHealth"
+                ),
+                "programs" => array(
+                    "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
+                ),
+                "community" => array(
+                    "<en>Interact</en><fr>Vie sociale</fr>" => "CFN-INT",
+                    "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT",
+                    "<en>Mental Health</en><fr>Santé mentale</fr>" => "CFN-MH"
+                )
+            ),
+            "Sensory: Hearing and Vision" => array(
+                "img" => "sensory.png",
+                "text" => "<en>Communication</en><fr>Communication</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    
+                ),
+                "programs" => array(
+
+                ),
+                "community" => array(
+                    "<en>Disability Services</en><fr>Services liés à l’incapacité</fr>" => "CFN-DIS",
+                    "<en>Home & Care Partners</en><fr>Services de soutien<br />et de soins à domicile</fr> ↴ <en>Help at Home</en><fr>Aide à domicile</fr>" => "CFN-HOMECARE-HELP",
+                    "<en>Interact</en><fr>Vie sociale</fr> → <en>Communication</en><fr>Communication</fr>" => "CFN-INT-COM"
+                )
+            )
+        ),
+        "D" => array(
+            "Diet & Nutrition" => array(
+                "img" => "DietAndNutrition.png",
+                "text" => "<en>Diet and Nutrition</en><fr>Alimentation</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "DietAndNutrition"
+                ),
+                "programs" => array(
+                    "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
+                ),
+                "community" => array(
+                    "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "CFN-DIET",
+                    "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT"
+                )
+            ),
+            "Nutritional Status" => array(
+                "img" => "diet.png",
+                "text" => "<en>Appetite</en><fr>État nutritionnel</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Resources</en><fr>Ressources</fr>" => "index.php/Special:EducationResources?topic=DietAndNutrition&resources=Appetite"
+                ),
+                "programs" => array(
+
+                ),
+                "community" => array(
+                    "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "CFN-DIET"
+                )
+            ),
+            "Oral Health" => array(
+                "img" => "dental-care.png",
+                "text" => "<en>Oral Health</en><fr>Santé bucco-dentaire</fr>",
+                "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
+                "education" => array(
+                    "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "DietAndNutrition"
+                ),
+                "programs" => array(
+                
+                ),
+                "community" => array(
+                    "<en>Diet and Nutrition</en><fr>Alimentation</fr> → <en>Dental</en><fr>Soins dentaires</fr>" => "CFN-DIET-DENTAL"
+                )
+            )
+        )
+    );
+    
+    static $otherRows = array(
         "Pain" => array(
             "img" => "back.png",
             "text" => "<en>Pain</en><fr>Douleur</fr>",
-            "no" => "<en>
-                        If you’re not experiencing pain or discomfort, that’s great! Age isn’t synonymous with aches and pains, but by the looks of things, you already know that!
-                     </en>
-                     <fr>
-                        Si vous ne ressentez aucune douleur ou gêne, c’est très bien! L’âge n’est pas synonyme de courbatures, mais on dirait que vous le savez déjà! 
-                     </fr>",
+            "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
             "education" => array(
                 "<en>Activity</en><fr>Activité physique</fr>" => "Activity"
             ),
@@ -93,99 +249,13 @@ class FrailtyReport extends SpecialPage {
                 "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
             ),
             "community" => array(
-                "<en>Chronic Condition</en><fr>Maladies chroniques</fr> → <en>Chronic<br />Pain</en><fr>Douleur chronique</fr>" => "CFN-CHRONIC-PAIN",
-                "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT"
-            )
-        ),
-        "Physical Activity" => array(
-            "img" => "physical-activity.png",
-            "text" => "<en>Physical Activity</en><fr>Activité physique</fr>",
-            "no" => "<en>
-                        You are extending independent living, reducing your risk of many chronic conditions, and reducing your risk of falls. Great job!
-                     </en>
-                     <fr>
-                        Vous prolongez votre autonomie, réduisez votre risque de souffrir de nombreuses maladies chroniques et diminuez votre risque de chute. Bon travail!
-                     </fr>",
-            "education" => array(
-                "<en>Activity</en><fr>Activité physique</fr>" => "Activity"
-            ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
-            ),
-            "community" => array(
-                "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT"
-            )
-        ),
-        "Strength" => array(
-            "img" => "muscle.png",
-            "text" => "<en>Strength</en><fr>Force physique</fr>",
-            "no" => "<en>
-                        Keep up your strength! We naturally lose muscle tone as we age, so it’s great you’re combating that now!
-                     </en>
-                     <fr>
-                        La force n’a plus de secret pour vous! Nous perdons naturellement du tonus musculaire en vieillissant, c’est donc une bonne chose que vous preniez les moyens pour le conserver maintenant!
-                     </fr>",
-            "education" => array(
-                "<en>Activity</en><fr>Activité physique</fr>" => "Activity"
-            ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
-            ),
-            "community" => array(
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr> → <en>Fitness</en><fr>Conditionnement physique</fr>" => "CFN-ACT-EX-FIT"
-            )
-        ),
-        "Walking Speed" => array(
-            "img" => "marathon.png",
-            "text" => "<en>Walking Speed</en><fr>Vitesse de marche</fr>",
-            "no" => "<en>
-                        Walking is a great exercise you can continue to do as you age. It’s great for strength, mobility and reducing your risk of falling. Sounds like you aren’t slowing down, keep it up!
-                     </en>
-                     <fr>
-                        La marche est un excellent exercice que vous pouvez continuer à pratiquer en vieillissant. C’est une excellente activité pour maintenir votre force et votre mobilité tout en réduisant le risque de chute. Rien ne vous arrête, continuez comme ça!
-                     </fr>",
-            "education" => array(
-                "<en>Activity</en><fr>Activité physique</fr>" => "Activity"
-            ),
-            "programs" => array(
-            
-            ),
-            "community" => array(
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Gentle</en><fr>Doux</fr>" => "CFN-ACT-GEN",
-                "<en>Transportation</en><fr>Transport</fr> → <en>Driving<br />Programs</en><fr>Programmes<br />d’accompagnement</fr>" => "CFN-TRANSPORT-DRIVP"
-            )
-        ),
-        "Falls and Balance" => array(
-            "img" => "falling.png",
-            "text" => "<en>Falls and Balance</en><fr>Chutes et équilibre</fr>",
-            "no" => "<en>
-                        Did you know that every 12 seconds a Canadian aged 65years+ experiences a fall? Sounds like you’ve reduced your risk. Way to go!
-                     </en>
-                     <fr>
-                        Saviez-vous que toutes les 12 secondes, un Canadien ou une Canadienne de 65 ans et plus fait une chute? On dirait que vous avez réduit vos risques. Bravo! 
-                     </fr>",
-            "education" => array(
-                "<en>Falls Prevention</en><fr>Prévention des chutes</fr>" => "FallsPrevention",
-                "<en>Activity</en><fr>Activité physique</fr>" => "Activity"
-            ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
-            ),
-            "community" => array(
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Gentle</en><fr>Doux</fr>" => "CFN-ACT-GEN",
-                "<en>Home & Care Partners</en><fr>Services de soutien<br />et de soins à domicile</fr> ↴ <en>Help at Home</en><fr>Aide à domicile</fr>" => "CFN-HOMECARE-HELP",
-                "<en>Transportation</en><fr>Transport</fr> → <en>Driving<br />Programs</en><fr>Programmes<br />d’accompagnement</fr>" => "CFN-TRANSPORT-DRIVP"
+                "<en>Chronic Condition</en><fr>Maladies chroniques</fr> → <en>Chronic<br />Pain</en><fr>Douleur chronique</fr>" => "CFN-CHRONIC-PAIN"
             )
         ),
         "Urinary Continence" => array(
             "img" => "urinary-tract.png",
             "text" => "<en>Urinary Continence</en><fr>Continence urinaire</fr>",
-            "no" => "<en>
-                        You are doing well. Maintaining a healthy lifestyle is an important strategy to avoid incontinence. If you do develop problems, see your healthcare provider since incontinence is not an inevitable part of aging and there are measures that can be taken to help.
-                     </en>
-                     <fr>
-                        Vous vous débrouillez bien. Le maintien d’un mode de vie sain est une stratégie importante pour éviter l’incontinence. Si vous rencontrez des problèmes, consultez votre professionnel de la santé, car il y a des moyens d’éviter l’incontinence en vieillissant.
-                     </fr>",
+            "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
             "education" => array(
                 "<en>Activity</en><fr>Activité physique</fr>" => "Activity"
             ),
@@ -193,78 +263,28 @@ class FrailtyReport extends SpecialPage {
                 "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
             ),
             "community" => array(
-                "<en>Healthcare Services</en><fr>Services de santé</fr> → <en>Clinics</en><fr>Cliniques</fr>" => "CFN-HEALTH-CLINICS",
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr>" => "CFN-ACT-EX"
+                
             )
         ),
         "Memory" => array(
             "img" => "memory.png",
             "text" => "<en>Memory</en><fr>Mémoire</fr>",
-            "no" => "<en>
-                        You are doing well. Just as exercise is important to keep muscle strength, doing activities which require mental effort are important for brain function to be maintained.
-                     </en>
-                     <fr>
-                        Vous vous débrouillez bien. Tout comme l’exercice est important pour conserver la force musculaire, les activités qui demandent un effort mental sont importantes pour le maintien des fonctions cérébrales.
-                     </fr>",
+            "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
             "education" => array(
                 "<en>Activity</en><fr>Activité physique</fr>" => "Activity",
                 "<en>Interact</en><fr>Vie sociale</fr>" => "Interact"
             ),
             "programs" => array(
-                "<en>Community Connectors</en><fr>Connecteurs communautaires</fr>" => "CommunityConnectors"
+
             ),
             "community" => array(
-                "<en>Interact</en><fr>Vie sociale</fr>" => "CFN-INT",
-                "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT"
-            )
-        ),
-        "Mental Health" => array(
-            "img" => "mental-health.png",
-            "text" => "<en>Mental Health</en><fr>Santé mentale</fr>",
-            "no" => "<en>
-                        Mental Health problems are prevalent at every age. If your mental health status changes, speak with your family doctor.
-                     </en>
-                     <fr>
-                        Les problèmes de santé mentale sont répandus à tout âge. Si votre état de santé mentale change, parlez-en à votre médecin de famille. 
-                     </fr>",
-            "education" => array(
-                "<en>Interact</en><fr>Vie sociale</fr>" => "Interact",
-                "<en>Activity</en><fr>Activité physique</fr>" => "Activity"
-            ),
-            "programs" => array(
-                "<en>Community Connectors</en><fr>Connecteurs communautaires</fr>" => "CommunityConnectors",
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
-            ),
-            "community" => array(
-                "<en>Interact</en><fr>Vie sociale</fr>" => "CFN-INT",
-                "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT",
-                "<en>Mental Health</en><fr>Santé mentale</fr>" => "CFN-MH"
-            )
-        ),
-        "Multiple Medications" => array(
-            "img" => "syringe.png",
-            "text" => "<en>Multiple Medications</en><fr>Médicaments multiples</fr>",
-            "no" => "<en>
-                        Continue to conduct annual medication reviews with your doctor or pharmacist. These reviews could result in reducing a dose, changing medications or stopping an unnecessary medication.
-                     </en>
-                     <fr>
-                        Continuez à faire des bilans annuels de vos médicaments avec votre médecin ou votre pharmacien. Ces examens pourraient aboutir à la réduction d’une dose, à un changement de médicament ou à l’arrêt d’un médicament inutile. 
-                     </fr>",
-            "education" => array(
-                "Optimize Medication" => "OptimizeMedication"
-            ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
-            ),
-            "community" => array(
-                "<en>Vaccination/Optimize Medication</en><fr>Vaccination et optimisation des médicaments</fr>" => "CFN-VAC",
-                "<en>Chronic Conditions</en><fr>Maladies chroniques</fr>" => "CFN-CHRONIC"
+                "<en>Chronic Conditions</en><fr>Maladies chroniques</fr>" => "CFN-CHRONIC-DEMENTIA"
             )
         ),
         "Health Conditions" => array(
             "img" => "medical-chechup.png",
             "text" => "<en>Health Conditions</en><fr>Affections de santé</fr>",
-            "no" => "",
+            "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
             "education" => array(
                 "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "DietAndNutrition",
                 "<en>Activity</en><fr>Activité physique</fr>" => "Activity",
@@ -276,15 +296,13 @@ class FrailtyReport extends SpecialPage {
                 "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
             ),
             "community" => array(
-                "<en>Chronic Conditions</en><fr>Maladies chroniques</fr>" => "CFN-CHRONIC",
-                "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "CFN-DIET",
-                "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT"
+                "<en>Chronic Conditions</en><fr>Maladies chroniques</fr>" => "CFN-CHRONIC"
             )
         ),
         "Self-Perceived Health" => array(
             "img" => "fever.png",
             "text" => "<en>Self-Perceived Health</en><fr>État de santé autoévalué</fr>",
-            "no" => "",
+            "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
             "education" => array(
                 
             ),
@@ -293,139 +311,6 @@ class FrailtyReport extends SpecialPage {
             ),
             "community" => array(
             
-            )
-        ),
-        "Sensory: Hearing and Vision" => array(
-            "img" => "sensory.png",
-            "text" => "<en>Sensory: Hearing and Vision</en><fr>Sensorielle : Audition et vision</fr>",
-            "no" => "<en>
-                        If anything changes with vision or hearing, visit your appropriate health care provider.
-                     </en>
-                     <fr>
-                        En cas de changement dans votre vision ou audition, consultez un professionnel de la santé. 
-                     </fr>",
-            "education" => array(
-                
-            ),
-            "programs" => array(
-
-            ),
-            "community" => array(
-                "<en>Disability Services</en><fr>Services liés à l’incapacité</fr>" => "CFN-DIS",
-                "<en>Home & Care Partners</en><fr>Services de soutien<br />et de soins à domicile</fr> ↴ <en>Help at Home</en><fr>Aide à domicile</fr>" => "CFN-HOMECARE-HELP",
-                "<en>Transportation</en><fr>Transport</fr> → <en>Driving<br />Programs</en><fr>Programmes<br />d’accompagnement</fr>" => "CFN-TRANSPORT-DRIVP"
-            )
-        )
-    );
-    
-    static $behavioralRows = array(
-        "Activity" => array(
-            "img" => "Activity.png",
-            "text" => "<en>Activity</en><fr>Activité physique</fr>",
-            "no" => "<en>
-                        Way to stay active! If you want to learn more, you can view the Activity module in education resources or any activity-related webinar within Cyber-Seniors.
-                     </en>
-                     <fr>
-                        Bonne manière de rester actif! Si vous souhaitez en savoir plus, vous pouvez consulter le module Activité physique dans les ressources éducatives ou toute autre ressource offerte pour ce domaine dans le programme.
-                     </fr>",
-            "education" => array(
-                "<en>Activity</en><fr>Activité physique</fr>" => "Activity"
-            ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
-            ),
-            "community" => array(
-                "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT",
-                "<en>Interact</en><fr>Vie sociale</fr>" => "CFN-INT"
-            )
-        ),
-        "Vaccination" => array(
-            "img" => "Vaccination.png",
-            "text" => "<en>Vaccination</en><fr>Vaccination</fr>",
-            "no" => "<en>
-                        As we age, it’s harder to recover from infectious diseases like the flu, pneumonia, and COVID-19. Way to keep up with your vaccines!
-                     </en>
-                     <fr>
-                        En vieillissant, il est plus difficile de se remettre de maladies infectieuses comme la grippe, la pneumonie et la COVID-19. C’est une bonne façon de faire le suivi de vos vaccins!
-                     </fr>",
-            "education" => array(
-                "<en>Vaccination</en><fr>Vaccination</fr>" => "Vaccination"
-            ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
-            ),
-            "community" => array(
-                "<en>Vaccination/Optimize Medication</en><fr>Vaccination et optimisation des médicaments</fr>" => "CFN-VAC",
-                "<en>Transportation</en><fr>Transports</fr>" => "CFN-TRANSPORT"
-            )
-        ),
-        "Optimize Medication" => array(
-            "img" => "OptimizeMedication.png",
-            "text" => "<en>Optimize Medication</en><fr>Optimisation des médicaments</fr>",
-            "no" => "<en>
-                        It’s great that you feel like you have your medications under control. If you need help with managing the medications you are on, visit the following Cyber-Seniors Webinars: How to Fill Prescriptions Online, Medisafe Pill Reminder App
-                     </en>
-                     <fr>
-                        C’est bien que vous ayez l’impression d’avoir le contrôle sur vos médicaments. Si vous avez besoin d’aide pour les gérer, consultez les ressources sur l’optimisation des médicaments.
-                     </fr>",
-            "education" => array(
-                 "<en>Optimize Medication</en><fr>Optimisation des médicaments</fr>" => "OptimizeMedication"
-            ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
-            ),
-            "community" => array(
-                "<en>Vaccination/Optimize Medication</en><fr>Vaccination et optimisation des médicaments</fr>" => "CFN-VAC",
-                "<en>Activity</en><fr>Activité physique</fr> → <en>Exercise</en><fr>Exercice</fr>" => "CFN-ACT-EX",
-                "<en>Interact</en><fr>Vie sociale</fr>" => "CFN-INT"
-            )
-        ),
-        "Interact" => array(
-            "img" => "Interact.png",
-            "text" => "<en>Interact</en><fr>Vie sociale</fr>",
-            "no" => "<en>
-                        Keep up with your social interactions. It provides you with mental and physical health benefits!<br />
-                        If you want to learn more, you can view the Interact module in education resources
-                     </en>
-                     <fr>
-                        Maintenez vos interactions sociales.  Elles vous procurent des bienfaits mentaux et physiques!<br />
-                        Si vous souhaitez en savoir plus, vous pouvez consulter le module « Vie sociale » dans les modules d’éducation.
-                     </fr>",
-            "education" => array(
-                "<en>Interact</en><fr>Vie sociale</fr>" => "Interact"
-            ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching",
-                "<en>Community Connectors</en><fr>Connecteurs communautaires</fr>" => "CommunityConnectors"
-            ),
-            "community" => array(
-                "<en>Interact</en><fr>Vie sociale</fr>" => "CFN-INT",
-                "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT"
-            )
-        ),
-        "Diet and Nutrition" => array(
-            "img" => "DietAndNutrition.png",
-            "text" => "<en>Diet and Nutrition</en><fr>Alimentation</fr>",
-            "no" => "<en>
-                        Great job, keep it up! <br />
-                        Continue to incorporate protein, calcium and vitamin D  - to maintain strong bones and muscles.<br />
-                        <br />
-                        If you want to learn more about diet and nutrition, you can view the Nutrition & Diet education module, or any nutrition-related webinar within Cyber-Seniors.
-                     </en>
-                     <fr>
-                        Bon travail, continuez!<br />
-                        Continuez d’intégrer des protéines, du calcium et de la vitamine D à votre alimentation pour avoir des os et des muscles en bonne santé.<br />
-                        Si vous souhaitez en savoir plus sur les régimes alimentaires et la nutrition, vous pouvez consulter le module Activité physique dans les ressources éducatives ou toute autre ressource sur l’alimentation offerte dans le programme.
-                     </fr>",
-            "education" => array(
-                "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "DietAndNutrition"
-            ),
-            "programs" => array(
-                "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
-            ),
-            "community" => array(
-                "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "CFN-DIET",
-                "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT"
             )
         )
     );
@@ -439,57 +324,87 @@ class FrailtyReport extends SpecialPage {
         return $person->isLoggedIn();
     }
     
-    function drawRow($key, $row, $scores){
-        global $wgServer, $wgScriptPath;
-        $need = "<en>N</en><fr>N</fr>";
-        $education = "";
-        $programs = "";
-        $community = "";
-        if(@$scores[$key] > 0){
-            $need = "<en>Y</en><fr>O</fr>";
-            foreach($row['education'] as $k => $e){
-                if(is_array($e)){
-                    $links = array();
-                    foreach($e as $k1 => $e1){
-                        $links[] = "<a href='{$e1}' target='_blank'>{$k1}</a>";
-                    }
-                    $education .= "<p>{$k} ".implode(", ", $links)."</p>";
+    function drawRow($comp, $topics, $scores){
+        global $wgServer, $wgScriptPath, $wgLang;
+        $subTopics = array();
+        $education = array();
+        $programs = array();
+        $community = array();
+        $nos = array();
+        foreach($topics as $key => $topic){
+            if(@$scores[$key] > 0 || @$scores["Behavioral"][$key] > 0){
+                if(isset($scores[$key])){
+                    $subTopics[$key] = "<p><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$topic['img']}' alt='{$key}' /><br />{$topic['text']}</p>";
                 }
-                else{
-                    $education .= "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$e}' target='_blank'>{$k}</a></p>";
+                foreach($topic['education'] as $k => $e){
+                    if(is_array($e)){
+                        $links = array();
+                        foreach($e as $k1 => $e1){
+                            $links[] = "<a href='{$e1}' target='_blank'>{$k1}</a>";
+                        }
+                        $education[$key][] = "<p>{$k} ".implode(", ", $links)."</p>";
+                    }
+                    else{
+                        if(strstr($e, "http") !== false){
+                            $education[$key][] = "<p><a href='{$e}' target='_blank'>{$k}</a></p>";
+                        }
+                        else if(strstr($e, "index.php") !== false){
+                            $education[$key][] = "<p><a href='{$wgServer}{$wgScriptPath}/{$e}' target='_blank'>{$k}</a></p>";
+                        }
+                        else{
+                            $education[$key][] = "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$e}' target='_blank'>{$k}</a></p>";
+                        }
+                    }
+                }
+                foreach($topic['programs'] as $k => $p){
+                    if(is_array($p)){
+                        $links = array();
+                        foreach($p as $k1 => $p1){
+                            $links[] = "<a href='{$p1}' target='_blank'>{$k1}</a>";
+                        }
+                        $programs[$key][] = "<p>{$k} ".implode(", ", $links)."</p>";
+                    }
+                    else{
+                        $programs[$key][] = "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/{$p}' target='_blank'>{$k}</a></p>";
+                    }
+                }
+                foreach($topic['community'] as $k => $p){
+                    $k = preg_replace("/(.*(^|→|↴))(?!.*(→|↴))(.*)/", "$1<a style='vertical-align:top;' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$p}'>$4</a>", $k);
+                    $k = str_replace("→", "</span>→<span class='cb'>", $k);
+                    $k = str_replace("↴", "</span>↴<span class='cb' style='width: 100%; text-align: right;'>", $k);
+                    $community[$key][] = "<p>{$k}</p>";
                 }
             }
-            foreach($row['programs'] as $k => $p){
-                if(is_array($p)){
-                    $links = array();
-                    foreach($p as $k1 => $p1){
-                        $links[] = "<a href='{$p1}' target='_blank'>{$k1}</a>";
-                    }
-                    $programs .= "<p>{$k} ".implode(", ", $links)."</p>";
-                }
-                else{
-                    $programs .= "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/{$p}' target='_blank'>{$k}</a></p>";
-                }
-            }
-            foreach($row['community'] as $k => $p){
-                $k = preg_replace("/(.*(^|→|↴))(?!.*(→|↴))(.*)/", "$1<a style='vertical-align:top;' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$p}'>$4</a>", $k);
-                $k = str_replace("→", "</span>→<span class='cb'>", $k);
-                $k = str_replace("↴", "</span>↴<span class='cb' style='width: 100%; text-align: right;'>", $k);
-                $community .= "<p>{$k}</p>";
+            else{
+                $nos[$key] = $topic['no'];
             }
         }
+        
+        //Category
+        $borderBottom = (count($subTopics) == 0) ? "" : "border-bottom-style: dashed;";
         $html = "<tr>
-                    <td align='center' style='padding-top: 1em; font-style: initial;'>{$need}</td>
-                    <td align='center'><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$row['img']}' alt='{$key}' /><br />{$row['text']}</td>";
-        if($need == "<en>Y</en><fr>O</fr>"){
-            $html .= "<td align='center' style='font-size: 0.9em;'>{$education}</td>
-                    <td align='center' style='font-size: 0.8em;'>{$programs}</td>
-                    <td style='font-size: 0.9em;'>{$community}</td>";
-        }
-        else{
-            $html .= "<td colspan='3'>{$row['no']}</td>";
-        }
+                    <td align='left' style='font-style: initial; font-size: 1.2em; {$borderBottom}'>
+                        <span class='AVOID {$comp}'>".substr(ActionPlan::comp2Text($comp, $wgLang->getCode()), 0, 1)."</span><span class='AVOIDrest'>".substr(ActionPlan::comp2Text($comp, $wgLang->getCode()), 1)."</span>
+                    </td>";
+        $html .= (!isset($nos[ActionPlan::comp2Text($comp)])) 
+               ? "<td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $education[ActionPlan::comp2Text($comp)])."</td>
+                  <td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $programs[ActionPlan::comp2Text($comp)])."</td>
+                  <td style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $community[ActionPlan::comp2Text($comp)])."</td>"
+               : "<td style='{$borderBottom}' colspan='3'>{$nos[ActionPlan::comp2Text($comp)]}</td>";
         $html .= "</tr>";
+        
+        // SubTopics
+        foreach($subTopics as $key => $topic){
+            $borderBottom = ($topic == array_values($subTopics)[count($subTopics)-1]) ? "" : "border-bottom-style: dashed;";
+            $html .= "<tr>
+                        <td align='center' style='font-style: initial; font-size: 0.9em;{$borderBottom}'>{$topic}</td>";
+            $html .= (!isset($nos[$key])) 
+                   ? "<td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $education[$key])."</td>
+                      <td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $programs[$key])."</td>
+                      <td style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $community[$key])."</td>"
+                   : "<td style='{$borderBottom}' colspan='3'>{$nos[$key]}</td>";
+            $html .= "</tr>";
+        }
         return $html;
     }
     
@@ -677,12 +592,13 @@ class FrailtyReport extends SpecialPage {
                             }
                             
                             table img {
-                                height: 50px;
+                                height: 30px;
                                 display: inline-block;
                             }
                             
                             table p {
                                 margin-top: 0;
+                                margin-bottom: 0.75em;
                             }
                             
                             a, a:visited {
@@ -700,8 +616,68 @@ class FrailtyReport extends SpecialPage {
                                 padding: 0;
                                 margin: 0;
                                 line-height: 1em;
-                            }";
+                            }
                             
+                            .AVOID {
+                                border-radius: 10em;
+                                font-size: 1.5em;
+                                width: 1.5em;
+                                display: inline-block;
+                                height: 1.5em;
+                                text-align: center;
+                                line-height: 1.5em;
+                                font-weight: bold;
+                                color: white;
+                                margin: 0.1em;
+                                margin-left: 0;
+                            }
+                            
+                            .AVOIDrest {
+                                display: inline-block; 
+                                width: 3em; 
+                                vertical-align: text-top;
+                            }
+
+                            .AVOID.A {
+                                background: #c7db55;
+                            }
+
+                            .AVOID.V {
+                                background: #2cace2;
+                            }
+
+                            .AVOID.O {
+                                background: #f79234;
+                            }
+
+                            .AVOID.I {
+                                background: #3ab094;
+                            }
+
+                            .AVOID.D {
+                                background: #4b8ecc;
+                            }
+
+                            .AVOID.S {
+                                background: #71ad94;
+                            }
+
+                            .AVOID.F {
+                                background: #9669ba;
+                            }";
+                    if(!isset($_GET['preview'])){
+                        $html .= ".AVOID {
+                            display: inline-block;
+                            line-height: 1em;
+                            margin-top: 0.5em;
+                        }
+                        
+                        .AVOIDrest {
+                            vertical-align: middle;
+                            height: 1em;
+                            margin-top: -0.7em;
+                        }";
+                    }
                     if($wgLang->getCode() == "en"){
 	                    $html .= "fr, .fr { display: none !important; }";
 	                }
@@ -715,39 +691,23 @@ class FrailtyReport extends SpecialPage {
                         <div class='stickyContainer pdfnodisplay'>
                             <table class='sticky recommendations' cellspacing='0' style='width: 100%;'>
                                 <tr>
-                                    <th class='dark-top' colspan='5'>
-                                        <en>The following risks and recommendations are from the health outcomes section of the assessment</en>
-                                        <fr style='font-size:0.8em;'>Les recommandations et les risques suivants sont issus de la section de l’évaluation consacrée aux résultats en matière de santé.</fr>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th rowspan='2' style='min-width: 6em; width: 6em; padding-bottom: 0; position: relative;'>
+                                    <th style='min-width: 9em; width: 9em; padding-bottom: 0; position: relative;'>
                                         <div style='line-height: 1em; position: absolute; top: 8px; left: 0;width:100%; text-align: center;'>
-                                            <en>Risk<br />Identified?<br />(Y/N)</en>
-                                            <fr>Risque<br />identifié?<br />(O/N)</fr>
+                                            <en>Category</en>
+                                            <fr>Catégorie</fr>
                                         </div>
                                     </th>
-                                    <th rowspan='2' style='min-width: 6em; width: 6em;'>
-                                        <en>Topic</en>
-                                        <fr>Sujet</fr>
+                                    <th align='center' style='width: 6.5em;'>
+                                        <en>Education</en>
+                                        <fr>Éducation</fr>
                                     </th>
-                                    <th class='dark' colspan='3'>
-                                        <en>AVOID Frailty Program Support Recommendation</en>
-                                        <fr>Recommandation de soutien du programme Proactif</fr>
+                                    <th align='center' style='width: 9em;'>
+                                        <en>AVOID Programs</en>
+                                        <fr>Programmes Proactif</fr>
                                     </th>
-                                </tr>
-                                <tr>
-                                    <th align='left' style='width: 6.5em;'>
-                                        <en><small><i>AVOID Frailty<br />Education<br />Topic<br /></i></small></en>
-                                        <fr><small><i>Sujet d’éducation<br />du programme<br />Proacif</i></small></fr>
-                                    </th>
-                                    <th align='left' style='width: 9em;'>
-                                        <en><small><i>AVOID Frailty<br />Programs<br /></i></small></en>
-                                        <fr><small><i>Programmes offerts<br />dans le cadre<br />de Proactif</i></small></fr>
-                                    </th>
-                                    <th align='left' style='width: 13em;'>
-                                        <en><small><i>Community Program<br />Category (Find these in the <br />Community Program Library)<br /></i></small></en>
-                                        <fr><small><i>Catégorie de ressources<br />communautaires (dans le Répertoire<br />des ressources communautaires)</i></small></fr>
+                                    <th align='center' style='width: 13em;'>
+                                        <en>Community Programs</en>
+                                        <fr>Ressources Communautaires</fr>
                                     </th>
                                 </tr>
                             </table>
@@ -782,11 +742,7 @@ class FrailtyReport extends SpecialPage {
                         <div class='list'>
                             <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' /><en>This report shows the items that went into your frailty status. Where a need was identified from your answers, some recommended resources appear in that topic to address that specific item. If you do not see any recommendations, it means that no needs were identified from your answers.</en><fr>Ce rapport montre les domaines évalués pour mesurer votre état de fragilité. Lorsqu’un besoin est établi à partir de vos réponses, certaines ressources recommandées apparaissent dans cette rubrique concernant ce domaine précis. Si vous ne voyez pas de recommandations, cela signifie qu’aucun besoin n’a été établi à partir de vos réponses.</fr>
                             </p>
-                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/star.png' /><en>The recommendations throughout this program are meant to support healthy 
-behaviour. They are not clinical recommendations, for which you should seek advice from your health care providers (example: doctor, pharmacist, dentist).</en><fr>Les recommandations formulées tout au long de ce programme visent à favoriser un vieillissement en santé. Il ne s’agit pas de recommandations cliniques pour lesquelles vous devez demander conseil à un professionnel de la santé (p. ex. médecin, pharmacien, dentiste).</fr></p>
                         </div>
-                        <br />
-                        <br />
                         
                         <script type='text/php'>
                             \$php_code = '
@@ -811,72 +767,81 @@ behaviour. They are not clinical recommendations, for which you should seek advi
                         
                         <table class='recommendations' cellspacing='0' style='width: 100%;'>
                             <tr>
-                                <th class='dark-top' colspan='5'>
-                                    <en>The following risks and recommendations are from the health outcomes section of the assessment</en>
-                                    <fr style='font-size:0.8em;'>Les recommandations et les risques suivants sont issus de la section de l’évaluation consacrée aux résultats en matière de santé.</fr>
+                                <th style='min-width: 9em; width: 9em; padding-bottom: 0; position: relative;'>
+                                    <div style='line-height: 1em; position: absolute; top: 8px; left: 0;width:100%; text-align: center;'><en>Category</en><fr>Catégorie</fr></div>
                                 </th>
-                            </tr>
-                            <tr>
-                                <th rowspan='2' style='min-width: 6em; width: 6em; padding-bottom: 0; position: relative;'>
-                                    <div style='line-height: 1em; position: absolute; top: 8px; left: 0;width:100%; text-align: center;'>Risk<br />Identified?<br />(Y/N)</div>
+                                <th align='center' style='width: 6.5em;'>
+                                    <en>Education</en>
+                                    <fr>Éducation</fr>
                                 </th>
-                                <th rowspan='2' style='min-width: 6em; width: 6em;'>
-                                    <en>Topic</en>
-                                    <fr>Sujet</fr>
+                                <th align='center' style='width: 9em;'>
+                                    <en>AVOID Programs</en>
+                                    <fr>Programmes Proactif</fr>
                                 </th>
-                                <th class='dark' colspan='3'>
-                                    AVOID Frailty Program Support Recommendation
-                                </th>
-                            </tr>
-                            <tr>
-                                <th align='left' style='width: 6.5em;'>
-                                    <en><small><i>AVOID Frailty<br />Education<br />Topic<br /></i></small></en>
-                                    <fr><small><i>Sujet d’éducation<br />du programme<br />Proacif</i></small></fr>
-                                </th>
-                                <th align='left' style='width: 9em;'>
-                                    <en><small><i>AVOID Frailty<br />Programs<br /></i></small></en>
-                                    <fr><small><i>Programmes offerts<br />dans le cadre<br />de Proactif</i></small></fr>
-                                </th>
-                                <th align='left' style='width: 13em;'>
-                                    <en><small><i>Community Program<br />Category (Find these in the <br />Community Program Library)<br /></i></small></en>
-                                    <fr><small><i>Catégorie de ressources<br />communautaires (dans le Répertoire<br />des ressources communautaires)</i></small></fr>
+                                <th align='center' style='width: 13em;'>
+                                    <en>Community Programs</en>
+                                    <fr>Ressources Communautaires</fr>
                                 </th>
                             </tr>";
-        foreach(self::$healthRows as $key => $row){
-            $html .= $this->drawRow($key, $row, $scores);
+        foreach(self::$rows as $comp => $topics){
+            $html .= $this->drawRow($comp, $topics, $scores);
         }
         
-        $html .= "<tr><td class='white' colspan='5'></td></tr>
-                  <tr style='page-break-after: avoid;'>
-                    <th class='dark-top' colspan='5'>
-                        <en>The following risks and recommendations are from the behavioural portion of the assessment</en>
-                        <fr style='font-size:0.8em;'>Les recommandations et les risques suivants sont issus de la section de l’évaluation consacrée aux résultats en matière de santé.</fr>
-                    </th></tr>";
-        foreach(self::$behavioralRows as $key => $row){
-            $html .= $this->drawRow($key, $row, $scores["Behavioral"]);
+        $html .= "</table>";
+                        
+        $otherHTML = "";
+        foreach(self::$otherRows as $key => $row){
+            if(@$scores[$key] > 0 || @$scores["Behavioral"][$key] > 0){
+                $otherHTML .= "<div style='display:inline-block; width: 50%; margin-bottom: 0.25em;'>
+                                 <img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$row['img']}' style='width:1.25em; vertical-align: middle;' />
+                                 <span style='vertical-align:middle;'>";
+                $otherHTML .= (count($row['community'])) 
+                            ? "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/".array_values($row['community'])[0]."'>{$row['text']}</a>"
+                            : $row['text'];
+                $otherHTML .= "  </span>
+                               </div>";
+            }
         }
         
-        $actionPlan = ActionPlan::newFromUserId($person->getId());
-        $actionPlanMessage = "";
-        if(!isset($actionPlan[0]) || $actionPlan[0]->getSubmitted()){
-            $actionPlanMessage = "<en>Are you ready to create a goal to improve your health?</en><fr>Voulez-vous améliorer votre santé globale?</fr>
-                                  <a href='#' onClick='parent.clickActionPlan();'><en>Create Action Plan Now</en><fr>Créez votre plan d’action maintenant</fr></a>
-                                  <en>(closes Frailty Report)</en><fr>(fermer le rapport d’évaluation)</fr>";
-        }
-        else{
-            $actionPlanMessage = "<en>Are you ready to create a goal to improve your health?</en><fr>Voulez-vous améliorer votre santé globale?</fr>  
-                                  <a href='#' onClick='parent.clickActionPlan();'><en>View Action Plan Now</en><fr>Créez votre plan d’action maintenant</fr></a>
-                                  <en>(closes Frailty Report)</en><fr>(fermer le rapport d’évaluation)</fr>";
+        if($otherHTML != ""){
+            $html .= "<p><b><en>Your frailty score also considers the following:</en><fr>Votre score de fragilité tient également compte de ce qui suit :</fr></b></p>{$otherHTML}";
         }
         
-        $html .= "      </table>
-                        <br />
-                        <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' /><en>While the behaviours recommended for all AVOID components play a role in a healthy lifestyle, you may want to focus on one or a few at a time - this report can help you decide where to start and focus your efforts. You can use this as a place to start on your healthy aging journey to help you develop an action plan around one or more of the topics that can best help slow the onset of frailty for you personally.</en><fr>Bien que les comportements recommandés pour toutes les composantes du programme Proactif pour éviter la fragilisation jouent un rôle dans un mode de vie sain, vous voudrez peut-être vous concentrer sur un ou plusieurs d’entre eux à la fois; ce rapport peut vous aider à décider par où commencer et sur quoi concentrer vos efforts. Vous pouvez l’utiliser comme point de départ de votre parcours de vieillissement en santé. Il vous sera ainsi plus facile d’élaborer un plan d’action autour d’un ou de plusieurs des domaines qui contribueront de manière optimale à ralentir l’apparition de la fragilité pour vous, personnellement.</fr>
-                        <br />
-                        <br />
-                        {$actionPlanMessage}
+        $html .= "<p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' /><en>While the AVOID Frailty program has some resources to target these risks, talking to your healthcare provider will provide you with a personal course of action. Click on a topic of concern for further education or community programs that can help you.</en><fr>Même si le programme Proactif vous offre des ressources à propos de ces risques, il ne remplace en rien une consultation auprès de votre spécialiste de la santé qui peut mettre en place un plan d’action personnalisé à votre état de santé. Cliquez sur l’un des domaines pour avoir accès à des modules éducatifs et à des ressources locales pratiques.</fr>
                         </p>
-                        <div style='width:100%; text-align:center;'>
+                        <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/star.png' /><en>The recommendations throughout this program are meant to support healthy 
+behaviour. They are not clinical recommendations, for which you should seek advice from your health care providers (example: doctor, pharmacist, dentist).</en><fr>Les recommandations formulées tout au long de ce programme visent à favoriser un vieillissement en santé. Il ne s’agit pas de recommandations cliniques pour lesquelles vous devez demander conseil à un professionnel de la santé (p. ex. médecin, pharmacien, dentiste).</fr></p>";
+        
+        // Selected for you
+        $selectedHTML = "";
+        
+        $blob = new ReportBlob(BLOB_TEXT, YEAR, $person->getId(), 0);
+        $blob_address = ReportBlob::create_address("RP_AVOID", "AVOID_Questions_tab0", "income_avoid", 0);
+        $blob->load($blob_address);
+        $income = $blob->getData();
+        
+        $blob = new ReportBlob(BLOB_TEXT, YEAR, $person->getId(), 0);
+        $blob_address = ReportBlob::create_address("RP_AVOID", "AVOID_Questions_tab0", "transportation_avoid", 0);
+        $blob->load($blob_address);
+        $transportation = $blob->getData();
+        if($income == "Under $10,000" ||
+           $income == "$10,000 to $24,999" ||
+           $income == "$25,000 to $49,999"){
+            $selectedHTML .= "<en><a target='_blank' href='https://docs.google.com/document/d/1guEL1L_062NgbsAP9u5tebnp4vc7Zpo9/edit?usp=drive_link&ouid=105295311895815272560&rtpof=true&sd=true'>Practical Assistance</a><br /></en>";
+        }
+        
+        if($transportation == "Taxi or similar paid services" ||
+           $transportation == "Passenger in a motor vehicle"){
+            $selectedHTML .= "<en><a target='_blank' href='https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true'>Transit Travel Training</a><br /></en>
+                              <fr><a target='_blank' href=\"{$wgServer}{$wgScriptPath}/EducationModules/STTR-Guide d'utilisation.pdf\">Guide d’utilisation de la Société de Transport de Trois-Rivières</a><br /></fr>";
+        }
+        
+        if($selectedHTML != ""){
+            $html .= "<p><en>Selected for you</en><fr>Pour vous</fr><br />{$selectedHTML}</p>";
+        }
+        
+        // Footer
+        $html .= "<div style='width:100%; text-align:center;'>
                             <en><a href='https://HealthyAgingCentres.ca' target='_blank'>HealthyAgingCentres.ca</a></en>
                             <fr><a href='https://Proactifquebec.ca' target='_blank'>Proactifquebec.ca</a></fr>
                         </div>
@@ -885,20 +850,22 @@ behaviour. They are not clinical recommendations, for which you should seek advi
                         <script type='text/javascript'>
                             var initialWidth = $(window).width();
                             var wgLang = '{$wgLang->getCode()}';
-                            $(window).resize(function(){
-                                $('html').width('100%');
-                                var desiredWidth = $(window).width();
-                                $('html').width('216mm');
-                                var scaleFactor = desiredWidth/initialWidth;
-                                $('div.body').css('transform', 'scale(' + scaleFactor + ')');
-                                $('div.stickyContainer').css('top', 496*scaleFactor);
-                                if(wgLang == 'fr'){
-                                    $('div.stickyContainer').css('top', parseFloat($('div.stickyContainer').css('top')) + 16*scaleFactor);
-                                }
-                                $('table.sticky').css('transform', 'scale(' + scaleFactor + ')')
-                                                 .css('margin-left', scaleFactor - 1 + 'cm');
-                                $('body').height($('div.body').outerHeight()*scaleFactor);
-                            }).resize();
+                            $(document).ready(function(){
+                                $(window).resize(function(){
+                                    $('html').width('100%');
+                                    var desiredWidth = $(window).width();
+                                    $('html').width('216mm');
+                                    var scaleFactor = desiredWidth/initialWidth;
+                                    $('div.body').css('transform', 'scale(' + scaleFactor + ')');
+                                    $('div.stickyContainer').css('top', 397*scaleFactor);
+                                    if(wgLang == 'fr'){
+                                        //$('div.stickyContainer').css('top', parseFloat($('div.stickyContainer').css('top')) + 10*scaleFactor);
+                                    }
+                                    $('table.sticky').css('transform', 'scale(' + scaleFactor + ')')
+                                                     .css('margin-left', scaleFactor - 1 + 'cm');
+                                    $('body').height($('div.body').outerHeight()*scaleFactor);
+                                }).resize();
+                            });
                         </script>
                         </div>
                     </body>

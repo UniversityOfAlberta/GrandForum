@@ -63,22 +63,22 @@ class ActionPlan extends BackboneModel {
         return array();
     }
     
-    static function comp2Text($comp){
+    static function comp2Text($comp, $lang='en'){
         switch($comp){
             case "A": 
-                return "Activity";
+                return ($lang == 'en') ? "Activity" : "Activité physique";
             case "V":
-                return "Vaccinate";
+                return ($lang == 'en') ? "Vaccinate" : "Vaccination";
             case "O":
-                return "Optimize Medication";
+                return ($lang == 'en') ? "Optimize Medication" : "Optimisation des médicaments";
             case "I":
-                return "Interact";
+                return ($lang == 'en') ? "Interact" : "Vie sociale";
             case "D":
-                return "Diet & Nutrition";
+                return ($lang == 'en') ? "Diet & Nutrition" : "Alimentation";
             case "S":
-                return "Sleep";
+                return ($lang == 'en') ? "Sleep" : "Sommeil";
             case "F":
-                return "Falls Prevention";
+                return ($lang == 'en') ? "Falls Prevention" : "Prévention des chutes";
         }
         return "Other";
     }

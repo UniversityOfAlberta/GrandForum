@@ -92,18 +92,20 @@ $(document).ready(function(){
     });
     
     setInterval(function(){
-        if($.cookie('gamification') != undefined){
-            if($("#achievementContainer").css("opacity") == 0){
-                var gamification = JSON.parse($.cookie('gamification'));
-                var achievement = gamification.shift();
-                if(achievement != null){
-                    $("#achievementPoints").text(achievement.points);
-                    $("#achievementText").text(achievement.text);
-                    showAchievement();
-                    $.cookie('gamification', JSON.stringify(gamification), {path: wgScriptPath});
-                    setTimeout(function(){
-                        hideAchievement();
-                    }, 5000);
+        if(document.hasFocus()){
+            if($.cookie('gamification') != undefined){
+                if($("#achievementContainer").css("opacity") == 0){
+                    var gamification = JSON.parse($.cookie('gamification'));
+                    var achievement = gamification.shift();
+                    if(achievement != null){
+                        $("#achievementPoints").text(achievement.points);
+                        $("#achievementText").text(achievement.text);
+                        showAchievement();
+                        $.cookie('gamification', JSON.stringify(gamification), {path: wgScriptPath});
+                        setTimeout(function(){
+                            hideAchievement();
+                        }, 5000);
+                    }
                 }
             }
         }

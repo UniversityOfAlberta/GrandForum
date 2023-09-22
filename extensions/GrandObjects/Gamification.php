@@ -55,8 +55,12 @@ class Gamification {
     
     static function log($action){
         global $wgMessage, $wgServer, $wgScriptPath;
-        return; // TODO: Gamification is disabled for now
+        
         $me = Person::newFromWgUser();
+        if(!$me->isSubRole("Gamification")){
+            return; // TODO: Gamification is disabled for non-Gamification users
+        }
+        
         $date = date('Y-m-d h:i:s');
         
         $exploded = explode("/", $action);
@@ -73,13 +77,9 @@ class Gamification {
         $create = true;
         $actions = self::newFromUserId($me->getId(), $fullAction);
         if(count($actions) > 0){
-            $create = false;
-            foreach($actions as $act){
-                $diff = @date_diff(date_create($act->getDate()), date_create('today'))->d;
-                if($diff >= self::$actions[$action]['frequency']){
-                    $create = true;
-                }
-            }
+            $act = $actions[count($actions)-1];
+            $diff = @date_diff(date_create($act->getDate()), date_create('today'))->d;
+            $create = ($diff >= self::$actions[$action]['frequency']) ? true : false;
         }
         
         if($create){
@@ -176,6 +176,6 @@ Gamification::addAction('CreateClipBoard', 1, 'Created a clip board of community
 Gamification::addAction('LoginConsistency', 2, 'Logged in 5+ times per week consistency bonus', 7);
 Gamification::addAction('SignUpProgram', 5, 'Signed up for an AVOID Program', 0);
 Gamification::addAction('SignAskAnExpert', 5, 'Signed up for Ask an Expert', 0);
-Gamification::addAction('5CommunitySupports', 10, 'Lookeded into 5 community supports', 0);
+Gamification::addAction('5CommunitySupports', 10, 'Looked into 5 community supports', 0);
 
 ?>

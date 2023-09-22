@@ -331,7 +331,7 @@ class UserFrailtyIndexAPI extends API{
                 $score += 1;
             }
         }
-        $scores["Vaccination"] = ($score >= 1) ? 1 : 0;
+        $scores["Vaccinate"] = ($score >= 1) ? 1 : 0;
         
         // Optimize Medication
         $answer = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "meds3_avoid", $user_id);
@@ -361,7 +361,7 @@ class UserFrailtyIndexAPI extends API{
                 $score += 1;
             }
         }
-        $scores["Diet and Nutrition"] = ($score > 0) ? 1 : 0;
+        $scores["Diet & Nutrition"] = ($score > 0) ? 1 : 0;
 
         return $scores;
     }
