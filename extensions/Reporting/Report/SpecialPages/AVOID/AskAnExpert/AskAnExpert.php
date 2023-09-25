@@ -67,6 +67,7 @@ class AskAnExpert extends BackbonePage {
     static function registerExpertEventAction($action){
         global $config;
         if($action == 'registerExpertEventAction'){
+            Gamification::log("SignAskAnExpert");
             $me = Person::newFromWgUser();
             $uid = md5(uniqid(time()));
             $firstName = $_POST['firstname'];

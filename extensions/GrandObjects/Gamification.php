@@ -164,10 +164,11 @@ class Gamification {
     }
 }
 
-Gamification::addAction('HealthAssessment', 4, 'Completed Healthy Aging Assessment', 9999);
+Gamification::addAction('HealthAssessment', 20, 'Completed Healthy Aging Assessment', 9999);
 Gamification::addAction('3MonthFollowup', 10, 'Completed 3 month follow up assessment', 9999);
 Gamification::addAction('OpenReport', 5, 'Opened Report', 9999);
 Gamification::addAction('EducationModule', 5, 'Completed Education Module', 9999, 40);
+Gamification::addAction('EducationResource', 2, 'Clicked on an educational resource', 9999, 9999);
 Gamification::addAction('CreateActionPlan', 2, 'Created weekly action plan', 1, 24);
 Gamification::addAction('SubmitActionPlan', 2, 'Submited a weekly action plan', 1, 36);
 Gamification::addAction('MeetActionPlan', 3, 'Met your action plan goal', 1, 48);
@@ -175,7 +176,8 @@ Gamification::addAction('ActionPlanConsistency', 2, '10 weeks minimum of action 
 Gamification::addAction('CreateClipBoard', 1, 'Created a clip board of community programs', 9999);
 Gamification::addAction('LoginConsistency', 2, 'Logged in 5+ times per week consistency bonus', 7);
 Gamification::addAction('SignUpProgram', 5, 'Signed up for an AVOID Program', 0);
-Gamification::addAction('SignAskAnExpert', 5, 'Signed up for Ask an Expert', 0);
-Gamification::addAction('5CommunitySupports', 10, 'Looked into 5 community supports', 0);
+Gamification::addAction('SignAskAnExpert', 5, 'Signed up for Ask an Expert', 9999);
+Gamification::addAction('SubmitCommunityProgram', 5, 'Submitted a community program', 9999);
+Gamification::addAction('5CommunitySupports', 10, 'Looked into 5 community supports', 9999);
 
 ?>

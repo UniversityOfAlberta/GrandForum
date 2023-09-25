@@ -56,7 +56,7 @@ class EducationResources extends SpecialPage {
     }
 	
 	function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath, $wgLang;
+        global $wgOut, $wgServer, $wgScriptPath, $wgLang;        
         $dir = dirname(__FILE__) . '/';
         $wgOut->setPageTitle(showLanguage("AVOID Education", "PROACTIF pour éviter la fragilisation – Éducation"));
         $categories = self::JSON();
@@ -124,6 +124,9 @@ class EducationResources extends SpecialPage {
                     else{
                         $wgOut->addHTML("<ul style='margin-top: 0;'>");
                         foreach($resources as $resource){
+                            if(isset($_GET['clickedResource']) && $_GET['clickedResource'] == "{$category->id}-{$resource->file}"){
+                                Gamification::log("EducationResource/".md5("{$category->id}-{$resource->file}"));
+                            }
                             $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
                             $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
                         }
@@ -161,6 +164,8 @@ class EducationResources extends SpecialPage {
             $('a.resource').click(function(){
                 dc.init(me.get('id'), $(this).attr('data-resource'));
                 dc.increment('count');
+                
+                $.get(wgServer + wgScriptPath + '/index.php/Special:EducationResources?clickedResource=' + encodeURI($(this).attr('data-resource')));
             });
             
             $('a.category').click(function(){

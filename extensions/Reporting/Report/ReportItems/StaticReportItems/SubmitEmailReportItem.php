@@ -5,6 +5,9 @@ class SubmitEmailReportItem extends StaticReportItem {
 	function render(){
         global $wgServer, $wgScriptPath, $wgOut;
         if(isset($_GET['programSubmit'])){
+            if($this->getReport()->xmlName == "SubmitProgram"){
+                Gamification::log("SubmitCommunityProgram");
+            }
             $this->sendEmail();
             exit;
         }
