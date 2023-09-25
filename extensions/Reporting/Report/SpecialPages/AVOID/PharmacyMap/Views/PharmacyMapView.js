@@ -118,6 +118,9 @@ PharmacyMapView = Backbone.View.extend({
     clickWebsite: function(cat){
         dc.init(me.get('id'), 'ProgramLibrary-' + cat);
         dc.increment("websiteClicks");
+        $.when(dc.ready()).then(function(){
+            $.get(wgServer + wgScriptPath + '/index.php/Special:PharmacyMap?clickedProgram');
+        });
     },
     
     record: function(cat){
@@ -138,7 +141,6 @@ PharmacyMapView = Backbone.View.extend({
             else {
                 var id_cat = "#"+this.buttons[cat]["code"];
                 this.category_text = $(id_cat).html();
-                console.log(this.category_text);
                 this.refresh = false;
                 this.renderMap = true;
                 this.model.cat = this.buttons[cat]["code"];

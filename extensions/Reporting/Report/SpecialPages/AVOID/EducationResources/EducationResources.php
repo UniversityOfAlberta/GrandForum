@@ -113,6 +113,10 @@ class EducationResources extends SpecialPage {
                                 $wgOut->addHTML("<h4 id='resources".str_replace(" ", "", $subCategory)."' style='margin-top: 0; padding-top: 0;'>{$subCategory}</h4>");
                                 $wgOut->addHTML("<div style='padding:1em !important;'><ul style='margin-top: 0;'>");
                                 foreach($subResources as $resource){
+                                    if(isset($_GET['clickedResource']) && $_GET['clickedResource'] == "{$category->id}-{$resource->file}"){
+                                        Gamification::log("EducationResource/".md5("{$category->id}-{$resource->file}"));
+                                        exit;
+                                    }
                                     $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
                                     $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
                                 }
@@ -126,6 +130,7 @@ class EducationResources extends SpecialPage {
                         foreach($resources as $resource){
                             if(isset($_GET['clickedResource']) && $_GET['clickedResource'] == "{$category->id}-{$resource->file}"){
                                 Gamification::log("EducationResource/".md5("{$category->id}-{$resource->file}"));
+                                exit;
                             }
                             $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
                             $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
@@ -164,7 +169,6 @@ class EducationResources extends SpecialPage {
             $('a.resource').click(function(){
                 dc.init(me.get('id'), $(this).attr('data-resource'));
                 dc.increment('count');
-                
                 $.get(wgServer + wgScriptPath + '/index.php/Special:EducationResources?clickedResource=' + encodeURI($(this).attr('data-resource')));
             });
             

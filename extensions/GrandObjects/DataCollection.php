@@ -40,9 +40,28 @@ class DataCollection extends BackboneModel {
     }
     
     /**
+     * Returns all new DataCollection using the given userId and page
+     * @param int $userId The userId of the DataCollection
+     * @param int $page The 'page' of the DataCollection
+     * @return DataCollection The DataCollection that matches the userId and page
+     */
+    static function allFromUserId($userId, $page){
+        $page = str_replace("*", "%", $page);
+        $data = DBFunctions::select(array('grand_data_collection'),
+                                    array('*'),
+                                    array('user_id' => $userId,
+                                          'page' => LIKE($page)));
+        $array = array();
+        foreach($data as $row){
+            $array[] = new DataCollection(array($row));
+        }
+        return $array;
+    }
+    
+    /**
      * Returns all of the DataCollections using the given page
      * @param int $page The 'page' of the DataCollection
-     * @return DataCollection The DataCollections that matche the page
+     * @return DataCollection The DataCollections that match the page
      */
     static function newFromPage($page){
         $me = Person::newFromWgUser();

@@ -47,6 +47,18 @@ class PharmacyMap extends BackbonePage {
     
     function getTemplates(){
         global $wgOut;
+        $me = Person::newFromWgUser();
+        if(isset($_GET['clickedProgram'])){
+            $dcs = DataCollection::allFromUserId($me->getId(), "ProgramLibrary-*");
+            $clicks = 0;
+            foreach($dcs as $dc){
+                $clicks += $dc->getField('websiteClicks', 0);
+            }
+            if($clicks >= 5){
+                Gamification::log("5CommunitySupports");
+            }
+            exit;
+        }
         $json = self::getCategoryJSON();
         $wgOut->addHTML("<script type='text/javascript'>
             var cat_json = ".json_encode($json).";
