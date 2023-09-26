@@ -305,8 +305,10 @@ class AVOIDDashboard extends SpecialPage {
             $gamificationLink = ($me->isSubRole("Gamification")) 
                               ? "<img src='{$wgServer}{$wgScriptPath}/skins/goldstar.png' style='height:24px;' />
                                  <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>
+                                    
                                     <a href='https://healthyagingcentres.ca/awards/'>Healthy Lifestyle Rewards</a><br />
-                                    Earn points with a team, for using the program. Compete for prizes and bragging rights!
+                                    <span style='font-size: 3em;float: right;line-height: 1em;'>".Gamification::calculatePoints($me)."</span>
+                                    <span>Earn points with a team, for using the program. Compete for prizes and bragging rights!</span>
                                  </span>"
                               : "";
             $wgOut->addHTML("<div class='$membersOnly modules module-2cols-outer'>
