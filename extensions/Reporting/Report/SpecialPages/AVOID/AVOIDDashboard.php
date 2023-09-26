@@ -304,7 +304,10 @@ class AVOIDDashboard extends SpecialPage {
                              <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Join the discussion in the <a target='_blank' href='https://www.facebook.com/groups/1751174705081179/'>member's only facebook group</a></span>";
             $gamificationLink = ($me->isSubRole("Gamification")) 
                               ? "<img src='{$wgServer}{$wgScriptPath}/skins/goldstar.png' style='height:24px;' />
-                                 <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Create or join a team in the <a href='https://healthyagingcentres.ca/awards/'>Healthy Lifestyle Rewards game</a> and start earning points for using the program. Compete for prizes and bragging rights!</span>"
+                                 <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>
+                                    <a href='https://healthyagingcentres.ca/awards/'>Healthy Lifestyle Rewards</a><br />
+                                    Earn points with a team, for using the program. Compete for prizes and bragging rights!
+                                 </span>"
                               : "";
             $wgOut->addHTML("<div class='$membersOnly modules module-2cols-outer'>
                                 <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'><en>My Frailty Status</en><fr>Mon état de fragilité</fr></h1>
