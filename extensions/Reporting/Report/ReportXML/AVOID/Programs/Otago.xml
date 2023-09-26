@@ -51,7 +51,13 @@
             <![CDATA[
                 <!--b>Phone Number:</b> {$item} (optional)<br />
                 <p><span class='program-text'>You will be contacted with further details</span></p-->
-                <b>This program is now full</b>
+                <!--b>This program is now full</b-->
+                <b>Upcoming Session:</b><br /> 
+                January 15 to March 25, 2024 - 10 weeks, not including Family Day<br />
+                Location: Amherstview Leisure & Activity Centre - 177 Upper Park<br />
+                Mondays from 1:00 to - 2:00pm<br />
+                Cost: $70<br />
+                To Register: visit <a href='https://www.loyalist.ca/register' target='_blank'>www.loyalist.ca/register</a> or 613-386-7351 Ext. 300
             ]]>
         </ReportItem>
         <!--ReportItem id="register" type="Checkbox" 
