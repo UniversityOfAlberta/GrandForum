@@ -305,9 +305,12 @@ class AVOIDDashboard extends SpecialPage {
             $gamificationLink = ($me->isSubRole("Gamification")) 
                               ? "<img src='{$wgServer}{$wgScriptPath}/skins/goldstar.png' style='height:24px;' />
                                  <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>
-                                    
+                                    <span style='float: right;border: 2px solid #005f9d;border-radius: 10px;padding: 5px;text-align: center;'>
+                                        <span style='font-weight: bold;'>My Points<br /></span>
+                                        <span style='font-size: 3em; line-height: 1em;'>".Gamification::calculatePoints($me)."</span>
+                                    </span>
                                     <a href='https://healthyagingcentres.ca/awards/'>Healthy Lifestyle Rewards</a><br />
-                                    <span style='font-size: 3em;float: right;line-height: 1em;'>".Gamification::calculatePoints($me)."</span>
+                                    
                                     <span>Earn points with a team, for using the program. Compete for prizes and bragging rights!</span>
                                  </span>"
                               : "";
@@ -349,7 +352,7 @@ class AVOIDDashboard extends SpecialPage {
                                         <en>
                                             <div class='modules' style='margin-top: 0.5em;'>
                                                 <div class='module-2cols-outer'>{$facebookLink}</div>
-                                                <div class='module-2cols-outer'>{$gamificationLink}</div>
+                                                <div class='module-2cols-outer' style='width:50%;'>{$gamificationLink}</div>
                                             </div>
                                         </en>
                                     </div>
