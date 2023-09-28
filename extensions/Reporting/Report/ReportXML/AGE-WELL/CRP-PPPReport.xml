@@ -19,11 +19,14 @@
         <Project />
     </Permissions>
     <ReportSection id="progress" tooltip="Progress Report" name="Progress Report" title="2023-24 MID-YEAR PROGRESS UPDATE" blobSection="PROGRESS_REPORT" type="EditableReportSection">
-        <Static>
+        <ReportItem id="pdf" type="PDFReportItem" buttonName="Last Year's PDF" project="true" reportType="ProjectEvaluation" year="{$last_year}">
             <![CDATA[
-                <p>The aim of this report is to allow AGE-WELL’s Research Management Committee (RMC) to assess project progress and network spending in our final year of NCE funding. Please keep your responses brief (max 500 words per question). </p>
+                <p>The aim of this report is to allow AGE-WELL’s Research Management Committee (RMC) to assess project progress and network spending in our final year of NCE funding. You may want to refer to your report submitted January 2023 which outlined project plans for the current fiscal year.</p>
+                {$item}
+                <p>Please keep your responses brief (max 500 words per question).</p>
+                
             ]]>
-        </Static>
+        </ReportItem>
         <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500">
             <![CDATA[
                 <h3>SUMMARY OF PROJECT PROGRESS</h3>
@@ -37,9 +40,9 @@
         <ReportItem id="financial" type="TextareaReportItem" blobItem="FINANCIAL" rich="true" limit="500">
             <![CDATA[
                 <h3>FINANCIAL UPDATE</h3>
-                <p>In the space below, provide an update on project spending to September 30, noting any challenges or commitments that may not yet be reflected on your account balance. Please provide an indication of how confident you are that funds allocated for the current year will be spent as planned by the end of the current fiscal year. Financial updates will be considered in the context of your budget justification submitted for 2023-24.</p>
+                <p>In the space below, provide an update on project spending to September 30 2023, noting any challenges or commitments that may not yet be reflected on your account balance. Please provide an indication of how confident you are that funds allocated for the current year will be spent as planned by the end of the current fiscal year. Financial updates will be considered in the context of your budget justification submitted for 2023-24.</p>
                 
-                <p><b>As communicated previously, there are no project extensions available for CRP/PPP projects beyond March 31, 2024.</b> Any unspent funds at that time will be recalled and redeployed as we wind down the NCE arm of AGE-WELL in 2024.</p>
+                <p><b>As communicated previously, there are no project extensions available for CRP/PPP projects beyond March 31, 2024.  Any unspent funds at that time will be recalled and redeployed as we wind down the NCE arm of AGE-WELL in 2024.</b></p>
                 {$item}<br /><br />
             ]]>
         </ReportItem>
