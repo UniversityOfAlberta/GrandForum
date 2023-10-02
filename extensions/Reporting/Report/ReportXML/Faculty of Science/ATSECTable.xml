@@ -43,7 +43,7 @@
                         var nDDATS = 0;
                         
                         // Get these numbers from sciea/scihr each year
-                        var targetATS = 19.20;
+                        var targetATS = 22.80;
                         
                         var needsSaving = false;
                         
