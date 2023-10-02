@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="true">
+<Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="false">
     <Permissions>
         <Role role="INACTIVE+" subRole="ATSEC">
             <SectionPermission id="atsec" permissions="rw" />
