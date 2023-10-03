@@ -24,14 +24,16 @@
 <div class='searches'>
 </div>
 <p class="program-body" style="margin-bottom:0;">
-    <img id="bkmarked" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg">
-    <en>Click on this icon located next to each program name below to create a list of programs you are interested in. They will be added to your clipboard.</en>
-    <fr>Cliquez sur cette icône située à côté de chaque nom de ressources ci-dessous pour créer une liste des ressources qui vous intéressent. Elles seront ajoutées à votre presse-papiers.</fr>
-    <br />
-    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:ClipboardList" class="program-button" title="Print/View Clipboard">
-        <en>Print/View Clipboard</en>
-        <fr>Imprimer/afficher le presse-papiers</fr>
-    </a>
+    <% if(me.isLoggedIn()){ %>
+        <img id="bkmarked" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg">
+        <en>Click on this icon located next to each program name below to create a list of programs you are interested in. They will be added to your clipboard.</en>
+        <fr>Cliquez sur cette icône située à côté de chaque nom de ressources ci-dessous pour créer une liste des ressources qui vous intéressent. Elles seront ajoutées à votre presse-papiers.</fr>
+        <br />
+        <a href="<%= wgServer+wgScriptPath%>/index.php/Special:ClipboardList" class="program-button" title="Print/View Clipboard">
+            <en>Print/View Clipboard</en>
+            <fr>Imprimer/afficher le presse-papiers</fr>
+        </a>
+    <% } %>
     <!--% if(this.note != null && this.note != 'No notes'){ %-->
         <a id="questions" href="#asdf" class="program-button" title="Questions to consider asking when calling about a support">
             <en>Questions to Consider</en>

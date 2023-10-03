@@ -150,7 +150,7 @@
         }
 
         function isLoginRequired(){
-            return true;
+            return false;
         }
     }
 ?>

@@ -1,10 +1,12 @@
 <td valign="top" style="width:40px" id="row_<%= output.id %>">
 	<h3 style="margin-top:0;">
 	    <span style="display:none;"><%= output.PublicName %></span>
-		<% if(!bookmarked){ %>
-            <a href="#" id="bkmark" data-index="1"><img id="bkmarked_<%= output.id %>" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg"></a> 
-		<% }else{ %>
-			<a href="#" id="bkmark" data-index="1"><img id="bkmark_<%= output.id %>" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-star-fill.svg"></a> 
+	    <% if(me.isLoggedIn()){ %>
+		    <% if(!bookmarked){ %>
+                <a href="#" id="bkmark" data-index="1"><img id="bkmarked_<%= output.id %>" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg"></a> 
+		    <% }else{ %>
+			    <a href="#" id="bkmark" data-index="1"><img id="bkmark_<%= output.id %>" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-star-fill.svg"></a> 
+		    <% } %>
 		<% } %>
 		<%= output.PublicName %>
 	</h3>

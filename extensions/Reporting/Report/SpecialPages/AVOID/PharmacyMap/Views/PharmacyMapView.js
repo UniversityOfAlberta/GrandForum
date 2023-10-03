@@ -469,12 +469,14 @@ PharmacyMapView = Backbone.View.extend({
             findCat: this.findCat.bind(this)
         }));
         var self = this;
-        this.clipboard = new PersonClipboard();
-        this.clipboard.fetch({
-            success: function () {
-                self.addRows(self.model);
-            }
-        });
+        if(me.isLoggedIn()){
+            this.clipboard = new PersonClipboard();
+            this.clipboard.fetch({
+                success: function () {
+                    self.addRows(self.model);
+                }
+            });
+        }
 
         if(this.renderMap){
             this.initMap();
