@@ -275,14 +275,16 @@
         </div>
     </div>
 </div>
-<p class='program-body'>
-    <en>Do you know about a program that isn’t in our database and you want to share it with the community?<br /></en>
-    <fr>Avez-vous récemment eu recours à une ressource officielle ou informelle que vous ne voyez pas dans la liste et que vous aimeriez mentionner à la communauté?</fr>
-    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:Report?report=SubmitProgram" class="program-button" title="Submit a Program">
-        <en>Submit a Program</en>
-        <fr>Soumettre une ressource</fr>
-    </a>
-</p>
+<% if(me.isLoggedIn()){ %>
+    <p class='program-body'>
+        <en>Do you know about a program that isn’t in our database and you want to share it with the community?<br /></en>
+        <fr>Avez-vous récemment eu recours à une ressource officielle ou informelle que vous ne voyez pas dans la liste et que vous aimeriez mentionner à la communauté?</fr>
+        <a href="<%= wgServer+wgScriptPath%>/index.php/Special:Report?report=SubmitProgram" class="program-button" title="Submit a Program">
+            <en>Submit a Program</en>
+            <fr>Soumettre une ressource</fr>
+        </a>
+    </p>
+<% } %>
 <div id="db_powered">
     Database Powered by<br />
     <img src="<%= wgServer + wgScriptPath %>/skins/cneo_logo.png" style="height: 150px;" />

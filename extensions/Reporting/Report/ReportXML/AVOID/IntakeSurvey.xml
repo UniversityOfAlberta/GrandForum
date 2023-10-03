@@ -866,7 +866,7 @@ As a user of this program, you may or may not see direct benefits from this stud
         <Static>
             <![CDATA[
             <br/>
-            <div id="reportHeader" class="headers-behaviour"><b><en>VACCINATE</en><fr>VACCINATE</fr></b></div><hr>
+            <div id="reportHeader" class="headers-behaviour"><b><en>VACCINATE</en><fr>VACCINATION</fr></b></div><hr>
         ]]>
         </Static>
         <ReportItem id="vaccinate1_avoid" blobItem="vaccinate1_avoid" type="RadioReportItem" orientation="horizontal" 
@@ -1542,7 +1542,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                     options="Yes|No"
                     labels="{showLanguage(Yes|No, Oui|Non)}">
             <![CDATA[
-                    <h3>Do you take a vitamin D supplement?</h3>
+                    <h3><en>Do you take a vitamin D supplement?</en><fr>Prenez-vous un supplément de vitamine D?</fr></h3>
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
@@ -1779,7 +1779,10 @@ As a user of this program, you may or may not see direct benefits from this stud
     <ReportSection id="healthquestions3" tooltip="Health Related QoL3" name="Health Related QoL3" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-                <p>Please tap the ONE box that best describes your health TODAY.</p>
+                <p>
+                    <en>Please tap the ONE box that best describes your health TODAY.</en>
+                    <fr>Pour chaque rubrique, veuillez cocher UNE case, celle qui décrit le mieux votre santé AUJOURD’HUI.</fr>
+                </p>
             ]]>
         </Static>
         <ReportItem id="healthstatus2_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" 

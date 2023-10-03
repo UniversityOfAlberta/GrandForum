@@ -12,8 +12,7 @@ class PharmacyMap extends BackbonePage {
     }
     
     function userCanExecute($user){
-        $me = Person::newFromWgUser();
-        return $me->isLoggedIn();
+        return true;
     }
     
     static function getCategoryJSON(){

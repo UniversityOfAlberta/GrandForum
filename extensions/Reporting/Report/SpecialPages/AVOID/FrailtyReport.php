@@ -129,7 +129,7 @@ class FrailtyReport extends SpecialPage {
                 "text" => "<en>Multiple Medications</en><fr>Médicaments multiples</fr>",
                 "no" => "<en>Keep up the good work!</en><fr>Continuez votre bon travail!</fr>",
                 "education" => array(
-                    "Optimize Medication" => "OptimizeMedication"
+                    "<en>Optimize Medication</en><fr>Optimisation des médicaments</fr>" => "OptimizeMedication"
                 ),
                 "programs" => array(
                     "<en>Peer Coaching</en><fr>Coaching par les pairs</fr>" => "PeerCoaching"
@@ -357,6 +357,9 @@ class FrailtyReport extends SpecialPage {
                     }
                 }
                 foreach($topic['programs'] as $k => $p){
+                    if($wgLang->getCode() == "fr" && strstr($k, "Cyber Seniors") !== false){
+                        continue;
+                    }
                     if(is_array($p)){
                         $links = array();
                         foreach($p as $k1 => $p1){
