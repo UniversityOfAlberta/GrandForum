@@ -110,10 +110,12 @@ CommunityRowView = Backbone.View.extend({
     render: function(){
         if(this.newModel == null){
             this.newModel = [];
-            _.each(this.clipboard.get('objs'), function(obj, i){
-                this.newModel.push(obj);
-                this.clipboardids.push(obj.id);
-            }.bind(this));
+            if(this.clipboard != null){
+                _.each(this.clipboard.get('objs'), function(obj, i){
+                    this.newModel.push(obj);
+                    this.clipboardids.push(obj.id);
+                }.bind(this));
+            }
         }
         var self = this;
         var i = this.model.toJSON();

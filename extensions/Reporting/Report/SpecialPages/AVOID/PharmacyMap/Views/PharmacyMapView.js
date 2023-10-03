@@ -308,28 +308,24 @@ PharmacyMapView = Backbone.View.extend({
         if(this.note == null || this.note == "No notes"){
             this.note = "No notes";
         }
-        if(rows != undefined){
-            var fragment = document.createDocumentFragment();
-            rows.forEach(function (p, i) {
-                var row = new CommunityRowView({ model: p, parent: this, category:this.category_text, note:this.note, clipboard:this.clipboard});
-                row.render();
-                fragment.appendChild(row.el);
-            }.bind(this));
-            this.$("#sopRows").html(fragment);
+        var fragment = document.createDocumentFragment();
+        rows.forEach(function (p, i) {
+            var row = new CommunityRowView({ model: p, parent: this, category:this.category_text, note:this.note, clipboard:this.clipboard});
+            row.render();
+            fragment.appendChild(row.el);
+        }.bind(this));
+        this.$("#sopRows").html(fragment);
 
-            // Create the DataTable
-            this.createDataTable();
+        // Create the DataTable
+        this.createDataTable();
 
-            // Show the DataTable
-            this.$('#listTable').show();
-            this.$('.dataTables_scrollHead table').show();
-            this.$('.DTFC_LeftHeadWrapper table').show();
-        }
+        // Show the DataTable
+        this.$('#listTable').show();
+        this.$('.dataTables_scrollHead table').show();
+        this.$('.DTFC_LeftHeadWrapper table').show();
 
         this.initMap();
-        if(rows != undefined){
-            this.AddMarkers(rows.toJSON());
-        }
+        this.AddMarkers(rows.toJSON());
     },
 
     createDataTable: function () {
@@ -476,12 +472,12 @@ PharmacyMapView = Backbone.View.extend({
             this.clipboard = new PersonClipboard();
             this.clipboard.fetch({
                 success: function () {
-                    this.addRows(self.model);
+                    this.addRows(this.model);
                 }.bind(this)
             });
         }
         else {
-            this.addRows(self.model);
+            this.addRows(this.model);
         }
 
         if(this.renderMap){
