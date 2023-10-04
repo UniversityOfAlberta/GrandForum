@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Products>
+
+    <!-- Publications -->
+    <Publications category="Publication">
+        <Publication type="Bachelor Thesis" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
+            <statuses ccv_id="cf36bbd2e16c45cba9768a84ac2d6729" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status>In Preparation</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status>Under Review</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>e-pub, ahead of print</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field bibtex="school" label="University" type="String">university</field>
+                <field label="Department" type="String">department</field>
+                <field label="Database or Archive Name" type="String">database</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" bibtex="url" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date"></date>
+            <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Student"></authors>
+            <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+
+        <Publication type="Book" ccv_id="4ef4df71a505469788b587f1a509eadf" ccv_name="Books" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="ef406ccb1fcc45d1b096380119649200" ccv_name="Book Title"></title>
+            <statuses ccv_id="92114e550d1c40028e44dbebbc97d05e" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status>In Preparation</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status>Under Review</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>e-pub, ahead of print</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <!--field>address</field--> <!-- In some entried in DB, but not in UI -->
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" bibtex="url" label="Publication URL" type="URL">url</field>
+                <field ccv_id="ecd4abd985ec4e9ab590f0ecb86811a7" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="b9156e483a5a42a3b49d5ee599c73aee" ccv_name="Date"></date>
+            <authors ccv_id="e555fb44aaf14740b880693b01603a35" ccv_name="Authors"></authors>
+            <description ccv_id="6480fa19889345619e778b394ad1445e" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+
+        <Publication type="Book Chapter" ccv_id="fd8f2ffe3f5c43db8b5c3f72d8ffd994" ccv_name="Book Chapters" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="52a699a6b0fe42a4851a7d5ae355360b" ccv_name="Chapter Title"></title>
+            <statuses ccv_id="cf36bbd2e16c45cba9768a84ac2d6729" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status>In Preparation</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status>Under Review</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>e-pub, ahead of print</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field ccv_id="b864a9512e89482487f83ed22c454e9d" ccv_name="Book Title" ccvtk="booktitle" label="Book Title" type="String">book_title</field>
+                <field ccv_id="45b9d02a4bb04ec782357741b53dc135" ccv_name="Page Range" ccvtk="pages" label="Page Range" type="String">pages</field>
+                <field ccv_id="51a088349c1442238d5d0331d95f3205" ccv_name="Publisher" ccvtk="publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="dcb27492e1554fc9838992ba7c70f416" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
+                <field label="ISBN" type="String">isbn</field>
+                <field label="ISSN" type="String">issn</field>
+                <field label="Publication DOI" type="DOI">doi</field>
+                <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" ccvtk="url" label="Publication URL" type="URL">url</field>
+                <field ccv_id="51bd72e89f85442a9ae199e75fe5e765" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date"></date>
+            <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Authors"></authors>
+            <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+        
+        <Publication type="Edited Volume" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="ef406ccb1fcc45d1b096380119649200" ccv_name="Book Title"></title>
+            <statuses ccv_id="92114e550d1c40028e44dbebbc97d05e" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status>In Preparation</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status>Under Review</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>e-pub, ahead of print</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <!--field>address</field--> <!-- In some entried in DB, but not in UI -->
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" bibtex="url" label="Publication URL" type="URL">url</field>
+                <field ccv_id="ecd4abd985ec4e9ab590f0ecb86811a7" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="b9156e483a5a42a3b49d5ee599c73aee" ccv_name="Date"></date>
+            <authors ccv_id="e555fb44aaf14740b880693b01603a35" ccv_name="Authors"></authors>
+            <description ccv_id="6480fa19889345619e778b394ad1445e" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+
+        <Publication type="Peer-Reviewed Journal Article" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="f3fd4878d47c4e83aef6959620ba4870" ccv_name="Article Title"></title>
+            <statuses ccv_id="3b56e4362d6a495aa5d22a1de5914741" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status>In Preparation</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status>Under Review</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>e-pub, ahead of print</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
+                <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
+                <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
+                <field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue" ccvtk="number" bibtex="number" label="Issue" type="String">number</field>
+                <field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range" ccvtk="pages" bibtex="pages" label="Page Range" type="String">pages</field>
+                <field label="Impact Factor" type="String">impact_factor</field>
+                <field ccv_id="4ad593960aba4a21bf154fa8daf37f9f" ccv_name="Publisher" ccvtk="publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="707a6e0ca58341a5a82fb923b2842530" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="Publication URL" type="URL">url</field>
+                <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Date"></date>
+            <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
+            <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+        
+        <Publication type="Article in professional or trade journals" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="f3fd4878d47c4e83aef6959620ba4870" ccv_name="Article Title"></title>
+            <statuses ccv_id="3b56e4362d6a495aa5d22a1de5914741" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status>In Preparation</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status>Under Review</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>e-pub, ahead of print</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
+                <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
+                <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
+                <field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue" ccvtk="number" bibtex="number" label="Issue" type="String">number</field>
+                <field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range" ccvtk="pages" bibtex="pages" label="Page Range" type="String">pages</field>
+                <field label="Impact Factor" type="String">impact_factor</field>
+                <field ccv_id="4ad593960aba4a21bf154fa8daf37f9f" ccv_name="Publisher" ccvtk="publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="707a6e0ca58341a5a82fb923b2842530" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="Publication URL" type="URL">url</field>
+                <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Date"></date>
+            <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
+            <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+        
+        <Publication type="Article in popular media" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="f3fd4878d47c4e83aef6959620ba4870" ccv_name="Article Title"></title>
+            <statuses ccv_id="3b56e4362d6a495aa5d22a1de5914741" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status>In Preparation</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status>Under Review</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>e-pub, ahead of print</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Type of Media">type</field>
+                <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="Article URL" type="URL">url</field>
+                <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+            <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Date"></date>
+            <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
+            <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+
+        <Publication type="Master Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
+            <statuses ccv_id="fa5c5a2edf324a05b3e572b240aa218a" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status>In Preparation</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status>Under Review</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>e-pub, ahead of print</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Completed in joint supervision&lt;br />with University of Calgary?" type="Check">uofc</field>
+                <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
+                <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" bibtex="publisher" label="Department" type="String">department</field>
+                <field label="Database or Archive Name" type="String">database</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field ccv_id="e921d0d933bd48ed9192283bb16a83f6" ccv_name="URL" bibtex="url"  label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Date"></date>
+            <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
+            <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+
+        <Publication type="Doctoral Thesis/Dissertation" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
+            <statuses ccv_id="fa5c5a2edf324a05b3e572b240aa218a" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status>In Preparation</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status>Under Review</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>e-pub, ahead of print</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Completed in joint supervision&lt;br />with University of Calgary?" type="Check">uofc</field>
+                <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
+                <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" label="Department" type="String">department</field>
+                <field label="Database or Archive Name" type="String">database</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field ccv_id="e921d0d933bd48ed9192283bb16a83f6" ccv_name="URL" bibtex="url" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Date"></date>
+            <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
+            <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+
+        <Publication type="Conference Proceedings" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <pub_type ccv_id="81ef87c09ded47ae8880b8d79e83406f" ccv_name="Conference Publication Type">
+                <type lov_id="00000000000000000000000100007000">Paper</type>
+            </pub_type>
+            <title ccv_id="8e6ee535c95e42ec866b777c7472bafb" ccv_name="Publication Title"></title>
+            <statuses ccv_id="080301b1f1c0464bba7fcfa1fa8fe182" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status>In Preparation</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status>Under Review</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>e-pub, ahead of print</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
+                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="Conference Location" placeholder="City, Province and Country" type="String">event_location</field>
+                <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
+                <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field bibtex="url" ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" label="Publication URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Date"></date>
+            <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
+            <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+        
+        <Publication type="Research Report" status="Submitted|To Appear|Under Revision|Published|Rejected">
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field bibtex="school" label="Organization" type="String">university</field>
+                <field label="Article Number" type="String">number</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field bibtex="url" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Publication>
+        
+        <Publication type="Report, brief, and other forms of grey literature" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="dd692787647b495fbadb038b6937950d" ccv_name="Title"></title>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Impact Factor" type="String">impact_factor</field>
+                <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
+                <field label="Pages" type="String">pages</field>
+                <field ccv_id="e3264fc9e17442e492bc8d5dca60e165" ccv_name="Editors" label="Editor" type="String">editor</field>
+                <field label="Organization" type="String">publisher</field>
+                <field label="Article Number" type="String">number</field>
+                <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Date"></date>
+            <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
+            <description ccv_id="694c4c7bf6ad47309ab6f77f4fee1869" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+
+        <Publication type="Government Publication" ccv_id="7e57525337d5498a9506fdadee098b10" ccv_name="Reports" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="dd692787647b495fbadb038b6937950d" ccv_name="Report Title"></title>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Impact Factor" type="String">impact_factor</field>
+                <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
+                <field label="Pages" type="String">pages</field>
+                <field ccv_id="e3264fc9e17442e492bc8d5dca60e165" ccv_name="Editors" label="Editor" type="String">editor</field>
+                <field label="Publisher" type="String">publisher</field>
+                <field label="Article Number" type="String">number</field>
+                <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+            <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Date"></date>
+            <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
+            <description ccv_id="694c4c7bf6ad47309ab6f77f4fee1869" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+               
+        <Publication type="Website" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Publication>
+        
+        <Publication type="Database" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <data>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Database Holder" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Publication>
+        
+        <Publication type="Podcast" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Episode Number" type="String">venue</field>
+                <field bibtex="howpublished" label="Publisher" type="String">how_published</field>
+                <field bibtex="note" label="Note" type="String">note</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field bibtex="url" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+        </Publication>
+        
+        <Publication type="Research-Specific Short Film" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Venue" type="String">venue</field>
+                <field bibtex="howpublished" label="Publisher" type="String">how_published</field>
+                <field bibtex="note" label="Note" type="String">note</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field bibtex="url" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+        </Publication>
+        
+        <Publication type="Misc" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Venue" type="String">venue</field>
+                <field bibtex="howpublished" label="Form of Publication" type="String">how_published</field>
+                <field bibtex="note" label="Note" type="String">note</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field bibtex="url" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+        </Publication>
+    </Publications>
+
+    <!-- Activities -->
+    <Activities category="Activity">
+        <Activity type="Other Event" status="Invited|Not Invited">
+            <data>
+                <field label="Event Type" type="String">event_type</field>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Chair Name" type="String">chair_name</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Conference/Symposium/Workshop Contribution" status="Invited|Not Invited">
+            <data>
+                <field label="Involvement/Contribution Type" type="Select" options="Attendance only|Conference session|Event Chair/MC|Keynote|Oral Presentation|Poster Presentation|Session Chair|Symposium Contribution|Workshop Contribution">involvement</field>
+                <field label="Conference/Symposium/Workshop Name" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Chair Name" type="String">chair_name</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Government Briefings" status="Invited|Not Invited">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Visiting Researcher (outgoing)" status="">
+            <data>
+                <field label="Researcher Type" type="Select" options="BSc|BA|MSc|MA|PhD|PDF|Professor (all levels)|Other|Research Associate">researcher_type</field>
+                <field label="Researcher Name" type="String">student_name</field>
+                <field label="External Institution" type="String">institution</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Visiting Researcher (incoming)" status="">
+            <data>
+                <field label="Researcher Type" type="Select" options="BSc|BA|MSc|MA|PhD|PDF|Professor (all levels)|Other|Research Associate">researcher_type</field>
+                <field label="Researcher Name" type="String">student_name</field>
+                <field label="External Institution" type="String">institution</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Interview (Broadcast or Text)" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Interviewer Name" type="String">interviewer</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Publisher" type="String">publisher</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Misc" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+    </Activities>
+    
+    <!-- IP Management -->
+    <IPManagements category="IP Management" citationFormat="{%Authors} {(%YYYY).} &lt;i>{%Title.}&lt;/i> {%Issue} {%Url}">
+        <IPManagement type="Patent" status="">
+            <data>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="no. of HQP trained&lt;br />in new technology" type="Integer">hqp_trained</field>
+                <field label="Location" type="String">location</field>
+                <field label="Article Number" type="String">number</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </IPManagement>
+        
+        <IPManagement type="Policy" status="">
+            <data>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Location" type="String">location</field>
+                <field label="Article Number" type="String">number</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </IPManagement>
+        
+        <IPManagement type="Copyright" status="">
+            <data>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Registration Number" type="String">number</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </IPManagement>
+        
+        <IPManagement type="Trademark" status="">
+            <data>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Type" type="String">type</field>
+                <field label="File Number" type="String">number</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </IPManagement>
+        
+        <IPManagement type="Utility design" status="">
+            <data>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Type" type="String">type</field>
+                <field label="File Number" type="String">number</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </IPManagement>
+        
+        <IPManagement type="License" status="">
+            <data>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Type" type="String">type</field>
+                <field label="Term" type="String">term</field>
+                <field label="File Number" type="String">number</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </IPManagement>
+        
+        <IPManagement type="Start-up Company" status="">
+            <data>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Sector">sector</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </IPManagement>
+        
+        <IPManagement type="Misc" status="">
+            <data>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </IPManagement>
+
+    </IPManagements>
+    
+    <!-- Awards -->
+    <Awards category="Award" citationFormat="{%Authors} {(%YYYY).} {%Title.} {%Institution} ({%Value, }{%Frequency})">
+        <Award type="Award">
+            <authors label="Recipient"></authors>
+            <data>
+                <field label="Frequency" type="String">frequency</field>
+                <field label="Awarding Institution" type="String">institution</field>
+                <field label="Value (if applicable)" type="String">value</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Award>
+    </Awards>
+
+</Products>
