@@ -192,7 +192,7 @@ class AVOIDDashboard extends SpecialPage {
 	}
     
     function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath, $wgLang;
+        global $wgOut, $wgServer, $wgScriptPath, $wgLang, $config;
         if(isset($_GET['fitbitApi'])){
             $me = Person::newFromWgUser();
             if(isset($_GET['disable']) || isset($_GET['token'])){
@@ -302,7 +302,7 @@ class AVOIDDashboard extends SpecialPage {
             // Member Frailty Status
             $facebookLink = "<img src='{$wgServer}{$wgScriptPath}/skins/icons/avoid/glyphicons_social_30_facebook.png' />
                              <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Join the discussion in the <a target='_blank' href='https://www.facebook.com/groups/1751174705081179/'>member's only facebook group</a></span>";
-            $gamificationLink = ($me->isSubRole("Gamification")) 
+            $gamificationLink = ($config->getValue('gamificationEnabled')) 
                               ? "<img src='{$wgServer}{$wgScriptPath}/skins/goldstar.png' style='height:24px;' />
                                  <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>
                                     <span style='float: right;border: 2px solid #005f9d;border-radius: 10px;padding: 5px;text-align: center;'>

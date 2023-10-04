@@ -54,11 +54,11 @@ class Gamification {
     }
     
     static function log($action){
-        global $wgMessage, $wgServer, $wgScriptPath;
+        global $wgMessage, $wgServer, $wgScriptPath, $config;
         
         $me = Person::newFromWgUser();
-        if(!$me->isSubRole("Gamification")){
-            return; // TODO: Gamification is disabled for non-Gamification users
+        if(!$config->getValue('gamificationEnabled')){
+            return;
         }
         
         $date = date('Y-m-d h:i:s');

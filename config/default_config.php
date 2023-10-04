@@ -202,6 +202,9 @@
     // Whether or not Profiles should be enabled
     $config->setValue("profilesEnabled", true);
     
+    // Whether or not gamification should be enabled
+    $config->setValue("gamificationEnabled", false);
+    
     // A list of api keys
     $config->setValue("apiKeys", array());
     
