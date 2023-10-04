@@ -163,6 +163,13 @@ if($wgUser->getID() == 0){
     User::createNew("Admin", array('real_name' => "Admin", 
                                    'email' => $email));
     DBFunctions::update('mw_user',
+                        array('user_id' => 1),
+                        array('user_name' => "Admin"));
+    DBFunctions::update('mw_actor',
+                        array('actor_id' => 1,
+                              'actor_user' => 1),
+                        array('actor_name' => "Admin"));
+    DBFunctions::update('mw_user',
                         array('user_password' => MediaWiki\MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($password1)->toString()),
                         array('user_id' => 1));
     DBFunctions::insert('grand_roles',
