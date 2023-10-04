@@ -15,6 +15,25 @@ class PharmacyMap extends BackbonePage {
         return true;
     }
     
+    function execute($par){
+        parent::execute($par);
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $dc = DataCollection::newFromUserId(0, "PharmacyMap");
+            $dc->page = "PharmacyMap";
+            $dc->userId = 0;
+            $dc->allowed = true;
+            $date = date('Y-m-d');
+            $dc->setField($date, $dc->getField($date, 0)+1);
+            if($dc->exists()){
+                $dc->update();
+            }
+            else{
+                $dc->create();
+            }
+        }
+    }
+    
     static function getCategoryJSON(){
         $dir = dirname(__FILE__) . '/';
         $json = json_decode(file_get_contents("{$dir}categories.json"));
