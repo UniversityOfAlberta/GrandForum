@@ -256,6 +256,16 @@ class AdminUsageStats extends SpecialPage {
             }
         }
         
+        $dcs = DataCollection::newFromPage('PharmacyMap/*');
+        $ips = 0;
+        $ipCount = 0;
+        foreach($dcs as $dc){
+            $ips++;
+            foreach($dc->getData() as $date => $clicks){
+                $ipCount += $clicks;
+            }
+        }
+        
         asort($topPages);
         $topPages = array_reverse($topPages);
         $topPagesKeys = array_keys($topPages);
@@ -272,6 +282,14 @@ class AdminUsageStats extends SpecialPage {
             <tr>
                 <td class='label'>Number of hits on page</td>
                 <td align='right'>$count</td>
+            </tr>
+            <tr>
+                <td class='label'>Number of guest users</td>
+                <td align='right'>{$ips}</td>
+            </tr>
+            <tr>
+                <td class='label'>Number of guest hits on page</td>
+                <td align='right'>$ipCount</td>
             </tr>
             <tr>
                 <td class='label'>Top 3 main categories hit</td>
