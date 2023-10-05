@@ -12,6 +12,7 @@ class DataCollection extends BackboneModel {
     var $data = array();
     var $created;
     var $modified;
+    var $allowed = false;
     
     /**
      * Returns a new DataCollection using the given id
@@ -130,8 +131,12 @@ class DataCollection extends BackboneModel {
      */
     function canUserRead(){
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn()){
-            // Not logged in?  Too bad, you can't read anything!
+        if($this->allowed){
+            // Allowed if 'allowed' is true (only set in specific cases)
+            return true;        
+        }
+        else if(!$me->isLoggedIn()){
+            // Not logged in?  Too bad, you can't read anything
             return false;
         }
         else if($me->isRoleAtLeast(MANAGER)){
