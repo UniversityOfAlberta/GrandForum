@@ -19,8 +19,9 @@ class PharmacyMap extends BackbonePage {
         parent::execute($par);
         $me = Person::newFromWgUser();
         if(!$me->isLoggedIn()){
-            $dc = DataCollection::newFromUserId(0, "PharmacyMap");
-            $dc->page = "PharmacyMap";
+            $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+            $dc = DataCollection::newFromUserId(0, "PharmacyMap/{$ip}");
+            $dc->page = "PharmacyMap/{$ip}";
             $dc->userId = 0;
             $dc->allowed = true;
             $date = date('Y-m-d');
