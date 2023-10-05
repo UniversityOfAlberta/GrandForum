@@ -190,7 +190,10 @@ class Register extends SpecialPage{
                                                          "Courrier"), 
                                          "Television" =>
                                             showLanguage("Television",
-                                                         "Télévision"), 
+                                                         "Télévision"),
+                                         "Bus ad" => 
+                                            showLanguage("Bus ad",
+                                                         "Annonce de bus"),
                                          "Other" => 
                                             showLanguage("Other",
                                                          "Autre")), VALIDATE_NOT_NULL);

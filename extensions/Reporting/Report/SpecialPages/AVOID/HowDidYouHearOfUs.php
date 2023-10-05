@@ -60,7 +60,7 @@ class HowDidYouHearOfUs extends SpecialPage{
         $hearLabel->attr('class', 'label tooltip left-align');
         $hearRow1 = new FormTableRow("hear_row1");
         $hearRow1->append($hearLabel);
-        $hearField = new SelectBox("hear_field", "Hear", "", array("", "Canadian Frailty Network website", "Poster, flyer, or pamphlet at community venue", "Newspaper", "Magazine or Newsletter", "Healthcare practitioner", "Social media", "Word of mouth", "Event", "Radio", "Mail", "Television", "Other"), VALIDATE_NOT_NULL);
+        $hearField = new SelectBox("hear_field", "Hear", "", array("", "Canadian Frailty Network website", "Poster, flyer, or pamphlet at community venue", "Newspaper", "Magazine or Newsletter", "Healthcare practitioner", "Social media", "Word of mouth", "Event", "Radio", "Mail", "Television", "Bus ad", "Other"), VALIDATE_NOT_NULL);
         $hearRow2 = new FormTableRow("hear_row2");
         $hearRow2->append($hearField);
         
