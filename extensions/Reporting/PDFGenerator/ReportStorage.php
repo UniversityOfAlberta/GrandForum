@@ -224,8 +224,8 @@ class ReportStorage {
             $tok = DBFunctions::escape($tok);
             $sql = "SELECT report_id, type, user_id, submitted, token, timestamp, len_pdf, generation_user_id, submission_user_id, year, encrypted
                     FROM grand_pdf_report 
-                    WHERE {$ext} token = '{$tok}' AND ((encrypted = 0 AND token = '{$tok}') OR 
-                                                       (encrypted = 1 AND token = '".@decrypt($tok, true)."'))
+                    WHERE {$ext} ((encrypted = 0 AND token = '{$tok}') OR 
+                                  (encrypted = 1 AND token = '".@decrypt($tok, true)."'))
                     ORDER BY timestamp DESC LIMIT 1;";
         }
         $res = DBFunctions::execSQL($sql);
