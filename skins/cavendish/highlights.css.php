@@ -17,6 +17,7 @@ $hl = $config->getValue("highlightColor");
 $shl = ($config->getValue("sideHighlightColor") != "") ? $config->getValue("sideHighlightColor") : $hl;
 $hlFontColor = $config->getValue("highlightFontColor");
 $hlc = $config->getValue("hyperlinkColor");
+$hbc = $config->getValue("headerBorderColor");
 $bc = $config->getValue("mainBorderColor");
 $hc = $config->getValue("headerColor");
 $iconPath = $config->getValue("iconPath");
@@ -82,6 +83,10 @@ h1 {
     background: $sc;
 }
 
+#header {
+    border-bottom: 1px solid {$hbc};
+}
+
 #header, #mobileMenu {
     background: $sc;
 }
@@ -101,6 +106,15 @@ h1 {
 #submenu li.action a:hover {
     color: #FFFFFF !important;
     background: $sc;
+}
+
+#sideToggle {
+    border-left: 1px solid {$hbc};
+    border-right: 1px solid {$hbc};
+}
+
+#side hr {
+    background-color: {$hbc};
 }
 
 #sideToggle, #allTabs {
@@ -366,7 +380,7 @@ if($config->getValue("topInverted")){
     #topheader {
         background: #FFFFFF;
         color: {$ti};
-        border-bottom: 1px solid rgba(0,0,0,0.10);
+        border-bottom: 1px solid {$hbc};
     }
     
     #topheader a {
