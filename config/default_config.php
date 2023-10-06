@@ -80,7 +80,10 @@
     $config->setValue("shibDefaultRole", "");
     
     // Whether to auto create a user from single sign on
-    $config->setValue('shibCreateUser', false);
+    $config->setValue("shibCreateUser", false);
+    
+    // The type of network (NCE, CFREF)
+    $config->setValue("networkType", "NCE");
     
     // Skin
     $config->setValue("skin", "cavendish");

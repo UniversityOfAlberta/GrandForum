@@ -32,7 +32,7 @@ class NITableTab extends PeopleTableTab {
         if($me->isLoggedIn()){
             $emailHeader = "<th style='white-space: nowrap;'>Email</th><th>".AR."</th><th>".CI."</th><th>".PL."</th>";
         }
-        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkName') == "FES"){
+        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkType') == "CFREF"){
             $emplIdHeader = "<th style='white-space: nowrap;'>Employee ID</th>";
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){

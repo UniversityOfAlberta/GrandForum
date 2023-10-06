@@ -159,7 +159,7 @@ class RequestUserAPI extends API{
 		                          'created' => 0));
 		
 		$me = Person::newFromId($requesting_user);
-		if($config->getValue('networkName') == "FES"){
+		if($config->getValue('networkType') == "CFREF"){
 		    $headers = "From: {$config->getValue('supportEmail')}\r\n".
 		               "Reply-To: {$config->getValue('supportEmail')}\r\n".
 		               "X-Mailer: PHP/".phpversion();

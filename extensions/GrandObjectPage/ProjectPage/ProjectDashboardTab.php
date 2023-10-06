@@ -363,7 +363,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     
     function showUpToDate($project, $visibility){
         global $config;
-        if($config->getValue('networkName') == "FES"){
+        if($config->getValue('networkType') == "CFREF"){
             $year = date('Y', time() - (3 * 30 * 24 * 60 * 60));
             $upToDate = $project->getUpToDate($year);
             if($upToDate){
@@ -374,7 +374,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     
     function showEditUpToDate($project, $visibility){
         global $config;
-        if($config->getValue('networkName') == "FES"){
+        if($config->getValue('networkType') == "CFREF"){
             $year = date('Y', time() - (3 * 30 * 24 * 60 * 60));
             $upToDate = $project->getUpToDate($year);
             $field = new SingleCheckBox("upToDate", "Up To Date", $upToDate, array("&nbsp;<b>The information in this section is current as per the end of Fiscal Year (".($year-1)."-".($year).")</b>" => 1));

@@ -41,7 +41,7 @@ class PublicVisualizations extends SpecialPage{
         $tabbedPage = new TabbedPage("publicVis");
         if($config->getValue('projectsEnabled')){
             $tabbedPage->addTab(new PublicChordTab());
-            if($config->getValue('networkName') == "FES"){
+            if($config->getValue('networkType') == "CFREF"){
                 $tabbedPage->addTab(new PublicPersonChordTab());
             }
             $tabbedPage->addTab(new PublicProjectClusterTab());

@@ -306,6 +306,7 @@ class CavendishTemplate extends QuickTemplate {
 		    showNonNetwork = <?php var_export($config->getValue("showNonNetwork")) ?>;
 		    alumniEnabled = <?php var_export($config->getValue('alumniEnabled')); ?>;
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
+		    networkType = "<?php echo $config->getValue('networkType'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
@@ -1139,7 +1140,7 @@ class CavendishTemplate extends QuickTemplate {
 ?>
 	<li class="portlet" id="p-tb">
 <?php global $config, $wgServer, $wgScriptPath;
-    if($config->getValue('networkName') == "FES"){ ?>
+    if($config->getValue('networkType') == "CFREF"){ ?>
         <style>
             a.administration {
                 padding-bottom:6px;

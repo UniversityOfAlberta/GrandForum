@@ -24,7 +24,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
         global $config;
         $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
         $niStructure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_NI_BUDGET_STRUCTURE');
-        if($config->getValue('networkName') == "FES"){
+        if($config->getValue('networkType') == "CFREF"){
             $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $contents);
         }
         else {
@@ -70,7 +70,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         if($tmp != ""){
                             $contents = file_get_contents($tmp);
                             // Network specific Budget Validations
-                            if($config->getValue('networkName') == "FES"){
+                            if($config->getValue('networkType') == "CFREF"){
                                 $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
                                 $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $contents);
                                 $budget = $multiBudget->getBudget(0);
@@ -230,7 +230,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $endYear = date('Y', time() + (1 * 30 * 24 * 60 * 60)); // Roll-over budget in December
                 $midYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Keep previous year open until April
             }
-            else if($config->getValue('networkName') == "FES"){
+            else if($config->getValue('networkType') == "CFREF"){
                 $endYear = date('Y'); // Roll-over budget in the new year
                 $midYear = date('Y'); // Keep previous year open until the new year
             }
@@ -362,7 +362,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         $this->html .= "<h3 style='margin-top:0;padding-top:0;'>{$allocationText}</h3>
                                             $alloc<br /><br />";
                     }
-                    if($config->getValue('networkName') == "FES"){
+                    if($config->getValue('networkType') == "CFREF"){
                         if(preg_match("/.*-T.*/", $this->project->getName())){
                             $multiBudget = new MultiBudget(array($structure, FES_EXTERNAL_STRUCTURE), $xls);
                         }
@@ -412,7 +412,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                             {$carryOver}";
                         }
                     }
-                    if($config->getValue('networkName') == "FES"){
+                    if($config->getValue('networkType') == "CFREF"){
                         $justification = nl2br($justification);
                         $this->html .= "<h3>Budget Justification</h3>
                                         {$justification}";
@@ -549,7 +549,7 @@ Please provide detail for each sub-project or investigator holding funds as part
                         }
                     }
                 }
-                if($edit && $config->getValue('networkName') == "FES" && $editable){
+                if($edit && $config->getValue('networkType') == "CFREF" && $editable){
                     if(preg_match("/.*-T.*/", $this->project->getName())){
                         $template = "FES_Project_Budget_Tsinghua.xlsx";
                     }

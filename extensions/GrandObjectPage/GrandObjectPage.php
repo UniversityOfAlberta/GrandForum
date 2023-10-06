@@ -30,7 +30,7 @@
     if($config->getValue("contributionsEnabled")){
         require_once("Contributions/Contributions.php");
     }
-    if($config->getValue('networkName') == "FES" ||
+    if($config->getValue('networkType') == "CFREF" ||
        $config->getValue('networkName') == "NETWORK"){
         // Only show this for FES (for now)
         require_once("Collaborations/Collaboration.php");

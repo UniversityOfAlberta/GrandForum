@@ -791,7 +791,7 @@ EOF;
                         </tr>";
             }
         }
-        if($config->getValue("networkName") == "FES"){
+        if($config->getValue('networkType') == "CFREF"){
             $this->html .= "<b>Please add your name, middle name, and last name as per your employment records</b>";
         }
         $this->html .= "<table>

@@ -57,7 +57,7 @@ class AddMember extends SpecialPage{
                 $form->getElementById('email_field')->setPOST('wpEmail');
                 $_POST['wpSendEmail'] = (is_array(@$_POST['sendEmail_field']) && count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
                 $form->getElementById('role_field')->setPOST('wpUserType');
-                if($user->isRoleAtLeast(STAFF) || $config->getValue('networkName') == "FES"){
+                if($user->isRoleAtLeast(STAFF) || $config->getValue('networkType') == "CFREF"){
                     $form->getElementById('subrole_field')->setPOST('wpUserSubType');
                 }
                 $form->getElementById('project_field')->setPOST('wpNS');
@@ -417,7 +417,7 @@ class AddMember extends SpecialPage{
                   ->append($emailRow)
                   ->append($sendEmailRow)
                   ->append($rolesRow);
-        if($me->isRoleAtLeast(STAFF) || $config->getValue('networkName') == "FES"){
+        if($me->isRoleAtLeast(STAFF) || $config->getValue('networkType') == "CFREF"){
             $formTable->append($subRolesRow);
         }
         
@@ -561,7 +561,7 @@ class AddMember extends SpecialPage{
                   ->append($recruitmentRow)
                   ->append($recRow)
                   ->append($recCountryRow);
-        if($config->getValue('networkName') == "FES"){
+        if($config->getValue('networkType') == "CFREF"){
             $formTable->append($fundedRow);
         }
         $formTable->append($employmentRow1)
@@ -572,7 +572,7 @@ class AddMember extends SpecialPage{
         if(!$me->isRoleAtLeast(STAFF)){
             $formTable->getElementById("cand_row")->attr('style', 'display:none;');
         }
-        if(!$config->getValue('alumniEnabled') && $config->getValue('networkName') == "FES"){
+        if(!$config->getValue('alumniEnabled') && $config->getValue('networkType') == "CFREF"){
             $formTable->getElementById("recruitment_row")->attr('style', 'display:none;');
             $formTable->getElementById("rec_row")->attr('style', 'display:none;');
             $formTable->getElementById("rec_country_row")->attr('style', 'display:none;');

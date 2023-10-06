@@ -110,7 +110,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->showPeople();
         $this->showDescription();
         $this->html .= $this->showTable();
-        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkName') == "FES"){
+        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkType') == "CFREF"){
             $this->html .= "<span class='pdfnodisplay'><a class='button' href='{$this->project->getUrl()}?generatePDF' style='margin-top:2px;'>Download PDF</a></span>";
         }
         return $this->html;

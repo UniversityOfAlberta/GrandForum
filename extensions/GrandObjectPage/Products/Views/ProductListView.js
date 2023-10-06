@@ -77,7 +77,7 @@ ProductListView = Backbone.View.extend({
             
             var row = new Array();
             row.push("<span style='white-space: nowrap;'>" + model.date + "</span>");
-            if(networkName == "FES" && model.category == "Publication"){
+            if(networkType == "CFREF" && model.category == "Publication"){
                 if(model.data.date_submitted != undefined){
                     row.push("<span style='white-space: nowrap;'>" + model.data.date_submitted  + "</span>");
                 }
@@ -137,7 +137,7 @@ ProductListView = Backbone.View.extend({
             return {};
         }
         var fields = _.reduce(productStructure.categories[this.model.category].types, function(memo, obj){ return Object.assign(memo, obj.data);}, {});
-        if(networkName == "FES" && this.model.category == "Publication"){
+        if(networkType == "CFREF" && this.model.category == "Publication"){
             delete fields['date_accepted'];
             delete fields['date_submitted'];
         }
@@ -161,7 +161,7 @@ ProductListView = Backbone.View.extend({
         var throbber = this.$(".throbber").detach();
         var data = this.processData(0);
         var targets = [ 4, 5, 6 ];
-        if(networkName == "FES" && this.model.category == "Publication"){
+        if(networkType == "CFREF" && this.model.category == "Publication"){
             targets = [ 6, 7, 8 ];
         }
         _.each(this.getFields(), function(field){

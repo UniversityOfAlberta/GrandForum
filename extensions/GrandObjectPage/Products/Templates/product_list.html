@@ -5,8 +5,8 @@
 <table id='listTable' frame='box' rules='all'>
     <thead>
         <tr>
-            <th width='1%'>Date<% if(networkName == "FES"){ %> Published<% } %></th>
-            <% if(networkName == "FES" && this.model.category == "Publication"){ %>
+            <th width='1%'>Date<% if(networkType == "CFREF"){ %> Published<% } %></th>
+            <% if(networkType == "CFREF" && this.model.category == "Publication"){ %>
                 <th width='1%'>Submitted Date</th>
                 <th width='1%'>Accepted Date</th>
             <% } %>

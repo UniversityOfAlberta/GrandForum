@@ -1,7 +1,7 @@
 <?php
 
 require_once("InactiveUsers.php");
-if($config->getValue("networkName") == "FES"){
+if($config->getValue('networkType') == "CFREF"){
     require_once("FESPeopleTable.php");
 }
 autoload_register('IndexTables');

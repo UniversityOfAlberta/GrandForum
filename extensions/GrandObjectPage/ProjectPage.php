@@ -92,7 +92,7 @@ class ProjectPage {
                 $tabbedPage->singleHeader = false;
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
                 if($config->getValue('projectLongDescription')){
-                    if($config->getValue('networkName') == "FES"){
+                    if($config->getValue('networkType') == "CFREF"){
                         $tabbedPage->addTab(new ProjectFESDescriptionTab($project, $visibility));
                     }
                     else{
@@ -102,7 +102,7 @@ class ProjectPage {
                 /*if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }*/
-                if($config->getValue('networkName') == "FES"){
+                if($config->getValue('networkType') == "CFREF"){
                     $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
                 }
                 else if($config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false)){
@@ -131,7 +131,7 @@ class ProjectPage {
                 if($visibility['isLead'] && isExtensionEnabled('Reporting')){
                     $tabbedPage->addTab(new ProjectSummaryTab($project, $visibility));
                 }
-                if($config->getValue('networkName') == "FES"){
+                if($config->getValue('networkType') == "CFREF"){
                     $tabbedPage->addTab(new ProjectFESProjectionsTab($project, $visibility));
                     $tabbedPage->addTab(new ProjectEdiTab($project, $visibility));
                     $tabbedPage->addTab(new ProjectFESReportTab($project, $visibility));
