@@ -47,13 +47,21 @@ class ProjectKPITab extends AbstractTab {
             $cells = @$sheet->toArray(null, false, false);
             $nRows = 0;
             foreach($cells as $rowN => $row){
-                if($row[0] != "" || $rowN <= 25){
+                if($rowN <= 25){
+                    $nRows++;
+                }
+                $empty = true;
+                foreach($row as $cell){
+                    if($cell != "" && substr($cell,0,1) != "="){
+                        $empty = false;
+                    }
+                }
+                if(!$empty){
                     $nRows++;
                 }
             }
             $nRows = min(200, $nRows);
             $max = max($max, $nRows);
-            
             foreach($cells as $rowN => $row){
                 foreach($row as $colN => $col){
                     if(strstr($cells[$rowN][$colN], "=") !== false && strstr($cells[$rowN][$colN], "200") !== false){
