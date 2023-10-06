@@ -713,7 +713,7 @@ EOF;
                                     "Yes, I am a Canada Excellence Research Chair (CERC) or equivalent",
                                     "Yes, I am a Canada 150 Research Chair (C150) or equivalent");
                 $crcField = new SelectBox("crc_rank", "CRC Rank", @$crcObj['rank'], $crcOptions);
-                $crc = "<tr>
+                $crc = @"<tr>
                             <td colspan='2'>
                                 <fieldset>
                                     <legend>Are you currently a CRC, CERC, C150 (or equivalent)?</legend>
