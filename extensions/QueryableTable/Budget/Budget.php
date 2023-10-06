@@ -249,6 +249,7 @@ class Budget extends QueryableTable{
             }
         }
         catch (Exception $e) {
+            var_dump($e->getMessage());
             // File is probably encrypted
             $this->errors[0][] = "There was an error reading this worksheet";
             $this->structure = array();

@@ -39,7 +39,6 @@ class ProjectKPITab extends AbstractTab {
     static function optimizeFn($obj, $project=null, $start_date="0000-00-00", $end_date="2100-01-01"){
         // Optimize formulas
         $sheets = $obj->getAllSheets();
-
         $max = 0;
         for($i=2; $i<count($sheets); $i++){
             $obj->setActiveSheetIndex($i);
@@ -50,14 +49,19 @@ class ProjectKPITab extends AbstractTab {
                 if($rowN <= 25){
                     $nRows++;
                 }
-                $empty = true;
-                foreach($row as $cell){
-                    if($cell != "" && substr($cell,0,1) != "="){
-                        $empty = false;
+                else{
+                    $empty = true;
+                    foreach($row as $cell){
+                        if($cell != "" && substr($cell,0,1) != "="){
+                            $empty = false;
+                        }
                     }
-                }
-                if(!$empty){
-                    $nRows++;
+                    if(!$empty){
+                        $nRows++;
+                    }
+                    else{
+                        break;
+                    }
                 }
             }
             $nRows = min(200, $nRows);
@@ -226,7 +230,7 @@ class ProjectKPITab extends AbstractTab {
     static function getKPI($project, $id, $start_date, $end_date){
         global $config;
         if(Cache::exists("{$project->getId()}_{$id}")){
-            return Cache::fetch("{$project->getId()}_{$id}");
+            //return Cache::fetch("{$project->getId()}_{$id}");
         }
         $kpi = null;
         $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $project->getId());
