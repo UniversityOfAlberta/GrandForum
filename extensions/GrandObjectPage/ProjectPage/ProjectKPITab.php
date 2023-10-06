@@ -230,7 +230,7 @@ class ProjectKPITab extends AbstractTab {
     static function getKPI($project, $id, $start_date, $end_date){
         global $config;
         if(Cache::exists("{$project->getId()}_{$id}")){
-            //return Cache::fetch("{$project->getId()}_{$id}");
+            return Cache::fetch("{$project->getId()}_{$id}");
         }
         $kpi = null;
         $blb = new ReportBlob(BLOB_EXCEL, 0, 0, $project->getId());
