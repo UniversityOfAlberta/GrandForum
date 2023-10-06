@@ -25,10 +25,10 @@ if(PHP_SAPI != 'cli'){
     header('Cache-Control: no-cache, no-store, must-revalidate');
     header('Pragma: no-cache');
     header('Expires: 0');
-}
-
-if(!isset($_GET['embed'])){
-    header('X-Frame-Options: SAMEORIGIN');
+    
+    if(!isset($_GET['embed'])){
+        header('X-Frame-Options: SAMEORIGIN');
+    }
 }
 
 date_default_timezone_set('America/Edmonton');
