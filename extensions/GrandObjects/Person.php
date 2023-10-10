@@ -2304,9 +2304,13 @@ class Person extends BackboneModel {
         }
         if($this->university === null){
             $this->university = array("university" => "",
+                                      "faculty"    => "",
                                       "department" => "",
                                       "position"   => "",
-                                      "date"       => "");
+                                      "date"       => "",
+                                      "start"      => "",
+                                      "end"        => ""
+                                     );
         }
         return $this->university;
     }
