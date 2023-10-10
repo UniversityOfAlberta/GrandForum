@@ -280,12 +280,12 @@ EOF;
                                                                "employment_type" => "",
                                                                "thesis" => null,
                                                                "reason" => "graduated"), true);
-                if($config->getValue('networkName') == 'FES'){
+                if($config->getValue('networkType') == "CFREF"){
                     $acks = DBFunctions::select(array('grand_acknowledgements'),
                                                 array('*'),
                                                 array('user_id' => EQ($this->person->getId())));
                     $checked = (count($acks) > 0) ? "checked='checked'" : "";
-                    $this->html .= "<br /><input type='checkbox' value='Yes' name='acknowledged' $checked /> Check this box to confirm that the HQP has consented to share their employment information with FES";
+                    $this->html .= "<br /><input type='checkbox' value='Yes' name='acknowledged' $checked /> Check this box to confirm that the HQP has consented to share their employment information with {$config->getValue('networkName')}";
                 }
                 $this->html .= "<br /><input id='addMovedOn' type='button' onClick='showNewMovedOn();' value='Add \"Alumni\" Info' />";
             }

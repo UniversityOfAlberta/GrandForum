@@ -621,7 +621,7 @@ class AddMember extends SpecialPage{
                 });
                 if(found){
                     // HQP
-                    if(networkName == 'FES'){
+                    if(networkType == 'CFREF'){
                         $('#subrole_row').show();
                     }
                     
@@ -659,7 +659,7 @@ class AddMember extends SpecialPage{
                 }
                 else{
                     // Not HQP
-                    if(networkName == 'FES'){
+                    if(networkType == 'CFREF'){
                         $('#subrole_row').hide();
                     }
                     

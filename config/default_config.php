@@ -7,6 +7,9 @@
     // The name of the Network
     $config->setValue("networkName", "NETWORK");
     
+    // The full name of the Network
+    $config->setValue("networkFullName", "Forum Network");
+    
     // The name of the Site
     $config->setValue("siteName", "{$config->getValue("networkName")} Forum");
     
@@ -69,6 +72,9 @@
     
     // Password Sender Email Address (if empty, it uses Support Email Address)
     $config->setValue("passwordSender", "");
+    
+    // Other Email Address (usually network contact)
+    $config->setValue("otherEmail", "");
     
     // Network Website
     $config->setValue("networkSite", "");

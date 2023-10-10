@@ -281,7 +281,7 @@ class PersonProfileTab extends AbstractEditableTab {
 
             if($config->getValue('ecrEnabled')){
                 if($person->getEarlyCareerResearcher() == "Yes"){
-                    $this->html .= "<li>FES ECR</li>";
+                    $this->html .= "<li>{$config->getValue('networkName')} ECR</li>";
                 }
             }
             $agencies = "";
@@ -759,7 +759,7 @@ EOF;
                 $ecr = "<tr>
                             <td colspan='2'>
                                 <fieldset>
-                                    <legend>Was your first appointment as a professor within 5 years of the beginning of your FES research?</legend>
+                                    <legend>Was your first appointment as a professor within 5 years of the beginning of your {$config->getValue('networkName')} research?</legend>
                                     {$ecrField->render()}
                                     <small>CFREF defines an Early Career Researcher as a researcher who has five or less experience since their first research appointment, minus eligible leaves</small>
                                 </fieldset>
@@ -812,7 +812,7 @@ EOF;
                                 <td class='value' style='max-width: 0;'><input type='text' name='aliases' value='".str_replace("'", "&#39;", implode(";", $person->getAliases()))."' /></td>
                             </tr>";
                    
-        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkName') == 'FES'){
+        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkType') == 'CFREF'){
             $this->html .= "<tr>
                                 <td align='right'><b>Employee Id:</b></td>
                                 <td><input size='10' type='text' name='employeeId' value='".str_replace("'", "&#39;", $person->getEmployeeId())."'></td>

@@ -227,6 +227,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     }
     
     function showEditTechnologyEvaluationAdoption($project, $visibility){
+        global $config;
         if(!$visibility['isLead']){
             return;
         }
@@ -287,7 +288,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                             <b>Please provide a brief description of your technology:</b>
                             <textarea style='height:100px;' name='response4'>{$technology['response4']}</textarea>
                             <br />
-                            <p><small>Note: If your research group has developed more than one technology that have been assessed and/or adopted by a third party organization, please contact the FES office at <a href='mailto:fes@ualberta.ca'>fes@ualberta.ca</a></small></p>
+                            <p><small>Note: If your research group has developed more than one technology that have been assessed and/or adopted by a third party organization, please contact the {$config->getValue('networkName')} office at <a href='mailto:{$config->getValue('otherEmail')}'>{$config->getValue('otherEmail')}</a></small></p>
                             <p><small>Innovation Canada info: <a target='_blank' href='https://www.ic.gc.ca/eic/site/080.nsf/eng/00002.html'>https://www.ic.gc.ca/eic/site/080.nsf/eng/00002.html</a></small></p>
                         </div>
                         <script type='text/javascript'>

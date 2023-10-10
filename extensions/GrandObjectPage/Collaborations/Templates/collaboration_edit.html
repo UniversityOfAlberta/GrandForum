@@ -1,9 +1,9 @@
 <div>
     <p>This <%= formType.toLowerCase() %> is for the <i><%= year - 1 %>/<%= year.toString().substr(2, 2) %> fiscal year</i></p>
     <% if(knowledgeUser != 1){ %>
-        <p>A <b>Collaborator</b> refers to the involvement of an individual (from academia or from other sectors) who plays an active role in the research and research-related activities of the CFREF (FES) initiative, but is not a CFREF participant.</p>
+        <p>A <b>Collaborator</b> refers to the involvement of an individual (from academia or from other sectors) who plays an active role in the research and research-related activities of the CFREF (<%= networkName %>) initiative, but is not a CFREF participant.</p>
     <% } else { %>
-        <p>A <b>Knowledge User (KU)</b> is a receptor (an individual or organization) of the CFREF (FES)'s outputs and findings, who does not have an active role in the CFREF(FES) research activities.</p>
+        <p>A <b>Knowledge User (KU)</b> is a receptor (an individual or organization) of the CFREF (<%= networkName %>)'s outputs and findings, who does not have an active role in the CFREF(<%= networkName %>) research activities.</p>
     <% } %>
     <h3>End Year:</h3>
     <%= HTML.Select(this, 'endYear', {options: [{value: 0, option: "Active"}].concat(_.map(_.range(parseInt(year), parseInt(YEAR)+5), function(y){
@@ -39,7 +39,7 @@
         </div>
         <div style="max-width:600px; width:50%; display:inline-block; margin-left:18px;">
             <% if (knowledgeUser != 1) { %>
-                <h3>Collaboration existed prior to FES grant?</h3>
+                <h3>Collaboration existed prior to <%= networkName %> grant?</h3>
                 <%= HTML.Select(this, 'existed', {options: ['','Yes','No']}) %>
             <% } %>
             <h3>To date, have you received in-kind and/or cash support from this organization?</h3>

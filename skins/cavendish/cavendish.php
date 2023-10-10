@@ -306,7 +306,10 @@ class CavendishTemplate extends QuickTemplate {
 		    showNonNetwork = <?php var_export($config->getValue("showNonNetwork")) ?>;
 		    alumniEnabled = <?php var_export($config->getValue('alumniEnabled')); ?>;
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
+		    networkFullName = "<?php echo $config->getValue('networkFullName'); ?>";
 		    networkType = "<?php echo $config->getValue('networkType'); ?>";
+		    supportEmail = "<?php echo $config->getValue('supportEmail'); ?>";
+		    otherEmail = "<?php echo $config->getValue('otherEmail'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";

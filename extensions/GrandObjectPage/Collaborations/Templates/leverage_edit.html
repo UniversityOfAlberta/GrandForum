@@ -1,5 +1,5 @@
 <div>
-    <p>Leveraged funds are from other sources that directly support your FES project, and those funds that support a project where methods and/or outcomes can be used to enhance your FES project. CFREF wishes to know how much cash and in-kind support other entities are contributing to your research, and what sectors those entities are from, to better understand the impact their research funding is having in your field. If you have questions about whether another funding source qualifies as leveraged funds, please contact <a href="mailto:fes@ualberta.ca" target="_blank">fes@ualberta.ca</a>.</p>
+    <p>Leveraged funds are from other sources that directly support your <%= networkName %> project, and those funds that support a project where methods and/or outcomes can be used to enhance your <%= networkName %> project. CFREF wishes to know how much cash and in-kind support other entities are contributing to your research, and what sectors those entities are from, to better understand the impact their research funding is having in your field. If you have questions about whether another funding source qualifies as leveraged funds, please contact <a href="mailto:<%= otherEmail %>" target="_blank"><%= otherEmail %></a>.</p>
     <h3>End Year:</h3>
     <%= HTML.Select(this, 'endYear', {options: [{value: 0, option: "Active"}].concat(_.map(_.range(parseInt(year)-1, parseInt(YEAR)+5), function(y){
         return {option: (y - 1) + "/" + y.toString().substr(2, 2), value: y};
@@ -34,7 +34,7 @@
         </div>
         <div style="max-width:600px; width:50%; display:inline-block; margin-left:18px;">
             <% if (knowledgeUser != 1) { %>
-                <h3>Collaboration existed prior to FES grant?</h3>
+                <h3>Collaboration existed prior to <%= networkName %> grant?</h3>
                 <%= HTML.Select(this, 'existed', {options: ['','Yes','No']}) %>
             <% } %>
             <h3>To date, have you received in-kind and/or cash support from this organization?</h3>
@@ -93,7 +93,7 @@
                 "Other Canadian research organizations (including research hospitals)",
                 "Academic and research institutes abroad (including research hospitals)",
                 "Federal Government of Canada (not from CIHR, NSERC, SSHRC or CFI)",
-                "Funding from the federal tri-agencies (CIHR, NSERC, and SSHRC) and CFI related to FES-funded research",
+                "Funding from the federal tri-agencies (CIHR, NSERC, and SSHRC) and CFI related to " + networkName + "-funded research",
                 "Private sector in Canada",
                 "Private sector abroad",
                 "Public sector in Canada",

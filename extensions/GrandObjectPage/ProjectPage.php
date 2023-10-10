@@ -133,7 +133,9 @@ class ProjectPage {
                 }
                 if($config->getValue('networkType') == "CFREF"){
                     $tabbedPage->addTab(new ProjectFESProjectionsTab($project, $visibility));
-                    $tabbedPage->addTab(new ProjectEdiTab($project, $visibility));
+                    if($config->getValue('networkName') == "FES"){
+                        $tabbedPage->addTab(new ProjectEdiTab($project, $visibility));
+                    }
                     $tabbedPage->addTab(new ProjectFESReportTab($project, $visibility));
                 }
                 $tabbedPage->showPage();

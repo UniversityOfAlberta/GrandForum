@@ -59,10 +59,10 @@ class ProjectEdiTab extends AbstractEditableTab {
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>
-                <h3>Checkmark the resources utilized by you or your FES research group to enhance knowledge of EDI and facilitate its implementation within your FES research group. Refer to the <a href='{$wgServer}{$wgScriptPath}/data/EDI Resource List.pdf' target='_blank'>attached EDI resource list</a> for more information.</h3>
+                <h3>Checkmark the resources utilized by you or your {$config->getValue('networkName')} research group to enhance knowledge of EDI and facilitate its implementation within your {$config->getValue('networkName')} research group. Refer to the <a href='{$wgServer}{$wgScriptPath}/data/EDI Resource List.pdf' target='_blank'>attached EDI resource list</a> for more information.</h3>
                 {$q1}
                 
-                <h3>List any other resources, including training or workshops, utilized by you or your FES research group members pertaining to EDI here.</h3>
+                <h3>List any other resources, including training or workshops, utilized by you or your {$config->getValue('networkName')} research group members pertaining to EDI here.</h3>
                 {$q2}
                 
                 <h3 style='color:#007c41 !important;'>How do you incorporate aspects of EDI into your HQP hiring strategy and research plan? Include information, if any, regarding collaborations with organizations or initiatives that promote EDI and social justice such as WISEST, ELITE Program for Black Youth, URI, I-STEAM Pathways, etc.</h3>
@@ -113,14 +113,14 @@ class ProjectEdiTab extends AbstractEditableTab {
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
-            $this->html .= "<h3>Checkmark the resources utilized by you or your FES research group to enhance knowledge of EDI and facilitate its implementation within your FES research group. Refer to the <a href='{$wgServer}{$wgScriptPath}/data/EDI Resource List.pdf' target='_blank'>attached EDI resource list</a> for more information.</h3>
+            $this->html .= "<h3>Checkmark the resources utilized by you or your {$config->getValue('networkName')} research group to enhance knowledge of EDI and facilitate its implementation within your {$config->getValue('networkName')} research group. Refer to the <a href='{$wgServer}{$wgScriptPath}/data/EDI Resource List.pdf' target='_blank'>attached EDI resource list</a> for more information.</h3>
                             <input type='hidden' name='edi_q1[$y][]' />
                             <div style='display:flex'>
                                 <div style='margin-right:15px;'>{$checkboxes1->render()}</div>
                                 <div>{$checkboxes2->render()}</div>
                             </div>
                 
-                            <h3>List any other resources, including training or workshops, utilized by you or your FES research group members pertaining to EDI here.</h3>
+                            <h3>List any other resources, including training or workshops, utilized by you or your {$config->getValue('networkName')} research group members pertaining to EDI here.</h3>
                             <textarea name='edi_q2[$y]' style='height:200px;resize: vertical;'>{$q2}</textarea>
                 
                             <h3 style='color:#007c41 !important;'>How do you incorporate aspects of EDI into your HQP hiring strategy and research plan? Include information, if any, regarding collaborations with organizations or initiatives that promote EDI and social justice such as WISEST, ELITE Program for Black Youth, URI, I-STEAM Pathways, etc.</h3>
