@@ -14,14 +14,14 @@ abstract class Cache {
 	
 	static function store($key, $data, $time=86400){
 	    global $wgSitename;
-	    if(function_exists('apc_store')){
+	    if(function_exists('apc_store') && PHP_SAPI != 'cli'){
             apc_store($wgSitename.$key, $data, $time);
         }
 	}
 	
 	static function fetch($key){
 	    global $wgSitename, $wgOut;
-	    if(function_exists('apc_fetch')){
+	    if(function_exists('apc_fetch') && PHP_SAPI != 'cli'){
 	        if(DBFunctions::$queryDebug){
                 $start = microtime(true);
                 $peakMemBefore = memory_get_peak_usage(true)/1024/1024;
@@ -42,7 +42,7 @@ abstract class Cache {
 	
 	static function delete($key, $prefix=false){
 	    global $wgSitename;
-	    if(function_exists('apc_delete') && class_exists('APCIterator')){
+	    if(function_exists('apc_delete') && class_exists('APCIterator') && PHP_SAPI != 'cli'){
 	        if($prefix){
 	            $it = new APCIterator('user', '/^'.str_replace(")", '\)', str_replace("(", '\(', $wgSitename)).$key.'/', APC_ITER_KEY);
 	            foreach($it as $k){
@@ -57,7 +57,7 @@ abstract class Cache {
 	
 	static function exists($key){
 	    global $wgSitename;
-	    if(function_exists('apc_exists')){
+	    if(function_exists('apc_exists') && PHP_SAPI != 'cli'){
             return apc_exists($wgSitename.$key);
         }
         return false;
