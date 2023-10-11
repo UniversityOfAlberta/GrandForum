@@ -96,7 +96,11 @@ EliteAdminPostingsView = PostingsView.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.$("table#postings").DataTable({
             "autoWidth": true,
-            "order": [[ 0, "desc" ]]
+            "order": [[ 0, "desc" ]],
+            'dom': 'Blfrtip',
+            'buttons': [
+                'excel', 'pdf'
+            ]
         });
         this.postingDialog = this.$("#postingDialog").dialog({
             autoOpen: false,
@@ -263,7 +267,11 @@ EliteAdminProfilesView = Backbone.View.extend({
     
     createDataTable: function(order, searchStr){
         this.table = this.$("table#profiles").DataTable({
-            "autoWidth": true
+            "autoWidth": true,
+            'dom': 'Blfrtip',
+            'buttons': [
+                'excel', 'pdf'
+            ]
         });
         this.table.order(order);
 	    this.table.search(searchStr);
