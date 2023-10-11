@@ -40,6 +40,7 @@ EliteAdminPostingsView = PostingsView.extend({
     acceptDialog: null,
     moreDialog: null,
     rejectDialog: null,
+    notAvailableDialog: null,
     matchDialog: null,
     matchConfirmDialog: null,
     
@@ -84,12 +85,19 @@ EliteAdminPostingsView = PostingsView.extend({
         this.rejectDialog.model = this.model.get(id);
     },
     
+    openNotAvailableDialog: function(el){
+        var id = $(el.target).attr('data-id');
+        this.notAvailableDialog.dialog('open');
+        this.notAvailableDialog.model = this.model.get(id);
+    },
+    
     events: {
         "click .postingLink": "openDialog",
         "click .accept": "openAcceptDialog",
         "click .more": "openMoreDialog",
         "click .notmatched": "openNotMatchedDialog",
         "click .reject": "openRejectDialog",
+        "click .notavailable": "openNotAvailableDialog"
     },
     
     render: function(){
@@ -186,6 +194,25 @@ EliteAdminPostingsView = PostingsView.extend({
                 }.bind(this)
             }
         });
+        this.notAvailableDialog = this.$("#notAvailableDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            width: 350,
+            buttons: {
+                "Not Available": function(){
+                    this.notAvailableDialog.model.set('visibility', 'Not Available');
+                    this.notAvailableDialog.model.save();
+                    this.notAvailableDialog.dialog('close'); 
+                }.bind(this),
+                "Cancel": function(){
+                    this.notAvailableDialog.dialog('close');
+                }.bind(this)
+            }
+        });
+        
         $(window).resize(function(){
             this.postingDialog.dialog({height: $(window).height()*0.75});
         }.bind(this));
