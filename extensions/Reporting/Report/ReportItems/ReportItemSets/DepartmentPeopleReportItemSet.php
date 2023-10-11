@@ -43,7 +43,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                           $person->isSubRole("DR"));
             }
             // SPECIAL CASES FOR PEOPLE FROM OTHER DEPARTMENTS BELOW
-            if(($me->getName() == "Linda.Christensen" || $me->getName() == "Declan.Ali") && $person->getName() == "Deanna.Singhal"){
+            if(($me->getName() == "Linda.Christensen" || $me->getName() == "Alison.Murray") && $person->getName() == "Deanna.Singhal"){
                 // This is also a special case, but needs to be put here
                 goto create;
             }
