@@ -80,6 +80,7 @@ function initDashboardGlobals(){
         $persRow = array();
         $projRow = array();
         foreach($categories as $category){
+            if($category == "SOP"){ continue; }
             $head[] = HEAD."(".str_replace("and", "and<br />", str_replace("-", "<br />", Inflect::pluralize($category))).")";
             $persRow[] = STRUCT(PERSON_PRODUCTS, $category);
             $projRow[] = STRUCT(PROJECT_PRODUCTS, $category);

@@ -892,5 +892,103 @@
             </data>
         </Press>
     </Presses>
+    
+    <!-- SOP -->
+    <SOPs category="SOP">
+        <SOP type="SOP - AGM and Symposium" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="SOP - BoD and Committee Meetings" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="SOP - Communications" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="SOP - Corporate AGM" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="SOP - Financial Procedures" status="">
+            <data>
+                <field label="Sub-Type" type="Select" options="Accounts Payable|Accounts Receivable|Accounts Receivable|NCE Report|Notice of Award|Payroll &amp; HR|HR &amp; Payroll Process">sub_type</field>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="SOP - GlycoNet General Processes" status="">
+            <data>
+                <field label="Sub-Type" type="Select" options="GlycoNet General Processes|Business Cards">sub_type</field>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="SOP - Governance Documents" status="">
+            <data>
+                <field label="Sub-Type" type="Select" options="Governance Documents|Logo|Policy|Terms of Reference">sub_type</field>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="SOP - NCE Report" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="SOP - Project Management" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="SOP - Training" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="FORM - BoD and Committee Meetings" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="FORM - Financial Procedures" status="">
+            <data>
+                <field label="Sub-Type" type="Select" options="Financial|Payroll &amp; HR">sub_type</field>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="FORM - GlycoNet General Processes" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="FORM - Governance" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+        <SOP type="FORM - Project Management" status="">
+            <data>
+                <field label="Version" type="String">version</field>
+                <field label="File" type="PDF">file</field>
+            </data>
+        </SOP>
+    </SOPs>
 
 </Products>

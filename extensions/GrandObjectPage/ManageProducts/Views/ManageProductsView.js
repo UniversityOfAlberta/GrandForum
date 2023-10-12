@@ -28,6 +28,7 @@ ManageProductsView = Backbone.View.extend({
             this.listenTo(this.products, "add", this.addRows);
             this.listenTo(this.products, "remove", this.addRows);
             this.listenToOnce(this.products, "sync", function(){
+                this.products = new Products(this.products.filter(function(p){ return (p.get('category') != "SOP"); })); // Don't show SOP category
                 me.projects.ready().then(function(){
                     this.projects = me.projects.getCurrent();
                     return this.projects.ready();

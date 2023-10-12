@@ -73,8 +73,11 @@ class ProductAPI extends RESTAPI {
                 $papers = Paper::getAllPapers('all', 'all', 'both', true, 'Public', $start, $count);
             }
             
+            $codes = array();
             foreach($papers as $paper){
-                $json[] = $paper->toArray();
+                $type = explode(" - ", $paper->getType());
+                @$codes[$type[0]]++;
+                $json[] = array_merge($paper->toArray(), array('code' => $type[0]."-".str_pad($codes[$type[0]], 3, "0", STR_PAD_LEFT)));
             }
             return large_json_encode($json);
         }

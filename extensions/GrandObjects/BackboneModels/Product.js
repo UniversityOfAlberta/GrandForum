@@ -127,6 +127,7 @@ Product = Backbone.Model.extend({
     defaults: function() {
         return {
             id : null,
+            code: "",
             title: "",
             category: "",
             type: "",
