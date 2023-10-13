@@ -40,7 +40,7 @@ ManageSOPView = Backbone.View.extend({
     
     addRows: function(){
         var searchStr = "";
-        var order = [1, 'desc'];
+        var order = [0, 'desc'];
         if(this.table != undefined){
             order = this.table.order();
             searchStr = this.table.search();
