@@ -92,6 +92,7 @@
                 </style>
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
                 <div style='float:right; margin-top: -45px;display:flex;'>
+                    <div><button id='downloadAllARs' class='noDisable' type='button'>Download All ARs</button></div>
                     <div><button id='generateAll' type='button'>Generate All Evals</button></div>
                     <div><button id='downloadAll' class='noDisable' type='button'>Download All Evals</button></div>
                 </div>
@@ -103,6 +104,10 @@
                         });
                         $('#postToIframe').submit().remove();
                     }
+                    $('#downloadAllARs').click(function(){
+                        var pdfs = $.makeArray($(".currentAR a:visible").map(function(i, pdf){ return $(pdf).attr('href');})).join(',').replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '');
+                        postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip', 'downloadFrame');
+                    });
                     $('#generateAll').click(function(){
                         $('.generateButton').click();
                     });
@@ -154,7 +159,7 @@
             </ReportItem>
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
-                        <td align='center'>
+                        <td align='center' class='currentAR'>
                             {$item}
                         </td>
                 ]]>
