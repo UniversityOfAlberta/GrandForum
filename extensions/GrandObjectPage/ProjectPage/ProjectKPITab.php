@@ -64,12 +64,14 @@ class ProjectKPITab extends AbstractTab {
                     }
                 }
             }
-            $nRows = min(200, $nRows);
+            $nRows = min(800, $nRows);
             $max = max($max, $nRows);
             foreach($cells as $rowN => $row){
                 foreach($row as $colN => $col){
-                    if(strstr($cells[$rowN][$colN], "=") !== false && strstr($cells[$rowN][$colN], "200") !== false){
+                    if(strstr($cells[$rowN][$colN], "=") !== false && (strstr($cells[$rowN][$colN], "200") !== false ||
+                                                                       strstr($cells[$rowN][$colN], "800") !== false)){
                         $cells[$rowN][$colN] = str_replace("200", $nRows, $cells[$rowN][$colN]);
+                        $cells[$rowN][$colN] = str_replace("800", $nRows, $cells[$rowN][$colN]);
                     }
                 }
             }
@@ -81,8 +83,10 @@ class ProjectKPITab extends AbstractTab {
         $cells = @$sheet->toArray(null, false, false);
         foreach($cells as $rowN => $row){
             foreach($row as $colN => $col){
-                if(strstr($cells[$rowN][$colN], "=") !== false && strstr($cells[$rowN][$colN], "200") !== false){
+                if(strstr($cells[$rowN][$colN], "=") !== false && (strstr($cells[$rowN][$colN], "200") !== false || 
+                                                                   strstr($cells[$rowN][$colN], "800") !== false)){
                     $cells[$rowN][$colN] = str_replace("200", $max, $cells[$rowN][$colN]);
+                    $cells[$rowN][$colN] = str_replace("800", $max, $cells[$rowN][$colN]);
                 }
             }
         }
