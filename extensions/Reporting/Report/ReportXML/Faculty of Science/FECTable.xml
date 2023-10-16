@@ -271,13 +271,37 @@
             </Static>
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
-                        <td align='center'>{$item}</td>
-                        <td align='center'>
+                        <td align='center'>{$item}<br />
+                        
                 ]]>
             </ReportItem>
+            <For from="1" to="3">
+                <If if="{!=({getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)},)}">
+                    <![CDATA[
+                       <a href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)}">File</a><br />
+                    ]]>
+                </If>
+                <If if="{!=({getBlobMD5(RP_CHAIR,FEC_DEAN_ADVICE,FILE{$index},{$user_id},0,0)},)}">
+                    <![CDATA[
+                       <a href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_DEAN_ADVICE,FILE{$index},{$user_id},0,0)}">File</a><br />
+                    ]]>
+                </If>
+                <If if="{!=({getBlobMD5(RP_CHAIR,FEC_DEAN_DECISION,FILE{$index},{$user_id},0,0)},)}">
+                    <![CDATA[
+                       <a href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_DEAN_DECISION,FILE{$index},{$user_id},0,0)}">File</a><br />
+                    ]]>
+                </If>
+                <If if="{!=({getBlobMD5(RP_CHAIR,FEC_CHAIR_ADVICE,FILE{$index},{$user_id},0,0)},)}">
+                    <![CDATA[
+                       <a href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_CHAIR_ADVICE,FILE{$index},{$user_id},0,0)}">File</a><br />
+                    ]]>
+                </If>
+            </For>
             <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
-                        {$item} Recommendation<br />
+                        </td>
+                        <td align='center' style="white-space:nowrap;">
+                            {$item} Recommendation<br />
                 ]]>
             </ReportItem>
             <If if="{or({contains({$my_roles},ADMIN)},
