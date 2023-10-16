@@ -272,7 +272,6 @@
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>{$item}<br />
-                        
                 ]]>
             </ReportItem>
             <For from="1" to="3">
@@ -297,10 +296,14 @@
                     ]]>
                 </If>
             </For>
+            <Static>
+                <![CDATA[
+                    </td>
+                    <td align='center' style="white-space:nowrap;">
+                ]]>
+            </Static>
             <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
-                        </td>
-                        <td align='center' style="white-space:nowrap;">
                             {$item} Recommendation<br />
                 ]]>
             </ReportItem>
