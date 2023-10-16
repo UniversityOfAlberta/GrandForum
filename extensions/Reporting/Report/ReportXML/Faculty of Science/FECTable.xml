@@ -269,15 +269,15 @@
                         <td>{$user_dept}</td>
                 ]]>
             </Static>
-            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName=" AR ">
                 <![CDATA[
-                        <td align='center'>{$item}<br />
+                        <td align='center' style="white-space:nowrap;">{$item}<br />
                 ]]>
             </ReportItem>
             <For from="1" to="3">
                 <If if="{!=({getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)},)}">
                     <![CDATA[
-                       <a id="file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)}">File</a><br />
+                       <a class="file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)}">File</a><br />
                     ]]>
                 </If>
                 <If if="{!=({getBlobMD5(RP_CHAIR,FEC_DEAN_ADVICE,FILE{$index},{$user_id},0,0)},)}">
@@ -372,14 +372,6 @@
                             <div class='field' style='display:none;'>
                                 <span id='t_vote_{$user_id}'>{$item}</span>
                             </div>
-                            <script type='text/javascript'>
-                                var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
-                                if(tenure != "i recommend that an appointment with tenure be offered" &&
-                                   tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
-                                    $("#t_vote_{$user_id}").remove();
-                                    $("#file_{$user_id}").text("Tenure File");
-                                }
-                            </script>
                         </td>
                     ]]>
                 </ReportItem>
@@ -393,13 +385,6 @@
                             <div class='field' style='display:none;'>
                                 <span id='p_vote_{$user_id}'>{$item}</span>
                             </div>
-                            <script type='text/javascript'>
-                                var promotion = "{getText(RP_CHAIR, FEC_REVIEW, PROMOTION, {$user_id}, 0, 0)}";
-                                if(promotion.indexOf("i recommend promotion") == -1){
-                                    $("#p_vote_{$user_id}").remove();
-                                    $("#file_{$user_id}").text("Promotion File");
-                                }
-                            </script>
                         </td>
                     ]]>
                 </ReportItem>
@@ -449,8 +434,23 @@
             <Static>
                 <![CDATA[
                     </tr>
+                    <script type='text/javascript'>
+                        var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
+                        if(tenure != "i recommend that an appointment with tenure be offered" &&
+                           tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
+                            $("#t_vote_{$user_id}").remove();
+                            $(".file_{$user_id}").text("Tenure File");
+                        }
+                        
+                        var promotion = "{getText(RP_CHAIR, FEC_REVIEW, PROMOTION, {$user_id}, 0, 0)}";
+                        if(promotion.indexOf("i recommend promotion") == -1){
+                            $("#p_vote_{$user_id}").remove();
+                            $(".file_{$user_id}").text("Promotion File");
+                        }
+                    </script>
                 ]]>
             </Static>
+            
         </ReportItemSet>
         <Static>
             <![CDATA[
