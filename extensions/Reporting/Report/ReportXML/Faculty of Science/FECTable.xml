@@ -439,12 +439,17 @@
                         if(tenure != "i recommend that an appointment with tenure be offered" &&
                            tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
                             $("#t_vote_{$user_id}").remove();
+                        }
+                        else if(tenure != ""){
                             $(".file_{$user_id}").text("Tenure File");
                         }
                         
                         var promotion = "{getText(RP_CHAIR, FEC_REVIEW, PROMOTION, {$user_id}, 0, 0)}";
                         if(promotion.indexOf("i recommend promotion") == -1){
                             $("#p_vote_{$user_id}").remove();
+                            
+                        }
+                        else if(promotion != ""){
                             $(".file_{$user_id}").text("Promotion File");
                         }
                     </script>
