@@ -277,22 +277,22 @@
             <For from="1" to="3">
                 <If if="{!=({getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)},)}">
                     <![CDATA[
-                       <a href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)}">File</a><br />
+                       <a id="file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)}">File</a><br />
                     ]]>
                 </If>
                 <If if="{!=({getBlobMD5(RP_CHAIR,FEC_DEAN_ADVICE,FILE{$index},{$user_id},0,0)},)}">
                     <![CDATA[
-                       <a href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_DEAN_ADVICE,FILE{$index},{$user_id},0,0)}">File</a><br />
+                       <a class="file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_DEAN_ADVICE,FILE{$index},{$user_id},0,0)}">File</a><br />
                     ]]>
                 </If>
                 <If if="{!=({getBlobMD5(RP_CHAIR,FEC_DEAN_DECISION,FILE{$index},{$user_id},0,0)},)}">
                     <![CDATA[
-                       <a href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_DEAN_DECISION,FILE{$index},{$user_id},0,0)}">File</a><br />
+                       <a class="file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_DEAN_DECISION,FILE{$index},{$user_id},0,0)}">File</a><br />
                     ]]>
                 </If>
                 <If if="{!=({getBlobMD5(RP_CHAIR,FEC_CHAIR_ADVICE,FILE{$index},{$user_id},0,0)},)}">
                     <![CDATA[
-                       <a href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_CHAIR_ADVICE,FILE{$index},{$user_id},0,0)}">File</a><br />
+                       <a class="file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_CHAIR_ADVICE,FILE{$index},{$user_id},0,0)}">File</a><br />
                     ]]>
                 </If>
             </For>
@@ -302,23 +302,23 @@
                     <td align='center' style="white-space:nowrap;">
                 ]]>
             </Static>
-            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="" buttonName="Recommendation">
                 <![CDATA[
-                            {$item} Recommendation<br />
+                            {$item}<br />
                 ]]>
             </ReportItem>
             <If if="{or({contains({$my_roles},ADMIN)},
                         {contains({$my_roles},DEAN)},
                         {contains({$my_roles},VDEAN)},
                         {contains({$my_roles},HR)})}">
-                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="Dean's Advice">
                     <![CDATA[
-                            {$item} Dean's Advice<br />
+                            {$item}<br />
                     ]]>
                 </ReportItem>
-                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="" buttonName="Dean's Decision">
                     <![CDATA[
-                            {$item} Dean's Decision<br />
+                            {$item}<br />
                     ]]>
                 </ReportItem>
             </If>
@@ -377,6 +377,7 @@
                                 if(tenure != "i recommend that an appointment with tenure be offered" &&
                                    tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
                                     $("#t_vote_{$user_id}").remove();
+                                    $("#file_{$user_id}").text("Tenure File");
                                 }
                             </script>
                         </td>
@@ -396,6 +397,7 @@
                                 var promotion = "{getText(RP_CHAIR, FEC_REVIEW, PROMOTION, {$user_id}, 0, 0)}";
                                 if(promotion.indexOf("i recommend promotion") == -1){
                                     $("#p_vote_{$user_id}").remove();
+                                    $("#file_{$user_id}").text("Promotion File");
                                 }
                             </script>
                         </td>
