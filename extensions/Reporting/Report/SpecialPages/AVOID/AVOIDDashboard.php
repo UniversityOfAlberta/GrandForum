@@ -298,7 +298,7 @@ class AVOIDDashboard extends SpecialPage {
             /*$wgOut->addHTML("<form style='display:none;' action='{$wgServer}{$wgScriptPath}/index.php?action=api.DownloadWordHtmlApi' enctype='multipart/form-data' id='downloadword' method='post' target='_blank'><input type='hidden' name='content' value='{$content}'><input type='hidden' name='filename' value='{$me->getNameForForms()} In-Person Assessment Download'><input id='downloadWord' type='submit' style='display:none;' value='Download Word'></form>");*/
             $assessmentReport = "<br /><a id='viewAssessmentReport' href='#'>In-Person Frailty Report</a>";
         }
-        //if($membersOnly == ""){
+        if($membersOnly == ""){
             // Member Frailty Status
             $facebookLink = "<img src='{$wgServer}{$wgScriptPath}/skins/icons/avoid/glyphicons_social_30_facebook.png' />
                              <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Join the discussion in the <a target='_blank' href='https://www.facebook.com/groups/1751174705081179/'>member's only facebook group</a></span>";
@@ -358,7 +358,7 @@ class AVOIDDashboard extends SpecialPage {
                                     </div>
                                 </div>
                              </div>");
-        /*}
+        }
         else{
             // Clinician 
             $wgOut->addHTML("<div class='modules module-2cols-outer'>
@@ -377,15 +377,21 @@ class AVOIDDashboard extends SpecialPage {
                                                 <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/Poster 2.jpg'>Poster 2 (JPG)</a></li>
                                                 <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/Poster 2.pdf'>Poster 2 (PDF)</a></li>
                                                 <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Clinician/Waiting room slide.jpg'>Waiting room slide</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Brochure'>Rack Card Request</a></li>
                                             </ul>
                                         </div>
                                         <div class='module-2cols-outer'>
                                             <b><en>Patient Resources</en><fr>Ressources pour les patients</fr></b>
+                                            <ul>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/Resources/Protein serves and nutrition risk handout-2.pdf'>Protein serves and nutrition risk handout</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Interact/Resources/Positive Mental Health in Later Life.pdf'>Positive Mental Health in Later Life</a></li>
+                                                <li><a href='{$wgServer}{$wgScriptPath}/EducationModules/Sleep/Resources/Canadian Sleep Society - Sleep in Aging.pdf'>Sleep in Aging</a></li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>");
-        }*/
+        }
         
         // Upcoming Events
         $events = Wiki::newFromTitle("UpcomingEvents");

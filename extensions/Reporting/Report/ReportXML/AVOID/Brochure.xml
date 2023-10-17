@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Rack Card Request" reportType="RP_BROCHURE" pdfType="RPTP_BROCHURE" pdfFiles="BrochurePDF" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    <ReportSection id="brochure" tooltip="Rack Card Request" name="Rack Card Request" title="Rack Card Request" blobSection="AVOID_BROCHURE" type="EditableReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <style>
+                    #outerReport > div:first-child {
+                        display: none !important;
+                    }
+                </style>
+
+                <a id="clear" href="#">
+                    <en>Clear Form</en>
+                    <fr>Effacer le formulaire</fr>
+                </a>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $('#clear').click(function(){
+                        $(':input').not(':button, :submit, :reset, :hidden, :checkbox, :radio').val('');
+                        $(':checkbox, :radio').prop('checked', false);
+                    });
+                </script>
+            ]]>
+        </Static>
+        <ReportItem id="name" type="Text" blobItem="NAME" width="400px">
+            <![CDATA[
+                <h3>
+                    Name:
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="address" type="Text" blobItem="ADDRESS" width="400px">
+            <![CDATA[
+                <h3>
+                    Address:
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="quantity" type="Text" blobItem="QUANTITY" width="200px">
+            <![CDATA[
+                <h3>
+                    Quantity:
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" type="Text" blobItem="EMAIL" width="400px">
+            <![CDATA[
+                <h3>
+                    Email:
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="phone" type="Text" blobItem="PHONE" width="400px">
+            <![CDATA[
+                <h3>
+                    Phone Number:
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="notes" type="Textarea" blobItem="NOTES" width="415px">
+            <![CDATA[
+                <h3>
+                    Notes:
+                </h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="submit" type="SubmitEmail">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td><b>User:</b></td>
+                        <td>{$user_name} &lt;{$user_email}&gt;</td>
+                    </tr>
+                    <tr>
+                        <td><b>Date Submitted:</b></td>
+                        <td>{time2date({$timestamp})}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Name:</b></td>
+                        <td>{getText(RP_BROCHURE,AVOID_BROCHURE,NAME,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Address:</b></td>
+                        <td>{getText(RP_BROCHURE,AVOID_BROCHURE,ADDRESS,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Quantity:</b></td>
+                        <td>{getText(RP_BROCHURE,AVOID_BROCHURE,QUANTITY,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email:</b></td>
+                        <td>{getText(RP_BROCHURE,AVOID_BROCHURE,EMAIL,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Phone Number:</b></td>
+                        <td>{getText(RP_BROCHURE,AVOID_BROCHURE,PHONE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Notes:</b></td>
+                        <td>{getText(RP_BROCHURE,AVOID_BROCHURE,NOTES,0,{$user_id},0}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
