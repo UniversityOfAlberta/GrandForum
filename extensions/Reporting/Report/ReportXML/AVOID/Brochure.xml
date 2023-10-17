@@ -76,7 +76,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="submit" type="SubmitEmail">
+        <ReportItem id="submit" type="SubmitEmail" subject="Rack Card Submitted">
             <![CDATA[
                 <table>
                     <tr>

@@ -46,7 +46,7 @@ class SubmitEmailReportItem extends StaticReportItem {
 	
 	function sendEmail(){
 	    global $config, $wgPasswordSender;
-	    $subject = "Program Submitted";
+	    $subject = $this->getAttr("subject", "Program Submitted");
 	    $message = $this->processCData("");
 	    $emails = $this->getAttr('emails', "{$config->getValue('supportEmail')}");
 	    $headers = "From: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
