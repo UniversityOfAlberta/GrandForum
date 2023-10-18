@@ -52,12 +52,12 @@
                 }
                 
                 function hideConsent(){
-                    if($(".selectedReportTab").text() == "Consent" && consent == "Yes"){
+                    if($(".selectedReportTab").text() == showLanguage(wgLang, "Consent", "Consentement") && consent == "Yes"){
                         $("#reportBody").hide();
                         $("#Consent").hide().addClass("disabled_lnk");
                         $("button[name=submit]").click();
                     }
-                    if($(".selectedReportTab").text() != "Consent"){
+                    if($(".selectedReportTab").text() != showLanguage(wgLang, "Consent", "Consentement")){
                         $("#Consent").hide().addClass("disabled_lnk");
                     }
                 }
@@ -110,7 +110,7 @@
                                                         "<fr>Vous n'avez pas encore terminé toutes les questions.</fr>" + 
                                                    "</div>");
                     }
-                    if($(".selectedReportTab").text() != "Consent"){
+                    if($(".selectedReportTab").text() != showLanguage(wgLang, "Consent", "Consentement")){
                         if($(".requiredFieldIncomplete:visible").length > 0){
                             $("button[type=submit]").hide();
                             $("#reportWarning").show();
@@ -130,49 +130,197 @@
             </script>
         ]]>
     </Script>
-    <ReportSection id="eula" name="Consent" title="Consent" tooltip="Consent" blobSection="AVOID_CHECK_EULA" type="Eula">
-        <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
-                                                          no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
-            <![CDATA[
-                <div style="width:100%;text-align:right"><img src="{$wgServer}{$wgScriptPath}/skins/QueensLogo_colour.png" width="200px" style="text-align:right;"></div>
+    <ReportSection id="eula" blobSection="AVOID_CHECK_EULA" type="Eula"
+                             postId="Consent" 
+                             name="{showLanguage(Consent, Consentement)}" 
+                             title="{showLanguage(Consent, Consentement)}" 
+                             tooltip="{showLanguage(Consent, Consentement)}">
+        <If if="{==({$wgLang}, en)}">
+            <Static>
+                <![CDATA[
+                    <div id="consent_eula">
+                ]]>
+            </Static>
+            <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
+                                                              no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
+                <![CDATA[
+                    <div style="width:100%;text-align:right"><img src="{$wgServer}{$wgScriptPath}/skins/QueensLogo_colour.png" width="200px" style="text-align:right;"></div>
+                        <p>
+                        <b>Study Title:</b> KFLA Centre for Healthy Aging: The AVOID Frailty program for Healthy Aging
+                    </p>
                     <p>
-                    <b>Study Title:</b> KFLA Centre for Healthy Aging: The AVOID Frailty program for Healthy Aging
-                </p>
-                <p>
-                    <b>Name of Principal investigator: </b>Dr John Muscedere<br/>
-                    <b>Name of Sponsor/Funder:</b> Canadian Frailty Network
-                </p>
-                <p>
-                        As a participant of the AVOID Frailty Program for Healthy Aging, you are invited to take part in an associated research study. The purpose of this study is to evaluate how well the program is supporting you in your development of healthy behaviours. If you agree to take part, you will be asked to complete an online survey when you sign up for the program, and the same survey every six months after. The survey should take you about 20 minutes to complete. It will ask you about: some of your background information to help us adjust the program in its accessibility; your health status, quality of life and curiosity around healthy behaviours to help us track how effective the program has been. Much of this survey will provide information to personalize your program so that it is supportive based on frailty indicators and behavioural risks, but we also want to make sure that you are benefiting and if not, want to adjust the program to ensure it is resulting in positive health outcomes for all participants.
-                </p>
-                <p>
-                        In addition to the survey, you may be contacted by email by Kyle Plumb to invite you to an interview to discuss your usage and experience with the platform. This interview will take approximately 30 minutes to complete and will be conducted in person.  Participants are selected based on their level of program usage – we are interested in both the facilitators and barriers to participant activity and thus seek to understand why you are either using the program often, or rarely. You may opt-out of this portion of the study at any time via email response. No identifiable information will be sought during the interview as the information sought is regarding program usage rather than outcomes. The interview will be recorded and transcribed by the research team where your name will be replaced with an identification number. Upon transcription, the audio will be deleted and the transcribed interviews will be stored in a secure computer drive in a locked cabinet.
-                </p>
-                <p>
-                        There is a minimal risk that you may experience discomfort if you feel that the questions are too personal or refer to sensitive issues. The questions are not meant to be personal but if you do not feel comfortable answering a question, you do not need to answer it. No identifiable information will be generated. 
-As a user of this program, you may or may not see direct benefits from this study, but the study results will add to the body of literature about how to support people to undertake healthy behaviours and the community will benefit from the information you provide that will potentially enhance the quality of the program for future users. We also plan to publish the results of this study in academic journals and present them at conferences. You will not be paid for joining this study but the program is free for you to enjoy.  You will be provided with any new information that may be relevant to your continuing from study participation. 
-                </p>
-                <p>
-                        Participation is voluntary. You don’t have to answer any questions you don’t want to. You can stop participating at any time without impact on your ability to use the AVOID Frailty Program or any other negative impacts. If you exit out of the survey before completion (close your laptop or phone) your progress will be saved for you to complete at a later time. You may withdraw from the study up until March 1, 2025 by contacting me at <a href = "mailto: kyle@cfn-nce.ca">kyle@cfn-nce.ca</a>. Your data cannot be withdrawn after the submission of the anonymous survey.  
-                </p>
-                <p>
-                        Your confidentiality will be protected, to the extent permitted by applicable laws. We will do this by replacing your name with a study ID number in all study records. This data will be stored in an encrypted folder in a password protected computer that is kept in a locked file cabinet in the CFN office. The code file that links real names with pseudonyms and study ID numbers will be stored securely and separately from the data on an encrypted USB. We will keep your data securely for five years per Queen’s University Policy, after which the de-identified data will be destroyed. In the future, we may link data collected in this study with other sources of publicly or provincially collected data to better understanding aging in this region. Data which is not anonymous will not be shared with any other party and any linked data will be accessible by only the study investigators. The CFN research team consisting of Dr. Kyle Plumb -Project Manager, Dr. Jeanette Prorok Manager of Special Projects and Initiatives; and PI – Dr. John Muscedere – CFN’s Scientific Director will have sole access to the study data during its collection, use, analysis, dissemination, and disposal. The Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board (HSREB) may require access to your study-related records to monitor the ethical conduct of the research. HSREB is bound by confidentiality agreements concerning any personal information.
-                </p>
-                <p>
-                        For ethics concerns please contact the Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board (HSREB) at 1-844-535-2988 (Toll free in North America) or <a href = "mailto: hsreb@queensu.ca">hsreb@queensu.ca</a>.
-                </p>
-                <p>
-                        If you have any questions about the research, please contact me at <a href = "mailto: kyle@cfn-nce.ca">kyle@cfn-nce.ca</a> or 613-449-2140.
+                        <b>Name of Principal investigator: </b>Dr John Muscedere<br/>
+                        <b>Name of Sponsor/Funder:</b> Canadian Frailty Network
+                    </p>
+                    <p>
+                            As a participant of the AVOID Frailty Program for Healthy Aging, you are invited to take part in an associated research study. The purpose of this study is to evaluate how well the program is supporting you in your development of healthy behaviours. If you agree to take part, you will be asked to complete an online survey when you sign up for the program, and the same survey every six months after. The survey should take you about 20 minutes to complete. It will ask you about: some of your background information to help us adjust the program in its accessibility; your health status, quality of life and curiosity around healthy behaviours to help us track how effective the program has been. Much of this survey will provide information to personalize your program so that it is supportive based on frailty indicators and behavioural risks, but we also want to make sure that you are benefiting and if not, want to adjust the program to ensure it is resulting in positive health outcomes for all participants.
+                    </p>
+                    <p>
+                            In addition to the survey, you may be contacted by email by Kyle Plumb to invite you to an interview to discuss your usage and experience with the platform. This interview will take approximately 30 minutes to complete and will be conducted in person.  Participants are selected based on their level of program usage – we are interested in both the facilitators and barriers to participant activity and thus seek to understand why you are either using the program often, or rarely. You may opt-out of this portion of the study at any time via email response. No identifiable information will be sought during the interview as the information sought is regarding program usage rather than outcomes. The interview will be recorded and transcribed by the research team where your name will be replaced with an identification number. Upon transcription, the audio will be deleted and the transcribed interviews will be stored in a secure computer drive in a locked cabinet.
+                    </p>
+                    <p>
+                            There is a minimal risk that you may experience discomfort if you feel that the questions are too personal or refer to sensitive issues. The questions are not meant to be personal but if you do not feel comfortable answering a question, you do not need to answer it. No identifiable information will be generated. 
+    As a user of this program, you may or may not see direct benefits from this study, but the study results will add to the body of literature about how to support people to undertake healthy behaviours and the community will benefit from the information you provide that will potentially enhance the quality of the program for future users. We also plan to publish the results of this study in academic journals and present them at conferences. You will not be paid for joining this study but the program is free for you to enjoy.  You will be provided with any new information that may be relevant to your continuing from study participation. 
+                    </p>
+                    <p>
+                            Participation is voluntary. You don’t have to answer any questions you don’t want to. You can stop participating at any time without impact on your ability to use the AVOID Frailty Program or any other negative impacts. If you exit out of the survey before completion (close your laptop or phone) your progress will be saved for you to complete at a later time. You may withdraw from the study up until March 1, 2025 by contacting me at <a href = "mailto: kyle@cfn-nce.ca">kyle@cfn-nce.ca</a>. Your data cannot be withdrawn after the submission of the anonymous survey.  
+                    </p>
+                    <p>
+                            Your confidentiality will be protected, to the extent permitted by applicable laws. We will do this by replacing your name with a study ID number in all study records. This data will be stored in an encrypted folder in a password protected computer that is kept in a locked file cabinet in the CFN office. The code file that links real names with pseudonyms and study ID numbers will be stored securely and separately from the data on an encrypted USB. We will keep your data securely for five years per Queen’s University Policy, after which the de-identified data will be destroyed. In the future, we may link data collected in this study with other sources of publicly or provincially collected data to better understanding aging in this region. Data which is not anonymous will not be shared with any other party and any linked data will be accessible by only the study investigators. The CFN research team consisting of Dr. Kyle Plumb -Project Manager, Dr. Jeanette Prorok Manager of Special Projects and Initiatives; and PI – Dr. John Muscedere – CFN’s Scientific Director will have sole access to the study data during its collection, use, analysis, dissemination, and disposal. The Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board (HSREB) may require access to your study-related records to monitor the ethical conduct of the research. HSREB is bound by confidentiality agreements concerning any personal information.
+                    </p>
+                    <p>
+                            For ethics concerns please contact the Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board (HSREB) at 1-844-535-2988 (Toll free in North America) or <a href = "mailto: hsreb@queensu.ca">hsreb@queensu.ca</a>.
+                    </p>
+                    <p>
+                            If you have any questions about the research, please contact me at <a href = "mailto: kyle@cfn-nce.ca">kyle@cfn-nce.ca</a> or 613-449-2140.
 
-                </p>
-                <p>
-                        This Letter of Information provides you with the details to help you make an informed choice. All your questions should be answered to your satisfaction before you decide whether or not to participate in this research study. You have not waived any legal rights by consenting to participate in this study. This study has been reviewed for ethical compliance by the Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board. A copy of the LOI/CF will be kept by the Researcher.
-                </p>
-                <p>By clicking below, I am verifying that: I have read the Letter of Information and I consent to participate in this research study:
-            </p>
-                {$item}
-            ]]>
-        </ReportItem>
+                    </p>
+                    <p>
+                            This Letter of Information provides you with the details to help you make an informed choice. All your questions should be answered to your satisfaction before you decide whether or not to participate in this research study. You have not waived any legal rights by consenting to participate in this study. This study has been reviewed for ethical compliance by the Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board. A copy of the LOI/CF will be kept by the Researcher.
+                    </p>
+                    <p>By clicking below, I am verifying that: I have read the Letter of Information and I consent to participate in this research study:</p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    </div>
+                ]]>
+            </Static>
+        </If>
+        <Else>
+            <Static>
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td valign="top" style="padding-bottom: 1em;"><b>Titre du projet de recherche:</b></td>
+                            <td valign="top" style="padding-bottom: 1em;">Contribuer à créer un environnement adapté aux aînés dans la ville de Trois-Rivières</td>
+                        </tr>
+                        <tr>
+                            <td valign="top" style="padding-bottom: 1em;"><b>Chercheurs responsables:</b></td>
+                            <td valign="top" style="padding-bottom: 1em;">
+                                <b>Chercheuse principale locale : </b> Anik Giguère, PhD, Professeure titulaire, Département de médecine familiale et de médecine d’urgence, Université Laval<br />
+                                <b>Chercheur principal désigné : </b> John Muscedere, MD, FRCPC, Queen’s University, Kingston General Hospital
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top" style="padding-bottom: 1em;"><b>Autres membres de<br />l’équipe de recherche:</b></td>
+                            <td valign="top" style="padding-bottom: 1em;">Ginette Aubin (UQTR), Élisabeth Beaunoyer (UQTR), Hélène Carbonneau (UQTR), Émilie Dionne (U. Laval), Line Guénette (U. Laval), Laurence Guillaumie (Ulaval)</td>
+                        </tr>
+                        <tr>
+                            <td valign="top" style="padding-bottom: 1em;"><b>Coordonnateurs de recherche:</b></td>
+                            <td valign="top" style="padding-bottom: 1em;">
+                                Site local (Trois-Rivières) : Justine Laloux, Centre de recherche VITAM<br />
+                                Site central (Kingston) : Kyle Plumb, Université de Queens
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top" style="padding-bottom: 1em;"><b>Organisme subventionnaire:</b></td>
+                            <td valign="top" style="padding-bottom: 1em;">Réseau canadien des soins aux personnes fragilisées</td>
+                        </tr>
+                     </table>
+                     <p><b>Nature et objectifs de ce projet de recherche</b></p>
+                     
+                     <p>Ce projet de recherche vise à étudier l’implantation du programme <i>Proactif pour éviter la fragilisation</i>.</p>
+                     
+                     <p>Le programme <i>Proactif pour éviter la fragilisation</i> vise à contribuer à créer un environnement adapté aux personnes aînées dans la ville de Trois-Rivières en travaillant en collaboration avec les communautés et les organisations du milieu. Le programme cible sept domaines du vieillissement en santé : vie sociale, alimentation, activité physique, vaccination, sommeil, optimisation des médicaments, prévention des chutes. Il s’appuie sur un site Internet qui propose un outil d’autoévaluation, des modules éducatifs et un répertoire de ressources offertes dans la ville.</p>
+                     
+                     <p>L’objectif de ce projet de recherche est d’évaluer comment le programme vous soutient dans l’adoption de nouvelles habitudes de vie pour vieillir en santé.</p>
+                     
+                     <p><b>Déroulement du projet</b></p>
+                     
+                     <p>Si vous acceptez de participer, vous aurez à compléter un questionnaire au moment de votre inscription sur notre site internet et ensuite tous les trois mois pendant la durée de votre participation au projet qui doit se dérouler sur deux ans. Le premier questionnaire prend entre 20 et 25 minutes à remplir. Il contient des questions sur votre situation personnelle, votre état de santé, votre qualité de vie et votre motivation à adopter de nouvelles habitudes de vie. Les questionnaires subséquents seront plus courts, prenant entre 10 et 15 minutes environ à remplir.</p>
+                     
+                     <p>Vos réponses nous permettront d’évaluer si le programme est efficace et de le modifier. Une partie de vos réponses nous permettront aussi de personnaliser le programme pour qu’il vous apporte des réponses mieux adaptées à votre situation. </p>
+                     
+                     <p>Si vous acceptez de participer, vous pourriez être invité à participer à une entrevue ou à un autre sondage, mais vous aurez la possibilité d’accepter ou non à ce moment. Si vous avez moins de 65 ans ou que vous ne résidez pas dans la région de Trois-Rivières, vous pouvez compléter le questionnaire, vous aurez ainsi accès à toutes les fonctionnalités du site internet, mais vos données ne seront pas analysées dans le cadre de la recherche.</p>
+                     
+                     <p><b>Avantages, risques et inconvénients possibles</b></p>
+                     
+                     <p>Il y a peu de risque lié à la participation à ce projet de recherche. Vous pourriez éprouver un certain inconfort si vous sentez que les questions abordent des sujets personnels ou sensibles : si c’est le cas, vous êtes libres de ne pas répondre à ces questions.</p>
+                     
+                     <p>Le programme vise à vous soutenir pour améliorer votre santé, mais il se peut que vous ne ressentiez pas de bénéfice direct en participant à ce projet. Cependant, les résultats de ce projet contribueront à faire avancer la recherche sur la manière de soutenir les personnes dans l’adoption de saines habitudes de vie. Ainsi, la communauté bénéficiera des informations qui seront recueillies en nous permettant d’améliorer le programme. Nous prévoyons également publier les résultats de cette étude dans des journaux scientifiques et de les présenter lors de conférences.</p>
+                     
+                     <p><b>Participation volontaire et droit de retrait</b></p>
+                     
+                     <p>Votre participation à ce projet de recherche est tout à fait libre et volontaire. Il n’est pas obligatoire de répondre à toutes les questions si vous ne le souhaitez pas. Vous pourrez également compléter le questionnaire en plusieurs fois. Néanmoins, il est nécessaire de compléter l’ensemble du questionnaire pour pouvoir accéder à l’ensemble des ressources présentes sur le site internet <i>Proactif pour éviter la fragilisation</i>. Vous pourrez également vous retirer de ce projet à n’importe quel moment, sans avoir à donner de raison et sans perdre votre accès au site internet, en faisant connaître votre décision à la responsable de ce projet ou à l’un des membres de son personnel de recherche.</p>
+                     
+                     <p>Advenant votre retrait du projet, l’information déjà obtenue dans le cadre de ce projet ne sera pas utilisée.</p>
+                     
+                     <p>Les chercheurs responsables de ce projet peuvent mettre fin à votre participation, sans votre consentement, s’il existe des raisons d’abandonner le projet.</p>
+                     
+                     <p><b>Confidentialité</b></p>
+                     
+                     <p>Durant votre participation à ce projet, la chercheuse responsable du projet ainsi que son personnel de recherche recueilleront et inscrirons dans un dossier de recherche les renseignements vous concernant. Seuls les renseignements nécessaires à la bonne conduite du projet de recherche seront recueillis. Ces renseignements demeureront strictement confidentiels dans les limites prévues par la loi.</p>
+                     
+                     <p>Vous serez identifié(e) par un numéro de code afin de préserver la confidentialité de vos renseignements.</p>
+                     
+                     <p>Les données du questionnaire seront conservées sur le serveur sécurisé de nos partenaires à la l’Université Queens, en Ontario, dans des fichiers cryptés dont l’accès sera protégé par un mot de passe et auquel seule l’équipe de recherche aura accès. La clé du code reliant votre nom à votre dossier de recherche sera conservée dans un répertoire distinct du réseau sécurisé de la Faculté de Médecine de l’Université Laval auquel seule la coordonnatrice de recherche et la chercheuse principale auront accès.</p>
+                     
+                     <p>La chercheuse responsable et son personnel utiliseront les données à des fins de recherche seulement et dans le but de répondre aux objectifs scientifiques du projet de recherche. Ces données seront conservées pendant cinq ans suivant la fin du projet par la chercheuse responsable. Elles seront ensuite détruites.</p>
+                     
+                     <p><b>Personnes-ressources</b></p>
+                     
+                     <p>Si vous avez des questions concernant ce projet de recherche ou si vous éprouvez un problème que vous croyez lié à votre participation, vous pouvez communiquer avec la professionnelle de recherche coordonnatrice de recherche, Justine Laloux, au numéro suivant: 418-663-5313, poste 12226, au numéro sans frais 1-844-663-5005 poste 12226 ou par courriel à : <a href='mailto:mailto:justine.laloux.1@ulaval.ca'>justine.laloux.1@ulaval.ca</a>. Vous pouvez également communiquer avec la chercheuse responsable du projet de recherche, Anik Giguère par courriel à: <a href='mailto:mailto:anik.giguere@fmed.ulaval.ca'>anik.giguere@fmed.ulaval.ca</a>.</p>
+                     
+                     <p>Pour toute question concernant vos droits en tant que participant à ce projet de recherche ou si vous avez des plaintes ou des commentaires relatifs à votre participation à cette recherche, vous pouvez vous adresser, en toute confidentialité, au bureau de l’Ombudsman de l’Université Laval aux coordonnées suivantes :</p>
+                     
+                     <p>
+                        Pavillon Alphonse-Desjardins, bureau 3320<br />
+                        2325, rue de l’Université<br />
+                        Université Laval<br />
+                        Québec (Québec) G1V 0A6<br />
+                        Renseignements - Secrétariat : 418-656-3081<br />
+                        Ligne sans frais : 1-866-323-2271<br />
+                        Courriel : <a href='mailto:info@ombudsman.ulaval.ca'>info@ombudsman.ulaval.ca</a>
+                    </p>
+                    
+                    <p>Ce formulaire d’information vise à vous fournir les renseignements nécessaires pour vous permettre de faire un choix éclairé. Vous devriez avoir trouvé des réponses satisfaisantes à toutes vos questions pour vous permettre de décider si vous souhaitez ou non consentir à y participer. En acceptant de participer à ce projet, vous ne renoncez à aucun de vos droits, ni ne libérez les chercheurs, le commanditaire ou les institutions impliquées de leurs obligations légales et professionnelles.</p>
+                    
+                    <p>Le sous-comité sectoriel psychosocial du Comité d’éthique de la recherche du CIUSSS de la Mauricie-et-du-Centre-du-Québec a approuvé ce projet de recherche et en assure le suivi. De plus, il approuvera au préalable toute révision et toute modification apportée au protocole de recherche et au formulaire d’information et de consentement. Pour toute information, vous pouvez communiquer avec le secrétariat du comité d'éthique de la recherche du CIUSSS MCQ au 819 478-6464, poste 26478.</p>
+                    
+                    <p>Nous tenons à vous remercier pour votre précieuse collaboration dans la réalisation de cette recherche. Nous apprécions le temps et l’attention que vous y consacrez.</p>
+                ]]>
+            </Static>
+            <ReportItem id="eula" type="SingleCheckbox" blobItem="EULA" blobType="BLOB_TEXT" options="Yes" labels="">
+                <![CDATA[
+                    <ol>
+                        <li>En cochant la case ci-dessous, je confirme que j’ai pris connaissance du formulaire d’information et de consentement. Je reconnais qu’on m’a expliqué le projet, qu’on a répondu à mes questions et qu’on m’a laissé le temps voulu pour prendre une décision. Après réflexion, je consens à participer à ce projet de recherche aux conditions qui y sont énoncées.<span id='consent_eula'>{$item}</span></li>
+                ]]>
+            </ReportItem>
+           <ReportItem id="eulaContact" type="SingleCheckbox" blobItem="EULA_CONTACT" blobType="BLOB_TEXT" options="Yes" labels="">
+                <![CDATA[
+                        <li>En cochant la case ci-dessous, je consens à être recontacté par l’équipe de recherche afin de sonder mon intérêt à participer à des entrevues d’optimisation et d’évaluation du programme Proactif et à un sondage.{$item}</li>
+                ]]>
+            </ReportItem>
+            <ReportItem id="contact" type="Radio" options="Par courriel, voici mon adresse courriel|Par téléphone, voici mon numéro de téléphone" blobItem="CONTACT_TYPE" optional="true">
+                <![CDATA[
+                    <div id='contactDiv'>
+                        <b>Par quel moyen préférez-vous être contacté?</b>
+                        {$item}
+                    </div>
+                ]]>
+            </ReportItem>
+            <ReportItem id="contact_email" type="Text" blobItem="CONTACT_EMAIL" width="250px" optional="true">
+                <![CDATA[
+                    <div id='contactEmail' style='margin-left: 1em;'>{$item}</div>
+                ]]>
+            </ReportItem>
+            <ReportItem id="contact_phone" type="Text" blobItem="CONTACT_PHONE" width="250px" optional="true">
+                <![CDATA[
+                    <div id='contactPhone' style='margin-left: 1em;'>{$item}</div>
+                    </ol>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    <script type='text/javascript'>
+                        $($("#contactDiv > div > div")[0]).append($('#contactEmail').detach());
+                        $($("#contactDiv > div > div")[1]).append($('#contactPhone').detach());
+                    </script>
+                ]]>
+            </Static>
+        </Else>
         <Static>
             <![CDATA[
                 <div title='Limited Guest Access' style='display:none;' id='becomeGuestDialog'>
@@ -182,8 +330,8 @@ As a user of this program, you may or may not see direct benefits from this stud
                     <a id='closeGuest' class='program-button' href='#'>Close and Change Response</a>
                 </div>
                 <script type='text/javascript'>
-                    $("input:radio[name='Consent_eula']").on('click change', function(){
-                        var value = $("input:radio[name='Consent_eula']:checked").val();
+                    $("#consent_eula input").on('click change', function(){
+                        var value = $("#consent_eula input:checked").val();
                         checkConsent(value); 
                         if(value == "No"){
                             $("#becomeGuestDialog").dialog({
