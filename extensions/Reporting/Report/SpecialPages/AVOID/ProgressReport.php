@@ -270,6 +270,28 @@ class ProgressReport extends SpecialPage {
                             }
                             $html .= "<div class='pdfnodisplay'>You can also print your progress report <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ProgressReport' target='_blank'><b><u>here</u></b></a>.</div>
                         </div>
+                        
+                        <script type='text/php'>
+                            \$php_code = '
+                                if(\$PAGE_NUM == 1){
+                                    \$note = \"{$me->getNameForForms()}\";
+                                    \$font = \$fontMetrics->getFont(\"verdana\");
+                                    \$size = 6;
+                                    \$text_height = \$fontMetrics->getFontHeight(\$font, \$size);
+                                    \$text_width = \$fontMetrics->getTextWidth(\"\$note\", \$font, \$size);
+                                    \$color = array(0,0,0);
+                                    \$w = \$pdf->get_width();
+                                    \$h = \$pdf->get_height();
+                                    \$y = \$h - \$text_height - 24;
+
+                                    \$x = \$pdf->get_width() - \$text_width;
+
+                                    \$pdf->text(\$x - 28, \$y+(\$text_height) - \$text_height + 4, \"\$note\", \$font, \$size, \$color);
+                                }
+                                ';
+                             \$pdf->page_script(\$php_code);
+                        </script>
+                        
                         <br />
                         <div class='container'>
                             <div class='category'>
@@ -346,7 +368,7 @@ class ProgressReport extends SpecialPage {
                         
                         <br />
                         <div style='width:100%; text-align:center;'>
-                            <en><a href='https://HealthyAgingCentres.ca' target='_blank'>HealthyAgingCentres.ca</a></en>
+                            <en><a href='http://avoidfrailty.ca' target='_blank'>avoidfrailty.ca</a></en>
                             <fr><a href='https://Proactifquebec.ca' target='_blank'>Proactifquebec.ca</a></fr>
                         </div>
                         <br /><br /><br /><br /><br />

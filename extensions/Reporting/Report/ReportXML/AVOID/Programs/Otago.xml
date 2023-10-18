@@ -33,7 +33,7 @@
                             <p>
                                 <b>We</b> provide in-person instruction with a trained Otago fitness leader once per week.<br />
                                 <b>You</b> do the prescribed exercises 2 additional times each week on your own.
-                            </p><br /><br />
+                            </p>
                             <div class='program-box' style='width: 21em; margin-right: -14em; margin-top: 1em; float: right;'>
                                 <b>Best suited for:</b>
                                 <ul>
@@ -42,29 +42,25 @@
                                     <li>Persons who can walk in their own home with or without a walking aid</li>
                                 </ul>
                             </div>
+                            <p><b>Upcoming Sessions:</b></p>
                             <!--span class='program-text'>Register for a FREE upcoming 10-week session:</span><br />
                             <div class='program-button' style='width: 14em;'>{$item}</div><br /-->
                         
             ]]>
         </ReportItem>
-        <ReportItem id="phone" type="Text" width="180px" blobItem="PHONE">
-            <![CDATA[
-                <!--b>Phone Number:</b> {$item} (optional)<br />
-                <p><span class='program-text'>You will be contacted with further details</span></p-->
-                <!--b>This program is now full</b-->
-                <b>Upcoming Session:</b><br /> 
-                January 15 to March 25, 2024 - 10 weeks, not including Family Day<br />
-                Location: Amherstview Leisure & Activity Centre - 177 Upper Park<br />
-                Mondays from 1:00 to - 2:00pm<br />
-                Cost: $70<br />
-                To Register: visit <a href='https://www.loyalist.ca/register' target='_blank'>www.loyalist.ca/register</a> or 613-386-7351 Ext. 300
-            ]]>
-        </ReportItem>
-        <!--ReportItem id="register" type="Checkbox" 
-                    labels="&lt;b>Kingston&lt;/b> Community Health Centre, 263 Weller Ave, Unit 4.&lt;br />Thursday April 27, 10:30 to 11:30am and runs weekly for 10 weeks|Lennox &amp; Addington Seniors Outreach Services, 12 Richmond Park Drive, &lt;b>Napanee&lt;/b>.&lt;br />Thursday April 27, 1:45pm to 2:45pm and runs weekly for 10 weeks" 
-                    options="Kingston Community Health Centre, 263 Weller Ave, Unit 4. Thursday April 27, 10:30 to 11:30am and runs weekly for 10 weeks|Lennox &amp; Addington Seniors Outreach Services, 12 Richmond Park Drive, Napanee. Thursday April 27, 1:45pm to 2:45pm and runs weekly for 10 weeks" blobType="BLOB_ARRAY" blobItem="REGISTER">
+        <ReportItem id="register" type="Checkbox" 
+                    labels="Monday October 30, to January 15, no class Dec 25 or Jan 1. &lt;br />Time: 10:45 to 11:45am&lt;br />Location: Rideau Heights Community Centre, 85 MacCauley St." 
+                    options="Monday October 30, to January 15, no class Dec 25 or Jan 1. &lt;br />Time: 10:45 to 11:45am&lt;br />Location: Rideau Heights Community Centre, 85 MacCauley St." blobType="BLOB_ARRAY" blobItem="REGISTER2">
             <![CDATA[
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="phone" type="Text" width="180px" blobItem="PHONE">
+            <![CDATA[
+                <b>Phone Number:</b> {$item} (optional)<br />
+                <p><span class='program-text'>You will be contacted with further details</span></p>
+                <!--b>This program is now full</b-->
+                
             ]]>
         </ReportItem>
         <ReportItem id="submit" type="SubmitEmail">
@@ -89,12 +85,22 @@
                     <tr>
                         <td valign='top'><b>Training Date:</b></td>
                         <td>
-                            <div>{getArray(RP_OTAGO,OTAGO,REGISTER,0,{$user_id},0,register}</div>
+                            <div>{getArray(RP_OTAGO,OTAGO,REGISTER2,0,{$user_id},0,register}</div>
                         </td>
                     </tr>
                 </table>
             ]]>
-        </ReportItem-->
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br />
+                January 15 to March 25, 2024 - 10 weeks, not including Family Day<br />
+                Location: Amherstview Leisure & Activity Centre - 177 Upper Park<br />
+                Mondays from 1:00 to - 2:00pm<br />
+                Cost: $70<br />
+                To Register: visit <a href='https://www.loyalist.ca/register' target='_blank'>www.loyalist.ca/register</a> or 613-386-7351 Ext. 300
+            ]]>
+        </Static>
         <Static>
             <![CDATA[   </div>
                         <div style='width: 16em; margin-left: 1em;'>

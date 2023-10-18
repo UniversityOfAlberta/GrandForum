@@ -836,8 +836,9 @@ class CavendishTemplate extends QuickTemplate {
                         $text = ($text == "") ? "Flickr" : $text;
                         break;
                     case 'twitter':
-                        $img = "glyphicons_social_31_twitter";
-                        $text = ($text == "") ? "Twitter" : $text;
+                        $img = "";
+                        $text = ($text == "") ? "&#120143;" : $text;
+                        $text2 = "X";
                         break;
                     case 'facebook':
                         $img = "glyphicons_social_30_facebook";
@@ -864,9 +865,16 @@ class CavendishTemplate extends QuickTemplate {
                         $text = ($text == "") ? "Intranet" : $text;
                         break;
                 }
-                echo "<a class='changeImg' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
-	                        <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
-	                  </a>";
+                if($img != ""){
+                    echo "<a class='changeImg' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
+	                            <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
+	                      </a>";
+	            }
+	            else{
+	                echo "<a class='changeImg' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
+	                            <span class='changeImgIcon' style=''>$text</span> $text2
+	                      </a>";
+	            }
 	        }
 	        echo "</div>";
             echo "<a id='status_help_faq' name='question_mark_16x32' class='menuTooltip' title='FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_16x32.png' alt='FAQ' style='height: 16px;' />&nbsp;&nbsp;<span class='en'>FAQ</span><span class='fr'>FAQ</span></a>";

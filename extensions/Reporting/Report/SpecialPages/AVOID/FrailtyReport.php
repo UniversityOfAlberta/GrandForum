@@ -845,7 +845,7 @@ behaviour. They are not clinical recommendations, for which you should seek advi
         
         // Footer
         $html .= "<div style='width:100%; text-align:center;'>
-                            <en><a href='https://HealthyAgingCentres.ca' target='_blank'>HealthyAgingCentres.ca</a></en>
+                            <en><a href='http://avoidfrailty.ca' target='_blank'>avoidfrailty.ca</a></en>
                             <fr><a href='https://Proactifquebec.ca' target='_blank'>Proactifquebec.ca</a></fr>
                         </div>
                         <br /><br /><br /><br /><br />

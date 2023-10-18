@@ -46,6 +46,24 @@ echo <<<EOF
     color: $hlFontColor !important;
 }
 
+.changeImg span.changeImgIcon {
+    color: white; 
+    background: #333333;
+    text-align: center; 
+    border-radius: 3px; 
+    vertical-align:middle; 
+    display: inline-block; 
+    width:24px; 
+    font-size: 24px;
+    line-height:24px;
+    text-decoration: none !important;
+}
+
+.changeImg:hover span.changeImgIcon {
+    background: {$hlc};
+    color: white;
+}
+
 #side .highlights-text {
     color: $shl !important;
 }
