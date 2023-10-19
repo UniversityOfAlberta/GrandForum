@@ -108,15 +108,15 @@ class Register extends SpecialPage{
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
         $emailField->registerValidation(new UniqueEmailValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         $emailRow = new FormTableRow("email_row");
-        $emailRow->append($emailLabel)->append($emailField);
+        $emailRow->append($emailLabel)->append($emailField->attr('size', 20));
         
         $passwordLabel = new Label("password_label", "<en>Password</en><fr>Mot de passe</fr>", "The password of the user", VALIDATE_NOT_NULL);
         $passwordField = new PasswordField("password_field", "Password", "", VALIDATE_NOT_NULL);
         $passwordRow = new FormTableRow("password_row");
         $passwordRow->append($passwordLabel)->append($passwordField);
         
-        $password2Label = new Label("password2_label", "<en>Password (confirm)</en><fr>Mot de passe (confirmation)</fr>", "The password of the user", VALIDATE_NOT_NULL);
-        $password2Field = new PasswordField("password2_field", "Password (confirm)", "", VALIDATE_NOT_NULL);
+        $password2Label = new Label("password2_label", "<en>Password (again)</en><fr>Mot de passe (confirmation)</fr>", "The password of the user", VALIDATE_NOT_NULL);
+        $password2Field = new PasswordField("password2_field", "Password (again)", "", VALIDATE_NOT_NULL);
         $password2Row = new FormTableRow("password2_row");
         $password2Row->append($password2Label)->append($password2Field);
         
@@ -149,11 +149,12 @@ class Register extends SpecialPage{
         $roleRow = new FormTableRow("role_row");
         $roleRow->append($roleLabel)->append($roleField->attr('size', 20));
         
-        $hearLabel = new Label("hear_label", "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr>", 
-                                             "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr>", VALIDATE_NOT_NULL);
+        $hearLabel = new Label("hear_label", "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr><span style='color:red;font-weight:bold;'>*</span>", 
+                                             "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr>", VALIDATE_NOTHING);
         $hearLabel->colspan = 2;
         $hearLabel->colon = "";
         $hearLabel->attr('class', 'label tooltip left-align');
+        $hearLabel->attr('style', 'white-space: normal;');
         $hearRow1 = new FormTableRow("hear_row1");
         $hearRow1->append($hearLabel);
         $hearField = new SelectBox("hear_field", "Hear", "", 
@@ -243,8 +244,7 @@ class Register extends SpecialPage{
         $hearRow10 = new FormTableRow("hear_row10");
         $hearRow10->append($hearOtherField);
         
-        $handbookLabel = new Label("handbook_label", "<br />We have an AVOID Frailty Handbook that will explain the program,  help you navigate the website, and troubleshoot any problems you run into. How would you like to receive it?", 
-                                             "We have an AVOID Frailty Handbook that will explain the program,  help you navigate the website, and troubleshoot any problems you run into. How would you like to receive it?", VALIDATE_NOTHING);
+        $handbookLabel = new Label("handbook_label", "<br />We have an AVOID Frailty Handbook that will explain the program,  help you navigate the website, and troubleshoot any problems you run into. How would you like to receive it?", "", VALIDATE_NOTHING);
         $handbookLabel->colspan = 2;
         $handbookLabel->colon = "";
         $handbookLabel->attr('class', 'label tooltip left-align');
@@ -255,8 +255,19 @@ class Register extends SpecialPage{
                                    array("Electronically via email",
                                          "Paper copy in the mail",
                                          "I do not want the handbook"), VALIDATE_NOTHING);
+        $handbookField->colspan = 2;
         $handbookRow2 = new FormTableRow("handbook_row2");
         $handbookRow2->append($handbookField);
+        
+        $handbookAddressLabel = new Label("handbook_address_label", "Please Specify Mailing Address", "Address", VALIDATE_NOTHING);
+        $handbookAddressLabel->colspan = 2;
+        $handbookAddressLabel->attr('class', 'tooltip left-align');
+        $handbookRow3 = new FormTableRow("handbook_row3");
+        $handbookRow3->append($handbookAddressLabel);
+        $handbookAddressField = new TextField("handbook_address_specify", "Address", "", VALIDATE_NOTHING);
+        $handbookAddressField->colspan = 2;
+        $handbookRow4 = new FormTableRow("handbook_row4");
+        $handbookRow4->append($handbookAddressField);
         
         // End AVOID Fields
         
@@ -268,17 +279,17 @@ class Register extends SpecialPage{
         $typeRow = new FormTableRow("type_row");
         $typeRow->append($typeLabel)->append($typeField);
         
-        $captchaLabel = new EmptyElement();
         $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOTHING);
+        $captchaField->colspan = 2;
         $captchaRow = new FormTableRow("captcha_row");
-        $captchaRow->append($captchaLabel)->append($captchaField);
+        $captchaRow->append($captchaField);
         
-        $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
+        $submitField->colspan = 2;
         $submitField->buttonText = "<en>Submit Request</en>
                                     <fr>Soumettre la demande</fr>";
         $submitRow = new FormTableRow("submit_row");
-        $submitRow->append($submitCell)->append($submitField);
+        $submitRow->append($submitField);
         
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
@@ -330,7 +341,9 @@ class Register extends SpecialPage{
                       ->append($hearRow10);
             if($wgLang->getCode() == "en"){
                 $formTable->append($handbookRow1)
-                          ->append($handbookRow2);
+                          ->append($handbookRow2)
+                          ->append($handbookRow3)
+                          ->append($handbookRow4);
             }
         }
         $emptyRow = new FormTableRow("");
@@ -469,10 +482,18 @@ class Register extends SpecialPage{
                 else{ 
                     $('#hear_row7, #hear_row8').hide();
                 }
+                
+                if($(\"input[name='handbook_field[]'][value='Paper copy in the mail']\").is(':checked')){
+                    $('#handbook_row3, #handbook_row4').show();
+                }
+                else{
+                    $('#handbook_row3, #handbook_row4').hide();
+                } 
             }
             
             $(\"select[name='hear_field']\").change(specifyFrail);
             $(\"input:radio[name='hear_platform_specify']\").change(specifyFrail);
+            $(\"input[name='handbook_field[]']\").change(specifyFrail);
             specifyFrail();
             
         </script>");
@@ -568,7 +589,9 @@ class Register extends SpecialPage{
                     $_POST['wpExtra']['hearPlatformSpecify'] = @$_POST['hear_platform_specify'];
                     $_POST['wpExtra']['hearPlatformOtherSpecify'] = @$_POST['hear_platform_other_specify'];
                     $_POST['wpExtra']['hearProgramOtherSpecify'] = @$_POST['hear_other_specify'];
+                    // Handbook
                     $_POST['wpExtra']['handbook'] = @$_POST['handbook_field'];
+                    $_POST['wpExtra']['handbookAddress'] = @$_POST['handbook_address_specify'];
                 }
                 
                 $wgGroupPermissions['*']['createaccount'] = true;
