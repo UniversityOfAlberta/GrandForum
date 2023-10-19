@@ -226,6 +226,7 @@ class AdminDataCollection extends SpecialPage{
                 $age = $person->getExtra('ageField', '');
                 $practice = $person->getExtra('practiceField', '');
                 $rolefield = $person->getExtra('roleField', '');
+                $handbook = $person->getExtra('handbook', array());
                 
                 $wgOut->addHTML("<td style='white-space:nowrap;'>");
                 if($phone != ''){
@@ -242,6 +243,9 @@ class AdminDataCollection extends SpecialPage{
                 }
                 if($rolefield != ''){
                     $wgOut->addHTML("<b>Role:</b> $rolefield<br />");
+                }
+                if(count($handbook) > 0){
+                    $wgOut->addHTML("<b>Handbook:</b> ".implode(", ", $handbook)."<br />");
                 }
                 $wgOut->addHTML("</td>");
                 $wgOut->addHTML("<td>{$hear}</td>");

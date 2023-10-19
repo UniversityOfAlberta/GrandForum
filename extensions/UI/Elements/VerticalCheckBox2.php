@@ -22,7 +22,7 @@ class VerticalCheckBox2 extends CheckBox {
                     }
                 }
             }
-            $html .= "<input {$this->renderAttr()} id='{$this->id}_{$option}' type='checkbox' name='{$this->id}[]' value='{$key}' $checked/>{$label}<br />";
+            $html .= "<input {$this->renderAttr()} id='{$this->id}_{$option}' style='vertical-align:middle;' type='checkbox' name='{$this->id}[]' value='{$key}' $checked/><span style='vertical-align:middle; margin-left:0.5em;'>{$label}</span><br />";
         }
         return $html;
     }

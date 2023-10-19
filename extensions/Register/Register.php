@@ -243,6 +243,21 @@ class Register extends SpecialPage{
         $hearRow10 = new FormTableRow("hear_row10");
         $hearRow10->append($hearOtherField);
         
+        $handbookLabel = new Label("handbook_label", "<br />We have an AVOID Frailty Handbook that will explain the program,  help you navigate the website, and troubleshoot any problems you run into. How would you like to receive it?", 
+                                             "We have an AVOID Frailty Handbook that will explain the program,  help you navigate the website, and troubleshoot any problems you run into. How would you like to receive it?", VALIDATE_NOTHING);
+        $handbookLabel->colspan = 2;
+        $handbookLabel->colon = "";
+        $handbookLabel->attr('class', 'label tooltip left-align');
+        $handbookLabel->attr('style', 'max-width: 700px; white-space: normal;');
+        $handbookRow1 = new FormTableRow("handbook_row1");
+        $handbookRow1->append($handbookLabel);
+        $handbookField = new VerticalCheckBox("handbook_field", "Handbook", array(), 
+                                   array("Electronically via email",
+                                         "Paper copy in the mail",
+                                         "I do not want the handbook"), VALIDATE_NOTHING);
+        $handbookRow2 = new FormTableRow("handbook_row2");
+        $handbookRow2->append($handbookField);
+        
         // End AVOID Fields
         
         $typeLabel = new Label("type_label", "<en>Please select your role</en><fr>Veuillez sélectionner votre rôle</fr>", "The role of user", VALIDATE_NOT_NULL);
@@ -313,6 +328,10 @@ class Register extends SpecialPage{
                       ->append($hearRow8)
                       ->append($hearRow9)
                       ->append($hearRow10);
+            if($wgLang->getCode() == "en"){
+                $formTable->append($handbookRow1)
+                          ->append($handbookRow2);
+            }
         }
         $emptyRow = new FormTableRow("");
         $emptyRow->append(new EmptyElement());
@@ -549,6 +568,7 @@ class Register extends SpecialPage{
                     $_POST['wpExtra']['hearPlatformSpecify'] = @$_POST['hear_platform_specify'];
                     $_POST['wpExtra']['hearPlatformOtherSpecify'] = @$_POST['hear_platform_other_specify'];
                     $_POST['wpExtra']['hearProgramOtherSpecify'] = @$_POST['hear_other_specify'];
+                    $_POST['wpExtra']['handbook'] = @$_POST['handbook_field'];
                 }
                 
                 $wgGroupPermissions['*']['createaccount'] = true;
