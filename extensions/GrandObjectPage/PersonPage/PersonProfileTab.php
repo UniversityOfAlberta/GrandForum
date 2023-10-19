@@ -608,7 +608,7 @@ EOF;
                                 <td class='value'><input type='text' size='30' name='linkedin' value='".str_replace("'", "&#39;", $person->getLinkedIn())."' /></td>
                             </tr>
                             <tr>
-                                <td class='label'>Twitter Account:</td>
+                                <td class='label'>&#120143; Account:</td>
                                 <td class='value'><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
                             </tr>
                             <tr>
