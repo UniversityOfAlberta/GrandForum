@@ -356,19 +356,11 @@
                 "tags": ["dietitian services"]
             },
             {
-                "text": "<en>Food Banks and Stands</en><fr>Banques et kiosques alimentaires</fr>",
+                "text": "<en>Free and Subsidized Food</en><fr>Nourriture gratuite et subventionnée</fr>",
                 "value": 92,
-                "code": "CFN-DIET-FOODBANKS",
+                "code": "CFN-DIET-FREE",
                 "description": "Free or subsidized food",
                 "tags": ["food banks and stands"],
-                "note": "<en><ul><li>Does the service offer hot meals or frozen meals?</li><li>What size are the meals?</li><li>How do you place an order? Online or over the phone?</li><li>When will my order arrive? Is there flexibility on timing?</li><li>Is there a delivery charge?</li><li>Where is the store where the food is made and am I able to collect from there instead of having it delivered?</li><li>Should I tip the driver?</li><li>How do I request a menu?</li><li>How do I pay? Can I prepay for meals?</li><li>Can I buy meals as a gift for someone?</li><li>Is it possible to change the sides on a particular meal (rice instead of potato)?</li><li>Can you accommodate dietary restrictions?</li></ul></en><fr><ul><li>Le service propose-t-il des repas chauds ou des repas surgelés?</li><li>Quelle quantité de nourriture les repas contiennent-ils?</li><li>Comment faut-il procéder pour passer une commande? En ligne ou par téléphone?</li><li>Quand ma commande arrivera-t-elle? Y a-t-il une certaine souplesse quant à l’horaire de commande et de livraison?</li><li>Y a-t-il des frais de livraison?</li><li>Où se trouve le magasin où sont fabriqués les aliments et puis-je y ramasser les repas plutôt que de me les faire livrer?</li><li>Dois-je donner un pourboire au chauffeur?</li><li>Comment puis-je demander un menu?</li><li>Comment puis-je payer? Puis-je payer les repas à l’avance?</li><li>Puis-je acheter des repas comme cadeau pour quelqu’un?</li><li>Est-il possible de changer les accompagnements d’un repas particulier (riz au lieu de pommes de terre)?</li><li>Respecte-t-on les restrictions alimentaires?</li></ul></fr>"
-            },
-            {
-                "text": "<en>Fresh Food Boxes</en><fr>Boîtes de produits frais</fr>",
-                "value": 92,
-                "code": "CFN-DIET-FRESH",
-                "description": "Seasonal boxes of fruit and vegetables at reduced prices",
-                "tags": ["fresh food boxes"],
                 "note": "<en><ul><li>Does the service offer hot meals or frozen meals?</li><li>What size are the meals?</li><li>How do you place an order? Online or over the phone?</li><li>When will my order arrive? Is there flexibility on timing?</li><li>Is there a delivery charge?</li><li>Where is the store where the food is made and am I able to collect from there instead of having it delivered?</li><li>Should I tip the driver?</li><li>How do I request a menu?</li><li>How do I pay? Can I prepay for meals?</li><li>Can I buy meals as a gift for someone?</li><li>Is it possible to change the sides on a particular meal (rice instead of potato)?</li><li>Can you accommodate dietary restrictions?</li></ul></en><fr><ul><li>Le service propose-t-il des repas chauds ou des repas surgelés?</li><li>Quelle quantité de nourriture les repas contiennent-ils?</li><li>Comment faut-il procéder pour passer une commande? En ligne ou par téléphone?</li><li>Quand ma commande arrivera-t-elle? Y a-t-il une certaine souplesse quant à l’horaire de commande et de livraison?</li><li>Y a-t-il des frais de livraison?</li><li>Où se trouve le magasin où sont fabriqués les aliments et puis-je y ramasser les repas plutôt que de me les faire livrer?</li><li>Dois-je donner un pourboire au chauffeur?</li><li>Comment puis-je demander un menu?</li><li>Comment puis-je payer? Puis-je payer les repas à l’avance?</li><li>Puis-je acheter des repas comme cadeau pour quelqu’un?</li><li>Est-il possible de changer les accompagnements d’un repas particulier (riz au lieu de pommes de terre)?</li><li>Respecte-t-on les restrictions alimentaires?</li></ul></fr>"
             },
             {
