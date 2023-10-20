@@ -1151,7 +1151,7 @@ class CavendishTemplate extends QuickTemplate {
 ?>
 	<li class="portlet" id="p-tb">
 <?php global $config, $wgServer, $wgScriptPath;
-    if($config->getValue('networkType') == "CFREF"){ ?>
+    if($config->getValue('networkName') == "FES"){ ?>
         <style>
             a.administration {
                 padding-bottom:6px;
