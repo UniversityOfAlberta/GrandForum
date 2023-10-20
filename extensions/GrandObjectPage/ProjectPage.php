@@ -92,7 +92,7 @@ class ProjectPage {
                 $tabbedPage->singleHeader = false;
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
                 if($config->getValue('projectLongDescription')){
-                    if($config->getValue('networkType') == "CFREF"){
+                    if($config->getValue('networkName') == "FES"){
                         $tabbedPage->addTab(new ProjectFESDescriptionTab($project, $visibility));
                     }
                     else{

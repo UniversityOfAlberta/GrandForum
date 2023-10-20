@@ -1104,6 +1104,7 @@ class Project extends BackboneModel {
     
     // Returns the description of the Project
     function getDescription($history=false){
+        global $config;
         $sql = "(SELECT description 
                 FROM grand_project_descriptions d
                 WHERE d.project_id = '{$this->id}'\n";
@@ -1119,7 +1120,19 @@ class Project extends BackboneModel {
         
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
-            return $data[0]['description'];
+            $description = @unserialize($data[0]['description']);
+            if(!$config->getValue("projectSectionMap")){
+                if($description === false){
+                    return $data[0]['description'];
+                }
+                return implode("", $description);
+            }
+            if($description === false){
+                return array();
+            }
+            else{
+                return $description;
+            }
         }
         return "";
     }

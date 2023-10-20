@@ -172,21 +172,17 @@ class ProjectMainTab extends AbstractEditableTab {
         $me = Person::newFromWgUser();
         $_POST['project'] = $this->project->getName();
         $_POST['fullName'] = @$_POST['fullName'];
-        $_POST['description'] = @$_POST['description'];
         $_POST['website'] = @str_replace("'", "&#39;", $_POST['website']);
         $_POST['long_description'] = $this->project->getLongDescription();
-        if($_POST['description'] != $this->project->getDescription() ||
-           $_POST['fullName'] != $this->project->getFullName() ||
-           $_POST['website'] != $this->project->getWebsite()){
-            $error = APIRequest::doAction('ProjectDescription', true);
-            if($error != ""){
-                return $error;
-            }
-            Project::$cache = array();
-            Project::$projectDataCache = array();
-            $this->project = Project::newFromId($this->project->getId());
-            $wgOut->setPageTitle($this->project->getFullName());
+
+        $error = APIRequest::doAction('ProjectDescription', true);
+        if($error != ""){
+            return $error;
         }
+        Project::$cache = array();
+        Project::$projectDataCache = array();
+        $this->project = Project::newFromId($this->project->getId());
+        $wgOut->setPageTitle($this->project->getFullName());
         
         $this->project->themes = array();
         if(isset($_POST['challenge']) && is_array($_POST['challenge'])){
@@ -560,39 +556,52 @@ class ProjectMainTab extends AbstractEditableTab {
     
     function showDescription(){
         global $wgServer, $wgScriptPath, $config;
-        
+        $me = Person::newFromWgUser();
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
         $description = $project->getDescription();
-        
+        $sectionMap = $config->getValue('projectSectionMap');
+        if(!$sectionMap){
+            $sectionMap = array('' => array('', true));
+        }
         if($edit || !$edit && $description != ""){
             $this->html .= "<h2><span class='mw-headline'>Project Overview</span></h2>";
         }
-        if(!$edit){
-            $this->html .= $description."<br />";
-        }
-        else{
-            $this->html .= "<textarea name='description' style='height:500px;width:auto;'>{$description}</textarea>
-            <script type='text/javascript'>
-                $('textarea[name=description]').tinymce({
-                    theme: 'modern',
-                    relative_urls : false,
-                    convert_urls: false,
-                    menubar: false,
-                    plugins: 'link image charmap lists table paste wordcount',
-                    toolbar: [
-                        'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
-                    ],
-                    paste_postprocess: function(plugin, args) {
-                        var p = $('p', args.node);
-                        p.each(function(i, el){
-                            $(el).css('line-height', 'inherit');
+        foreach($sectionMap as $key => $value){
+            if($me->isLoggedIn() || $value[1]){
+                $text = ($key == '') ? $description : @$description[$key];
+                $height = ($key == '') ? 400 : 200;
+                if($key != "" && ($edit || !$edit && $text != "")){
+                    $this->html .= "<h3><span class='mw-headline'>{$value[0]}</span></h3>";
+                }
+                if(!$edit){
+                    $this->html .= $text;
+                }
+                else{
+                    $this->html .= "<textarea name='description{$key}' style='height:{$height}px;width:auto;'>{$text}</textarea>
+                    <script type='text/javascript'>
+                        $('textarea[name=description{$key}]').tinymce({
+                            theme: 'modern',
+                            relative_urls : false,
+                            convert_urls: false,
+                            menubar: false,
+                            plugins: 'link image charmap lists table paste wordcount',
+                            toolbar: [
+                                'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                            ],
+                            paste_postprocess: function(plugin, args) {
+                                var p = $('p', args.node);
+                                p.each(function(i, el){
+                                    $(el).css('line-height', 'inherit');
+                                });
+                            }
                         });
-                    }
-                });
-            </script>";
+                    </script>";
+                }
+            }
         }
+        $this->html .= "<br />";
         if($project->getType() == 'Administrative'){
             $researchProject = Project::newFromName($project->getName()." Research");
             if($researchProject != null && $researchProject->getId() != 0){

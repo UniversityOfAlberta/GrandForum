@@ -238,6 +238,9 @@
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
 
+    // Description section mapping
+    $config->setValue("projectSectionMap", false);
+    
     // Whether or not projects have 'long descriptions'
     $config->setValue("projectLongDescription", true);
     

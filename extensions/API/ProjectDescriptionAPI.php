@@ -11,6 +11,12 @@ class ProjectDescriptionAPI extends API{
     }
 
     function processParams($params){
+        global $config;
+        foreach(@$config->getValue('projectSectionMap') as $key => $value){
+            if(isset($_POST["description{$key}"]) && $_POST["description{$key}"] != ""){
+                $_POST["description{$key}"] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST["description{$key}"]));
+            }
+        }
         if(isset($_POST['description']) && $_POST['description'] != ""){
             $_POST['description'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description']));
         }
@@ -29,6 +35,7 @@ class ProjectDescriptionAPI extends API{
     }
 
 	function doAction($noEcho=false){
+	    global $config;
 	    $me = Person::newFromWgUser();
 		$project = Project::newFromName($_POST['project']);
 		$error = "";
@@ -52,6 +59,15 @@ class ProjectDescriptionAPI extends API{
 		else{
 		    $fullName = $project->getFullName();
 		}
+		
+		$descriptions = array();
+		if($config->getValue('projectSectionMap') != false){
+		    foreach(@$config->getValue('projectSectionMap') as $key => $value){
+		        $descriptions[$key] = @$_POST["description{$key}"];
+            }
+            $_POST['description'] = serialize($descriptions);
+        }
+		
         DBFunctions::begin();
         DBFunctions::update('grand_project_descriptions',
                             array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
