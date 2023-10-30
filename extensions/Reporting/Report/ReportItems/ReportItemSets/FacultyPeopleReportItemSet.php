@@ -77,6 +77,9 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
             }
             
             // SPECIAL CASES BELOW
+            if($me->getName() == "Anthony.Singhal" && $person->getName() == "Deanna.Singhal"){
+                continue;
+            }
             
             $index = @$fec[$person->getId()];
             $tuple = self::createTuple();
