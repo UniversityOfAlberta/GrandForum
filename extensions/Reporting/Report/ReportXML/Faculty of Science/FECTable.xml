@@ -259,7 +259,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01" excludeMe="true">
             <Static>
                 <![CDATA[
                     <tr data-id="{$user_id}">

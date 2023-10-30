@@ -17,6 +17,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         }
         $includeDean = (strtolower($this->getAttr("includeDean", "false")) == "true");
         $includeDD = (strtolower($this->getAttr("includeDD", "true")) == "true");
+        $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
         $me = Person::newFromWgUser();
         
         $data = array();
@@ -44,6 +45,15 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 continue;
             }
             if(($person->isSubRole("DD")) && 
+                !$me->isRole(DEAN) &&
+                !$me->isRole(DEANEA) &&
+                !$me->isRole(VDEAN) && 
+                !$me->isRole(HR) &&
+                !$me->isRole(ADMIN)){
+                // Don't show DD people unless user is Dean, Vice Dean, HR
+                continue;
+            }
+            if($excludeMe && ($person->isMe()) && 
                 !$me->isRole(DEAN) &&
                 !$me->isRole(DEANEA) &&
                 !$me->isRole(VDEAN) && 
