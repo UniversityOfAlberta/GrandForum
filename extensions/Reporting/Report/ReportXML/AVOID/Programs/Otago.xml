@@ -48,7 +48,7 @@
                         
             ]]>
         </ReportItem>
-        <ReportItem id="register" type="Checkbox" 
+        <!--ReportItem id="register" type="Checkbox" 
                     labels="Monday October 30, to January 15, no class Dec 25 or Jan 1. &lt;br />Time: 10:45 to 11:45am&lt;br />Location: Rideau Heights Community Centre, 85 MacCauley St." 
                     options="Monday October 30, to January 15, no class Dec 25 or Jan 1. &lt;br />Time: 10:45 to 11:45am&lt;br />Location: Rideau Heights Community Centre, 85 MacCauley St." blobType="BLOB_ARRAY" blobItem="REGISTER2">
             <![CDATA[
@@ -59,7 +59,7 @@
             <![CDATA[
                 <b>Phone Number:</b> {$item} (optional)<br />
                 <p><span class='program-text'>You will be contacted with further details</span></p>
-                <!--b>This program is now full</b-->
+                
                 
             ]]>
         </ReportItem>
@@ -90,7 +90,7 @@
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <Static>
             <![CDATA[
                 <br />
