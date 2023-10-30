@@ -12,7 +12,8 @@ class PromotionReportItem extends SelectReportItem {
                 // Faculty members (assistants and associates) are eligible for promotion if:
                 //   1. salary >= min_salary_prof - increment_rate_professor for that year AND
                 //   2. (is_tenured and !is_professor) or is_tenure_selected (this is will be done with javascript)
-                if($person->getSalary($this->getReport()->year) >= Person::getMinSalary($this->getReport()->year, 'prof') - Person::getSalaryIncrement($this->getReport()->year, 'assoc')){
+                if($person->getSalary($this->getReport()->year) >= Person::getMinSalary($this->getReport()->year, 'prof') - Person::getSalaryIncrement($this->getReport()->year, 'assoc') ||
+                   $person->getName() == "Matthew.Taylor"){ // TODO: Get Rid of this later
                     $options = array("n/a", 
                                      "i recommend promotion to full professor", 
                                      "i do not support the staff member's promotion to full professor");
