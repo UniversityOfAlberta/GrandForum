@@ -2,52 +2,88 @@
 <form id="eventform" class="navbar-form">
 <table id="eventData">
     <tr>
-        <td class="label">Name of Expert:</td>
-	<td class="field"><input type="text" id="name_of_expert" name="name_of_expert" value="<%= name_of_expert%>"></td>
+        <td class="label">
+            <en>Name of Expert:</en>
+            <fr>Nom du conférencier (si applicable) :</fr>
+        </td>
+	<td class="field"><input type="text" id="name_of_expert" name="name_of_expert" value="<%= name_of_expert %>"></td>
     </tr>
     <tr>
-        <td class="label">Expert Field:</td>
+        <td class="label">
+            <en>Expert Field:</en>
+            <fr>Domaine :</fr>
+        </td>
         <td class="field"><input type="text" id="expert_field" name="expert_field" value="<%= expert_field %>"></td>
     </tr>
     <tr>
-        <td class="label">Event Date:</td>
+        <td class="label">
+            <en>Event Date:</en>
+            <fr>Date de l’événement :</fr>
+        </td>
         <td class="field"><input type="date" id="date_of_event" name="date_of_event" value="<%= date %>"></td>
     </tr>
     <tr>
-        <td class="label">Time:</td>
+        <td class="label">
+            <en>Time:</en>
+            <fr>Heure de début :</fr>
+        </td>
         <td><input type="time" id="time_of_event" name="time_of_event" value="<%= time %>"></td>
     </tr>
     <tr>
-        <td class="label">End Time:</td>
+        <td class="label">
+            <en>End Time:</en>
+            <fr>Heure de fin :</fr>
+        </td>
         <td><input type="time" id="time_of_event_end" name="time_of_event_end" value="<%= end_time %>"></td>
     </tr>
     <tr>
-        <td class="label">Zoom Link:</td>
-        <td class="field"><input type="text" id="zoomlink" name="zoomlink" value="<%= zoomlink%>"></td>
+        <td class="label">
+            <en>Zoom Link:</en>
+            <fr>Lien Zoom (si applicable) :</fr>
+        </td>
+        <td class="field"><input type="text" id="zoomlink" name="zoomlink" value="<%= zoomlink %>"></td>
     </tr>
     <tr>
-        <td class="label">Current Theme:</td>
-        <td class="field"><input type="text" id="theme" name="theme" value="<%= theme%>"></td>
+        <td class="label">
+            <en>Current Theme:</en>
+            <fr>Thème de l’événement :</fr>
+        </td>
+        <td class="field"><input type="text" id="theme" name="theme" value="<%= theme %>"></td>
     </tr>
     <tr>
-        <td class="label">Host:</td>
-        <td class="field"><input type="text" style="width:300px" id="host" name="host" value="<%= host%>"></td>
+        <td class="label">
+            <en>Host:</en>
+            <fr>Organisme hôte :</fr>
+        </td>
+        <td class="field"><input type="text" style="width:300px" id="host" name="host" value="<%= host %>"></td>
     </tr>
     <tr>
-        <td class="label">Event:</td>
-        <td class="field"><input style="width:300px" type="text" id="event" name="event" value="<%= event%>"></td>
+        <td class="label">
+            <en>Event:</en>
+            <fr>Titre de l’événement :</fr>
+        </td>
+        <td class="field"><input style="width:300px" type="text" id="event" name="event" value="<%= event %>"></td>
     </tr>
     <tr>
-        <td class="label">Description:</td>
-	<td class="field"><textarea id="description" style="height:250px;" cols="20" rows="3" name="description"><%= description%></textarea></td>
+        <td class="label">
+            <en>Description:</en>
+            <fr>Description :</fr>
+        </td>
+	<td class="field"><textarea id="description" style="height:250px;" cols="20" rows="3" name="description"><%= description %></textarea></td>
     </tr>
     <tr>
-        <td class="label">Details:</td>
-        <td class="field"><textarea id="details" style="height:100px;" cols="10" rows="2" name="details"><%= details%></textarea></td>
+        <td class="label">
+            <en>Details:</en>
+            <fr>Détails :</fr>
+        </td>
+        <td class="field"><textarea id="details" style="height:100px;" cols="10" rows="2" name="details"><%= details %></textarea></td>
     </tr>
     <tr>
-        <td class="label">Location:</td>
-        <td class="field"><input type="text" style="width:300px" id="location" name="location" value="<%= location%>"></td>
+        <td class="label">
+            <en>Location:</en>
+            <fr>Lieu :</fr>
+        </td>
+        <td class="field"><input type="text" style="width:300px" id="location" name="location" value="<%= location %>"></td>
     </tr>
 
 </table>

@@ -9,8 +9,8 @@ ExpertDashboardView = Backbone.View.extend({
 
     events: {
         "click #editeventbtn": "openEdit",
-	"click .registerbtn": "openRegister",
-	"click #detailsbtn": "openDetails",
+        "click .registerbtn": "openRegister",
+        "click #detailsbtn": "openDetails",
     },
 
     openEdit: function () {
@@ -19,32 +19,31 @@ ExpertDashboardView = Backbone.View.extend({
         this.editDialog.dialog({
             height: $(window).height() * 0.60,
             width: 500,
-            title: "<en>Edit Event</en><fr>Modifier l'événement</fr>",
+            title: "<en>Edit Event</en><fr>Suggérer un événement</fr>",
         });
         this.editDialog.dialog('open');
         view.render();
     },
 
-
     openRegister: function(ev){
-	var cat = $(ev.currentTarget).data('cat');
-	var question = false;
-	var heightmultiplier = 0.60;
-	var title = "Registration";
-	var width = 550;
-	if(cat == "question"){
-	    question = true;
-            heightmultiplier = 0.38;
-	    width= 360;
-	    title = "Ask a Question";
-            $('.my-dialog .ui-button-text:contains(Submit)').text('Ask Question');
-            $('.my-dialog .ui-button-text:contains(Register)').text('Ask Question');
+        var cat = $(ev.currentTarget).data('cat');
+        var question = false;
+        var heightmultiplier = 0.60;
+        var title = "Registration";
+        var width = 550;
+        if(cat == "question"){
+            question = true;
+                heightmultiplier = 0.38;
+            width= 360;
+            title = "Ask a Question";
+                $('.my-dialog .ui-button-text:contains(Submit)').text('Ask Question');
+                $('.my-dialog .ui-button-text:contains(Register)').text('Ask Question');
 
+            }
+        if(cat== "register"){
+                $('.my-dialog .ui-button-text:contains(Ask Question)').text('Register');
+            $('.my-dialog .ui-button-text:contains(Submit)').text('Register');
         }
-	if(cat== "register"){
-            $('.my-dialog .ui-button-text:contains(Ask Question)').text('Register');
-	    $('.my-dialog .ui-button-text:contains(Submit)').text('Register');
-	}
         var view = new EventRegisterView({ el: this.registerDialog, model: this.model, isDialog: true, isQuestion: question});
         this.registerDialog.view = view;
         this.registerDialog.dialog({
@@ -71,39 +70,39 @@ ExpertDashboardView = Backbone.View.extend({
     render: function () {
         this.$el.empty();
         var data = this.model.toJSON();
-	if(data["date_of_event"] != null){
-        //split time and date TODO: do this in class function instead
+        if(data["date_of_event"] != null){
+            //split time and date TODO: do this in class function instead
             var origDate = new Date(data["date_of_event"].replace(/-/g, "/"));
-        	var split = data["date_of_event"].split(" ");
-        	var parts = split[0].split('-');
-        	var date = new Date(parts[0], parts[1] - 1, parts[2]);
-        	var timesplit = split[1].split(":");
-        	var time = timesplit[0] + ":" + timesplit[1];
-        	var datestring = date.toDateString();
-        	data["date"] = datestring;
-        	data["time"] = origDate.toLocaleString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
-	}
-	if(data["date_for_questions"] != null){
-        //split time and date TODO: do this in class function instead
-                var split = data["date_for_questions"].split(" ");
-                var parts = split[0].split('-');
-                var date = new Date(parts[0], parts[1] - 1, parts[2]);
-                var timesplit = split[1].split(":");
-                var time = timesplit[0] + ":" + timesplit[1];
-                var datestring = date.toDateString();
-                data["date_for_questions"] = datestring;
+            var split = data["date_of_event"].split(" ");
+            var parts = split[0].split('-');
+            var date = new Date(parts[0], parts[1] - 1, parts[2]);
+            var timesplit = split[1].split(":");
+            var time = timesplit[0] + ":" + timesplit[1];
+            var datestring = date.toDateString();
+            data["date"] = datestring;
+            data["time"] = origDate.toLocaleString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
+        }
+        if(data["date_for_questions"] != null){
+            //split time and date TODO: do this in class function instead
+            var split = data["date_for_questions"].split(" ");
+            var parts = split[0].split('-');
+            var date = new Date(parts[0], parts[1] - 1, parts[2]);
+            var timesplit = split[1].split(":");
+            var time = timesplit[0] + ":" + timesplit[1];
+            var datestring = date.toDateString();
+            data["date_for_questions"] = datestring;
         }
         if(data["end_of_event"] != null){
-        //split time and date TODO: do this in class function instead
-		var origDate = new Date(data["end_of_event"].replace(/-/g, "/"));
-                var split = data["end_of_event"].split(" ");
-                var parts = split[0].split('-');
-                var date = new Date(parts[0], parts[1] - 1, parts[2]);
-                var timesplit = split[1].split(":");
-                var time = timesplit[0] + ":" + timesplit[1];
-                var datestring = date.toDateString();
-                data["end_date"] = datestring;
-		data["end_time"] = origDate.toLocaleString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
+            //split time and date TODO: do this in class function instead
+            var origDate = new Date(data["end_of_event"].replace(/-/g, "/"));
+            var split = data["end_of_event"].split(" ");
+            var parts = split[0].split('-');
+            var date = new Date(parts[0], parts[1] - 1, parts[2]);
+            var timesplit = split[1].split(":");
+            var time = timesplit[0] + ":" + timesplit[1];
+            var datestring = date.toDateString();
+            data["end_date"] = datestring;
+            data["end_time"] = origDate.toLocaleString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
         }
         this.$el.html(this.template({
             output: data,
@@ -156,15 +155,15 @@ ExpertDashboardView = Backbone.View.extend({
                 "Submit": function () {
                     this.registerDialog.view.registerEvent();
                     this.registerDialog.dialog('close');
-		    this.window.scrollTo(0, 0);
+                    this.window.scrollTo(0, 0);
                 }.bind(this),
 
                 "Cancel": function () {
                     this.registerDialog.dialog('close');
-		    this.window.scrollTo(0, 0);
+                    this.window.scrollTo(0, 0);
                 }.bind(this)
             },
-	    dialogClass: 'my-dialog'
+            dialogClass: 'my-dialog'
         });
 
         this.detailsDialog = this.$("#detailsDialog").dialog({

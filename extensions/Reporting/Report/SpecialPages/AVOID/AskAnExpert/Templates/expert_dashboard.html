@@ -16,7 +16,7 @@
             <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){%>
                 <a href="#" id="editeventbtn" style="float:right" class="editbutton" title="Edit">
                     <en>Edit Event</en>
-                    <fr>Modifier l'événement</fr>
+                    <fr>Suggérer un événement</fr>
                 </a>
             <% } %>
         </div>
@@ -37,7 +37,9 @@
                     <ul>
                         <li><span style=""><%= output.date %> @ <%= output.time %> - <%= output.end_time %></span></li>
                         <li><%= output.location %></li>
-                        <li><a id="registerevent" class="registerbtn" data-cat="register" href="#"><en>REGISTER</en><fr>S’INSCRIRE</fr></a></li>
+                        <% if (wgLang == 'en'){ %>
+                            <li><a id="registerevent" class="registerbtn" data-cat="register" href="#"><en>REGISTER</en><fr>S’INSCRIRE</fr></a></li>
+                        <% } %>
                     </ul>
                 </div>
             <% } %>

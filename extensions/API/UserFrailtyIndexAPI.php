@@ -538,15 +538,23 @@ class UserFrailtyIndexAPI extends API{
                 $scores["Total"] += $score;
             }
         }
+        
+        // Behavioral Scores
         $scores["Behavioral"] = ($hasSubmitted) ? $this->getBehavioralScores($user_id, $reportType) : array("Activity" => 0, 
                                                                                                             "Vaccination" => 0,
                                                                                                             "Optimize Medication" => 0,
                                                                                                             "Interact" => 0,
                                                                                                             "Diet and Nutrition" => 0);
+        
+        // Used for Report
+        $dietEnd = $this->getBlobValue(BLOB_ARRAY, YEAR, $reportType, "behaviouralassess", "diet_end", $user_id);
+        $scores["DietEnd"] = ($hasSubmitted && @array_search("I can't afford the type of food that I would like to eat", $dietEnd['diet_end']) !== false) ? 1 : 0;
+        
+        // Other scores
         $scores["Health"] = ($hasSubmitted) ? $this->getHealthScores($user_id, $reportType) : array(0,0,0,0,0);
         $scores["VAS"] = ($hasSubmitted) ? $this->getSelfPerceivedHealth($user_id, $reportType, true) : 0;
         $scores["CFS"] = ($hasSubmitted) ? $this->getCFS($user_id, $reportType) : 0;
-        
+
         // Labels
         if($scores["Total"] >= 0 && $scores["Total"] <= 3){
             $scores["Label"] = "very low risk";

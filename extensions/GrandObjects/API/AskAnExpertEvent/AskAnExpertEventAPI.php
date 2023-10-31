@@ -41,16 +41,16 @@ class AskAnExpertEventAPI extends RESTAPI {
         header('Content-Type: application/json');
         $askanexpertevent->name_of_expert = $this->POST('name_of_expert');
         $askanexpertevent->expert_field = $this->POST('expert_field');
-	$askanexpertevent->date_of_event = $this->POST('date_of_event');
-	$askanexpertevent->end_of_event = $this->POST('end_of_event');
-	$askanexpertevent->zoomlink = $this->POST('zoomlink');
-	$askanexpertevent->date_for_questions = $this->POST('date_for_questions');
-	$askanexpertevent->event = $this->POST('event');
+        $askanexpertevent->date_of_event = $this->POST('date_of_event');
+        $askanexpertevent->end_of_event = $this->POST('end_of_event');
+        $askanexpertevent->zoomlink = $this->POST('zoomlink');
+        $askanexpertevent->date_for_questions = $this->POST('date_for_questions');
+        $askanexpertevent->event = $this->POST('event');
         $askanexpertevent->desc = $this->POST('description');
         $askanexpertevent->host = $this->POST('host');
-	$askanexpertevent->theme = $this->POST('theme');
-	$askanexpertevent->details = $this->POST('details');
-	$askanexpertevent->location = $this->POST('location');
+        $askanexpertevent->theme = $this->POST('theme');
+        $askanexpertevent->details = $this->POST('details');
+        $askanexpertevent->location = $this->POST('location');
         $askanexpertevent->active = 1;
         $askanexpertevent->currently_on = 1;
         $status =$askanexpertevent->create();
@@ -68,22 +68,22 @@ class AskAnExpertEventAPI extends RESTAPI {
    */
     function doPUT(){
         $askanexpertevent = AskAnExpertEvent::newFromId($this->getParam('id'));
-        if($askanexpertevent == null || $askanexpertevent->name_of_expert == ""){
+        if($askanexpertevent == null){
             $this->throwError("This event does not exist");
         }
         header('Content-Type: application/json');
         $askanexpertevent->name_of_expert = $this->POST('name_of_expert');
         $askanexpertevent->expert_field = $this->POST('expert_field');
-	$askanexpertevent->date_of_event = $this->POST('date_of_event');
-	$askanexpertevent->end_of_event = $this->POST('end_of_event');
-	$askanexpertevent->zoomlink = $this->POST('zoomlink');
-	$askanexpertevent->date_for_questions = $this->POST('date_for_questions');
+        $askanexpertevent->date_of_event = $this->POST('date_of_event');
+        $askanexpertevent->end_of_event = $this->POST('end_of_event');
+        $askanexpertevent->zoomlink = $this->POST('zoomlink');
+        $askanexpertevent->date_for_questions = $this->POST('date_for_questions');
         $askanexpertevent->event = $this->POST('event');
         $askanexpertevent->desc = $this->POST('description');
         $askanexpertevent->host = $this->POST('host');
-	$askanexpertevent->theme = $this->POST('theme');
-	$askanexpertevent->details = $this->POST('details');
-	$askanexpertevent->location = $this->POST('location');
+        $askanexpertevent->theme = $this->POST('theme');
+        $askanexpertevent->details = $this->POST('details');
+        $askanexpertevent->location = $this->POST('location');
         $askanexpertevent->active = 1;
         $status = $askanexpertevent->update();
         if(!$status){
