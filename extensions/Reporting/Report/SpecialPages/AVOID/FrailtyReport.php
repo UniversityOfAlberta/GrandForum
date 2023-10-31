@@ -203,6 +203,7 @@ class FrailtyReport extends SpecialPage {
                 ),
                 "community" => array(
                     "<en>Diet and Nutrition</en><fr>Alimentation</fr>" => "CFN-DIET",
+                    "<en>Diet and Nutrition</en><fr>Alimentation</fr> → <en>Free and Subsidized Food</en><fr>Nourriture gratuite et subventionnée</fr>" => "CFN-DIET-FREE",
                     "<en>Activity</en><fr>Activité physique</fr>" => "CFN-ACT"
                 )
             ),
@@ -335,7 +336,7 @@ class FrailtyReport extends SpecialPage {
             if(isset($scores[$key])){
                 $subTopics[$key] = "<p><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$topic['img']}' alt='{$key}' /><br />{$topic['text']}</p>";
             }
-            if(@$scores[$key] > 0 || @$scores["Behavioral"][$key] > 0){
+            if(@$scores[$key] > 0 || @$scores["Behavioral"][$key] > 0 || ($key == "Diet & Nutrition" && $scores["DietEnd"] > 0)){
                 foreach($topic['education'] as $k => $e){
                     if(is_array($e)){
                         $links = array();
@@ -372,6 +373,7 @@ class FrailtyReport extends SpecialPage {
                     }
                 }
                 foreach($topic['community'] as $k => $p){
+                    if(strstr($k, "Free and Subsidized Food") !== false && $scores["DietEnd"] == 0){ continue; }
                     $k = preg_replace("/(.*(^|→|↴))(?!.*(→|↴))(.*)/", "$1<a style='vertical-align:top;' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$p}'>$4</a>", $k);
                     $k = str_replace("→", "</span>→<span class='cb'>", $k);
                     $k = str_replace("↴", "</span>↴<span class='cb' style='width: 100%; text-align: right;'>", $k);
