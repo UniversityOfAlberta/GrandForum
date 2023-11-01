@@ -1101,7 +1101,7 @@ abstract class AbstractReport extends SpecialPage {
             if(!$me->isLoggedIn()){
                 permissionError();
             }
-            ini_set("memory_limit","256M");
+            ini_set("memory_limit","512M");
             $fileName = '/tmp/'.md5($me->getId().'_'.rand(0,9999)).'.zip';
             $md5s = explode(",", $_POST['pdfs']);
             $zip = new ZipArchive;
