@@ -51,7 +51,7 @@ class ReportArchive extends SpecialPage {
             $tok = $action;
             
             $sto = new ReportStorage($person);
-            if (! empty($tok)) {
+            if (!empty($tok)) {
                 $pdf = $sto->fetch_pdf($tok, false);
                 if(isset($_GET['html'])){
                     $html = $sto->fetch_html($tok);
@@ -89,7 +89,11 @@ class ReportArchive extends SpecialPage {
                             $date = "{$year}-{$month}-{$day}_{$hour}-{$minute}";
                             $reportName = str_replace(" ", "-", trim(str_replace(":", "", str_replace("Report", "", $report->name))));
                             if($report->name == ""){
-                                $name = str_replace(" ", "-", trim(str_replace(":", "", $type)))."_$date.$ext";
+                                $caseNumber = strip_tags($report->person->getCaseNumber($report->year));
+                                $caseNumber = ($caseNumber != "") ? "{$caseNumber}-" : "";
+                                $firstName = $report->person->getFirstName();
+                                $lastName = $report->person->getLastName();
+                                $name = str_replace(" ", "-", $caseNumber."{$lastName}".substr($lastName, 0, 1)."-".trim(str_replace(":", "", $type)))."_$date.$ext";
                             }
                             else if($report->project != null){
                                 $project = $report->project;
@@ -109,7 +113,8 @@ class ReportArchive extends SpecialPage {
                                 // Individual Reports
                                 $firstName = $report->person->getFirstName();
                                 $lastName = $report->person->getLastName();
-                                $name = "{$lastName}".substr($lastName, 0, 1)."-{$reportName}_{$date}.{$ext}";
+                                $caseNumber = $report->person->getCaseNumber();
+                                $name = "{$caseNumber}-{$lastName}".substr($lastName, 0, 1)."-{$reportName}_{$date}.{$ext}";
                             }
                         }
                     }
