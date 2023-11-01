@@ -113,7 +113,7 @@ class VoteResultsReportItem extends SelectReportItem {
     }
 
     function parseOptions(){
-        return array("Unfrozen", "Frozen");
+        return array("Unfrozen", "Frozen", "Unanimous");
     }
 }
 
