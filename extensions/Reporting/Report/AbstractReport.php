@@ -1096,6 +1096,7 @@ abstract class AbstractReport extends SpecialPage {
     
     static function downloadReportZip($action){
         $me = Person::newFromWgUser();
+        $files = array();
         if($action == "downloadReportZip" && isset($_POST['pdfs'])){
             if(!$me->isLoggedIn()){
                 permissionError();
@@ -1108,20 +1109,46 @@ abstract class AbstractReport extends SpecialPage {
             foreach($md5s as $md5){
                 if($md5 != ""){
                     $pdf = PDF::newFromToken($md5);
-                    $zip->addFromString(utf8_decode(ucwords($pdf->getTitle()).".pdf"), $pdf->getPDF());
+                    if($pdf->getId() == ""){
+                        // Try Blobs
+                        $blob = new ReportBlob();
+                        $blob->loadFromMD5(urldecode($md5));
+                        $address = $blob->getAddress();
+                        $data = $blob->getData();
+                        $json = json_decode($data);
+                        $person = Person::newFromId($address['rp_subitem']);
+                        @$files[$person->getId()]++;
+                        $caseNumber = strip_tags($report->person->getCaseNumber($report->year));
+                        $caseNumber = ($caseNumber != "") ? "{$caseNumber}-" : "";
+                        $firstName = $report->person->getFirstName();
+                        $lastName = $report->person->getLastName();
+                        $name = str_replace(" ", "-", $caseNumber."{$lastName}".substr($lastName, 0, 1)."-File{$files[$person->getId()]}");
+                        $zip->addFromString(utf8_decode("{$name}.pdf"), base64_decode($json->file));
+                    }
+                    else{
+                        // In Report PDF
+                        $type = $pdf->getType();
+                        $report = AbstractReport::newFromToken($pdf->getId());
+                        $caseNumber = strip_tags($report->person->getCaseNumber($report->year));
+                        $caseNumber = ($caseNumber != "") ? "{$caseNumber}-" : "";
+                        $firstName = $report->person->getFirstName();
+                        $lastName = $report->person->getLastName();
+                        $name = str_replace(" ", "-", $caseNumber."{$lastName}".substr($lastName, 0, 1)."-".trim(str_replace(":", "", $type)));
+                        $zip->addFromString(utf8_decode("{$name}.pdf"), $pdf->getPDF());
+                    }
                 }
             }
             $zip->close();
             $contents = file_get_contents($fileName);
             unlink($fileName);
-            
+
             $zipName = isset($_GET['zipName']) ? $_GET['zipName'] : "Reports.zip";
-            
             header('Content-Type: application/zip');
             header('Content-Disposition: attachment; filename="'.$zipName.'"');
             header('Cache-Control: private, max-age=0, must-revalidate');
             header('Pragma: public');
             ini_set('zlib.output_compression','0');
+            
             echo $contents;
             exit;
         }

@@ -239,6 +239,27 @@
                         font-size:11px !important;
                     }
                 </style>
+                <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
+                <div style='float:right; margin-top: -45px;display:flex;'>
+                    <div><button id='downloadAll' class='noDisable' type='button'>Download All</button></div>
+                </div>
+                <script type='text/javascript'>
+                    function postToIframe(data,url,target){
+                        $('body').append('<form action="'+url+'" method="post" target="'+target+'" id="postToIframe"></form>');
+                        $.each(data,function(n,v){
+                            $('#postToIframe').append('<input type="hidden" name="'+n+'" value="'+v+'" />');
+                        });
+                        $('#postToIframe').submit().remove();
+                    }
+                    $('#downloadAll').click(function(){
+                        var pdfs = $.makeArray($(".downloadPDF:visible").map(function(i, pdf){
+                            return $(pdf).attr('href');
+                        })).join(',')
+                           .replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '')
+                           .replaceAll(wgServer + wgScriptPath + '/index.php?action=downloadBlob&id=', '');
+                        postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip', 'downloadFrame');
+                    });
+                </script>
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
                     <thead>
                         <tr>
@@ -269,7 +290,7 @@
                         <td>{$user_dept}</td>
                 ]]>
             </Static>
-            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName=" AR ">
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="downloadPDF" buttonName=" AR ">
                 <![CDATA[
                         <td align='center' style="white-space:nowrap;">{$item}<br />
                 ]]>
@@ -277,22 +298,22 @@
             <For from="1" to="3">
                 <If if="{!=({getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)},)}">
                     <![CDATA[
-                       <a class="file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)}">File</a><br />
+                       <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)}">File</a><br />
                     ]]>
                 </If>
                 <If if="{!=({getBlobMD5(RP_CHAIR,FEC_DEAN_ADVICE,FILE{$index},{$user_id},0,0)},)}">
                     <![CDATA[
-                       <a class="file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_DEAN_ADVICE,FILE{$index},{$user_id},0,0)}">File</a><br />
+                       <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_DEAN_ADVICE,FILE{$index},{$user_id},0,0)}">File</a><br />
                     ]]>
                 </If>
                 <If if="{!=({getBlobMD5(RP_CHAIR,FEC_DEAN_DECISION,FILE{$index},{$user_id},0,0)},)}">
                     <![CDATA[
-                       <a class="file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_DEAN_DECISION,FILE{$index},{$user_id},0,0)}">File</a><br />
+                       <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_DEAN_DECISION,FILE{$index},{$user_id},0,0)}">File</a><br />
                     ]]>
                 </If>
                 <If if="{!=({getBlobMD5(RP_CHAIR,FEC_CHAIR_ADVICE,FILE{$index},{$user_id},0,0)},)}">
                     <![CDATA[
-                       <a class="file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_CHAIR_ADVICE,FILE{$index},{$user_id},0,0)}">File</a><br />
+                       <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_CHAIR_ADVICE,FILE{$index},{$user_id},0,0)}">File</a><br />
                     ]]>
                 </If>
             </For>
@@ -302,7 +323,7 @@
                     <td align='center' style="white-space:nowrap;">
                 ]]>
             </Static>
-            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="" buttonName="Recommendation">
+            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="downloadPDF" buttonName="Recommendation">
                 <![CDATA[
                             {$item}<br />
                 ]]>
@@ -311,12 +332,12 @@
                         {contains({$my_roles},DEAN)},
                         {contains({$my_roles},VDEAN)},
                         {contains({$my_roles},HR)})}">
-                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="Dean's Advice">
+                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Advice">
                     <![CDATA[
                             {$item}<br />
                     ]]>
                 </ReportItem>
-                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="" buttonName="Dean's Decision">
+                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Decision">
                     <![CDATA[
                             {$item}<br />
                     ]]>
