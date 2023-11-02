@@ -142,21 +142,87 @@ class ReportArchive extends SpecialPage {
                 }
             }
         }
-        $wgOut->addHTML("<p>You can view your submitted Annual Reports below (starting from 2018):</p><ul>");
-        $found = false;
+        $wgOut->addHTML("<p>You can view your submitted Annual Reports below (starting from 2018):</p>
+            <table class='wikitable'>");
         for($y=YEAR;$y>=2018;$y--){
-            $report = new DummyReport("FEC", $person, 0, $y, true);
-            $check = $report->getPDF();
+            $wgOut->addHTML("<tr>
+                <td align='center' style='padding-left:1em; padding-right:1em;'>{$y}</td>");
+                
+            // Annual Report
+            $arUrl = "";
+            $ar = new DummyReport("FEC", $person, 0, $y, true);
+            $check = $ar->getPDF();
             if(count($check) > 0){
-                $found = true; // Found at least 1 past submission
                 $pdf = PDF::newFromToken($check[0]['token']);
-                $wgOut->addHTML("<li><a href='{$pdf->getUrl()}' target='_blank'><b>$y</b></a> - Submitted: {$check[0]['timestamp']}</li>");
+                $arUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Annual Report</a>";
             }
+            
+            // Recommendations
+            $reccUrl = "";
+            $daUrl = "";
+            $caUrl = "";
+            $ddUrl = "";
+            if(date('Y-m-d') >= "$y-11-01"){
+                $recc = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALRecommendations", $y);
+                $da = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALDean Advice", $y);
+                $ca = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALChair Advice", $y);
+                $dd = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALDean Decision", $y);
+                
+                if(count($recc) > 0){
+                    $pdf = PDF::newFromToken($recc[0]['token']);
+                    $reccUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Recommendation</a><br />";
+                }
+                if(count($da) > 0){
+                    $pdf = PDF::newFromToken($da[0]['token']);
+                    $daUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Dean's Advice</a><br />";
+                }
+                if(count($ca) > 0){
+                    $pdf = PDF::newFromToken($ca[0]['token']);
+                    $caUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Chair's Advice</a><br />";
+                }
+                if(count($dd) > 0){
+                    $pdf = PDF::newFromToken($dd[0]['token']);
+                    $ddUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Dean's Decision</a><br />";
+                }
+            }
+            
+            // Letters
+            $letter1Url = "";
+            $letter2Url = "";
+            $letter3Url = "";
+            $letter4Url = "";
+            $letter1 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER", $y);
+            $letter2 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER2", $y);
+            $letter3 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER3", $y);
+            $letter4 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER4", $y);
+            $n = 0;
+            if(count($letter1) > 0){
+                $n++;
+                $pdf = PDF::newFromToken($letter1[0]['token']);
+                $letter1Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter {$n}</a><br />";
+            }
+            if(count($letter2) > 0){
+                $n++;
+                $pdf = PDF::newFromToken($letter2[0]['token']);
+                $letter2Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter {$n}</a><br />";
+            }
+            if(count($letter3) > 0){
+                $n++;
+                $pdf = PDF::newFromToken($letter3[0]['token']);
+                $letter3Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter {$n}</a><br />";
+            }
+            if(count($letter4) > 0){
+                $n++;
+                $pdf = PDF::newFromToken($letter4[0]['token']);
+                $letter4Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter {$n}</a><br />";
+            }
+            
+            $wgOut->addHTML("<td align='center' style='padding-left:1em; padding-right:1em;'>{$arUrl}</td>
+                             <td align='center' style='padding-left:1em; padding-right:1em;'>{$reccUrl}</td>
+                             <td align='center' style='padding-left:1em; padding-right:1em;'>{$letter1Url}{$letter2Url}{$letter3Url}{$letter4Url}</td>");
+            $wgOut->addHTML("</tr>");
         }
-        $wgOut->addHTML("</ul>");
-        if(!$found){
-            $wgOut->addHTML("You have submitted no Annual Reports");
-        }
+        $wgOut->addHTML("</table>");
         return;
     }
     
