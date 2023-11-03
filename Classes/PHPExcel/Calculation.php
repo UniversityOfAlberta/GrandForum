@@ -549,8 +549,8 @@ class PHPExcel_Calculation
         ),
         'COUNTIFS' => array(
             'category' => PHPExcel_Calculation_Function::CATEGORY_STATISTICAL,
-            'functionCall' => 'PHPExcel_Calculation_Functions::DUMMY',
-            'argumentCount' => '2'
+            'functionCall' => 'PHPExcel_Calculation_Statistical::COUNTIFS',
+            'argumentCount' => '2+',
         ),
         'COUPDAYBS' => array(
             'category' => PHPExcel_Calculation_Function::CATEGORY_FINANCIAL,
