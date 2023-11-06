@@ -36,6 +36,7 @@ class ProjectKPITab extends AbstractTab {
         return $this->html;
     }
     
+    // Manually calculates unique user requests
     static function uniqueCount($cells, $type="", $geography="", $sector=""){
         $results = array();
         foreach($cells as $rowN => $row){
