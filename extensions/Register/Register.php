@@ -359,7 +359,7 @@ class Register extends SpecialPage{
                           ->append($handbookRow3)
                           ->append($handbookRow4);
             }
-            if($config->getValue("networkFullName") == "AVOID Frailty: Program for Healthy Aging"){
+            if($config->getValue("siteName") == "AVOID Frailty: Program for Healthy Aging"){
                 $formTable->append($recommendRow1)
                           ->append($recommendRow2);
             }
