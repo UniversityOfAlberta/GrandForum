@@ -177,7 +177,7 @@ abstract class AbstractReportItem {
         $cdata = trim("{$this->value}");
         $cdata = $this->varSubstitute($cdata);
         $cdata = str_replace('{$item}', $output, $cdata);
-		return $cdata;
+        return $cdata;
     }
 
     //Responsible for rendering the actual widget
@@ -296,10 +296,10 @@ abstract class AbstractReportItem {
         $year = $this->getAttr('blobYear', $report->year);
 
         $blob = new ReportBlob($this->blobType, $year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
-	    $blob->load($blob_address);
-	    $blob_data = $blob->getData();
-	    $this->extraIndex = $this->getExtraIndex();
+        $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        $this->extraIndex = $this->getExtraIndex();
         switch($this->blobType){
             default:
             case BLOB_TEXT:
@@ -343,10 +343,10 @@ abstract class AbstractReportItem {
         $rep = $this->getAttr('blobReport', $section->getAttr('blobReport', $report->reportType));
 
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
-	    $blob->load($blob_address, true);
-	    $md5 = $blob->getMD5($urlencode);
-	    return $md5;
+        $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
+        $blob->load($blob_address, true);
+        $md5 = $blob->getMD5($urlencode);
+        return $md5;
     }
     
     /**
@@ -355,11 +355,11 @@ abstract class AbstractReportItem {
     function getDownloadLink(){
         global $wgServer, $wgScriptPath;
         $md5 = $this->getMD5();
-	    $mime = $this->getAttr('mimeType', '');
-	    if($mime != ""){
-	        $mime = "&mime={$mime}";
-	    }
-	    return "{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}{$mime}";
+        $mime = $this->getAttr('mimeType', '');
+        if($mime != ""){
+            $mime = "&mime={$mime}";
+        }
+        return "{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}{$mime}";
     }
     
     /**
@@ -374,9 +374,9 @@ abstract class AbstractReportItem {
         $rep = $this->getAttr('blobReport', $section->getAttr('blobReport', $report->reportType));
         
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
-	    $this->extraIndex = $this->getExtraIndex();
-	    switch($this->blobType){
+        $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
+        $this->extraIndex = $this->getExtraIndex();
+        switch($this->blobType){
             default:
             case BLOB_TEXT:
             case BLOB_WIKI:
@@ -388,7 +388,7 @@ abstract class AbstractReportItem {
                 break;
             case BLOB_ARRAY:
                 $blob->load($blob_address);
-	            $blob_data = $blob->getData();
+                $blob_data = $blob->getData();
                 $parent = $this->getParent();
                 $accessStr = "";
                 if($this->id != ""){
@@ -416,12 +416,12 @@ abstract class AbstractReportItem {
                     $value = utf8_decode($value);
                 }
                 $blob->store($value, $blob_address, $this->encrypt);
-	            $blob->load($blob_address);
-	            break;
-	        case BLOB_RAW:
-	            $blob->store(utf8_decode($value), $blob_address, $this->encrypt);
-	            $blob->load($blob_address);
-	            break;
+                $blob->load($blob_address);
+                break;
+            case BLOB_RAW:
+                $blob->store(utf8_decode($value), $blob_address, $this->encrypt);
+                $blob->load($blob_address);
+                break;
         }
     }
     
@@ -433,7 +433,7 @@ abstract class AbstractReportItem {
         $rep = $this->getAttr('blobReport', $section->getAttr('blobReport', $report->reportType));
 
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
+        $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
         $blob->delete($blob_address);
     }
     

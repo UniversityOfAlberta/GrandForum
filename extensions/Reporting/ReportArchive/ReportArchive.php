@@ -197,31 +197,49 @@ class ReportArchive extends SpecialPage {
             $letter2 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER2", $y);
             $letter3 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER3", $y);
             $letter4 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER4", $y);
-            $n = 0;
             if(count($letter) > 0){
-                $n++;
                 $pdf = PDF::newFromToken($letter[0]['token']);
-                $letterUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Letter {$n}</a><br />";
+                $letterUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Letter</a><br />";
             }
             if(count($letter1) > 0){
-                $n++;
                 $pdf = PDF::newFromToken($letter1[0]['token']);
-                $letter1Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter {$n}</a><br />";
+                
+                $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
+                $blob_address = ReportBlob::create_address("RP_LETTER1", "TABLE", "TEMPLATE", $person->getId());
+                $blob->load($blob_address);
+                $blob_data = $blob->getData();
+                
+                $letter1Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
             }
             if(count($letter2) > 0){
-                $n++;
                 $pdf = PDF::newFromToken($letter2[0]['token']);
-                $letter2Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter {$n}</a><br />";
+                
+                $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
+                $blob_address = ReportBlob::create_address("RP_LETTER2", "TABLE", "TEMPLATE", $person->getId());
+                $blob->load($blob_address);
+                $blob_data = $blob->getData();
+                
+                $letter2Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
             }
             if(count($letter3) > 0){
-                $n++;
                 $pdf = PDF::newFromToken($letter3[0]['token']);
-                $letter3Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter {$n}</a><br />";
+                
+                $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
+                $blob_address = ReportBlob::create_address("RP_LETTER3", "TABLE", "TEMPLATE", $person->getId());
+                $blob->load($blob_address);
+                $blob_data = $blob->getData();
+                
+                $letter3Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
             }
             if(count($letter4) > 0){
-                $n++;
                 $pdf = PDF::newFromToken($letter4[0]['token']);
-                $letter4Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter {$n}</a><br />";
+                
+                $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
+                $blob_address = ReportBlob::create_address("RP_LETTER4", "TABLE", "TEMPLATE", $person->getId());
+                $blob->load($blob_address);
+                $blob_data = $blob->getData();
+                
+                $letter4Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
             }
             
             $wgOut->addHTML("<td align='center' style='padding-left:1em; padding-right:1em;'>{$arUrl}</td>
