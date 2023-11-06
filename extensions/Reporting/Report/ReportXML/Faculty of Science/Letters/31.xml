@@ -11,7 +11,7 @@
                     <p>Since you chose to appear before the FEC seeking reconsideration to present your case, as per Article A6.16.7 of Schedule A, you have the right to appeal this decision to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of the letter confirming FEC’s reconsideration decision.</p>
                 ]]>
             </Static>
-            <If if="{==({getText(RP_LETTER, TABLE, 0D, {$user_id}, 1, 0)},Yes)}">
+            <If if="{==({getText({$report_type}, TABLE, 0D, {$user_id}, 1, 0)},Yes)}">
                 <![CDATA[
                     <p>Since the increment award is 0d and this is the second 0d over the last three years of review, the record will be forwarded to the Provost for possible discipline under Article 7 of the Collective Agreement if the GAC does not uphold your appeal.</p>
                 ]]>

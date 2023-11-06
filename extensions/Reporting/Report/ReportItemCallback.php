@@ -65,6 +65,7 @@ class ReportItemCallback {
             "post_id" => "getPostId",
             "report_name" => "getReportName",
             "report_xmlname" => "getReportXMLName",
+            "report_type" => "getReportType",
             "section_name" => "getSectionName",
             "report_has_started" => "getReportHasStarted",
             // People
@@ -1372,6 +1373,10 @@ class ReportItemCallback {
     
     function getReportSection(){
         return $this->reportItem->getSection()->name;
+    }
+    
+    function getReportType(){
+        return $this->reportItem->getSection()->getAttr("blobReport", $this->reportItem->getReport()->reportType);
     }
     
     function getUserHQPCount(){

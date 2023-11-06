@@ -292,7 +292,7 @@ abstract class AbstractReportItem {
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $report->person->getId());
         $sec = $this->getAttr('blobSection', $section->sec);
-        $rep = $this->getAttr('blobReport', $report->reportType);
+        $rep = $this->getAttr('blobReport', $section->getAttr('blobReport', $report->reportType));
         $year = $this->getAttr('blobYear', $report->year);
 
         $blob = new ReportBlob($this->blobType, $year, $personId, $this->projectId);
@@ -340,7 +340,7 @@ abstract class AbstractReportItem {
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
         $sec = $this->getAttr('blobSection', $section->sec);
-        $rep = $this->getAttr('blobReport', $report->reportType);
+        $rep = $this->getAttr('blobReport', $section->getAttr('blobReport', $report->reportType));
 
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
@@ -371,7 +371,7 @@ abstract class AbstractReportItem {
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
         $sec = $this->getAttr('blobSection', $section->sec);
-        $rep = $this->getAttr('blobReport', $report->reportType);
+        $rep = $this->getAttr('blobReport', $section->getAttr('blobReport', $report->reportType));
         
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
@@ -430,7 +430,7 @@ abstract class AbstractReportItem {
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
         $sec = $this->getAttr('blobSection', $section->sec);
-        $rep = $this->getAttr('blobReport', $report->reportType);
+        $rep = $this->getAttr('blobReport', $section->getAttr('blobReport', $report->reportType));
 
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);

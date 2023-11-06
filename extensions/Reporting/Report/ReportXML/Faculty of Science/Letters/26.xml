@@ -7,7 +7,7 @@
 
                 <p>Each year, the FEC is charged with the responsibility of awarding incrementation to its faculty from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
 
-                <p>I would like to take this opportunity to thank you for your {getText(RP_LETTER, TABLE, PERFORMANCE, {$user_id}, 1, 0)} performance and to wish you continued success in your teaching, research and service.</p>
+                <p>I would like to take this opportunity to thank you for your {getText({$report_type}, TABLE, PERFORMANCE, {$user_id}, 1, 0)} performance and to wish you continued success in your teaching, research and service.</p>
             ]]>
         </ReportItem>
     </ReportSection>

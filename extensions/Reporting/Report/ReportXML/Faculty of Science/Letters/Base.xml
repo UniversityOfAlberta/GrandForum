@@ -1,28 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name=" " headerName=" " pageCount="false" reportType="RP_LETTER" pdfType="RP_LETTER" pdfFiles="Letters/Base" ajax="true" personId="{GET(userId, {$my_id})}">
+<Report name=" " headerName=" " pageCount="false" reportType="RP_LETTER{GET(n, 1)}" pdfType="RP_LETTER{GET(n, 1)}" pdfFiles="Letters/Base" personId="{GET(userId, {$my_id})}" ajax="true" encrypt="true">
     <Permissions>
         <Role role="DEAN">
-            <SectionPermission id="table" permissions="rw" />
-            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="fec1" permissions="rw" />
+            <SectionPermission id="fec2" permissions="rw" />
+            <SectionPermission id="fec3" permissions="rw" />
+            <SectionPermission id="fec4" permissions="rw" />
+            <SectionPermission id="atsec1" permissions="rw" />
+            <SectionPermission id="atsec2" permissions="rw" />
+            <SectionPermission id="atsec3" permissions="rw" />
+            <SectionPermission id="atsec4" permissions="rw" />
             <SectionPermission id="letter" permissions="rw" />
         </Role>
         <Role role="VDEAN">
-            <SectionPermission id="table" permissions="rw" />
-            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="fec1" permissions="rw" />
+            <SectionPermission id="fec2" permissions="rw" />
+            <SectionPermission id="fec3" permissions="rw" />
+            <SectionPermission id="fec4" permissions="rw" />
+            <SectionPermission id="atsec1" permissions="rw" />
+            <SectionPermission id="atsec2" permissions="rw" />
+            <SectionPermission id="atsec3" permissions="rw" />
+            <SectionPermission id="atsec4" permissions="rw" />
             <SectionPermission id="letter" permissions="rw" />
         </Role>
         <Role role="HR">
-            <SectionPermission id="table" permissions="rw" />
-            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="fec1" permissions="rw" />
+            <SectionPermission id="fec2" permissions="rw" />
+            <SectionPermission id="fec3" permissions="rw" />
+            <SectionPermission id="fec4" permissions="rw" />
+            <SectionPermission id="atsec1" permissions="rw" />
+            <SectionPermission id="atsec2" permissions="rw" />
+            <SectionPermission id="atsec3" permissions="rw" />
+            <SectionPermission id="atsec4" permissions="rw" />
             <SectionPermission id="letter" permissions="rw" />
         </Role>
         <Role role="MANAGER+">
-            <SectionPermission id="table" permissions="rw" />
-            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="fec1" permissions="rw" />
+            <SectionPermission id="fec2" permissions="rw" />
+            <SectionPermission id="fec3" permissions="rw" />
+            <SectionPermission id="fec4" permissions="rw" />
+            <SectionPermission id="atsec1" permissions="rw" />
+            <SectionPermission id="atsec2" permissions="rw" />
+            <SectionPermission id="atsec3" permissions="rw" />
+            <SectionPermission id="atsec4" permissions="rw" />
             <SectionPermission id="letter" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="table" name="FEC Letters" title="FEC Letters Table" type="EditableReportSection" blobSection="TABLE" renderpdf="false">
+    <ReportSection id="fec1" name="FEC Letter 1" title="FEC Letters Table" type="EditableReportSection" blobSection="TABLE" renderpdf="false">
         <Static>
             <![CDATA[
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
@@ -54,12 +78,15 @@
                             <th>PDF</th>
                             <th style='width:14em;'>Generate</th>
                             <th>Template</th>
-                            <th>Follow-Up Date</th>
+                            <th>Date</th>
                             <th>Comments</th>
                             <th>Show 0D Message</th>
                             <th>Chair Position</th>
                             <th>Performance</th>
                             <th>Present Case</th>
+                            <th>Sabbatical Duration</th>
+                            <th>Sabbatical Start</th>
+                            <th>Sabbatical End</th>
                     </thead>
                     <tbody>
             ]]>
@@ -72,7 +99,7 @@
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                 ]]>
             </Static>
-            <ReportItem id="letter" type="PDFReportItem" class="letterPDF downloadButton{$user_id}" reportType="Letters/Base" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="letter" type="PDFReportItem" class="letterPDF downloadButton{$user_id}" reportType="Letters/Base" pdfReport="{$report_type}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>
                             {$item}
@@ -83,7 +110,7 @@
                         </td>
                 ]]>
             </ReportItem>
-            <ReportItem id="template" type="Select" personId="1" blobItem="TEMPLATE" blobSubItem="{$user_id}" width="3em" options="|23|24|26|27|28|30|31|32|33|34|35|36|38" labels="|23 - FEC New (Jul1-Oct1)|24 - FEC New (Oct2-Jun1)|26 - FEC Agree with Chair (above 1.0)|27 - FEC goes higher|28 - Recommend is 1.0 and FEC lowered appeared reconsideration|30 - Recommend is less than 1.0 and FEC lowered|31 - Recommend less than 1.0 and FEC lowered reconsideration|32 - FEC Agree with Chair less than 1.0 appear|33 - FEC Agree with Chair less than 1.0 no appearance|34 - Recommend 1.0 or multiple and FEC less than 1.0|35 - Recommend is 1.0 and FEC lowered appear|36 - Recommend multiple and FEC lowered but not less than 1.0|38 - Recommend no increment and FEC decides 0D">
+            <ReportItem id="template" type="Select" personId="1" blobItem="TEMPLATE" blobSubItem="{$user_id}" width="3em" options="|23|24|26|27|28|29|30|31|32|33|34|35|36|38|40" labels="|23 - FEC New (Jul1-Oct1)|24 - FEC New (Oct2-Jun1)|26 - FEC Agree with Chair (above 1.0)|27 - FEC goes higher|28 - Recommend is 1.0 and FEC lowered appeared reconsideration|29 - FEC less than a single increment|30 - Recommend is less than 1.0 and FEC lowered|31 - Recommend less than 1.0 and FEC lowered reconsideration|32 - FEC Agree with Chair less than 1.0 appear|33 - FEC Agree with Chair less than 1.0 no appearance|34 - Recommend 1.0 or multiple and FEC less than 1.0|35 - Recommend is 1.0 and FEC lowered appear|36 - Recommend multiple and FEC lowered but not less than 1.0|38 - Recommend no increment and FEC decides 0D|40 - Sabbatical">
                 <![CDATA[
                         <td align="center" class="template">
                             {$item}
@@ -132,6 +159,27 @@
                         </td>
                 ]]>
             </ReportItem>
+            <ReportItem id="sabb_duration" type="Select" personId="1" blobItem="SABB_DURATION" blobSubItem="{$user_id}" options="|6 month|12 month">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="sabb_start" type="Text" personId="1" blobItem="SABB_START" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="sabb_end" type="Text" personId="1" blobItem="SABB_END" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
             <Static>
                 <![CDATA[
                     </tr>
@@ -167,7 +215,10 @@
                         $(this).siblings(".throbber").show();
                         saveAll(function(){
                             if(template != ""){
-                                $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + "&userId=" + userid + "&generatePDF", function(response){
+                                $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + 
+                                                                "&n=" + "{$report_type}".slice(-1) + 
+                                                                "&userId=" + userid + 
+                                                                "&generatePDF", function(response){
                                     $(".downloadButton" + userid).attr("href", wgServer + wgScriptPath + "/index.php/Special:ReportArchive?getpdf=" + response["Letters/" + template].tok).show();
                                     $(this).prop("disabled", false);
                                     $(this).siblings(".throbber").hide();
@@ -183,7 +234,10 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="atsec" name="ATSEC Letters" title="ATSEC Letters Table" type="EditableReportSection" blobSection="TABLE" renderpdf="false">
+    <ReportSection id="fec2" name="FEC Letter 2" blobReport="RP_LETTER2" copy="fec1" />
+    <ReportSection id="fec3" name="FEC Letter 3" blobReport="RP_LETTER3" copy="fec1" />
+    <ReportSection id="fec4" name="FEC Letter 4" blobReport="RP_LETTER4" copy="fec1" />
+    <ReportSection id="atsec1" name="ATSEC Letter 1" title="ATSEC Letters Table" type="EditableReportSection" blobSection="TABLE" renderpdf="false">
         <Static>
             <![CDATA[
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
@@ -215,7 +269,7 @@
                             <th>PDF</th>
                             <th style='width:14em;'>Generate</th>
                             <th>Template</th>
-                            <th>Follow-Up Date</th>
+                            <th>Date</th>
                             <th>Comments</th>
                             <th>Chair Position</th>
                             <th>Promotion Rank</th>
@@ -231,7 +285,7 @@
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                 ]]>
             </Static>
-            <ReportItem id="letter" type="PDFReportItem" class="letterPDF downloadButton{$user_id}" reportType="Letters/Base" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="letter" type="PDFReportItem" class="letterPDF downloadButton{$user_id}" reportType="Letters/Base" pdfReport="{$report_type}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>
                             {$item}
@@ -312,7 +366,10 @@
                         $(this).siblings(".throbber").show();
                         saveAll(function(){
                             if(template != ""){
-                                $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + "&userId=" + userid + "&generatePDF", function(response){
+                                $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + 
+                                                                "&n=" + "{$report_type}".slice(-1) + 
+                                                                "&userId=" + userid + 
+                                                                "&generatePDF", function(response){
                                     $(".downloadButton" + userid).attr("href", wgServer + wgScriptPath + "/index.php/Special:ReportArchive?getpdf=" + response["Letters/" + template].tok).show();
                                     $(this).prop("disabled", false);
                                     $(this).siblings(".throbber").hide();
@@ -383,8 +440,8 @@
         </Static>
         <Static id="from">
             <![CDATA[
-                            Frederick West<br />
-                            Acting Dean of Science<br />
+                            Eleni Stroulia<br />
+                            Vice Dean of Science<br />
                             Chair Faculty Evaluation Committee
             ]]>
         </Static>
@@ -419,15 +476,18 @@
             <![CDATA[
                 Sincerely,<br />
                 <br />
-                <div class='previewnodisplay'><img src='skins/Signature.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
                 <br />
-                Frederick West<br />
-                Acting Dean of Science<br />
+                Eleni Stroulia<br />
+                Vice Dean of Science<br />
                 Chair of the Science Faculty Evaluation Committee<br />
-                FW/ld
+                ES/pw
                 </div>
             ]]>
         </Static>
     </ReportSection>
+    <ReportSection id="atsec2" name="ATSEC Letter 2" blobReport="RP_LETTER2" copy="atsec1" />
+    <ReportSection id="atsec3" name="ATSEC Letter 3" blobReport="RP_LETTER3" copy="atsec1" />
+    <ReportSection id="atsec4" name="ATSEC Letter 4" blobReport="RP_LETTER4" copy="atsec1" />
 </Report>

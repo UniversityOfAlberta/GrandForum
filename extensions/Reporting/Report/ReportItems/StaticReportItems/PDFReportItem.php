@@ -12,6 +12,8 @@ class PDFReportItem extends StaticReportItem {
         $buttonName = $this->getAttr("buttonName", "Report PDF");
         $noRenderIfNull = $this->getAttr("noRenderIfNull", "false");
         $year = $this->getAttr("year", $this->getReport()->year);
+        $blobReport = $this->getAttr("blobReport", "");
+        $pdfReport = $this->getAttr("pdfReport", "");
         $section = $this->getAttr("section", "");
         $width = $this->getAttr("width", 'auto');
         $height = $this->getAttr("height", "700px");
@@ -26,6 +28,12 @@ class PDFReportItem extends StaticReportItem {
         }
         $person = Person::newFromId($this->personId);
         $report = new DummyReport($reportType, $person, $project, $year, true);
+        if($blobReport != ""){
+            $report->reportType = $blobReport;
+        }
+        if($pdfReport != ""){
+            $report->pdfType = $pdfReport;
+        }
         $report->person = $person;
         $tok = false;
         $check = $report->getPDF(false, $section);

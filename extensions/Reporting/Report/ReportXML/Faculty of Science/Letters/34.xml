@@ -5,13 +5,13 @@
             <![CDATA[
                 <p>Each year, the Faculty Evaluation Committee (FEC) is charged with the responsibility of awarding incrementation to its faculty, from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
                 
-                As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of December 8, 2022, the FEC did not support your Chair’s recommendation. Instead it is prepared to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Chair {getText(RP_LETTER, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}. Under Article A6.19.1 of Schedule A, this is the preliminary position of FEC. This decision was based on the following:
+                As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of December 8, 2022, the FEC did not support your Chair’s recommendation. Instead it is prepared to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Chair {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}. Under Article A6.19.1 of Schedule A, this is the preliminary position of FEC. This decision was based on the following:
                 
-                <ul><li>{getText(RP_LETTER, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
+                <ul><li>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
                 
                 You may wish to consider the following options: 
                 <ul>
-                    <li>I am willing to meet with you during the week of {getText(RP_LETTER, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case as it was presented before FEC. Please contact my office at 780-492-6232 for an appointment.</li>
+                    <li>I am willing to meet with you during the week of {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case as it was presented before FEC. Please contact my office at 780-492-6232 for an appointment.</li>
                     <li>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s preliminary decision by informing me, in writing, within 5 working days from the receipt of this letter.</li>
                 </ul><br />
 

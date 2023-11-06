@@ -448,6 +448,16 @@ class ReportXMLParser {
     function parseReportSection($node){
         foreach($node as $key => $n){
             $attributes = $n->attributes();
+            if(isset($attributes->copy)){
+                $n = $this->parser->xpath("//ReportSection[@id='{$attributes->copy}']");
+                $n = $n[0];
+                $attrs = get_object_vars($n->attributes());
+                foreach($attrs['@attributes'] as $key => $attr){
+                    if(!isset($attributes->{$key})){
+                        $attributes->addAttribute($key, $attr);
+                    }
+                }
+            }
             $children = $n->children();
             $section = $this->report->getSectionById("{$attributes->id}");
             if(isset($attributes->type) || $section != null){
