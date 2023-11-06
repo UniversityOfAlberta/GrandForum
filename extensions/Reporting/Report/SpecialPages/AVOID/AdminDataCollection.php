@@ -228,6 +228,7 @@ class AdminDataCollection extends SpecialPage{
                 $rolefield = $person->getExtra('roleField', '');
                 $handbook = $person->getExtra('handbook', array());
                 $handbookAddress = $person->getExtra('handbookAddress', '');
+                $recommended = $person->getExtra('recommended', '');
                 
                 $wgOut->addHTML("<td style='white-space:nowrap;'>");
                 if($phone != ''){
@@ -250,6 +251,9 @@ class AdminDataCollection extends SpecialPage{
                 }
                 if($handbookAddress != ''){
                     $wgOut->addHTML("<b>Address:</b> $handbookAddress<br />");
+                }
+                if($recommended != ''){
+                    $wgOut->addHTML("<b>Recommended:</b> $recommended<br />");
                 }
                 $wgOut->addHTML("</td>");
                 $wgOut->addHTML("<td>{$hear}</td>");

@@ -269,6 +269,20 @@ class Register extends SpecialPage{
         $handbookRow4 = new FormTableRow("handbook_row4");
         $handbookRow4->append($handbookAddressField);
         
+        $recommendLabel = new Label("recommend_label", "<br />Was this program recommended by a Queen's Family Health Team Community Service Worker?", "", VALIDATE_NOTHING);
+        $recommendLabel->colspan = 2;
+        $recommendLabel->colon = "";
+        $recommendLabel->attr('class', 'label tooltip left-align');
+        $recommendLabel->attr('style', 'max-width: 700px; white-space: normal;');
+        $recommendRow1 = new FormTableRow("recommend_row1");
+        $recommendRow1->append($recommendLabel);
+        $recommendField = new VerticalRadioBox("recommend_field", "Recommend", array(), 
+                                   array("Yes",
+                                         "No"), VALIDATE_NOTHING);
+        $recommendField->colspan = 2;
+        $recommendRow2 = new FormTableRow("recommend_row2");
+        $recommendRow2->append($recommendField);
+        
         // End AVOID Fields
         
         $typeLabel = new Label("type_label", "<en>Please select your role</en><fr>Veuillez sélectionner votre rôle</fr>", "The role of user", VALIDATE_NOT_NULL);
@@ -344,6 +358,10 @@ class Register extends SpecialPage{
                           ->append($handbookRow2)
                           ->append($handbookRow3)
                           ->append($handbookRow4);
+            }
+            if($config->getValue("networkFullName") == "AVOID Frailty: Program for Healthy Aging"){
+                $formTable->append($recommendRow1)
+                          ->append($recommendRow2);
             }
         }
         $emptyRow = new FormTableRow("");
@@ -592,6 +610,8 @@ class Register extends SpecialPage{
                     // Handbook
                     $_POST['wpExtra']['handbook'] = @$_POST['handbook_field'];
                     $_POST['wpExtra']['handbookAddress'] = @$_POST['handbook_address_specify'];
+                    // Recommended
+                    $_POST['wpExtra']['recommended'] = @$_POST['recommend_field'];
                 }
                 
                 $wgGroupPermissions['*']['createaccount'] = true;
