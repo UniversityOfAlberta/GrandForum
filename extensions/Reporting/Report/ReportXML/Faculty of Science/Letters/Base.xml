@@ -63,7 +63,7 @@
                         $('#postToIframe').submit().remove();
                     }
                     $('#generateAll').click(function(){
-                        $('.generatePDF').click();
+                        $('.generatePDF:not(:disabled)').click();
                     });
                     $('#downloadAll').click(function(){
                         var pdfs = $.makeArray($(".letterPDF:visible").map(function(i, pdf){ return $(pdf).attr('href');})).join(',').replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '');
@@ -254,7 +254,7 @@
                         $('#postToIframe').submit().remove();
                     }
                     $('#generateAll').click(function(){
-                        $('.generatePDF').click();
+                        $('.generatePDF:not(:disabled)').click();
                     });
                     $('#downloadAll').click(function(){
                         var pdfs = $.makeArray($(".letterPDF:visible").map(function(i, pdf){ return $(pdf).attr('href');})).join(',').replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '');
