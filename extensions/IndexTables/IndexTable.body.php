@@ -334,7 +334,7 @@ class IndexTable {
                     }
                 }
                 else{
-                    foreach($proj->getAllPeopleOn(PL, $proj->getEffectiveDate()) as $leader){
+                    foreach($proj->getAllPeopleOn(PL, $proj->getEndDate()) as $leader){
                         $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
                     }
                 }
