@@ -2,7 +2,7 @@
 
 class ProjectKPITab extends AbstractTab {
 
-    static $autoProjects = array("GIS-03", "GIS-07", "GIS-13");
+    static $autoProjects = array(); //array("GIS-03", "GIS-07", "GIS-13");
 
     static $qMap = array(1 => "Apr-Jun",
                          2 => "Jul-Sep",
