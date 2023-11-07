@@ -10,7 +10,7 @@
             <![CDATA[
                 <p>Based on my review of your performance, your annual report, and our meeting to discuss my review on <b>{getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}</b>, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of <b>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</b>.</p>
                 
-                <p>I have a number of concerns. My merit incrementation recommendation was explained to you in my Chair recommendation report and during our meeting (if applicable).</p>
+                <p>My merit incrementation recommendation was explained to you in my Chair recommendation report and during our meeting (if applicable).</p>
                 
                 <p>You may wish to consider the following option:</p>
                 
