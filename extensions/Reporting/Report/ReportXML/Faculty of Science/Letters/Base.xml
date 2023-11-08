@@ -84,6 +84,7 @@
                             <th>Chair Position</th>
                             <th>Performance</th>
                             <th>Present Case</th>
+                            <th>Chair (From)</th>
                             <th>Sabbatical Duration</th>
                             <th>Sabbatical Start</th>
                             <th>Sabbatical End</th>
@@ -153,6 +154,13 @@
                 ]]>
             </ReportItem>
             <ReportItem id="present_case" type="Select" personId="1" blobItem="PRESENT_CASE" blobSubItem="{$user_id}" options="|present your case|submit documentation in support of your case">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="chair" type="Text" personId="1" blobItem="CHAIR" blobSubItem="{$user_id}">
                 <![CDATA[
                         <td align="center">
                             {$item}

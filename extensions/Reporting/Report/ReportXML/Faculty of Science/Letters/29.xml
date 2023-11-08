@@ -3,7 +3,7 @@
     <ReportSection id="letter" title="Merit Recommendation">
         <ReportItem id="from">
             <![CDATA[
-                Department Chair
+                {getText({$report_type}, TABLE, CHAIR, {$user_id}, 1, 0)}
             ]]>
         </ReportItem>
         <ReportItem id="body">
