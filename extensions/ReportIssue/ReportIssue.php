@@ -146,7 +146,7 @@
 
             // Put everything else in $message
             $message = "--".$uid.$eol;
-            $message .= "Content-Type: text/html; charset=ISO-8859-1".$eol;
+            $message .= "Content-Type: text/html; charset=UTF-8".$eol;
             $message .= "Content-Transfer-Encoding: 8bit".$eol.$eol;
             $message .= $msg.$eol.$eol;
             if(isset($_POST['img'])){
