@@ -49,7 +49,7 @@
                         var nDDFSO = 0;
                         
                         // Get these numbers from sciea/scihr each year
-                        var targetFac = 319.2;
+                        var targetFac = 316.8;
                         var targetFSO = 12.0;
                         
                         var needsSaving = false;
