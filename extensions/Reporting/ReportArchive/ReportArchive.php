@@ -191,7 +191,7 @@ class ReportArchive extends SpecialPage {
             $blob_address = ReportBlob::create_address("RP_CHAIR", "FEC_DEAN_DECISION", "INCREMENT", $person->getId());
             $blob->load($blob_address);
             $blob_data = $blob->getData();
-            $isDD = ($blob_data == "");
+            $isDD = ($blob_data != "");
             
             // Letters
             $letterUrl = "";
