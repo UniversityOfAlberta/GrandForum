@@ -55,6 +55,7 @@ $apiRequest->addAction('Hidden','person/:id/similar', 'SimilarPeopleAPI');
 $apiRequest->addAction('Hidden','person/:id/products', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/bibtex', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/private', 'PersonProductAPI');
+$apiRequest->addAction('Hidden','person/:id/products/managed', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/all', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/:productId', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/contributions', 'PersonContributionsAPI');

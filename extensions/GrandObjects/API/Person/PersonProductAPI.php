@@ -10,15 +10,35 @@ class PersonProductAPI extends RESTAPI {
             $json = array();
             $onlyPublic = true;
             $showAll = false;
+            $showManaged = false;
+            $products = array();
             if($this->getParam(3) == "private"){
                 $onlyPublic = false;
+            }
+            if($this->getParam(3) == "managed"){
+                $onlyPublic = false;
+                $showManaged = true;
             }
             if($this->getParam(3) == "all" && $me->isRoleAtLeast(ADMIN) && $me->getId() == $person->getId()){
                 $showAll = true;
                 $onlyPublic = false;
             }
+            
             if($showAll){
                 $products = Product::getAllPapers("all", true, 'both', $onlyPublic, 'Public');
+            }
+            else if($showManaged){
+                foreach($person->getPapers("all", true, 'both', $onlyPublic, 'Public') as $p){
+                    $products[$p->getId()] = $p;
+                }
+                $projects = $person->getProjects();
+                foreach($projects as $project){
+                    if($person->isRole(PL, $project) || $person->isRole(PA, $project)){
+                        foreach($project->getPapers("all", "0000-00-00", EOT) as $p){
+                            $products[$p->getId()] = $p;
+                        }
+                    }
+                }
             }
             else{
                 $products = $person->getPapers("all", true, 'both', $onlyPublic, 'Public');

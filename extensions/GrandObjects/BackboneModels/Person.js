@@ -30,6 +30,9 @@ Person = Backbone.Model.extend({
         this.privateProducts = new PersonProducts();
         this.privateProducts.url = this.urlRoot + '/' + this.get('id') + '/products/private';
         
+        this.managedProducts = new PersonProducts();
+        this.managedProducts.url = this.urlRoot + '/' + this.get('id') + '/products/managed';
+        
         this.adminProducts = new PersonProducts();
         this.adminProducts.url = this.urlRoot + '/' + this.get('id') + '/products/all';
         
@@ -116,6 +119,11 @@ Person = Backbone.Model.extend({
     getPrivateProducts: function(){
         this.privateProducts.fetch();
         return this.privateProducts;
+    },
+    
+    getManagedProducts: function(){
+        this.managedProducts.fetch();
+        return this.managedProducts;
     },
     
     getAdminProducts: function(){
