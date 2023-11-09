@@ -245,6 +245,11 @@
         "resources": {
             "Addressing Isolation": [
                 {
+                    "file": "Gadget Gizmos and Lines.pdf",
+                    "title": "Gadget Gizmos and Lines",
+                    "tags": ["interact"]
+                },
+                {
                     "file": "19. Isolation Tip Sheet (without Technology).pdf",
                     "title": "Isolation Tip Sheet (without Technology)",
                     "tags": ["interact"]
