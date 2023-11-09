@@ -88,34 +88,34 @@ class Register extends SpecialPage{
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
         
-        $firstNameLabel = new Label("first_name_label", "<en>First Name</en><fr>Prénom</fr>", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
+        $firstNameLabel = new Label("first_name_label", "<en>First Name</en><fr>Prénom</fr>", "<en>The first name of the user</en><fr>Prénom de l’utilisateur</fr>", VALIDATE_NOT_NULL);
         $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOT_NULL);
         $firstNameRow = new FormTableRow("first_name_row");
         $firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
         
-        $lastNameLabel = new Label("last_name_label", "<en>Last Name</en><fr>Nom</fr>", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
+        $lastNameLabel = new Label("last_name_label", "<en>Last Name</en><fr>Nom de famille</fr>", "<en>The last name of the user</en><fr>Nom de famille de l’utilisateur</fr>", VALIDATE_NOT_NULL);
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
         
-        $userNameLabel = new Label("user_name_label", "<en>Username</en><fr>Nom d’usager</fr>", "The username", VALIDATE_NOT_NULL);
+        $userNameLabel = new Label("user_name_label", "<en>Username</en><fr>Nom d’usager</fr>", "<en>The username</en><fr>Nom d’usager</fr>", VALIDATE_NOT_NULL);
         $userNameField = new TextField("user_name_field", "Last Name", "", VALIDATE_NOT_NULL);
         $userNameRow = new FormTableRow("user_name_row");
         $userNameRow->append($userNameLabel)->append($userNameField->attr('size', 20));
         $userNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         
-        $emailLabel = new Label("email_label", "<en>Email</en><fr>Courriel</fr>", "The email address of the user", VALIDATE_NOT_NULL);
+        $emailLabel = new Label("email_label", "<en>Email</en><fr>Adresse courriel</fr>", "<en>The email address of the user</en><fr>Adresse courriel de l’utilisateur</fr>", VALIDATE_NOT_NULL);
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
         $emailField->registerValidation(new UniqueEmailValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField->attr('size', 20));
         
-        $passwordLabel = new Label("password_label", "<en>Password</en><fr>Mot de passe</fr>", "The password of the user", VALIDATE_NOT_NULL);
+        $passwordLabel = new Label("password_label", "<en>Password</en><fr>Mot de passe</fr>", "<en>The password of the user</en><fr>Mot de passe de l’utilisateur</fr>", VALIDATE_NOT_NULL);
         $passwordField = new PasswordField("password_field", "Password", "", VALIDATE_NOT_NULL);
         $passwordRow = new FormTableRow("password_row");
         $passwordRow->append($passwordLabel)->append($passwordField);
         
-        $password2Label = new Label("password2_label", "<en>Password (again)</en><fr>Mot de passe (confirmation)</fr>", "The password of the user", VALIDATE_NOT_NULL);
+        $password2Label = new Label("password2_label", "<en>Password (again)</en><fr>Mot de passe (confirmation)</fr>", "<en>The password of the user</en><fr>Mot de passe de l’utilisateur</fr>", VALIDATE_NOT_NULL);
         $password2Field = new PasswordField("password2_field", "Password (again)", "", VALIDATE_NOT_NULL);
         $password2Row = new FormTableRow("password2_row");
         $password2Row->append($password2Label)->append($password2Field);
@@ -123,7 +123,7 @@ class Register extends SpecialPage{
         // These next fields for are for AVOID
         $phoneLabel = new Label("phone_label", "<en>Phone Number</en><fr>Numéro de téléphone</fr>", 
                                                "<en>Phone Number</en><fr>Numéro de téléphone</fr>", VALIDATE_NOT_NULL);
-        $phoneField = new TextField("phone_field", "Phone Number", "", VALIDATE_NOT_NULL);
+        $phoneField = new TextField("phone_field", "<en>Phone Number", "", VALIDATE_NOT_NULL);
         $phoneRow = new FormTableRow("phone_row");
         $phoneRow->append($phoneLabel)->append($phoneField->attr('size', 10));
         
@@ -149,8 +149,8 @@ class Register extends SpecialPage{
         $roleRow = new FormTableRow("role_row");
         $roleRow->append($roleLabel)->append($roleField->attr('size', 20));
         
-        $hearLabel = new Label("hear_label", "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr><span style='color:red;font-weight:bold;'>*</span>", 
-                                             "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme AVOID Frailty?</fr>", VALIDATE_NOTHING);
+        $hearLabel = new Label("hear_label", "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme Proactif?</fr><span style='color:red;font-weight:bold;'>*</span>", 
+                                             "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme Proactif?</fr>", VALIDATE_NOTHING);
         $hearLabel->colspan = 2;
         $hearLabel->colon = "";
         $hearLabel->attr('class', 'label tooltip left-align');
@@ -406,18 +406,21 @@ class Register extends SpecialPage{
         }
         else if($config->getValUE("networkName") == "AVOID"){
             $role = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? $_GET['role'] : CI; // Member
+            $frRole = $role;
             if($role == CI){
                 $wgOut->setPageTitle(showLanguage("Member Registration", "Inscription - Membre"));
+                $frRole = "Membre";
             }
             else if($role == "Partner"){
-                $wgOut->setPageTitle(showLanguage("Care Partner/Guest Registration", "Inscription - Partenaire/Invité"));
+                $wgOut->setPageTitle(showLanguage("Care Partner/Guest Registration", "Inscription – Partenaire/Invité"));
+                $frRole = "Partenaire";
             }
             else if($role == "Clinician"){
-                $wgOut->setPageTitle(showLanguage("Clinician Registration", "Inscription - Partenaire/Invité"));
+                $wgOut->setPageTitle(showLanguage("Clinician Registration", "Inscription - Clinicien"));
             }
             $wgOut->addHTML("<div class='program-body'>
                                 <en>By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</en>
-                                <fr>En vous inscrivant au site Web Proactif, vous obtenez le statut de {$role}. Consultez vos pourriels si vous ne recevez pas le courriel de confirmation d’inscription dans les prochaines minutes. Si vous n’avez toujours rien reçu, veuillez écrire aux adresses suivantes: <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</fr>
+                                <fr>En vous inscrivant au site Web Proactif, vous obtenez le statut de {$frRole}. Consultez vos pourriels si vous ne recevez pas le courriel de confirmation d’inscription dans les prochaines minutes. Si vous n’avez toujours rien reçu, veuillez écrire aux adresses suivantes: <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</fr>
                                 <br /><br />
                                 <en>If completing the online registration or healthy aging assessment presents any challenges for you (such as vision problems, or an unsteady hand), program administration can complete it on your behalf over the phone. Please call 613-549-6666. Ex. 2834 to organize this.</en>
                                 <fr>Si vous avez de la difficulté à remplir le questionnaire (par exemple, si vous avez des problèmes de vision ou que vos mains tremblent), nous pouvons le remplir pour vous. Pour organiser une rencontre téléphonique d’assistance, appelez au 418-663-5313, poste 12218.</fr>
