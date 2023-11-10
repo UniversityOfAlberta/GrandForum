@@ -11,7 +11,7 @@
             <SectionPermission id="review student" permissions="r" />
         </Role>
     </Permissions>
-    <ReportSection id="review student" tooltip="Student Review" name="Review Student" blobSection="OT_REVIEW" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="review student" tooltip="Student Review" name="Review Student" blobSection="OT_REVIEW" type="ReportSection" pagebreak="false">
         <ReportItem id="js" type="StaticReportItem">
             <![CDATA[
                 <style>
