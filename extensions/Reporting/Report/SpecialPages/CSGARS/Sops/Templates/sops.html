@@ -10,6 +10,10 @@
         <a href="#/hidden<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" class="button" <% if(this.hidden == true){ %> style="text-decoration:underline;" <% } %>>Hidden By Me</a>&nbsp;
     </div>
 </div>
+<div style="display:none;border-radius: 0 0 10px 10px;padding:0;" id="reviewDialog" title="Reviewer Comments">
+    <div id="reviewSpinner" style="width:100%;position:absolute;top:100px;left:0;text-align:center;"></div>
+    <iframe id="reviewFrame" src="" style="border:none;width:800px;height:500px;" onLoad="$(this).css('opacity', 1);$('#reviewSpinner').hide();"></iframe>
+</div>
 <input type="button" id="showfilter" value="Show Filter Options" style="background: #079651;" />
 <input type="checkbox" id="filterMeOnly"/>My Review Assignments <span id="evalStats">(<%= evalCompleted %> / <%= evalTotal %> completed)</span>
 <div style="float: right; margin-top:4px;">

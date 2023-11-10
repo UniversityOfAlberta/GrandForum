@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="CSViewReviewReadOnly" reportType="RP_OTT" pdfType="RPTP_OTT" pdfFiles="CSViewReview" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="Chair">
+            <SectionPermission id="review student" permissions="r" />
+        </Role>
+        <Role role="Faculty">
+            <SectionPermission id="review student" permissions="r" />
+        </Role>
+        <Role role="Manager">
+            <SectionPermission id="review student" permissions="r" />
+        </Role>
+    </Permissions>
+    <ReportSection id="review student" tooltip="Student Review" name="Review Student" blobSection="OT_REVIEW" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="js" type="StaticReportItem">
+            <![CDATA[
+                <style>
+                    #reportFooter, #reportHeader, #aboveTabs, #reportTabs, hr {
+                        display: none;
+                    }
+                </style>
+                <script type='text/javascript'>
+                    $('#reportBody').css('min-height',0);
+                    setInterval(function(){
+                        //parent.alertsize($("body").height()); 
+                    }, 100);
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="professors" type="AllSopReviewerReportItemSet" roles="Faculty" sort_reversed="true">
+            <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_reversed_name}" sop="true">
+                <ReportItem id="feedback_unedit" type="StaticReportItem">
+                    <![CDATA[
+                        <table border="1" style="border-collapse:collapse">
+                            <tr>
+                                <td width="50%"><span><h3>Special Considerations That Make This Application Compelling?</h3></span></td>
+                                <td width="50%">{getText(RP_OTT,OT_REVIEW,CS_Review_SpecialCons,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,CS_Review_SpecialExplain,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td><span><h3>Rank:</h3></span></td>
+                                <td>{getText(RP_OTT,OT_REVIEW,CS_Review_Rank,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td><span><h3>Confidence:</h3></span></td>
+                                <td>{getText(RP_OTT,OT_REVIEW,CS_Review_Rank_Confidence,0,{$user_id},{$project_id})} {getText(RP_OTT,OT_REVIEW,CS_Review_Rank_ConfidenceOther,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td><span><h3>Based On:</h3></span></td>
+                                <td>{getArray(RP_OTT,OT_REVIEW,CS_Review_Rank_BasedOn,0,{$user_id},{$project_id},q3b,<br />)} {getText(RP_OTT,OT_REVIEW,CS_Review_Rank_BasedOnOther,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td colspan=2>Justification for Ranking:<br />{getText(RP_OTT,OT_REVIEW,CS_Review_RankExplain,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td><span><h3>Supervise?:</h3></span></td>
+                                <td>{getArray(RP_OTT,OT_REVIEW,CS_Review_SuperviseSalary,0,{$user_id},{$project_id},q7)}</td>
+                            </tr>
+                            <tr>
+                                <td><span><h3>Award:</h3></span></td>
+                                <td>{getArray(RP_OTT,OT_REVIEW,CS_Review_Award,0,{$user_id},{$project_id},q8)}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+</Report>
