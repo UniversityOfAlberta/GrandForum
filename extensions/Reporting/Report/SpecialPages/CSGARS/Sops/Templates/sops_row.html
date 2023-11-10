@@ -5,7 +5,7 @@
     <% if(this.parent.model.year != ''){ %>
         <b><span>
             <% if(sop_id != "" && typeof sop_id == 'string'){ %>
-                <a class="reviewDialog" style="cursor:pointer;" data-href="<%= wgServer + wgScriptPath %>/index.php/Special:Report?report=CSViewReviewReadOnly&project=Sop:<%= sop_id %>&reportingYear=<%= this.parent.model.year %>&embed" id="sop<%= sop_id %>"><%= student_data.name %></a>
+                <a class="reviewDialog" style="cursor:pointer;" data-href="<%= wgServer + wgScriptPath %>/index.php/Special:Report?report=CSViewReviewReadOnly&project=Sop:<%= id %>&reportingYear=<%= this.parent.model.year %>&embed" id="sop<%= sop_id %>"><%= student_data.name %></a>
             <% } else { %>
                 <%= student_data.name %>
             <% } %>
