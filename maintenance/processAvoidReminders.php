@@ -114,7 +114,7 @@ foreach($people as $person){
     
     $baseDiff = (time() - strtotime(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID")))/86400;
 
-    if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*6 && getReminder("3MonthReminder", $person)['count'] < 1){
+    if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*4 && getReminder("3MonthReminder", $person)['count'] < 1){
         // 3 Month
         addReminder("3MonthReminder", $person);
         $subject = "Been 3 months since healthy aging assessment was completed";
@@ -130,7 +130,7 @@ foreach($people as $person){
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
-    else if($baseLineSubmitted && !$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*12 && getReminder("9MonthReminder", $person)['count'] < 1){
+    else if($baseLineSubmitted && !$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*10 && getReminder("9MonthReminder", $person)['count'] < 1){
         // 9 Month
         addReminder("9MonthReminder", $person);
         $subject = "Been 9 months since healthy aging assessment was completed";

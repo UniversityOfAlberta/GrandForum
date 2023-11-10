@@ -996,13 +996,13 @@ class AVOIDDashboard extends SpecialPage {
             if(!$baseLineSubmitted && ($wgTitle->getText() != "Report" || @$_GET['report'] != "IntakeSurvey")){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey&section={$section}");
             }
-            else if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*6 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "ThreeMonths")){
+            else if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*4 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "ThreeMonths")){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ThreeMonths");
             }
             else if($baseLineSubmitted && !$sixMonthSubmitted && $baseDiff >= 30*6 && $baseDiff < 30*9 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "SixMonths")){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=SixMonths");
             }
-            else if($baseLineSubmitted && !$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*12 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "NineMonths")){
+            else if($baseLineSubmitted && !$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*10 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "NineMonths")){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=NineMonths");
             }
             else if($baseLineSubmitted && !$twelveMonthSubmitted && $baseDiff >= 30*12 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "TwelveMonths")){
