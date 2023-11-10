@@ -754,12 +754,12 @@ abstract class AbstractReport extends SpecialPage {
                             }
                             else{
                                 $isMember = true;
-                                if($this->project != null && $this->project->getId() != 0){
+                                /*if($this->project != null && $this->project->getId() != 0){
                                     $isMember = $me->isRole($perm['perm']['role'], $this->project);
                                 }
                                 if($this->project != null && $this->project->getName() == "" && $this->allowIdProjects){
                                     $isMember = true;
-                                }
+                                }*/
                                 $rResultTmp = ($me->isRole($perm['perm']['role']) && $isMember);
                             }
                             if($perm['perm']['subType'] != ""){
