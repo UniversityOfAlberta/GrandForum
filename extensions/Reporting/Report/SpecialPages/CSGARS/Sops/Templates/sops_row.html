@@ -3,7 +3,13 @@
         <span style="display:none;"><a href="<%= sop_pdf %>" target="_blank"><span class="pdf_gif"></span></a></span>
     <% } %>
     <% if(this.parent.model.year != ''){ %>
-        <b><span><a class="reviewDialog" style="cursor:pointer;" data-href="<%= wgServer + wgScriptPath %>/index.php/Special:Report?report=CSViewReviewReadOnly&project=Sop:<%= sop_id %>&reportingYear=<%= this.parent.model.year %>&embed" id="sop<%= sop_id %>"><%= student_data.name %></a></b></span><br />
+        <b><span>
+            <% if(sop_id != "" && typeof sop_id == 'string'){ %>
+                <a class="reviewDialog" style="cursor:pointer;" data-href="<%= wgServer + wgScriptPath %>/index.php/Special:Report?report=CSViewReviewReadOnly&project=Sop:<%= sop_id %>&reportingYear=<%= this.parent.model.year %>&embed" id="sop<%= sop_id %>"><%= student_data.name %></a>
+            <% } else { %>
+                <%= student_data.name %>
+            <% } %>
+        </b></span><br />
     <% } else { %>
         <b><span><a href="<%= sop_url %>" id="sop<%= sop_id %>" target="_blank"><%= student_data.name %></a></b></span><br />
     <% } %>
