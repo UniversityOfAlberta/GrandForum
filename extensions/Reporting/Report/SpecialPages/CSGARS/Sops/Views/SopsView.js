@@ -85,13 +85,13 @@ SopsView = Backbone.View.extend({
         COL_DECISION = counter++;
     },
     
-    openReviewDialog: function(){
+    openReviewDialog: function(e){
         if(typeof reviewSpin == 'undefined'){
             reviewSpin = spinner("reviewSpinner", 40, 75, 12, 10, '#888');
         }
         $('#reviewSpinner').show();
         $("#reviewDialog iframe").css("opacity", 0.25);
-        $("#reviewDialog iframe").attr("src", $(this).attr("data-href"));        
+        $("#reviewDialog iframe").attr("src", $(e.target).attr("data-href"));        
         $("#reviewDialog").dialog({
             resizable: false,
             width: 'auto',
@@ -965,7 +965,7 @@ SopsView = Backbone.View.extend({
             changeMonth: true,
             changeYear: true
         });
-        $(".reviewDialog").click(this.openReviewDialog);
+        $("body").click(".reviewDialog", this.openReviewDialog);
         return this.$el;
     }
 });
