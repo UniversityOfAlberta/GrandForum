@@ -86,17 +86,19 @@ SopsView = Backbone.View.extend({
     },
     
     openReviewDialog: function(e){
-        if(typeof reviewSpin == 'undefined'){
-            reviewSpin = spinner("reviewSpinner", 40, 75, 12, 10, '#888');
+        if($(e.target).hasClass("reviewDialog")){
+            if(typeof reviewSpin == 'undefined'){
+                reviewSpin = spinner("reviewSpinner", 40, 75, 12, 10, '#888');
+            }
+            $('#reviewSpinner').show();
+            $("#reviewDialog iframe").css("opacity", 0.25);
+            $("#reviewDialog iframe").attr("src", $(e.target).attr("data-href"));        
+            $("#reviewDialog").dialog({
+                resizable: false,
+                width: 'auto',
+                height: 'auto'
+            });
         }
-        $('#reviewSpinner').show();
-        $("#reviewDialog iframe").css("opacity", 0.25);
-        $("#reviewDialog iframe").attr("src", $(e.target).attr("data-href"));        
-        $("#reviewDialog").dialog({
-            resizable: false,
-            width: 'auto',
-            height: 'auto'
-        });
     },
 
     updateUserPrefs: function() {
