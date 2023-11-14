@@ -4,6 +4,9 @@ class AllSopReviewerReportItemSet extends ReportItemSet {
 
     function getData(){
         $data = array();
+        if(!isset($_GET['project'])){
+            return $data;
+        }
         $roles = explode(",",$this->getAttr("roles", ""));
         $projectName = $_GET['project'];
         if(strpos($projectName, 'Sop') !== false ){
