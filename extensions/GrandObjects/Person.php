@@ -3063,15 +3063,14 @@ class Person extends BackboneModel {
     }
 
     /**
-     * Returns whether this Person is the given role (on the given optional project)
+     * Returns whether this Person is the given role
      * @param string $role The role of this Person
-     * @param Project $project The Project the Person is a role on
      * @return boolean Whether or not the Person is the given role
      */
-    function isRole($role, $project=null){
+    function isRole($role){
         if($role == NI){
-            return ($this->isRole(AR, $project) || 
-                    $this->isRole(CI, $project));
+            return ($this->isRole(AR) || 
+                    $this->isRole(CI));
         }
         $roles = array();
         $role_objs = $this->getRoles();
@@ -3092,16 +3091,15 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns whether this Person is the given role on the given date (on the given optional project)
+     * Returns whether this Person is the given role on the given date
      * @param string $role The role of this Person
      * @param string $data The date of the role
-     * @param Project $project The Project the Person is a role on
      * @return boolean Whether or not the Person is the given role
      */
-    function isRoleOn($role, $date, $project=null){
+    function isRoleOn($role, $date){
         if($role == NI){
-            return ($this->isRoleOn(AR, $date, $project) || 
-                    $this->isRoleOn(CI, $date, $project));
+            return ($this->isRoleOn(AR, $date) || 
+                    $this->isRoleOn(CI, $date));
         }
         $roles = array();
         $role_objs = $this->getRolesOn($date);
@@ -3122,20 +3120,19 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns whether this Person is the given role between the given dates (on the given optional project)
+     * Returns whether this Person is the given role between the given dates
      * @param string $role The role of this Person
      * @param string $startRange The start date
      * @param string $endRange The end date
-     * @param Project $project The Project the Person is a role on
      * @return boolean Whether or not the Person is the given role
      */
-    function isRoleDuring($role, $startRange, $endRange, $project=null){
+    function isRoleDuring($role, $startRange, $endRange){
         if($role == INACTIVE){
             return $this->exists();
         }
         if($role == NI){
-            return ($this->isRoleDuring(AR, $startRange, $endRange, $project) || 
-                    $this->isRoleDuring(CI, $startRange, $endRange, $project));
+            return ($this->isRoleDuring(AR, $startRange, $endRange) || 
+                    $this->isRoleDuring(CI, $startRange, $endRange));
         }
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);

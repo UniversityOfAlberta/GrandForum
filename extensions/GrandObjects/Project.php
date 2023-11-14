@@ -684,8 +684,8 @@ EOF;
                 }
             }
             else if(($filter == null || 
-                     ($person->isRole($filter, $this) && !$person->leadershipOf($this)) || 
-                     ($person->isRole($filter, $this) && !$person->leadershipOf($this))) && 
+                     ($person->isRole($filter) && !$person->leadershipOf($this)) || 
+                     ($person->isRole($filter) && !$person->leadershipOf($this))) && 
                     !$person->isRole(ADMIN)){
                 $people[$person->getId()] = $person;
             }
@@ -740,7 +740,7 @@ EOF;
                 }
             }
             else if(($filter == null || 
-                     ($person->isRoleDuring($filter, $startRange, $endRange, $this) && !$person->leadershipOf($this))) && 
+                     ($person->isRoleDuring($filter, $startRange, $endRange) && !$person->leadershipOf($this))) && 
                     ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
                 $people[$person->getId()] = $person;
             }
@@ -776,7 +776,7 @@ EOF;
                 }
             }
             else if(($filter == null || 
-                     ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOf($this))) && 
+                     ($person->isRoleOn($filter, $date) && !$person->leadershipOf($this))) && 
                     ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                 $people[$person->getId()] = $person;
             }
