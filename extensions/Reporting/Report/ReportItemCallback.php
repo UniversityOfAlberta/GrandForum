@@ -570,7 +570,6 @@ class ReportItemCallback {
     
     function getUserFullRoles(){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
         $roles = $this->getUserRoles();
         return $roles;
     }
@@ -1021,16 +1020,11 @@ class ReportItemCallback {
     
     function getName(){
         $personId = $this->reportItem->personId;
-        $projectId = $this->reportItem->projectId;
         $productId = $this->reportItem->productId;
         
         if($personId != 0){
             $person = Person::newFromId($personId);
             return $person->getNameForForms();
-        }
-        else if($projectId != 0){
-            $project = Project::newFromId($projectId);
-            return $project->getName();
         }
         else if($productId != 0){
             $product = Product::newFromId($productId);
@@ -1096,12 +1090,7 @@ class ReportItemCallback {
         $products = array();
         $includeHQP = (strtolower($includeHQP) == "true" || $includeHQP === true);
         $peerReviewed = (strtolower($peerReviewed) == "true" || $peerReviewed === true);
-        if($this->reportItem->projectId != 0){
-            // Project Products
-            $project = Project::newFromId($this->reportItem->projectId);
-            $products = $project->getPapers($category, $startDate, $endDate);
-        }
-        else if($this->reportItem->personId != 0){
+        if($this->reportItem->personId != 0){
             // Person Products
             $person = Person::newFromId($this->reportItem->personId);
             $products = $person->getPapersAuthored($category, $startDate, $endDate, $includeHQP, true);
@@ -1126,7 +1115,6 @@ class ReportItemCallback {
                 }
             }
         }
-        //var_dump($peerReviewed);
         if($peerReviewed){
             foreach($products as $key => $product){
                 if($product->getData('peer_reviewed') != "Yes"){

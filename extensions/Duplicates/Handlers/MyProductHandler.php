@@ -27,7 +27,7 @@ class MyProductHandler extends AbstractDuplicatesHandler {
     }
     
     function getArray2(){
-        $papers = Paper::getAllPapers('all', $this->type, 'both');
+        $papers = Paper::getAllPapers($this->type, 'both');
         $paperArray = array();
         foreach($papers as $paper){
             $paperArray[$paper->getId()] = $paper;
