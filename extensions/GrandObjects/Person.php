@@ -3662,7 +3662,7 @@ class Person extends BackboneModel {
             }
         }
         if(!$onlyPublic){
-            $allPapers = Paper::getAllPrivatePapers('all', $category, $grand);
+            $allPapers = Paper::getAllPrivatePapers($category, $grand);
             foreach($allPapers as $paper){
                 if(!isset($processed[$paper->getId()])){
                     $processed[$paper->getId()] = true;

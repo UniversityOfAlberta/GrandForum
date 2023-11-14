@@ -956,7 +956,7 @@ EOF;
     
     // Returns an array of papers relating to this project
     function getPapers($category="all", $startRange = false, $endRange = false){
-        return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);
+        return Paper::getAllPapersDuring($category, "grand", $startRange, $endRange);
     }
     
     // Returns the comments for the Project when a user moved from this Project
