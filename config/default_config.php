@@ -127,7 +127,6 @@
         'GlobalSearch',
         'Impersonation',
         'Visualizations',
-        'PublicVisualizations',
         'Duplicates',
         'ProjectEvolution',
         'CCVExport',
