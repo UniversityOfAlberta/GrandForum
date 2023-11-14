@@ -12,6 +12,7 @@ class Grant extends BackboneModel {
     var $external_pi;
     var $copi = array();
     var $total;
+    var $portions = array();
     var $funds_before;
     var $funds_after;
     var $title;
@@ -81,6 +82,7 @@ class Grant extends BackboneModel {
                 $this->external_pi = $row['external_pi'];
                 $this->copi = $copi;
                 $this->total = $row['total'];
+                $this->portions = json_decode($row['portions'], true);
                 $this->funds_before = $row['funds_before'];
                 $this->funds_after = $row['funds_after'];
                 $this->title = $row['title'];
@@ -94,6 +96,9 @@ class Grant extends BackboneModel {
                 $this->end_date = $row['end_date'];
                 $this->deleted = $row['deleted'];
                 $this->exclude = false;
+                if($this->portions == null){
+                    $this->portions = array();
+                }
                 foreach($this->getExclusions() as $exclusion){
                     if($exclusion->getId() == $me->getId()){
                         $this->exclude = true;
@@ -153,6 +158,15 @@ class Grant extends BackboneModel {
     
     function getTotal(){
         return $this->total;
+    }
+    
+    function getPortions(){
+        return $this->portions;
+    }
+    
+    function getMyPortion(){
+        $me = Person::newFromWgUser();
+        return (isset($this->portions[$me->getId()])) ? $this->portions[$me->getId()] : $this->total;
     }
     
     function getFundsBefore(){
@@ -254,6 +268,7 @@ class Grant extends BackboneModel {
                                   'external_pi' => $this->external_pi,
                                   'copi' => serialize($copis),
                                   'total' => str_replace(",", "", $this->total),
+                                  'portions' => json_encode($this->portions),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
                                   'title' => $this->title,
@@ -303,6 +318,7 @@ class Grant extends BackboneModel {
                                   'external_pi' => $this->external_pi,
                                   'copi' => serialize($copis),
                                   'total' => str_replace(",", "", $this->total),
+                                  'portions' => json_encode($this->portions),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
                                   'title' => $this->title,
@@ -356,6 +372,7 @@ class Grant extends BackboneModel {
     }
     
     function toArray(){
+        $me = Person::newFromWgUser();
         $copis = array();
         $copis_array = array();
         foreach($this->getCoPI() as $copi){
@@ -385,6 +402,8 @@ class Grant extends BackboneModel {
             'copi' => $copis_array,
             'copi_string' => implode("; ", $copis),
             'total' => $this->total,
+            'portions' => $this->portions,
+            'myportion' => $this->getMyPortion(),
             'funds_before' => $this->funds_before,
             'funds_after' => $this->funds_after,
             'title' => $this->title,
