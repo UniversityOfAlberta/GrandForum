@@ -38,7 +38,7 @@ DataCollection = Backbone.Model.extend({
             return "index.php?action=api.datacollection/" + this.get('id');
         }
         if(this.get('userId') != "" && this.get('page')){
-            return "index.php?action=api.datacollection/" + this.get('userId') + "/" + btoa(this.get('page')).replace("/", "-slash-");
+            return "index.php?action=api.datacollection/" + this.get('userId') + "/" + btoa(unaccentChars(this.get('page'))).replace("/", "-slash-");
         }
         return "index.php?action=api.datacollection";
     },
