@@ -37,8 +37,7 @@ class ProductAPI extends RESTAPI {
                 $projectId = explode(",", $this->getParam('projectId'));
                 $papers = array();
                 foreach($projectId as $pId){
-                    $ps = Paper::getAllPapers($pId, 
-                                              $this->getParam('category'), 
+                    $ps = Paper::getAllPapers($this->getParam('category'), 
                                               $this->getParam('grand'),
                                               true,
                                               'Public',
@@ -52,7 +51,7 @@ class ProductAPI extends RESTAPI {
                 $papers = array_values($papers);
             }
             else{
-                $papers = Paper::getAllPapers('all', 'all', 'both', true, 'Public', $start, $count);
+                $papers = Paper::getAllPapers('all', 'both', true, 'Public', $start, $count);
             }
             
             foreach($papers as $paper){

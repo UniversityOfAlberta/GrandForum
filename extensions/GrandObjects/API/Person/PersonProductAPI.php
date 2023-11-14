@@ -18,7 +18,7 @@ class PersonProductAPI extends RESTAPI {
                 $onlyPublic = false;
             }
             if($showAll){
-                $products = Product::getAllPapers("all", true, 'both', $onlyPublic, 'Public');
+                $products = Product::getAllPapers(true, 'both', $onlyPublic, 'Public');
             }
             else{
                 $products = $person->getPapers("all", true, 'both', $onlyPublic, 'Public', false);

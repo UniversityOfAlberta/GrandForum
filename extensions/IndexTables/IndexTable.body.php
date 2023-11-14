@@ -142,7 +142,7 @@ class IndexTable {
      * Researchers, or Highly-Qualified People, depending on parameter
      * #table.
      * Consists of the following columns
-     * User Page | Projects | Twitter
+     * User Page | Twitter
      */
     private function generatePersonTable($table){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
@@ -152,7 +152,6 @@ class IndexTable {
         $idsHeader = "";
         $contactHeader = "";
         $subRoleHeader = "";
-        $projectsHeader = "";
         $universityHeader = "";
         $ldapHeader = "";
         if($me->isRoleAtLeast(ADMIN)){
@@ -171,9 +170,6 @@ class IndexTable {
         if($table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
         }
-        if($config->getValue('projectsEnabled') && $table != CHAIR && $table != EA && $table != RMC){
-            $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
-        }
         if(!$config->getValue('singleUniversity')){
             $universityHeader = "<th style='white-space: nowrap;'>University</th>";
         }
@@ -185,7 +181,6 @@ class IndexTable {
                                 <tr>
                                     <th style='white-space: nowrap;'>Name</th>
                                     {$subRoleHeader}
-                                    {$projectsHeader}
                                     {$universityHeader}
                                     <th style='white-space: nowrap;'>Department</th>
                                     <th style='white-space: nowrap;'>Title</th>

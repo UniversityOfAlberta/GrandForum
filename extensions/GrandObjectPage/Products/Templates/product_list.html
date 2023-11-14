@@ -1,6 +1,3 @@
-<% if(projectsEnabled){ %>
-    <a id='showButton' class='button' style='margin-left:20px;' href='<%= url %>'>View <%= name %></a>
-<% } %>
 <span class="throbber" style="margin-left: 20px;"></span>
 <table id='listTable' frame='box' rules='all'>
     <thead>
@@ -9,9 +6,6 @@
             <th width='1%'>Type</th>
             <th width='50%'>Title</th>
             <th width='48%'>Authors</th>
-            <% if(projectsEnabled){ %>
-                <th>Projects</th>
-            <% } %>
         </tr>
     </thead>
     <tbody id='productRows'>

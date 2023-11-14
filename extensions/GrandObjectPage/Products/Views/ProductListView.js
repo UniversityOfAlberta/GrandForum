@@ -30,20 +30,9 @@ ProductListView = Backbone.View.extend({
                     authors.push(author.name);
                 }
             });
-            _.each(model.projects, function(project, aId){
-                if(project.url != ''){
-                    projects.push("<a href='" + project.url + "' target='_blank'>" + project.name + "</a>");
-                }
-                else{
-                    projects.push(project.name);
-                }
-            });
             var row = new Array("<span style='white-space: nowrap;'>" + model.date + "</span>", 
                                 "<span style='white-space: nowrap;'>" + model.type + "</span>",
                                 "<a href='" + model.url + "'>" + model.title + "</a>", authors.join('; '));
-            if(projectsEnabled){
-                row.push(projects.join(', '));
-            }
             data.push(row);
         }, this);
         return data;

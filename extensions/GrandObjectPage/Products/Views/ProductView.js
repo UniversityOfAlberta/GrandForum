@@ -84,39 +84,6 @@ ProductView = Backbone.View.extend({
         csv.render();
     },
     
-    renderProjects: function(){
-        var xhrs = new Array();
-        var projects = new Array();
-        _.each(this.model.get('projects'), function(proj){
-            var project = new Project({id: proj.id});
-            projects.push(project);
-            xhrs.push(project.fetch());
-        });
-        $.when.apply(null, xhrs).done(function(){
-            this.$('#productProjects').empty();
-            this.$('#productProjects').append("<ul>");
-            _.each(projects, function(project){
-                if(project.get('subprojects').length > 0){
-                    projects = _.without(projects, project);
-                    this.$('#productProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
-                    var subs = new Array();
-                    _.each(project.get('subprojects'), function(sub){
-                        if(_.where(projects, {id: sub.id}).length > 0){
-                            subs.push("<a href='" + sub.url + "'>" + sub.name + "</a>");
-                            projects = _.without(projects, _.findWhere(projects, {id: sub.id}));
-                        }
-                    });
-                    if(subs.length > 0){
-                        this.$('#productProjects li#' + project.get('id')).append("&nbsp;<span>(" + subs.join(', ') + ")</span>");
-                    }
-                }
-            });
-            _.each(projects, function(project){
-                this.$('#productProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
-            });
-        }.bind(this));
-    },
-    
     render: function(){
         main.set('title', this.model.get('title'));
         this.$el.empty();
@@ -125,7 +92,6 @@ ProductView = Backbone.View.extend({
         this.$el.html(this.template(data));
         this.renderAuthors();
         this.renderContributors();
-        this.renderProjects();
         if(this.model.get('deleted') == true){
             this.$("#deleteProduct").prop('disabled', true);
             clearInfo();

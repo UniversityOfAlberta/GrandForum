@@ -306,13 +306,10 @@ class Project extends BackboneModel {
     }
     
     function toArray(){
-        $challenge = $this->getChallenge();
-        $theme = $challenge->getAcronym();
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
-                       'theme' => $theme,
                        'url' => $this->getUrl());
         return $array;
     }
@@ -477,41 +474,6 @@ class Project extends BackboneModel {
         }
         return $people;
     }
-    
-    /**
-     * Returns whether or not the logged in user can edit this project
-     * @return boolean Whether or not the logged in user can edit this project
-     */
-    function userCanEdit(){
-        $me = Person::newFromWgUser();
-        if(!$me->isRoleAtLeast(STAFF) && 
-           (($this->isSubProject() &&
-             !$me->isThemeLeaderOf($this) &&
-             !$me->isThemeCoordinatorOf($this) &&
-             !$me->leadershipOf($this)) ||
-            (!$this->isSubProject() &&
-             !$me->isThemeLeaderOf($this) &&
-             !$me->isThemeCoordinatorOf($this) &&
-             !$me->leadershipOf($this)))){
-            return false;
-        }
-        return true;
-    }
-
-    //get the project challenge
-    function getChallenge(){
-        $data = DBFunctions::select(array('grand_project_challenges' => 'pc',
-                                          'grand_themes' => 't'),
-                                    array('t.id'),
-                                    array('t.id' => EQ(COL('pc.challenge_id')),
-                                          'pc.project_id' => EQ($this->id)),
-                                    array('pc.id' => 'DESC'),
-                                    array(1));
-        if(count($data) > 0){
-            return Theme::newFromId($data[0]['id']);
-        }
-        return Theme::newFromName("Not Specified");
-    } 
 
 }
 

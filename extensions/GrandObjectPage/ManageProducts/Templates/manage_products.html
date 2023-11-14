@@ -26,7 +26,7 @@
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="ccvDialog" style="display:none;" title="Upload Canadian CCV">
-    <p>You can upload your Canadian CCV (in XML format) using the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the <%= siteName %> will automatically imported, but will not be visible to anyone else on the <%= siteName %> except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the <%= siteName %> by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the <%= siteName %>, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> and associate it with projects before releasing it.  A <%= productsTerm.toLowerCase() %> will not get added twice into the <%= siteName %>, so uploading the CCV a second time will generally not result in duplicate entries.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.  Overwriting will typically only add information, and not change existing fields that already have data.</p>
+    <p>You can upload your Canadian CCV (in XML format) using the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the <%= siteName %> will automatically imported, but will not be visible to anyone else on the <%= siteName %> except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the <%= siteName %> by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the <%= siteName %>, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> before releasing it.  A <%= productsTerm.toLowerCase() %> will not get added twice into the <%= siteName %>, so uploading the CCV a second time will generally not result in duplicate entries.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.  Overwriting will typically only add information, and not change existing fields that already have data.</p>
     <p><b>Note:</b> After importing, double check that the publications contain the correct data, especially authors.  If the author is known to the system, they will have a green background when editing, if they don't appear green, then you will need to manually correct this.</p>
     <iframe name="fileUpload" style="display:none;"></iframe>
     <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.uploadCCV" method="POST" enctype="multipart/form-data">
@@ -38,7 +38,7 @@
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="calendarDialog" style="display:none;" title="Upload ICS Calendar">
-    <p>You can upload a Calendar (in ICS format) using the form below.  Any events that can be read into the <%= siteName %> will automatically imported, but will not be visible to anyone else on the <%= siteName %> except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the <%= siteName %> by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted events will not get added to the <%= siteName %>, and also gives you a chance to make changes to the event and associate it with projects before releasing it.</p>
+    <p>You can upload a Calendar (in ICS format) using the form below.  Any events that can be read into the <%= siteName %> will automatically imported, but will not be visible to anyone else on the <%= siteName %> except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the <%= siteName %> by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted events will not get added to the <%= siteName %>, and also gives you a chance to make changes to the event before releasing it.</p>
     <iframe name="icsUpload" style="display:none;"></iframe>
     <form target="icsUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.uploadICS" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="publications" value="true" />
@@ -56,7 +56,7 @@
 </div>
 <% if(isExtensionEnabled('CrossForumExport')){ %>
     <div id="crossForumExportDialog" style="display:none;" title="Import from other Forum">
-        <p>If you have an account on another Forum, you can import BibTeX references from it.  Any <%= productsTerm.toLowerCase() %> that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the forum, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> and associate it with projects before releasing it.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.  Overwriting will typically only add information, and not change existing fields that already have data.</p>
+        <p>If you have an account on another Forum, you can import BibTeX references from it.  Any <%= productsTerm.toLowerCase() %> that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the forum, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> before releasing it.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.  Overwriting will typically only add information, and not change existing fields that already have data.</p>
         <select>
             <% _.each(crossForumUrls, function(url, name){ %>
                 <!--% if(!url.includes(window.location.hostname)){ %-->
@@ -127,22 +127,7 @@
 <%= subview('addProduct') %>
 <table id="listTable" frame="box" rules="all" style="display:none;">
     <thead>
-        <% if(projectsEnabled){ %>
-            <tr style="border-bottom: 1px solid #C8C8C8; border-top: 1px solid #C8C8C8;">
-                <th class="angledTableHead" ><div class="angledTableBorder"></div><div class="angledTableText">Other</div></th>
-                <% _.each(this.projects.models, function(p){ %>
-                    <th class="angledTableHead checkboxCell"><div class="angledTableBorder"></div><div class="angledTableText"><%= p.get('name') %></div></th>
-                <% }) %>
-                <th width="100%" colspan="7"><%= productsTerm %> Information</th>
-            </tr>
-        <% } %>
         <tr style="border-bottom: 2px solid #C8C8C8;">
-            <% if(projectsEnabled){ %>
-                <th width="40px"></th>
-                <% _.each(this.projects.models, function(p){ %>
-                    <th width="40px" class="checkboxCell"><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /></th>
-                <% }) %>
-            <% } %>
             <th width="1%" style="border-left: 2px solid #C8C8C8;">Edit</th>
             <th width="1%">Private&nbsp;<span class="tooltip" title="If a Product is marked as private, it will NOT show up anywhere else on the Forum.">&#9432;</span></th>
             <th width="1%">Exclude&nbsp;<span class="tooltip" title="If a Product is marked as excluded, it will NOT show up in your profile or Annual Report.">&#9432;</span></th>
