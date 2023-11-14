@@ -300,8 +300,6 @@ class CavendishTemplate extends QuickTemplate {
 		    ?>
 		    
 		    orcidId = "<?php echo $config->getValue('orcidId'); ?>";
-		    projectPhase = <?php echo PROJECT_PHASE; ?>;
-		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
             singleUniversity = <?php var_export($config->getValue('singleUniversity')); ?>;		    
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
@@ -622,14 +620,6 @@ class CavendishTemplate extends QuickTemplate {
 		        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
                 var eventer = window[eventMethod];   
                 var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";   
-
-                // Listen to message from parent window
-                eventer(messageEvent,function(e) {
-                    if(e.data.projectUrl != undefined){
-                        $("a.projectUrl").attr('href', function(el){ return e.data.projectUrl + jQuery(this).attr('data-projectId')});
-                        $("a.projectUrl").attr('target', '_parent');
-                    }
-                }, false);
 		        
 		        $(document).ready(function(){
 		            $("a").attr("target", "");

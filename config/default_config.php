@@ -86,9 +86,6 @@
     
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
-    
-    // Whether or not to enable projects
-    $config->setValue("projectsEnabled", true);
    
     // Whether or not the forum only contains one university
     $config->setValue("singleUniversity",false);
@@ -153,9 +150,6 @@
                                               "FES"        => "https://forum.futureenergysystems.ca/index.php/Special:CrossForumExport",
                                               "UofA FoS"   => "https://forum-fos.ualberta.ca/index.php/Special:CrossForumExport",
                                               "GlycoNet"   => "https://forum.glyconet.ca/index.php/Special:CrossForumExport"));
-
-    $config->setValue("projectPhaseDates", array(1 => "2015-03-31 00:00:00",
-                                                 2 => "2015-04-01 00:00:00"));
     
     /*
      * PDF Config
@@ -178,9 +172,6 @@
      */
      
     $config->setConst("DEMO", false);
-     
-    // The current Project Phase
-    $config->setConst("PROJECT_PHASE", 2);
      
     // The current cycle year
     $config->setConst("YEAR", date('Y'));

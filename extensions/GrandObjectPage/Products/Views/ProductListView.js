@@ -21,7 +21,6 @@ ProductListView = Backbone.View.extend({
                 return;
             }
             var authors = Array();
-            var projects = Array();
             _.each(model.authors, function(author, aId){
                 if(author.url != ''){
                     authors.push("<a href='" + author.url + "' target='_blank'>" + author.name + "</a>");
