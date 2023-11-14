@@ -7,7 +7,6 @@ function initValidations(){
                              'NOSPACES' => 'NoSpacesValidation',
                              'NUMERIC'  => 'NumericValidation',
                              'PERCENT'  => 'PercentValidation',
-                             'PROJECT'  => 'ProjectValidation',
                              'PERSON'   => 'PersonValidation',
                              'NI'       => 'NIValidation',
                              'EMAIL'    => 'EmailValidation');
