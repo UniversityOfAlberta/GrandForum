@@ -117,7 +117,7 @@ EOF;
             $tok = false;
             $tst = '';
             $sto = new ReportStorage($person);
-            $project = Project::newFromId($this->projectId);
+            $project = null;
             $report = new DummyReport($file, $person, $project);
             $report->person = $person;
         	$check = $report->getPDF(false, $this->getAttr("section", ""));

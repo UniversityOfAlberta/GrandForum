@@ -130,15 +130,7 @@ class PDF extends BackboneModel {
     }
     
     function getProject(){
-        if($this->project === false){
-            if($this->projectId != null){
-                $this->project = Project::newFromId($this->projectId);
-            }
-            else{
-                $this->project = null;
-            }
-        }
-        return $this->project;
+        return null;
     }
     
     function getTitle(){

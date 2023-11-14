@@ -6,7 +6,6 @@ class PDFReportItem extends StaticReportItem {
         global $wgServer, $wgScriptPath, $wgOut;
         $me = $this->getReport()->person;
         $reportType = $this->getAttr("reportType", 'HQPReport');
-        $useProject = $this->getAttr("project", false);
         $class = $this->getAttr("class", "button");
         $showIfNull = $this->getAttr("showIfNull", "false");
         $buttonName = $this->getAttr("buttonName", "Report PDF");
@@ -23,9 +22,6 @@ class PDFReportItem extends StaticReportItem {
             $width = $width.";-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box";
         }
         $project = null;
-        if($useProject){
-            $project = Project::newFromId($this->projectId);
-        }
         $person = Person::newFromId($this->personId);
         $report = new DummyReport($reportType, $person, $project, $year, true);
         if($blobReport != ""){

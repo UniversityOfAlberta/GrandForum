@@ -174,7 +174,7 @@ EOF;
             $tst = '';
             $sub = 0;
             $sto = new ReportStorage($person);
-            $project = Project::newFromId($this->projectId);
+            $project = null;
             if($file != $this->getReport()->xmlName){
                 $report = new DummyReport($file, $person, $project);
             }
@@ -252,7 +252,7 @@ EOF;
             $tst = '';
             $sub = 0;
             $sto = new ReportStorage($person);
-            $project = Project::newFromId($this->projectId);
+            $project = null;
             if($file != $this->getReport()->xmlName){
                 $report = new DummyReport($file, $person, $project);
             }

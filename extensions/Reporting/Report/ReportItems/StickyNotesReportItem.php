@@ -6,13 +6,9 @@ class StickyNotesReportItem extends AbstractReportItem {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 		$me = $this->getReport()->person;
         $reportType = $this->getAttr("reportType", 'HQPReport');
-        $useProject = $this->getAttr("project", false);
         $year = $this->getAttr("year", $this->getReport()->year);
         $height = $this->getAttr("height", "700px");
         $project = null;
-        if($useProject){
-            $project = Project::newFromId($this->projectId);
-        }
         $person = Person::newFromId($this->personId);
         $report = new DummyReport($reportType, $person, $project, $year, true);
         $report->person = $person;
