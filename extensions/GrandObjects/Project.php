@@ -21,7 +21,6 @@ class Project extends BackboneModel {
     var $startDates;
     var $endDates;
     var $comments;
-    var $milestones;
     var $deleted;
     var $effectiveDate;
     private $succ;
@@ -542,7 +541,6 @@ EOF;
                 if($pred != null && $pred->getName() != ""){
                     if($pred->getId() == $this->id){
                         // These are the same project id, just different evolution id.  Copy over some of the data
-                        $pred->milestones = $this->milestones;
                         $pred->people = $this->people;
                         $pred->multimedia = $this->multimedia;
                         $pred->startDates = $this->startDates;
@@ -1069,85 +1067,6 @@ EOF;
             return "";
         }
     }
-    
-    // Returns the current milestones of this project
-    // If $history is set to true, all the milestones ever for this project are included
-    function getMilestones($history=false){
-        if($this->milestones != null && !$history){
-            return $this->milestones;
-        }
-        $milestones = array();
-        $milestonesIds = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getMilestones($history) as $milestone){
-                    if(isset($milestoneIds[$milestone->getMilestoneId()])){
-                        continue;
-                    }
-                    $milestoneIds[$milestone->getMilestoneId()] = true;
-                    $milestones[] = $milestone;
-                }
-            }
-        }
-        $sql = "SELECT DISTINCT milestone_id
-                FROM grand_milestones
-                WHERE project_id = '{$this->id}'";
-        if(!$history){
-            $sql .= "\nAND start_date > end_date
-                     AND status != 'Abandoned' AND status != 'Closed'";
-        }
-        $sql .= "\nORDER BY activity_id, projected_end_date";
-        $data = DBFunctions::execSQL($sql);
-        
-        foreach($data as $row){
-            if(isset($milestoneIds[$row['milestone_id']])){
-                continue;
-            }
-            $milestone = Milestone::newFromId($row['milestone_id']);
-            $milestoneIds[$milestone->getMilestoneId()] = true;
-            $milestones[] = $milestone;
-        }
-        
-        if(!$history){
-            $this->milestones = $milestones;
-        }
-        return $milestones;
-    }
-
-    // Returns the past milestones of this project
-    function getPastMilestones(){
-        $milestoneIds = array();
-        $milestones = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getPastMilestones() as $milestone){
-                    if(isset($milestoneIds[$milestone->getMilestoneId()])){
-                        continue;
-                    }
-                    $milestoneIds[$milestone->getMilestoneId()] = true;
-                    $milestones[] = $milestone;
-                }
-            }
-        }
-        $sql = "SELECT DISTINCT milestone_id
-                FROM grand_milestones
-                WHERE project_id = '{$this->id}'
-                AND status IN ('Abandoned','Closed') 
-                ORDER BY activity_id, projected_end_date";
-        
-        $data = DBFunctions::execSQL($sql);
-        foreach($data as $row){
-            if(isset($milestoneIds[$row['milestone_id']])){
-                continue;
-            }
-            $milestone = Milestone::newFromId($row['milestone_id']);
-            $milestoneIds[$milestone->getMilestoneId()] = true;
-            $milestones[] = $milestone;
-        }
-        return $milestones;
-    }
 
     // Determine whether this is a Sub-Project
     function isSubProject(){
@@ -1202,105 +1121,6 @@ EOF;
     
     function getParent(){
         return Project::newFromId($this->parentId);
-    }
-    
-    // Returns an array of milestones where all the milestones which were active at any time during the given year
-    function getMilestonesDuring($year='0000'){
-        if($year == '0000'){
-            $year = date('Y');
-        }
-        
-        $startRange = $year.'01-01 00:00:00';
-        $endRange = $year.'-12-31 23:59:59';
-        
-        $milestones = array();
-        $milestoneIds = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getMilestonesDuring($year) as $milestone){
-                    if(isset($milestoneIds[$milestone->getMilestoneId()])){
-                        continue;
-                    }
-                    $milestoneIds[$milestone->getMilestoneId()] = $milestone->getMilestoneId();
-                    $milestones[] = $milestone;
-                }
-            }
-        }
-        $sql = "SELECT MAX(id) as max_id, milestone_id
-                FROM grand_milestones
-                WHERE project_id ='{$this->id}'
-                AND milestone_id NOT IN ('".implode("','", $milestoneIds)."')
-                GROUP BY milestone_id
-                ORDER BY milestone_id";
-        $data = DBFunctions::execSQL($sql);
-        foreach ($data as $row){
-            $max_id = $row['max_id'];
-            $sql2 = "SELECT milestone_id
-                     FROM grand_milestones
-                     WHERE id = '{$max_id}'
-                     AND ( 
-                        ( (end_date != '0000-00-00 00:00:00') AND
-                        (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
-                        OR
-                        ( (end_date = '0000-00-00 00:00:00') AND
-                        ((start_date <= '$endRange')))
-                     )
-                     AND ( (start_date > end_date AND status != 'Closed' AND status != 'Abandoned') OR ( $year BETWEEN YEAR(start_date)  AND YEAR(end_date) ) )";
-            
-            $data2 = DBFunctions::execSQL($sql2);
-            if( count($data2) > 0 ){
-                $row2 = $data2[0];
-                if(isset($milestoneIds[$row2['milestone_id']])){
-                    continue;
-                }
-                $milestoneIds[$row2['milestone_id']] = true;
-                $milestones[] = Milestone::newFromId($row2['milestone_id']);
-            }
-        }
-        return $milestones;
-    }
-    
-    function getGoalsDuring($year){
-        $milestones = array();
-        $milestoneIds = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getGoalsDuring($year) as $milestone){
-                    if(isset($milestoneIds[$milestone->getMilestoneId()])){
-                        continue;
-                    }
-                    $milestoneIds[$milestone->getMilestoneId()] = $milestone->getMilestoneId();
-                    $milestones[] = $milestone;
-                }
-            }
-        }
-        $sql = "SELECT MAX(id) as max_id, milestone_id
-                FROM grand_milestones
-                WHERE project_id ='{$this->id}'
-                AND milestone_id NOT IN ('".implode("','", $milestoneIds)."')
-                GROUP BY milestone_id
-                ORDER BY milestone_id";
-        $data = DBFunctions::execSQL($sql);
-        foreach ($data as $row){
-            $max_id = $row['max_id'];
-            $sql2 = "SELECT milestone_id
-                     FROM grand_milestones
-                     WHERE id = '{$max_id}'
-                     AND (projected_end_date LIKE '%{$year}%')";
-            
-            $data2 = DBFunctions::execSQL($sql2);
-            if(count($data2) > 0){
-                $row2 = $data2[0];
-                if(isset($milestoneIds[$row2['milestone_id']])){
-                    continue;
-                }
-                $milestoneIds[$row2['milestone_id']] = true;
-                $milestones[] = Milestone::newFromId($row2['milestone_id']);
-            }
-        }
-        return $milestones;
     }
 }
 
