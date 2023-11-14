@@ -183,6 +183,7 @@ class IntakeSummary extends SpecialPage {
                 }
             }
         }
+        $html .= IntakeSummary::programAttendanceHeaderBottom();
         if(!$simple){                      
             $html .= "  </tr>
                       </thead>";
@@ -263,6 +264,7 @@ class IntakeSummary extends SpecialPage {
                 }
             }
         }
+        $html .= IntakeSummary::programAttendanceRow($person);
         if(!$simple){
             $html .= "</tr>";
         }

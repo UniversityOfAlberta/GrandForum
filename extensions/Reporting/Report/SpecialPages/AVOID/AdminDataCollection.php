@@ -15,7 +15,7 @@ class AdminDataCollection extends SpecialPage{
                              "peer_choach"         => array("text" => "Peer-Coach", "count" => 1),
                              "community_connector" => array("text" => "Community Connector", "count" => 1),
                              "peer_navigator"      => array("text" => "Peer Navigator", "count" => 1),
-                             "ask_an_expert"       => array("text" => "Ask an Expert", "count" => 3),
+                             "ask_an_expert"       => array("text" => "Ask an Expert", "count" => 5),
                              "tech_training"       => array("text" => "Tech Training", "count" => 1));
 
     function __construct() {
