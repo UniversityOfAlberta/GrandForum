@@ -95,20 +95,6 @@ class ReportArchive extends SpecialPage {
                                 $lastName = $report->person->getLastName();
                                 $name = str_replace(" ", "-", $caseNumber."{$lastName}".substr($lastName, 0, 1)."-".trim(str_replace(":", "", $type)))."_$date.$ext";
                             }
-                            else if($report->project != null){
-                                $project = $report->project;
-                                if($report->person->getId() == 0){
-                                    $reportName = trim(str_replace($project->getName(), "", $reportName), " \t\n\r\0\x0B-");
-                                    // Project Reports
-                                    $name = "{$project->getName()}-{$reportName}_{$date}.{$ext}";
-                                }
-                                else{
-                                    // Individual Reports, but project version
-                                    $firstName = $report->person->getFirstName();
-                                    $lastName = $report->person->getLastName();
-                                    $name = "{$lastName}".substr($lastName, 0, 1)."-{$reportName}:{$project->getName()}_{$date}.{$ext}";
-                                }
-                            }
                             else{
                                 // Individual Reports
                                 $firstName = $report->person->getFirstName();

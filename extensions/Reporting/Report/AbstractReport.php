@@ -74,20 +74,6 @@ abstract class AbstractReport extends SpecialPage {
         $type = ReportXMLParser::findPDFReport($type, true);
         
         $proj = null;
-        $rp_index = new ReportIndex($pers);
-        $projects = $rp_index->list_projects();
-        foreach($projects as $project){
-            $reports = $rp_index->list_reports($project, 0, 0);
-            foreach($reports as $report){
-                if($report['token'] == $tok){
-                    $proj = Project::newFromId($project);
-                    break;
-                }
-            }
-            if($proj != null){
-                break;
-            }
-        }
         return new DummyReport($type, $pers, $proj, $year, true);
     }
     
@@ -117,12 +103,6 @@ abstract class AbstractReport extends SpecialPage {
         }
         else{
             $this->person = Person::newFromId($personId);
-        }
-        if($projectName === false && isset($_GET['project'])){
-            $projectName = $_GET['project'];
-        }
-        if($projectName != null){
-            $this->project = Project::newFromName($projectName);
         }
         if(isset($_GET['generatePDF'])){
             $this->generatePDF = true;

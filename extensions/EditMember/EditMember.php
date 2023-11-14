@@ -54,48 +54,6 @@ class EditMember extends SpecialPage{
                                                     }
                                                 });
                             });
-                            
-                            function qualifyProjects(box){
-                                if($(box).is(':checked')){
-                                    $(box).next().next().show();
-                                }
-                                else{
-                                    $(box).next().next().hide();
-                                }
-                            }
-                            
-                            function addComment(box, cannotchange){
-                                if(cannotchange){
-                                    if(!$(box).is(':checked') && $(box).hasClass('already')){
-                                        $(box).attr('checked', 'checked');
-                                        alert('You cannot change the role of an HQP that is supervised by someone else.');
-                                    }
-                                }
-                                else{
-                                    if(!$(box).is(':checked') && $(box).hasClass('already')){
-                                        $(box).next().slideDown('fast');
-                                    }
-                                    else{
-                                        $(box).next().slideUp('fast');
-                                    }
-                                }
-                            }
-                            
-                            function openRoleProjects(roleId){
-                                $('div#role_' + roleId + '_projects').dialog({
-                                    width: 650,
-                                    buttons: {
-                                        'Ok': function(){
-                                            $(this).dialog('close');
-                                        }
-                                    }
-                                }).parent().appendTo($('#editMember'));
-                                $('div#role_' + roleId + '_projects').dialog('option','position', {
-                                    my: 'center center',
-                                    at: 'center center',
-                                    offset: '0 -75%'
-                                });
-                            }
                            </script>");
         if(!isset($_POST['submit'])){
             // Form not entered yet
@@ -178,24 +136,6 @@ class EditMember extends SpecialPage{
         }
     }
     
-    // Returns a string representation of the given variable containing role details
-    private function varToString($var, $current, $nss, $type, $person){
-        $diff = EditMember::roleDiff($person, $current, $nss, $type);
-        $return = "";
-        if(isset($var)){
-            foreach($var as $key => $value){
-                if($value != "" && ($nss == "" || strstr($nss, $key) === false) && strstr($diff, '-'.$key) !== false){
-                    if($type == "PROJECT"){
-                        $proj = Project::newFromName($key);
-                        $key = $proj->getId();
-                    }
-                    $return .= "$key::".EditMember::parse($value)." ::";
-                }
-            }
-        }
-        return substr($return,0,-2);
-    }
-    
     // Generates a more human readable form for the string used to add/remove roles
     function roleDiff($person, $current, $string, $type, $date=false){
         $output = "";
@@ -254,7 +194,7 @@ class EditMember extends SpecialPage{
             $names[] = $person->getName();
         }
         
-        $wgOut->addHTML("This page can be used to edit the roles and projects of members on the {$config->getValue('siteName')}.<br />
+        $wgOut->addHTML("This page can be used to edit the sub-roles of members on the {$config->getValue('siteName')}.<br />
                          Select a user from the list below, and then click the 'Next' button.<table>
                             <tr><td>
                             <form action='$wgServer$wgScriptPath/index.php/Special:EditMember' method='post'>
@@ -272,147 +212,16 @@ class EditMember extends SpecialPage{
             <input id='button' type='submit' name='next' value='Next' disabled='disabled' />
         </form></td></tr></table>
         <script type='text/javascript'>
-	        $('#names').chosen();
-	        $(document).ready(function(){
-	            $('#names').change(function(){
-	                var page = $('#names').val();
-	                if(page != ''){
-	                    $('#button').prop('disabled', false);
-	                }
-	            });
-	        });
-	    </script>");
-    }
-    
-    function generateViewHTML($wgOut){
-        global $wgScriptPath, $wgServer;
-        $history = false;
-        if(isset($_GET['history']) && $_GET['history'] == true){
-            $history = true;
-        }
-        if($history){
-            $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view'>View New Requests</a><br /><br />
-                        <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-                        <thead><tr bgcolor='#F2F2F2'>
-                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Effective Dates</th> <th>Staff</th> <th>Role</th> <th>Comment</th> <th>Other</th> <th>Type</th> <th>Status</th>
-                        </tr></thead><tbody>\n");
-        }
-        else{
-            $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&history=true'>View History</a><br /><br />
-                        <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-                        <thead><tr bgcolor='#F2F2F2'>
-                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Effective Dates</th> <th>Role</th> <th>Comment</th> <th>Other</th> <th>Type</th> <th>Accept</th> <th>Ignore</th>
-                        </tr></thead><tbody>\n");
-        }
-        if($history){
-            $rows = DBFunctions::select(array('grand_role_request'),
-                                        array('*'),
-                                        array('created' => EQ(1),
-                                              WHERE_OR('`ignore`') => EQ(1)),
-                                        array('last_modified' => 'DESC'));
-        }
-        else{
-            $rows = DBFunctions::select(array('grand_role_request'),
-                                        array('*'),
-                                        array('created' => EQ(0),
-                                              '`ignore`' => EQ(0)));
-        }
-        foreach($rows as $row){
-            $otherData = unserialize($row['other']);
-            if(isset($otherData['thesisTitle'])){
-                $other = "<b>Thesis:</b> {$otherData['thesisTitle']}";
-            }
-            else if(isset($otherData['where'])){
-                $other = "<b>Now At:</b> {$otherData['where']}";
-            }
-            else{
-                $other = "";
-            }
-            $req_user = Person::newFromId($row['requesting_user']);
-            $staff = Person::newFromId($row['staff']);
-            $person = Person::newFromId($row['user']);
-            $projs = array();
-            $roles = array();
-            if($req_user->getName() != null){
-                foreach($req_user->getRoles() as $role){
-                    $roles[] = $role->getRole();
-                }
-            }
-            if($history){
-                $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['current_role'], $row['role'], $row['type'], $row['last_modified']);
-            }
-            else{
-                $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['current_role'], $row['role'], $row['type']);
-            }
-            $roleProjects = unserialize($row['role_projects']);
-            
-            if(is_array($roleProjects) && count($roleProjects) > 0){
-                $diff .= "<ul>";
-                foreach($roleProjects as $r => $projs){
-                    $diff .= "<li>{$r}<ul><li>".implode("</li><li>", $projs)."</li></ul></li>";
-                }
-                $diff .= "</ul>";
-            }
-            
-            $dates = explode("::", $row['effective_date']);
-            foreach($dates as $key => $date){
-                if($key % 2 == 0 && is_numeric($date)){
-                    $proj = Project::newFromId($date);
-                    $dates[$key] = $proj->getName();
-                }
-            }
-            $wgOut->addHTML("<tr bgcolor='#FFFFFF'>
-                        <td align='left'>
-                            <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a> (".implode(",", $roles).")<br /><a onclick='$(\"#{$row['id']}\").slideToggle();$(this).remove();' style='cursor:pointer;'>Show Projects</a>
-                            <div id='{$row['id']}' style='display:none;padding-left:15px;'>".implode("<br />", $projs)."</div>
-                        </td> 
-                        <td align='left'><a target='_blank' href='{$person->getUrl()}'>{$person->getName()}</a></td> <td>{$row['last_modified']}</td> <td>".str_replace(" ::", "<br />", implode("::", $dates))."</td>");
-            if($history){
-                $wgOut->addHTML("<td>{$staff->getName()}</td>");
-            }
-            $comments = explode("::", $row['comment']);
-            foreach($comments as $key => $comment){
-                if($key % 2 == 0 && is_numeric($comment)){
-                    $proj = Project::newFromId($comment);
-                    $comments[$key] = $proj->getName();
-                }
-            }
-            $wgOut->addHTML("<td align='left'>{$diff}</td> <td align='left'>".str_replace(" ::", "<br />", implode("::", $comments))."</td> <td align='left'>".$other."</td> <td align='left'>{$row['type']}</td>
-                        <form action='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&sub' method='post'>
-                            <input type='hidden' name='current_role' value='{$row['current_role']}' />
-                            <input type='hidden' name='role' value='{$row['role']}' />
-                            <input type='hidden' name='role_projects' value='{$row['role_projects']}' />
-                            <input type='hidden' name='comment' value='{$row['comment']}' />
-                            <input type='hidden' name='effectiveDates' value='{$row['effective_date']}' />
-                            <input type='hidden' name='user' value='{$row['user']}' />
-                            <input type='hidden' name='requesting_user' value='{$row['requesting_user']}' />
-                            <input type='hidden' name='type' value='{$row['type']}' />
-                            <input type='hidden' name='id' value='{$row['id']}' />");
-            if(isset($otherData['thesisTitle'])){
-                $wgOut->addHTML("<input type='hidden' name='thesis' value='{$otherData['thesisId']}' />");
-            }
-            else if(isset($otherData['where'])){
-                $wgOut->addHTML("<input type='hidden' name='where' value='{$otherData['where']}' />");
-            }
-            if($history){
-                if($row['created']){
-                    $wgOut->addHTML("<td>Accepted</td>");
-                }
-                else{
-                    $wgOut->addHTML("<td>Ignored</td>");
-                }
-            }
-            else{
-                $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /></td> <td><input type='submit' name='submit' value='Ignore' /></td>");
-            }
-            $wgOut->addHTML("
-                        </form>
-                    </tr>");
-        }
-        $wgOut->addHTML("</tbody></table><script type='text/javascript'>
-                                            $('#requests').dataTable({'autoWidth': false}).fnSort([[2,'desc']]);
-                                            $('#requests').css('display', 'table');
-                                         </script>");
+            $('#names').chosen();
+            $(document).ready(function(){
+                $('#names').change(function(){
+                    var page = $('#names').val();
+                    if(page != ''){
+                        $('#button').prop('disabled', false);
+                    }
+                });
+            });
+        </script>");
     }
     
     function generateEditMemberFormHTML($wgOut){
@@ -420,7 +229,7 @@ class EditMember extends SpecialPage{
         $me = Person::newFromId($wgUser->getId());
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
         $wgOut->addHTML("<form id='editMember' action='$wgServer$wgScriptPath/index.php/Special:EditMember?project' method='post'>
-        <p>Select the Roles and Projects to which <b>{$person->getNameForForms()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.  All actions will need to be approved by an Administrator.</p>");
+        <p>Select the Sub-Roles to which <b>{$person->getNameForForms()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.  All actions will need to be approved by an Administrator.</p>");
         EditMember::generateSubRoleFormHTML($wgOut);
         $wgOut->addHTML("<br />
                          <input type='hidden' name='name' value='{$_GET['name']}' />

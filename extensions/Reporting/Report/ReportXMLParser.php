@@ -353,21 +353,6 @@ class ReportXMLParser {
                 $this->parseRoleSectionPermissions($child, $role);
                 $this->report->addPermission("Role", array("role" => "{$role}", "subType" => "{$subType}"), "{$start}", "{$end}");
             }
-            else if($key == "Project"){
-                $attributes = $child->attributes();
-                $deleted = (isset($attributes->deleted)) ? (strtolower("{$attributes->deleted}") == "true") : false;
-                $projName = (isset($attributes->project)) ? "{$attributes->project}" : "";
-                $start = (isset($attributes->start)) ? AbstractReport::blobConstant($attributes->start) : "0000-00-00";
-                $end = (isset($attributes->end)) ? AbstractReport::blobConstant($attributes->end) : "2100-12-31";
-                if($start == null){
-                    $this->errors[] = "Start time '{$attributes->start}' does not exist";
-                }
-                if($end == null){
-                    $this->errors[] = "Start time '{$attributes->end}' does not exist";
-                }
-                $this->parseProjectSectionPermissions($child, $projName);
-                $this->report->addPermission("Project", array("deleted" => $deleted, "project" => $projName), "{$start}", "{$end}");
-            }
             else if($key == "Person"){
                 $attributes = $child->attributes();
                 $id = (isset($attributes->id)) ? "{$attributes->id}" : 0;
@@ -419,17 +404,6 @@ class ReportXMLParser {
             $permissions = (isset($attributes->permissions)) ? "{$attributes->permissions}" : "r";
             $sectionId = (isset($attributes->id)) ? "{$attributes->id}" : "";
             $this->report->addSectionPermission($sectionId, $role, $permissions);
-        }
-    }
-    
-    // Parses the <SectionPermission> elements of a <Project> element
-    function parseProjectSectionPermissions($node, $project){
-        $children = $node->children();
-        foreach($children as $key => $child){
-            $attributes = $child->attributes();
-            $permissions = (isset($attributes->permissions)) ? "{$attributes->permissions}" : "r";
-            $sectionId = (isset($attributes->id)) ? "{$attributes->id}" : "";
-            $this->report->addSectionPermission($sectionId, $project, $permissions);
         }
     }
     

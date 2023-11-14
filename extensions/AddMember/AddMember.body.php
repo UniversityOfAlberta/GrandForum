@@ -31,19 +31,6 @@ class UserCreate {
         }
         Cache::delete("rolesCache");
         
-        if(isset($_POST['wpNS'])){
-            $box = $_POST['wpNS'];
-            while (list ($key,$val) = @each ($box)) {
-                if($val != null && $val != ""){
-                    $project = Project::newFromName($val);
-                    DBFunctions::insert('grand_project_members',
-                                        array('user_id' => $id,
-                                              'project_id' => $project->getId(),
-                                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
-                }
-            }
-        }
-        
         $_POST['candidate'] = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
         DBFunctions::update('mw_user',
 	                        array('candidate' => $_POST['candidate']),

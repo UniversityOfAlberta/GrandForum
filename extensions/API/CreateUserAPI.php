@@ -10,7 +10,6 @@ class CreateUserAPI extends API{
         $this->addPOST("wpFirstName",false,"The User's first name","My First Name");
         $this->addPOST("wpLastName",false,"The User's last name","My Last Name");
         $this->addPOST("wpUserType",true,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
-        $this->addPOST("wpNS",false,"The list of projects that the user is a part of.  Must be in the form \"Project1, Project2, ...\"","MEOW, NAVEL");
         $this->addPOST("wpSendMail",false,"Whether or not to send an email to the user or not.  This value should be either 'true' or 'false'.  If this parameter is not included, it is assumed that not email should be sent","true");
         $this->addPOST("candidate",false,"Whether or not to make this user a candidate", "1");
         $this->addPOST("id",false,"The id of the creation request(You probably should not touch this parameter unless you know exactly what you are doing)", "15");
@@ -23,17 +22,6 @@ class CreateUserAPI extends API{
     function doAction($doEcho=true){
         global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $wgEnableEmail, $wgEmailAuthentication, $config;
         $me = Person::newFromId($wgUser->getId());
-        $oldWPNS = "";
-        $oldWPType = "";
-        if(isset($_POST['wpNS'])){
-            $oldWPNS = $_POST['wpNS'];
-            $nss = explode(", ", $_POST['wpNS']);
-            unset($_POST['wpNS']);
-            foreach($nss as $ns){
-                $_POST['wpNS'][] = $ns;
-            }
-        }
-        $oldWPType = $_POST['wpUserType'];
         $roles = explode(", ", $_POST['wpUserType']);
         unset($_POST['wpUserType']);
         foreach($roles as $role){
