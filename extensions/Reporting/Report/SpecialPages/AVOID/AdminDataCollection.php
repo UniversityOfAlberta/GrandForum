@@ -16,7 +16,8 @@ class AdminDataCollection extends SpecialPage{
                              "community_connector" => array("text" => "Community Connector", "count" => 1),
                              "peer_navigator"      => array("text" => "Peer Navigator", "count" => 1),
                              "ask_an_expert"       => array("text" => "Ask an Expert", "count" => 5),
-                             "tech_training"       => array("text" => "Tech Training", "count" => 1));
+                             "tech_training"       => array("text" => "Tech Training", "count" => 1),
+                             "in_person"           => array("text" => "In Person Assessment", "count" => 1));
 
     function __construct() {
         SpecialPage::__construct("AdminDataCollection", STAFF.'+', true);
