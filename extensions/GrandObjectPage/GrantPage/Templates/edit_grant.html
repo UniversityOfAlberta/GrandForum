@@ -7,7 +7,7 @@
 <div id="preview" style="display:none;"></div>
 <table>
     <tr>
-        <td class="label">PI:</td>
+        <td class="label">UofA PI:</td>
         <td colspan="3"><%= HTML.Select(this, 'pi.id', {options: [{option: "", value: 0}].concat(this.allPeople.map(function(o){ return {option: o.get('fullName'), value: o.get('id')}; }))}) %></td>
     </tr>
     <tr>
@@ -44,8 +44,12 @@
         <td colspan="3"><%= HTML.TextBox(this, 'project_id') %></td>
     </tr>
     <tr>
-        <td class="label">Funding Amount ($):</td>
+        <td class="label">Total Amount ($):</td>
         <td colspan="3"><span style="vertical-align: middle;"><%= HTML.TextBox(this, 'total') %></td>
+    </tr>
+    <tr>
+        <td class="label">My Portion ($):</td>
+        <td colspan="3"><span style="vertical-align: middle;"><%= HTML.TextBox(this, 'myportion') %></td>
     </tr>
 </table>
 <!--h2>Contributions</h2>

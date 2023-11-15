@@ -27,6 +27,7 @@ class GrantAPI extends RESTAPI {
         $grant->sponsor = $this->POST('sponsor');
         $grant->external_pi = $this->POST('external_pi');
         $grant->total = $this->POST('total');
+        $grant->portions = array($me->getId() => str_replace(",", "", $this->POST('myportion')));
         $grant->funds_before = $this->POST('funds_before');
         $grant->funds_after = $this->POST('funds_after');
         $grant->title = $this->POST('title');
@@ -45,6 +46,7 @@ class GrantAPI extends RESTAPI {
     }
     
     function doPUT(){
+        $me = Person::newFromWgUser();
         $id = $this->getParam('id');
         if($id != ""){
             $grant = Grant::newFromId($id);
@@ -57,6 +59,7 @@ class GrantAPI extends RESTAPI {
             $grant->sponsor = $this->POST('sponsor');
             $grant->external_pi = $this->POST('external_pi');
             $grant->total = $this->POST('total');
+            $grant->portions[$me->getId()] = str_replace(",", "", $this->POST('myportion'));
             $grant->funds_before = $this->POST('funds_before');
             $grant->funds_after = $this->POST('funds_after');
             $grant->title = $this->POST('title');

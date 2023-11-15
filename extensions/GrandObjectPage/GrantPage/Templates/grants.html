@@ -13,6 +13,7 @@
             <th style="white-space:nowrap;">Start Date</th>
             <th style="white-space:nowrap;">End Date</th>
             <th style="white-space:nowrap;">Total ($)</th>
+            <th style="white-space:nowrap;">My Portion ($)</th>
         </tr>
     </thead>
     <tbody>
@@ -42,6 +43,7 @@
                 <td><%= grant.get('start_date') %></td>
                 <td><%= grant.get('end_date') %></td>
                 <td align="right"><%= number_format(grant.get('total')) %></td>
+                <td align="right"><%= number_format(grant.get('myportion')) %></td>
             </tr>
         <% }) %>
     </tbody>

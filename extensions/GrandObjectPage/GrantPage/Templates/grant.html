@@ -9,7 +9,7 @@
 <table>
     <% if(this.person.get('id') != 0){ %>
         <tr>
-            <td class="label">PI:</td>
+            <td class="label">UofA PI:</td>
             <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
         </tr>
     <% } %>
@@ -62,8 +62,12 @@
         </tr>
     <% } %>
     <tr>
-        <td class="label">Funding Amount:</td>
+        <td class="label">Total Amount:</td>
         <td>$<%= number_format(total, 2) %></td>
+    </tr>
+    <tr>
+        <td class="label">My Portion:</td>
+        <td>$<%= number_format(myportion, 2) %></td>
     </tr>
     <tr>
         <td class="label">Exclude<sup><span class="clicktooltip" style="font-size:1.25em;" title="If a Revenue Account is marked as excluded, it will NOT show up in your profile or Annual Report.">&#9432;</span></sup>:</td>
