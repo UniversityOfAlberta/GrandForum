@@ -68,7 +68,7 @@ class PersonRelationsTab extends AbstractTab {
         }
         if($wgUser->isLoggedIn()){
             if($this->html == ""){
-                if($visibility['isMe'] && ($this->person->isRole(HQP) || $this->person->isRole(HQP.'-Candidate'))){
+                if($visibility['isMe'] && $this->person->isRole(HQP)){
                     $this->html .= "Contact your supervisor in order be added as their student";
                 }
                 else if($me->isAllowedToEdit($this->person)){

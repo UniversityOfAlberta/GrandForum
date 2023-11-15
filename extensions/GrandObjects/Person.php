@@ -95,7 +95,6 @@ class Person extends BackboneModel {
     var $universityDuring;
     var $roles;
     var $rolesDuring;
-    var $candidate;
     var $relations = array();
     var $hqps;
     var $historyHqps;
@@ -399,8 +398,7 @@ class Person extends BackboneModel {
                                               'wos',
                                               'user_public_profile',
                                               'profile_start_date',
-                                              'profile_end_date',
-                                              'candidate'),
+                                              'profile_end_date'),
                                         array('deleted' => NEQ(1),
                                               'user_id' => NOT_IN($keys)));
             foreach($data as $row){
@@ -580,8 +578,7 @@ class Person extends BackboneModel {
             else{
                 $data = DBFunctions::select(array('mw_user'),
                                             array('user_id'),
-                                            array('deleted' => NEQ(1),
-                                                  'candidate' => NEQ(1)),
+                                            array('deleted' => NEQ(1)),
                                             array('user_name' => 'ASC'));
                 foreach($data as $row){
                     self::$allPeopleCache[] = $row['user_id'];
@@ -1275,37 +1272,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns an array of People of the type $filter and are also candidates
-     * @param string $filter The role to filter by
-     * @return array The array of People of the type $filter
-     */
-    static function getAllCandidates($filter=null){
-        if($filter == NI){
-            $ars = self::getAllCandidates(AR);
-            $cis = self::getAllCandidates(CI);
-            return array_merge($ars, $cis);
-        }
-        $me = Person::newFromWgUser();
-        $data = DBFunctions::select(array('mw_user'),
-                                    array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1)),
-                                    array('user_name' => 'ASC'));
-        $people = array();
-        foreach($data as $row){
-            $rowA = array();
-            $rowA[0] = $row;
-            $person = Person::newFromId($rowA[0]['user_id']);
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
-                if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
-                    $people[strtolower($person->getName())] = $person;
-                }
-            }
-        }
-        ksort($people);
-        return $people;
-    }
-    
-    /**
      * Merges two People
      * @param Person $personToKeep The Person object to keep
      * @param Person $personToDelete The Person object to delete/merge into $personToKeep
@@ -1366,9 +1332,6 @@ class Person extends BackboneModel {
     function Person($data){
         global $wgUser;
         if(!empty($data)){
-            if(@$data[0]['candidate'] == 1 && !$wgUser->isLoggedIn()){
-                return;
-            }
             $this->id = @$data[0]['user_id'];
             $this->name = @$data[0]['user_name'];
             $this->realname = @$data[0]['user_real_name'];
@@ -1389,7 +1352,6 @@ class Person extends BackboneModel {
             $this->profileEndDate = @$data[0]['profile_end_date'];
             $this->hqps = null;
             $this->historyHqps = null;
-            $this->candidate = @$data[0]['candidate'];
         }
     }
     
@@ -3038,10 +3000,6 @@ class Person extends BackboneModel {
         return $grants;
     }
     
-    function isCandidate(){
-        return $this->candidate;
-    }
-    
     function isActive(){
         $roles = $this->getRoles();
         if(count($roles) > 0){
@@ -3082,11 +3040,6 @@ class Person extends BackboneModel {
         else{
             return false;
         }
-        if($this->isCandidate()){
-            foreach($roles as $key => $r){
-                $roles[$key] = $r."-Candidate";
-            }    
-        }
         return (array_search($role, $roles) !== false);
     }
     
@@ -3110,11 +3063,6 @@ class Person extends BackboneModel {
         }
         if(empty($roles)){
             return false;
-        }
-        if($this->isCandidate()){
-            foreach($roles as $key => $r){
-                $roles[$key] = $r."-Candidate";
-            }    
         }
         return (array_search($role, $roles) !== false);
     }
@@ -3144,11 +3092,6 @@ class Person extends BackboneModel {
         if(empty($roles)){
             return false;
         }
-        if($this->isCandidate()){
-            foreach($roles as $key => $r){
-                $roles[$key] = $r."-Candidate";
-            }    
-        }
         return (array_search($role, $roles) !== false);
     }
     
@@ -3167,9 +3110,6 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRoleAtLeastDuring(AR, $startRange, $endRange) || 
                     $this->isRoleAtLeastDuring(CI, $startRange, $endRange));
-        }
-        if($this->isCandidate()){
-            return false;
         }
         $roles = $this->getRolesDuring($startRange, $endRange);
         if($roles != null){
@@ -3194,9 +3134,6 @@ class Person extends BackboneModel {
                     $this->isRoleAtLeast(CI));
         }
         $me = Person::newFromWgUser();
-        if($this->isCandidate()){
-            return false;
-        }
         if($this->getRoles() != null){
             foreach($this->getRoles() as $r){
                 if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
@@ -3217,9 +3154,6 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRoleAtMost(AR) || 
                     $this->isRoleAtMost(CI));
-        }
-        if($this->isCandidate()){
-            return true;
         }
         foreach($this->getRoles() as $r){
             if($r->getRole() != "" && $wgRoleValues[$r->getRole()] <= $wgRoleValues[$role]){

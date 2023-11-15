@@ -201,7 +201,6 @@ class GrantAward extends BackboneModel {
                     $pdata[0]['user_registration'] = "";
                     $pdata[0]['user_public_profile'] = "";
                     $pdata[0]['user_private_profile'] = "";
-                    $pdata[0]['candidate'] = 0;
                     $person = new Person($pdata);
                     Person::$cache[$co] = $person;
                 }

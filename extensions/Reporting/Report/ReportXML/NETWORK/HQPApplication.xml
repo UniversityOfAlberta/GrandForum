@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="HQP Application" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" pdfFiles="HQPApplicationPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP-Candidate">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="documents" permissions="rw" />

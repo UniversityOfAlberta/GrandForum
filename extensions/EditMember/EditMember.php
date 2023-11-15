@@ -112,25 +112,6 @@ class EditMember extends SpecialPage{
                         $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a {$subRole}");
                     }
                 }
-                
-                if(isset($_POST['candidate']) && !$person->isCandidate()){
-                    DBFunctions::update('mw_user',
-                                        array('candidate' => '1'),
-                                        array('user_id' => EQ($person->getId())));
-                    Cache::delete("mw_user_{$person->getId()}");
-                    Cache::delete("allPeopleCache");
-                    $person->candidate = true;
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a candidate user");
-                }
-                else if(!isset($_POST['candidate']) && $person->isCandidate()){
-                    DBFunctions::update('mw_user',
-                                        array('candidate' => '0'),
-                                        array('user_id' => EQ($person->getId())));
-                    Cache::delete("mw_user_{$person->getId()}");
-                    Cache::delete("allPeopleCache");
-                    $person->candidate = false;
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a full user");
-                }
             }
             EditMember::generateMain();
         }
@@ -183,7 +164,7 @@ class EditMember extends SpecialPage{
     function generateMain(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
         $me = Person::newFromWgUser();
-        $allPeople = Person::getAllCandidates('all');
+        $allPeople = Person::getAllPeople('all');
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
@@ -257,9 +238,6 @@ class EditMember extends SpecialPage{
             $boxes .= "&nbsp;<input id='role_$subRole' type='checkbox' name='sub_wpNS[]' value='".$subRole."' $checked />&nbsp;{$fullSubRole}<br />";            
         }
         $wgOut->addHTML($boxes);
-        $wgOut->addHTML("<hr />");
-        $checked = ($person->isCandidate()) ? " checked" : "";
-        $wgOut->addHTML("&nbsp;<input id='candidate' type='checkbox' name='candidate' value='true' $checked />&nbsp;Candidate?");
         $wgOut->addHTML("</td></tr></table>\n");
     }
     

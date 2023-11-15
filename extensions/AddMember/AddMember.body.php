@@ -30,11 +30,6 @@ class UserCreate {
             }
         }
         Cache::delete("rolesCache");
-        
-        $_POST['candidate'] = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
-        DBFunctions::update('mw_user',
-	                        array('candidate' => $_POST['candidate']),
-	                        array('user_id' => EQ($wgUser->getId())));
 	    Cache::delete("allPeopleCache");
         Cache::delete("mw_user_{$wgUser->getId()}");
         UserCreate::addNewUserPage($wgUser);

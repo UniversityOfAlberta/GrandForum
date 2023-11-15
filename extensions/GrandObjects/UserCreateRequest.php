@@ -17,7 +17,6 @@ class UserCreateRequest {
     var $university;
     var $department;
     var $position;
-    var $candidate;
     var $created;
     var $ignored;
     var $lastModified;
@@ -65,7 +64,6 @@ class UserCreateRequest {
             $this->university = $data[0]['university'];
             $this->department = $data[0]['department'];
             $this->position = $data[0]['position'];
-            $this->candidate = $data[0]['candidate'];
             $this->created = $data[0]['created'];
             $this->ignored = $data[0]['ignore'];
             $this->lastModified = ($data[0]['last_modified']);
@@ -114,14 +112,6 @@ class UserCreateRequest {
     
     function getPosition(){
         return $this->position;
-    }
-    
-    function getCandidate($transformed=false){
-        if($transformed){
-            if($this->candidate == 1) return "Yes";
-            return "No";
-        }
-        return $this->candidate;
     }
     
     function isCreated(){

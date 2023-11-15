@@ -11,7 +11,6 @@ class CreateUserAPI extends API{
         $this->addPOST("wpLastName",false,"The User's last name","My Last Name");
         $this->addPOST("wpUserType",true,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
         $this->addPOST("wpSendMail",false,"Whether or not to send an email to the user or not.  This value should be either 'true' or 'false'.  If this parameter is not included, it is assumed that not email should be sent","true");
-        $this->addPOST("candidate",false,"Whether or not to make this user a candidate", "1");
         $this->addPOST("id",false,"The id of the creation request(You probably should not touch this parameter unless you know exactly what you are doing)", "15");
     }
 
@@ -28,8 +27,7 @@ class CreateUserAPI extends API{
             $_POST['wpUserType'][] = $role;
         }
         // Finished manditory checks
-        $_POST['candidate'] = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
-        if($me->isRoleAtLeast(STAFF) || $_POST['candidate'] == "1" || ($me->isLoggedIn() && isExtensionEnabled("AddHqp"))){
+        if($me->isRoleAtLeast(STAFF) || ($me->isLoggedIn() && isExtensionEnabled("AddHqp"))){
             // First check to see if the user already exists
             $person = Person::newFromName($_POST['wpName']);
             if($person != null && $person->getName() != ""){

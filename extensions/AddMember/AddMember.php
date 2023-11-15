@@ -52,7 +52,6 @@ class AddMember extends SpecialPage{
                 $form->getElementById('university_field')->setPOST('university');
                 $form->getElementById('dept_field')->setPOST('department');
                 $form->getElementById('position_field')->setPOST('position');
-                $form->getElementById('cand_field')->setPOST('candidate');
                 
                 if(isset($_POST['wpNS'])){
                     $nss = implode(", ", $_POST['wpNS']);
@@ -104,7 +103,6 @@ class AddMember extends SpecialPage{
                             <th>Staff</th>
                             <th>User Type</th>
                             <th>Institution</th>
-                            <th>Candidate</th>
                             <th>Action</th>
                         </tr></thead><tbody>\n");
         }
@@ -118,7 +116,6 @@ class AddMember extends SpecialPage{
                             <th>User Type</th>
                             <th>Institution</th>
                             {$hqpType}
-                            <th>Candidate</th>
                             <th>Action</th>
                         </tr></thead><tbody>\n");
         }
@@ -160,18 +157,15 @@ class AddMember extends SpecialPage{
                 $wgOut->addHTML("</td>");
             }
             $wpSendMail = ($wgEnableEmail) ? "true" : "false";
-            $wgOut->addHTML("
-                        <td>{$request->getCandidate(true)}</td>
-                            <input type='hidden' name='id' value='{$request->getId()}' />
-                            <input type='hidden' name='wpName' value='{$request->getName()}' />
-                            <input type='hidden' name='wpEmail' value='{$request->getEmail()}' />
-                            <input type='hidden' name='wpRealName' value='{$request->getRealName()}' />
-                            <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
-                            <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
-                            <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
-                            <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
-                            <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
-                            <input type='hidden' name='wpSendMail' value='$wpSendMail' />");
+            $wgOut->addHTML("<input type='hidden' name='id' value='{$request->getId()}' />
+                             <input type='hidden' name='wpName' value='{$request->getName()}' />
+                             <input type='hidden' name='wpEmail' value='{$request->getEmail()}' />
+                             <input type='hidden' name='wpRealName' value='{$request->getRealName()}' />
+                             <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
+                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
+                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
+                             <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
+                             <input type='hidden' name='wpSendMail' value='$wpSendMail' />");
             if($history){
                 if($request->isCreated()){
                     $wgOut->addHTML("<td>Accepted</td>");
@@ -249,11 +243,6 @@ class AddMember extends SpecialPage{
         $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technical Assistant", "Research Internship", "Undergraduate Student");
         $departments = Person::getAllDepartments();
         
-        $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
-        $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
-        $candRow = new FormTableRow("cand_row");
-        $candRow->append($candLabel)->append($candField);
-        
         $universityLabel = new Label("university_label", "Institution", "The intitution that the user is a member of", VALIDATE_NOTHING);
         $universityField = new ComboBox("university_field", "Instutution", $me->getUni(), $universities, VALIDATE_NOTHING);
         $universityField->attr("style", "width: 250px;");
@@ -284,7 +273,6 @@ class AddMember extends SpecialPage{
                   ->append($universityRow)
                   ->append($deptRow)
                   ->append($positionRow)
-                  ->append($candRow)
                   ->append($submitRow);
         
         $formContainer->append($formTable);

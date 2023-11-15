@@ -19,8 +19,8 @@ class PeopleAPI extends RESTAPI {
             foreach($exploded as $role){
                 $role = trim($role);
                 if($role == 'all'){
-                    // Get All people (including candidates)
-                    $people = array_merge(Person::getAllPeople(), Person::getAllCandidates());
+                    // Get All people
+                    $people = array_merge(Person::getAllPeople());
                 }
                 else{
                     // Get the specific role
