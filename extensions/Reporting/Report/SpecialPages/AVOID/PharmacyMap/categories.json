@@ -139,6 +139,13 @@
                 "code": "CFN-ACT-SLEEP",
                 "description": "Find supports to improve your sleep",
                 "tags": ["sleep services"]
+            },
+            {
+                "text": "<en>Free and Subsidized Activities</en><fr>Activités gratuites et subventionnées</fr>",
+                "value": 78,
+                "code": "CFN-ACT-FREE",
+                "description": "",
+                "tags": [""]
             }
         ]
     },
@@ -292,6 +299,13 @@
                 "value": 88,
                 "code": "CFN-INT-TECH",
                 "description": "Find your local library to attend a workshop, event, or borrow a resource",
+                "tags": [""]
+            },
+            {
+                "text": "<en>Free and Subsidized Opportunities</en><fr>Possibilités gratuites et subventionnées</fr>",
+                "value": 78,
+                "code": "CFN-INT-FREE",
+                "description": "",
                 "tags": [""]
             }
         ]
