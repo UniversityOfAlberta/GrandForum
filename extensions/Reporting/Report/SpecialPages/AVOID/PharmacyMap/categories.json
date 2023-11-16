@@ -141,7 +141,7 @@
                 "tags": ["sleep services"]
             },
             {
-                "text": "<en>Free and Subsidized Activities</en><fr>Activités gratuites et subventionnées</fr>",
+                "text": "<en>Free and Subsidized</en><fr>Gratuit et subventionné</fr>",
                 "value": 78,
                 "code": "CFN-ACT-FREE",
                 "description": "",
@@ -302,7 +302,7 @@
                 "tags": [""]
             },
             {
-                "text": "<en>Free and Subsidized Opportunities</en><fr>Possibilités gratuites et subventionnées</fr>",
+                "text": "<en>Free and Subsidized</en><fr>Gratuit et subventionné</fr>",
                 "value": 78,
                 "code": "CFN-INT-FREE",
                 "description": "",
