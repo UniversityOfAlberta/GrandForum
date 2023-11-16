@@ -108,6 +108,47 @@ class Report extends AbstractReport{
                 filter: blur(0.25em);
             }
             
+            .top-nav .top-nav-element a {
+                font-size: 1.5em;
+            }
+            
+            #header {
+                height: 50px;
+            }
+            
+            #header ul a {
+                height: 56px;
+                line-height: 56px;
+            }
+            
+            #header ul a:hover {
+                height: 53px;
+                line-height: 50px;
+            }
+            
+            #allTabs {
+                height: 52px;
+                line-height: 49px;
+            }
+            
+            #allTabsDropdown {
+                top: 102px;
+            }
+            
+            #mobileMenu {
+                top: 102px !important;
+            }
+            
+            @media only screen and (min-width: 1024px) {
+                #bodyContent {
+                    top: 102px !important;
+                }
+                
+                #contactUs, #reportIssue {
+                    margin-top: 13px !important;
+                }
+            }
+            
             @media only screen and (max-width: 767px) {
                 #achievementContainer {
                     right: 20px !important;
