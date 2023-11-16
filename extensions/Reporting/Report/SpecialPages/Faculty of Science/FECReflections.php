@@ -71,12 +71,7 @@ class FECReflections extends SpecialPage {
                     $increment = self::getBlobValue("RP_CHAIR", "FEC_REVIEW", "INCREMENT", $person->getId(), $year, 0);
                     $revisedIncrement = self::getBlobValue("RP_FEC_TABLE", "TABLE", "INCREMENT", $person->getId(), $year, 1);
 
-                    if($increment != "" &&
-                       $increment != "N/A" &&
-                       $increment != "0.00" &&
-                       $increment != "0.00 (PTC)" &&
-                       $increment != "0A" &&
-                       $revisedIncrement == ""){
+                    if($revisedIncrement == ""){
                         $revisedIncrement = $increment;
                     }
                 }
@@ -144,12 +139,13 @@ class FECReflections extends SpecialPage {
                     else if(floatval($revisedIncrement) < floatval($increment)){
                         $nLowered++;
                     }
-                }
-                if($revisedIncrement <= "1.00" && $revisedIncrement != "0A" && strstr($revisedIncrement, "PTC") === false){
-                    $nLessThan1++;
-                }
-                if($revisedIncrement >= "1.25"){
-                    $nGreaterThan1++;
+                    
+                    if($revisedIncrement <= "1.00" && $revisedIncrement != "0A" && strstr($revisedIncrement, "PTC") === false){
+                        $nLessThan1++;
+                    }
+                    if($revisedIncrement >= "1.25"){
+                        $nGreaterThan1++;
+                    }
                 }
                 
                 $nPeople++;
@@ -299,8 +295,8 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("   <tr><td valign='top'><b>FSO promotions</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
         $wgOut->addHTML("   <tr><td valign='top'><b>Number of FSO cases considered</b></td><td valign='top'>{$nFSO}</td></tr>");
         $wgOut->addHTML("   <tr><td valign='top'><b>Average increments received by non-capped FSOs</b></td><td valign='top'>".number_format($sumFSO/max($nUncappedFSO, 1), 2)."</td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Total number of cases that have a non-PTC increment of 1 and below</b></td><td valign='top'>{$nLessThan1}</td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Total number of cases that have an increment of 1.25 and above</b></td><td valign='top'>{$nGreaterThan1}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Total number of faculty that have a non-PTC increment of 1 and below</b></td><td valign='top'>{$nLessThan1}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Total number of faculty that have an increment of 1.25 and above</b></td><td valign='top'>{$nGreaterThan1}</td></tr>");
         $wgOut->addHTML("</table>");
     }
     
