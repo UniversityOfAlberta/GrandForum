@@ -140,10 +140,10 @@ class FECReflections extends SpecialPage {
                         $nLowered++;
                     }
                     
-                    if($revisedIncrement <= "1.00" && $revisedIncrement != "0A" && strstr($revisedIncrement, "PTC") === false){
+                    if($revisedIncrement != "" && $revisedIncrement <= "1.00" && $revisedIncrement != "0A" && strstr($revisedIncrement, "PTC") === false){
                         $nLessThan1++;
                     }
-                    if($revisedIncrement >= "1.25"){
+                    if($revisedIncrement != "" && $revisedIncrement >= "1.25"){
                         $nGreaterThan1++;
                     }
                 }
