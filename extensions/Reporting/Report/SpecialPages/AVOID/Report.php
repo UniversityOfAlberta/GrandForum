@@ -126,6 +126,11 @@ class Report extends AbstractReport{
                 line-height: 50px;
             }
             
+            #header li.selected a {
+                height: 53px;
+                line-height: 50px;
+            }
+            
             #allTabs {
                 height: 52px;
                 line-height: 49px;
