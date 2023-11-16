@@ -42,6 +42,8 @@ class FECReflections extends SpecialPage {
             $sumFSO = @$blob_data['sumFSO'];
             $nLowered = @$blob_data['nLowered'];
             $nRaised = @$blob_data['nRaised'];
+            $nLessThan1 = @$blob_data['nLessThan1'];
+            $nGreaterThan1 = @$blob_data['nGreaterThan1'];
         }
         else{
             $people = Person::getAllPeopleDuring(NI, "2000-01-01", "2100-01-01");
@@ -61,6 +63,8 @@ class FECReflections extends SpecialPage {
             $sumFSO = 0;
             $nLowered = 0;
             $nRaised = 0;
+            $nLessThan1 = 0;
+            $nGreaterThan1 = 0;
             foreach($people as $person){
                 $case = $person->getCaseNumber($year);
                 if($case != ""){
@@ -141,6 +145,13 @@ class FECReflections extends SpecialPage {
                         $nLowered++;
                     }
                 }
+                if($revisedIncrement <= "1.00" && $revisedIncrement != "0A" && strstr($revisedIncrement, "PTC") === false){
+                    $nLessThan1++;
+                }
+                if($revisedIncrement >= "1.25"){
+                    $nGreaterThan1++;
+                }
+                
                 $nPeople++;
                 $report = new Report();
                 $section = new EditableReportSection();
@@ -222,7 +233,9 @@ class FECReflections extends SpecialPage {
                           'sumFullProfs' => $sumFullProfs,
                           'sumFSO' => $sumFSO,
                           'nLowered' => $nLowered,
-                          'nRaised' => $nRaised);
+                          'nRaised' => $nRaised,
+                          'nLessThan1' => $nLessThan1,
+                          'nGreaterThan1' => $nGreaterThan1);
             
             $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
             $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
@@ -276,16 +289,18 @@ class FECReflections extends SpecialPage {
         
         $wgOut->addHTML("<table class='wikitable'>");
         $wgOut->addHTML("   <tr><td style='width:250px;' valign='top'><b>Promotion from assistant to associate professor (with tenure)</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Promotion from associate to full professor.</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Number of professoriate cases considered by FEC.</b><br /><small>This does not include the Dean, Vice Dean, and Department Chairs.</small></td><td valign='top'>{$nProfs}</td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for a full professor.</b></td><td valign='top'>".number_format($sumFullProfs/max($nFullProfs, 1), 2)."</td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for an uncapped associate professor.</b><br /><small>Note that this number has been lowered by the “almost-capped” professors.</small></td><td valign='top'>".number_format($sumAssocProfs/max($nAssocProfs, 1), 2)."</td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for an assistant professor.</b></td><td valign='top'>".number_format($sumAssistProfs/max($nAssistProfs, 1), 2)."</td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Number of increment recommendations that were lowered by FEC.</b></td><td valign='top'>{$nLowered}</td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Number of increment recommendations that were raised by FEC.</b></td><td valign='top'>{$nRaised}</td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>FSO promotions.</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Number of FSO cases considered.</b></td><td valign='top'>{$nFSO}</td></tr>");
-        $wgOut->addHTML("   <tr><td valign='top'><b>Average increments received by non-capped FSOs.</b></td><td valign='top'>".number_format($sumFSO/max($nUncappedFSO, 1), 2)."</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Promotion from associate to full professor</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Number of professoriate cases considered by FEC</b><br /><small>This does not include the Dean, Vice Dean, and Department Chairs</small></td><td valign='top'>{$nProfs}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for a full professor</b></td><td valign='top'>".number_format($sumFullProfs/max($nFullProfs, 1), 2)."</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for an uncapped associate professor</b><br /><small>Note that this number has been lowered by the “almost-capped” professors</small></td><td valign='top'>".number_format($sumAssocProfs/max($nAssocProfs, 1), 2)."</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Average number of increments for an assistant professor</b></td><td valign='top'>".number_format($sumAssistProfs/max($nAssistProfs, 1), 2)."</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Number of increment recommendations that were lowered by FEC</b></td><td valign='top'>{$nLowered}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Number of increment recommendations that were raised by FEC</b></td><td valign='top'>{$nRaised}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>FSO promotions</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Number of FSO cases considered</b></td><td valign='top'>{$nFSO}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Average increments received by non-capped FSOs</b></td><td valign='top'>".number_format($sumFSO/max($nUncappedFSO, 1), 2)."</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Total number of cases that have a non-PTC increment of 1 and below</b></td><td valign='top'>{$nLessThan1}</td></tr>");
+        $wgOut->addHTML("   <tr><td valign='top'><b>Total number of cases that have an increment of 1.25 and above</b></td><td valign='top'>{$nGreaterThan1}</td></tr>");
         $wgOut->addHTML("</table>");
     }
     
