@@ -2273,7 +2273,7 @@ div.program-text {
         position: absolute;
         left: 0;
         right: 0;
-        z-index: 998;
+        z-index: 997;
     }
     
     #side {
