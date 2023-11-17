@@ -24,7 +24,7 @@ class FECReflections extends SpecialPage {
 	    $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
-	    $blob_data = null;
+	    //$blob_data = null;
 	    
         if(date('Y-m-d') >= ($year+1)."-01-01" && is_array($blob_data)){
             $nPeople = @$blob_data['nPeople'];
