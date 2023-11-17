@@ -176,7 +176,7 @@ class FECReflections extends SpecialPage {
                         @$increments[$short]["0.00"]++;
                     }
                     else if($revisedIncrement >= "2.00"){
-                        @$increments[$short]["2.00"]++;
+                        @$increments[$short]["2.00+"]++;
                     }
                     for($i=0.5;$i<2.00;$i+=0.25){
                         $inc = number_format($i, 2);
