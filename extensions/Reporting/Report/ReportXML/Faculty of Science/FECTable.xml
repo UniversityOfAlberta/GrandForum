@@ -200,8 +200,8 @@
                             saveAll();
                         }
                         
-                        var facSign = (targetFac - sumRevFaculty > 0) ? "-" : "+";
-                        var fsoSign = (targetFSO - sumRevFSO > 0) ? "-" : "+";
+                        var facSign = (targetFac - sumRevFaculty - sumDDFaculty > 0) ? "-" : "+";
+                        var fsoSign = (targetFSO - sumRevFSO - sumDDFSO > 0) ? "-" : "+";
                         
                         $("#averageFac").text(number_format(sumFaculty/Math.max(1,nFaculty)));
                         $("#averageFSO").text(number_format(sumFSO/Math.max(1,nFSO)));
@@ -219,9 +219,27 @@
                         $("#ddTotalFSO").text(number_format(sumDDFSO));
                         
                         $("#targetFac").text(number_format(targetFac));
-                        $("#deltaFac").text(facSign + number_format(Math.abs(targetFac - sumRevFaculty)));
+                        $("#deltaFac").text(facSign + number_format(Math.abs(targetFac - sumRevFaculty - sumDDFaculty)));
                         $("#targetFSO").text(number_format(targetFSO));
-                        $("#deltaFSO").text(facSign + number_format(Math.abs(targetFSO - sumRevFSO)));
+                        $("#deltaFSO").text(fsoSign + number_format(Math.abs(targetFSO - sumRevFSO - sumDDFSO)));
+                        
+                        if(facSign == "+"){
+                            $("#deltaFac").css("background", "red");
+                            $("#deltaFac").css("color", "white");
+                        }
+                        else{
+                            $("#deltaFac").css("background", "white");
+                            $("#deltaFac").css("color", "black");
+                        }
+                        
+                        if(fsoSign == "+"){
+                            $("#deltaFSO").css("background", "red");
+                            $("#deltaFSO").css("color", "white");
+                        }
+                        else{
+                            $("#deltaFSO").css("background", "white");
+                            $("#deltaFSO").css("color", "black");
+                        }
                         
                         lastData = response.data;
                     });
@@ -498,66 +516,35 @@
                     {contains({$my_roles},VDEAN)},
                     {contains({$my_roles},HR)})}">
             <![CDATA[
-                <h3>Recommended Increment Totals <small>(Excludes DD cases)</small></h3>
                 <table class='wikitable' frame='box' rules='all'>
                     <tr>
-                        <th>Average<br />Faculty Increment</th>
-                        <th>Average<br />FSO Increment</th>
-                        <th>Total<br />Faculty Increment</th>
-                        <th>Total<br />FSO Increment</th>
+                        <th></th>
+                        <th style='width:6em;'>Faculty</th>
+                        <th style='width:6em;'>FSO</th>
                     </tr>
                     <tr>
-                        <td id='averageFac' align='right'></td>
-                        <td id='averageFSO' align='right'></td>
-                        <td id='totalFac' align='right'></td>
-                        <td id='totalFSO' align='right'></td>
-                    </tr>
-                </table>
-                
-                <h3>Running Increment Totals <small>(Excludes DD cases)</small></h3>
-                <table id='runningIncrements' class='wikitable' frame='box' rules='all'>
-                    <tr>
-                        <th>Average<br />Faculty Increment</th>
-                        <th>Average<br />FSO Increment</th>
-                        <th>Total<br />Faculty Increment</th>
-                        <th>Total<br />FSO Increment</th>
-                    </tr>
-                    <tr>
-                        <td id='runningAverageFac' align='right'></td>
-                        <td id='runningAverageFSO' align='right'></td>
-                        <td id='runningTotalFac' align='right'></td>
-                        <td id='runningTotalFSO' align='right'></td>
-                    </tr>
-                </table>
-                
-                <h3>Dean's Decision Increment Totals</h3>
-                <table id='ddIncrements' class='wikitable' frame='box' rules='all'>
-                    <tr>
-                        <th>Average<br />Faculty Increment</th>
-                        <th>Average<br />FSO Increment</th>
-                        <th>Total<br />Faculty Increment</th>
-                        <th>Total<br />FSO Increment</th>
-                    </tr>
-                    <tr>
-                        <td id='ddAverageFac' align='right'></td>
-                        <td id='ddAverageFSO' align='right'></td>
+                        <td><b>Dean's Decisions&nbsp;</b></td>
                         <td id='ddTotalFac' align='right'></td>
                         <td id='ddTotalFSO' align='right'></td>
                     </tr>
-                </table>
-                
-                <h3>Target Totals</h3>
-                <table id='targetIncrements' class='wikitable' frame='box' rules='all'>
                     <tr>
-                        <th>Target<br />Faculty Increment</th>
-                        <th>Diff<br />Faculty Increment</th>
-                        <th>Target<br />FSO Increment</th>
-                        <th>Diff<br />FSO Increment</th>
+                        <td><b>Recommendations to FEC&nbsp;</b></td>
+                        <td id='totalFac' align='right'></td>
+                        <td id='totalFSO' align='right'></td>
                     </tr>
                     <tr>
+                        <td><b>Recommendations by FEC&nbsp;</b></td>
+                        <td id='runningTotalFac' align='right'></td>
+                        <td id='runningTotalFSO' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>Total Pool&nbsp;</b></td>
                         <td id='targetFac' align='right'></td>
-                        <td id='deltaFac' align='right'></td>
                         <td id='targetFSO' align='right'></td>
+                    </tr>
+                    <tr>
+                        <td><b>Running Targets&nbsp;</b></td>
+                        <td id='deltaFac' align='right'></td>
                         <td id='deltaFSO' align='right'></td>
                     </tr>
                 </table>
