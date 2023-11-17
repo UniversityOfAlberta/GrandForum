@@ -24,7 +24,7 @@ class FECReflections extends SpecialPage {
 	    $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
-	    //$blob_data = null;
+	    $blob_data = null;
 	    
         if(date('Y-m-d') >= ($year+1)."-01-01" && is_array($blob_data)){
             $nPeople = @$blob_data['nPeople'];
@@ -44,6 +44,7 @@ class FECReflections extends SpecialPage {
             $nRaised = @$blob_data['nRaised'];
             $nLessThan1 = @$blob_data['nLessThan1'];
             $nGreaterThan1 = @$blob_data['nGreaterThan1'];
+            $increments = @$blob_data['increments'];
         }
         else{
             $people = Person::getAllPeopleDuring(NI, "2000-01-01", "2100-01-01");
@@ -65,6 +66,7 @@ class FECReflections extends SpecialPage {
             $nRaised = 0;
             $nLessThan1 = 0;
             $nGreaterThan1 = 0;
+            $increments = array();
             foreach($people as $person){
                 $case = $person->getCaseNumber($year);
                 if($case != ""){
@@ -145,6 +147,42 @@ class FECReflections extends SpecialPage {
                     }
                     if($revisedIncrement != "" && $revisedIncrement >= "1.25"){
                         $nGreaterThan1++;
+                    }
+
+                    $positions = array();
+                    if(strstr($case, "N") !== false){
+                        // Only needed for "New" people
+                        $unis = $person->getUniversitiesDuring(($year-1)."-07-01", ($year)."-07-01");
+                        
+                        foreach($unis as $uni){
+                            $positions[] = $uni['position'];
+                        }
+                    }
+                    
+                    if(strstr($case, "A") !== false || array_search("Assistant Professor", $positions) !== false){
+                        $short = "A";
+                    }
+                    else if(strstr($case, "B") !== false || array_search("Associate Professor", $positions) !== false){
+                        $short = "B";
+                    }
+                    else if(strstr($case, "C") !== false || array_search("Professor", $positions) !== false){
+                        $short = "C";
+                    }
+                    
+                    if($revisedIncrement == "0A" || strstr($revisedIncrement, "PTC") !== false){
+                        @$increments[$short]["PTC"]++;
+                    }
+                    else if($revisedIncrement == "0B" || $revisedIncrement == "0C" || $revisedIncrement == "0D"){
+                        @$increments[$short]["0.00"]++;
+                    }
+                    else if($revisedIncrement >= "2.00"){
+                        @$increments[$short]["2.00"]++;
+                    }
+                    for($i=0.5;$i<2.00;$i+=0.25){
+                        $inc = number_format($i, 2);
+                        if($revisedIncrement == $inc){
+                            @$increments[$short][$inc]++;
+                        }
                     }
                 }
                 
@@ -231,7 +269,8 @@ class FECReflections extends SpecialPage {
                           'nLowered' => $nLowered,
                           'nRaised' => $nRaised,
                           'nLessThan1' => $nLessThan1,
-                          'nGreaterThan1' => $nGreaterThan1);
+                          'nGreaterThan1' => $nGreaterThan1,
+                          'increments' => $increments);
             
             $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
             $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
@@ -264,7 +303,8 @@ class FECReflections extends SpecialPage {
         
         $totalRefereed = @(count($publications['pr']['journals']) + count($publications['pr']['conference']) + count($publications['pr']['book_chapters']) + count($publications['pr']['others']));
 
-        $wgOut->addHTML("<table class='wikitable'>");
+        $wgOut->addHTML("<h3>Publication Stats</h3>
+                         <table class='wikitable'>");
         $wgOut->addHTML("   <tr><td><b>Journals:</b></td><td>".@count($publications['pr']['journals'])."</td></tr>");
         $wgOut->addHTML("   <tr><td><b>Conferences:</b></td><td>".@count($publications['pr']['conference'])."</td></tr>");
         $wgOut->addHTML("   <tr><td><b>Book Chapters:</b></td><td>".@count($publications['pr']['book_chapters'])."</td></tr>");
@@ -283,7 +323,8 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("   <tr><td><b>Unranked:</b></td><td>".number_format($unranked/count($rankings), 4)."</td></tr>");
         $wgOut->addHTML("</table>");
         
-        $wgOut->addHTML("<table class='wikitable'>");
+        $wgOut->addHTML("<h3>FEC Stats</h3>
+                         <table class='wikitable'>");
         $wgOut->addHTML("   <tr><td style='width:250px;' valign='top'><b>Promotion from assistant to associate professor (with tenure)</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
         $wgOut->addHTML("   <tr><td valign='top'><b>Promotion from associate to full professor</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
         $wgOut->addHTML("   <tr><td valign='top'><b>Number of professoriate cases considered by FEC</b><br /><small>This does not include the Dean, Vice Dean, and Department Chairs</small></td><td valign='top'>{$nProfs}</td></tr>");
@@ -297,6 +338,38 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("   <tr><td valign='top'><b>Average increments received by non-capped FSOs</b></td><td valign='top'>".number_format($sumFSO/max($nUncappedFSO, 1), 2)."</td></tr>");
         $wgOut->addHTML("   <tr><td valign='top'><b>Total number of faculty that have a non-PTC increment of 1 and below</b></td><td valign='top'>{$nLessThan1}</td></tr>");
         $wgOut->addHTML("   <tr><td valign='top'><b>Total number of faculty that have an increment of 1.25 and above</b></td><td valign='top'>{$nGreaterThan1}</td></tr>");
+        $wgOut->addHTML("</table>");
+        
+        $wgOut->addHTML("<h3>Merit Increment Distribution</h3>
+                         <table class='wikitable'>");
+        $wgOut->addHTML("   <tr><th style='width:6em;'></th>
+                                <th style='width:6em;'>Assistant</th>
+                                <th style='width:6em;'>Associate</th>
+                                <th style='width:6em;'>Full</th>
+                            </tr>");
+        $wgOut->addHTML("   <tr><td><b>0A, PTC</b></td>
+                                <td align='right'>".@intval($increments["A"]["PTC"])."</td>
+                                <td align='right'>".@intval($increments["B"]["PTC"])."</td>
+                                <td align='right'>".@intval($increments["C"]["PTC"])."</td>
+                            </tr>");
+        $wgOut->addHTML("   <tr><td><b>0B, 0C, 0D</b></td>
+                                <td align='right'>".@intval($increments["A"]["0.00"])."</td>
+                                <td align='right'>".@intval($increments["B"]["0.00"])."</td>
+                                <td align='right'>".@intval($increments["C"]["0.00"])."</td>
+                            </tr>");
+        for($i=0.5;$i<2.00;$i+=0.25){
+            $inc = number_format($i, 2);
+            $wgOut->addHTML("<tr><td><b>{$inc}</b></td>
+                                <td align='right'>".@intval($increments["A"][$inc])."</td>
+                                <td align='right'>".@intval($increments["B"][$inc])."</td>
+                                <td align='right'>".@intval($increments["C"][$inc])."</td>
+                             </tr>");
+        }
+        $wgOut->addHTML("   <tr><td><b>2.00+</b></td>
+                                <td align='right'>".@intval($increments["A"]["2.00+"])."</td>
+                                <td align='right'>".@intval($increments["B"]["2.00+"])."</td>
+                                <td align='right'>".@intval($increments["C"]["2.00+"])."</td>
+                            </tr>");
         $wgOut->addHTML("</table>");
     }
     
