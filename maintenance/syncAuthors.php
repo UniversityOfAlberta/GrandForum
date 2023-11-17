@@ -6,7 +6,7 @@ $wgUser = User::newFromName("Admin");
 
 $queriesSoFar = 0;
 global $wgDBname;
-$papers = Paper::getAllPapers('all', 'all', 'both', -1);
+$papers = Paper::getAllPapers('all', 'both', -1);
 $nPapers = count($papers);
 $insertSQL = "INSERT INTO `grand_product_authors`
 	          (`author`, `product_id`, `order`) VALUES\n";
