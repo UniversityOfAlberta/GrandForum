@@ -148,7 +148,7 @@ class Report extends AbstractReport{
                 top: 102px !important;
             }
             
-            @media only screen and (min-width: 1024px) {
+            @media only screen and (min-width: 1024px) {           
                 #contactUs, #reportIssue {
                     margin-top: 13px !important;
                 }
@@ -167,6 +167,9 @@ class Report extends AbstractReport{
                 }
             }
         </style>");
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('#bodyContent').css('top', 102);
+        </script>");
         $wgOut->addScript("<script src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/avoid.js?".filemtime('extensions/Reporting/Report/SpecialPages/AVOID/avoid.js')."'></script>");
         $wgOut->addHTML("<audio id='ding' preload='auto'><source src='{$wgServer}{$wgScriptPath}/skins/ding.mp3' type='audio/mpeg' /></audio>");
         $wgOut->addHTML("<div id='achievementContainer' style='opacity:0; right: -5em;'>
