@@ -142,7 +142,7 @@
 	    text-decoration: none;
 	}
 	
-	#submenu ul a:hover {
+	#submenu ul a:hover, #submenu ul a:focus {
 	    line-height:19px;
 	    height: 22px;
 	}

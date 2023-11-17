@@ -121,7 +121,7 @@ class Report extends AbstractReport{
                 line-height: 56px;
             }
             
-            #header ul a:hover {
+            #header ul a:hover, #header ul a:focus {
                 height: 53px;
                 line-height: 50px;
             }
@@ -140,15 +140,15 @@ class Report extends AbstractReport{
                 top: 102px;
             }
             
+            div#submenu {
+                top: 102px;
+            }
+            
             #mobileMenu {
                 top: 102px !important;
             }
             
             @media only screen and (min-width: 1024px) {
-                #bodyContent {
-                    top: 102px !important;
-                }
-                
                 #contactUs, #reportIssue {
                     margin-top: 13px !important;
                 }

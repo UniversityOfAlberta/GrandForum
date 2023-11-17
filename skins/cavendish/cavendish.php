@@ -398,7 +398,7 @@ class CavendishTemplate extends QuickTemplate {
 		            $("#submenu").css("margin-top", "-45px");
 		            $("#sideToggle").css("line-height", ($("#submenu").height() - 6) + "px");
 		        }
-		        var top = 90;
+		        var top = $("#topheader").outerHeight() + $(".top-nav").outerHeight() + 1;
 	            if(window.matchMedia('(max-width: 1024px)').matches){
 	                if(me.isLoggedIn()){
 		                $("#side").hide();
