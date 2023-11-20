@@ -174,10 +174,28 @@ class FECReflections extends SpecialPage {
                     }
                     
                     $nStudents = 0;
+                    $nUgrad = 0;
+                    $nGrad = 0;
                     foreach($person->getCoursesDuring(($year-1)."-07-01", ($year)."-06-30") as $course){
                         if($course->totEnrl >= 1 && $course->component == "LEC"){
                             $nStudents += $course->totEnrl;
+                            $level = substr($course->catalog, 0, 1);
+                            // Exceptions
+                            if($course->subject == "MED" && ($course->catalog == "521" || $course->catalog == "525")){ $level = "1"; }
+                            if($level <= "4"){
+                                $nUgrad++;
+                            }
+                            if($level > "4"){
+                                $nGrad++;
+                            }
                         }
+                    }
+                    
+                    if($nUgrad == 0 && $nGrad == 0){
+                        @$courses[$short]["0"]++;
+                    }
+                    else{
+                        @$courses[$short][($nUgrad+$nGrad)." ($nUgrad Ugrad, $nGrad Grad)"]++;
                     }
                     
                     if($nStudents == 0){
@@ -429,9 +447,22 @@ class FECReflections extends SpecialPage {
                                 <th style='width:6em;'>Associate</th>
                                 <th style='width:6em;'>Full</th>
                             </tr>");
+        $courseRows = @array_merge($courses["A"], $courses["B"], $courses["C"]);
+        @asort($courseRows);
+        if(is_array($courseRows)){
+            foreach($courseRows as $key => $row){
+                $keyLabel = ($key == "0") ? "No teaching" : $key;
+                $wgOut->addHTML("<tr>
+                                    <td style='white-space:nowrap;'><b>{$keyLabel}</b></td>
+                                    <td align='right'>".@intval($courses["A"][$key])."</td>
+                                    <td align='right'>".@intval($courses["B"][$key])."</td>
+                                    <td align='right'>".@intval($courses["C"][$key])."</td>
+                                 </tr>");
+            }
+        }
         $wgOut->addHTML("</table>");
         
-        // Courses Taught
+        // Students Taught
         $wgOut->addHTML("<h3>Students Taught</h3>
                          <table class='wikitable'>");
         $wgOut->addHTML("   <tr>
