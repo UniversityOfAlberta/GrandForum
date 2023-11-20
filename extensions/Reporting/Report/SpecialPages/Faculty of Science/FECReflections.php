@@ -448,7 +448,7 @@ class FECReflections extends SpecialPage {
                                 <th style='width:6em;'>Full</th>
                             </tr>");
         $courseRows = @array_merge($courses["A"], $courses["B"], $courses["C"]);
-        @asort($courseRows);
+        @ksort($courseRows);
         if(is_array($courseRows)){
             foreach($courseRows as $key => $row){
                 $keyLabel = ($key == "0") ? "No teaching" : $key;
