@@ -45,6 +45,8 @@ class FECReflections extends SpecialPage {
             $nLessThan1 = @$blob_data['nLessThan1'];
             $nGreaterThan1 = @$blob_data['nGreaterThan1'];
             $increments = @$blob_data['increments'];
+            $courses = @$blob_data['courses'];
+            $students = @$blob_data['students'];
         }
         else{
             $people = Person::getAllPeopleDuring(NI, "2000-01-01", "2100-01-01");
@@ -67,6 +69,8 @@ class FECReflections extends SpecialPage {
             $nLessThan1 = 0;
             $nGreaterThan1 = 0;
             $increments = array();
+            $courses = array();
+            $students = array();
             foreach($people as $person){
                 $case = $person->getCaseNumber($year);
                 if($case != ""){
@@ -167,6 +171,47 @@ class FECReflections extends SpecialPage {
                     }
                     else if(strstr($case, "C") !== false || array_search("Professor", $positions) !== false){
                         $short = "C";
+                    }
+                    
+                    $nStudents = 0;
+                    foreach($person->getCoursesDuring(($year-1)."-07-01", ($year)."-06-30") as $course){
+                        if($course->totEnrl >= 1 && $course->component == "LEC"){
+                            $nStudents += $course->totEnrl;
+                        }
+                    }
+                    
+                    if($nStudents == 0){
+                        @$students[$short]["0"]++;
+                    }
+                    else if($nStudents >= 1 && $nStudents <= 20){
+                        @$students[$short]["1-20"]++;
+                    }
+                    else if($nStudents >= 21 && $nStudents <= 40){
+                        @$students[$short]["21-40"]++;
+                    }
+                    else if($nStudents >= 41 && $nStudents <= 60){
+                        @$students[$short]["41-60"]++;
+                    }
+                    else if($nStudents >= 61 && $nStudents <= 80){
+                        @$students[$short]["61-80"]++;
+                    }
+                    else if($nStudents >= 81 && $nStudents <= 100){
+                        @$students[$short]["81-100"]++;
+                    }
+                    else if($nStudents >= 101 && $nStudents <= 150){
+                        @$students[$short]["101-150"]++;
+                    }
+                    else if($nStudents >= 151 && $nStudents <= 200){
+                        @$students[$short]["151-200"]++;
+                    }
+                    else if($nStudents >= 201 && $nStudents <= 300){
+                        @$students[$short]["201-300"]++;
+                    }
+                    else if($nStudents >= 301 && $nStudents <= 500){
+                        @$students[$short]["301-500"]++;
+                    }
+                    else if($nStudents >= 501){
+                        @$students[$short]["501+"]++;
                     }
                     
                     if($revisedIncrement == "0A" || strstr($revisedIncrement, "PTC") !== false){
@@ -270,7 +315,9 @@ class FECReflections extends SpecialPage {
                           'nRaised' => $nRaised,
                           'nLessThan1' => $nLessThan1,
                           'nGreaterThan1' => $nGreaterThan1,
-                          'increments' => $increments);
+                          'increments' => $increments,
+                          'courses' => $courses,
+                          'students' => $students);
             
             $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
             $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
@@ -300,9 +347,9 @@ class FECReflections extends SpecialPage {
                 $n50_100++;
             }
         }
-        
         $totalRefereed = @(count($publications['pr']['journals']) + count($publications['pr']['conference']) + count($publications['pr']['book_chapters']) + count($publications['pr']['others']));
 
+        // Publication Stats
         $wgOut->addHTML("<h3>Publication Stats</h3>
                          <table class='wikitable'>");
         $wgOut->addHTML("   <tr><td><b>Journals:</b></td><td>".@count($publications['pr']['journals'])."</td></tr>");
@@ -323,6 +370,7 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("   <tr><td><b>Unranked:</b></td><td>".number_format($unranked/count($rankings), 4)."</td></tr>");
         $wgOut->addHTML("</table>");
         
+        // FEC Stats
         $wgOut->addHTML("<h3>FEC Stats</h3>
                          <table class='wikitable'>");
         $wgOut->addHTML("   <tr><td style='width:250px;' valign='top'><b>Promotion from assistant to associate professor (with tenure)</b></td><td valign='top'>Check <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=FECTable'>FEC Table</a></td></tr>");
@@ -340,6 +388,7 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("   <tr><td valign='top'><b>Total number of faculty that have an increment of 1.25 and above</b></td><td valign='top'>{$nGreaterThan1}</td></tr>");
         $wgOut->addHTML("</table>");
         
+        // Merit Increment Distribution
         $wgOut->addHTML("<h3>Merit Increment Distribution</h3>
                          <table class='wikitable'>");
         $wgOut->addHTML("   <tr><th style='width:6em;'></th>
@@ -369,6 +418,93 @@ class FECReflections extends SpecialPage {
                                 <td align='right'>".@intval($increments["A"]["2.00+"])."</td>
                                 <td align='right'>".@intval($increments["B"]["2.00+"])."</td>
                                 <td align='right'>".@intval($increments["C"]["2.00+"])."</td>
+                            </tr>");
+        $wgOut->addHTML("</table>");
+        
+        // Courses Taught
+        $wgOut->addHTML("<h3>Courses Taught</h3>
+                         <table class='wikitable'>");
+        $wgOut->addHTML("   <tr><th style='width:6em;'></th>
+                                <th style='width:6em;'>Assistant</th>
+                                <th style='width:6em;'>Associate</th>
+                                <th style='width:6em;'>Full</th>
+                            </tr>");
+        $wgOut->addHTML("</table>");
+        
+        // Courses Taught
+        $wgOut->addHTML("<h3>Students Taught</h3>
+                         <table class='wikitable'>");
+        $wgOut->addHTML("   <tr>
+                                <th style='width:6em;'></th>
+                                <th style='width:6em;'>Assistant</th>
+                                <th style='width:6em;'>Associate</th>
+                                <th style='width:6em;'>Full</th>
+                            </tr>
+                            <tr>
+                                <td><b>0</b></td>
+                                <td align='right'>".@intval($students["A"]["0"])."</td>
+                                <td align='right'>".@intval($students["B"]["0"])."</td>
+                                <td align='right'>".@intval($students["C"]["0"])."</td>
+                            </tr>
+                            <tr>
+                                <td><b>1-20</b></td>
+                                <td align='right'>".@intval($students["A"]["1-20"])."</td>
+                                <td align='right'>".@intval($students["B"]["1-20"])."</td>
+                                <td align='right'>".@intval($students["C"]["1-20"])."</td>
+                            </tr>
+                            <tr>
+                                <td><b>21-40</b></td>
+                                <td align='right'>".@intval($students["A"]["21-40"])."</td>
+                                <td align='right'>".@intval($students["B"]["21-40"])."</td>
+                                <td align='right'>".@intval($students["C"]["21-40"])."</td>
+                            </tr>
+                            <tr>
+                                <td><b>41-60</b></td>
+                                <td align='right'>".@intval($students["A"]["41-60"])."</td>
+                                <td align='right'>".@intval($students["B"]["41-60"])."</td>
+                                <td align='right'>".@intval($students["C"]["41-60"])."</td>
+                            </tr>
+                            <tr>
+                                <td><b>61-80</b></td>
+                                <td align='right'>".@intval($students["A"]["61-80"])."</td>
+                                <td align='right'>".@intval($students["B"]["61-80"])."</td>
+                                <td align='right'>".@intval($students["C"]["61-80"])."</td>
+                            </tr>
+                            <tr>
+                                <td><b>81-100</b></td>
+                                <td align='right'>".@intval($students["A"]["81-100"])."</td>
+                                <td align='right'>".@intval($students["B"]["81-100"])."</td>
+                                <td align='right'>".@intval($students["C"]["81-100"])."</td>
+                            </tr>
+                            <tr>
+                                <td><b>101-150</b></td>
+                                <td align='right'>".@intval($students["A"]["101-150"])."</td>
+                                <td align='right'>".@intval($students["B"]["101-150"])."</td>
+                                <td align='right'>".@intval($students["C"]["101-150"])."</td>
+                            </tr>
+                            <tr>
+                                <td><b>151-200</b></td>
+                                <td align='right'>".@intval($students["A"]["151-200"])."</td>
+                                <td align='right'>".@intval($students["B"]["151-200"])."</td>
+                                <td align='right'>".@intval($students["C"]["151-200"])."</td>
+                            </tr>
+                            <tr>
+                                <td><b>201-300</b></td>
+                                <td align='right'>".@intval($students["A"]["201-300"])."</td>
+                                <td align='right'>".@intval($students["B"]["201-300"])."</td>
+                                <td align='right'>".@intval($students["C"]["201-300"])."</td>
+                            </tr>
+                            <tr>
+                                <td><b>301-500</b></td>
+                                <td align='right'>".@intval($students["A"]["301-500"])."</td>
+                                <td align='right'>".@intval($students["B"]["301-500"])."</td>
+                                <td align='right'>".@intval($students["C"]["301-500"])."</td>
+                            </tr>
+                            <tr>
+                                <td><b>501+</b></td>
+                                <td align='right'>".@intval($students["A"]["501+"])."</td>
+                                <td align='right'>".@intval($students["B"]["501+"])."</td>
+                                <td align='right'>".@intval($students["C"]["501+"])."</td>
                             </tr>");
         $wgOut->addHTML("</table>");
     }
