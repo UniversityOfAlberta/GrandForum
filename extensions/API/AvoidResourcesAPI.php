@@ -93,10 +93,10 @@
                 foreach($contents as $row){
                     $row = str_getcsv($row);
                     $data[] = $row;
-                    $cats = explode(";", $row[18]);
+                    $cats = explode(";", str_replace(" ", "", $row[18]));
                     $category = $cats[count($cats)-1];
                     $website = (strstr($row[12], "http") === false) ? "http://{$row[12]}" : $row[12];
-                    if(($cat != "" && trim($cat) == trim($category)) ||
+                    if(($cat != "" && array_search($cat, $cats) !== false) ||
                        ($key != "" && strstr(strtolower(trim($row[0])." (".trim($row[1]).")". $row[3]), strtolower($key)) !== false)){
                         $publicName = (trim($row[1]) != "") ? trim($row[0])." (".trim($row[1]).")" : trim($row[0]);
                         $programs[] = array(

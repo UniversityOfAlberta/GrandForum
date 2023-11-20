@@ -384,19 +384,19 @@ PharmacyMapView = Backbone.View.extend({
                     }
 
                     var infowindow = new google.maps.InfoWindow({
-                        content: "Name: "
+                        content: "<en>Name:</en><fr>Nom:</fr> "
                             + val.PublicName
                             + "<br>"
-                            + "Address: "
+                            + "<en>Address:</en><fr>Adresse:</fr> "
                             + val.PhysicalAddress1
                             + "<br>"
-                            + "Phone: "
+                            + "<en>Phone:</en><fr>Numéro de téléphone:</fr> "
                             + phoneNumber
                             + "<br>"
-                            + "Email: "
+                            + "<en>Email:</en><fr>Courriel:</fr> "
                             + val.EmailAddressMain
                             + "<br>"
-                            + "Website: <a class='programWebsite' href='"
+                            + "<en>Website:</en><fr>Site Internet:</fr> <a class='programWebsite' href='"
                             + val.WebsiteAddress
                             + "' target='_blank'>"
                             + val.WebsiteAddress
