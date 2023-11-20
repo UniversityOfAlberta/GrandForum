@@ -5,12 +5,14 @@
         "class": "testing",
         "code": "CFN-ACT",
         "description": "Explore ways to get physically active in your community!",
+        "descriptionFr": "Explorer les façons d’être physiquement actif dans votre communauté",
         "tags": ["activity programs"],
         "children": [
             {
                 "text": "<en>Sports</en><fr>Sports</fr>",
                 "code": "CFN-ACT-SP",
                 "description": "Choose from a variety of individual and team sports",
+                "descriptionFr": "Faites votre choix parmi une variété de sports individuels et de groupe",
                 "tags": ["sports programs"],
                 "children": [
                     {
@@ -18,6 +20,7 @@
                         "value": 90,
                         "code": "CFN-ACT-SP-IND",
                         "description": "Pickleball, bowling, volleyball, and more",
+                        "descriptionFr": "Pickleball, quilles, volleyball, etc.",
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     },
                     {
@@ -25,6 +28,7 @@
                         "value": 90,
                         "code": "CFN-ACT-SP-WINTER",
                         "description": "Skating, curling, and more",
+                        "descriptionFr": "Patinage, curling, et plus encore",
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     },
                     {
@@ -32,6 +36,7 @@
                         "value": 90,
                         "code": "CFN-ACT-SP-WATER",
                         "description": "Canoeing, rowing, and more",
+                        "descriptionFr": "Canoë, aviron, et plus encore",
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     },
                     {
@@ -39,6 +44,7 @@
                         "value": 90,
                         "code": "CFN-ACT-SP-FIELD",
                         "description": "Tennis, lawn-bowling, soccer, and more",
+                        "descriptionFr": "Tennis, pétanque, football, etc.",
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     }
                 ]
@@ -48,6 +54,7 @@
                 "value": 113,
                 "code": "CFN-ACT-EX",
                 "description": " Improve your strength, balance, and endurance with these programs",
+                "descriptionFr": "Améliorez votre force, votre équilibre et votre endurance grâce à ces activités",
                 "tags": ["exercise programs"],
                 "children": [
                     {
@@ -55,6 +62,7 @@
                         "value": 90,
                         "code": "CFN-ACT-EX-BIKING",
                         "description": "Join a group in your community for your next road or trail ride",
+                        "descriptionFr": "Rejoignez un groupe dans votre communauté pour votre prochaine randonnée sur la route ou sur les sentiers",
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     },
                     {
@@ -62,6 +70,7 @@
                         "value": 90,
                         "code": "CFN-ACT-EX-DANCE",
                         "description": "Try a new style of dance, whether you’re a beginner or expert",
+                        "descriptionFr": "Débutant ou expert, essayez un nouveau style de danse",
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     },
                     {
@@ -69,6 +78,7 @@
                         "value": 90,
                         "code": "CFN-ACT-EX-MOV",
                         "description": "Enjoy classes for all mobility levels such as Yoga and Tai-Chi",
+                        "descriptionFr": "Profitez de cours adaptés à tous les niveaux de mobilité, comme le yoga et le tai-chi",
                         "tags": ["movement and mindfulness programs"],
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     },
@@ -77,6 +87,7 @@
                         "value": 90,
                         "code": "CFN-ACT-EX-FIT",
                         "description": "Choose from a variety of programs such as Pilates and aerobics for a fun way to move",
+                        "descriptionFr": "Choisissez parmi une variété de programmes, comme le Pilates et l’aérobie, pour bouger tout en vous amusant",
                         "tags": ["fitness programs"],
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     },
@@ -85,6 +96,7 @@
                         "value": 90,
                         "code": "CFN-ACT-EX-HORSE",
                         "description": "Find recreational and therapeutic options for all levels",
+                        "descriptionFr": "Trouvez des options récréatives et thérapeutiques à tous les niveaux",
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     },
                     {
@@ -92,6 +104,7 @@
                         "value": 90,
                         "code": "CFN-ACT-EX-RECF",
                         "description": "Visit a gym or community centre near you",
+                        "descriptionFr": "Visitez une salle de sport ou un centre communautaire près de chez vous",
                         "tags": ["recreation programs"],
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     },
@@ -100,6 +113,7 @@
                         "value": 90,
                         "code": "CFN-ACT-EX-WALK",
                         "description": "Join a group in your community for your next walk or run",
+                        "descriptionFr": "Rejoignez un groupe dans votre communauté pour votre prochaine promenade ou sortie de course à pied",
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     },
                     {
@@ -107,6 +121,7 @@
                         "value": 90,
                         "code": "CFN-ACT-EX-SWIM",
                         "description": "Attend aquatic classes or enjoy a community pool",
+                        "descriptionFr": "Suivez des cours de natation ou profitez des bienfaits d’une baignade à la piscine communautaire",
                         "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
                     }
                 ]
@@ -116,6 +131,7 @@
                 "value": 78,
                 "code": "CFN-ACT-GARDEN",
                 "description": "Join a gardening club or find your nearest community garden",
+                "descriptionFr": "Rejoignez un club de jardinage ou trouvez un jardin communautaire près de chez vous",
                 "tags": ["gardening programs"],
                 "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
             },
@@ -124,6 +140,7 @@
                 "value": 78,
                 "code": "CFN-ACT-TRAIL",
                 "description": "Take a walk or a hike at one of the many conservation areas or trails in KFL&A",
+                "descriptionFr": "Faites une promenade ou une randonnée dans l’une des nombreuses aires de conservation ou sur l’un des nombreux sentiers de Trois-Rivières",
                 "tags": ["trails"]
             },
             {
@@ -131,6 +148,7 @@
                 "value": 78,
                 "code": "CFN-ACT-GEN",
                 "description": "Gentle classes with increased support and modifications",
+                "descriptionFr": "",
                 "tags": [""]
             },
             {
@@ -138,6 +156,7 @@
                 "value": 78,
                 "code": "CFN-ACT-SLEEP",
                 "description": "Find supports to improve your sleep",
+                "descriptionFr": "Trouvez de l’assistance pour améliorer votre sommeil",
                 "tags": ["sleep services"]
             },
             {
@@ -145,6 +164,7 @@
                 "value": 78,
                 "code": "CFN-ACT-FREE",
                 "description": "",
+                "descriptionFr": "",
                 "tags": [""]
             }
         ]
@@ -153,6 +173,7 @@
         "text": "<en>Interact</en><fr>Vie sociale</fr>",
         "code": "CFN-INT",
         "description": "Explore opportunities to meet new people in your community!",
+        "descriptionFr": "Explorez les possibilités de rencontrer de nouvelles personnes dans votre communauté!",
         "tags": ["interact programs"],
         "children": [
             {
@@ -160,6 +181,7 @@
                 "value": 88,
                 "code": "CFN-INT-CRAFT",
                 "description": "Join a group to learn or practice your knitting, quilting, crocheting, or other crafts",
+                "descriptionFr": "Rejoignez un groupe pour apprendre ou pratiquer le tricot, la courtepointe, le crochet ou d’autres métiers d’artisanat",
                 "tags": ["crafting programs"],
                 "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
             },
@@ -168,13 +190,15 @@
                 "value": 88,
                 "code": "CFN-INT-LIB",
                 "description": "Find your local library to attend a workshop, event, or borrow a resource",
+                "descriptionFr": "Trouvez votre bibliothèque locale pour participer à un atelier, un événement ou emprunter un livre",
                 "tags": ["library"]
             },
             {
                 "text": "<en>Recreation</en><fr>Loisirs</fr>",
                 "value": 88,
                 "code": "CFN-INT-REC",
-                "description": "Join a club or group to meet people that share your interests ",
+                "description": "Join a club or group to meet people that share your interests",
+                "descriptionFr": "Rejoignez un groupe ou un club pour rencontrer des personnes qui partagent vos intérêts",
                 "tags": ["recreation programs"],
                 "children": [
                     {
@@ -182,6 +206,7 @@
                         "value": 88,
                         "code": "CFN-INT-REC-GAMES",
                         "description": "Play board games or cards",
+                        "descriptionFr": "Jouez à des jeux de société ou de cartes",
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
@@ -189,6 +214,7 @@
                         "value": 88,
                         "code": "CFN-INT-REC-ED",
                         "description": "Take a class to learn something new",
+                        "descriptionFr": "Suivez un cours pour apprendre quelque chose de nouveau",
                         "tags": ["education and employment programs"],
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
@@ -197,6 +223,7 @@
                         "value": 88,
                         "code": "CFN-INT-REC-ADV",
                         "description": "Join to promote a good cause",
+                        "descriptionFr": "Joignez un groupe pour promouvoir une bonne cause",
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
@@ -204,6 +231,7 @@
                         "value": 88,
                         "code": "CFN-INT-REC-CULTURE",
                         "description": "Connect with cultural clubs and centres in KFL&A",
+                        "descriptionFr": "Entrez en contact avec les clubs et les centres culturels de Trois-Rivières",
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
@@ -211,6 +239,7 @@
                         "value": 88,
                         "code": "CFN-INT-REC-HIST",
                         "description": "Learn more about historical events and KFL&A heritage",
+                        "descriptionFr": "En savoir plus sur les événements historiques et sur le patrimoine de Trois-Rivières",
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
@@ -218,6 +247,7 @@
                         "value": 88,
                         "code": "CFN-INT-REC-HOB",
                         "description": "Gather with your peers to celebrate a specific interest",
+                        "descriptionFr": "Réunissez-vous avec vos pairs pour vous adonner à votre passe-temps favori",
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
@@ -225,6 +255,7 @@
                         "value": 88,
                         "code": "CFN-INT-REC-SOC",
                         "description": "Join a club or association focused on meeting new friends",
+                        "descriptionFr": "Rejoignez un club ou une association dont l’objectif est de rencontrer de nouveaux amis",
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     }
                 ]
@@ -234,6 +265,7 @@
                 "value": 88,
                 "code": "CFN-INT-RELIGIOUS",
                 "description": "Join a local chapter of your religious affiliation",
+                "descriptionFr": "Rejoignez une section locale de votre affiliation religieuse",
                 "tags": ["religious centres"]
             },
             {
@@ -241,6 +273,7 @@
                 "value": 88,
                 "code": "CFN-INT-SUPPORT",
                 "description": "Find support in your community to meet your specific needs",
+                "descriptionFr": "Trouvez du soutien dans votre communauté pour répondre à vos besoins spécifiques",
                 "tags": ["support groups/centres"]
             },
             {
@@ -248,6 +281,7 @@
                 "value": 88,
                 "code": "CFN-INT-ART",
                 "description": "Opportunities to create through literature, music, and visual or performing arts",
+                "descriptionFr": "Profitez d’occasions de créer à travers la littérature, la musique et les arts visuels ou du spectacle",
                 "tags": ["arts programs"],
                 "children": [
                     {
@@ -255,6 +289,7 @@
                         "value": 88,
                         "code": "CFN-INT-ART-MUSIC",
                         "description": "Join a singing group, play your favourite instrument or learn something new",
+                        "descriptionFr": "Rejoignez un groupe de chant, jouez de votre instrument préféré ou apprenez quelque chose de nouveau",
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
@@ -262,6 +297,7 @@
                         "value": 88,
                         "code": "CFN-INT-ART-PER",
                         "description": "Become a part of a local theatre production or participate in acting workshops",
+                        "descriptionFr": "Faites partie d’un production théâtrale locale ou participez à des ateliers de théâtre",
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
@@ -269,6 +305,7 @@
                         "value": 88,
                         "code": "CFN-INT-ART-VIS",
                         "description": "Create through drawing, painting, pottery and other mediums",
+                        "descriptionFr": "Créez par le dessin, la peinture, la poterie et d’autres médiums",
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
@@ -276,6 +313,7 @@
                         "value": 88,
                         "code": "CFN-INT-ART-LIT",
                         "description": "Join a writing group to develop or advance your literary skills",
+                        "descriptionFr": "Rejoignez un groupe d’écriture pour développer ou améliorer vos compétences littéraires",
                         "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     }
                 ]
@@ -285,6 +323,7 @@
                 "value": 88,
                 "code": "CFN-INT-VOL",
                 "description": "Meet new people while contributing to your community",
+                "descriptionFr": "Rencontrez de nouvelles personnes tout en contribuant à votre communauté",
                 "tags": ["volunteering programs"]
             },
             {
@@ -292,6 +331,7 @@
                 "value": 88,
                 "code": "CFN-INT-COM",
                 "description": "",
+                "descriptionFr": "",
                 "tags": ["library"]
             },
             {
@@ -299,6 +339,7 @@
                 "value": 88,
                 "code": "CFN-INT-TECH",
                 "description": "Find your local library to attend a workshop, event, or borrow a resource",
+                "descriptionFr": "",
                 "tags": [""]
             },
             {
@@ -306,6 +347,7 @@
                 "value": 78,
                 "code": "CFN-INT-FREE",
                 "description": "",
+                "descriptionFr": "",
                 "tags": [""]
             }
         ]
@@ -315,6 +357,7 @@
         "value": 88,
         "code": "CFN-VAC",
         "description": "Find a location near you to get vaccinated or review your medications",
+        "descriptionFr": "Trouvez un lieu près de chez vous pour vous faire vacciner ou passer en revue vos médicaments",
         "tags": ["vaccination programs","optimize medication programs"],
         "children": [
             {
@@ -322,6 +365,7 @@
                 "value": 22,
                 "code": "CFN-VAC-FM",
                 "description": "Find a primary care provider",
+                "descriptionFr": "Trouvez un prestataire de soins primaires",
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
             {
@@ -329,6 +373,7 @@
                 "value": 38,
                 "code": "CFN-VAC-CLINIC",
                 "description": "Healthcare clinics that accept walk-ins",
+                "descriptionFr": "Trouvez une clinique de santé qui accepte les visites sans rendez-vous",
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
             {
@@ -336,6 +381,7 @@
                 "value": 38,
                 "code": "CFN-VAC-PHARMA",
                 "description": "Local pharmacies that provide vaccinations and medication reviews",
+                "descriptionFr": "Trouvez les pharmacies locales qui offrent des services de vaccination et de vérification des médicaments",
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
             {
@@ -343,6 +389,7 @@
                 "value": 38,
                 "code": "CFN-VAC-EDU",
                 "description": "Public health resources",
+                "descriptionFr": "Ressources de santé publique",
                 "tags": ["education and employment programs"],
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             }
@@ -352,6 +399,7 @@
         "text": "<en>Diet and Nutrition</en><fr>Alimentation et nutrition</fr>",
         "code": "CFN-DIET",
         "description": "Local supports and services to help create or maintain a balanced diet",
+        "descriptionFr": "Soutien et services locaux pour aider à créer ou maintenir une alimentation équilibrée",
         "tags": ["diet and nutrition programs"],
         "children": [
             {
@@ -359,6 +407,7 @@
                 "value": 92,
                 "code": "CFN-DIET-DELIV",
                 "description": "Community-based meal programs that offer home delivery",
+                "descriptionFr": "Programmes de repas communautaires avec livraison à domicile",
                 "tags": ["diet and nutrition delivery programs"],
                 "note": "<en><ul><li>Does the service offer hot meals or frozen meals?</li><li>What size are the meals?</li><li>How do you place an order? Online or over the phone?</li><li>When will my order arrive? Is there flexibility on timing?</li><li>Is there a delivery charge?</li><li>Where is the store where the food is made and am I able to collect from there instead of having it delivered?</li><li>Should I tip the driver?</li><li>How do I request a menu?</li><li>How do I pay? Can I prepay for meals?</li><li>Can I buy meals as a gift for someone?</li><li>Is it possible to change the sides on a particular meal (rice instead of potato)?</li><li>Can you accommodate dietary restrictions?</li></ul></en><fr><ul><li>Le service propose-t-il des repas chauds ou des repas surgelés?</li><li>Quelle quantité de nourriture les repas contiennent-ils?</li><li>Comment faut-il procéder pour passer une commande? En ligne ou par téléphone?</li><li>Quand ma commande arrivera-t-elle? Y a-t-il une certaine souplesse quant à l’horaire de commande et de livraison?</li><li>Y a-t-il des frais de livraison?</li><li>Où se trouve le magasin où sont fabriqués les aliments et puis-je y ramasser les repas plutôt que de me les faire livrer?</li><li>Dois-je donner un pourboire au chauffeur?</li><li>Comment puis-je demander un menu?</li><li>Comment puis-je payer? Puis-je payer les repas à l’avance?</li><li>Puis-je acheter des repas comme cadeau pour quelqu’un?</li><li>Est-il possible de changer les accompagnements d’un repas particulier (riz au lieu de pommes de terre)?</li><li>Respecte-t-on les restrictions alimentaires?</li></ul></fr>"
             },
@@ -367,6 +416,7 @@
                 "value": 92,
                 "code": "CFN-DIET-DIET",
                 "description": "Find a Registered Dietitian in your area",
+                "descriptionFr": "Trouvez un diététiste professionnel à Trois-Rivières",
                 "tags": ["dietitian services"]
             },
             {
@@ -374,6 +424,7 @@
                 "value": 92,
                 "code": "CFN-DIET-FREE",
                 "description": "Free or subsidized food",
+                "descriptionFr": "Nourriture gratuite et subventionnée",
                 "tags": ["food banks and stands"],
                 "note": "<en><ul><li>Does the service offer hot meals or frozen meals?</li><li>What size are the meals?</li><li>How do you place an order? Online or over the phone?</li><li>When will my order arrive? Is there flexibility on timing?</li><li>Is there a delivery charge?</li><li>Where is the store where the food is made and am I able to collect from there instead of having it delivered?</li><li>Should I tip the driver?</li><li>How do I request a menu?</li><li>How do I pay? Can I prepay for meals?</li><li>Can I buy meals as a gift for someone?</li><li>Is it possible to change the sides on a particular meal (rice instead of potato)?</li><li>Can you accommodate dietary restrictions?</li></ul></en><fr><ul><li>Le service propose-t-il des repas chauds ou des repas surgelés?</li><li>Quelle quantité de nourriture les repas contiennent-ils?</li><li>Comment faut-il procéder pour passer une commande? En ligne ou par téléphone?</li><li>Quand ma commande arrivera-t-elle? Y a-t-il une certaine souplesse quant à l’horaire de commande et de livraison?</li><li>Y a-t-il des frais de livraison?</li><li>Où se trouve le magasin où sont fabriqués les aliments et puis-je y ramasser les repas plutôt que de me les faire livrer?</li><li>Dois-je donner un pourboire au chauffeur?</li><li>Comment puis-je demander un menu?</li><li>Comment puis-je payer? Puis-je payer les repas à l’avance?</li><li>Puis-je acheter des repas comme cadeau pour quelqu’un?</li><li>Est-il possible de changer les accompagnements d’un repas particulier (riz au lieu de pommes de terre)?</li><li>Respecte-t-on les restrictions alimentaires?</li></ul></fr>"
             },
@@ -382,6 +433,7 @@
                 "value": 92,
                 "code": "CFN-DIET-MEAL",
                 "description": "Hot meals provided in a congregate setting or to take-home",
+                "descriptionFr": "Repas chauds fournis dans un établissement collectif ou à emporter à la maison",
                 "tags": ["meal programs"]
             },
             {
@@ -389,6 +441,7 @@
                 "value": 92,
                 "code": "CFN-DIET-DENTAL",
                 "description": "Oral health services and financial assistance programs",
+                "descriptionFr": "Services de santé bucco-dentaire et programmes d’aide financière",
                 "tags": ["dental services"]
             },
             {
@@ -396,6 +449,7 @@
                 "value": 92,
                 "code": "CFN-DIET-CLASS",
                 "description": "Cooking and nutrition classes",
+                "descriptionFr": "Cours de cuisine et de nutrition",
                 "tags": ["diet and nutrition classes"]
             }
         ]
@@ -404,19 +458,22 @@
         "text": "<en>Education and Employment</en><fr>Éducation et emploi</fr>",
         "code": "CFN-EDU",
         "description": "Opportunities for continued learning and assistance searching for employment",
+        "descriptionFr": "Possibilités de formation continue et d’aide à la recherche d’emploi",
         "tags": ["education and employment programs"],
         "children": [
             {
                 "text": "<en>Continued Education</en><fr>Formation continue</fr>",
                 "value": 42,
                 "code": "CFN-EDU-CONT",
-                "description": "Opportunities for further education"
+                "description": "Opportunities for further education",
+                "descriptionFr": "Possibilités de formation continue"
             },
             {
                 "text": "<en>Literacy/ESL</en><fr>Alphabétisation/FLS</fr>",
                 "value": 28,
                 "code": "CFN-EDU-LITESL",
                 "description": "Programs and classes to help improve literacy skills and learn the English language",
+                "descriptionFr": "Programmes et cours pour aider à améliorer les capacités de lecture et d’écriture et à apprendre la langue française",
                 "tags": ["literacy/english second language programs"]
             },
             {
@@ -424,6 +481,7 @@
                 "value": 42,
                 "code": "CFN-EDU-EMP",
                 "description": "Programs and services to assist with a job search",
+                "descriptionFr": "Programmes et services d’aide à la recherche d’emploi",
                 "tags": ["education and employment programs"]
             }
         ]
@@ -432,31 +490,36 @@
         "text": "<en>Financial/Legal Assistance</en><fr>Assistance financière et juridique</fr>",
         "code": "CFN-FINLGL",
         "description": "Services that provide support for managing money, and assist with legal matters",
+        "descriptionFr": "Services d’aide à la gestion financière et d’assistance juridique",
         "tags": ["financial and legal assistance"],
         "children": [
             {
                 "text": "<en>Credit Counselling</en><fr>Conseil en crédit</fr>",
                 "value": 121,
                 "code": "CFN-FINLGL-CREDIT",
-                "description": "Services to help manage debts"
+                "description": "Services to help manage debts",
+                "descriptionFr": "Services d’aide à la gestion des dettes"
             },
             {
                 "text": "<en>Income Tax</en><fr>Impôt sur le revenu</fr>",
                 "value": 100,
                 "code": "CFN-FINLGL-INCOMETAX",
-                "description": "Volunteer services that assist individuals with income tax returns"
+                "description": "Volunteer services that assist individuals with income tax returns",
+                "descriptionFr": "Services bénévoles qui aident les particuliers à remplir leur déclaration d’impôt sur le revenu"
             },
             {
                 "text": "<en>Legal Services</en><fr>Services juridiques</fr>",
                 "value": 42,
                 "code": "CFN-FINLGL-LEGAL",
-                "description": "Subsidized legal advice and education on matters such as estates, wills, and advanced care planning"
+                "description": "Subsidized legal advice and education on matters such as estates, wills, and advanced care planning",
+                "descriptionFr": "Conseils et formation juridiques subventionnés sur des questions, comme les successions, les testaments et la planification avancée des soins"
             },
             {
                 "text": "<en>Social Services</en><fr>Services sociaux</fr>",
                 "value": 42,
                 "code": "CFN-FINLGL-SOCIAL",
-                "description": "Community programs providing financial support and help with financial assistance applications"
+                "description": "Community programs providing financial support and help with financial assistance applications",
+                "descriptionFr": "Programmes communautaires offrant un soutien financier et des conseils pour les demandes d’aide financière"
             }
         ]
     },
@@ -464,12 +527,14 @@
         "text": "<en>Chronic Conditions</en><fr>Maladies chroniques</fr>",
         "code": "CFN-CHRONIC",
         "description": "Programs and services that help you manage living with a specific ongoing health issue",
+        "descriptionFr": "Programmes et services qui aident les personnes à composer avec un problème de santé spécifique et permanent",
         "children": [
             {
                 "text": "<en>Cancer</en><fr>Cancer</fr>",
                 "value": 121,
                 "code": "CFN-CHRONIC-CANCER",
                 "description": "Services for people living with cancer and their care partners",
+                "descriptionFr": "Services destinés aux personnes atteintes d’un cancer et à leurs proches aidants",
                 "tags": ["cancer programs"],
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
@@ -478,6 +543,7 @@
                 "value": 100,
                 "code": "CFN-CHRONIC-PAIN",
                 "description": "Services for people living with chronic pain and their care partners",
+                "descriptionFr": "Services destinés aux personnes atteintes de douleur chronique et à leurs proches aidants",
                 "tags": ["chronic pain programs"],
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
@@ -486,6 +552,7 @@
                 "value": 42,
                 "code": "CFN-CHRONIC-DEMENTIA",
                 "description": "Services for people living with a type of dementia and their care partners",
+                "descriptionFr": "Services destinés aux personnes atteintes d’une forme de démence et à leurs proches aidants",
                 "tags": ["dementia programs"],
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
@@ -494,6 +561,7 @@
                 "value": 42,
                 "code": "CFN-CHRONIC-DIABETES",
                 "description": "Services for people living with diabetes and their care partners",
+                "descriptionFr": "Services destinés aux personnes atteintes de diabète et à leurs proches aidants",
                 "tags": ["diabetes programs"],
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
@@ -502,6 +570,7 @@
                 "value": 42,
                 "code": "CFN-CHRONIC-OTHER",
                 "description": "Services for people living with other chronic conditions and their care partners",
+                "descriptionFr": "Services destinés aux personnes atteintes d’autres affections chroniques et à leurs proches aidants",
                 "tags": ["other chronic conditions programs"],
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             }
@@ -511,6 +580,7 @@
         "text": "<en>Mental Health</en><fr>Santé mentale</fr>",
         "code": "CFN-MH",
         "description": "Supportive services and programs for people who are living with a mental health disorder and their care partners",
+        "descriptionFr": "Services et programmes de soutien pour les personnes vivant avec un trouble de santé mentale et leurs proches aidants",
         "tags": ["mental health services"],
         "children": [
             {
@@ -518,6 +588,7 @@
                 "value": 121,
                 "code": "CFN-MH-ADDICT",
                 "description": "Support groups, counselling, treatment clinics and other services for individuals living with a substance use disorder",
+                "descriptionFr": "Groupes de soutien, counselling, cliniques de traitement et autres services destinés aux personnes souffrant de troubles liés à la toxicomanie",
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
             {
@@ -525,6 +596,7 @@
                 "value": 100,
                 "code": "CFN-MH-CLINICS",
                 "description": "Variety of services to support individuals living with a mental health disorder",
+                "descriptionFr": "Divers services pour soutenir les personnes vivant avec un trouble de santé mentale",
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
             {
@@ -532,6 +604,7 @@
                 "value": 42,
                 "code": "CFN-MH-COUNSELLING",
                 "description": "Individual and group counselling with options for specific populations",
+                "descriptionFr": "Counselling individuel et de groupe, avec des options pour des populations spécifiques",
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
             {
@@ -539,6 +612,7 @@
                 "value": 42,
                 "code": "CFN-MH-SUPPORT",
                 "description": "Regular meetings with peers who share a common healthcare need or lived experience",
+                "descriptionFr": "Réunions régulières avec des pairs qui partagent un besoin commun en matière de soins de santé ou relativement à une expérience vécue",
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             }
         ]
@@ -547,6 +621,7 @@
         "text": "<en>Housing</en><fr>Logement</fr>",
         "code": "CFN-HOUS",
         "description": "Opportunities and services to assist with finding appropriate housing for your situation",
+        "descriptionFr": "Services d’aide à la recherche d’un logement adapté à sa situation",
         "tags": ["housing services"],
         "children": [
             {
@@ -554,25 +629,29 @@
                 "value": 121,
                 "code": "CFN-HOUS-DIS",
                 "description": "Residences and support for people living with a disability",
+                "descriptionFr": "Résidences et soutien pour les personnes en situation de handicap",
                 "tags": ["disability services"]
             },
             {
                 "text": "<en>Emergency Housing</en><fr>Logement d’urgence</fr>",
                 "value": 100,
                 "code": "CFN-HOUS-EMERG",
-                "description": "Shelter services for those in need"
+                "description": "Shelter services for those in need",
+                "descriptionFr": "Services d’hébergement pour les personnes dans le besoin"
             },
             {
                 "text": "<en>Geared to Income</en><fr>Logement en fonction du revenu</fr>",
                 "value": 200,
                 "code": "CFN-HOUS-GTI",
-                "description": "Rental units priced based on income"
+                "description": "Rental units priced based on income",
+                "descriptionFr": "Logements locatifs avec des prix ajustés au revenu"
             },
             {
                 "text": "<en>Housing for Older Adults</en><fr>Logement pour les personnes aînées</fr>",
                 "value": 200,
                 "code": "CFN-HOUS-OLDERADULTS",
                 "description": "Services for people living with diabetes and their care partners",
+                "descriptionFr": "Services d’hébergement spécifiques aux personnes aînées",
                 "tags": ["housing services"]
             },
             {
@@ -580,13 +659,15 @@
                 "value": 200,
                 "code": "CFN-HOUS-HOUSSUPP",
                 "description": "Housing related financial assistance programs and services",
+                "descriptionFr": "Programmes et services d’aide financière liés au logement",
                 "tags": ["housing services"]
             },
             {
                 "text": "<en>Nursing Home</en><fr>Maison de soins</fr>",
                 "value": 200,
                 "code": "CFN-HOUS-NURSING",
-                "description": "Residency for those who require some care"
+                "description": "Residency for those who require some care",
+                "descriptionFr": "Résidence pour personnes ayant besoin de soins spécifiques"
             }
         ]
     },
@@ -594,6 +675,7 @@
         "text": "<en>Home and Care Partners</en><fr>Services de soutien et de soins à domicile</fr>",
         "code": "CFN-HOMECARE",
         "description": "Programs and services that provide assistance in the home or to care partners",
+        "descriptionFr": "Programmes et services qui offrent de l’aide à domicile ou du soutien aux proches aidants",
         "tags": ["home care services"],
         "children": [
             {
@@ -601,6 +683,7 @@
                 "value": 121,
                 "code": "CFN-HOMECARE-CAREPARTNER",
                 "description": "Relief from caregiving responsibilities and other supports for care partners",
+                "descriptionFr": "Aide et répit pour les proches aidants",
                 "note": "<en><ul><li>What services does your organization provide?</li><li>How quickly can we initiate services? Is there a waitlist?</li><li>How often can I arrange care in the home?</li><li>How do you match your clients with caregivers? Is there a contract?</li><li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li><li>How does the payment process work? Hourly rate? Cancellation charges?</li><li>If I have an issue or concern, who will be my point of contact?</li><li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li><li>How do I report a no-show or late caregiver?</li><li>How do you provide last-minute coverage?</li></ul></en><fr><ul><li>Quels services l’organisation fournit-elle?</li><li>Dans quel délai peut-on recevoir les services? Y a-t-il une liste d’attente?</li><li>quelle fréquence puis-je obtenir des soins à domicile?</li><li>Comment la clientèle est-elle mise en relation avec les soignants? Y a-t-il un contrat?</li><li>Quelles sont les qualifications des soignants? Ont-ils reçu une formation pour des affections particulières?</li><li>Comment fonctionne le processus de paiement? Quel est le taux horaire? Y a-t-il des frais d’annulation?</li><li>Si j’ai un problème ou une préoccupation, qui sera mon point de contact?</li><li>Comment communique-t-on avec la clientèle et les membres de la famille concernant les problèmes, les préoccupations ou les recommandations?</li><li>Comment puis-je signaler un soignant qui ne se présente pas ou qui est en retard?</li><li>Comment assurez-vous un service de dernière minute?</li></ul></fr>"
             },
             {
@@ -608,6 +691,7 @@
                 "value": 100,
                 "code": "CFN-HOMECARE-HELP",
                 "description": "Services provided in the home including housekeeping, meal preparation, basic personal care, companionship, and more",
+                "descriptionFr": "Services offerts à domicile, comme l’entretien ménager, la préparation de repas",
                 "tags": ["help at home"],
                 "note": "<en><ul><li>What services does your organization provide?</li><li>How quickly can we initiate services? Is there a waitlist?</li><li>How often can I arrange care in the home?</li><li>How do you match your clients with caregivers? Is there a contract?</li><li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li><li>How does the payment process work? Hourly rate? Cancellation charges?</li><li>If I have an issue or concern, who will be my point of contact?</li><li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li><li>How do I report a no-show or late caregiver?</li><li>How do you provide last-minute coverage?</li></ul></en><fr><ul><li>Quels services l’organisation fournit-elle?</li><li>Dans quel délai peut-on recevoir les services? Y a-t-il une liste d’attente?</li><li>quelle fréquence puis-je obtenir des soins à domicile?</li><li>Comment la clientèle est-elle mise en relation avec les soignants? Y a-t-il un contrat?</li><li>Quelles sont les qualifications des soignants? Ont-ils reçu une formation pour des affections particulières?</li><li>Comment fonctionne le processus de paiement? Quel est le taux horaire? Y a-t-il des frais d’annulation?</li><li>Si j’ai un problème ou une préoccupation, qui sera mon point de contact?</li><li>Comment communique-t-on avec la clientèle et les membres de la famille concernant les problèmes, les préoccupations ou les recommandations?</li><li>Comment puis-je signaler un soignant qui ne se présente pas ou qui est en retard?</li><li>Comment assurez-vous un service de dernière minute?</li></ul></fr>"
             },
@@ -616,6 +700,7 @@
                 "value": 42,
                 "code": "CFN-HOMECARE-HOMECARE",
                 "description": "Medical services delivered in the home",
+                "descriptionFr": "Services médicaux offerts à domicile",
                 "tags": ["home care services"],
                 "note": "<en><ul><li>What services does your organization provide?</li><li>How quickly can we initiate services? Is there a waitlist?</li><li>How often can I arrange care in the home?</li><li>How do you match your clients with caregivers? Is there a contract?</li><li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li><li>How does the payment process work? Hourly rate? Cancellation charges?</li><li>If I have an issue or concern, who will be my point of contact?</li><li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li><li>How do I report a no-show or late caregiver?</li><li>How do you provide last-minute coverage?</li></ul></en><fr><ul><li>Quels services l’organisation fournit-elle?</li><li>Dans quel délai peut-on recevoir les services? Y a-t-il une liste d’attente?</li><li>quelle fréquence puis-je obtenir des soins à domicile?</li><li>Comment la clientèle est-elle mise en relation avec les soignants? Y a-t-il un contrat?</li><li>Quelles sont les qualifications des soignants? Ont-ils reçu une formation pour des affections particulières?</li><li>Comment fonctionne le processus de paiement? Quel est le taux horaire? Y a-t-il des frais d’annulation?</li><li>Si j’ai un problème ou une préoccupation, qui sera mon point de contact?</li><li>Comment communique-t-on avec la clientèle et les membres de la famille concernant les problèmes, les préoccupations ou les recommandations?</li><li>Comment puis-je signaler un soignant qui ne se présente pas ou qui est en retard?</li><li>Comment assurez-vous un service de dernière minute?</li></ul></fr>"
             },
@@ -624,6 +709,7 @@
                 "value": 42,
                 "code": "CFN-HOMECARE-PALL",
                 "description": "End of life care and support for care partners",
+                "descriptionFr": "Soins de fin de vie et soutien aux proches aidants",
                 "tags": ["palliative care/hospice"],
                 "note": "<en><ul><li>What services does your organization provide?</li><li>How quickly can we initiate services? Is there a waitlist?</li><li>How often can I arrange care in the home?</li><li>How do you match your clients with caregivers? Is there a contract?</li><li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li><li>How does the payment process work? Hourly rate? Cancellation charges?</li><li>If I have an issue or concern, who will be my point of contact?</li><li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li><li>How do I report a no-show or late caregiver?</li><li>How do you provide last-minute coverage?</li></ul></en><fr><ul><li>Quels services l’organisation fournit-elle?</li><li>Dans quel délai peut-on recevoir les services? Y a-t-il une liste d’attente?</li><li>quelle fréquence puis-je obtenir des soins à domicile?</li><li>Comment la clientèle est-elle mise en relation avec les soignants? Y a-t-il un contrat?</li><li>Quelles sont les qualifications des soignants? Ont-ils reçu une formation pour des affections particulières?</li><li>Comment fonctionne le processus de paiement? Quel est le taux horaire? Y a-t-il des frais d’annulation?</li><li>Si j’ai un problème ou une préoccupation, qui sera mon point de contact?</li><li>Comment communique-t-on avec la clientèle et les membres de la famille concernant les problèmes, les préoccupations ou les recommandations?</li><li>Comment puis-je signaler un soignant qui ne se présente pas ou qui est en retard?</li><li>Comment assurez-vous un service de dernière minute?</li></ul></fr>"
             }
@@ -633,12 +719,14 @@
         "text": "<en>Healthcare Services</en><fr>Soins de santé</fr>",
         "code": "CFN-HEALTH",
         "description": "Medical services from local clinics, hospitals, and public health",
+        "descriptionFr": "Services médicaux offerts par des cliniques, des hôpitaux et des services de santé publique locaux",
         "children": [
             {
                 "text": "<en>Clinics</en><fr>Cliniques</fr>",
                 "value": 121,
                 "code": "CFN-HEALTH-CLINICS",
                 "description": "Visit specific healthcare clinics including seniors day rehabilitation, stroke rehabilitation, breast assessments, and more",
+                "descriptionFr": "Visitez des cliniques de soins de santé spécifiques, notamment pour la réadaptation de jour des personnes aînées, la réadaptation après une attaque cérébrale, l’examen mammaire, etc.",
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
             {
@@ -646,6 +734,7 @@
                 "value": 100,
                 "code": "CFN-HEALTH-HOSP",
                 "description": "Locate the nearest hospital to you",
+                "descriptionFr": "Trouvez l’hôpital le plus près de chez vous",
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             },
             {
@@ -653,6 +742,7 @@
                 "value": 42,
                 "code": "CFN-HEALTH-KFLAPH",
                 "description": "Connect with the resources and services offered through your local health unit",
+                "descriptionFr": "Entrez en contact avec des ressources et des services offerts par votre santé publique locale",
                 "note": "<en><ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul></en><fr><ul><li>Quels sont les services couverts par la Régie de l’assurance maladie du Québec?</li><li>Y a-t-il un coût pour ce programme ou service?</li><li>Dois-je avoir une recommandation ou une ordonnance d’un médecin pour avoir droit aux services couverts par la Régie de l’assurance maladie du Québec?</li><li>Je n’ai pas de médecin de famille, comment puis-je obtenir une recommandation?</li><li>Puis-je le faire moi-même? Y a-t-il des critères d’admissibilité? (c.-à-d. un diagnostic de santé établi.)</li><li>Des services mobiles sont-ils offerts? Des prises de sang à domicile? Des soins des pieds à domicile? La livraison d’oxygène? Quel est le coût?</li><li>À quelle fréquence est-il recommandé d’accéder à ces services?</li><li>Le service de santé est-il limité dans le temps? p. ex. Est-ce un programme de 8 semaines?</li><li>Y a-t-il un psychiatre pour offrir du soutien?</li><li>Comment le soutien est-il géré? Virtuellement, appels téléphoniques, en ligne ou en personne.</li><li>Existe-t-il une liste d’attente pour accéder aux programmes?</li><li>À quoi ressemble le processus d’aiguillage? Est-ce que l’on communiquera avec moi? Quel suivi est nécessaire?</li><li>Un gestionnaire de cas sera-t-il affecté à mon dossier? À quoi ressemblera mon équipe de soins?</li><li>Les services d’aide aux victimes contribueront-ils au financement de l’aide psychologique? Dans l’affirmative, pendant combien de temps?</li></ul></fr>"
             }
         ]
@@ -661,32 +751,37 @@
         "text": "<en>Disability Services</en><fr>Services pour personnes en situation de handicap</fr>",
         "code": "CFN-DIS",
         "description": "Community and home supports for individuals living with a disability and their care partners",
+        "descriptionFr": "Soutien communautaire et à domicile pour les personnes vivant en situation de handicap et leurs proches aidants",
         "tags": ["disability services"],
         "children": [
             {
                 "text": "<en>Developmental Disability Services</en><fr>Services pour personnes ayant une déficience développementale</fr>",
                 "value": 121,
                 "code": "CFN-DIS-DEVDIS",
-                "description": "Supports and services for individuals living with a developmental disability"
+                "description": "Supports and services for individuals living with a developmental disability",
+                "descriptionFr": "Soutien et services pour les personnes vivant avec une déficience développementale"
             },
             {
                 "text": "<en>Physical Disability Services</en><fr>Services pour les personnes ayant une déficience physique</fr>",
                 "value": 100,
                 "code": "CFN-DIS-PHYDIS",
-                "description": "Supports and services for individuals living with a physical disability"
+                "description": "Supports and services for individuals living with a physical disability",
+                "descriptionFr": "Soutien et services pour les personnes vivant avec une déficience physique"
             },
             {
                 "text": "<en>Homecare</en><fr>Soins à domicile</fr>",
                 "value": 42,
                 "code": "CFN-DIS-HOMECARE",
                 "description": "Services including housekeeping, respite, and nursing delivered in the home for individuals living with a disability",
+                "descriptionFr": "Services comprenant l’entretien ménager, les soins de répit et les soins infirmiers fournis à domicile pour les personnes en situation de handicap",
                 "tags": ["home care services"]
             },
             {
                 "text": "<en>Community Support</en><fr>Soutien communautaire</fr>",
                 "value": 42,
                 "code": "CFN-DIS-COMMUNITY",
-                "description": "Assistance with financial assistance applications, family support, employment training, and more"
+                "description": "Assistance with financial assistance applications, family support, employment training, and more",
+                "descriptionFr": "Assistance pour les demandes d’aide financière, soutien aux familles, formation à l’emploi, etc."
             }
         ]
     },
@@ -694,19 +789,22 @@
         "text": "<en>Transportation</en><fr>Transport</fr>",
         "code": "CFN-TRANSPORT",
         "description": " Services to assist with transportation needs",
+        "descriptionFr": "Services d’assistance pour les besoins de transport",
         "tags": ["transportation services"],
         "children": [
             {
                 "text": "<en>Driving Assessment</en><fr>Évaluation de conduite</fr>",
                 "value": 121,
                 "code": "CFN-TRANSPORT-DRIVA",
-                "description": "Centres that offer driving lessons and continued assessments"
+                "description": "Centres that offer driving lessons and continued assessments",
+                "descriptionFr": "Centres qui proposent des leçons de conduite et des évaluations continues"
             },
             {
                 "text": "<en>Driving Program</en><fr>Programme d’accompagnement</fr>",
                 "value": 100,
                 "code": "CFN-TRANSPORT-DRIVP",
                 "description": "Volunteer drivers available for grocery shopping, medical appointments, and other daily needs",
+                "descriptionFr": "Des chauffeurs bénévoles disponibles pour les courses, les rendez-vous médicaux et autres besoins quotidiens",
                 "note": "<en><ul><li>What is the cost? Per KM, set fee?</li><li>Can the driver assist with transfers, putting mobility aids in the vehicle, etc?</li><li><li>Do you have accessible vehicles available?</li><li>Can I bring a companion with me and is there an additional cost?</li><li>How much notice is needed to set up a drive?</li><li>Is there a referral process or criteria for accessing the services?</li><li>Can I set up a regular weekly scheduled (weekly) ride, or do I have to book one ride at a time?</li></ul></en><fr><ul><li>Quel est le coût? S'agit-il d’un tarif fixe ou par kilomètre?</li><li>Le chauffeur peut-il aider lors de transferts, aider à mettre les aides à la mobilité dans le véhicule, etc.?</li><li>Avez-vous des véhicules adaptés?</li><li>Puis-je amener une personne avec moi et y a-t-il un coût supplémentaire?</li><li>Quel est le délai de préavis nécessaire pour organiser un transport?</li><li>Pour accéder aux services, faut-il une recommandation? Ou faut-il satisfaire à certains critères?</li><li>Puis-je programmer un trajet régulier (hebdomadaire) ou dois-je réserver un seul trajet à la fois?</li></ul></fr>"
             },
             {
@@ -714,6 +812,7 @@
                 "value": 42,
                 "code": "CFN-TRANSPORT-MED",
                 "description": "Non-emergency patient transfer services",
+                "descriptionFr": "Services de transfert non-urgent de patients",
                 "tags": ["transportation services"]
             },
             {
@@ -721,6 +820,7 @@
                 "value": 42,
                 "code": "CFN-TRANSPORT-PUBLIC",
                 "description": "Local bus service and non-emergency medical transfers",
+                "descriptionFr": "Services d’autobus et de transferts médicaux non-urgent",
                 "note": "<en><ul><li>What is the cost? Per KM, set fee?</li><li>Can the driver assist with transfers, putting mobility aids in the vehicle, etc?</li><li><li>Do you have accessible vehicles available?</li><li>Can I bring a companion with me and is there an additional cost?</li><li>How much notice is needed to set up a drive?</li><li>Is there a referral process or criteria for accessing the services?</li><li>Can I set up a regular weekly scheduled (weekly) ride, or do I have to book one ride at a time?</li></ul></en><fr><ul><li>Quel est le coût? S'agit-il d’un tarif fixe ou par kilomètre?</li><li>Le chauffeur peut-il aider lors de transferts, aider à mettre les aides à la mobilité dans le véhicule, etc.?</li><li>Avez-vous des véhicules adaptés?</li><li>Puis-je amener une personne avec moi et y a-t-il un coût supplémentaire?</li><li>Quel est le délai de préavis nécessaire pour organiser un transport?</li><li>Pour accéder aux services, faut-il une recommandation? Ou faut-il satisfaire à certains critères?</li><li>Puis-je programmer un trajet régulier (hebdomadaire) ou dois-je réserver un seul trajet à la fois?</li></ul></fr>"
             }
         ]
