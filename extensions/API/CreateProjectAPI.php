@@ -99,6 +99,7 @@ class CreateProjectAPI extends API{
 	                                    array('evolution_id' => $evoId,
 	                                          'project_id' => $nsId,
 	                                          'status' => $status,
+	                                          'start_date' => $effective_date,
 	                                          'type' => $type),
 	                                    true);
 	    }
