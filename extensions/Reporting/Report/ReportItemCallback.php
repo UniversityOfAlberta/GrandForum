@@ -113,6 +113,9 @@ class ReportItemCallback {
             "user_other_count" => "getUserOtherCount",
             "user_committee_count" => "getUserCommitteeCount",
             "user_courses_count" => "getUserCoursesCount",
+            "user_student_count" => "getUserStudentCount",
+            "user_lectures_count" => "getUserLecCount",
+            "user_lectures_student_count" => "getUserLecStudentCount",
             "user_grant_count" => "getUserGrantCount",
             "user_cv_grant_count" => "getUserCVGrantCount",
             "user_grant_total" => "getUserGrantTotal",
@@ -124,6 +127,7 @@ class ReportItemCallback {
             "getUserPublicationCount" => "getUserPublicationCount",
             "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
             "isAllowedToViewRecommendation" => "isAllowedToViewRecommendation",
+            "getPersonVar" => "getPersonVar",
             // Chair
             "chair_id" => "getChairId",
             // Products
@@ -179,6 +183,7 @@ class ReportItemCallback {
             "replace" => "replace",
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
+            "substr" => "substr",
             "nl2br" => "nl2br",
             "strip_html" => "strip_html",
             "occurrences" => "occurrences",
@@ -648,6 +653,16 @@ class ReportItemCallback {
         $category = "";
         switch($case){
             default:
+            case "Any Journal":
+                $category = "Publication";
+                $type = "Journal Paper";
+                $histories = array();
+                break;
+            case "Not Refereed":
+                $category = "Publication";
+                $type = "Journal Paper|Conference Paper|Proceedings Paper|Workshop Paper|Book Chapter";
+                $histories = array();
+                break;
             case "Journal":
                 $case = "Publication";
                 $category = "Publication";
@@ -675,6 +690,11 @@ class ReportItemCallback {
                 $type = "Patent";
                 $histories = $person->getProductHistories($year, "Patent");
                 break;
+            case "Award":
+                $category = "Award";
+                $type = "*";
+                $histories = array();
+                break;
         }
         
         if(count($histories) > 0){
@@ -684,7 +704,7 @@ class ReportItemCallback {
         $count = 0;
         $types = explode("|", $type);
         foreach($products as $product){
-            if(in_array($product->getType(), $types)){
+            if(in_array($product->getType(), $types) || implode($types) == "*"){
                 $reportedYear = $product->getReportedForPerson($this->reportItem->personId);
                 if($reportedYear == "" && $product->getType() != "Patent"){
                     // Not reported yet, but do some checks to make sure we don't count it twice
@@ -696,6 +716,11 @@ class ReportItemCallback {
                 if($reportedYear == "" || $reportedYear == $year){
                     if($case == "Publication"){
                         if($product->getData('peer_reviewed') == "Yes"){
+                            $count++;
+                        }
+                    }
+                    else if($case == "Not Refereed"){
+                        if($product->getData('peer_reviewed') == "No" || $product->getData('peer_reviewed') == ""){
                             $count++;
                         }
                     }
@@ -765,6 +790,14 @@ class ReportItemCallback {
             }
         }
         return false;
+    }
+
+    function getPersonVar($var){
+        $user = Person::newFromId($this->reportItem->personId);
+        if(isset($user->{$var})){
+            return $user->{$var};
+        }
+        return "";
     }
 
     function getChairId(){
@@ -1213,6 +1246,10 @@ class ReportItemCallback {
         return strtoupper($str);
     }
     
+    function substr($string, $offset, $length=null){
+        return substr($string, $offset, $length);
+    }
+    
     function nl2br($str){
         return nl2br($str);
     }
@@ -1527,6 +1564,40 @@ class ReportItemCallback {
         foreach($courses as $course){
             if($course->totEnrl > 0){
                 $count++;
+            }
+        }
+        return $count;
+    }
+    
+    function getUserStudentCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $courses = $person->getCoursesDuring(($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $count = 0;
+        foreach($courses as $course){
+            $count += $course->totEnrl;
+        }
+        return $count;
+    }
+    
+    function getUserLecCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $courses = $person->getCoursesDuring(($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $count = 0;
+        foreach($courses as $course){
+            if($course->totEnrl > 0 && $course->component == "LEC"){
+                $count++;
+            }
+        }
+        return $count;
+    }
+    
+    function getUserLecStudentCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $courses = $person->getCoursesDuring(($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $count = 0;
+        foreach($courses as $course){
+            if($course->component == "LEC"){
+                $count += $course->totEnrl;
             }
         }
         return $count;

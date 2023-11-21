@@ -2200,7 +2200,7 @@ class Person extends BackboneModel {
      * @param string $endRange The end date to look at
      * @return array The Universities that this Person was at between the given range
      */ 
-    function getUniversitiesDuring($startRange, $endRange){
+    function getUniversitiesDuring($startRange, $endRange, $id=null){
         $startRange = substr($startRange,0,10);
         $endRange = substr($endRange,0,10);
         if(empty(self::$allUniversityCache)){
@@ -2229,8 +2229,9 @@ class Person extends BackboneModel {
             }
         }
         $unis = array();
-        if(isset(self::$allUniversityCache[$this->getId()])){
-            foreach(self::$allUniversityCache[$this->getId()] as $uni){
+        $id = ($id == null) ? $this->getId() : $id;
+        if(isset(self::$allUniversityCache[$id])){
+            foreach(self::$allUniversityCache[$id] as $uni){
                 if(($uni['end'] != "0000-00-00 00:00:00" && ((substr($uni['start'],0,10) >= $startRange && substr($uni['start'],0,10) <= $endRange) || 
                                                              (substr($uni['end'],0,10) >= $startRange && substr($uni['end'],0,10) <= $endRange) ||
                                                              (substr($uni['start'],0,10) <= $endRange && substr($uni['end'],0,10) >= $endRange))) || 
@@ -2733,8 +2734,8 @@ class Person extends BackboneModel {
         if(isset($this->relations["{$type}{$startRange}{$endRange}"])){
             return $this->relations["{$type}{$startRange}{$endRange}"];
         }
-        $sql = "SELECT *
-                FROM grand_relations
+        $sql = "SELECT r.*
+                FROM grand_relations r, mw_user u
                 WHERE user1 = '{$this->id}'\n";
         if($type == "public" || $type == "all"){
             // do nothing
@@ -2749,14 +2750,14 @@ class Person extends BackboneModel {
                 ( (end_date = '0000-00-00 00:00:00') AND
                 ((start_date <= '$endRange')))
                 )
+                AND u.user_id = r.user2
+                AND u.deleted != 1
         ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
         $data = DBFunctions::execSQL($sql);
         $relations = array();
         foreach($data as $row){
             $relation = Relationship::newFromId($row['id']);
-            if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
-                $relations[] = $relation;
-            }
+            $relations[] = $relation;
         }
         $this->relations["{$type}{$startRange}{$endRange}"] = $relations;
         return $relations;
@@ -2802,9 +2803,7 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $relation = Relationship::newFromId($row['id']);
-                if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
-                    $this->relations[$row['type']][$row['id']] = $relation;
-                }
+                $this->relations[$row['type']][$row['id']] = $relation;
             }
             return $this->relations;
         }
@@ -2823,9 +2822,7 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $relation = Relationship::newFromId($row['id']);
-                if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
-                    $this->relations[$row['type']][$row['id']] = $relation;
-                }
+                $this->relations[$row['type']][$row['id']] = $relation;
             }
             return $this->relations;
         }
@@ -2846,9 +2843,7 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $relation = Relationship::newFromId($row['id']);
-                if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
-                    $this->relations[$row['type']][$row['id']] = $relation;
-                }
+                $this->relations[$row['type']][$row['id']] = $relation;
             }
         //}
         return $this->relations[$type];
@@ -3446,8 +3441,7 @@ class Person extends BackboneModel {
         
         $data = array();
         foreach($relations as $r){
-            $hqp = $r->getUser2();
-            $universities = $hqp->getUniversitiesDuring("0000-00-00", "2100-00-00");
+            $universities = $this->getUniversitiesDuring("0000-00-00", "2100-00-00", $r->user2);
             $role = $r->getType();
             if($hqpTypes == "committee"){
                 if($role == SUPERVISES || $role == CO_SUPERVISES){
@@ -3512,10 +3506,9 @@ class Person extends BackboneModel {
             }
 
             $end_date = ($endDate1 == '0000-00-00') ? "Current" : $endDate1;
-            $hqp_name = $hqp->getNameForForms();
             
             $data[$end_date.$startDate1.$position.$r->getId()] = 
-                array('hqp' => $hqp->getId(),
+                array('hqp' => $r->user2,
                       'position' => $position,
                       'start_date' => $startDate1,
                       'end_date' => $end_date,
@@ -3985,15 +3978,18 @@ class Person extends BackboneModel {
     }
      
     function getRelationsAll(){
+        $data = DBFunctions::execSQL("SELECT r.*
+                                      FROM grand_relations r, mw_user u
+                                      WHERE user1 = '{$this->id}'
+                                      AND r.user2 = u.user_id
+                                      AND u.deleted != '1'");
         $data = DBFunctions::select(array('grand_relations'),
                                     array('id'),
                                     array('user1' => EQ($this->id)));
         $relations = array();
         foreach($data as $row){
             $relation = Relationship::newFromId($row['id']);
-            if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
-                $relations[] = $relation;
-            }
+            $relations[] = $relation;
         }
         usort($relations, function($a, $b){ 
             return str_replace("0000-00-00", "9999-12-31", $a->getEndDate()) < 
@@ -4072,7 +4068,7 @@ class Person extends BackboneModel {
         if($person instanceof Person){
             $relations = $this->getRelationsDuring($relationship, $start_date, $end_date);
             foreach($relations as $relation){                
-                if($relation->getUser2()->getId() == $person->getId()){
+                if($relation->user2 == $person->getId()){
                     return true;
                 }
             }
