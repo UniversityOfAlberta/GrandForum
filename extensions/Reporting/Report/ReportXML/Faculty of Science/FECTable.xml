@@ -762,7 +762,7 @@
                         <td>{substr({getPersonVar(dateOfTenure)},0,10)}</td>
                         <td>{substr({getPersonVar(dateOfRetirement)},0,10)}</td>
                         <td>{substr({getPersonVar(dateOfLastDegree)},0,10)}</td>
-                        <td>{substr({getPersonVar(lastDegree)},0,10)}</td>
+                        <td>{getPersonVar(lastDegree)}</td>
                         <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Any Journal)}</td>
                         <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</td>
                         <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Not Refereed)}</td>

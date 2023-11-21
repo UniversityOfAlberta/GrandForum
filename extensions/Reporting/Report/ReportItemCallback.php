@@ -1247,7 +1247,7 @@ class ReportItemCallback {
     }
     
     function substr($string, $offset, $length=null){
-        return substr($string, $offset, $length);
+        return @substr($string, $offset, $length);
     }
     
     function nl2br($str){
