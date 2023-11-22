@@ -162,6 +162,19 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="cost" type="Textarea" blobItem="COST" rich="true">
+            <![CDATA[
+                <h3>Project Cost Items</h3>
+                <i>(Please itemize each cost in the total project budget; the CIC will provide up to a maximum of 50% of the required funding with the expectation that matching from other sources is obtained)</i>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="requested" type="Textarea" blobItem="REQUESTED" rich="true">
+            <![CDATA[
+                <h3>Requested Funds from CIC (note that CIC endowments can only be matched if industry partner providing endowment is involved in project) and Ratio of Matching Funds to CIC Funds from Planned Sources</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="milestones" type="Textarea" blobItem="MILESTONES" rich="true">
             <![CDATA[
                 <h3>Project Duration and Milestones</h3>

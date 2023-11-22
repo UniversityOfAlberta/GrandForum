@@ -101,6 +101,18 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="cost" type="Textarea" blobItem="COST" rich="true">
+            <![CDATA[
+                <h3>Project Cost Items</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="requested" type="Textarea" blobItem="REQUESTED" rich="true">
+            <![CDATA[
+                <h3>Requested Funds from CIC and Ratio of Matching Funds to CIC Funds from Planned Sources</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="milestones" type="Textarea" blobItem="MILESTONES" rich="true">
             <![CDATA[
                 <h3>Project Duration and Milestones</h3>
