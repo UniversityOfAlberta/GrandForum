@@ -70,6 +70,7 @@ ExpertDashboardView = Backbone.View.extend({
     render: function () {
         this.$el.empty();
         var data = this.model.toJSON();
+        var locale = (wgLang == 'en') ? 'en-US' : 'fr-CA';
         if(data["date_of_event"] != null){
             //split time and date TODO: do this in class function instead
             var origDate = new Date(data["date_of_event"].replace(/-/g, "/"));
@@ -78,9 +79,8 @@ ExpertDashboardView = Backbone.View.extend({
             var date = new Date(parts[0], parts[1] - 1, parts[2]);
             var timesplit = split[1].split(":");
             var time = timesplit[0] + ":" + timesplit[1];
-            var datestring = date.toDateString();
-            data["date"] = datestring;
-            data["time"] = origDate.toLocaleString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
+            data["date"] = date.toLocaleDateString(locale, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+            data["time"] = origDate.toLocaleString(locale, { hour: 'numeric', hour12: true, minute: 'numeric' });
         }
         if(data["date_for_questions"] != null){
             //split time and date TODO: do this in class function instead
@@ -89,8 +89,7 @@ ExpertDashboardView = Backbone.View.extend({
             var date = new Date(parts[0], parts[1] - 1, parts[2]);
             var timesplit = split[1].split(":");
             var time = timesplit[0] + ":" + timesplit[1];
-            var datestring = date.toDateString();
-            data["date_for_questions"] = datestring;
+            data["date_for_questions"] = date.toLocaleDateString(locale, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
         }
         if(data["end_of_event"] != null){
             //split time and date TODO: do this in class function instead
@@ -100,9 +99,8 @@ ExpertDashboardView = Backbone.View.extend({
             var date = new Date(parts[0], parts[1] - 1, parts[2]);
             var timesplit = split[1].split(":");
             var time = timesplit[0] + ":" + timesplit[1];
-            var datestring = date.toDateString();
-            data["end_date"] = datestring;
-            data["end_time"] = origDate.toLocaleString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
+            data["end_date"] = date.toLocaleDateString(locale, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+            data["end_time"] = origDate.toLocaleString(locale, { hour: 'numeric', hour12: true, minute: 'numeric' });
         }
         this.$el.html(this.template({
             output: data,

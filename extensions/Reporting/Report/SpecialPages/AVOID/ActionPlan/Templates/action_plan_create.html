@@ -58,22 +58,34 @@
         </h3>
         <div style="box-sizing: border-box; width: 100%; background: #fae6cb; border: none !important; border-radius: 0 0 14px 14px; padding: 14px !important;">
             <div>
-                <b>This week I will:</b><br />
-                <%= HTML.TextArea(this, 'plan', {class: 'defaultTextarea', placeholder: "what", style: 'height: 100px;width:100%;'}) %>
+                <b>
+                    <en>This week I will:</en>
+                    <fr>Cette semaine, je prendrai les actions suivantes :</fr>    
+                </b><br />
+                <%= HTML.TextArea(this, 'plan', {class: 'defaultTextarea', placeholder: showLanguage(wgLang, "what", "quoi"), style: 'height: 100px;width:100%;'}) %>
             </div>
             
             <div style="margin-top: 0.5em;">
-                <b>How much:</b><br />
-                <%= HTML.TextBox(this, 'time', {placeholder: "time"}) %>
+                <b>
+                    <en>How much:</en>
+                    <fr>Durée :</fr>
+                </b><br />
+                <%= HTML.TextBox(this, 'time', {placeholder: showLanguage(wgLang, "time", "temps")}) %>
             </div>
             
             <div style="margin-top: 0.5em;">
-                <b>When:</b><br />
-                <%= HTML.TextBox(this, 'when', {placeholder: "time of day"}) %>
+                <b>
+                    <en>When:</en>
+                    <fr>À quel moment de la journée :</fr>
+                </b><br />
+                <%= HTML.TextBox(this, 'when', {placeholder: showLanguage(wgLang, "time of day", "s la journée")}) %>
             </div>
             
             <div style="margin-top: 0.5em;">
-                <b>How often:</b><br />
+                <b>
+                    <en>How often:</en>
+                    <fr>À quelle fréquence :</fr>
+                </b><br />
                 <table class='wikitable' style="width: 100%;margin-top:0;margin-bottom:0;">
                     <tr>
                         <th style='width: 14.2%;line-height:1em;'><en>Mon</en><fr>Lun</fr><br /><small><%= new Date(actionPlanDate.replace(/-/g, "/")).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
@@ -97,7 +109,10 @@
             </div>
             
             <div style="margin-top: 0.5em;">
-                <b>Confidence Level:</b><br />
+                <b>
+                    <en>Confidence Level:</en>
+                    <fr>Niveau de confiance :</fr>
+                </b><br />
                 <div class="slider" style="max-width: 20em; width: 100%; margin-bottom: 2em;">
                     <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "max-width: 20em; width: 100%; padding:0;"}) %>
                     <div style="display: flex; position: relative; font-size: 0.75em; padding: 0 14px 5px 5px; line-height: 1em; white-space: nowrap;">
@@ -179,35 +194,83 @@
 
 <div class="actionPlanSection">
     <div class="manual">
-        <h4 style="margin-top:0;">What AVOID component(s) does your action plan address? Choose all that apply.</h4>
+        <h4 style="margin-top:0;">
+            <en>What AVOID component(s) does your action plan address? Choose all that apply.</en>
+            <fr>Quels sont les domaines de Proactif dans lesquels votre plan d’action s’inscrit? Sélectionnez tous ceux qui s’appliquent.</fr>
+        </h4>
         <table>
             <tr>
-                <td><%= HTML.CheckBox(this, 'components.A', {value: 1}) %></td>
-                <td style="padding-top: 5px; padding-left:5px;"><b>Activity</b> - something that involves moving your body, including walking</td>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.A', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Activity</en>
+                        <fr>Activité physique</fr>
+                    </b> - 
+                    <en>something that involves moving your body, including walking</en>
+                    <fr>lorsque vous bougez, par exemple lorsque vous marchez</fr>
+                </td>
             </tr>
             <tr>
-                <td><%= HTML.CheckBox(this, 'components.V', {value: 1}) %></td>
-                <td style="padding-top: 5px; padding-left:5px;"><b>Vaccinate</b></td>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.V', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Vaccinate</en>
+                        <fr>Vaccination</fr>
+                    </b>
+                </td>
             </tr>
             <tr>
-                <td><%= HTML.CheckBox(this, 'components.O', {value: 1}) %></td>
-                <td style="padding-top: 5px; padding-left:5px;"><b>Optimize Medication</b></td>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.O', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Optimize Medication</en>
+                        <fr>Optimisation de la médication</fr>
+                    </b>
+                </td>
             </tr>
             <tr>
-                <td><%= HTML.CheckBox(this, 'components.I', {value: 1}) %></td>
-                <td style="padding-top: 5px; padding-left:5px;"><b>Interact</b> - this could be meeting new people, trying something new, reducing isolation or loneliness.</td>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.I', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Interact</en>
+                        <fr>Vie sociale</fr>
+                    </b> - 
+                    <en>this could be meeting new people, trying something new, reducing isolation or loneliness.</en>
+                    <fr>ce pourrait être de rencontrer de nouvelles personnes, d’essayer de nouvelles choses, dans le but de réduire l’isolement et la solitude.</fr>
+                </td>
             </tr>
             <tr>
-                <td><%= HTML.CheckBox(this, 'components.D', {value: 1}) %></td>
-                <td style="padding-top: 5px; padding-left:5px;"><b>Diet & Nutrition</b> - anything related to the food and drink you consume, or your oral health.</td>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.D', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Diet & Nutrition</en>
+                        <fr>Alimentation</fr>
+                    </b> - 
+                    <en>anything related to the food and drink you consume, or your oral health.</en>
+                    <fr>tout ce que vous buvez ou mangez, ou tout ce qui a lien à votre hygiène buccale.</fr>
+                </td>
             </tr>
             <tr>
-                <td><%= HTML.CheckBox(this, 'components.S', {value: 1}) %></td>
-                <td style="padding-top: 5px; padding-left:5px;"><b>Sleep</b> - something you are doing specifically to improve your sleep</td>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.S', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Sleep</en>
+                        <fr>Sommeil</fr>
+                    </b> - 
+                    <en>something you are doing specifically to improve your sleep</en>
+                    <fr>toute action prise pour améliorer votre sommeil.</fr>
+                </td>
             </tr>
             <tr>
-                <td><%= HTML.CheckBox(this, 'components.F', {value: 1}) %></td>
-                <td style="padding-top: 5px; padding-left:5px;"><b>Falls Prevention</b> - something you are doing specifically to reduce your risk of falling</td>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.F', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Falls Prevention</en>
+                        <fr>Prévention des chutes</fr>
+                    </b> - 
+                    <en>something you are doing specifically to reduce your risk of falling</en>
+                    <fr>toute action prise pour réduire votre risque de chute.</fr>
+                </td>
             </tr>
         </table>
         <div class="actionPlanWarning warning"></div>

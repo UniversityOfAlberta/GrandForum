@@ -18,7 +18,7 @@ ActionPlanCreateView = Backbone.View.extend({
         else{
             $("#saveActionPlanButton").prop("disabled", true);
             $(".actionPlanWarning", this.$el.parent()).slideDown();
-            $(".actionPlanWarning", this.$el.parent()).text("You must select at least one AVOID component");
+            $(".actionPlanWarning", this.$el.parent()).html("<en>You must select at least one AVOID component</en><fr>Sélectionnez au moins un domaine Proactif.</fr>");
         }
     },
 
