@@ -75,7 +75,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="team" type="MultiText" blobItem="TEAM" blobType="BLOB_ARRAY" labels="Name|Email|Faculty|Department|Discipline" types="Text|Text|Text|Text|Text" sizes="150|150|200|200|200" multiple="true">
+        <ReportItem id="team" type="MultiText" class="wikitable" blobItem="TEAM" blobType="BLOB_ARRAY" labels="Name|Email|Faculty|Department|Discipline" types="Text|Text|Text|Text|Text" multiple="true">
             <![CDATA[
                 <h3>Proposed Research Team (i.e., other faculty members)</h3>
                 {$item}

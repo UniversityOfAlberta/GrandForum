@@ -3,7 +3,6 @@
     <Permissions>
         <Role role="INACTIVE+">
             <SectionPermission id="intent" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
@@ -262,11 +261,6 @@
                 <h3>By completing this form, you acknowledge that PIs of projects that are approved by the CIC are required to participate in and present at the CIC’s Innovation in Construction Forum</h3>
                 {$item}
             ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="report_review" type="ReviewReportItem">
-            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="INTENT" type="EditableReportSection" renderpdf="false">
