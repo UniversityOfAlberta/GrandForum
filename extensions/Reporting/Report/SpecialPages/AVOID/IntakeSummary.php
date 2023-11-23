@@ -184,6 +184,14 @@ class IntakeSummary extends SpecialPage {
             }
         }
         $html .= IntakeSummary::programAttendanceHeaderBottom();
+        $html .= "<th>Time spent sitting</th>
+                  <th>Walking 10 min at a time</th>
+                  <th>Moderate activity</th>
+                  <th>Missing vaccinations</th>
+                  <th>Medication review</th>
+                  <th>Seeing family and friends improvement</th>
+                  <th>Loneliness score improvement</th>
+                  <th>Nutrition deficit</th>";
         if(!$simple){                      
             $html .= "  </tr>
                       </thead>";
@@ -265,6 +273,44 @@ class IntakeSummary extends SpecialPage {
             }
         }
         $html .= IntakeSummary::programAttendanceRow($person);
+        $aggregates = array();
+        $status = array();
+        Descriptors::aggregateStats($person, $aggregates, $status);
+        $aId = null;
+        switch($report->reportType){
+            case "RP_AVOID_THREEMO":
+                $aId = 0;
+                break;
+            case "RP_AVOID_SIXMO":
+                $aId = 1;
+                break;
+            case "RP_AVOID_NINEMO":
+                $aId = 2;
+                break;
+            case "RP_AVOID_TWELVEMO":
+                $aId = 3;
+                break;
+        }
+        foreach($status as $stat){
+            if(!isset($stat[$aId])){
+                $text = "N/A";
+            }
+            else{
+                switch($stat[$aId]){
+                    case -1:
+                        $text = "Worse";
+                        break;
+                    case 0:
+                        $text = "No change";
+                        break;
+                    case 1:
+                        $text = "Improved";
+                        break;
+                }
+            }
+            
+            $html .= "<td>{$text}</td>";
+        }
         if(!$simple){
             $html .= "</tr>";
         }
