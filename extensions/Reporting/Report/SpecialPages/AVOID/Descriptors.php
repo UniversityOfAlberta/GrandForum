@@ -25,6 +25,9 @@ class Descriptors extends SpecialPage {
     }
     
     static function compareProgress(&$aggregates, &$status, $val1, $rp, $blobItem, $category, $person){
+        if(!AVOIDDashboard::hasSubmittedSurvey($person->getId(), $rp)){
+            return $val1;
+        }
         $val2 = self::getBlobData("behaviouralassess", $blobItem, $person, YEAR, $rp);
         if($val1 != "" && 
            ($val2 == "" || $val2 == $val1) &&
@@ -51,6 +54,9 @@ class Descriptors extends SpecialPage {
     }
     
     static function compareVaccines(&$aggregates, &$status, $count1, $rp, $person){
+        if(!AVOIDDashboard::hasSubmittedSurvey($person->getId(), $rp)){
+            return $count1;
+        }
         $MAX = 5;
         $count2 = 0;
         $v1 = self::getBlobData("behaviouralassess", "vaccinate1_avoid", $person, YEAR, $rp);
@@ -93,6 +99,9 @@ class Descriptors extends SpecialPage {
     }
     
     static function compareMeds(&$aggregates, &$status, $val1, $rp, $person){
+        if(!AVOIDDashboard::hasSubmittedSurvey($person->getId(), $rp)){
+            return $val1;
+        }
         $val2 = self::getBlobData("behaviouralassess", "meds3_avoid", $person, YEAR, $rp);
         
         $score1 = ($val1 == "Yes") ? 0 : 1;
@@ -122,6 +131,9 @@ class Descriptors extends SpecialPage {
     }
     
     static function compareInteract(&$aggregates, &$status, $score1, $rp, $person){
+        if(!AVOIDDashboard::hasSubmittedSurvey($person->getId(), $rp)){
+            return $score1;
+        }
         $score2 = 0;
         $v1 = self::getBlobData("behaviouralassess", "interact1_avoid", $person, YEAR, $rp);
         $v2 = self::getBlobData("behaviouralassess", "interact2_avoid", $person, YEAR, $rp);
@@ -157,6 +169,9 @@ class Descriptors extends SpecialPage {
     }
     
     static function compareLoneliness(&$aggregates, &$status, $score1, $rp, $person){
+        if(!AVOIDDashboard::hasSubmittedSurvey($person->getId(), $rp)){
+            return $score1;
+        }
         $options = array("Hardly ever","Some of the time","Often");
         $score2 = 0;
         $v1 = self::getBlobData("behaviouralassess", "interact7_avoid", $person, YEAR, $rp);
@@ -189,6 +204,9 @@ class Descriptors extends SpecialPage {
     }
     
     static function compareNutrition(&$aggregates, &$status, $count1, $rp, $person){
+        if(!AVOIDDashboard::hasSubmittedSurvey($person->getId(), $rp)){
+            return $count1;
+        }
         $MAX = 3;
         $count2 = 0;
         $v1 = self::getBlobData("behaviouralassess", "diet1_avoid", $person, YEAR, $rp);
@@ -242,10 +260,10 @@ class Descriptors extends SpecialPage {
         // Vaccine Stats
         $count = 0;
         $count = self::compareVaccines($aggregates[3][-1], $status[3][-1], $count, "RP_AVOID", $person);
-        $count = self::compareVaccines($aggregates[3][0], $status[3][0], $count, "RP_AVOID_THREEMO", $person);
-        $count = self::compareVaccines($aggregates[3][1], $status[3][1], $count, "RP_AVOID_SIXMO", $person);
-        $count = self::compareVaccines($aggregates[3][2], $status[3][2], $count, "RP_AVOID_NINEMO", $person);
-        $count = self::compareVaccines($aggregates[3][3], $status[3][3], $count, "RP_AVOID_TWELVEMO", $person);
+        $count = self::compareVaccines($aggregates[3][0],  $status[3][0], $count, "RP_AVOID_THREEMO", $person);
+        $count = self::compareVaccines($aggregates[3][1],  $status[3][1], $count, "RP_AVOID_SIXMO", $person);
+        $count = self::compareVaccines($aggregates[3][2],  $status[3][2], $count, "RP_AVOID_NINEMO", $person);
+        $count = self::compareVaccines($aggregates[3][3],  $status[3][3], $count, "RP_AVOID_TWELVEMO", $person);
         
         // Meds
         $meds = self::getBlobData("behaviouralassess", "meds3_avoid", $person, YEAR, "RP_AVOID");
@@ -257,26 +275,26 @@ class Descriptors extends SpecialPage {
         // Interact
         $count = 0;
         $count = self::compareInteract($aggregates[5][-1], $status[5][-1], $count, "RP_AVOID", $person);
-        $count = self::compareInteract($aggregates[5][0], $status[5][0], $count, "RP_AVOID_THREEMO", $person);
-        $count = self::compareInteract($aggregates[5][1], $status[5][1], $count, "RP_AVOID_SIXMO", $person);
-        $count = self::compareInteract($aggregates[5][2], $status[5][2], $count, "RP_AVOID_NINEMO", $person);
-        $count = self::compareInteract($aggregates[5][3], $status[5][3], $count, "RP_AVOID_TWELVEMO", $person);
+        $count = self::compareInteract($aggregates[5][0],  $status[5][0], $count, "RP_AVOID_THREEMO", $person);
+        $count = self::compareInteract($aggregates[5][1],  $status[5][1], $count, "RP_AVOID_SIXMO", $person);
+        $count = self::compareInteract($aggregates[5][2],  $status[5][2], $count, "RP_AVOID_NINEMO", $person);
+        $count = self::compareInteract($aggregates[5][3],  $status[5][3], $count, "RP_AVOID_TWELVEMO", $person);
         
         // Loneliness
         $count = 0;
         $count = self::compareLoneliness($aggregates[6][-1], $status[6][-1], $count, "RP_AVOID", $person);
-        $count = self::compareLoneliness($aggregates[6][0], $status[6][0], $count, "RP_AVOID_THREEMO", $person);
-        $count = self::compareLoneliness($aggregates[6][1], $status[6][1], $count, "RP_AVOID_SIXMO", $person);
-        $count = self::compareLoneliness($aggregates[6][2], $status[6][2], $count, "RP_AVOID_NINEMO", $person);
-        $count = self::compareLoneliness($aggregates[6][3], $status[6][3], $count, "RP_AVOID_TWELVEMO", $person);
+        $count = self::compareLoneliness($aggregates[6][0],  $status[6][0], $count, "RP_AVOID_THREEMO", $person);
+        $count = self::compareLoneliness($aggregates[6][1],  $status[6][1], $count, "RP_AVOID_SIXMO", $person);
+        $count = self::compareLoneliness($aggregates[6][2],  $status[6][2], $count, "RP_AVOID_NINEMO", $person);
+        $count = self::compareLoneliness($aggregates[6][3],  $status[6][3], $count, "RP_AVOID_TWELVEMO", $person);
         
         // Nutrition
         $count = 0;
         $count = self::compareNutrition($aggregates[7][-1], $status[7][-1], $count, "RP_AVOID", $person);
-        $count = self::compareNutrition($aggregates[7][0], $status[7][0], $count, "RP_AVOID_THREEMO", $person);
-        $count = self::compareNutrition($aggregates[7][1], $status[7][1], $count, "RP_AVOID_SIXMO", $person);
-        $count = self::compareNutrition($aggregates[7][2], $status[7][2], $count, "RP_AVOID_NINEMO", $person);
-        $count = self::compareNutrition($aggregates[7][3], $status[7][3], $count, "RP_AVOID_TWELVEMO", $person);
+        $count = self::compareNutrition($aggregates[7][0],  $status[7][0], $count, "RP_AVOID_THREEMO", $person);
+        $count = self::compareNutrition($aggregates[7][1],  $status[7][1], $count, "RP_AVOID_SIXMO", $person);
+        $count = self::compareNutrition($aggregates[7][2],  $status[7][2], $count, "RP_AVOID_NINEMO", $person);
+        $count = self::compareNutrition($aggregates[7][3],  $status[7][3], $count, "RP_AVOID_TWELVEMO", $person);
         return $aggregates;
     }
     
@@ -1303,8 +1321,7 @@ class Descriptors extends SpecialPage {
         return true;
     }
     
-    static function getBlobData($blobSection, $blobItem, $person, $year, $rpType=null){
-        $rpType = ($rpType == null) ? "RP_AVOID" : $rpType;
+    static function getBlobData($blobSection, $blobItem, $person, $year, $rpType="RP_AVOID"){
         $blb = new ReportBlob(BLOB_TEXT, $year, $person->getId(), 0);
         $addr = ReportBlob::create_address($rpType, $blobSection, $blobItem, 0);
         $result = $blb->load($addr);
