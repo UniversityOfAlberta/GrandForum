@@ -843,6 +843,7 @@ class AVOIDDashboard extends SpecialPage {
     }
     
     static function getNextIncompleteSection(){
+        global $config;
         $me = Person::newFromWgUser();
         
         $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
@@ -854,7 +855,10 @@ class AVOIDDashboard extends SpecialPage {
             // Consent not Yes
             return"";
         }
-        $report = new DummyReport("IntakeSurvey", $me);
+        
+        $alberta = ($config->getValue("networkFullName") == "AVOID Alberta") ? "Alberta" : "";
+        
+        $report = new DummyReport("IntakeSurvey{$alberta}", $me);
         foreach($report->sections as $section){
             if($section instanceof EditableReportSection){
                 $percent = $section->getPercentComplete();
@@ -992,9 +996,10 @@ class AVOIDDashboard extends SpecialPage {
         $baseDiff = (time() - strtotime(AVOIDDashboard::submissionDate($me->getId(), "RP_AVOID")))/86400;
         
         $section = AVOIDDashboard::getNextIncompleteSection();
+        $alberta = ($config->getValue("networkFullName") == "AVOID Alberta") ? "Alberta" : "";
         if($me->isLoggedIn()){
-            if(!$baseLineSubmitted && ($wgTitle->getText() != "Report" || @$_GET['report'] != "IntakeSurvey")){
-                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey&section={$section}");
+            if(!$baseLineSubmitted && ($wgTitle->getText() != "Report" || @$_GET['report'] != "IntakeSurvey{$alberta}")){
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey{$alberta}&section={$section}");
             }
             else if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*4 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "ThreeMonths")){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ThreeMonths");
@@ -1008,7 +1013,7 @@ class AVOIDDashboard extends SpecialPage {
             else if($baseLineSubmitted && !$twelveMonthSubmitted && $baseDiff >= 30*12 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "TwelveMonths")){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=TwelveMonths");
             }
-            else if($nsText == "Special" && $wgTitle->getText() == "Report" && ((@$_GET['report'] == "IntakeSurvey" && $baseLineSubmitted) || 
+            else if($nsText == "Special" && $wgTitle->getText() == "Report" && ((@$_GET['report'] == "IntakeSurvey{$alberta}" && $baseLineSubmitted) || 
                                                                                 (@$_GET['report'] == "ThreeMonths" && $threeMonthSubmitted) ||
                                                                                 (@$_GET['report'] == "SixMonths" && $sixMonthSubmitted) ||
                                                                                 (@$_GET['report'] == "NineMonths" && $nineMonthSubmitted) ||
