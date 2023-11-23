@@ -49,14 +49,15 @@ class Report extends AbstractReport{
     }
     
     static function createSubTabs(&$tabs){
-        global $wgServer, $wgScriptPath, $wgTitle;
+        global $wgServer, $wgScriptPath, $wgTitle, $config;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
+        $alberta = ($config->getValue("networkFullName") == "AVOID Alberta") ? "Alberta" : "";
         if($person->isLoggedIn()){
             if(!AVOIDDashboard::hasSubmittedSurvey()){
                 $section = AVOIDDashboard::getNextIncompleteSection();
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey")) ? "selected" : false;
-                $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("<en>Healthy Aging Assessment</en><fr>Évaluation du vieillissement sain</fr>", "{$url}IntakeSurvey&section={$section}", $selected);
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey{$alberta}")) ? "selected" : false;
+                $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("<en>Healthy Aging Assessment</en><fr>Évaluation du vieillissement sain</fr>", "{$url}IntakeSurvey{$alberta}&section={$section}", $selected);
             }
         }
         return true;
