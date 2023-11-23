@@ -571,6 +571,10 @@ class Descriptors extends SpecialPage {
                 }
                 
                 $nIntake++;
+                
+                // Aggregate Stats
+                $status = array();
+                self::aggregateStats($person, $aggregates, $status);
             }
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO") && self::getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
@@ -613,10 +617,6 @@ class Descriptors extends SpecialPage {
                 }
                 $n6Month++;
             }
-            
-            // Aggregate Stats
-            $status = array();
-            self::aggregateStats($person, $aggregates, $status);
         }
         $wgOut->addHTML("<div class='modules'>");
         @$wgOut->addHTML("<div class='module-3cols-outer'>

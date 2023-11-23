@@ -301,7 +301,7 @@ class IntakeSummary extends SpecialPage {
                         $text = "Worse";
                         break;
                     case 0:
-                        $text = "No change";
+                        $text = "No change (Max)";
                         break;
                     case 1:
                         $text = "Improved";
