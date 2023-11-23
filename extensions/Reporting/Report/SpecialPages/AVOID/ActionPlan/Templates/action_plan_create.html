@@ -78,7 +78,7 @@
                     <en>When:</en>
                     <fr>À quel moment de la journée :</fr>
                 </b><br />
-                <%= HTML.TextBox(this, 'when', {placeholder: showLanguage(wgLang, "time of day", "s la journée")}) %>
+                <%= HTML.TextBox(this, 'when', {placeholder: showLanguage(wgLang, "time of day", "Quand pendant la journée")}) %>
             </div>
             
             <div style="margin-top: 0.5em;">
@@ -129,8 +129,14 @@
                         <div style="width: 0; position: absolute; right: 18px;">10</div>
                     </div>
                     <div style="padding: 5px 5px; font-size: 0.85em; line-height: 1em; 100%; position: relative;">
-                        <div style="position: absolute; left: 5px;">Not at<br />all sure</div>
-                        <div style="position: absolute; right: 0; text-align: right;">Absolutely<br />sure</div>
+                        <div style="position: absolute; left: 5px;">
+                            <en>Not at<br />all sure</en>
+                            <fr>Pas du tout<br />certaine ou certain</fr>
+                        </div>
+                        <div style="position: absolute; right: 0; text-align: right;">
+                            <en>Absolutely<br />sure</en>
+                            <fr>Complètement<br />certaine ou certain</fr>
+                        </div>
                     </div>
                 </div>
                 <div class="warning confidenceWarning" style="display:none;">
