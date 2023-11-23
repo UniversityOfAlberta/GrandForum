@@ -292,23 +292,7 @@ class IntakeSummary extends SpecialPage {
                 break;
         }
         foreach($status as $stat){
-            if(!isset($stat[$aId])){
-                $text = "N/A";
-            }
-            else{
-                switch($stat[$aId]){
-                    case -1:
-                        $text = "Worse";
-                        break;
-                    case 0:
-                        $text = "No change (Max)";
-                        break;
-                    case 1:
-                        $text = "Improved";
-                        break;
-                }
-            }
-            
+            $text = (!isset($stat[$aId])) ? AGG_NA : $stat[$aId];
             $html .= "<td>{$text}</td>";
         }
         if(!$simple){

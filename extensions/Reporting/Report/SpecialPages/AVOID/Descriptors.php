@@ -13,6 +13,12 @@ function runDescriptors($par) {
     Descriptors::execute($par);
 }
 
+define("AGG_NA", "N/A");
+define("AGG_WORSE", "Regression");
+define("AGG_SAME", "No Change");
+define("AGG_BETTER", "Improvement");
+define("AGG_BEST", "No Change (Max)");
+
 class Descriptors extends SpecialPage {
     
     function __construct() {
@@ -33,7 +39,7 @@ class Descriptors extends SpecialPage {
            ($val2 == "" || $val2 == $val1) &&
            UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val1] == min(UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"])){
             // Already max, exclude from dataset
-            $status = 0;
+            $status = AGG_BEST;
             return $val1;
         }
         if($val2 != ""){
@@ -41,12 +47,12 @@ class Descriptors extends SpecialPage {
                UserFrailtyIndexAPI::$checkanswers[$category][$blobItem]["answer_scores"][$val2]){
                 // Improvement
                 $aggregates[] = 1;
-                $status = 1;
+                $status = AGG_BETTER;
             }
             else{
                 // No Improvement
                 $aggregates[] = 0;
-                $status = -1;
+                $status = AGG_WORSE;
             }
             $val1 = $val2;
         }
@@ -68,7 +74,7 @@ class Descriptors extends SpecialPage {
         
         if($v1 == "Yes"){
             // Exclude from dataset
-            $status = 0;
+            $status = AGG_NA;
             return 0;
         }
         
@@ -80,18 +86,19 @@ class Descriptors extends SpecialPage {
         
         if($count1 == $MAX && ($v1 == "" || $count2 == $count1)){
             // Already max, exclude from dataset
+            $status = AGG_BEST;
             return $count1;
         }
         
         if($v1 != ""){
             if($count2 > $count1){
                 $aggregates[] = 1;
-                $status = 1;
+                $status = AGG_BETTER;
             }
             else{
                 // No Improvement
                 $aggregates[] = 0;
-                $status = -1;
+                $status = ($count1 == $count2) ? AGG_SAME: AGG_WORSE;
             }
             $count1 = $count2;
         }
@@ -111,19 +118,19 @@ class Descriptors extends SpecialPage {
            ($val2 == "" || $val2 == $val1) &&
            $score1 == 0){
             // Already max, exclude from dataset
-            $status = 0;
+            $status = AGG_BEST;
             return $val1;
         }
         if($val2 != ""){
             if($score1 > $score2){
                 // Improvement
                 $aggregates[] = 1;
-                $status = 1;
+                $status = AGG_BETTER;
             }
             else{
                 // No Improvement
                 $aggregates[] = 0;
-                $status = -1;
+                $status = ($score1 == $score2) ? AGG_SAME: AGG_WORSE;
             }
             $val1 = $val2;
         }
@@ -149,19 +156,19 @@ class Descriptors extends SpecialPage {
         
         if($score1 >= 12 && ($v1 == "" || $score2 >= 12)){
             // Already max, exclude from dataset
-            $status = 0;
+            $status = AGG_BEST;
             return $score1;
         }
         
         if($v1 != ""){
             if($score2 >= 12){
                 $aggregates[] = 1;
-                $status = 1;
+                $status = AGG_BETTER;
             }
             else{
                 // No Improvement
                 $aggregates[] = 0;
-                $status = -1;
+                $status = ($score1 == $score2) ? AGG_SAME: AGG_WORSE;
             }
             $score1 = $score2;
         }
@@ -184,19 +191,19 @@ class Descriptors extends SpecialPage {
         
         if($score1 == 0 && ($v1 == "" || $score2 == $score1)){
             // Already max, exclude from dataset
-            $status = 0;
+            $status = AGG_BEST;
             return $score1;
         }
         
         if($v1 != ""){
             if($score2 < $score1){
                 $aggregates[] = 1;
-                $status = 1;
+                $status = AGG_BETTER;
             }
             else{
                 // No Improvement
                 $aggregates[] = 0;
-                $status = -1;
+                $status = ($score1 == $score2) ? AGG_SAME: AGG_WORSE;
             }
             $score1 = $score2;
         }
@@ -219,19 +226,19 @@ class Descriptors extends SpecialPage {
         
         if($count1 == $MAX && ($v1 == "" || $count2 == $count1)){
             // Already max, exclude from dataset
-            $status = 0;
+            $status = AGG_BEST;
             return $count1;
         }
         
         if($v1 != ""){
             if($count2 > $count1){
                 $aggregates[] = 1;
-                $status = 1;
+                $status = AGG_BETTER;
             }
             else{
                 // No Improvement
                 $aggregates[] = 0;
-                $status = -1;
+                $status = ($count1 == $count2) ? AGG_SAME: AGG_WORSE;
             }
             $count1 = $count2;
         }
