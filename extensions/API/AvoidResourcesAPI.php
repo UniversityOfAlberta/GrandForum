@@ -19,7 +19,14 @@
         }
 
         function callAPI($cat="CFN-ACT-EX-DANCE", $key=""){
-            global $config;
+            global $config, $wgLang;
+            
+            $catMap = array();
+            foreach(PharmacyMap::getCategoryLeaves() as $leaf){
+                $text = explode("|", strtolower(strip_tags(str_replace("</en><fr>", "|", $leaf->text))));
+                $catMap[$leaf->code]['en'] = @$text[0];
+                $catMap[$leaf->code]['fr'] = @$text[1];
+            }
             
             if($config->getValue('211Key') != ""){
                 $long = -77.2922286;
@@ -93,10 +100,14 @@
                 foreach($contents as $row){
                     $row = str_getcsv($row);
                     $data[] = $row;
+                    $row[18] = str_replace(",", ";", $row[18]);
+                    $row[18] = str_replace("(", ";", $row[18]);
+                    $row[18] = str_replace(")", ";", $row[18]);
+                    $row[18] = strtoupper($row[18]);
                     $cats = explode(";", str_replace(" ", "", $row[18]));
                     $category = $cats[count($cats)-1];
                     $website = (strstr($row[12], "http") === false) ? "http://{$row[12]}" : $row[12];
-                    if(($cat != "" && array_search($cat, $cats) !== false) ||
+                    if(($cat != "" && (array_search(strtoupper($cat), $cats) !== false || array_search(strtoupper(str_replace(" ", "", $catMap[$cat][$wgLang->getCode()])), $cats))) ||
                        ($key != "" && strstr(strtolower(trim($row[0])." (".trim($row[1]).")". $row[3]), strtolower($key)) !== false)){
                         $publicName = (trim($row[1]) != "") ? trim($row[0])." (".trim($row[1]).")" : trim($row[0]);
                         $programs[] = array(
