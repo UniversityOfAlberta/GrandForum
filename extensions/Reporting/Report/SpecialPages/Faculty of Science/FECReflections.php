@@ -9,6 +9,15 @@ $wgHooks['SubLevelTabs'][] = 'FECReflections::createSubTabs';
 
 class FECReflections extends SpecialPage {
     
+    static $validDepts = array("All",
+                               "Earth And Atmospheric Sciences",
+                               "Mathematical And Statistical Sciences",
+                               "Physics",
+                               "Psychology",
+                               "Biological Sciences",
+                               "Computing Science",
+                               "Chemistry");
+    
     function FECReflections(){
         parent::__construct("FECReflections", null, true);
     }
@@ -154,12 +163,13 @@ class FECReflections extends SpecialPage {
                     }
 
                     $positions = array();
-                    if(strstr($case, "N") !== false){
-                        // Only needed for "New" people
-                        $unis = $person->getUniversitiesDuring(($year-1)."-07-01", ($year)."-07-01");
-                        
-                        foreach($unis as $uni){
+                    $depts = array("All");
+                    // Only needed for "New" people
+                    $unis = $person->getUniversitiesDuring(($year-1)."-07-01", ($year)."-07-01");
+                    foreach($unis as $uni){
+                        if(in_array($uni['department'], self::$validDepts) !== false){
                             $positions[] = $uni['position'];
+                            $depts[] = $uni['department'];
                         }
                     }
                     
@@ -191,11 +201,13 @@ class FECReflections extends SpecialPage {
                         }
                     }
                     
-                    if($nUgrad == 0 && $nGrad == 0){
-                        @$courses[$short]["0"]++;
-                    }
-                    else{
-                        @$courses[$short][($nUgrad+$nGrad)." ($nUgrad Ugrad, $nGrad Grad)"]++;
+                    foreach($depts as $dept){
+                        if($nUgrad == 0 && $nGrad == 0){
+                            @$courses[$short][$dept]["0"]++;
+                        }
+                        else{
+                            @$courses[$short][$dept][($nUgrad+$nGrad)." ($nUgrad Ugrad, $nGrad Grad)"]++;
+                        }
                     }
                     
                     if($nStudents == 0){
@@ -441,26 +453,36 @@ class FECReflections extends SpecialPage {
         
         // Courses Taught
         $wgOut->addHTML("<h3>Courses Taught</h3>
-                         <table class='wikitable'>");
-        $wgOut->addHTML("   <tr><th style='width:6em;'></th>
-                                <th style='width:6em;'>Assistant</th>
-                                <th style='width:6em;'>Associate</th>
-                                <th style='width:6em;'>Full</th>
-                            </tr>");
-        $courseRows = @$courses["A"] + @$courses["B"] + @$courses["C"];
-        @array_multisort(array_keys($courseRows), SORT_NATURAL, $courseRows);
-        if(is_array($courseRows)){
-            foreach($courseRows as $key => $row){
-                $keyLabel = ($key == "0") ? "No teaching" : $key;
-                $wgOut->addHTML("<tr>
-                                    <td style='white-space:nowrap;'><b>{$keyLabel}</b></td>
-                                    <td align='right'>".@intval($courses["A"][$key])."</td>
-                                    <td align='right'>".@intval($courses["B"][$key])."</td>
-                                    <td align='right'>".@intval($courses["C"][$key])."</td>
-                                 </tr>");
-            }
+                         <div id='courses{$year}'>
+                            <ul>");
+        foreach(self::$validDepts as $i => $dept){
+            $wgOut->addHTML("<li><a href='#courses{$year}-{$i}'>{$dept}</a></li>");
         }
-        $wgOut->addHTML("</table>");
+        $wgOut->addHTML("   </ul>");
+        foreach(self::$validDepts as $i => $dept){
+            $wgOut->addHTML("<div id='courses{$year}-{$i}' style='padding: 0;'>
+                             <table class='wikitable'>
+                                <tr><th style='width:6em;'></th>
+                                    <th style='width:6em;'>Assistant</th>
+                                    <th style='width:6em;'>Associate</th>
+                                    <th style='width:6em;'>Full</th>
+                                </tr>");
+            $courseRows = @$courses["A"][$dept] + @$courses["B"][$dept] + @$courses["C"][$dept];
+            @array_multisort(array_keys($courseRows), SORT_NATURAL, $courseRows);
+            if(is_array($courseRows)){
+                foreach($courseRows as $key => $row){
+                    $keyLabel = ($key == "0") ? "No teaching" : $key;
+                    $wgOut->addHTML("<tr>
+                                        <td style='white-space:nowrap;'><b>{$keyLabel}</b></td>
+                                        <td align='right'>".@intval($courses["A"][$dept][$key])."</td>
+                                        <td align='right'>".@intval($courses["B"][$dept][$key])."</td>
+                                        <td align='right'>".@intval($courses["C"][$dept][$key])."</td>
+                                     </tr>");
+                }
+            }
+            $wgOut->addHTML("</table></div>");
+        }
+        $wgOut->addHTML("</div>");
         
         // Students Taught
         $wgOut->addHTML("<h3>Students Taught</h3>
@@ -538,6 +560,10 @@ class FECReflections extends SpecialPage {
                                 <td align='right'>".@intval($students["C"]["501+"])."</td>
                             </tr>");
         $wgOut->addHTML("</table>");
+        
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('#courses{$year}').tabs();
+        </script>");
     }
     
     function execute($par){
