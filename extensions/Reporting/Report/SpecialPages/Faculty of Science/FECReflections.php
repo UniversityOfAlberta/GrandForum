@@ -164,7 +164,6 @@ class FECReflections extends SpecialPage {
 
                     $positions = array();
                     $depts = array("All");
-                    // Only needed for "New" people
                     $unis = $person->getUniversitiesDuring(($year-1)."-07-01", ($year)."-07-01");
                     foreach($unis as $uni){
                         if(in_array($uni['department'], self::$validDepts) !== false){
@@ -210,38 +209,40 @@ class FECReflections extends SpecialPage {
                         }
                     }
                     
-                    if($nStudents == 0){
-                        @$students[$short]["0"]++;
-                    }
-                    else if($nStudents >= 1 && $nStudents <= 20){
-                        @$students[$short]["1-20"]++;
-                    }
-                    else if($nStudents >= 21 && $nStudents <= 40){
-                        @$students[$short]["21-40"]++;
-                    }
-                    else if($nStudents >= 41 && $nStudents <= 60){
-                        @$students[$short]["41-60"]++;
-                    }
-                    else if($nStudents >= 61 && $nStudents <= 80){
-                        @$students[$short]["61-80"]++;
-                    }
-                    else if($nStudents >= 81 && $nStudents <= 100){
-                        @$students[$short]["81-100"]++;
-                    }
-                    else if($nStudents >= 101 && $nStudents <= 150){
-                        @$students[$short]["101-150"]++;
-                    }
-                    else if($nStudents >= 151 && $nStudents <= 200){
-                        @$students[$short]["151-200"]++;
-                    }
-                    else if($nStudents >= 201 && $nStudents <= 300){
-                        @$students[$short]["201-300"]++;
-                    }
-                    else if($nStudents >= 301 && $nStudents <= 500){
-                        @$students[$short]["301-500"]++;
-                    }
-                    else if($nStudents >= 501){
-                        @$students[$short]["501+"]++;
+                    foreach($depts as $dept){
+                        if($nStudents == 0){
+                            @$students[$short][$dept]["0"]++;
+                        }
+                        else if($nStudents >= 1 && $nStudents <= 20){
+                            @$students[$short][$dept]["1-20"]++;
+                        }
+                        else if($nStudents >= 21 && $nStudents <= 40){
+                            @$students[$short][$dept]["21-40"]++;
+                        }
+                        else if($nStudents >= 41 && $nStudents <= 60){
+                            @$students[$short][$dept]["41-60"]++;
+                        }
+                        else if($nStudents >= 61 && $nStudents <= 80){
+                            @$students[$short][$dept]["61-80"]++;
+                        }
+                        else if($nStudents >= 81 && $nStudents <= 100){
+                            @$students[$short][$dept]["81-100"]++;
+                        }
+                        else if($nStudents >= 101 && $nStudents <= 150){
+                            @$students[$short][$dept]["101-150"]++;
+                        }
+                        else if($nStudents >= 151 && $nStudents <= 200){
+                            @$students[$short][$dept]["151-200"]++;
+                        }
+                        else if($nStudents >= 201 && $nStudents <= 300){
+                            @$students[$short][$dept]["201-300"]++;
+                        }
+                        else if($nStudents >= 301 && $nStudents <= 500){
+                            @$students[$short][$dept]["301-500"]++;
+                        }
+                        else if($nStudents >= 501){
+                            @$students[$short][$dept]["501+"]++;
+                        }
                     }
                     
                     if($revisedIncrement == "0A" || strstr($revisedIncrement, "PTC") !== false){
@@ -485,84 +486,39 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("</div>");
         
         // Students Taught
+        $studentRows = @$students["A"]["All"] + @$students["B"]["All"] + @$students["C"]["All"];
+        @array_multisort(array_keys($studentRows), SORT_NATURAL, $studentRows);
+            
         $wgOut->addHTML("<h3>Students Taught</h3>
-                         <table class='wikitable'>");
-        $wgOut->addHTML("   <tr>
-                                <th style='width:6em;'></th>
-                                <th style='width:6em;'>Assistant</th>
-                                <th style='width:6em;'>Associate</th>
-                                <th style='width:6em;'>Full</th>
-                            </tr>
-                            <tr>
-                                <td><b>0</b></td>
-                                <td align='right'>".@intval($students["A"]["0"])."</td>
-                                <td align='right'>".@intval($students["B"]["0"])."</td>
-                                <td align='right'>".@intval($students["C"]["0"])."</td>
-                            </tr>
-                            <tr>
-                                <td><b>1-20</b></td>
-                                <td align='right'>".@intval($students["A"]["1-20"])."</td>
-                                <td align='right'>".@intval($students["B"]["1-20"])."</td>
-                                <td align='right'>".@intval($students["C"]["1-20"])."</td>
-                            </tr>
-                            <tr>
-                                <td><b>21-40</b></td>
-                                <td align='right'>".@intval($students["A"]["21-40"])."</td>
-                                <td align='right'>".@intval($students["B"]["21-40"])."</td>
-                                <td align='right'>".@intval($students["C"]["21-40"])."</td>
-                            </tr>
-                            <tr>
-                                <td><b>41-60</b></td>
-                                <td align='right'>".@intval($students["A"]["41-60"])."</td>
-                                <td align='right'>".@intval($students["B"]["41-60"])."</td>
-                                <td align='right'>".@intval($students["C"]["41-60"])."</td>
-                            </tr>
-                            <tr>
-                                <td><b>61-80</b></td>
-                                <td align='right'>".@intval($students["A"]["61-80"])."</td>
-                                <td align='right'>".@intval($students["B"]["61-80"])."</td>
-                                <td align='right'>".@intval($students["C"]["61-80"])."</td>
-                            </tr>
-                            <tr>
-                                <td><b>81-100</b></td>
-                                <td align='right'>".@intval($students["A"]["81-100"])."</td>
-                                <td align='right'>".@intval($students["B"]["81-100"])."</td>
-                                <td align='right'>".@intval($students["C"]["81-100"])."</td>
-                            </tr>
-                            <tr>
-                                <td><b>101-150</b></td>
-                                <td align='right'>".@intval($students["A"]["101-150"])."</td>
-                                <td align='right'>".@intval($students["B"]["101-150"])."</td>
-                                <td align='right'>".@intval($students["C"]["101-150"])."</td>
-                            </tr>
-                            <tr>
-                                <td><b>151-200</b></td>
-                                <td align='right'>".@intval($students["A"]["151-200"])."</td>
-                                <td align='right'>".@intval($students["B"]["151-200"])."</td>
-                                <td align='right'>".@intval($students["C"]["151-200"])."</td>
-                            </tr>
-                            <tr>
-                                <td><b>201-300</b></td>
-                                <td align='right'>".@intval($students["A"]["201-300"])."</td>
-                                <td align='right'>".@intval($students["B"]["201-300"])."</td>
-                                <td align='right'>".@intval($students["C"]["201-300"])."</td>
-                            </tr>
-                            <tr>
-                                <td><b>301-500</b></td>
-                                <td align='right'>".@intval($students["A"]["301-500"])."</td>
-                                <td align='right'>".@intval($students["B"]["301-500"])."</td>
-                                <td align='right'>".@intval($students["C"]["301-500"])."</td>
-                            </tr>
-                            <tr>
-                                <td><b>501+</b></td>
-                                <td align='right'>".@intval($students["A"]["501+"])."</td>
-                                <td align='right'>".@intval($students["B"]["501+"])."</td>
-                                <td align='right'>".@intval($students["C"]["501+"])."</td>
-                            </tr>");
-        $wgOut->addHTML("</table>");
+                         <div id='students{$year}'>
+                            <ul>");
+        foreach(self::$validDepts as $i => $dept){
+            $wgOut->addHTML("<li><a href='#students{$year}-{$i}'>{$dept}</a></li>");
+        }
+        $wgOut->addHTML("   </ul>");
+        foreach(self::$validDepts as $i => $dept){
+            $wgOut->addHTML("<div id='students{$year}-{$i}' style='padding: 0;'>
+                             <table class='wikitable'>
+                                <tr><th style='width:6em;'></th>
+                                    <th style='width:6em;'>Assistant</th>
+                                    <th style='width:6em;'>Associate</th>
+                                    <th style='width:6em;'>Full</th>
+                                </tr>");
+            foreach($studentRows as $key => $row){
+                $wgOut->addHTML("<tr>
+                                    <td><b>{$key}</b></td>
+                                    <td align='right'>".@intval($students["A"][$dept][$key])."</td>
+                                    <td align='right'>".@intval($students["B"][$dept][$key])."</td>
+                                    <td align='right'>".@intval($students["C"][$dept][$key])."</td>
+                                 </tr>");
+            }
+            $wgOut->addHTML("</table></div>");
+        }
+        $wgOut->addHTML("</div>");
         
         $wgOut->addHTML("<script type='text/javascript'>
             $('#courses{$year}').tabs();
+            $('#students{$year}').tabs();
         </script>");
     }
     
