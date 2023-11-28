@@ -45,11 +45,12 @@ class CreateUserAPI extends API{
             $_POST['wpUserType'][] = $role;
         }
         
-        $oldWPSubType = $_POST['wpUserSubType'];
-        $subroles = explode(", ", $_POST['wpUserSubType']);
-        unset($_POST['wpUserSubType']);
-        foreach($subroles as $subrole){
-            $_POST['wpUserSubType'][] = $subrole;
+        if(isset($_POST['wpUserSubType'])){
+            $subroles = explode(", ", $_POST['wpUserSubType']);
+            unset($_POST['wpUserSubType']);
+            foreach($subroles as $subrole){
+                $_POST['wpUserSubType'][] = $subrole;
+            }
         }
         
         if(!$me->isLoggedIn()){
@@ -122,12 +123,12 @@ class CreateUserAPI extends API{
                                               'user_extra' => @json_encode($_POST['wpExtra'])),
                                         array('user_id' => $person->getId()));
                     
-                    $universities = explode("\n", str_replace("\r", "", $_POST['university']));
-                    $faculties = explode("\n", str_replace("\r", "", $_POST['faculty']));
-                    $departments = explode("\n", str_replace("\r", "", $_POST['department']));
-                    $positions = explode("\n", str_replace("\r", "", $_POST['position']));
-                    $startDates = explode("\n", str_replace("\r", "", $_POST['start_date']));
-                    $endDates = explode("\n", str_replace("\r", "", $_POST['end_date']));
+                    $universities = explode("\n", str_replace("\r", "", @$_POST['university']));
+                    $faculties = explode("\n", str_replace("\r", "", @$_POST['faculty']));
+                    $departments = explode("\n", str_replace("\r", "", @$_POST['department']));
+                    $positions = explode("\n", str_replace("\r", "", @$_POST['position']));
+                    $startDates = explode("\n", str_replace("\r", "", @$_POST['start_date']));
+                    $endDates = explode("\n", str_replace("\r", "", @$_POST['end_date']));
                     $earliestStartDate = "";
                     $latestEndDate = "";
                     foreach($universities as $i => $university){
@@ -156,7 +157,7 @@ class CreateUserAPI extends API{
                                               'end_date' => $latestEndDate),
                                         array('user_id' => $person->getId()));
                                         
-                    if($_POST['employment'] != ""){
+                    if(isset($_POST['employment']) && $_POST['employment'] != ""){
                         $_POST['id'] = "";
                         $_POST['user'] = $person->getName();
                         $_POST['studies'] = "";
@@ -168,7 +169,7 @@ class CreateUserAPI extends API{
                         APIRequest::doAction('AddHQPMovedOn', true);
                     }
                     
-                    if($_POST['relation'] != ""){
+                    if(isset($_POST['relation']) && $_POST['relation'] != ""){
                         $relation = explode(":", $_POST['relation']);
                         $user1 = Person::newFromName($relation[0]);
                         DBFunctions::insert('grand_relations',
@@ -179,7 +180,7 @@ class CreateUserAPI extends API{
                                                   'end_date' => $latestEndDate));
                     }
                     
-                    if($_POST['recruitment'] != ""){
+                    if(isset($_POST['recruitment']) && $_POST['recruitment'] != ""){
                         DBFunctions::insert('grand_alumni',
                                             array('user_id' => $person->getId(),
                                                   'recruited' => $_POST['recruitment'],

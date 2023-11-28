@@ -169,7 +169,12 @@ class Report extends AbstractReport{
             }
         </style>");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('#bodyContent').css('top', 102);
+            if(!embed){
+                $('#bodyContent').css('top', 102);
+            }
+            else{
+                $('#bodyContent').css('top', 0);
+            }
         </script>");
         $wgOut->addScript("<script src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/avoid.js?".filemtime('extensions/Reporting/Report/SpecialPages/AVOID/avoid.js')."'></script>");
         $wgOut->addHTML("<audio id='ding' preload='auto'><source src='{$wgServer}{$wgScriptPath}/skins/ding.mp3' type='audio/mpeg' /></audio>");

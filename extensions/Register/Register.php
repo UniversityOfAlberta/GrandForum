@@ -68,6 +68,9 @@ class Register extends SpecialPage{
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $me = Person::newFromWgUser();
         $this->getOutput()->setPageTitle("Registration");
+        if(isset($_GET['embed'])){
+            $wgOut->addHTML("<style>h1 { display: none; }</style>");
+        }
         if($me->isLoggedIn()){
             $wgOut->clearHTML();
             $wgOut->setPageTitle("Account already exists");
@@ -418,13 +421,15 @@ class Register extends SpecialPage{
             else if($role == "Clinician"){
                 $wgOut->setPageTitle(showLanguage("Clinician Registration", "Inscription - Clinicien"));
             }
-            $wgOut->addHTML("<div class='program-body'>
-                                <en>By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</en>
-                                <fr>En vous inscrivant au site Internet Proactif, vous obtenez le statut de {$frRole}. Consultez vos pourriels si vous ne recevez pas le courriel de confirmation d’inscription dans les prochaines minutes. Si vous n’avez toujours rien reçu, veuillez écrire aux adresses suivantes: <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</fr>
-                                <br /><br />
-                                <en>If completing the online registration or healthy aging assessment presents any challenges for you (such as vision problems, or an unsteady hand), program administration can complete it on your behalf over the phone. Please call 613-549-6666. Ex. 2834 to organize this.</en>
-                                <fr>Si vous avez de la difficulté à remplir le questionnaire (par exemple, si vous avez des problèmes de vision ou que vos mains tremblent), nous pouvons le remplir pour vous. Pour organiser une rencontre téléphonique d’assistance, appelez au 418-663-5313, poste 12218.</fr>
-                                <br /><br />");
+            $wgOut->addHTML("<div class='program-body'>");
+            if(!isset($_GET['embed'])){
+                $wgOut->addHTML("<en>By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</en>
+                                 <fr>En vous inscrivant au site Internet Proactif, vous obtenez le statut de {$frRole}. Consultez vos pourriels si vous ne recevez pas le courriel de confirmation d’inscription dans les prochaines minutes. Si vous n’avez toujours rien reçu, veuillez écrire aux adresses suivantes: <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</fr>
+                                 <br /><br />
+                                 <en>If completing the online registration or healthy aging assessment presents any challenges for you (such as vision problems, or an unsteady hand), program administration can complete it on your behalf over the phone. Please call 613-549-6666. Ex. 2834 to organize this.</en>
+                                 <fr>Si vous avez de la difficulté à remplir le questionnaire (par exemple, si vous avez des problèmes de vision ou que vos mains tremblent), nous pouvons le remplir pour vous. Pour organiser une rencontre téléphonique d’assistance, appelez au 418-663-5313, poste 12218.</fr>
+                                 <br /><br />");
+            }
         }
         else if($config->getValue('networkName') == 'IDeaS'){
             $wgOut->setPageTitle("Forum Registration");
@@ -437,7 +442,8 @@ class Register extends SpecialPage{
             $wgOut->addHTML("<i><b>Note:</b> Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'))."</i><br /><br />");
         }
         $getRole = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? "?role={$_GET['role']}" : "";
-        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:Register{$getRole}' method='post'>\n");
+        $embed = (isset($_GET['embed'])) ? "&embed" : "";
+        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:Register{$getRole}{$embed}' method='post'>\n");
         $form = self::createForm();
         $wgOut->addHTML($form->render());
         $wgOut->addHTML("</form>");
@@ -627,7 +633,13 @@ class Register extends SpecialPage{
                 if($result){
                     $form->reset();
                     $wgMessage->addSuccess("A confirmation email for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
-                    redirect("$wgServer$wgScriptPath");
+                    if(!isset($_GET['embed'])){
+                        redirect("$wgServer$wgScriptPath");
+                    }
+                    else{
+                        $wgOut->addHTML("<div class='program-body'><a class='button' href='$wgServer$wgScriptPath' target='_top'>Click Here to login</a></div>");
+                        return;
+                    }
                 }
             }
         }

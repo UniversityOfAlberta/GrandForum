@@ -328,6 +328,7 @@ class CavendishTemplate extends QuickTemplate {
 		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
 		    showSideBar = <?php var_export($config->getValue('showSideBar')) ?>;
+		    embed = <?php var_export(isset($_GET['embed'])); ?>;
 		    
 		    var today = new Date().toISOString().split('T')[0];
 		
@@ -394,6 +395,9 @@ class CavendishTemplate extends QuickTemplate {
 		    }
 		    
 		    function setBodyContentTop(){
+		        if(embed){
+		            return;
+		        }
 		        if(!$("#header").is(":visible")){
 		            $("#submenu").css("margin-top", "-45px");
 		            $("#sideToggle").css("line-height", ($("#submenu").height() - 6) + "px");
@@ -741,6 +745,14 @@ class CavendishTemplate extends QuickTemplate {
 		        
 		        #bodyContent .ui-tabs-panel {
 		            padding: 0;
+		        }
+		        
+		        #avoidButtons {
+		            display: none;
+		        }
+		        
+		        #mobileMenu {
+		            display: none;
 		        }
 		    </style>
 		    <script type="text/javascript">
