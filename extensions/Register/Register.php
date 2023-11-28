@@ -637,7 +637,7 @@ class Register extends SpecialPage{
                         redirect("$wgServer$wgScriptPath");
                     }
                     else{
-                        $wgOut->addHTML("<div class='program-body'><a class='button' href='$wgServer$wgScriptPath' target='_top'>Click Here to login</a></div>");
+                        $wgOut->addHTML("<div class='program-body'><a class='button' href='$wgServer$wgScriptPath' target='_blank'>Click Here to login</a></div>");
                         return;
                     }
                 }
