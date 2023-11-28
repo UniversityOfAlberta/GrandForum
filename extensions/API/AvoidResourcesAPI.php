@@ -8,6 +8,10 @@
         }
 
         function filter_CFN($json_obj){
+            global $config;
+            if($config->getValue('networkFullName') != "AVOID KFLA"){
+                return $json_obj;
+            }
             $newjson = array();
             for($x = 0; $x <= count($json_obj)-1; $x++){
                 $result_obj = $json_obj[$x];
