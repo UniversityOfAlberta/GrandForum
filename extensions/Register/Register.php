@@ -442,7 +442,7 @@ class Register extends SpecialPage{
             $wgOut->addHTML("<i><b>Note:</b> Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'))."</i><br /><br />");
         }
         $getRole = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? "&role={$_GET['role']}" : "";
-        $embed = (isset($_GET['embed'])) ? "&embed" : "";
+        $embed = (isset($_GET['embed'])) ? "&embed&newTab" : "";
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:Register?arg{$getRole}{$embed}' method='post'>\n");
         $form = self::createForm();
         $wgOut->addHTML($form->render());
