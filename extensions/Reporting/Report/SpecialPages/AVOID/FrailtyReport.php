@@ -326,7 +326,7 @@ class FrailtyReport extends SpecialPage {
     }
     
     function drawRow($comp, $topics, $scores){
-        global $wgServer, $wgScriptPath, $wgLang;
+        global $wgServer, $wgScriptPath, $wgLang, $config;
         $subTopics = array();
         $education = array();
         $programs = array();
@@ -385,17 +385,30 @@ class FrailtyReport extends SpecialPage {
             }
         }
         
+        $colspan  = ($config->getValue('reportingExtras', 'EducationResources')) ? 1 : 0;
+        $colspan += ($config->getValue('reportingExtras', 'AvoidPrograms')) ? 1 : 0;
+        $colspan += ($config->getValue('reportingExtras', 'CommunityPrograms')) ? 1 : 0;
+        
         //Category
         $borderBottom = (count($subTopics) == 0) ? "" : "border-bottom-style: dashed;";
         $html = "<tr>
                     <td align='left' style='font-style: initial; font-size: 1.2em; {$borderBottom}'>
                         <span class='AVOID {$comp}'>".substr(ActionPlan::comp2Text($comp, $wgLang->getCode()), 0, 1)."</span><span class='AVOIDrest'>".substr(ActionPlan::comp2Text($comp, $wgLang->getCode()), 1)."</span>
                     </td>";
-        $html .= (!isset($nos[ActionPlan::comp2Text($comp)])) 
-               ? "<td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $education[ActionPlan::comp2Text($comp)])."</td>
-                  <td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $programs[ActionPlan::comp2Text($comp)])."</td>
-                  <td style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $community[ActionPlan::comp2Text($comp)])."</td>"
-               : "<td style='{$borderBottom}' colspan='3'>{$nos[ActionPlan::comp2Text($comp)]}</td>";
+        if(!isset($nos[ActionPlan::comp2Text($comp)])){
+            if($config->getValue('reportingExtras', 'EducationResources')){
+                $html .= "<td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $education[ActionPlan::comp2Text($comp)])."</td>";
+            }
+            if($config->getValue('reportingExtras', 'AvoidPrograms')){
+                $html .= "<td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $programs[ActionPlan::comp2Text($comp)])."</td>";
+            }
+            if($config->getValue('reportingExtras', 'CommunityPrograms')){
+                $html .= "<td style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $community[ActionPlan::comp2Text($comp)])."</td>";
+            }
+        }
+        else{
+            $html .= "<td style='{$borderBottom}' colspan='{$colspan}'>{$nos[ActionPlan::comp2Text($comp)]}</td>";
+        }
         $html .= "</tr>";
         
         // SubTopics
@@ -403,11 +416,20 @@ class FrailtyReport extends SpecialPage {
             $borderBottom = ($topic == array_values($subTopics)[count($subTopics)-1]) ? "" : "border-bottom-style: dashed;";
             $html .= "<tr>
                         <td align='center' style='font-style: initial; font-size: 0.9em;{$borderBottom}'>{$topic}</td>";
-            $html .= (!isset($nos[$key])) 
-                   ? "<td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $education[$key])."</td>
-                      <td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $programs[$key])."</td>
-                      <td style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $community[$key])."</td>"
-                   : "<td style='{$borderBottom}' colspan='3'>{$nos[$key]}</td>";
+            if(!isset($nos[$key])){
+                if($config->getValue('reportingExtras', 'EducationResources')){
+                    $html .= "<td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $education[$key])."</td>";
+                }
+                if($config->getValue('reportingExtras', 'AvoidPrograms')){
+                    $html .= "<td align='center' style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $programs[$key])."</td>";
+                }
+                if($config->getValue('reportingExtras', 'CommunityPrograms')){
+                    $html .= "<td style='font-size: 0.9em; {$borderBottom}'>".@implode("\n", $community[$key])."</td>";
+                }
+            }
+            else{
+                $html .= "<td style='{$borderBottom}' colspan='{$colspan}'>{$nos[$key]}</td>";
+            }
             $html .= "</tr>";
         }
         return $html;
@@ -701,21 +723,27 @@ class FrailtyReport extends SpecialPage {
                                             <en>Category</en>
                                             <fr>Catégorie</fr>
                                         </div>
-                                    </th>
-                                    <th align='center' style='width: 6.5em;'>
+                                    </th>";
+                    if($config->getValue('reportingExtras', 'EducationResources')){
+                        $html .= "<th align='center' style='width: 6.5em;'>
                                         <en>Education</en>
                                         <fr>Éducation</fr>
-                                    </th>
-                                    <th align='center' style='width: 9em;'>
+                                    </th>";
+                    }
+                    if($config->getValue('reportingExtras', 'AvoidPrograms')){
+                        $html .= "<th align='center' style='width: 9em;'>
                                         <en>AVOID Programs</en>
                                         <fr>Programmes Proactif</fr>
-                                    </th>
-                                    <th align='center' style='width: 13em;'>
+                                    </th>";
+                    }
+                    if($config->getValue('reportingExtras', 'CommunityPrograms')){
+                        $html .= "<th align='center' style='width: 13em;'>
                                         <en>Community Programs</en>
                                         <fr>Ressources Communautaires</fr>
                                     </th>
-                                </tr>
-                            </table>
+                                </tr>";
+                    }
+                    $html .= "</table>
                         </div>
                         <div class='body'>
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_top.png' style='z-index: -2; position: absolute; top:0; left: 0; right:0; width: 216mm;' />
@@ -774,20 +802,27 @@ class FrailtyReport extends SpecialPage {
                             <tr>
                                 <th style='min-width: 9em; width: 9em; padding-bottom: 0; position: relative;'>
                                     <div style='line-height: 1em; position: absolute; top: 8px; left: 0;width:100%; text-align: center;'><en>Category</en><fr>Catégorie</fr></div>
-                                </th>
-                                <th align='center' style='width: 6.5em;'>
-                                    <en>Education</en>
-                                    <fr>Éducation</fr>
-                                </th>
-                                <th align='center' style='width: 9em;'>
-                                    <en>AVOID Programs</en>
-                                    <fr>Programmes Proactif</fr>
-                                </th>
-                                <th align='center' style='width: 13em;'>
-                                    <en>Community Programs</en>
-                                    <fr>Ressources Communautaires</fr>
-                                </th>
-                            </tr>";
+                                </th>";
+                                if($config->getValue('reportingExtras', 'EducationResources')){
+                                    $html .= "<th align='center' style='width: 6.5em;'>
+                                                    <en>Education</en>
+                                                    <fr>Éducation</fr>
+                                                </th>";
+                                }
+                                if($config->getValue('reportingExtras', 'AvoidPrograms')){
+                                    $html .= "<th align='center' style='width: 9em;'>
+                                                    <en>AVOID Programs</en>
+                                                    <fr>Programmes Proactif</fr>
+                                                </th>";
+                                }
+                                if($config->getValue('reportingExtras', 'CommunityPrograms')){
+                                    $html .= "<th align='center' style='width: 13em;'>
+                                                    <en>Community Programs</en>
+                                                    <fr>Ressources Communautaires</fr>
+                                                </th>
+                                            </tr>";
+                                }
+        $html .= "          </tr>";
         foreach(self::$rows as $comp => $topics){
             $html .= $this->drawRow($comp, $topics, $scores);
         }

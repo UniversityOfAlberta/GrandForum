@@ -14,8 +14,10 @@ $wgHooks['PersonExtra'][] = 'Report::personExtra';
 require_once("AVOIDDashboard.php");
 require_once("FrailtyReport.php");
 require_once("ProgressReport.php");
-require_once("InPersonAssessment.php");
-require_once("InPersonFollowup.php");
+if($config->getValue('reportingExtras', 'Assessor')){
+    require_once("InPersonAssessment.php");
+    require_once("InPersonFollowup.php");
+}
 require_once("AdminDataCollection.php");
 require_once("AdminUsageStats.php");
 require_once("FitbitStats.php");
@@ -25,12 +27,20 @@ require_once("ThreeMonthSummary.php");
 require_once("SixMonthSummary.php");
 require_once("NineMonthSummary.php");
 require_once("TwelveMonthSummary.php");
-require_once("EducationResources/EducationResources.php");
-require_once("Programs/Programs.php");
+if($config->getValue('reportingExtras', 'EducationResources')){
+    require_once("EducationResources/EducationResources.php");
+}
+if($config->getValue('reportingExtras', 'AvoidPrograms')){
+    require_once("Programs/Programs.php");
+}
 require_once("ActionPlan/ActionPlan.php");
-require_once("PharmacyMap/PharmacyMap.php");
-require_once("ClipboardList/ClipboardList.php");
-require_once("AskAnExpert/AskAnExpert.php");
+if($config->getValue('reportingExtras', 'CommunityPrograms')){
+    require_once("PharmacyMap/PharmacyMap.php");
+    require_once("ClipboardList/ClipboardList.php");
+}
+if($config->getValue('reportingExtras', 'AskAnExpert')){
+    require_once("AskAnExpert/AskAnExpert.php");
+}
 require_once("UsageVisualizations.php");
 require_once("HowDidYouHearOfUs.php");
 

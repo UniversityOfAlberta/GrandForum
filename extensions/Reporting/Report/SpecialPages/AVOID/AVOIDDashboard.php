@@ -291,7 +291,7 @@ class AVOIDDashboard extends SpecialPage {
                            AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? "<br /><a id='viewProgressReport' href='#'>My Recent Mini Assessment Results</a>" : "";
 
         $assessmentReport = "";
-        if(AVOIDDashboard::isPersonAssessmentDone($me->getId())){
+        if(class_exists("InPersonFollowup") && AVOIDDashboard::isPersonAssessmentDone($me->getId())){
             // This might be a bit slow, but unlikely to be noticable.  If it becomes a problem, it should be moved to an ajax/api request
             $content = urldecode(InPersonFollowup::getContent($me));
             $wgOut->addHTML("<div id='assessmentDialog' title='In Person Assessment' style='display:none;'>{$content}</div>");
