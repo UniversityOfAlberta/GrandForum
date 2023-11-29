@@ -327,6 +327,12 @@ PharmacyMapView = Backbone.View.extend({
 
         this.initMap();
         this.AddMarkers(rows.toJSON());
+        if(rows.length > 0){
+            this.$("#map").show();
+        }
+        else{
+            this.$("#map").hide();
+        }
     },
 
     createDataTable: function () {
