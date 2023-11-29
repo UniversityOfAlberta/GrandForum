@@ -93,6 +93,7 @@ CollaborationView = Backbone.View.extend({
         var formType = this.model.getType();
         this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
         this.renderProjects();
+        this.$("#fields").parent(".collab_box").css("max-width", Math.max(625, this.$("#fields").outerWidth()));
         return this.$el;
     }
 
