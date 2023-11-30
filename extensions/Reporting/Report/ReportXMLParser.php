@@ -362,6 +362,32 @@ class ReportXMLParser {
                 $this->parsePersonSectionPermissions($child, $id);
                 $this->report->addPermission("Person", array("id" => $id));
             }
+            else if($key == "If"){
+                $attributes = $child->attributes();
+                $if = (isset($attributes->if)) ? "{$attributes->if}" : false;
+                
+                $fakeReportItem = new StaticReportItem();
+                $fakeReportSection = new ReportSection();
+                $fakeReportSection->setParent($this->report);
+                $fakeReportItem->setParent($fakeReportSection);
+                $if = $fakeReportItem->varSubstitute($if);
+                
+                $this->parseIfSectionPermissions($child, $if);
+                $this->report->addPermission("If", array("if" => $if));
+            }
+        }
+    }
+    
+    // Parses the <SectionPermission> elements of a <If> element
+    function parseIfSectionPermissions($node, $if){
+        if($if == 1 || $if == true){
+            $children = $node->children();
+            foreach($children as $key => $child){
+                $attributes = $child->attributes();
+                $permissions = (isset($attributes->permissions)) ? "{$attributes->permissions}" : "r";
+                $sectionId = (isset($attributes->id)) ? "{$attributes->id}" : "";
+                $this->report->addSectionPermission($sectionId, "If_".count($this->report->sectionPermissions), $permissions);
+            }
         }
     }
     

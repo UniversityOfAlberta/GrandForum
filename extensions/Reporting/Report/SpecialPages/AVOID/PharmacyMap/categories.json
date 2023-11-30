@@ -822,6 +822,13 @@
                 "description": "Local bus service and non-emergency medical transfers",
                 "descriptionFr": "Services d’autobus et de transferts médicaux non-urgent",
                 "note": "<en><ul><li>What is the cost? Per KM, set fee?</li><li>Can the driver assist with transfers, putting mobility aids in the vehicle, etc?</li><li><li>Do you have accessible vehicles available?</li><li>Can I bring a companion with me and is there an additional cost?</li><li>How much notice is needed to set up a drive?</li><li>Is there a referral process or criteria for accessing the services?</li><li>Can I set up a regular weekly scheduled (weekly) ride, or do I have to book one ride at a time?</li></ul></en><fr><ul><li>Quel est le coût? S'agit-il d’un tarif fixe ou par kilomètre?</li><li>Le chauffeur peut-il aider lors de transferts, aider à mettre les aides à la mobilité dans le véhicule, etc.?</li><li>Avez-vous des véhicules adaptés?</li><li>Puis-je amener une personne avec moi et y a-t-il un coût supplémentaire?</li><li>Quel est le délai de préavis nécessaire pour organiser un transport?</li><li>Pour accéder aux services, faut-il une recommandation? Ou faut-il satisfaire à certains critères?</li><li>Puis-je programmer un trajet régulier (hebdomadaire) ou dois-je réserver un seul trajet à la fois?</li></ul></fr>"
+            },
+            {
+                "text": "Taxi Alternative",
+                "value": 42,
+                "code": "CFN-TRANSPORT-TAXIALT",
+                "description": "",
+                "descriptionFr": ""
             }
         ]
     }

@@ -814,13 +814,6 @@ abstract class AbstractReport extends SpecialPage {
                             }
                             else if(strstr($perm['perm']['role'], "+") !== false){
                                 $role = str_replace("+", "", $perm['perm']['role']);
-                                if(strstr($role, "-Candidate") !== false){
-                                    $role = str_replace("-Candidate", "", $role);
-                                    $role = constant($role)."-Candidate";
-                                }
-                                else{
-                                    $role = constant($role);
-                                }
                                 $rResultTmp = $me->isRoleAtLeastDuring($role, $perm['start'], $perm['end']);
                             }
                             else{
@@ -949,6 +942,19 @@ abstract class AbstractReport extends SpecialPage {
                 $permissions[$key] = $perm;
                 if($key == "-"){
                     return array();
+                }
+            }
+        }
+        foreach($this->sectionPermissions as $if => $sections){
+            if(strstr($if, "If_") !== false){
+                $found = true;
+                if(isset($this->sectionPermissions[$if][$section->id])){
+                    foreach($this->sectionPermissions[$if][$section->id] as $key => $perm){
+                        $permissions[$key] = $perm;
+                        if($key == "-"){
+                            return array();
+                        }
+                    }
                 }
             }
         }
@@ -1394,10 +1400,22 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     static function blobConstant($constant){
-        if(defined("{$constant}")){
-            return constant("{$constant}");
+        $plus = (strstr($constant, "+") !== false);
+        if($plus){
+            $constant = str_replace("+", "", $constant);
+            $plus = true;
         }
-        return "{$constant}";
+        
+        if(defined("{$constant}")){
+            $constant = constant("{$constant}");
+        }
+        
+        if($plus){
+            return "{$constant}+";
+        }
+        else{
+            return "{$constant}";
+        }
     }
     
     static function tinyMCEUpload($action){

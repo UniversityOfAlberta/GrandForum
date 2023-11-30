@@ -226,6 +226,7 @@ class ReportItemCallback {
             "wgLang" => "getWgLang",
             "GET" => "getGet",
             "networkName" => "getNetworkName",
+            "networkFullName" => "getNetworkFullName",
             "id" => "getId",
             "name" => "getName",
             "i" => "getI",
@@ -1856,6 +1857,11 @@ class ReportItemCallback {
     function getNetworkName(){
         global $config;
         return $config->getValue('networkName');
+    }
+    
+    function getNetworkFullName(){
+        global $config;
+        return $config->getValue('networkFullName');
     }
     
     function getId(){

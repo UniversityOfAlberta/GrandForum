@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Nine Months Form" reportType="RP_AVOID_NINEMO" pdfType="RPTP_AVOID" pdfFiles="NINEMOFORMPDF" ajax="true" disabled="false" extends="ThreeMonths">
-    <Permissions>
-        <Role role="INACTIVE+"></Role>
-    </Permissions>
+
     <ReportSection id="behaviouralassess" title="{showLanguage(Nine Month Follow Up: Behavioural Self-Assessment,
                                                                Suivi de neuf mois: Auto-évaluer vos habitudes)}" />
 </Report>

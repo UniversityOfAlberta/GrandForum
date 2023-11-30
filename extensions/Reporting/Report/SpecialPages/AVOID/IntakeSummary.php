@@ -132,7 +132,31 @@ class IntakeSummary extends SpecialPage {
         'help12_avoid' => 'Help housework?',
         'help13_avoid' => 'Help laundry?',
         'evaluation1' => 'In person opportunity1',
-        'evaluation2' => 'In person opportunity2'
+        'evaluation2' => 'In person opportunity2',
+        'VFS_SCORE' => 'VFS',
+        'haai_1' => 'HAAI Physical Health 1',
+        'haai_2a' => 'HAAI Physical Health 2A',
+        'haai_2b' => 'HAAI Physical Health 2B',
+        'haai_3a' => 'HAAI Physical Health 3A',
+        'haai_3b' => 'HAAI Physical Health 3B',
+        'haai_4' => 'HAAI Personal Well-being 4',
+        'haai_5' => 'HAAI Personal Well-being 5',
+        'haai_6' => 'HAAI Personal Well-being 6',
+        'haai_7' => 'HAAI Mental Health 7',
+        'haai_8' => 'HAAI Mental Health 8',
+        'haai_9' => 'HAAI Mental Health 9',
+        'haai_10' => 'HAAI Social Support 10',
+        'haai_11' => 'HAAI Social Support 11',
+        'haai_12' => 'HAAI Social Support 12',
+        'haai_13' => 'HAAI Physical Environment 13',
+        'haai_14' => 'HAAI Physical Environment 14',
+        'haai_15' => 'HAAI Physical Environment 15',
+        'haai_16' => 'HAAI Safety and Security 16',
+        'haai_17' => 'HAAI Safety and Security 17',
+        'haai_18' => 'HAAI Safety and Security 18',
+        'haai_19' => 'HAAI Social Engagement 19',
+        'haai_20' => 'HAAI Social Engagement 20',
+        'haai_21' => 'HAAI Social Engagement 21'
     );
     
     static $topics = array("IngredientsForChange" => "Ingredients For Change",
@@ -145,6 +169,7 @@ class IntakeSummary extends SpecialPage {
                            "FallsPrevention" => "Falls Prevention");
     
     function __construct() {
+        global $config;
         SpecialPage::__construct("IntakeSummary", null, true, 'runIntakeSummary');
     }
     
@@ -171,11 +196,26 @@ class IntakeSummary extends SpecialPage {
             $html .= "<th>EQ Health Score</th>";
             $html .= "<th>VAS Score</th>";
             $html .= "<th>CFS Score</th>";
+            if($config->getValue('networkFullName') == "AVOID Alberta"){
+                $html .= "<th>VFS Score</th>";
+                $html .= "<th>HAAI Total</th>";
+                $html .= "<th>HAAI Physical Health</th>";
+                $html .= "<th>HAAI Personal Well-being</th>";
+                $html .= "<th>HAAI Mental Health</th>";
+                $html .= "<th>HAAI Social Support</th>";
+                $html .= "<th>HAAI Physical Environment</th>";
+                $html .= "<th>HAAI Safety and Security</th>";
+                $html .= "<th>HAAI Social Engagement</th>";
+            }
         }
+        
         $html .= "<th>Usage</th>";
         $html .= "<th>Month Registered</th>";
         $html .= "<th>Hear about us</th>";
         foreach($report->sections as $section){
+            if($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta"){
+                continue;
+            }
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
                     $label = (isset(self::$map[$item->blobItem])) ? self::$map[$item->blobItem] : str_replace("_", " ", $item->blobItem);
@@ -238,31 +278,39 @@ class IntakeSummary extends SpecialPage {
         if($type != false){
             $html .= "<td style='white-space:nowrap;'>{$type}</td>";
         }
+        $api = new UserFrailtyIndexAPI();
         if(static::$rpType != "RP_AVOID_THREEMO" && static::$rpType != "RP_AVOID_NINEMO"){
-            $api = new UserFrailtyIndexAPI();
-            if($report->reportType == "RP_AVOID_THREEMO"){
-                $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
-            }
-            else if($report->reportType == "RP_AVOID_NINEMO"){
-                $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
-            }
-            else{
-                $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
-            }
+            $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
             $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
             $html .= "<td>".implode("", $scores["Health"])."</td>";
             $html .= "<td>".$EQ5D5L[implode("", $scores["Health"])]."</td>";
             $html .= "<td>".$scores["VAS"]."</td>";
             $html .= "<td>".$scores["CFS"]."</td>";
+            if($config->getValue('networkFullName') == "AVOID Alberta"){
+                $html .= "<td>".$scores["VFS"]."</td>";
+                $html .= "<td>".$scores["HAAI"]["Total"]."</td>";
+                $html .= "<td>".@$scores["HAAI"]["Physical Health"]."</td>";
+                $html .= "<td>".@$scores["HAAI"]["Personal Well-being"]."</td>";
+                $html .= "<td>".@$scores["HAAI"]["Mental Health"]."</td>";
+                $html .= "<td>".@$scores["HAAI"]["Social Support"]."</td>";
+                $html .= "<td>".@$scores["HAAI"]["Physical Environment"]."</td>";
+                $html .= "<td>".@$scores["HAAI"]["Safety and Security"]."</td>";
+                $html .= "<td>".@$scores["HAAI"]["Social Engagement"]."</td>";
+            }
         }
         $html .= "<td align='center'><a href='#' class='viewUsage'>View</a></td>";
         $html .= "<td align='center'>{$registration_date}</td>";
         $html .= "<td>{$hear}</td>";
         $hasSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType);
         foreach($report->sections as $section){
+            if($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta"){
+                continue;
+            }
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
                     $value = ($hasSubmitted) ? $item->getBlobValue() : "";
+                    $labels = explode("|", $item->getAttr('labels', ''));
+                    $options = explode("|", $item->getAttr('options', ''));
                     if(is_array($value)){
                         $html .= "<td>".implode(", ", $value)."</td>";
                     }
@@ -589,7 +637,7 @@ class IntakeSummary extends SpecialPage {
             
             foreach($people as $person){
                 if(!$person->isRoleAtMost(CI)){
-                    continue;
+                    //continue;
                 }
                 if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
                     $report->person = $person;

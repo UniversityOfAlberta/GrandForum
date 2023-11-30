@@ -511,6 +511,67 @@ class UserFrailtyIndexAPI extends API{
         }
         return 0;
     }
+    
+    function getVFS($user_id, $reportType="RP_AVOID"){
+        global $config;
+        $score = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "VFS_SCORE", $user_id);
+        return ($score != "") ? $score : "N/A";
+    }
+    
+    function getHAAI($user_id, $reportType="RP_AVOID"){
+        global $config;
+        $scores = array("Total" => 0,
+                        "Physical Health" => 0,
+                        "Personal Well-being" => 0,
+                        "Mental Health" => 0,
+                        "Social Support" => 0,
+                        "Physical Environment" => 0,
+                        "Safety and Security" => 0,
+                        "Social Engagement" => 0);
+        
+        // Physical Health
+        $scores["Physical Health"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_1", $user_id);
+        $scores["Physical Health"] += ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_2a", $user_id) == "Yes") ? 
+                                       $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_2b", $user_id) : 0;
+        $scores["Physical Health"] += ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_3a", $user_id) == "Yes") ?
+                                       $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_3b", $user_id) : 0;
+        
+        // Personal Well-being
+        $scores["Personal Well-being"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_4", $user_id);
+        $scores["Personal Well-being"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_5", $user_id);
+        $scores["Personal Well-being"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_6", $user_id);
+        
+        // Mental Health
+        $scores["Mental Health"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_7", $user_id);
+        $scores["Mental Health"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_8", $user_id);
+        $scores["Mental Health"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_9", $user_id);
+        
+        // Social Support
+        $scores["Social Support"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_10", $user_id);
+        $scores["Social Support"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_11", $user_id);
+        $scores["Social Support"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_12", $user_id);
+        
+        // Physical Environment
+        $scores["Physical Environment"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_13", $user_id);
+        $scores["Physical Environment"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_14", $user_id);
+        $scores["Physical Environment"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_15", $user_id);
+        
+        // Safety and Security
+        $scores["Safety and Security"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_16", $user_id);
+        $scores["Safety and Security"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_17", $user_id);
+        $scores["Safety and Security"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_18", $user_id);
+        
+        // Social Engagement
+        $scores["Social Engagement"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_19", $user_id);
+        $scores["Social Engagement"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_20", $user_id);
+        $scores["Social Engagement"] += $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "ALBERTA", "haai_21", $user_id);
+        
+        foreach($scores as $score){
+            $scores["Total"] += $score;
+        }
+        
+        return $scores;
+    }
 
     function getFrailtyScore($user_id, $reportType="RP_AVOID"){
         $scores = array();
@@ -554,6 +615,8 @@ class UserFrailtyIndexAPI extends API{
         $scores["Health"] = ($hasSubmitted) ? $this->getHealthScores($user_id, $reportType) : array(0,0,0,0,0);
         $scores["VAS"] = ($hasSubmitted) ? $this->getSelfPerceivedHealth($user_id, $reportType, true) : 0;
         $scores["CFS"] = ($hasSubmitted) ? $this->getCFS($user_id, $reportType) : 0;
+        $scores["VFS"] = ($hasSubmitted) ? $this->getVFS($user_id, $reportType) : "N/A";
+        $scores["HAAI"] = ($hasSubmitted) ? $this->getHAAI($user_id, $reportType) : array("Total" => "N/A");
 
         // Labels
         if($scores["Total"] >= 0 && $scores["Total"] <= 3){

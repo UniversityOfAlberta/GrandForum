@@ -1176,7 +1176,7 @@ class CavendishTemplate extends QuickTemplate {
         <a class="administration highlights-background-hover" href="<?php echo "$wgServer$wgScriptPath/index.php/"; ?>Administration">Administration</a>
 <?php } ?>
 <?php
-	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config, $wgMessage;
+	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config, $wgMessage, $wgImpersonating, $wgDelegating;
 	    $GLOBALS['toolbox'] = array();
         
         $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
@@ -1186,7 +1186,8 @@ class CavendishTemplate extends QuickTemplate {
         
 		if($wgUser->isLoggedIn()){
 		    $me = Person::newFromWgUser();
-		    if(!$me->isAuthenticated()){
+		    var_dump($wgImpersonating);
+		    if(!$me->isAuthenticated() && !($wgImpersonating || $wgDelegating)){
 		        $wgUser->logout();
 		        $wgMessage->addError("You have not yet verified this account by email");
 		        redirect("$wgServer$wgScriptPath");
