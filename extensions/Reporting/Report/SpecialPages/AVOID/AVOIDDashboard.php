@@ -858,6 +858,9 @@ class AVOIDDashboard extends SpecialPage {
         
         $report = new DummyReport("IntakeSurvey", $me);
         foreach($report->sections as $section){
+            if($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta"){
+                continue;
+            }
             if($section instanceof EditableReportSection){
                 $percent = $section->getPercentComplete();
                 if($percent < 100){
