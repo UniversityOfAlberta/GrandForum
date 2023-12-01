@@ -50,7 +50,6 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     if($ni == null || $ni->getName() == ""){
                         $valid = false;
                     }
-                    var_dump($total);
                     if($valid && $total != "" && $total != 0){
                         $this->addAllocation($year, $total, $ni);
                     }
