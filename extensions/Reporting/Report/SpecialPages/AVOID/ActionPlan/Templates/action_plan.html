@@ -55,28 +55,55 @@
     <% } %>
 </div>
 
-<h4>What AVOID component(s) does your action plan address?</h4>
+<h4>
+    <en>What AVOID component(s) does your action plan address?</en>
+    <fr>Quels domaines de la santé Proactif votre plan vise-t-il?</fr>
+</h4>
 <% if(components != null){ %>
     <ul>
         <% if(components.A == "1"){ %>
-            <li>Activity</li>
+            <li>
+                <en>Activity</en>
+                <fr>Activité physique</fr>
+            </li>
         <% } if(components.V == "1"){ %>
-            <li>Vaccinate</li>
+            <li>
+                <en>Vaccinate</en>
+                <fr>Vaccination</fr>
+            </li>
         <% } if(components.O == "1"){ %>
-            <li>Optimize Medication</li>
+            <li>
+                <en>Optimize Medication</en>
+                <fr>Optimisation de la médication</fr>
+            </li>
         <% } if(components.I == "1"){ %>
-            <li>Interact</li>
+            <li>
+                <en>Interact</en>
+                <fr>Vie sociale</fr>
+            </li>
         <% } if(components.D == "1"){ %>
-            <li>Diet & Nutrition</li>
+            <li>
+                <en>Diet & Nutrition</en>
+                <fr>Alimentation</fr>
+            </li>
         <% } if(components.S == "1"){ %>
-            <li>Sleep</li>
+            <li>
+                <en>Sleep</en>
+                <fr>Sommeil</fr>
+            </li>
         <% } if(components.F == "1"){ %>
-            <li>Falls Prevention</li>
+            <li>
+                <en>Falls Prevention</en>
+                <fr>Prévention des chutes</fr>
+            </li>
         <% } %>
     </ul>
 <% } %>
 
-<h4>Action Plan Daily Tracker - Accomplished your plan today?</h4>
+<h4>
+    <en>Action Plan Daily Tracker - Accomplished your plan today?</en>
+    <fr>Outil de suivi du plan d'action hebdomadaire - Avez-vous atteint vos objectifs aujourd'hui?</fr>
+</h4>
 <table class='wikitable' style='width: 100%;'>
     <tr>
         <th style='width: 14.2%;line-height:1em;'><en>Mon</en><fr>Lun</fr><br /><small><%= new Date(date.replace(/-/g, "/")).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>

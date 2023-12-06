@@ -19,6 +19,7 @@ ActionPlanView = Backbone.View.extend({
                 draggable: false,
                 resizable: false,
                 width: 'auto',
+                title: '<en>My Weekly Action Plan</en><fr>Mon plan d’action hebdomadaire</fr>',
                 height: $(window).height()*0.85,
                 position: { 'my': 'center', 'at': 'center' }
             });

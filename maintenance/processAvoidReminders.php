@@ -75,8 +75,14 @@ foreach($people as $person){
        (time() - strtotime($person->getRegistration()))/86400 > 2 &&
        getReminder("AbandonedAssessment", $person)['count'] < 2 && time() - getReminder("AbandonedAssessment", $person)['time'] > 2*86400){
         addReminder("AbandonedAssessment", $person);
-        $subject = "Get your personal report";
-        $message = "<p>You've registered with AVOID Frailty but haven't completed the Healthy Aging Assessment. That means you're missing out on your personal report. The report will provide you with valuable information about your frailty status and give you recommendations about what you can do within the program to improve your health. Log back in <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a>, and continue where you left off. Get to the good part!</p>";
+        if($wgLang->getCode() == "en"){
+            $subject = "Get your personal report";
+            $message = "<p>You've registered with AVOID Frailty but haven't completed the Healthy Aging Assessment. That means you're missing out on your personal report. The report will provide you with valuable information about your frailty status and give you recommendations about what you can do within the program to improve your health. Log back in <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a>, and continue where you left off. Get to the good part!</p>";
+        }
+        else{
+            $subject = "Obtenez votre rétroaction personnalisée!";
+            $message = "<p>Votre inscription au programme Proactif est complète! Toutefois, vous n’avez pas rempli le questionnaire sur le vieillissement en santé. C’est ce questionnaire qui vous permet d’obtenir une rétroaction personnalisée contenant des informations importantes sur votre niveau de fragilisation et des recommandations pour adopter de saines habitudes de vie. Connectez-vous au <a href='http://www.proactifquebec.ca'>www.proactifquebec.ca</a> et remplissez le questionnaire. Votre rétroaction personnalisée vous attend!</p>";
+        }
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
@@ -85,8 +91,14 @@ foreach($people as $person){
     if((time() - strtotime($person->getTouched()))/86400 > 14 &&
        getReminder("InactiveUser", $person)['count'] < 2 && time() - getReminder("InactiveUser", $person)['time'] > 14*86400){
         addReminder("InactiveUser", $person);
-        $subject = "We've missed you!";
-        $message = "<p>Just checking in to see how you've been.  We don't want you to miss out on the programs and resources that other older adults in KFL&A have been using.  Visit <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a> and be part of a growing community who is taking control of their health.</p>";
+        if($wgLang->getCode() == "en"){
+            $subject = "We've missed you!";
+            $message = "<p>Just checking in to see how you've been.  We don't want you to miss out on the programs and resources that other older adults in KFL&A have been using.  Visit <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a> and be part of a growing community who is taking control of their health.</p>";
+        }
+        else {
+            $subject = "Vous nous avez manqué!";
+            $message = "<p>Comment allez-vous? Nous voulons que vous profitiez pleinement des programmes et des ressources utilisés par les autres personnes aînées de Trois-Rivières. Visitez le <a href='http://www.proactifquebec.ca'>www.proactifquebec.ca</a> et faites partie d’une communauté en plein essor qui a sa santé à cœur!</p>";
+        }
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
@@ -98,8 +110,14 @@ foreach($people as $person){
            getReminder("ActionPlanCheckIn{$actionPlan->getId()}", $person)['count'] < 1 &&
            strtotime($actionPlan->getDate()) + 7*86400 < time()){
             addReminder("ActionPlanCheckIn{$actionPlan->getId()}", $person);
-            $subject = "Time to Submit your Action Plan";
-            $message = "<p>How has your week been? Did you do what you committed to? Don't forget to sign back into your account at <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a> to submit your weekly action <a href='$wgServer$wgScriptPath/index.php/Special:AVOIDDashboard'>plan</a>. It will show up in your logged accomplishments. If things didn't go as planned, that's okay too! Maybe you want to edit your weekly plan to something more attainable.</p>";
+            if($wgLang->getCode() == "en"){
+                $subject = "Time to Submit your Action Plan";
+                $message = "<p>How has your week been? Did you do what you committed to? Don't forget to sign back into your account at <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a> to submit your weekly action <a href='$wgServer$wgScriptPath/index.php/Special:AVOIDDashboard'>plan</a>. It will show up in your logged accomplishments. If things didn't go as planned, that's okay too! Maybe you want to edit your weekly plan to something more attainable.</p>";
+            }
+            else{
+                $subject = "Le temps est venu de soumettre votre plan d’action";
+                $message = "<p>Comment a été votre semaine? Avez-vous atteint vos objectifs? N’oubliez pas de vous connectez au <a href='http://www.proactifquebec.ca'>www.proactifquebec.ca</a> pour soumettre votre plan d’action hebdomadaire. Vous le retrouverez dans vos accomplissements. Si tout ne se passe pas comme prévu, pas de panique! C’est peut-être signe de le modifier avec des objectifs plus atteignables.</p>";
+            }
             sendMail($subject, $message, $person);
             echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
         }
@@ -117,32 +135,56 @@ foreach($people as $person){
     if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*4 && getReminder("3MonthReminder", $person)['count'] < 1){
         // 3 Month
         addReminder("3MonthReminder", $person);
-        $subject = "Been 3 months since healthy aging assessment was completed";
-        $message = "<p>Hello, It has been 3 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours. When you have a minute, please fill in the health-related behaviours and lifestyle section of the assessment, which should take less than 5 minutes. This will also allow us to display for you, your healthy aging progress. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        if($wgLang->getCode() == "en"){
+            $subject = "Been 3 months since healthy aging assessment was completed";
+            $message = "<p>Hello, It has been 3 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours. When you have a minute, please fill in the health-related behaviours and lifestyle section of the assessment, which should take less than 5 minutes. This will also allow us to display for you, your healthy aging progress. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        }
+        else{
+            $subject = "Déjà trois mois que vous avez soumis votre questionnaire sur la santé";
+            $message = "<p>Bonjour! Il y a déjà trois mois que vous avez soumis votre questionnaire sur la santé Proactif. Nous espérons que vous appréciez le programme. Nous voulons vérifier que le programme vous soutient dans l’adoption et le maintien de saines habitudes de vie. Lorsque vous aurez quelques minutes, veuillez remplir le court questionnaire (moins de 15 minutes) en cliquant sur le lien ci-dessous. Cela nous permettra également de vous présenter votre évolution et de mettre à jour votre rapport sur votre état de fragilité. Connectez-vous à votre compte au moment qui vous convient le mieux. <a href='http://www.proactifquebec.ca'>www.proactifquebec.ca</a></p>";
+        }
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
     else if($baseLineSubmitted && !$sixMonthSubmitted && $baseDiff >= 30*6 && $baseDiff < 30*9 && getReminder("6MonthReminder", $person)['count'] < 1){
         // 6 Month
         addReminder("6MonthReminder", $person);
-        $subject = "Been 6 months since healthy aging assessment was completed";
-        $message = "<p>Hello, It has been 6 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours and if that has slowed your risk of frailty. When you have a few minutes, please fill in the portion of the healthy aging assessment linked below, which should take less than 15 minutes. This will also allow us to display for you, your healthy aging progress and refresh your frailty report. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        if($wgLang->getCode() == "en"){
+            $subject = "Been 6 months since healthy aging assessment was completed";
+            $message = "<p>Hello, It has been 6 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours and if that has slowed your risk of frailty. When you have a few minutes, please fill in the portion of the healthy aging assessment linked below, which should take less than 15 minutes. This will also allow us to display for you, your healthy aging progress and refresh your frailty report. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        }
+        else{
+            $subject = "Déjà six mois que vous avez soumis votre questionnaire sur la santé";
+            $message = "<p>Bonjour! Il y a déjà six mois que vous avez soumis votre questionnaire sur la santé Proactif. Nous espérons que vous appréciez le programme. Nous voulons vérifier que le programme vous soutient dans l’adoption et le maintien de saines habitudes de vie. Lorsque vous aurez quelques minutes, veuillez remplir le court questionnaire (moins de 15 minutes) en cliquant sur le lien ci-dessous. Cela nous permettra également de vous présenter votre évolution et de mettre à jour votre rapport sur votre état de fragilité. Connectez-vous à votre compte au moment qui vous convient le mieux. <a href='http://www.proactifquebec.ca'>www.proactifquebec.ca</a></p>";
+        }
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
     else if($baseLineSubmitted && !$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*10 && getReminder("9MonthReminder", $person)['count'] < 1){
         // 9 Month
         addReminder("9MonthReminder", $person);
-        $subject = "Been 9 months since healthy aging assessment was completed";
-        $message = "<p>Hello, It has been 9 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours. When you have a minute, please fill in the health-related behaviours and lifestyle section of the assessment, which should take less than 5 minutes. This will also allow us to display for you, your healthy aging progress. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        if($wgLang->getCode() == "en"){
+            $subject = "Been 9 months since healthy aging assessment was completed";
+            $message = "<p>Hello, It has been 9 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours. When you have a minute, please fill in the health-related behaviours and lifestyle section of the assessment, which should take less than 5 minutes. This will also allow us to display for you, your healthy aging progress. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        }
+        else{
+            $subject = "Déjà neuf mois que vous avez soumis votre questionnaire sur la santé";
+            $message = "<p>Bonjour! Il y a déjà neuf mois que vous avez soumis votre questionnaire sur la santé Proactif. Nous espérons que vous appréciez le programme. Nous voulons vérifier que le programme vous soutient dans l’adoption et le maintien de saines habitudes de vie. Lorsque vous aurez quelques minutes, veuillez remplir le court questionnaire (moins de 5 minutes) en cliquant sur le lien ci-dessous. Cela nous permettra également de vous présenter votre évolution et de mettre à jour votre rapport sur votre état de fragilité. Connectez-vous à votre compte au moment qui vous convient le mieux. <a href='http://www.proactifquebec.ca'>www.proactifquebec.ca</a></p>";
+        }
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
     else if($baseLineSubmitted && !$twelveMonthSubmitted && $baseDiff >= 30*12 && getReminder("12MonthReminder", $person)['count'] < 1){
         // 12 Month
         addReminder("12MonthReminder", $person);
-        $subject = "Been 12 months since healthy aging assessment was completed";
-        $message = "<p>Hello, It has been 12 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours and if that has slowed your risk of frailty. When you have a few minutes, please fill in the portion of the healthy aging assessment linked below, which should take less than 15 minutes. This will also allow us to display for you, your healthy aging progress and refresh your frailty report. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        if($wgLang->getCode() == "en"){
+            $subject = "Been 12 months since healthy aging assessment was completed";
+            $message = "<p>Hello, It has been 12 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours and if that has slowed your risk of frailty. When you have a few minutes, please fill in the portion of the healthy aging assessment linked below, which should take less than 15 minutes. This will also allow us to display for you, your healthy aging progress and refresh your frailty report. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        }
+        else{
+            $subject = "Déjà douze mois que vous avez soumis votre questionnaire sur la santé";
+            $message = "<p>Bonjour! Il y a déjà douze mois que vous avez soumis votre questionnaire sur la santé Proactif. Nous espérons que vous appréciez le programme. Nous voulons vérifier que le programme vous soutient dans l’adoption et le maintien de saines habitudes de vie. Lorsque vous aurez quelques minutes, veuillez remplir le court questionnaire (moins de 15 minutes) en cliquant sur le lien ci-dessous. Cela nous permettra également de vous présenter votre évolution et de mettre à jour votre rapport sur votre état de fragilité. Connectez-vous à votre compte au moment qui vous convient le mieux. <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        }
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }

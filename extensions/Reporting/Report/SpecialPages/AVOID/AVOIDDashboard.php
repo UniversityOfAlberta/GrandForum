@@ -440,7 +440,12 @@ class AVOIDDashboard extends SpecialPage {
                                         <fr>Créer un NOUVEAU plan d’action</fr>
                                     </a>
                                 </div>
-                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a> / <a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a> / <a id='repeatActionPlan' href='#'>Repeat for another week</a>)</div>
+                                <div id='currentPlan' style='display: none;'>
+                                    <en>Current Action Plan</en><fr>Mon plan d'action</fr>
+                                    (<a id='viewActionPlan' href='#'><en>View</en><fr>Voir</fr></a> / 
+                                     <a id='submitActionPlan' href='#'><en>Submit and Log Accomplishment</en><fr>Soumettre et enregistrer mes accomplissements</fr></a> / 
+                                     <a id='repeatActionPlan' href='#'><en>Repeat for another week</en><fr>Répéter le plan d'action une autre semaine</fr></a>)
+                                </div>
                             </p>
                             <div id='actionPlanTracker' style='display:none;'></div>
                             <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog' class='actionPlanDialog'></div>

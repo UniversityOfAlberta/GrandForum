@@ -37,12 +37,12 @@ var isAmPm	= (format.indexOf("a") !== -1) || (format.indexOf("A") !== -1);
 var parts	= [];
 parts['d']	= date.getDate();
 parts['dd']	= formatLogic.pad(parts['d'], 2);
-parts['ddd']	= formatLogic.i18n.shortDayNames[date.getDay()];
-parts['dddd']	= formatLogic.i18n.dayNames[date.getDay()];
+parts['ddd']	= formatLogic.i18n[wgLang].shortDayNames[date.getDay()];
+parts['dddd']	= formatLogic.i18n[wgLang].dayNames[date.getDay()];
 parts['M']	= date.getMonth() + 1;
 parts['MM']	= formatLogic.pad(parts['M'], 2);
-parts['MMM']	= formatLogic.i18n.shortMonthNames[parts['M'] - 1];
-parts['MMMM']	= formatLogic.i18n.monthNames[parts['M'] - 1];
+parts['MMM']	= formatLogic.i18n[wgLang].shortMonthNames[parts['M'] - 1];
+parts['MMMM']	= formatLogic.i18n[wgLang].monthNames[parts['M'] - 1];
 parts['yyyy']	= date.getFullYear();
 parts['yyy']	= formatLogic.pad(parts['yyyy'], 2) + 'y';
 parts['yy']	= formatLogic.pad(parts['yyyy'], 2);
@@ -128,13 +128,21 @@ return value % 12 === 0 ? 12 : value % 12;
 },
 
 // internationalization settings
-i18n:
-{
-dayNames:	['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-shortDayNames:	['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-monthNames:	['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-shortMonthNames:	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-}
+i18n: 
+    {
+        'en': {
+            dayNames:	['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            shortDayNames:	['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            monthNames:	['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            shortMonthNames:	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        'fr': {
+            dayNames:	['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+            shortDayNames:	['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'],
+            monthNames:	['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'aout', 'septembre', 'octobre', 'novembre', 'décembre'],
+            shortMonthNames:	['jan', 'fév', 'mar', 'avr', 'mai', 'jui', 'jui', 'aou', 'sep', 'oct', 'nov', 'déc']
+        }
+    }
 };
 
 // add a member "format" function which will return the string representation
