@@ -33,7 +33,7 @@ function addReminder($id, $person){
 function sendMail($subject, $message, $person){
     global $config, $wgServer, $wgScriptPath, $wgLang;
     $message = nl2br($message);
-    $headers  = "Content-type: text/html\r\n"; 
+    $headers  = "Content-Type: text/html; charset=UTF-8\r\n"; 
     $headers .= "From: AVOID Frailty <noreply@healthyagingcentres.ca>" . "\r\n";
     $hash = hash('sha256', $person->getId()."_".$person->getRegistration());
     if($wgLang->getCode() == "en"){
