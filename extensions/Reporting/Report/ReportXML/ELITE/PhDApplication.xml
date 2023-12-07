@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Engineering PhD Fellowship Application" reportType="RP_PHD_ELITE" pdfType="RPTP_PHD_ELITE" pdfFiles="PhDApplicationPDF" year="0" ajax="true" encrypt="true" disabled="true">
+<Report name="Engineering PhD Fellowship Application" reportType="RP_PHD_ELITE" pdfType="RPTP_PHD_ELITE" pdfFiles="PhDApplicationPDF" year="0" ajax="true" encrypt="true" disabled="false">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="profile" permissions="rw" />
