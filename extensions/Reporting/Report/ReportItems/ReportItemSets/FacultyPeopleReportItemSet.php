@@ -33,7 +33,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
             }
             */
             if(!$includeDD && $person->isSubRole('DD') &&
-               $person->getName() != "Hodges, Elizabeth"){ // TODO: Get rid of this
+               $person->getName() != "Elizabeth.Hodges"){ // TODO: Get rid of this
                 continue;
             }
             $caseNumber = $person->getCaseNumber($this->getReport()->year);
