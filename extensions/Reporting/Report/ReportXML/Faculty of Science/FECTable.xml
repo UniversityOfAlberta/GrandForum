@@ -360,7 +360,8 @@
             <If if="{or({contains({$my_roles},ADMIN)},
                         {contains({$my_roles},DEAN)},
                         {contains({$my_roles},VDEAN)},
-                        {contains({$my_roles},HR)})}">
+                        {contains({$my_roles},HR)},
+                        {==({$user_id},8960)})}"><!-- Get Rid of this for Elizabeth Hodges -->
                 <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Advice">
                     <![CDATA[
                             {$item}<br />
@@ -377,7 +378,7 @@
                     </td>
                 ]]>
             </Static>
-            <If if="{contains({user_sub_roles(;)},Dean's Decision)}">
+            <If if="{or({contains({user_sub_roles(;)},Dean's Decision)},{==({$user_id},8960)})}"> <!-- Get Rid of this for Elizabeth Hodges -->
                 <![CDATA[
                     <td>
                         <span class="increment dd">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span>
