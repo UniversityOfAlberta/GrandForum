@@ -55,7 +55,7 @@
                         
                         // Get these numbers from sciea/scihr each year
                         var targetFac = 318.0;
-                        var targetFSO = 13.2;
+                        var targetFSO = 14.4;
                         
                         var needsSaving = false;
                         
