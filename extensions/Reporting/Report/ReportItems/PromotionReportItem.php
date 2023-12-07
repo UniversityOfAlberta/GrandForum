@@ -32,7 +32,8 @@ class PromotionReportItem extends SelectReportItem {
                 }
                 break;
             case "E1":
-                if($person->getSalary($this->getReport()->year) >= Person::getMinSalary($this->getReport()->year, 'fso4') - Person::getSalaryIncrement($this->getReport()->year, 'fso3')){
+                if($person->getSalary($this->getReport()->year) >= Person::getMinSalary($this->getReport()->year, 'fso4') - Person::getSalaryIncrement($this->getReport()->year, 'fso3') ||
+                   $person->getName() == "Sarah.Woodland"){ // TODO: Get Rid of this later
                     $options = array("n/a", 
                                      "i recommend promotion to faculty service officer iv");
                 }
