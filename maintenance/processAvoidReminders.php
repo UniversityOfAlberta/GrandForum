@@ -81,7 +81,9 @@ foreach($people as $person){
         }
         else{
             $subject = "Obtenez votre rétroaction personnalisée!";
-            $message = "<p>Votre inscription au programme Proactif est complète! Toutefois, vous n’avez pas rempli le questionnaire sur le vieillissement en santé. C’est ce questionnaire qui vous permet d’obtenir une rétroaction personnalisée contenant des informations importantes sur votre niveau de fragilisation et des recommandations pour adopter de saines habitudes de vie. Connectez-vous au <a href='http://www.proactifquebec.ca'>www.proactifquebec.ca</a> et remplissez le questionnaire. Votre rétroaction personnalisée vous attend!</p>";
+            $message = "<p>Votre inscription au programme Proactif est complète! Toutefois, vous n’avez pas rempli le questionnaire sur le vieillissement en santé. C’est ce questionnaire qui vous permet d’obtenir une rétroaction personnalisée contenant des informations importantes sur votre niveau de fragilisation et des recommandations pour adopter de saines habitudes de vie. Connectez-vous au <a href='http://www.proactifquebec.ca'>www.proactifquebec.ca</a> et remplissez le questionnaire. Votre rétroaction personnalisée vous attend!</p>
+            <img src='{$wgServer}{$wgScriptPath}/EducationModules/Proactif.affiche+guide_Page_1.jpg' style='width: 100%;' /><br />
+            <img src='{$wgServer}{$wgScriptPath}/EducationModules/Proactif.affiche+guide_Page_2.jpg' style='width: 100%;' />";
         }
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
