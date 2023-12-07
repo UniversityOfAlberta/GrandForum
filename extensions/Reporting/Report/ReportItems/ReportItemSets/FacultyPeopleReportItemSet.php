@@ -50,7 +50,8 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 !$me->isRole(DEANEA) &&
                 !$me->isRole(VDEAN) && 
                 !$me->isRole(HR) &&
-                !$me->isRole(ADMIN)){
+                !$me->isRole(ADMIN) &&
+                $person->getName() != "Elizabeth.Hodges"){ // TODO: Get rid of this
                 // Don't show DD people unless user is Dean, Vice Dean, HR
                 continue;
             }
@@ -59,7 +60,8 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 !$me->isRole(DEANEA) &&
                 !$me->isRole(VDEAN) && 
                 !$me->isRole(HR) &&
-                !$me->isRole(ADMIN)){
+                !$me->isRole(ADMIN) &&
+                $person->getName() != "Elizabeth.Hodges"){ // TODO: Get rid of this){
                 // Don't show DD people unless user is Dean, Vice Dean, HR
                 continue;
             }
