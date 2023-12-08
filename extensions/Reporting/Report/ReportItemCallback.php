@@ -1166,16 +1166,18 @@ class ReportItemCallback {
         if($year == null){
             $year = $this->reportItem->getReport()->year;
         }
-        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
-        $blb = new ReportBlob(BLOB_PDF, $year, $personId, $projectId);
-        $result = $blb->load($addr, true);
-        $md5 = $blb->getMD5();
-        if($md5 != ""){
-            return $md5;
-        }
-        $blb = new ReportBlob(BLOB_RAW, $year, $personId, $projectId);
-        $result = $blb->load($addr, true);
-        return $blb->getMD5();
+        
+        $data = DBFunctions::execSQL("SELECT md5, encrypted 
+                                      FROM grand_report_blobs 
+                                      WHERE user_id = '{$personId}' 
+                                      AND year = '{$year}'
+                                      AND proj_id = '{$projectId}' 
+                                      AND rp_type = '{$rp}' 
+                                      AND rp_section = '{$section}' 
+                                      AND rp_item = '{$blobId}' 
+                                      AND rp_subitem = '{$subId}'");
+		$md5 = (@$data[0]['encrypted']) ? encrypt(@$data[0]['md5']) : @$data[0]['md5'];
+        return urlencode($md5);
     }
     
     function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", ", $year=null){
