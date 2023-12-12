@@ -18,6 +18,7 @@ class LIMSOpportunity extends BackboneModel {
     var $surveyed;
     var $responded;
     var $satisfaction;
+    var $status;
     var $date;
     var $files = array();
     var $products = array();
@@ -95,6 +96,7 @@ class LIMSOpportunity extends BackboneModel {
             $this->surveyed = $data[0]['surveyed'];
             $this->responded = $data[0]['responded'];
             $this->satisfaction = $data[0]['satisfaction'];
+            $this->status = $data[0]['status'];
             $this->date = $data[0]['date'];
             $this->products = json_decode($data[0]['products']);
             $files = DBFunctions::select(array('grand_lims_files'),
@@ -154,6 +156,10 @@ class LIMSOpportunity extends BackboneModel {
     
     function getSatisfaction(){
         return $this->satisfaction;
+    }
+    
+    function getStatus(){
+        return $this->status;
     }
 
     function getDate(){
@@ -220,6 +226,7 @@ class LIMSOpportunity extends BackboneModel {
                           'surveyed' => $this->getSurveyed(),
                           'responded' => $this->getResponded(),
                           'satisfaction' => $this->getSatisfaction(),
+                          'status' => $this->getStatus(),
                           'products' => $this->getProducts(),
                           'files' => $this->getFiles(),
                           'date' => $this->getDate(),
@@ -241,6 +248,7 @@ class LIMSOpportunity extends BackboneModel {
                                       'surveyed' => $this->surveyed,
                                       'responded' => $this->responded,
                                       'satisfaction' => $this->satisfaction,
+                                      'status' => $this->status,
                                       'products' => json_encode($this->products),
                                       'date' => COL('CURRENT_TIMESTAMP')));
             $this->id = DBFunctions::insertId();
@@ -268,6 +276,7 @@ class LIMSOpportunity extends BackboneModel {
                                       'surveyed' => $this->surveyed,
                                       'responded' => $this->responded,
                                       'satisfaction' => $this->satisfaction,
+                                      'status' => $this->status,
                                       'products' => json_encode($this->products)),
                                 array('id' => $this->id));
             $this->uploadFiles();

@@ -49,6 +49,9 @@
     if($config->getValue('networkName') == "ELITE"){
         require_once("extensions/ELITE/ELITE.php");
     }
+    if($config->getValue('networkName') == "GlycoNet"){
+        require_once("extensions/GrandObjectPage/ManageSOP/ManageSOP.php");
+    }
     if(isExtensionEnabled("CRM")){
         require_once("CRM/CRM.php");
         require_once("LIMS/LIMS.php");

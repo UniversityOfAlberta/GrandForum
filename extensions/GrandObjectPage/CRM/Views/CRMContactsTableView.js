@@ -56,9 +56,9 @@ CRMContactsTableView = Backbone.View.extend({
         model.fetch().then(function(){
             model.set('priority', priority);
             model.save().then(function(){
-                $(e.currentTarget).prop('disabled', false);
-            });
-        });
+                this.model.fetch();
+            }.bind(this));
+        }.bind(this));
         $(e.currentTarget).closest("td").css("background", CRMTask.priorityMap[priority]);
     },
     

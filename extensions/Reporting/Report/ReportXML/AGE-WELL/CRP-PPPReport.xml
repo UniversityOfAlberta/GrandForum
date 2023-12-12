@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Core Research Program 2022-2023 Mid-Year Progress Report and Financial Update" reportType="RP_CRP_PPP_REPORT" pdfType="RPTP_CRP_PPP_REPORT" pdfFiles="CRP-PPPReportPDF" personId="0" ajax="true" disabled="false">
+<Report name="2023-24 MID-YEAR PROGRESS UPDATE" reportType="RP_CRP_PPP_REPORT" pdfType="RPTP_CRP_PPP_REPORT" pdfFiles="CRP-PPPReportPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role role="SD+">
         
@@ -18,23 +18,36 @@
         </Role>
         <Project />
     </Permissions>
-    <ReportSection id="progress" tooltip="Progress Report" name="Progress Report" title="2022-23 MID-YEAR PROGRESS REPORT AND FINANCIAL UPDATE" blobSection="PROGRESS_REPORT" type="EditableReportSection">
-        <Static>
+    <ReportSection id="progress" tooltip="Progress Report" name="Progress Report" title="2023-24 MID-YEAR PROGRESS UPDATE" blobSection="PROGRESS_REPORT" type="EditableReportSection">
+        <ReportItem id="pdf" type="PDFReportItem" buttonName="Last Year's PDF" project="true" reportType="ProjectEvaluation" year="{$last_year}">
             <![CDATA[
-                <p>The aim of this form is to allow AGE-WELL’s Research Management Committee (RMC) to assess project progress approaching the 2022-23 mid-point as communicated in April 2022.</p>
-
-                <p>Please keep your responses brief (250-500 words per question). A more comprehensive Annual Project Progress Evaluation Report with Balanced Scorecard will be due and evaluated in early 2023 similar to the report you submitted January 2022.</p>
+                <p>The aim of this report is to allow AGE-WELL’s Research Management Committee (RMC) to assess project progress and network spending in our final year of NCE funding. You may want to refer to your report submitted January 2023 which outlined project plans for the current fiscal year.</p>
+                {$item}
+                <p>Please keep your responses brief (max 500 words per question).</p>
+                
             ]]>
-        </Static>
+        </ReportItem>
         <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500">
             <![CDATA[
-                <h3>Project Status Summary</h3>
-                <p>Provide a brief summary of project status and progress underway approaching the mid-point of 2022-23.</p>
+                <h3>SUMMARY OF PROJECT PROGRESS</h3>
+                <p>Please provide a brief summary of project progress against annual objectives in the final year of your project. Are you on track to complete the project by March 31, 2024? Are there areas in which you think the Network Management Office could be in assistance to support successful completion of your project?</p>
+                
+                <p>Where relevant, please highlight notable achievements or challenges in the following areas in line with your project plan: Scientific Excellence, Networking and Partnerships, Knowledge Mobilization and Commercialization, and/or Development of HQP.</p>
                 {$item}<br /><br />
             ]]>
         </ReportItem>
         
-        <ReportItem id="excellence" type="TextareaReportItem" blobItem="EXCELLENCE" rich="true" limit="500">
+        <ReportItem id="financial" type="TextareaReportItem" blobItem="FINANCIAL" rich="true" limit="500">
+            <![CDATA[
+                <h3>FINANCIAL UPDATE</h3>
+                <p>In the space below, provide an update on project spending to September 30 2023, noting any challenges or commitments that may not yet be reflected on your account balance. Please provide an indication of how confident you are that funds allocated for the current year will be spent as planned by the end of the current fiscal year. Financial updates will be considered in the context of your budget justification submitted for 2023-24.</p>
+                
+                <p><b>As communicated previously, there are no project extensions available for CRP/PPP projects beyond March 31, 2024.  Any unspent funds at that time will be recalled and redeployed as we wind down the NCE arm of AGE-WELL in 2024.</b></p>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
+        <!--ReportItem id="excellence" type="TextareaReportItem" blobItem="EXCELLENCE" rich="true" limit="500">
             <![CDATA[
                 <p>In each section below, describe specific progress that has been made against planned objectives and activities since April 1, 2022. While you are not restricted to the content of your planning scorecard provided January 2022, you may wish to reference those plans here.<br />
                 (select "Award Number (Plan Update)" in Forum to see your report)</p>
@@ -63,10 +76,10 @@
                 <h4>4. Training of HQP</h4>
                 {$item}<br />
             ]]>
-        </ReportItem>
+        </ReportItem-->
         
     </ReportSection>
-    <ReportSection id="budget" tooltip="Future Impact" name="Financial Update" title="Mid-Year Financial Update" blobSection="BUDGET" type="EditableReportSection">
+    <!--ReportSection id="budget" tooltip="Future Impact" name="Financial Update" title="Mid-Year Financial Update" blobSection="BUDGET" type="EditableReportSection">
         <ReportItem id="budget" type="TextareaReportItem" blobItem="BUDGET" rich="true" limit="500">
             <![CDATA[
                 <p>Please provide a brief update of spending against proposed activities noting any challenges or commitments that may not yet be reflected on your account balance. How confident are you that funds allocated for the current year will be spent as planned? Financial updates will be considered in the context of your budget justification submitted for 2022-23.</p>
@@ -74,7 +87,7 @@
                 {$item}
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>

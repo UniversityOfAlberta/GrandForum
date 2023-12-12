@@ -30,6 +30,8 @@
             <th>FY9 In-Kind</th>
             <th>FY10 Cash</th>
             <th>FY10 In-Kind</th>
+            <th>FY11 Cash</th>
+            <th>FY11 In-Kind</th>
             <th>Creator</th>
             <th>Projects</th>
             <th>Year</th>
@@ -113,6 +115,12 @@
                 </td>
                 <td align="right">
                     <%= number_format(collab.get('extra')['inkindFY10'],2,'') %>
+                </td>
+                <td align="right">
+                    <%= number_format(collab.get('extra')['cashFY11'],2,'') %>
+                </td>
+                <td align="right">
+                    <%= number_format(collab.get('extra')['inkindFY11'],2,'') %>
                 </td>
                 <td>
                     <% if (collab.get('creator').id != 0){ %>

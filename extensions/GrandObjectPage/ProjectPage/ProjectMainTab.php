@@ -461,7 +461,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $people = $project->getAllPeople($role);
             }
             else{
-                $people = $project->getAllPeopleOn($role, $project->getEffectiveDate());
+                $people = $project->getAllPeopleOn($role, $project->getEndDate());
             }
             // Filter for Alumni people
             if($past){

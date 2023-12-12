@@ -1,14 +1,18 @@
 <div id="dialogMessages"></div>
 <span class="label" style="display:inline-block;">Title:</span> <%= HTML.TextBox(this, 'title', {size: '50'}) %>
-<h2><%= this.model.getAuthorsLabel().pluralize() %></h2>
-<div id="productAuthors">
-    
+<div id="authors">
+    <h2><%= this.model.getAuthorsLabel().pluralize() %></h2>
+    <div id="productAuthors">
+        
+    </div>
 </div>
-<h2>Description</h2>
-<%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
+<div id="description">
+    <h2>Description</h2>
+    <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
+</div>
 <h2>Information</h2>
 <table id="productData" width="100%">
-    <tr>
+    <tr id="tags">
         <td class="label">Tags:</td>
         <td class="field" colspan="2">
             <div id="productTags" style="max-width:550px;width:100%;display:inline-block;vertical-align:middle;"></div>
@@ -24,7 +28,7 @@
             </div>
         </td>
     </tr>
-    <tr>
+    <tr id="category">
         <td class="label">Category:</td>
         <td class="field">
             <% var def = (category == "") ? [{option: "Choose a Category...", value: ""}] : []; %>
@@ -45,7 +49,7 @@
             </td>
         </tr>
     <% } %>
-    <tr>
+    <tr id="visibility">
         <td class="label">Visibility:</td>
         <td class="field" colspan="2">
             <%= HTML.Select(this, 'access', {options: allowedVisibility}) %>
@@ -67,8 +71,10 @@
         <td class="label"><% if(category == 'Grants'){ %> Start <% } %>Date<% if(networkType == "CFREF"){ %> Published<% } %>:</td>
         <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>
         <td valign="top" rowspan="<%= _.size(this.model.getPossibleFields()) + 1 %>" style="width:100%;">
-            <h2 style="margin-top:0;padding-top:0;">Related Projects</h2>
-            <div><%= HTML.ProjectSelector(this, 'projects') %></div>
+            <div id="projects">
+                <h2 style="margin-top:0;padding-top:0;">Related Projects</h2>
+                <div><%= HTML.ProjectSelector(this, 'projects') %></div>
+            </div>
         </td>
     </tr>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>

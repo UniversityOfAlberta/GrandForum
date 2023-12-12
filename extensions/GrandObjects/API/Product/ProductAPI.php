@@ -21,7 +21,9 @@ class ProductAPI extends RESTAPI {
                 $file = $paper->getData($this->getParam('file'));
                 if($file != null && isset($file->data)){
                     header('Content-Type: '.$file->type);
-                    header('Content-Disposition: attachment; filename="'.$file->filename.'"');
+                    if(!isset($_GET['preview'])){
+                        header('Content-Disposition: attachment; filename="'.$file->filename.'"');
+                    }
                     $exploded = explode(",", $file->data);
                     echo base64_decode($exploded[1]);
                 }
@@ -73,8 +75,11 @@ class ProductAPI extends RESTAPI {
                 $papers = Paper::getAllPapers('all', 'all', 'both', true, 'Public', $start, $count);
             }
             
+            $codes = array();
             foreach($papers as $paper){
-                $json[] = $paper->toArray();
+                $type = explode(" - ", $paper->getType());
+                @$codes[$type[0]]++;
+                $json[] = array_merge($paper->toArray(), array('code' => $type[0]."-".str_pad($codes[$type[0]], 3, "0", STR_PAD_LEFT)));
             }
             return large_json_encode($json);
         }

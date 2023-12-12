@@ -1,0 +1,25 @@
+<div id="editDialog" style="display:none;"></div>
+<div id="deleteDialog" style="display:none;" title="Delete SOP">
+    <p>Are you sure you want to delete this SOP?</p>
+    <div class="throbber" style="float:right;display:none;"></div>
+</div>
+<%= subview('addProduct') %>
+<p>
+    <button id="addProductButton">Add SOP</button>
+</p>
+<table id="listTable" frame="box" rules="all" style="display:none;">
+    <thead>
+        <tr>
+            <th width="3%" style="min-width: 70px;">Code</th>
+            <th width="35%">Title</th>
+            <th width="35%">File</th>
+            <th width="15%">Category</th>
+            <th width="5%">Version</th>
+            <th width="3%" style="min-width: 70px;">Date</th>
+            <th width="4%">Edit</th>
+        </tr>
+    </thead>
+    <tbody id="productRows">
+        
+    </tbody>
+</table>

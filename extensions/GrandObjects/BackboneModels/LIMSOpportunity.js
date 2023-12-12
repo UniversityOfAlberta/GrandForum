@@ -40,6 +40,7 @@ LIMSOpportunity = Backbone.Model.extend({
             surveyed: "",
             responded: "",
             satisfaction: "",
+            status: "",
             products: [],
             files: [],
             date: "",

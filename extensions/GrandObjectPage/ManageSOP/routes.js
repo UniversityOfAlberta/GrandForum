@@ -19,7 +19,6 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
-        "all": "showAll",
         "*actions": "defaultRoute"
     }
 });
@@ -28,19 +27,11 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
-    main.set('title', productsTerm + ' Management');
     this.closeCurrentView();
-    var products = me.getManagedProducts();
-    products.all = false;
-    this.currentView = new ManageProductsView({el: $("#currentView"), model: products});
-});
-
-pageRouter.on('route:showAll', function (actions) {
-    main.set('title', productsTerm + ' Management');
-    this.closeCurrentView();
-    var products = me.getAdminProducts();
-    products.all = true;
-    this.currentView = new ManageProductsView({el: $("#currentView"), model: products});
+    var products = new Products();
+    products.category = "SOP";
+    products.fetch();
+    this.currentView = new ManageSOPView({el: $("#currentView"), model: products});
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

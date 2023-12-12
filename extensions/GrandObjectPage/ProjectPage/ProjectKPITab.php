@@ -2,7 +2,7 @@
 
 class ProjectKPITab extends AbstractTab {
 
-    static $autoProjects = array("GIS-03", "GIS-07", "GIS-13");
+    static $autoProjects = array(); //array("GIS-03", "GIS-07", "GIS-13");
 
     static $qMap = array(1 => "Apr-Jun",
                          2 => "Jul-Sep",
@@ -36,10 +36,25 @@ class ProjectKPITab extends AbstractTab {
         return $this->html;
     }
     
+    // Manually calculates unique user requests
+    static function uniqueCount($cells, $type="", $geography="", $sector=""){
+        $results = array();
+        foreach($cells as $rowN => $row){
+            if($rowN >= 7 && count($row) >= 6){
+                if(($row[2]    == "Yes") &&
+                   ($type      == "" || $row[5] == $type) &&
+                   ($geography == "" || $row[3] == $geography) &&
+                   ($sector    == "" || $row[6] == $sector)){
+                    $results[trim($row[0])] = 1;
+                }
+            }
+        }
+        return count($results);
+    }
+    
     static function optimizeFn($obj, $project=null, $start_date="0000-00-00", $end_date="2100-01-01"){
         // Optimize formulas
         $sheets = $obj->getAllSheets();
-
         $max = 0;
         for($i=2; $i<count($sheets); $i++){
             $obj->setActiveSheetIndex($i);
@@ -47,30 +62,47 @@ class ProjectKPITab extends AbstractTab {
             $cells = @$sheet->toArray(null, false, false);
             $nRows = 0;
             foreach($cells as $rowN => $row){
-                if($row[0] != "" || $rowN <= 25){
+                if($rowN <= 25){
                     $nRows++;
                 }
+                else{
+                    $empty = true;
+                    foreach($row as $cell){
+                        if($cell != "" && substr($cell,0,1) != "="){
+                            $empty = false;
+                        }
+                    }
+                    if(!$empty){
+                        $nRows++;
+                    }
+                    else{
+                        break;
+                    }
+                }
             }
-            $nRows = min(200, $nRows);
+            $nRows = min(800, $nRows);
             $max = max($max, $nRows);
-            
             foreach($cells as $rowN => $row){
                 foreach($row as $colN => $col){
-                    if(strstr($cells[$rowN][$colN], "=") !== false && strstr($cells[$rowN][$colN], "200") !== false){
+                    if(strstr($cells[$rowN][$colN], "=") !== false && (strstr($cells[$rowN][$colN], "200") !== false ||
+                                                                       strstr($cells[$rowN][$colN], "800") !== false)){
                         $cells[$rowN][$colN] = str_replace("200", $nRows, $cells[$rowN][$colN]);
+                        $cells[$rowN][$colN] = str_replace("800", $nRows, $cells[$rowN][$colN]);
                     }
                 }
             }
             @$sheet->fromArray($cells, null, 'A1', false);
         }
 
-        $obj->setActiveSheetIndex(min(1, count($sheets)-1));
+        $obj->setActiveSheetIndex(min(1, count($sheets)-1)); // Report Sheet
         $sheet = $obj->getActiveSheet();
         $cells = @$sheet->toArray(null, false, false);
         foreach($cells as $rowN => $row){
             foreach($row as $colN => $col){
-                if(strstr($cells[$rowN][$colN], "=") !== false && strstr($cells[$rowN][$colN], "200") !== false){
+                if(strstr($cells[$rowN][$colN], "=") !== false && (strstr($cells[$rowN][$colN], "200") !== false || 
+                                                                   strstr($cells[$rowN][$colN], "800") !== false)){
                     $cells[$rowN][$colN] = str_replace("200", $max, $cells[$rowN][$colN]);
+                    $cells[$rowN][$colN] = str_replace("800", $max, $cells[$rowN][$colN]);
                 }
             }
         }
@@ -194,6 +226,40 @@ class ProjectKPITab extends AbstractTab {
             $cells[96][2] = (is_numeric($cells[96][2])) ? @$prods['Collaborations with Scientific Institutions'] : $cells[96][2];
             $cells[97][2] = (is_numeric($cells[97][2])) ? @$prods['Total Value of Research Grants & Awards Held by Facility Staff and Faculty'] : $cells[97][2];
             $cells[98][2] = (is_numeric($cells[98][2])) ? @$prods['Total Number of Research Grants and Awards Held by Facility Staff and Faculty'] : $cells[98][2];
+        }
+        else{
+            // Uploaded File, some formulas are too complicated and need to be calculated manually
+            $obj->setActiveSheetIndex(min(2, count($sheets)-1)); // Requests Sheet
+            $requestSheet = $obj->getActiveSheet();
+            $reqCells = @$requestSheet->toArray(null, false, false);
+            
+            // User Type
+            $cells[5][2] = self::uniqueCount($reqCells, "Onsite User", "", "");
+            $cells[6][2] = self::uniqueCount($reqCells, "Remote User", "", "");
+            $cells[7][2] = self::uniqueCount($reqCells, "Data User", "", "");
+            
+            // Geography
+            $cells[10][2] = self::uniqueCount($reqCells, "", $cells[10][1], "");
+            $cells[11][2] = self::uniqueCount($reqCells, "", $cells[11][1], "");
+            $cells[12][2] = self::uniqueCount($reqCells, "", $cells[12][1], "");
+            $cells[13][2] = self::uniqueCount($reqCells, "", $cells[13][1], "");
+            $cells[14][2] = self::uniqueCount($reqCells, "", $cells[14][1], "");
+            $cells[15][2] = self::uniqueCount($reqCells, "", $cells[15][1], "");
+            $cells[16][2] = self::uniqueCount($reqCells, "", $cells[16][1], "");
+            $cells[17][2] = self::uniqueCount($reqCells, "", $cells[17][1], "");
+            $cells[18][2] = self::uniqueCount($reqCells, "", $cells[18][1], "");
+            $cells[19][2] = self::uniqueCount($reqCells, "", $cells[19][1], "");
+            $cells[20][2] = self::uniqueCount($reqCells, "", $cells[20][1], "");
+            $cells[21][2] = self::uniqueCount($reqCells, "", $cells[21][1], "");
+            $cells[22][2] = self::uniqueCount($reqCells, "", $cells[22][1], "");
+            $cells[23][2] = self::uniqueCount($reqCells, "", $cells[23][1], "");
+            $cells[24][2] = self::uniqueCount($reqCells, "", $cells[24][1], "");
+            
+            // Sector
+            $cells[27][2] = self::uniqueCount($reqCells, "", "", $cells[27][1]);
+            $cells[28][2] = self::uniqueCount($reqCells, "", "", $cells[28][1]);
+            $cells[29][2] = self::uniqueCount($reqCells, "", "", $cells[29][1]);
+            $cells[30][2] = self::uniqueCount($reqCells, "", "", $cells[30][1]);
         }
         
         @$sheet->fromArray($cells, null, 'A1', false);
