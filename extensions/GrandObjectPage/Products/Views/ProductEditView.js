@@ -26,7 +26,8 @@ ProductEditView = Backbone.View.extend({
                 this.model.fetch({silent: true});
             }
             else{
-                _.defer(this.render);
+                this.model.fetch({silent: true});
+                //_.defer(this.render);
             }
         }.bind(this));
     },
