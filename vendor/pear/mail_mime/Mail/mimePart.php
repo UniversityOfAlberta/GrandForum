@@ -8,7 +8,7 @@
  * of mime mail.
  * This class however allows full control over the email.
  *
- * Compatible with PHP version 5, 7 and 8
+ * Compatible with PHP version 5 and 7
  *
  * LICENSE: This LICENSE is in the BSD license style.
  * Copyright (c) 2002-2003, Richard Heyes <richard@phpguru.org>
@@ -636,11 +636,9 @@ class Mail_mimePart
                 } elseif ($dec == 9 && isset($line[$i])) {
                     ; // Do nothing if a TAB is not on eol
                 } elseif (($dec == 61) || ($dec < 32) || ($dec > 126)) {
-                    // Escape unprintable chars
                     $char = $escape . sprintf('%02X', $dec);
                 } elseif (($dec == 46) && (($newline == '')
-                    || ((strlen($newline) + strlen(".=")) > $line_max
-                    && isset($line[$i])))
+                    || ((strlen($newline) + strlen("=2E")) >= $line_max))
                 ) {
                     // Bug #9722: convert full-stop at bol,
                     // some Windows servers need this, won't break anything (cipri)
@@ -649,12 +647,10 @@ class Mail_mimePart
                     $char = '=2E';
                 }
 
+                // Note, when changing this line, also change the ($dec == 46)
+                // check line, as it mimics this line due to Bug #11731
                 // EOL is not counted
-                if ((strlen($newline) + strlen($char) == $line_max)
-                    && !isset($line[$i])
-                ) {
-                    ; // no soft break is needed if we're the last char
-                } elseif ((strlen($newline) + strlen($char)) >= $line_max) {
+                if ((strlen($newline) + strlen($char)) >= $line_max) {
                     // soft line break; " =\r\n" is okay
                     $output  .= $newline . $escape . $eol;
                     $newline  = '';
@@ -885,7 +881,7 @@ class Mail_mimePart
         // Structured header (make sure addr-spec inside is not encoded)
         if (!empty($separator)) {
             // Simple e-mail address regexp
-            $email_regexp = '([^\s<]+|("[^\r\n"]+"))@[^\s"]+';
+            $email_regexp = '([^\s<]+|("[^\r\n"]+"))@\S+';
 
             if ($mb) {
                 $value = mb_convert_encoding($value, 'UTF-8', $mb_charset);
