@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/26" extends="Letters/Base">
-    <ReportSection id="letter" title="Incrementation">
+    <ReportSection id="letter" title="FEC Decision Regarding Merit">
         <ReportItem id="body">
             <![CDATA[
-                <p>I am writing to inform you that the Faculty Evaluation Committee (FEC) has accepted the recommendation of your Department Chair and awarded you {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation in recognition of your achievements during the past evaluation period. The award takes effect on July 1, 2023.</p>
+                <p>I am writing to inform you that the Faculty Evaluation Committee (FEC) has accepted the recommendation of your Department Chair and awarded you {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation in recognition of your achievements during the past evaluation period. The award takes effect on July 1, 2024.</p>
 
                 <p>Each year, the FEC is charged with the responsibility of awarding incrementation to its faculty from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
 
