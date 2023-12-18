@@ -281,11 +281,22 @@ class IntakeSummary extends SpecialPage {
         $api = new UserFrailtyIndexAPI();
         if(static::$rpType != "RP_AVOID_THREEMO" && static::$rpType != "RP_AVOID_NINEMO"){
             $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
-            $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
-            $html .= "<td>".implode("", $scores["Health"])."</td>";
-            $html .= "<td>".$EQ5D5L[implode("", $scores["Health"])]."</td>";
-            $html .= "<td>".$scores["VAS"]."</td>";
-            $html .= "<td>".$scores["CFS"]."</td>";
+            if($report->reportType != "RP_AVOID_THREEMO" && $report->reportType != "RP_AVOID_NINEMO"){
+                // Full Reports
+                $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
+                $html .= "<td>".implode("", $scores["Health"])."</td>";
+                $html .= "<td>".$EQ5D5L[implode("", $scores["Health"])]."</td>";
+                $html .= "<td>".$scores["VAS"]."</td>";
+                $html .= "<td>".$scores["CFS"]."</td>";
+            }
+            else{
+                // Partial Reports, don't show any numbers
+                $html .= "<td></td>";
+                $html .= "<td></td>";
+                $html .= "<td></td>";
+                $html .= "<td></td>";
+                $html .= "<td></td>";
+            }
             if($config->getValue('networkFullName') == "AVOID Alberta"){
                 $html .= "<td>".$scores["VFS"]."</td>";
                 $html .= "<td>".$scores["HAAI"]["Total"]."</td>";
