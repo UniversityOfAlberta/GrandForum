@@ -19,6 +19,7 @@
  */
 
 use GuzzleHttp\Psr7\StreamDecoratorTrait;
+use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -37,8 +38,11 @@ class MWCallbackStream implements StreamInterface {
 
 	private $callback;
 
+	/** @var StreamInterface */
+	protected $stream;
+
 	public function __construct( callable $cb ) {
-		$this->stream = GuzzleHttp\Psr7\stream_for();
+		$this->stream = Utils::streamFor();
 		$this->callback = $cb;
 	}
 

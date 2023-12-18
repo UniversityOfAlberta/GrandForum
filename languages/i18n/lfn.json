@@ -15,7 +15,9 @@
 			"Robin van der Vliet",
 			"Urhixidur",
 			"Vlad5250",
-			"아라"
+			"아라",
+			"1233qwer1234qwer4",
+			"Base"
 		]
 	},
 	"tog-underline": "Sulini de lias:",
@@ -776,7 +778,7 @@
 	"rev-deleted-unhide-diff": "Un de la revisas de esta difere es <strong>sutraeda</strong>.\nDetalias es trovable en la [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} rejistra de sutraes].\nTu pote ancora [$1 regarda esta revisa] si tu desira continua.",
 	"rev-suppressed-unhide-diff": "Un de la revisas de esta difere es <strong>supresada</strong>.\nDetalias es trovable en la [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} rejistra de supresas].\nTu pote ancora [$1 regarda esta revisa] si tu desira continua.",
 	"rev-deleted-diff-view": "Un de la revisas de esta difere es <strong>sutraeda</strong>.\nTu pote regarda esta difere; detalias es trovable en la [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} rejistra de sutraes].",
-	"rev-suppressed-diff-view": "Un de la revisas de esta difere es <strong>sutraeda</strong>.\nTu pote regarda esta difere; detalias es trovable en la [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} rejistra de sutraes].",
+	"rev-suppressed-diff-view": "Un de la revisas de esta difere es <strong>sutraeda</strong>.\nTu pote regarda esta difere; detalias es trovable en la [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} rejistra de sutraes].",
 	"rev-delundel": "cambia vidablia",
 	"rev-showdeleted": "mostra",
 	"revisiondelete": "Sutrae/desutrae revisas",
@@ -1013,6 +1015,7 @@
 	"badsiglength": "Tua suscrive es tro longa.\nLo debe conteni no plu ca {{PLURAL:$1|sinia|sinias}}.",
 	"yourgender": "Como tu prefere ce on descrive tu?",
 	"gender-unknown": "Cuando lo refere a tu, la program va usa parolas de jenero neutra, sempre cuando posible",
+	"gender-notknown": "El es un person",
 	"gender-male": "El es mas",
 	"gender-female": "El es fema",
 	"prefs-help-gender": "La defini de esta prefere es nonobligante.\nLa program consulta lo per usa la jenero gramatical conveninte cuando lo refere a tu en comunicas a tu o otras.\nEsta informa va es publica.",
@@ -2248,7 +2251,7 @@
 	"undeleteextrahelp": "Per restora la istoria intera de la paje, desmarca tota caxas e clica <strong><em>{{int:undeletebtn}}</em></strong>.\nPer fa un restora partal, marca la caxas corespondente a la revisas cual tu vole restora, e clica <strong><em>{{int:undeletebtn}}</em></strong>.",
 	"undeleterevisions": "$1 {{PLURAL:$1|revisa|revisas}} sutraeda",
 	"undeletehistory": "Si tu restora la paje, tota revisas va es restorada a la istoria.\nSi un paje nova con la mesma nom ia es creada pos la sutrae, la revisas restorada va apare en la istoria presedente.",
-	"undeleterevdel": "Desutrae no va aveni si lo ta fa ce la revisa la plu resente de la paje o fix va es partal sutraeda.\n En tal casos, tu debe deseleje o desasconde la revisa sutraeda la plu resente.",
+	"undeleterevdel": "Desutrae no va aveni si lo ta fa ce la revisa la plu resente de la paje o fix va es partal sutraeda.\nEn tal casos, tu debe deseleje o desasconde la revisa sutraeda la plu resente.",
 	"undeletehistorynoadmin": "Esta paje es sutraeda.\nLa razona de sutrae es mostrada en la resoma a su, con ance detalias de la usores ci ia edita esta paje ante la sutrae.\nLa testo mesma de esta revisas sutraeda es sola disponable a dirijores.",
 	"undelete-revision": "Revisa sutraeda de $1 (a $4, a $5) par $3:",
 	"undeleterevision-missing": "Revisa nonvalida o mancante.\nTu ave cisa un mal lia, o cisa la revisa ia es restorada o sutraeda de la arcivo.",

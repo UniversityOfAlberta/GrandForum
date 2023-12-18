@@ -1011,11 +1011,11 @@ class EditPage implements IEditObject {
 				}
 			}
 			$this->save = !$this->preview && !$this->diff;
-			if ( !preg_match( '/^\d{14}$/', $this->edittime ) ) {
+			if ( !$this->edittime || !preg_match( '/^\d{14}$/', $this->edittime ) ) {
 				$this->edittime = null;
 			}
 
-			if ( !preg_match( '/^\d{14}$/', $this->starttime ) ) {
+			if ( !$this->starttime || !preg_match( '/^\d{14}$/', $this->starttime ) ) {
 				$this->starttime = null;
 			}
 
@@ -1271,8 +1271,10 @@ class EditPage implements IEditObject {
 			$undo = $request->getInt( 'undo' );
 
 			if ( $undo > 0 && $undoafter > 0 ) {
-				$undorev = $this->revisionStore->getRevisionById( $undo );
-				$oldrev = $this->revisionStore->getRevisionById( $undoafter );
+				// The use of getRevisionByTitle() is intentional, as allowing access to
+				// arbitrary revisions on arbitrary pages bypass partial visibility restrictions (T297322).
+				$undorev = $this->revisionStore->getRevisionByTitle( $this->mTitle, $undo );
+				$oldrev = $this->revisionStore->getRevisionByTitle( $this->mTitle, $undoafter );
 				$undoMsg = null;
 
 				# Sanity check, make sure it's the right page,

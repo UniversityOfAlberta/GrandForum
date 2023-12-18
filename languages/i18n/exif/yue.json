@@ -7,7 +7,9 @@
 			"Roy17",
 			"Waihorace",
 			"William915",
-			"Yueman"
+			"Yueman",
+			"Moon0319",
+			"Z423x5c6"
 		]
 	},
 	"exif-imagewidth": "闊",
@@ -77,7 +79,7 @@
 	"exif-subjectlocation": "主題位置",
 	"exif-exposureindex": "曝光指數",
 	"exif-sensingmethod": "感知方法",
-	"exif-filesource": "檔案來源",
+	"exif-filesource": "快勞來源",
 	"exif-scenetype": "埸景類型",
 	"exif-customrendered": "自訂影像處理",
 	"exif-exposuremode": "曝光模式",
@@ -125,6 +127,8 @@
 	"exif-gpsdifferential": "GPS 差動修正",
 	"exif-jpegfilecomment": "JPEG文件註",
 	"exif-keywords": "關鍵字",
+	"exif-worldregioncreated": "影呢幅相嘅地方",
+	"exif-countrycreated": "影呢幅相嘅國家",
 	"exif-countrydest": "顯示國家",
 	"exif-countrycodedest": "顯示國家地區碼",
 	"exif-provinceorstatedest": "顯示省份或州份或領域地區",
@@ -136,7 +140,7 @@
 	"exif-urgency": "緊急程度",
 	"exif-contact": "聯繫信息",
 	"exif-writer": "作家",
-	"exif-languagecode": "語言",
+	"exif-languagecode": "話",
 	"exif-iimversion": "IIM版本",
 	"exif-iimcategory": "類",
 	"exif-datetimeexpires": "喺呢個日期之後唔好再用",

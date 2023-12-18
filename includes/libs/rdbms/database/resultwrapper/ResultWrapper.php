@@ -45,11 +45,6 @@ class ResultWrapper implements IResultWrapper {
 			throw new InvalidArgumentException( "Null result resource provided" );
 		}
 	}
-	
-	// NOTE: Added for DBFunctions
-	public function getResult(){
-	    return $this->result;
-	}
 
 	/**
 	 * Get the underlying RDBMS driver-specific result resource
@@ -77,6 +72,10 @@ class ResultWrapper implements IResultWrapper {
 		return $this->getDB()->numRows( $this );
 	}
 
+	public function count(): int {
+		return $this->numRows();
+	}
+
 	public function fetchObject() {
 		return $this->getDB()->fetchObject( $this );
 	}
@@ -85,7 +84,7 @@ class ResultWrapper implements IResultWrapper {
 		return $this->getDB()->fetchRow( $this );
 	}
 
-	public function seek( $pos ) {
+	public function seek( $pos ): void {
 		$this->getDB()->dataSeek( $this, $pos );
 		$this->pos = $pos;
 	}
@@ -95,6 +94,7 @@ class ResultWrapper implements IResultWrapper {
 		$this->result = null;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function rewind() {
 		if ( $this->numRows() ) {
 			$this->getDB()->dataSeek( $this, 0 );
@@ -103,6 +103,7 @@ class ResultWrapper implements IResultWrapper {
 		$this->currentRow = null;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function current() {
 		if ( $this->currentRow === null ) {
 			$this->currentRow = $this->fetchObject();
@@ -111,7 +112,7 @@ class ResultWrapper implements IResultWrapper {
 		return $this->currentRow;
 	}
 
-	public function key() {
+	public function key(): int {
 		return $this->pos;
 	}
 
@@ -122,6 +123,7 @@ class ResultWrapper implements IResultWrapper {
 		return $this->currentRow;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function valid() {
 		return $this->current() !== false;
 	}

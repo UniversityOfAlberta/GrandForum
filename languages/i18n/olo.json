@@ -8,7 +8,8 @@
 			"Mashoi7",
 			"Matma Rex",
 			"Misosoof",
-			"Pyscowicz"
+			"Pyscowicz",
+			"Amire80"
 		]
 	},
 	"tog-underline": "Linkien alleviivuamine:",
@@ -180,7 +181,7 @@
 	"protect_change": "vaihta",
 	"unprotect": "Vaihta suojavustu",
 	"newpage": "Uuzi sivu",
-	"talkpagelinktext": "Pagin",
+	"talkpagelinktext": "pagin",
 	"specialpage": "Erikoine sivu",
 	"personaltools": "Omat instrumentat",
 	"talk": "Paginat",
@@ -429,6 +430,7 @@
 	"watchthis": "Tarkaile tädä sivuu",
 	"savearticle": "Tallenda sivu",
 	"savechanges": "Tallenda muutokset",
+	"publishpage": "Julgua sivu",
 	"preview": "Ezikačo",
 	"showpreview": "Ezikačo",
 	"showdiff": "Luajitut kohendukset",
@@ -656,6 +658,7 @@
 	"action-move": "siirrä tämä sivu",
 	"action-move-subpages": "siirrä tämä sivu, da sen alisivut",
 	"action-movefile": "siirrä tämä failu",
+	"action-delete": "Ota iäre",
 	"enhancedrc-history": "histourii",
 	"recentchanges": "Uvvet kohendukset",
 	"recentchanges-legend": "Tuorehien muutoksien azetukset",
@@ -904,6 +907,7 @@
 	"tags-edit-existing-tags-none": "\"Nimidä\"",
 	"compare-page1": "Sivu 1",
 	"compare-page2": "Sivu 2",
+	"htmlform-submit": "Lähetä",
 	"htmlform-no": "Ei",
 	"htmlform-yes": "Muga",
 	"logentry-delete-delete": "$1 {{GENDER:$2|iäreotettu}} sivu $3",

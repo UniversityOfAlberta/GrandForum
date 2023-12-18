@@ -2,7 +2,9 @@
 	"@metadata": {
 		"authors": [
 			"DannyS712",
-			"Vikoula5"
+			"Vikoula5",
+			"Amire80",
+			"Base"
 		]
 	},
 	"tog-underline": "Aderrer n iseɣwan:",
@@ -181,7 +183,7 @@
 	"protect_change": "beddel tiḥḥerzi",
 	"unprotect": "Beddel amesten",
 	"newpage": "Asebter amaynut",
-	"talkpagelinktext": "Mmeslay",
+	"talkpagelinktext": "mmeslay",
 	"specialpage": "Asebter uslig",
 	"personaltools": "Dduzan inu",
 	"talk": "Asqerdec",
@@ -726,7 +728,7 @@
 	"rev-deleted-unhide-diff": "Yiwen lqem n tameẓla agi <strong>yetwesfeḍ</strong>.\nTilɣa llant deg [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} uɣmis n usfeḍ].\nTzemreḍ meqqar [$1 ad ẓṛeḍ tameẓla agi] ma tebɣiḍ",
 	"rev-suppressed-unhide-diff": "Yiwen lqem n tameẓla agi <strong>yetwekkes</strong>.\nTilɣa llant deg [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} uɣmis n umḥu].\nTzemreḍ meqqar [$1 ad ẓṛeḍ tameẓla agi] ma tebɣiḍ",
 	"rev-deleted-diff-view": "Yiwen lqem n \"diff\" agi <strong>yetwekkes</strong>.\nTzemreḍ att ẓṛeḍ ; tilɣa llant deg [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} uɣmis n umḥu].",
-	"rev-suppressed-diff-view": "Yiwen lqem n \"diff\" agi <strong>yetwesfeḍ</strong>.\nTzemreḍ att ẓṛeḍ ; tilɣa llant deg [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} uɣmis n usfeḍ].",
+	"rev-suppressed-diff-view": "Yiwen lqem n \"diff\" agi <strong>yetwesfeḍ</strong>.\nTzemreḍ att ẓṛeḍ ; tilɣa llant deg [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} uɣmis n usfeḍ].",
 	"rev-delundel": "ssken/ffer",
 	"rev-showdeleted": "Ssken",
 	"revisiondelete": "Mḥu/kkes amḥay tisiwal",
@@ -1041,6 +1043,8 @@
 	"rightslog": "Aɣmis n yizerfan n wemseqdac",
 	"action-edit": "beddel asebter agi",
 	"action-createaccount": "snulfud amiḍan agi n useqdac",
+	"action-move": "Snifel isem",
+	"action-delete": "Mḥu",
 	"enhancedrc-history": "amazray",
 	"recentchanges": "Ibeddilen imaynuten",
 	"recentchanges-legend": "Tifranin n ibeddilen imaynuten",

@@ -4,7 +4,8 @@
 			"Conquistador",
 			"Kolega2357",
 			"OC Ripper",
-			"Vlad5250"
+			"Vlad5250",
+			"BadDog"
 		]
 	},
 	"exif-imagewidth": "Širina",
@@ -174,7 +175,7 @@
 	"exif-attributionurl": "Kada ponovno koristite ovaj rad, molimo povežite ga na",
 	"exif-preferredattributionname": "Kada ponovno koristite ovaj rad, molimo pripišite ga na",
 	"exif-pngfilecomment": "PNG komentar datoteke",
-	"exif-disclaimer": "Odricanje od odgovornosti",
+	"exif-disclaimer": "Odricanje odgovornosti",
 	"exif-contentwarning": "Upozorenje o sadržaju",
 	"exif-giffilecomment": "GIF komentar datoteke",
 	"exif-intellectualgenre": "Tip predmeta",
@@ -276,6 +277,9 @@
 	"exif-customrendered-2": "HDR (bez spremlenog originala)",
 	"exif-customrendered-3": "HDR (sa spremlenim originalom)",
 	"exif-customrendered-4": "Original (za HDR)",
+	"exif-customrendered-6": "Panorama",
+	"exif-customrendered-7": "Portret HDR",
+	"exif-customrendered-8": "Portret",
 	"exif-exposuremode-0": "Automatska ekpozicija",
 	"exif-exposuremode-1": "Ručna ekspozicija",
 	"exif-exposuremode-2": "Automatski određen raspon",

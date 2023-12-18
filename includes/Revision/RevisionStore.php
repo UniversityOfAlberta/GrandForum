@@ -81,6 +81,9 @@ class RevisionStore
 
 	public const ROW_CACHE_KEY = 'revision-row-1.29';
 
+	public const ORDER_OLDEST_TO_NEWEST = 'ASC';
+	public const ORDER_NEWEST_TO_OLDEST = 'DESC';
+
 	/**
 	 * @var SqlBlobStore
 	 */
@@ -1230,7 +1233,7 @@ class RevisionStore
 	 * Factory method for SlotRecords based on known slot rows.
 	 *
 	 * @param int $revId The revision to load slots for.
-	 * @param object[]|IResultWrapper $slotRows
+	 * @param \stdClass[]|IResultWrapper $slotRows
 	 * @param int $queryFlags
 	 * @param Title $title
 	 * @param array|null $slotContents a map from blobAddress to slot
@@ -1308,8 +1311,8 @@ class RevisionStore
 	 * public, since RevisionSlots instances should not be constructed directly.
 	 *
 	 * @param int $revId
-	 * @param object $revisionRow
-	 * @param object[]|null $slotRows
+	 * @param \stdClass $revisionRow
+	 * @param \stdClass[]|null $slotRows
 	 * @param int $queryFlags
 	 * @param Title $title
 	 *
@@ -1345,7 +1348,7 @@ class RevisionStore
 	 *
 	 * MCR migration note: this replaces Revision::newFromArchiveRow
 	 *
-	 * @param object $row
+	 * @param \stdClass $row
 	 * @param int $queryFlags
 	 * @param Title|null $title
 	 * @param array $overrides associative array with fields of $row to override. This may be
@@ -1370,7 +1373,7 @@ class RevisionStore
 	 *
 	 * MCR migration note: this replaces Revision::newFromRow
 	 *
-	 * @param object $row A database row generated from a query based on getQueryInfo()
+	 * @param \stdClass $row A database row generated from a query based on getQueryInfo()
 	 * @param int $queryFlags
 	 * @param Title|null $title Preloaded title object based on Title::newFromRow from database row
 	 *   when query was build with option 'page' on getQueryInfo
@@ -1391,8 +1394,8 @@ class RevisionStore
 	 * @see newRevisionFromArchiveRow()
 	 * @since 1.35
 	 *
-	 * @param object $row
-	 * @param null|object[]|RevisionSlots $slots
+	 * @param \stdClass $row
+	 * @param null|\stdClass[]|RevisionSlots $slots
 	 *  - Database rows generated from a query based on getSlotsQueryInfo
 	 *    with the 'content' flag set. Or
 	 *  - RevisionSlots instance
@@ -1413,7 +1416,7 @@ class RevisionStore
 		Title $title = null,
 		array $overrides = []
 	) {
-		Assert::parameterType( 'object', $row, '$row' );
+		Assert::parameterType( \stdClass::class, $row, '$row' );
 
 		// check second argument, since Revision::newFromArchiveRow had $overrides in that spot.
 		Assert::parameterType( 'integer', $queryFlags, '$queryFlags' );
@@ -1473,8 +1476,8 @@ class RevisionStore
 	/**
 	 * @see newFromRevisionRow()
 	 *
-	 * @param object $row A database row generated from a query based on getQueryInfo()
-	 * @param null|object[]|RevisionSlots $slots
+	 * @param \stdClass $row A database row generated from a query based on getQueryInfo()
+	 * @param null|\stdClass[]|RevisionSlots $slots
 	 *  - Database rows generated from a query based on getSlotsQueryInfo
 	 *    with the 'content' flag set. Or
 	 *  - RevisionSlots instance
@@ -1494,7 +1497,7 @@ class RevisionStore
 		Title $title = null,
 		$fromCache = false
 	) {
-		Assert::parameterType( 'object', $row, '$row' );
+		Assert::parameterType( \stdClass::class, $row, '$row' );
 
 		if ( !$title ) {
 			$pageId = (int)( $row->rev_page ?? 0 ); // XXX: fall back to page_id?
@@ -1556,7 +1559,7 @@ class RevisionStore
 	 * When a mismatch is detected, this tries to re-load the title from master,
 	 * to avoid spurious errors during page moves.
 	 *
-	 * @param object $row
+	 * @param \stdClass $row
 	 * @param Title $title
 	 * @param array $context
 	 */
@@ -1596,7 +1599,7 @@ class RevisionStore
 	 * Use getQueryInfo() or getArchiveQueryInfo() to construct the
 	 * query that produces the rows.
 	 *
-	 * @param Traversable|array $rows the rows to construct revision records from
+	 * @param IResultWrapper|\stdClass[] $rows the rows to construct revision records from
 	 * @param array $options Supports the following options:
 	 *               'slots' - whether metadata about revision slots should be
 	 *               loaded immediately. Supports falsy or truthy value as well
@@ -2350,7 +2353,7 @@ class RevisionStore
 	 * @param int $flags (optional)
 	 * @param array $options (optional) additional query options
 	 *
-	 * @return object|false data row as a raw object
+	 * @return \stdClass|false data row as a raw object
 	 */
 	private function fetchRevisionRowFromConds(
 		IDatabase $db,
@@ -3005,8 +3008,10 @@ class RevisionStore
 	 *
 	 * @param IDatabase $dbr
 	 * @param RevisionRecord|null $old Old revision.
+	 *  If null is provided, count starting from the first revision (inclusive).
 	 * @param RevisionRecord|null $new New revision.
-	 * @param array $options Single option, or an array of options:
+	 *  If null is provided, count until the last revision (inclusive).
+	 * @param string|array $options Single option, or an array of options:
 	 *     'include_old' Include $old in the range; $new is excluded.
 	 *     'include_new' Include $new in the range; $old is excluded.
 	 *     'include_both' Include both $old and $new in the range.
@@ -3044,6 +3049,85 @@ class RevisionStore
 				"OR rev_timestamp < {$newTs}";
 		}
 		return $conds;
+	}
+
+	/**
+	 * Get IDs of revisions between the given revisions.
+	 *
+	 * @since 1.36
+	 *
+	 * @param int $pageId The id of the page
+	 * @param RevisionRecord|null $old Old revision.
+	 *  If null is provided, count starting from the first revision (inclusive).
+	 * @param RevisionRecord|null $new New revision.
+	 *  If null is provided, count until the last revision (inclusive).
+	 * @param int|null $max Limit of Revisions to count, will be incremented by
+	 *  one to detect truncations.
+	 * @param string|array $options Single option, or an array of options:
+	 *     'include_old' Include $old in the range; $new is excluded.
+	 *     'include_new' Include $new in the range; $old is excluded.
+	 *     'include_both' Include both $old and $new in the range.
+	 * @param string|null $order The direction in which the revisions should be sorted.
+	 *  Possible values:
+	 *   - RevisionStore::ORDER_OLDEST_TO_NEWEST
+	 *   - RevisionStore::ORDER_NEWEST_TO_OLDEST
+	 *   - null for no specific ordering (default value)
+	 * @param int $flags
+	 * @throws InvalidArgumentException in case either revision is unsaved or
+	 *  the revisions do not belong to the same page or unknown option is passed.
+	 * @return int[]
+	 */
+	public function getRevisionIdsBetween(
+		int $pageId,
+		RevisionRecord $old = null,
+		RevisionRecord $new = null,
+		?int $max = null,
+		$options = [],
+		?string $order = null,
+		int $flags = IDBAccessObject::READ_NORMAL
+	) : array {
+		$this->assertRevisionParameter( 'old', $pageId, $old );
+		$this->assertRevisionParameter( 'new', $pageId, $new );
+
+		$options = (array)$options;
+		$includeOld = in_array( 'include_old', $options ) ||
+			in_array( 'include_both', $options );
+		$includeNew = in_array( 'include_new', $options ) ||
+			in_array( 'include_both', $options );
+
+		// No DB query needed if old and new are the same revision.
+		// Can't check for consecutive revisions with 'getParentId' for a similar
+		// optimization as edge cases exist when there are revisions between
+		// a revision and it's parent. See T185167 for more details.
+		if ( $old && $new && $new->getId() === $old->getId() ) {
+			return $includeOld || $includeNew ? [ $new->getId() ] : [];
+		}
+
+		$db = $this->getDBConnectionRefForQueryFlags( $flags );
+		$conds = array_merge(
+			[
+				'rev_page' => $pageId,
+				$db->bitAnd( 'rev_deleted', RevisionRecord::DELETED_TEXT ) . ' = 0'
+			],
+			$this->getRevisionLimitConditions( $db, $old, $new, $options )
+		);
+
+		$queryOptions = [];
+		if ( $order !== null ) {
+			$queryOptions['ORDER BY'] = [ "rev_timestamp $order", "rev_id $order" ];
+		}
+		if ( $max !== null ) {
+			$queryOptions['LIMIT'] = $max + 1; // extra to detect truncation
+		}
+
+		$values = $db->selectFieldValues(
+			'revision',
+			'rev_id',
+			$conds,
+			__METHOD__,
+			$queryOptions
+		);
+		return array_map( 'intval', $values );
 	}
 
 	/**

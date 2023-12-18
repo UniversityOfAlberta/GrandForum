@@ -62,6 +62,9 @@ class DatabaseMysqli extends DatabaseMysqlBase {
 			);
 		}
 
+		// PHP 8.1.0+ throws exceptions by default. Turn that off for consistency.
+		mysqli_report( MYSQLI_REPORT_OFF );
+
 		// Other than mysql_connect, mysqli_real_connect expects an explicit port number
 		// e.g. "localhost:1234" or "127.0.0.1:1234"
 		// or Unix domain socket path
@@ -105,15 +108,14 @@ class DatabaseMysqli extends DatabaseMysqlBase {
 		if ( $this->getFlag( self::DBO_PERSISTENT ) ) {
 			$realServer = 'p:' . $realServer;
 		}
-        /*
-        TODO: Causes issue with utf8 characters, so commented out
+
 		if ( $this->utf8Mode ) {
 			// Tell the server we're communicating with it in UTF-8.
 			// This may engage various charset conversions.
 			$mysqli->options( MYSQLI_SET_CHARSET_NAME, 'utf8' );
 		} else {
 			$mysqli->options( MYSQLI_SET_CHARSET_NAME, 'binary' );
-		}*/
+		}
 		$mysqli->options( MYSQLI_OPT_CONNECT_TIMEOUT, 3 );
 
 		if ( $mysqli->real_connect(

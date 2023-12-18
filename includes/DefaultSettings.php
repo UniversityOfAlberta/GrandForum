@@ -1047,7 +1047,10 @@ $wgFileBlacklist = [
 	# Other types that may be interpreted by some servers
 	'shtml', 'jhtml', 'pl', 'py', 'cgi',
 	# May contain harmful executables for Windows victims
-	'exe', 'scr', 'dll', 'msi', 'vbs', 'bat', 'com', 'pif', 'cmd', 'vxd', 'cpl' ];
+	'exe', 'scr', 'dll', 'msi', 'vbs', 'bat', 'com', 'pif', 'cmd', 'vxd', 'cpl',
+	# T341565
+	'xml',
+];
 
 /**
  * Files with these MIME types will never be allowed as uploads
@@ -1066,6 +1069,8 @@ $wgMimeTypeBlacklist = [
 	'text/scriptlet', 'application/x-msdownload',
 	# Windows metafile, client-side vulnerability on some systems
 	'application/x-msmetafile',
+	# XML files generally - T341565
+	'application/xml', 'text/xml',
 ];
 
 /**
@@ -1697,11 +1702,20 @@ $wgDirectoryMode = 0777;
 $wgResponsiveImages = true;
 
 /**
- * On pages containing images, tell the user agent to pre-connect to hosts from
- * $wgForeignFileRepos.  This speeds up rendering, but may create unwanted
- * traffic if there are many possible URLs from which images are served.
+ * Add a preconnect link for browsers to a remote FileRepo host.
+ *
+ * This is an optional performance enhancement designed for wiki farm where
+ * $wgForeignFileRepos or $wgLocalFileRepo is set to serve thumbnails from a
+ * separate hostname (e.g. not local `/w/images`). The feature expects at most
+ * a single remote hostname to be used.
+ *
+ * If multiple foreign repos are registered that serve images from different hostnames,
+ * only the first will be preconnected.
+ *
+ * This may cause unneeded HTTP connections in browsers on wikis where a foreign repo is
+ * enabled but where a local repo is more commonly used.
+ *
  * @since 1.35
- * @warning EXPERIMENTAL!
  */
 $wgImagePreconnect = false;
 
@@ -2303,6 +2317,12 @@ $wgSlaveLagWarning = 10;
  */
 $wgSlaveLagCritical = 30;
 
+/**
+ * Max execution time for queries of several expensive special pages such as RecentChanges
+ * in milliseconds.
+ * @since 1.35.6
+ */
+$wgMaxExecutionTimeForExpensiveQueries = 0;
 /** @} */ # End of DB settings }
 
 /************************************************************************//**
@@ -4598,9 +4618,10 @@ $wgMaxPPExpandDepth = 40;
  */
 $wgUrlProtocols = [
 	'bitcoin:', 'ftp://', 'ftps://', 'geo:', 'git://', 'gopher://', 'http://',
-	'https://', 'irc://', 'ircs://', 'magnet:', 'mailto:', 'mms://', 'news:',
-	'nntp://', 'redis://', 'sftp://', 'sip:', 'sips:', 'sms:', 'ssh://',
-	'svn://', 'tel:', 'telnet://', 'urn:', 'worldwind://', 'xmpp:', '//'
+	'https://', 'irc://', 'ircs://', 'magnet:', 'mailto:', 'matrix:', 'mms://',
+	'news:', 'nntp://', 'redis://', 'sftp://', 'sip:', 'sips:', 'sms:',
+	'ssh://', 'svn://', 'tel:', 'telnet://', 'urn:', 'worldwind://', 'xmpp:',
+	'//',
 ];
 
 /**
@@ -6277,6 +6298,7 @@ $wgGrantPermissions['editpage']['edit'] = true;
 $wgGrantPermissions['editpage']['minoredit'] = true;
 $wgGrantPermissions['editpage']['applychangetags'] = true;
 $wgGrantPermissions['editpage']['changetags'] = true;
+$wgGrantPermissions['editpage']['editcontentmodel'] = true;
 
 $wgGrantPermissions['editprotected'] = $wgGrantPermissions['editpage'];
 $wgGrantPermissions['editprotected']['editprotected'] = true;
@@ -8743,6 +8765,10 @@ $wgAllowedCorsHeaders = [
 	/* MediaWiki whitelist */
 	'User-Agent',
 	'Api-User-Agent',
+	/* Allowing caching preflight requests, see T269636 */
+	'Access-Control-Max-Age',
+	/* OAuth 2.0, see T322944 */
+	'Authorization',
 ];
 
 /**
@@ -9317,6 +9343,8 @@ $wgRawHtmlMessages = [
 	'googlesearch',
 	'feedback-terms',
 	'feedback-termsofuse',
+	'youhavenewmessagesmanyusers',
+	'youhavenewmessages',
 ];
 
 /**

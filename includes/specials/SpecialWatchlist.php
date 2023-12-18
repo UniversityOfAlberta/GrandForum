@@ -411,7 +411,7 @@ class SpecialWatchlist extends ChangesListSpecialPage {
 			], LIST_OR );
 		}
 
-		$tagFilter = $opts['tagfilter'] ? explode( '|', $opts['tagfilter'] ) : [];
+		$tagFilter = $opts['tagfilter'] !== '' ? explode( '|', $opts['tagfilter'] ) : [];
 		ChangeTags::modifyDisplayQuery(
 			$tables,
 			$fields,
@@ -443,6 +443,7 @@ class SpecialWatchlist extends ChangesListSpecialPage {
 		// array_merge() is used intentionally here so that hooks can, should
 		// they so desire, override the ORDER BY / LIMIT condition(s)
 		$query_options = array_merge( $orderByAndLimit, $query_options );
+		$query_options['MAX_EXECUTION_TIME'] = $this->getConfig()->get( 'MaxExecutionTimeForExpensiveQueries' );
 
 		return $dbr->select(
 			$tables,

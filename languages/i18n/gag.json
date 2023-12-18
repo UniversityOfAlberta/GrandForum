@@ -10,7 +10,9 @@
 			"Meisam",
 			"Reedy",
 			"Stephanecbisson",
-			"아라"
+			"아라",
+			"Amire80",
+			"TayfunEt."
 		]
 	},
 	"tog-underline": "Baalantıların altını çiz",
@@ -135,7 +137,7 @@
 	"protect_change": "Diiştir",
 	"unprotect": "Korunmayı kaldır",
 	"newpage": "Eni sayfa",
-	"talkpagelinktext": "Konuşmaa",
+	"talkpagelinktext": "konuşmaa",
 	"specialpage": "Maasus Sayfa",
 	"personaltools": "Personal instrumentlär",
 	"talk": "Dartışma",
@@ -679,5 +681,6 @@
 	"watchlisttools-edit": "Siir listasını gör hem düzelt",
 	"watchlisttools-raw": "Ham siir listasını düz",
 	"version": "Versiya",
-	"specialpages": "Maasus sayfalar"
+	"specialpages": "Maasus sayfalar",
+	"searchsuggest-search": "{{SITENAME}} içindä ara"
 }

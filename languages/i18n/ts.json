@@ -3,7 +3,8 @@
 		"authors": [
 			"Macofe",
 			"Thuvack",
-			"아라"
+			"아라",
+			"Amire80"
 		]
 	},
 	"tog-underline": "Hlanganisa nkhwatiheto:",
@@ -142,7 +143,7 @@
 	"protect_change": "Cinca",
 	"unprotect": "Cinca kusirhelela",
 	"newpage": "Tluka rintswa",
-	"talkpagelinktext": "Mbulavulo",
+	"talkpagelinktext": "mbulavulo",
 	"specialpage": "Tluka ro hlawuleka",
 	"personaltools": "Switirhisi swa n'wini",
 	"talk": "Mbulavuriswano",
@@ -387,6 +388,8 @@
 	"action-minoredit": "funga ndzulamiso lowu wulri lowintsanana",
 	"action-move": "Yisa tluka leri ndhzawini yinwana",
 	"action-move-subpages": "Yisa tlukaleri na matluka-nstongo ya rona, endzawini yinw'ana",
+	"action-delete": "Sula",
+	"action-undelete": "Cinca kusula",
 	"nchanges": "$1 {{PLURAL:$1|wa ndzulamiso|wa mindzulamiso}}",
 	"recentchanges": "Ku cinca ka sweswi-nyana",
 	"recentchanges-legend": "Tindlela to langutisa ku cinca ka sweswinyana",

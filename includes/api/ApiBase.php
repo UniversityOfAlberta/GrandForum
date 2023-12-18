@@ -61,28 +61,84 @@ abstract class ApiBase extends ContextSource {
 
 	/**
 	 * @name Old constants for ::getAllowedParams() arrays
-	 * @deprecated since 1.35, use the equivalent ParamValidator or TypeDef constants instead.
 	 * @{
 	 */
 
+	/**
+	 * @deprecated since 1.35, use ParamValidator::PARAM_DEFAULT instead
+	 */
 	public const PARAM_DFLT = ParamValidator::PARAM_DEFAULT;
+	/**
+	 * @deprecated since 1.35, use ParamValidator::PARAM_ISMULTI instead
+	 */
 	public const PARAM_ISMULTI = ParamValidator::PARAM_ISMULTI;
+	/**
+	 * @deprecated since 1.35, use ParamValidator::PARAM_TYPE instead
+	 */
 	public const PARAM_TYPE = ParamValidator::PARAM_TYPE;
+	/**
+	 * @deprecated since 1.35, use IntegerDef::PARAM_MAX instead
+	 */
 	public const PARAM_MAX = IntegerDef::PARAM_MAX;
+	/**
+	 * @deprecated since 1.35, use IntegerDef::PARAM_MAX2 instead
+	 */
 	public const PARAM_MAX2 = IntegerDef::PARAM_MAX2;
+	/**
+	 * @deprecated since 1.35, use IntegerDef::PARAM_MIN instead
+	 */
 	public const PARAM_MIN = IntegerDef::PARAM_MIN;
+	/**
+	 * @deprecated since 1.35, use ParamValidator::PARAM_ALLOW_DUPLICATES instead
+	 */
 	public const PARAM_ALLOW_DUPLICATES = ParamValidator::PARAM_ALLOW_DUPLICATES;
+	/**
+	 * @deprecated since 1.35, use ParamValidator::PARAM_DEPRECATED instead
+	 */
 	public const PARAM_DEPRECATED = ParamValidator::PARAM_DEPRECATED;
+	/**
+	 * @deprecated since 1.35, use ParamValidator::PARAM_REQUIRED instead
+	 */
 	public const PARAM_REQUIRED = ParamValidator::PARAM_REQUIRED;
+	/**
+	 * @deprecated since 1.35, use SubmoduleDef::PARAM_SUBMODULE_MAP instead
+	 */
 	public const PARAM_SUBMODULE_MAP = SubmoduleDef::PARAM_SUBMODULE_MAP;
+	/**
+	 * @deprecated since 1.35, use SubmoduleDef::PARAM_SUBMODULE_PARAM_PREFIX instead
+	 */
 	public const PARAM_SUBMODULE_PARAM_PREFIX = SubmoduleDef::PARAM_SUBMODULE_PARAM_PREFIX;
+	/**
+	 * @deprecated since 1.35, use ParamValidator::PARAM_ALL instead
+	 */
 	public const PARAM_ALL = ParamValidator::PARAM_ALL;
+	/**
+	 * @deprecated since 1.35, use NamespaceDef::PARAM_EXTRA_NAMESPACES instead
+	 */
 	public const PARAM_EXTRA_NAMESPACES = NamespaceDef::PARAM_EXTRA_NAMESPACES;
+	/**
+	 * @deprecated since 1.35, use ParamValidator::PARAM_SENSITIVE instead
+	 */
 	public const PARAM_SENSITIVE = ParamValidator::PARAM_SENSITIVE;
+	/**
+	 * @deprecated since 1.35, use EnumDef::PARAM_DEPRECATED_VALUES instead
+	 */
 	public const PARAM_DEPRECATED_VALUES = EnumDef::PARAM_DEPRECATED_VALUES;
+	/**
+	 * @deprecated since 1.35, use ParamValidator::PARAM_ISMULTI_LIMIT1 instead
+	 */
 	public const PARAM_ISMULTI_LIMIT1 = ParamValidator::PARAM_ISMULTI_LIMIT1;
+	/**
+	 * @deprecated since 1.35, use ParamValidator::PARAM_ISMULTI_LIMIT2 instead
+	 */
 	public const PARAM_ISMULTI_LIMIT2 = ParamValidator::PARAM_ISMULTI_LIMIT2;
+	/**
+	 * @deprecated since 1.35, use StringDef::PARAM_MAX_BYTES instead
+	 */
 	public const PARAM_MAX_BYTES = StringDef::PARAM_MAX_BYTES;
+	/**
+	 * @deprecated since 1.35, use StringDef::PARAM_MAX_CHARS instead
+	 */
 	public const PARAM_MAX_CHARS = StringDef::PARAM_MAX_CHARS;
 
 	/**
@@ -1271,7 +1327,7 @@ abstract class ApiBase extends ContextSource {
 			$max = max( $max, $row->max_id );
 		}
 		return array_filter( $ids, function ( $id ) use ( $min, $max ) {
-			return ( is_int( $id ) && $id >= 0 || ctype_digit( $id ) )
+			return ( is_int( $id ) && $id >= 0 || ctype_digit( (string)$id ) )
 				&& $id >= $min && $id <= $max;
 		} );
 	}
@@ -1375,10 +1431,10 @@ abstract class ApiBase extends ContextSource {
 	 * @param string|array|Message $msg See ApiErrorFormatter::addError()
 	 * @param string|null $code See ApiErrorFormatter::addError()
 	 * @param array|null $data See ApiErrorFormatter::addError()
-	 * @param int|null $httpCode HTTP error code to use
+	 * @param int $httpCode HTTP error code to use
 	 * @throws ApiUsageException always
 	 */
-	public function dieWithError( $msg, $code = null, $data = null, $httpCode = null ) {
+	public function dieWithError( $msg, $code = null, $data = null, $httpCode = 0 ) {
 		throw ApiUsageException::newWithMessage( $this, $msg, $code, $data, $httpCode );
 	}
 

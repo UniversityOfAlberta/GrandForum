@@ -35,7 +35,7 @@ use MediaWiki\Revision\SlotRecord;
  * @ingroup SpecialPage
  */
 class WikiImporter {
-	/** @var XMLReader */
+	/** @var XMLReader|null */
 	private $reader;
 	private $foreignNamespaces = null;
 	private $mLogItemCallback, $mUploadCallback, $mRevisionCallback, $mPageCallback;
@@ -62,13 +62,13 @@ class WikiImporter {
 	 * @param ImportSource $source
 	 * @param Config $config
 	 * @throws Exception
+	 * @suppress PhanStaticCallToNonStatic, UnusedSuppression -- for PHP 7.4 support
 	 */
 	public function __construct( ImportSource $source, Config $config ) {
 		if ( !class_exists( 'XMLReader' ) ) {
 			throw new Exception( 'Import requires PHP to have been compiled with libxml support' );
 		}
 
-		$this->reader = new XMLReader();
 		$this->config = $config;
 		$this->hookRunner = Hooks::runner();
 
@@ -79,19 +79,33 @@ class WikiImporter {
 
 		// Enable the entity loader, as it is needed for loading external URLs via
 		// XMLReader::open (T86036)
-		$oldDisable = libxml_disable_entity_loader( false );
-		if ( defined( 'LIBXML_PARSEHUGE' ) ) {
-			$status = $this->reader->open( "uploadsource://$id", null, LIBXML_PARSEHUGE );
+		// phpcs:ignore Generic.PHP.NoSilencedErrors -- suppress deprecation per T268847
+		$oldDisable = @libxml_disable_entity_loader( false );
+		if ( PHP_VERSION_ID >= 80000 ) {
+			// A static call is now preferred, and avoids https://github.com/php/php-src/issues/11548
+			$reader = XMLReader::open(
+				"uploadsource://$id", null, LIBXML_PARSEHUGE );
+			if ( $reader instanceof XMLReader ) {
+				$this->reader = $reader;
+				$status = true;
+			} else {
+				$status = false;
+			}
 		} else {
-			$status = $this->reader->open( "uploadsource://$id" );
+			// A static call generated a deprecation warning prior to PHP 8.0
+			$this->reader = new XMLReader;
+			$status = $this->reader->open(
+				"uploadsource://$id", null, LIBXML_PARSEHUGE );
 		}
 		if ( !$status ) {
 			$error = libxml_get_last_error();
-			libxml_disable_entity_loader( $oldDisable );
+			// phpcs:ignore Generic.PHP.NoSilencedErrors
+			@libxml_disable_entity_loader( $oldDisable );
 			throw new MWException( 'Encountered an internal error while initializing WikiImporter object: ' .
 				$error->message );
 		}
-		libxml_disable_entity_loader( $oldDisable );
+		// phpcs:ignore Generic.PHP.NoSilencedErrors
+		@libxml_disable_entity_loader( $oldDisable );
 
 		// Default callbacks
 		$this->setPageCallback( [ $this, 'beforeImportPage' ] );
@@ -572,15 +586,18 @@ class WikiImporter {
 		// Calls to reader->read need to be wrapped in calls to
 		// libxml_disable_entity_loader() to avoid local file
 		// inclusion attacks (T48932).
-		$oldDisable = libxml_disable_entity_loader( true );
+		// phpcs:ignore Generic.PHP.NoSilencedErrors -- suppress deprecation per T268847
+		$oldDisable = @libxml_disable_entity_loader( true );
 		$rethrow = null;
 		try {
 			$this->reader->read();
 
 			if ( $this->reader->localName != 'mediawiki' ) {
-				libxml_disable_entity_loader( $oldDisable );
-				throw new MWException( "Expected <mediawiki> tag, got " .
-					$this->reader->localName );
+				// phpcs:ignore Generic.PHP.NoSilencedErrors
+				@libxml_disable_entity_loader( $oldDisable );
+				throw new MWException(
+					"Expected '<mediawiki>' tag, got '<{$this->reader->localName}>' tag."
+				);
 			}
 			$this->debug( "<mediawiki> tag is correct." );
 
@@ -627,7 +644,8 @@ class WikiImporter {
 				}
 			}
 		} finally {
-			libxml_disable_entity_loader( $oldDisable );
+			// phpcs:ignore Generic.PHP.NoSilencedErrors
+			@libxml_disable_entity_loader( $oldDisable );
 			$this->reader->close();
 		}
 
@@ -1062,12 +1080,16 @@ class WikiImporter {
 	 */
 	private function processUpload( $pageInfo, $uploadInfo ) {
 		$revision = new WikiRevision( $this->config );
-		$text = $uploadInfo['text'] ?? '';
+		$revId = $pageInfo['id'];
+		$title = $pageInfo['_title'];
+		// T292348: text key may be absent, force addition if null
+		$uploadInfo['text'] = $uploadInfo['text'] ?? '';
+		$content = $this->makeContent( $title, $revId, $uploadInfo );
 
-		$revision->setTitle( $pageInfo['_title'] );
-		$revision->setID( $pageInfo['id'] );
+		$revision->setTitle( $title );
+		$revision->setID( $revId );
 		$revision->setTimestamp( $uploadInfo['timestamp'] );
-		$revision->setText( $text );
+		$revision->setContent( SlotRecord::MAIN, $content );
 		$revision->setFilename( $uploadInfo['filename'] );
 		if ( isset( $uploadInfo['archivename'] ) ) {
 			$revision->setArchiveName( $uploadInfo['archivename'] );

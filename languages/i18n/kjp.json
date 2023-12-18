@@ -4,7 +4,8 @@
 			"DannyS712",
 			"Ninjastrikers",
 			"Rul1902",
-			"Sawmw"
+			"Sawmw",
+			"Amire80"
 		]
 	},
 	"underline-always": "ကိုဝ်ၜၠင်",
@@ -358,7 +359,7 @@
 	"prevn-title": "ၰာၰံင်အ်ုတင်ၮေဝ်ႋ $1 {{PLURAL:$1|အ်ုတင်ၮေဝ်ႋ|အ်ုတင်ၮေဝ်ႋသယ်}}",
 	"nextn-title": "ၰာၰံင်အ်ုတင်ၮေဝ်ႋ $1 {{PLURAL:$1|ၮါင်း|ၮါင်းသယ်}}",
 	"shown-title": "လိက်မေံလ်ုၮါင်း အ်ုတင်ၮေဝ်ႋ $1 {{PLURAL:$1|ၮါင်း|ၮါင်လ်ုဖး}} မ်ုၮဲထါင်",
-	"viewprevnext": "($1 {{int:ခဝ့်}} $2) ထံင်အိုဝ်အ်ုလယ့် အ်ုတင်ၮေဝ်ႋ ($3) ၮါင်းၮှ် မ်ုယောဝ်ႋ",
+	"viewprevnext": "($1 {{int:pipe-separator}} $2) ထံင်အိုဝ်အ်ုလယ့် အ်ုတင်ၮေဝ်ႋ ($3) ၮါင်းၮှ် မ်ုယောဝ်ႋ",
 	"searchmenu-exists": "<strong>ဝီကီဝယ်ယိုဝ် \"[[:$1]]\" အ်ုမၠိင်လ်ု လိက်မေံၜၠါ် အ်ှဝေ့လ်ုဍူဆေဝ်ႋလှ်။</strong>\n{{PLURAL:$2|0=|အ်ုၰာၰံင် အင်းၰူ့ၮေဝ်သယ်ၮှ် ယောဝ်ႋၮေဝ်ဆေဝ်ႋလှ်}}",
 	"searchmenu-new": "<strong>ဝီကီယိုဝ် \"[[:$1]]\" လိက်မေံၜၠါ်ယိုဝ် အင်းတင်လာႋ!</strong> {{PLURAL:$2|0=|ၮ်ုအင်းၰူ့ လိက်မေံၜၠါ်ၮှ် အင်းၰူ့လာ။|အင်းၰူ့ အ်ုတင်ၮေဝ်ႋၮ်ှသီး ယောဝ်ႋဖှ်ေလာ။}}",
 	"searchprofile-articles": "ပ်ုယုံ့ခေါဟ်တင်လိက်မေံသိုဝ်လ်ုဖး",
@@ -416,6 +417,7 @@
 	"action-edit": "လိက်မေံယိုဝ် မ်ုအင်းတါင်",
 	"action-createpage": "မ်ုပ္တံင် လိက်မေံၜၠါ်ယိုဝ်",
 	"action-createaccount": "ဆ်ုအင်းသုံ့က်ုဆာဆ်ုမာ မ်ုအင်းတင်",
+	"action-move": "အ်ုၰာႋၰံင်",
 	"action-delete": "လိက်‌မေံၜၠါ်ယိုဝ် မ်ုထုဂ်ဆိင့်",
 	"enhancedrc-history": "မေင်ႋစိင်",
 	"recentchanges": "အ်ုခါ့ယိုဝ် ဆ်ုအင်းလယ်လ်ုဖး",
@@ -604,7 +606,7 @@
 	"isimage": "File လင့်",
 	"whatlinkshere-prev": "{{PLURAL:$1|လါင်းခါင့်|လါင်းခါင့် $1}}",
 	"whatlinkshere-next": "{{PLURAL:$1|မေံယာ့ခဝ့်|မေံယာ့ခဝ် $1}}",
-	"whatlinkshere-links": "လင့်ခ်သယ်",
+	"whatlinkshere-links": "← လင့်ခ်သယ်",
 	"whatlinkshere-hideredirs": "$1 ထါင်ၮဲထါင်သယ်လ်ုဖး",
 	"whatlinkshere-hidetrans": "$1 ဆူ့လင်ဍံင်",
 	"whatlinkshere-hidelinks": "$1 လင့်ခ်သယ်",

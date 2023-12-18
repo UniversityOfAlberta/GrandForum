@@ -56,6 +56,7 @@ use Wikimedia\ScopedCallback;
  *       anonymous (IP) user is to call the constructor directly. A factory
  *       method for that purpose should be added to TitleFactory, see T257464.
  */
+#[AllowDynamicProperties]
 class User implements IDBAccessObject, UserIdentity {
 	use ProtectedHookAccessorTrait;
 
@@ -3954,7 +3955,7 @@ class User implements IDBAccessObject, UserIdentity {
 	 * @return Status
 	 */
 	public function sendMail( $subject, $body, $from = null, $replyto = null ) {
-		global $wgPasswordSender, $wgAllowHTMLEmail;
+		global $wgPasswordSender;
 
 		if ( $from instanceof User ) {
 			$sender = MailAddress::newFromUser( $from );
@@ -3963,13 +3964,10 @@ class User implements IDBAccessObject, UserIdentity {
 				wfMessage( 'emailsender' )->inContentLanguage()->text() );
 		}
 		$to = MailAddress::newFromUser( $this );
-        $options = [
+
+		return UserMailer::send( $to, $sender, $subject, $body, [
 			'replyTo' => $replyto,
-		];
-		if($wgAllowHTMLEmail){
-		    $options['contentType'] = 'text/html; charset=iso-8859-1';
-		}
-		return UserMailer::send( $to, $sender, $subject, $body, $options );
+		] );
 	}
 
 	/**

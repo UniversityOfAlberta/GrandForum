@@ -186,10 +186,10 @@ class DBFunctions {
 	        $rows = array();
 	        if($result != null){
 	            if(DBFunctions::$mysqlnd){
-	                $rows = mysqli_fetch_all($result->getResult(), MYSQLI_ASSOC);
+	                $rows = mysqli_fetch_all(ResultWrapper::unwrap($result), MYSQLI_ASSOC);
 	            }
 	            else{
-	                while ($row = mysqli_fetch_array($result->getResult(), MYSQLI_ASSOC)) {
+	                while ($row = mysqli_fetch_array(ResultWrapper::unwrap($result), MYSQLI_ASSOC)) {
 		                $rows[] = $row;
 	                }
 	            }

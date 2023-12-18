@@ -13,7 +13,9 @@
 			"Triple-ADHD-AS",
 			"Vlad5250",
 			"Игорь Бродский",
-			"아라"
+			"아라",
+			"McDutchie",
+			"Amire80"
 		]
 	},
 	"tog-underline": "Jonoštada kosketused:",
@@ -178,7 +180,7 @@
 	"protect_change": "toižetada",
 	"unprotect": "Toižetada kaičend",
 	"newpage": "Uz’ lehtpol’",
-	"talkpagelinktext": "Lodu",
+	"talkpagelinktext": "lodu",
 	"specialpage": "Specialine lehtpol'",
 	"personaltools": "Personaližed azeged",
 	"talk": "Diskussii",
@@ -717,7 +719,7 @@
 	"default": "augotižjärgendusen mödhe",
 	"prefs-files": "Failad",
 	"prefs-custom-css": "Ičeze CSS",
-	"prefs-custom-js": "Ičeze JS",
+	"prefs-custom-js": "Ičeze JavaScript",
 	"prefs-common-config": "Ühthižed CSS/JavaScript kaikiden temiden täht:",
 	"prefs-reset-intro": "Tö sat kävutada nece lehtpol', miše pördutada teiden järgendused saitan ezijärgendusidennoks.\nNecidä tegendad ei sa toižetada.",
 	"prefs-emailconfirm-label": "E-počtan vahvištand:",
@@ -1293,7 +1295,7 @@
 	"enotif_lastvisited": "Kc. $1, miše nähta kaik teiden jäl'gmäižen vizitan jäl'ghe tehtud toižetused.",
 	"enotif_lastdiff": "Kc. $1, miše kacelta toižetusid.",
 	"enotif_anon_editor": "anonimine kävutai $1",
-	"enotif_body": "Kalliž $WATCHINGUSERNAME,\n\n\n{{SITENAME}}-saitan $PAGETITLE-lehtpol' om $CHANGEDORCREATED $PAGEEDITDATE; toižetusen avtor om $PAGEEDITOR, kc. $PAGETITLE_URL, miše nägištada jäl'gmäine versii.\n\n$NEWPAGE\n\nToižetajan ümbrikacund: $PAGESUMMARY $PAGEMINOREDIT\n\nSäkat pagin toižetusiden avtoranke:\ne-počt: $PAGEEDITOR_EMAIL\nwiki: $PAGEEDITOR_WIKI\n\nKu tö et tuleskekoi necile lehtpolile, ka sistem ei oigendaškande enamba teile tedotusid toižetusiš.\nTö voižit mugažo saubata tedotusiden opcii kaikiden lehtpoliden täht teiden kaclendnimikirjuteses.\n\n             {{SITENAME}}-saitan ustavakaz tedotuzsistem\n\n--\n\nMiše toižetada teiden e-počtan järgendused, mängat tänna:\n{{canonicalurl:{{#special:Preferences}}}}\n\nMiše toižetada teiden kaclendnimikirjutesen järgendused, mängat tänna:\n{{canonicalurl:{{#special:EditWatchlist}}}}\n\nMiše čuta lehtpol' teiden kaclendnimikirjutesespäi, mängat tänna:\n$UNWATCHURL\n\nPid'oitelend da joksii abu:\n$HELPPAGE",
+	"enotif_body": "Kalliž $WATCHINGUSERNAME,\n\n$PAGEINTRO $NEWPAGE\n\nToižetajan ümbrikacund: $PAGESUMMARY $PAGEMINOREDIT\n\nSäkat pagin toižetusiden avtoranke:\ne-počt: $PAGEEDITOR_EMAIL\nwiki: $PAGEEDITOR_WIKI\n\nKu tö et tuleskekoi necile lehtpolile, ka sistem ei oigendaškande enamba teile tedotusid toižetusiš.\nTö voižit mugažo saubata tedotusiden opcii kaikiden lehtpoliden täht teiden kaclendnimikirjuteses.\n\n{{SITENAME}}-saitan ustavakaz tedotuzsistem\n\n--\n\nMiše toižetada teiden e-počtan järgendused, mängat tänna:\n{{canonicalurl:{{#special:Preferences}}}}\n\nMiše toižetada teiden kaclendnimikirjutesen järgendused, mängat tänna:\n{{canonicalurl:{{#special:EditWatchlist}}}}\n\nMiše čuta lehtpol' teiden kaclendnimikirjutesespäi, mängat tänna:\n$UNWATCHURL\n\nPid'oitelend da joksii abu:\n$HELPPAGE",
 	"created": "om sätud",
 	"changed": "om toižetadud",
 	"deletepage": "Čuta lehtpol' poiš",

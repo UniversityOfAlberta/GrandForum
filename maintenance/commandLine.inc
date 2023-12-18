@@ -75,5 +75,3 @@ class CommandLineInc extends Maintenance {
 
 $maintClass = CommandLineInc::class;
 require RUN_MAINTENANCE_IF_MAIN;
-
-require_once("$IP/Classes/StatusBar/status_bar.php");

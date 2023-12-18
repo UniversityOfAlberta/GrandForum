@@ -437,16 +437,23 @@ class HashRing implements Serializable {
 		return time();
 	}
 
-	public function serialize() {
-		return serialize( [
+	public function serialize(): string {
+		return serialize( $this->__serialize() );
+	}
+
+	public function __serialize() {
+		return [
 			'algorithm' => $this->algo,
 			'locations' => $this->weightByLocation,
 			'ejections' => $this->ejectExpiryByLocation
-		] );
+		];
 	}
 
-	public function unserialize( $serialized ) {
-		$data = unserialize( $serialized );
+	public function unserialize( $serialized ): void {
+		$this->__unserialize( unserialize( $serialized ) );
+	}
+
+	public function __unserialize( $data ) {
 		if ( is_array( $data ) ) {
 			$this->init( $data['locations'], $data['algorithm'], $data['ejections'] );
 		} else {
