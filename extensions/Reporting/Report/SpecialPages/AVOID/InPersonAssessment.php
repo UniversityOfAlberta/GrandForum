@@ -14,6 +14,10 @@ function runInPersonAssessment($par) {
 
 class InPersonAssessment extends SpecialPage {
     
+    static $map = array(
+        
+    );
+    
     function __construct() {
         SpecialPage::__construct("InPersonAssessment", null, true, 'runInPersonAssessment');
     }
@@ -84,6 +88,39 @@ class InPersonAssessment extends SpecialPage {
         </script>");
     }
     
+    static function getHeader($report){
+        $html = "";
+        foreach($report->sections as $section){
+            foreach($section->items as $item){
+                if($item->blobItem != "" && $item->blobItem !== 0){
+                    $label = (isset(self::$map[$item->blobItem])) ? self::$map[$item->blobItem] : str_replace("_", " ", $item->blobItem);
+                    $html .= "<th>{$label}</th>";
+                }
+            }
+        }
+        return $html;
+    }
+    
+    static function getRow($person, $report){
+        $html = "";
+        foreach($report->sections as $section){
+            foreach($section->items as $item){
+                if($item->blobItem != "" && $item->blobItem !== 0){
+                    $value = $item->getBlobValue();
+                    $labels = explode("|", $item->getAttr('labels', ''));
+                    $options = explode("|", $item->getAttr('options', ''));
+                    if(is_array($value)){
+                        $html .= "<td>".implode(", ", $value)."</td>";
+                    }
+                    else{
+                        $html .= "<td>{$value}</td>";
+                    }
+                }
+            }
+        }
+        return $html;
+    }
+    
     function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
         if(isset($_GET['users'])){
@@ -92,6 +129,7 @@ class InPersonAssessment extends SpecialPage {
         }
         $me = Person::newFromWgUser();
         $report = new DummyReport(IntakeSummary::$reportName, $me, null, YEAR);
+        $assessment = new DummyReport("RP_AVOID_INPERSON", $me, null, YEAR);
         $wgOut->setPageTitle("Assessor");
         $wgOut->addHTML("<table id='summary' class='wikitable' frame='box' rules='all'>
             <thead>
@@ -100,6 +138,7 @@ class InPersonAssessment extends SpecialPage {
                     <th>Frailty Report</th>
                     <th>In Person Assessment</th>
                     ".IntakeSummary::getHeader($report, false, true)."
+                    ".InPersonAssessment::getHeader($assessment)."
                 </tr>
             </thead>
             <tbody>");
@@ -107,11 +146,13 @@ class InPersonAssessment extends SpecialPage {
         foreach($rels as $rel){
             $person = $rel->getUser2();
             $report->person = $person;
+            $assessment->person = $person;
             $wgOut->addHTML("<tr>
                 <td><a href='{$wgServer}{$wgScriptPath}/index.php/Special:InPersonAssessment?users={$person->getId()}'>{$person->getNameForForms()}</a></td>
                 <td><a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?user={$person->getId()}' target='_blank'>Download</a>
                 <td><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=InPersonAssessment&person={$person->getId()}'>Form</a></td>
                 ".IntakeSummary::getRow($person, $report, false, true)."
+                ".InPersonAssessment::getRow($person, $assessment)."
             </tr>");
         }
         $wgOut->addHTML("</tbody></table>
