@@ -353,7 +353,8 @@ class FrailtyReport extends SpecialPage {
                             $education[$key][] = "<p><a href='{$wgServer}{$wgScriptPath}/{$e}' target='_blank'>{$k}</a></p>";
                         }
                         else{
-                            $education[$key][] = "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$e}' target='_blank'>{$k}</a></p>";
+                            $fr = ($wgLang->getCode() == "fr") ? "FR" : "";
+                            $education[$key][] = "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$e}{$fr}' target='_blank'>{$k}</a></p>";
                         }
                     }
                 }
