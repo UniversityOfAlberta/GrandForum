@@ -120,7 +120,6 @@ class InPersonAssessment extends SpecialPage {
         "avoid_nutrition2_1" => "height",
         "avoid_nutrition2_2" => "Feet/inches/cm",
         "avoid_nutrition2_2_2" => "Inches",
-        "avoid_nutrition3" => "Weight circumference ",
         "avoid_nutrition4" => "follow Canada's FG",
         "avoid_nutrition5" => "BMI",
         "avoid_nutrition_fup" => "Nutrition fup",
