@@ -648,7 +648,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="avoid_balance" blobItem="avoid_balance" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
+        <ReportItem id="avoid_balance" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <hr />
                 <h3>7. BALANCE/FALLS/MOBILITY</h3>
