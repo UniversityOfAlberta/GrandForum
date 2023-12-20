@@ -4,7 +4,6 @@
         <Role role="INACTIVE+">
             <SectionPermission id="eula" permissions="rw" />
             <SectionPermission id="socio_info" permissions="rw" />
-            <SectionPermission id="socio_info" permissions="rw" />
             <SectionPermission id="behaviouralassess" permissions="rw" />
             <SectionPermission id="healthquestions" permissions="rw" />
             <SectionPermission id="healthquestions2" permissions="rw" />
@@ -151,7 +150,7 @@
             </script>
         ]]>
     </Script>
-    <ReportSection id="eula" blobSection="AVOID_CHECK_EULA" type="Eula"
+    <ReportSection id="eula" blobSection="AVOID_CHECK_EULA" type="EULA"
                              postId="Consent" 
                              name="{showLanguage(Consent, Consentement)}" 
                              title="{showLanguage(Consent, Consentement)}" 

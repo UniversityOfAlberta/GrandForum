@@ -20,6 +20,11 @@ class IntakeSummary extends SpecialPage {
     static $rpType = "RP_AVOID";
     
     static $map = array(
+        'EULA' => 'Consent',
+        'EULA_CONTACT' => 'Contact?',
+        'CONTACT_TYPE' => 'Contact Type',
+        'CONTACT_EMAIL' => 'Contact Email',
+        'CONTACT_PHONE' => 'Contact Phone',
         'avoid_age' => 'Age',
         'avoid_gender' => 'Gender',
         'GENDERSPECIFY' => 'Gender (Specify)',
@@ -212,14 +217,26 @@ class IntakeSummary extends SpecialPage {
         $html .= "<th>Usage</th>";
         $html .= "<th>Month Registered</th>";
         $html .= "<th>Hear about us</th>";
+        function itemHeaderCell($item){
+            $html = "";
+            if($item->blobItem != "" && $item->blobItem !== 0){
+                $label = (isset(IntakeSummary::$map[$item->blobItem])) ? IntakeSummary::$map[$item->blobItem] : str_replace("_", " ", $item->blobItem);
+                $html .= "<th>{$label}</th>";
+            }
+            return $html;
+        }
         foreach($report->sections as $section){
             if($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta"){
                 continue;
             }
             foreach($section->items as $item){
-                if($item->blobItem != "" && $item->blobItem !== 0){
-                    $label = (isset(self::$map[$item->blobItem])) ? self::$map[$item->blobItem] : str_replace("_", " ", $item->blobItem);
-                    $html .= "<th>{$label}</th>";
+                if($item instanceof ReportItemSet){
+                    foreach($item->getItems() as $item){
+                        $html .= itemHeaderCell($item);
+                    }
+                }
+                else{
+                    $html .= itemHeaderCell($item);
                 }
             }
         }
@@ -313,21 +330,33 @@ class IntakeSummary extends SpecialPage {
         $html .= "<td align='center'>{$registration_date}</td>";
         $html .= "<td>{$hear}</td>";
         $hasSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType);
+        function itemCell($item, $hasSubmitted){
+            $html = "";
+            if($item->blobItem != "" && $item->blobItem !== 0){
+                $value = ($hasSubmitted) ? $item->getBlobValue() : "";
+                $labels = explode("|", $item->getAttr('labels', ''));
+                $options = explode("|", $item->getAttr('options', ''));
+                if(is_array($value)){
+                    $html .= "<td>".implode(", ", $value)."</td>";
+                }
+                else{
+                    $html .= "<td>{$value}</td>";
+                }
+            }
+            return $html;
+        }
         foreach($report->sections as $section){
             if($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta"){
                 continue;
             }
             foreach($section->items as $item){
-                if($item->blobItem != "" && $item->blobItem !== 0){
-                    $value = ($hasSubmitted) ? $item->getBlobValue() : "";
-                    $labels = explode("|", $item->getAttr('labels', ''));
-                    $options = explode("|", $item->getAttr('options', ''));
-                    if(is_array($value)){
-                        $html .= "<td>".implode(", ", $value)."</td>";
+                if($item instanceof ReportItemSet){
+                    foreach($item->getItems() as $item){
+                        $html .= itemCell($item, $hasSubmitted);
                     }
-                    else{
-                        $html .= "<td>{$value}</td>";
-                    }
+                }
+                else{
+                    $html .= itemCell($item, $hasSubmitted);
                 }
             }
         }
