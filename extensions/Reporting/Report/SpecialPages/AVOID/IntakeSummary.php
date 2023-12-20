@@ -232,8 +232,8 @@ class IntakeSummary extends SpecialPage {
             }
             foreach($section->items as $item){
                 if($item instanceof ReportItemSet){
-                    foreach($item->getItems() as $item){
-                        $html .= self::itemHeaderCell($item);
+                    foreach($item->getItems() as $i){
+                        $html .= self::itemHeaderCell($i);
                     }
                 }
                 else{
@@ -354,8 +354,8 @@ class IntakeSummary extends SpecialPage {
             }
             foreach($section->items as $item){
                 if($item instanceof ReportItemSet){
-                    foreach($item->getItems() as $item){
-                        $html .= self::itemCell($item, $hasSubmitted);
+                    foreach($item->getItems() as $i){
+                        $html .= self::itemCell($i, $hasSubmitted);
                     }
                 }
                 else{
