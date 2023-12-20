@@ -63,7 +63,6 @@ class InPersonAssessment extends SpecialPage {
         "avoid_balance4" => "medical atten?",
         "avoid_balance5" => "fall fear?",
         "avoid_balance_fup" => "fall fup",
-        "avoid_balance_fup_txt" => "",
         "avoid_balance6" => "TUG (seconds)",
         "avoid_balance8" => "TUG comments",
         "avoid_balance2" => "TUG unsteadiness concern",
