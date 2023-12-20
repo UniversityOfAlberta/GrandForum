@@ -227,7 +227,8 @@ class IntakeSummary extends SpecialPage {
         $html .= "<th>Month Registered</th>";
         $html .= "<th>Hear about us</th>";
         foreach($report->sections as $section){
-            if($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta"){
+            if(($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta") ||
+               $section->id == "submit"){
                 continue;
             }
             foreach($section->items as $item){
@@ -349,7 +350,8 @@ class IntakeSummary extends SpecialPage {
         $hasSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType);
         
         foreach($report->sections as $section){
-            if($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta"){
+            if(($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta") ||
+               $section->id == "submit"){
                 continue;
             }
             foreach($section->items as $item){
