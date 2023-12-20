@@ -146,7 +146,7 @@
                         </td>
                 ]]>
             </ReportItem>
-            <ReportItem id="performance" type="Select" personId="1" blobItem="PERFORMANCE" blobSubItem="{$user_id}" width="8em" options="|strong|exemplary">
+            <ReportItem id="performance" type="Select" personId="1" blobItem="PERFORMANCE" blobSubItem="{$user_id}" width="8em" options="|satisfactory|strong|exemplary">
                 <![CDATA[
                         <td align="center">
                             {$item}
