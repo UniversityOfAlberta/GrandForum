@@ -183,6 +183,15 @@ class IntakeSummary extends SpecialPage {
         return $person->isRoleAtLeast(STAFF);
     }
     
+    static function itemHeaderCell($item){
+        $html = "";
+        if($item->blobItem != "" && $item->blobItem !== 0){
+            $label = (isset(IntakeSummary::$map[$item->blobItem])) ? IntakeSummary::$map[$item->blobItem] : str_replace("_", " ", $item->blobItem);
+            $html .= "<th>{$label}</th>";
+        }
+        return $html;
+    }
+    
     static function getHeader($report, $type=false, $simple=false){
         global $config;
         $html = "";
@@ -217,14 +226,6 @@ class IntakeSummary extends SpecialPage {
         $html .= "<th>Usage</th>";
         $html .= "<th>Month Registered</th>";
         $html .= "<th>Hear about us</th>";
-        function itemHeaderCell($item){
-            $html = "";
-            if($item->blobItem != "" && $item->blobItem !== 0){
-                $label = (isset(IntakeSummary::$map[$item->blobItem])) ? IntakeSummary::$map[$item->blobItem] : str_replace("_", " ", $item->blobItem);
-                $html .= "<th>{$label}</th>";
-            }
-            return $html;
-        }
         foreach($report->sections as $section){
             if($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta"){
                 continue;
@@ -232,11 +233,11 @@ class IntakeSummary extends SpecialPage {
             foreach($section->items as $item){
                 if($item instanceof ReportItemSet){
                     foreach($item->getItems() as $item){
-                        $html .= itemHeaderCell($item);
+                        $html .= self::itemHeaderCell($item);
                     }
                 }
                 else{
-                    $html .= itemHeaderCell($item);
+                    $html .= self::itemHeaderCell($item);
                 }
             }
         }
@@ -252,6 +253,22 @@ class IntakeSummary extends SpecialPage {
         if(!$simple){                      
             $html .= "  </tr>
                       </thead>";
+        }
+        return $html;
+    }
+    
+    static function itemCell($item, $hasSubmitted){
+        $html = "";
+        if($item->blobItem != "" && $item->blobItem !== 0){
+            $value = ($hasSubmitted) ? $item->getBlobValue() : "";
+            $labels = explode("|", $item->getAttr('labels', ''));
+            $options = explode("|", $item->getAttr('options', ''));
+            if(is_array($value)){
+                $html .= "<td>".implode(", ", $value)."</td>";
+            }
+            else{
+                $html .= "<td>{$value}</td>";
+            }
         }
         return $html;
     }
@@ -330,21 +347,7 @@ class IntakeSummary extends SpecialPage {
         $html .= "<td align='center'>{$registration_date}</td>";
         $html .= "<td>{$hear}</td>";
         $hasSubmitted = AVOIDDashboard::hasSubmittedSurvey($person->getId(), $report->reportType);
-        function itemCell($item, $hasSubmitted){
-            $html = "";
-            if($item->blobItem != "" && $item->blobItem !== 0){
-                $value = ($hasSubmitted) ? $item->getBlobValue() : "";
-                $labels = explode("|", $item->getAttr('labels', ''));
-                $options = explode("|", $item->getAttr('options', ''));
-                if(is_array($value)){
-                    $html .= "<td>".implode(", ", $value)."</td>";
-                }
-                else{
-                    $html .= "<td>{$value}</td>";
-                }
-            }
-            return $html;
-        }
+        
         foreach($report->sections as $section){
             if($section->id == "alberta" && $config->getValue('networkFullName') != "AVOID Alberta"){
                 continue;
@@ -352,11 +355,11 @@ class IntakeSummary extends SpecialPage {
             foreach($section->items as $item){
                 if($item instanceof ReportItemSet){
                     foreach($item->getItems() as $item){
-                        $html .= itemCell($item, $hasSubmitted);
+                        $html .= self::itemCell($item, $hasSubmitted);
                     }
                 }
                 else{
-                    $html .= itemCell($item, $hasSubmitted);
+                    $html .= self::itemCell($item, $hasSubmitted);
                 }
             }
         }
