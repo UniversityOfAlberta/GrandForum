@@ -5,7 +5,7 @@
             <![CDATA[
                 <p>Each year, the Faculty Evaluation Committee (FEC) is charged with the responsibility of awarding incrementation to its faculty, from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
                 
-                As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of December 8, 2022, the FEC did not support your Chair’s recommendation. Instead it is prepared to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Chair {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}. Under Article A6.19.1 of Schedule A, this is the preliminary position of FEC. This decision was based on the following:
+                As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of December 7, 2023, the FEC did not support your Chair’s recommendation. Instead it is prepared to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Chair {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}. Under Article A6.19.1 of Schedule A, this is the preliminary position of FEC. This decision was based on the following:
                 
                 <ul><li>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
                 
