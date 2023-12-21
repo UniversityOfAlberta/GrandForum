@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report pdfFiles="Letters/16" extends="Letters/Base">
-    <ReportSection id="letter" title="ATSEC Decision Regarding Merit">
+<Report pdfFiles="Letters/ATS19" extends="Letters/Base">
+    <ReportSection id="letter" title="Application for Promotion">
         <ReportItem id="from">
             <![CDATA[
                 Eleni Stroulia<br />
@@ -10,11 +10,9 @@
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>I am writing to inform you that the Academic Teaching Staff Evaluation Committee (ATSEC) has accepted the recommendation of your Department Chair and awarded you 0B as you are at the top of the current salary scale.</p>
+                <p>I am pleased to inform you that the Academic Teaching Staff Evaluation Committee (ATSEC) has approved your Department Chair’s recommendation to award you promotion to {getText({$report_type}, TABLE, PROMOTION, {$user_id}, 1, 0)}, effective July 1, 2023.</p>
 
-                <p>I would like to take this opportunity to thank you for your work this past year and to wish you continued success in your teaching.</p>
-
-                <p>Should you have any procedural questions, please contact the Secretary to ATSEC, Lori Dammann-Thomson, at 780-492-6232 or sciea@ualberta.ca.</p>
+                <p>Congratulations on meeting this important achievement in your career. Welcome to the rank of {getText({$report_type}, TABLE, PROMOTION, {$user_id}, 1, 0)} and very best wishes for continued success in your University career.</p>
             ]]>
         </ReportItem>
         <ReportItem id="footer">

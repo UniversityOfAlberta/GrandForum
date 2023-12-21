@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report pdfFiles="Letters/12" extends="Letters/Base">
+<Report pdfFiles="Letters/ATS12" extends="Letters/Base">
     <ReportSection id="letter" title="Preliminary Position of ATSEC">
         <ReportItem id="from">
             <![CDATA[

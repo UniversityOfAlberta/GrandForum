@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report pdfFiles="Letters/17" extends="Letters/Base">
-    <ReportSection id="letter" title="ATSEC Decision Regarding Merit">
+<Report pdfFiles="Letters/ATS20" extends="Letters/Base">
+    <ReportSection id="letter" title="Merit Recommendation">
         <ReportItem id="from">
             <![CDATA[
                 Eleni Stroulia<br />
@@ -10,9 +10,11 @@
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>I am writing to inform you that the Academic Teaching Staff Evaluation Committee (ATSEC) has accepted the recommendation of your Department Chair and awarded you 0C as you are at the top of the current salary scale.</p>
+                <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within Faculty of Science.</p>
 
-                <p>I would like to take this opportunity to thank you for your work this past year and to wish you continued success in your teaching.</p>
+                <p>At its meetings of April 3, 2023, the ATSEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
+
+                <p>As you chose not to appear before ATSEC to present your case or submit documentation in support of your case, the decision will be final and binding. As per Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC.</p>
 
                 <p>Should you have any procedural questions, please contact the Secretary to ATSEC, Lori Dammann-Thomson, at 780-492-6232 or sciea@ualberta.ca.</p>
             ]]>

@@ -1,36 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/20" extends="Letters/Base">
-    <ReportSection id="letter" title="Merit Recommendation">
-        <ReportItem id="from">
-            <![CDATA[
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
-                Chair Academic Teaching Staff Evaluation Committee
-            ]]>
-        </ReportItem>
+    <ReportSection id="letter" title="Right to Appear before FEC - Promotion has not been supported by Department Chair">
         <ReportItem id="body">
             <![CDATA[
-                <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within Faculty of Science.</p>
-
-                <p>At its meetings of April 3, 2023, the ATSEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
-
-                <p>As you chose not to appear before ATSEC to present your case or submit documentation in support of your case, the decision will be final and binding. As per Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC.</p>
-
-                <p>Should you have any procedural questions, please contact the Secretary to ATSEC, Lori Dammann-Thomson, at 780-492-6232 or sciea@ualberta.ca.</p>
-            ]]>
-        </ReportItem>
-        <ReportItem id="footer">
-            <![CDATA[
-                Sincerely,<br />
-                <br />
-                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
-                <br />
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
-                Chair of the Academic Teaching Staff Evaluation Committee<br />
-                ES/jb
-                </div>
+                <p>This is to inform you that I have received your Department Chair’s recommendation not to support your application for promotion to Professor. The recommendation has been referred to FEC. Under Article A6.17.1 of Schedule A, you have a right to appear before FEC and contest the recommendation.</p>
+                
+                <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
+                
+                <p>Please be advised that the date for your case has been scheduled for {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}.</p>
+                
+                <p>Should you decide to contest the recommendation, the following information is to be included in your written submission to FEC by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}:</p>
+                <p style='margin-left:1em;'>
+                    a) a statement advising FEC whether or not you will be appearing in person before FEC to present a case;<br />
+                    b) any material in response to the Chair’s recommendation as communicated to you under Article A5.03.1 of Schedule A, and any other material relevant to the case;<br />
+                    c) a list of names of persons who will attend the FEC hearing as your witnesses.
+                </p>
+                
+                <p>At the same time, a copy of this material must be provided to your Department Chair. Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
+                
+                <p>If FEC supports your Department Chair’s recommendation, you have the right to appeal this decision to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of the letter confirming FEC's decision.</p>
+                
+                <p>Should you have any procedural questions, please contact the Secretary to FEC, Brigitte Martin, at 780-863-9232 or brigitt2@ualberta.ca.</p>
             ]]>
         </ReportItem>
     </ReportSection>

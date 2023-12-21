@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report pdfFiles="Letters/14" extends="Letters/Base">
+<Report pdfFiles="Letters/ATS17" extends="Letters/Base">
     <ReportSection id="letter" title="ATSEC Decision Regarding Merit">
         <ReportItem id="from">
             <![CDATA[
@@ -10,11 +10,11 @@
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Academic Teaching Staff Evaluation Committee (ATSEC) has approved the award of a {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} merit increment for you, rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} merit increment recommended by your Department Chair.</p>
+                <p>I am writing to inform you that the Academic Teaching Staff Evaluation Committee (ATSEC) has accepted the recommendation of your Department Chair and awarded you 0C as you are at the top of the current salary scale.</p>
 
-                <p>Each year, the ATSEC is charged with the responsibility of awarding merit increments to its academic teaching staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within the Faculty. This decision was made within this context. This increment takes effect July 1, 2023.</p>
+                <p>I would like to take this opportunity to thank you for your work this past year and to wish you continued success in your teaching.</p>
 
-                <p>ATSEC would like to thank you for your contributions to the Faculty in the past year and wishes you well in the coming year.</p>
+                <p>Should you have any procedural questions, please contact the Secretary to ATSEC, Lori Dammann-Thomson, at 780-492-6232 or sciea@ualberta.ca.</p>
             ]]>
         </ReportItem>
         <ReportItem id="footer">
