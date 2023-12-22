@@ -87,8 +87,8 @@
                             <th>Present Case</th>
                             <th>Chair (From)</th>
                             <th>Sabbatical Duration</th>
-                            <th>Sabbatical Start</th>
-                            <th>Sabbatical End</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
                     </thead>
                     <tbody>
             ]]>
@@ -112,7 +112,7 @@
                         </td>
                 ]]>
             </ReportItem>
-            <ReportItem id="template" type="Select" personId="1" blobItem="TEMPLATE" blobSubItem="{$user_id}" width="3em" options="|10|18|19|20|21|22|23|24|26|27|28|29|30|31|32|33|34|35|36|38|40" labels="|10 - End of a First or Second Probationary Period Department Chair recommends tenure FEC supports recommendation|18 - Department Chair supports application for promotion and FEC awards promotion|19 - Department Chair supports application for promotion and preliminary position of FEC is to deny promotion|20 - Department Chair does not support promotion and staff member is advised of the right to appear before FEC and contest the recommendation|21 - Department Chair does not support promotion and staff member appears before FEC to contest the Chair’s recommendation and the final decision of FEC is to deny promotion|22 - Department Chair opposes application for promotion and FEC awards promotion|23 - FEC New (Jul1-Oct1)|24 - FEC New (Oct2-Jun1)|26 - FEC Agree with Chair (above 1.0)|27 - FEC goes higher|28 - Recommend is 1.0 and FEC lowered appeared reconsideration|29 - FEC less than a single increment|30 - Recommend is less than 1.0 and FEC lowered|31 - Recommend less than 1.0 and FEC lowered reconsideration|32 - FEC Agree with Chair less than 1.0 appear|33 - FEC Agree with Chair less than 1.0 no appearance|34 - Recommend 1.0 or multiple and FEC less than 1.0|35 - Recommend is 1.0 and FEC lowered appear|36 - Recommend multiple and FEC lowered but not less than 1.0|38 - Recommend no increment and FEC decides 0D|40 - Sabbatical">
+            <ReportItem id="template" type="Select" personId="1" blobItem="TEMPLATE" blobSubItem="{$user_id}" width="3em" options="|5|10|18|19|20|21|22|23|24|26|27|28|29|30|31|32|33|34|35|36|38|40" labels="|05 - Department Chair recommends second probationary period and Dean supports recommendation|10 - End of a First or Second Probationary Period Department Chair recommends tenure FEC supports recommendation|18 - Department Chair supports application for promotion and FEC awards promotion|19 - Department Chair supports application for promotion and preliminary position of FEC is to deny promotion|20 - Department Chair does not support promotion and staff member is advised of the right to appear before FEC and contest the recommendation|21 - Department Chair does not support promotion and staff member appears before FEC to contest the Chair’s recommendation and the final decision of FEC is to deny promotion|22 - Department Chair opposes application for promotion and FEC awards promotion|23 - FEC New (Jul1-Oct1)|24 - FEC New (Oct2-Jun1)|26 - FEC Agree with Chair (above 1.0)|27 - FEC goes higher|28 - Recommend is 1.0 and FEC lowered appeared reconsideration|29 - FEC less than a single increment|30 - Recommend is less than 1.0 and FEC lowered|31 - Recommend less than 1.0 and FEC lowered reconsideration|32 - FEC Agree with Chair less than 1.0 appear|33 - FEC Agree with Chair less than 1.0 no appearance|34 - Recommend 1.0 or multiple and FEC less than 1.0|35 - Recommend is 1.0 and FEC lowered appear|36 - Recommend multiple and FEC lowered but not less than 1.0|38 - Recommend no increment and FEC decides 0D|40 - Sabbatical">
                 <![CDATA[
                         <td align="center" class="template">
                             {$item}
