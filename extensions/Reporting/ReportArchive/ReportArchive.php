@@ -243,7 +243,65 @@ class ReportArchive extends SpecialPage {
             $wgOut->addHTML("</tr>");
         }
         $wgOut->addHTML("</table>");
+        self::showTemplateLegend();
         return;
+    }
+    
+    static function showTemplateLegend(){
+        global $wgOut;
+        $wgOut->addHTML("<h3>Letter Templates Legend</h3>
+             <table>
+                <tr><td colspan='2'><b>Annual Report</b></tr>
+                <tr><td>Template 1&nbsp;&nbsp;&nbsp;</td><td>Failure to provide an annual report</td></tr>
+                <tr><td colspan='2'><b>Staff who take Childbirth/Parental Leaves</b></tr>
+                <tr><td>Template 2&nbsp;&nbsp;&nbsp;</td><td>Annual evaluations of staff who take childbirth/parental leaves</td></tr>
+                <tr><td colspan='2'><b>External Referees for Tenure or Promotion to Professor</b></tr>
+                <tr><td>Template 3&nbsp;&nbsp;&nbsp;</td><td>Requesting assistance in serving as an external referee</td>
+                <tr><td>Template 4&nbsp;&nbsp;&nbsp;</td><td>Follow-up to external referee</td>
+                <tr><td colspan='2'><b>End of First Probationary Period</b></tr>
+                <tr><td>Template 5&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends second probationary period and Dean supports recommendation</td></tr>
+                <tr><td>Template 6&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC offers a second probationary period</td></tr>
+                <tr><td>Template 7&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends that no further appointment be offered and staff member is advised of the right to appear before FEC and contest the decision</td></tr>
+                <tr><td>Template 8&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends that no further appointment be offered and staff member appears before FEC to contest Chair’s recommendation and final decision of FEC is that no further appointment be offered</td></tr>
+                <tr><td>Template 9&nbsp;&nbsp;&nbsp;</td><td>FEC makes preliminary decision that no further appointment be offered and staff member appears before FEC's reconsideration meeting and FEC upholds preliminary decision that no further appointment be offered</td></tr>
+                <tr><td colspan='2'><b>End of First or Second Probationary Period</b></tr>
+                <tr><td>Template 10&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC supports recommendation</td></tr>
+                <tr><td colspan='2'><b>End of Second Probationary Period</b></tr>
+                <tr><td>Template 11&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends that no further appointment be offered and staff member is advised of the right to appear before FEC and contest the decision</td></tr>
+                <tr><td>Template 12&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC's preliminary position is that no further appointment be offered</td></tr>
+                <tr><td>Template 13&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a one-year extension and FEC's preliminary decision is that no further appointment be offered</td></tr>
+                <tr><td>Template 14&nbsp;&nbsp;&nbsp;</td><td>FEC makes preliminary decision that no further appointment be offered and staff member appears before FEC's reconsideration meeting and FEC upholds preliminary position that no further appointment be offered</td></tr>
+                <tr><td>Template 15&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a one-year extension and FEC supports recommendation</td></tr>
+                <tr><td>Template 16&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC extends second probationary period by one year</td></tr>
+                <tr><td>Template 17&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not support tenure and staff member appears before FEC to contest the Chair’s decision and final decision is to aware tenure</td></tr>
+                <tr><td>Template 18&nbsp;&nbsp;&nbsp;</td><td>Department Chair supports application for promotion and FEC awards promotion</td></tr>
+                <tr><td>Template 19&nbsp;&nbsp;&nbsp;</td><td>Department Chair supports application for promotion and preliminary position of FEC is to deny promotion</td></tr>
+                <tr><td>Template 20&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not support promotion and staff member is advised of the right to appear before FEC and contest the recommendation</td></tr>
+                <tr><td>Template 21&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not support promotion and staff member appears before FEC to contest the Chair’s recommendation and the final decision of FEC is to deny promotion</td></tr>
+                <tr><td>Template 22&nbsp;&nbsp;&nbsp;</td><td>Department Chair opposes application for promotion and FEC awards promotion</td></tr>
+                <tr><td colspan='2'><b>Incrementation</b></tr>
+                <tr><td>Template 23&nbsp;&nbsp;&nbsp;</td><td>New appointments between July 1 and October 1</td></tr>
+                <tr><td>Template 24&nbsp;&nbsp;&nbsp;</td><td>New appointments between October 2 and June 1</td></tr>
+                <tr><td>Template 25&nbsp;&nbsp;&nbsp;</td><td>Non-adjudicated increment for staff who take childbirth/parental leaves</td></tr>
+                <tr><td>Template 26&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends single/multiple increment and FEC supports recommendation</td><tr>
+                <tr><td>Template 27&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends single/multiple increment and FEC decides on higher increment</td></tr>
+                <tr><td>Template 28&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a single increment and FEC's preliminary position is less than the Chair's recommendation and staff member appeared before FEC</td></tr>
+                <tr><td>Template 29&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends less than a single increment</td></tr>
+                <tr><td>Template 30&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends less than a single increment and FEC's preliminary position is less than the Chair's recommendation</td></tr>
+                <tr><td>Template 31&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends less than a single increment and FEC at reconsideration lowers the Chair's recommended increment</td></tr>
+                <tr><td>Template 32&nbsp;&nbsp;&nbsp;</td><td>FEC concurs with Department Chair's increment recommendation of less than a single increment and staff member appears before FEC</td></tr>
+                <tr><td>Template 33&nbsp;&nbsp;&nbsp;</td><td>FEC concurs with Department Chair's increment recommendation of less than a single increment and staff member does not appear before FEC</td></tr>
+                <tr><td>Template 34&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends single/multiple increment and FEC decides on less than a single increment</td></tr>
+                <tr><td>Template 35&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends single increment and FEC decides on less than a single increment and staff member appears before FEC</td></tr>
+                <tr><td>Template 36&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends multiple increment and FEC decides on lower increment but not less than a single increment</td></tr>
+                <tr><td>Template 37&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a 0D increment for the second time in three years</td></tr>
+                <tr><td>Template 38&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends no increment and FEC decides on a 0D increment</td></tr>
+                <tr><td colspan='2'><b>Sabbatical</b></tr>
+                <tr><td>Template 40&nbsp;&nbsp;&nbsp;</td><td>FEC recommends approval of sabbatical and Dean accepts FEC's recommendation</td></tr>
+                <tr><td colspan='2'><b>FSO Promotion</b></tr>
+                <tr><td>Template 50&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO III</td></tr>
+                <tr><td>Template 51&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO IV</td></tr>
+            </table>");
     }
     
     static function createSubTabs(&$tabs){
