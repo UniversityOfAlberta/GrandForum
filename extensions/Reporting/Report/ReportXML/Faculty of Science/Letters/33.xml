@@ -6,7 +6,7 @@
                 <![CDATA[
                     <p>Each year, the Faculty Evaluation Committee (FEC) is charged with the responsibility of awarding incrementation to its faculty, from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
                     
-                    <p>At its meetings of December 8, 2022, the FEC endorsed the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
+                    <p>At its meetings of December 7, 2023, the FEC endorsed the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
                     
                     <p>As you chose not to appear before FEC to present your case or submit documentation in support of your position, the decision will be final and binding.  Pursuant to Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC.</p>
                 ]]>
