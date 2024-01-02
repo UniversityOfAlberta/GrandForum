@@ -762,9 +762,9 @@ class IntakeSummary extends SpecialPage {
     }
     
     static function createSubTabs(&$tabs){
-        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+        global $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
         $person = Person::newFromWgUser();
-        if($person->isRoleAtLeast(STAFF)){
+        if($person->isRoleAtLeast(STAFF) && $config->getValue('networkFullName') != "AVOID Australia"){
             $selected = @($wgTitle->getText() == "IntakeSummary") ? "selected" : false;
             $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Intake Summary", "{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary", $selected);
         }

@@ -22,9 +22,9 @@ class NineMonthSummary extends IntakeSummary {
     }
     
     static function createSubTabs(&$tabs){
-        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+        global $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
         $person = Person::newFromWgUser();
-        if($person->isRoleAtLeast(STAFF)){
+        if($person->isRoleAtLeast(STAFF) && $config->getValue('networkFullName') != "AVOID Australia"){
             $selected = @($wgTitle->getText() == "NineMonthSummary") ? "selected" : false;
             $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("9 Month Summary", "{$wgServer}{$wgScriptPath}/index.php/Special:NineMonthSummary", $selected);
         }
