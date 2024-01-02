@@ -1089,6 +1089,15 @@ abstract class AbstractReport extends SpecialPage {
                         // In Report PDF
                         $type = $pdf->getType();
                         $report = AbstractReport::newFromToken($pdf->getId());
+                        
+                        if(strstr($type, "RP_LETTER") !== false){
+                            $blob = new ReportBlob(BLOB_TEXT, $report->year, 1, 0);
+                            $blob_address = ReportBlob::create_address($type, "TABLE", "TEMPLATE", $report->person->getId());
+                            $blob->load($blob_address);
+                            $blob_data = $blob->getData();
+                            $type = "Template{$blob_data}";
+                        }
+                        
                         $caseNumber = strip_tags($report->person->getCaseNumber($report->year));
                         $caseNumber = ($caseNumber != "") ? "{$caseNumber}-" : "";
                         $firstName = $report->person->getFirstName();

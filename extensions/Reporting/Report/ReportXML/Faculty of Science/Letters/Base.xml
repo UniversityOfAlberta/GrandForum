@@ -75,6 +75,7 @@
                         <tr>
                             <th>Case#</th>
                             <th>Name</th>
+                            <th>Department</th>
                             <th>PDF</th>
                             <th style='width:14em;'>Generate</th>
                             <th>Template</th>
@@ -99,6 +100,7 @@
                     <tr data-fecid="{getExtra()}" data-userid="{$user_id}">
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_dept}</td>
                 ]]>
             </Static>
             <ReportItem id="letter" type="PDFReportItem" class="letterPDF downloadButton{$user_id}" reportType="Letters/Base" pdfReport="{$report_type}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
