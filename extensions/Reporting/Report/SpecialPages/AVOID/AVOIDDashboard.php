@@ -405,6 +405,16 @@ class AVOIDDashboard extends SpecialPage {
         
         // Weekly Action Plan
         $fitbitEnabled = ($me->getExtra('fitbit') != "" && time() < $me->getExtra('fitbit_expires')) ? "checked" : "";
+        $fitbitHTML = "";
+        if($config->getValue('fitbitId') != ""){
+            $fitbitHTML = "<div id='fitbitMessages'></div>
+                            <en>Connect with your <img src='{$wgServer}{$wgScriptPath}/skins/fitbit.png' style='height: 0.92em; margin-top: -0.2em;' alt='Fitbit' /> to track your goals automatically&nbsp;&nbsp;&nbsp;</en>
+                            <fr>Connectez votre FitBit pour obtenir des informations plus précises sur votre santé<br /></fr>
+                            <en>Off</en><fr>Désactiver</fr> <label class='switch'>
+                                <input type='checkbox' name='fitbitToggle' $fitbitEnabled />
+                                <span class='toggle round' style='border: none !important;'></span>
+                            </label> <en>On</en><fr>Activer</fr>";
+        }
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>
                             <en>My Weekly Action Plan</en>
@@ -426,13 +436,7 @@ class AVOIDDashboard extends SpecialPage {
                                 <en>Use the action plan template provided to develop weekly plans, track your daily progress, then review your achievements in your action plans log.</en>
                                 <fr>Utilisez le modèle de plan d’action fourni pour élaborer des plans hebdomadaires, suivre vos progrès quotidiens et examiner vos réalisations dans votre journal de plans d’action.</fr>
                             </p>
-                            <div id='fitbitMessages'></div>
-                            <en>Connect with your <img src='{$wgServer}{$wgScriptPath}/skins/fitbit.png' style='height: 0.92em; margin-top: -0.2em;' alt='Fitbit' /> to track your goals automatically&nbsp;&nbsp;&nbsp;</en>
-                            <fr>Connectez votre FitBit pour obtenir des informations plus précises sur votre santé<br /></fr>
-                            <en>Off</en><fr>Désactiver</fr> <label class='switch'>
-                                <input type='checkbox' name='fitbitToggle' $fitbitEnabled />
-                                <span class='toggle round' style='border: none !important;'></span>
-                            </label> <en>On</en><fr>Activer</fr>
+                            {$fitbitHTML}
                             <p>
                                 <div id='newPlan' style='display: none;'>
                                     <a id='createActionPlan' href='#'>
