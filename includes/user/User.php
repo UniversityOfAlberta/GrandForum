@@ -3955,7 +3955,7 @@ class User implements IDBAccessObject, UserIdentity {
 	 * @return Status
 	 */
 	public function sendMail( $subject, $body, $from = null, $replyto = null ) {
-		global $wgPasswordSender;
+		global $wgPasswordSender, $wgAllowHTMLEmail;
 
 		if ( $from instanceof User ) {
 			$sender = MailAddress::newFromUser( $from );
@@ -3964,10 +3964,13 @@ class User implements IDBAccessObject, UserIdentity {
 				wfMessage( 'emailsender' )->inContentLanguage()->text() );
 		}
 		$to = MailAddress::newFromUser( $this );
-
-		return UserMailer::send( $to, $sender, $subject, $body, [
+        $options = [
 			'replyTo' => $replyto,
-		] );
+		];
+		if($wgAllowHTMLEmail){
+		    $options['contentType'] = 'Content-type: text/html; charset=iso-8859-1';
+		}
+		return UserMailer::send( $to, $sender, $subject, $body, $options );
 	}
 
 	/**
