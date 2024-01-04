@@ -493,7 +493,8 @@ class AVOIDDashboard extends SpecialPage {
             $('#bodyContent h1:not(.program-header)').hide();
             
             $('.viewActionPlanOverview').click(function(){
-                $('#actionPlanOverview').html('<iframe style=\"width:100%;height:99%;border:none;\" src=\"{$wgServer}{$wgScriptPath}/data/Overview.pdf\"></iframe>');
+                var url = (wgLang == 'fr') ? '{$wgServer}{$wgScriptPath}/data/OverviewFR.pdf' : '{$wgServer}{$wgScriptPath}/data/Overview.pdf';
+                $('#actionPlanOverview').html('<iframe style=\"width:100%;height:99%;border:none;\" src=\"' + url + '\"></iframe>');
                 $('#actionPlanOverview').dialog({
                     modal: true,
                     draggable: false,
@@ -641,7 +642,7 @@ class AVOIDDashboard extends SpecialPage {
                 actionPlans.at(0).save(null, {
                     success: function(){
                         clearSuccess('#actionPlanMessages');
-                        addSuccess('Action Plan submitted!', false, '#actionPlanMessages');
+                        addSuccess('<en>Action Plan submitted!</en><fr>Plan d\'action enregistré!</fr>', false, '#actionPlanMessages');
                     },
                     error: function(){
                         clearError('#actionPlanMessages');
