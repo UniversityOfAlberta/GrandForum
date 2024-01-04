@@ -148,7 +148,7 @@ ActionPlanCreateView = Backbone.View.extend({
                             this.model.save(null, {
                                 success: function(){
                                     clearSuccess('#actionPlanMessages');
-                                    addSuccess('Action Plan created!', false, '#actionPlanMessages');
+                                    addSuccess('<en>Action Plan created!</en><fr>Création d\'un plan d\'action!</fr>', false, '#actionPlanMessages');
                                     this.actions.fetch();
                                 }.bind(this),
                                 error: function(){
