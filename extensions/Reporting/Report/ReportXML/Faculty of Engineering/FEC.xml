@@ -1,0 +1,1065 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="FEC" reportType="RP_FEC" pdfFiles="FECpdf" ajax="true" encrypt="true">
+    <Permissions>
+        <Role role="NI">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="courses" permissions="rw" />
+            <SectionPermission id="students" permissions="rw" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="awards" permissions="rw" />
+            <SectionPermission id="grants" permissions="rw" />
+            <SectionPermission id="services" permissions="rw" />
+            <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="edi" permissions="rw" />
+            <SectionPermission id="additionalInfo" permissions="rw" />
+            <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="chair" permissions="" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="ATS">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="courses" permissions="rw" />
+            <SectionPermission id="students" permissions="rw" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="awards" permissions="rw" />
+            <SectionPermission id="grants" permissions="rw" />
+            <SectionPermission id="services" permissions="rw" />
+            <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="edi" permissions="rw" />
+            <SectionPermission id="additionalInfo" permissions="rw" />
+            <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="chair" permissions="" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="HR">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="courses" permissions="rw" />
+            <SectionPermission id="students" permissions="rw" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="awards" permissions="rw" />
+            <SectionPermission id="grants" permissions="rw" />
+            <SectionPermission id="services" permissions="rw" />
+            <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="edi" permissions="rw" />
+            <SectionPermission id="additionalInfo" permissions="rw" />
+            <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="chair" permissions="" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <If if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="courses" permissions="rw" />
+            <SectionPermission id="students" permissions="rw" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="awards" permissions="rw" />
+            <SectionPermission id="grants" permissions="rw" />
+            <SectionPermission id="services" permissions="rw" />
+            <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="edi" permissions="rw" />
+            <SectionPermission id="additionalInfo" permissions="rw" />
+            <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="chair" permissions="-" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </If>
+        <If if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
+            <SectionPermission id="information" permissions="-" />
+            <SectionPermission id="courses" permissions="-" />
+            <SectionPermission id="students" permissions="-" />
+            <SectionPermission id="publications" permissions="-" />
+            <SectionPermission id="awards" permissions="-" />
+            <SectionPermission id="grants" permissions="-" />
+            <SectionPermission id="services" permissions="-" />
+            <SectionPermission id="supplementary" permissions="-" />
+            <SectionPermission id="edi" permissions="-" />
+            <SectionPermission id="additionalInfo" permissions="-" />
+            <SectionPermission id="pandemic" permissions="-" />
+            <SectionPermission id="sabbatical" permissions="-" />
+            <SectionPermission id="chair" permissions="rw" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
+        </If>
+    </Permissions>
+    <ReportSection id="information" tooltip="Intro" name="Intro" title="Intro" blobSection="FEC_INFORMATION" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <p style='margin-bottom:1em;'><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Criteria for Merit Increments, Tenure, and Promotion.pdf'><b>Criteria for Merit Increments, Tenure, and Promotion</b></a></p>
+                
+                <p style='margin-bottom:1em;'><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Procedures for Annual Review of Performance.pdf'><b>Procedures for Annual Review of Performance</b></a></p>
+                
+                <p><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Standards for Faculty Service Officers.pdf'><b>Standards for Faculty Service Officers</b></a></p>
+                
+                <p><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Guidelines for Supplementary Professional Activity and University Industry Relationships.pdf'><b>Guidelines for SPA and University Industry Relationships</b></a></p>
+                
+                <h3>Responsibilities Variation</h3>
+                <p>Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.</p>
+                
+                <h3>Reasons For Reduced Teaching</h3>
+                <p>The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.</p>
+            ]]>
+        </Instructions>
+        <Static>
+            <![CDATA[
+                <div style='position: absolute; top: 1em; right:10px;'>{$user_case_number}</div>
+                <div style='display:inline-block;width:59%;'>
+                    <table class='wikitable'>
+                        <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
+                        <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
+                        <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
+                        <tr><td><b>Year of PhD:</b></td><td>{$user_phd_year}</td></tr>
+                        <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$user_appointment_year}</td></tr>
+                        <tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
+                        <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
+                        <tr><td style='width:350px;'><b>Research/Technical Assistants:</b></td><td>{$user_tech_count}</tr></td>
+                        <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</tr></td>
+                    </table>
+                </div>
+                <div style='display:inline-block;width:40%;vertical-align:top;'>
+                    <center><b>Period: July {$start_year} to June {$this_year}</b></center><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a> or <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf' target='_blank'>FSO Agreement</a>. The information submitted will be used in arriving at decisions regarding salaries, tenure, and promotion.</p></center>
+                    <table width="100%" class='wikitable'>
+                        <tr>
+                            <th></th>
+                            <th>Refereed</th>
+                            <th>Books</th>
+                            <th>Patents</th>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Publication)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Publication)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Publication)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Book)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Patent)}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Publication)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Book)}</td>
+                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Patent)}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Lifetime</b></td>
+                            <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
+                            <td align='center'>{user_lifetime_pubs_count(Book)}</td>
+                            <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
+                        </tr>
+                    </table>
+                    <center><small>Note: Refereed includes only <b>refereed</b> Journals, Conferences, and Book Chapters.</small></center>
+                </div>
+            ]]>
+        </Static>
+        <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
+            <![CDATA[
+                <h2>Responsibilities Variation <span class='clicktooltip' title='Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.'>&#9432;</span></h2>
+                Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a>?
+                <div style='margin-left:25px;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="responsibilities_variation" type="MultiTextReportItem" blobItem="FEC_INFO_RESP_VARIATION" blobType="BLOB_ARRAY" labels="% Research|% Teaching|% Service" types="Integer|Integer|Integer" sizes="100|100|100" optional="true" encrypt="true">
+            <![CDATA[
+                <div id="responsibilities_variation" style='margin-left:25px;display:none;'>
+                    {$item}
+                </div>
+                <script type="text/javascript">
+                    var respChange = function(){
+                        var value = $("input[name=Intro_responsibilities]:checked").val();
+                        if(value == "Yes"){
+                            $("#responsibilities_variation").show();
+                        }
+                        else{
+                            $("#responsibilities_variation").hide();
+                        }
+                    };
+                    
+                    $("input[name=Intro_responsibilities]").change(respChange);
+                    respChange();
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Category Description(if other)|Start Date|End Date" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Sabbatical Leave,Political Leave,Other)|Text|Date|Date" sizes="200|200|164|164" multiple="true" addText="Add New" optional="true" encrypt="true">
+            <![CDATA[
+                <h2>Leaves</h2>
+                {$item}
+                <script type='text/javascript'>
+                    $("#table_Intro_leaves tr.obj select").change(function(e){
+                        var td = $($(e.target).closest("tr").children()[1]);
+                        var text = $("input", td);
+                        if($(e.target).val() == "Other"){
+                            text.prop('disabled', false);
+                        }
+                        else{
+                            text.prop('disabled', true);
+                            text.val('');
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" sizes="200|200|350" multiple="true" addText="Add New" optional="true" encrypt="true">
+            <![CDATA[
+                <h2>Reasons For Reduced Teaching<small> (if applicable)</small> <span class='clicktooltip' title='The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.'>&#9432;</span></h2>
+                {$item}
+                <script type='text/javascript'>
+                    $("#table_Intro_reasons tr.obj select").change(function(e){
+                        var td = $($(e.target).closest("tr").children()[1]);
+                        var text = $("input", td);
+                        if($(e.target).val() == "Other"){
+                            text.prop('disabled', false);
+                        }
+                        else{
+                           text.prop('disabled', true);
+                            text.val('');
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="courses" tooltip="Teaching" name="Teaching" title="Teaching" blobSection="FEC_COURSES" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h3>Undergraduate</h3>
+                <p>Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses. Teaching percentages in square brackets.</p>
+                
+                <h3>Graduate</h3>
+                <p>Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses. Teaching percentages in square brackets.</p>
+                
+                <h3>Project Courses</h3>
+                <p>This section should be used for project courses, not individually recorded in Beartracks.</p>
+                <p>If you have taught such a course, and it does not appear above, please enter it below.</p>
+                <p>Click 'Add New' to add a line for each such course.</p>
+                
+                <h3>Teaching Development and Innovation</h3>
+                <p>Enter the information related to your teaching development. Enter all other teaching information (e.g., related to courses taught outside the university) in the Other Teaching section of the Annual Report.</p>
+                <p>Add a new teaching development entry to create a new paragraph.</p>
+                <p>(teaching development includes development of new courses, programs, etc. Innovation includes first use of alternative techniques and technologies, evidence-based practice, new research into teaching and learning related to your courses, etc.)</p>
+                
+                <h3>Other Teaching</h3>
+                <p>Enter information related to guest lectures, student projects, graduate instruction, courses taught outside the University, etc.</p>
+                <p>Add a new other teaching entry to create a new paragraph.</p>
+                <p>(Include guest lectures, special sessions, extensions, student projects, advising students, graduate instruction, etc.)</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="ugrad_courses" type="PersonCoursesReportItem" showPercentages="true" levels="1,2,3,4" start="CYCLE_START" end="CYCLE_END">
+            <![CDATA[
+                <h3>Undergraduate <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
+                <!--p><small><b>Note:</b> Courses have not yet been imported.</small></p-->
+                {$item}
+                <script type='text/javascript'>
+                    var mentions = new Array();
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="grad_courses" type="PersonCoursesReportItem" showPercentages="true" levels="5,6,7,8" start="CYCLE_START" end="CYCLE_END">
+            <![CDATA[
+                <h3>Graduate <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
+                <!--p><small><b>Note:</b> Courses have not yet been imported.</small></p-->
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="projectCourses" type="MultiTextReportItem" blobItem="FEC_PROJECT_COURSES" blobType="BLOB_ARRAY" labels="Class Prefix|Number|Title|Type|Term|Enrolment" types="Text|Text|Text|Select(LEC,SEM,LAB)|Checkbox(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" sizes="100|50|200|||50" multiple="true" addText="Add New" optional="true" encrypt="true">
+            <![CDATA[
+                <h3>Project Courses <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='This section should be used for project courses, not individually recorded in Beartracks.<br />If you have taught such a course, and it does not appear above, please enter it below. <br />Click &#39;Add New&#39; to add a line for each such course.'>&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="coursesSet" type="PersonCoursesReportItemSet">
+            <Static>
+                <![CDATA[
+                    <script type='text/javascript'>
+                        mentions.push({name: "{$course_subject} {$course_number}"});
+                    </script>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <ReportItem id="development" type="MultiTextReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="600" multiple="true" addText="Add New" optional="true" encrypt="true">
+            <![CDATA[
+                <h2>Teaching Development and Innovation <span class='clicktooltip' title='Enter the information related to your teaching development. Enter all other teaching information (e.g., related to courses taught outside the university) in the Other Teaching section of the Annual Report.<br />
+<br />
+Add a new teaching development entry to create a new paragraph.<br />
+<br />
+(teaching development includes development of new courses, programs, etc. Innovation includes first use of alternative techniques and technologies, evidence-based practice, new research into teaching and learning related to your courses, etc.)'>&#9432;</span></h2>
+                {$item}
+                <script type='text/javascript'>
+                    var tinyMCESettings = {
+                        theme: 'modern',
+                        menubar: false,
+                        plugins: 'paste advlist mention',
+                        toolbar: false,
+                        statusbar: false,
+                        width: "100%",
+                        mentions: {
+                            source: _.uniq(mentions, false, function(val, key){
+                                return val.name;
+                            }),
+                            insert: function(item) {
+                                return '<b>' + item.name + '</b>';
+                            },
+                            delay: 100,
+                            delimiter: '@'
+                        }
+                    };
+                    $('table#table_{$post_id} textarea').hide();
+                    $('table#table_{$post_id} textarea').parent().height(155);
+                    _.defer(function(){
+                        $('table#table_{$post_id} textarea').show();
+                        $('table#table_{$post_id} textarea').tinymce(tinyMCESettings);
+                    });
+                    $("#table_{$post_id} tbody").on("sortstart", function(event, ui){
+                        var textarea = $(ui.item).find('textarea');
+                        textarea.each(function(){
+                            tinyMCE.execCommand('mceRemoveEditor', false, $(this).attr('id') );
+                        });
+                        textarea.after("<div>" + textarea.val() + "</div>");
+                        textarea.next().css("width", textarea.width());
+                        textarea.next().css("height", parseInt($(ui.item).height()) - 10);
+                        textarea.hide();
+                    });
+                    $("#table_{$post_id} tbody").on("sortstop", function(event, ui){
+                        var textarea = $(ui.item).find('textarea');
+                        textarea.next().remove();
+                        textarea.show();
+                        textarea.each(function(){
+                            $(this).tinymce(tinyMCESettings);
+                        });
+                    });
+                    $("#add_Teaching_development").click(function(){
+                        $("#table_{$post_id} tbody textarea").last().tinymce(tinyMCESettings);
+                    });
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="otherTeaching" type="MultiTextReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="600" multiple="true" addText="Add New" optional="true" encrypt="true">
+            <![CDATA[
+                <h2>Other Teaching <span class='clicktooltip' title='Enter information related to guest lectures, student projects, graduate instruction, courses taught outside the University, etc.<br />
+<br />
+Add a new other teaching entry to create a new paragraph.<br />
+<br />
+(Include guest lectures, special sessions, extensions, student projects, advising students, graduate instruction, etc.)'>&#9432;</span></h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="students" tooltip="HQP Supervision" name="HQP Supervision" title="HQP Supervision" blobSection="FEC_STUDENTS" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h3>HQP Publications</h3>
+                <p>The publications should have your HQP listed as an author, but cannot include yourself as an author.  If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are. <b>Note</b> that this will only override the formatting for this author in this report. It is advised that the author be correctly associated with the output and have correct Basic Info history.</p>
+                
+                <h3>HQP Presentations</h3>
+                <p>The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="students" type="PersonSupervisesReportItem" blobItem="HQP" splitGrad="true" showCommittees="true" awards="true" footnotes="true" encrypt="true">
+            <![CDATA[
+                <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople">Manage HQP</a>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h2>HQP Publications <span class='clicktooltip' title='The publications should have your HQP listed as an author, but cannot include yourself as an author.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
+                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
+                <table class='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr><td>{$product_type}</td><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <h2>HQP Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
+                <small></small>
+                <table class ='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>HQP</th>
+                        <th>Invited</th>
+                        <th>Event Title</th>
+                        <th>Organization</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Length (minutes)</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <tr><td align='center'>{$presentation_title}</td>
+                        <td align='center'>{$presentation_type}</td>
+                        <td>{$product_authors}</td>
+                        <td align='center'>{$presentation_invited}</td>
+                        <td>{getProductData(event_title)}</td>
+                        <td>{$presentation_organization}</td>
+                        <td align='center'>{$presentation_country}</td>
+                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                        <td align='center'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="publications" tooltip="Outputs" name="Outputs" title="" blobSection="FEC_PRODUCTS" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h3>Publications</h3>
+                <p>(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)</p>
+                <p>If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are. Note that this will only override the formatting for this author in this report. It is advised that the author be correctly associated with the output and have correct Basic Info history.</p>
+                
+                <h3>Presentations</h3>
+                <p>The Presentations section lists any presentations given by the user during the reporting year.</p>
+                <p>(Do not include presentations given by your students or by others. HQP presentations are included on the Additional Info section.)</p>
+                
+                <h3>Patents/Spin-Offs</h3>
+                <p>(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)</p>
+                <p>If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are. Note that this will only override the formatting for this author in this report. It is advised that the author be correctly associated with the output and have correct Basic Info history.</p>
+            ]]>
+        </Instructions>
+        <Static>
+            <![CDATA[
+                <h2 style='margin-top:-5px;padding-top:0;'>Publications <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
+                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
+                <table class='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr><td>{$product_type}</td><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr><td>{$product_type}</td><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|Other|PHD Thesis|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr><td>{$product_type}</td><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <h2>Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user during the reporting year.<br />
+<br />
+(Do not include presentations given by your students or by others.  HQP presentations are included on the Additional Info section.)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
+                <small></small>
+                <table class ='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Invited</th>
+                        <th>Event Title</th>
+                        <th>Organization</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Length (minutes)</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <tr><td align='center'>{$presentation_title}</td>
+                        <td align='center'>{$presentation_type}</td>
+                        <td align='center'>{$presentation_invited}</td>
+                        <td>{getProductData(event_title)}</td>
+                        <td>{$presentation_organization}</td>
+                        <td align='center'>{$presentation_country}</td>
+                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                        <td align='center'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                
+                <h2>Patents/Spin-Offs <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Patent%2FSpin-Off">Manage Patents/Spin-Offs</a></h2>
+                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
+                <table class='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Footnotes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr><td><b>({$product_type})</b></td><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td align='center'>{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="awards" tooltip="Awards" name="Awards" title="" blobSection="FEC_PRODUCTS" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>(Do not include awards given to students.)</p>
+            ]]>
+        </Instructions>
+        <Static>
+            <![CDATA[
+                <h2 style='margin-top:-5px;padding-top:0;'>Awards <span class='clicktooltip' style='font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Award Category</th>
+                            <th>Scope</th>
+                            <th>Year</th>
+                            <th>Footnotes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <tr><td>{$product_title}</td>
+                        <td align='center'>{$product_type}</td>
+                        <td align='center'>{$award_scope}</td>
+                        <td align='center'>{$product_year}</td>
+                        <td align='center'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts &lt;span class='clicktooltip' title='(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)'>&#9432;&lt;/span>" blobSection="FEC_GRANTS" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
+            <![CDATA[
+                <a class="button" style="position:absolute; top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Sponsor</th>
+                            <th>Starts</th>
+                            <th>Ends</th>
+                            <th>$Total</th>
+                            <th>Footnotes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem> 
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
+                <![CDATA[
+                    <tr>
+                        <td align='left'>{$grant_project_id}<br />
+                            {$grant_scientific_title}
+                        </td>
+                        <td align='left'>{$grant_sponsor}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                        <td align='right'>${$grant_total}</td>
+                        <td align='center' style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="services" name="Service" tooltip="Service/Committees/Outreach" title="Service Activities &lt;span class='clicktooltip' title='Provide information for any of the subsections below.&lt;br />
+&lt;b>Departmental&lt;/b> (Excluding Graduate Student Committees): Enter any relevant information for this subsection.&lt;br />
+&lt;b>Faculty&lt;/b>: Enter any relevant information for this subsection.&lt;br />
+&lt;b>University&lt;/b>: Enter any relevant information for this subsection.&lt;br />
+&lt;b>Scientific&lt;/b>: Enter any relevant information for this subsection.&lt;br />
+&lt;b>Community Outreach&lt;/b> (Including academic service to the general public): Enter any relevant information for this subsection.&lt;br />
+&lt;b>Other&lt;/b>: Enter any other relevant information.'>&#9432;&lt;/span>" type="ReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>Provide information for any of the subsections below.</p>
+                <h3>Departmental</h3>
+                <p>(Excluding Graduate Student Committees)<br />Enter any relevant information for this subsection.</p>
+                
+                <h3>Faculty</h3>
+                <p>Enter any relevant information for this subsection.</p>
+
+                <h3>University</h3>
+                <p>Enter any relevant information for this subsection.</p>
+                
+                <h3>Scientific</h3>
+                <p>Enter any relevant information for this subsection.</p>
+                
+                <h3>Community Outreach</h3>
+                <p>(Including academic service to the general public): Enter any relevant information for this subsection.</p>
+                
+                <h3>Other</h3>
+                <p>Enter any other relevant information.</p>
+            ]]>
+        </Instructions>
+        <Static>
+            <![CDATA[
+                <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Activity">Manage Activities</a>
+            ]]>
+        </Static>
+        
+        <!-- Departmental -->
+        <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
+            <![CDATA[
+                <h3>Departmental</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <Static>
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+            
+        <!-- Faculty -->
+        <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
+            <![CDATA[
+                <h3>Faculty</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <Static>
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+            
+        <!-- University -->
+        <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
+            <![CDATA[
+                <h3>University</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <Static>
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        
+        <!-- Scientific -->
+        <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
+            <![CDATA[
+                <h3>Scientific</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <Static>
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {getProductData(organization)} (<b>{$product_scope}</b>)</p>
+                    <p style='margin-left:4em;'>{$product_title}<br />{$product_description}</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        
+        <!-- Outreach and Community Engagement -->
+        <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach and Community Engagement">
+            <![CDATA[
+                <h3>Outreach and Community Engagement</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <Static>
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        
+        <!-- Other -->
+        <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
+            <![CDATA[
+                <h3>Other</h3>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <Static>
+                <![CDATA[
+                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                    <p style='margin-left:4em;'>{$product_description}</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="supplementary" tooltip="Supplementary Professional Activities" name="SPA" title="Supplementary Professional Activities &lt;span class='clicktooltip' title='Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf&quot;>Faculty Agreement&lt;/a> or to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf&quot;>FSO Agreement&lt;/a> and to the &lt;a target=&quot;_blank&quot; href=&quot;https://drive.google.com/file/d/0ByVePqUFqXRESEpMZXUxeGJWWGc/view&quot;>SPA Guidelines&lt;/a>.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a> or to Article 8 of the <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf' target='_blank'>FSO Agreement</a> and to the <a href='https://drive.google.com/file/d/0ByVePqUFqXRESEpMZXUxeGJWWGc/view' target='_blank'>SPA Guidelines</a>.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA" encrypt="true">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("[name=SPA_spa_level]").change(function(){
+                            var value = $(this).val();
+                            if(value == "Minor SPA" ||
+                               value == "Major SPA"){
+                                $("#outer_disclosure").slideDown();
+                            }
+                            else{
+                                $("#outer_disclosure").slideUp();
+                            }
+                            if(value == "Major SPA"){
+                                $("#outer_major").slideDown();
+                            }
+                            else{
+                                $("#outer_major").slideUp();
+                            }
+                        }).change();
+                    });
+                </script>
+                <h3>If you have SPA to report, select "Minor SPA" or "Major SPA"</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="spa_disclosure" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
+            <![CDATA[
+                <div id="outer_disclosure" style="display:none;">
+                <h3>I confirm that I have an up to date Disclosure Report on file</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="spa_major" type="RadioReportItem" blobItem="FEC_SPA_MAJOR" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
+            <![CDATA[
+                <div id="outer_major" style="display:none;">
+                <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="spa_description" type="TextareaReportItem" blobItem="FEC_SPA_DESC" blobType="BLOB_TEXT" encrypt="true">
+            <![CDATA[
+                <h3>Describe the SPA below</h3>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="spa_level2" type="SelectReportItem" blobItem="FEC_SPA_LEVEL2" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA" encrypt="true">
+            <![CDATA[
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("[name=SPA_spa_level2]").change(function(){
+                            var value = $(this).val();
+                            if(value == "Minor SPA" ||
+                               value == "Major SPA"){
+                                $("#outer_disclosure2").slideDown();
+                            }
+                            else{
+                                $("#outer_disclosure2").slideUp();
+                            }
+                            if(value == "Major SPA"){
+                                $("#outer_major2").slideDown();
+                            }
+                            else{
+                                $("#outer_major2").slideUp();
+                            }
+                        }).change();
+                    });
+                </script>
+                <br /><br />
+                <hr />
+                <h3>Additional SPA</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="spa_disclosure2" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE2" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
+            <![CDATA[
+                <div id="outer_disclosure2" style="display:none;">
+                <h3>I confirm that I have an up to date Disclosure Report on file</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="spa_major2" type="RadioReportItem" blobItem="FEC_SPA_MAJOR2" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
+            <![CDATA[
+                <div id="outer_major2" style="display:none;">
+                <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="spa_description2" type="TextareaReportItem" blobItem="FEC_SPA_DESC2" blobType="BLOB_TEXT" encrypt="true">
+            <![CDATA[
+                <h3>Describe the SPA below</h3>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <!--ReportSection id="edi" tooltip="EDI and Indigenous Initiatives" name="EDI &amp; II" title="EDI and Indigenous Initiatives" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+        <ReportItem id="edi" type="Textarea" blobItem="EDI" optional="true" encrypt="true">
+            <![CDATA[
+                <p>The Faculty of Science recognizes the efforts and contributions of our faculty, FSOs and ATS members to EDI and Indigenous Initiatives in their teaching, research, and service. In this section of your annual report, please describe any of these activities that you have undertaken during this past reporting year.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection-->
+    <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info &lt;span class='clicktooltip' title='Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.&lt;br />
+&lt;br />
+(Include publications from Graduate Student theses (not co-authored), details of special interest on invited presentations or non-refereed publications, important information about refereed publication venues, distinctions, projects initiated, special details about grants and contracts, unpaid consulting, etc.)'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h3>Additional Info</h3>
+                <p>Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.</p>
+                <p>(Include publications from Graduate Student theses (not co-authored), details of special interest on invited presentations or non-refereed publications, important information about refereed publication venues, distinctions, projects initiated, special details about grants and contracts, unpaid consulting, etc.)</p>
+                <!--p><b>The FoS affirms its commitment to EDI and any evidence that the faculty member has pursued activities towards advancing EDI in their research and/or teaching and/or service is appreciated and recognized as meritorious.</b></p-->
+                <p><b>Activities such as commercialization activities, contributions to professional and policy reports, public dissemination and knowledge translation activities may also be considered meritorious.</b></p>
+            ]]>
+        </Instructions>
+        <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" addText="Add New" multiple="true" optional="true" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <!--ReportSection id="pandemic" tooltip="Pandemic Impact Statement" name="Pandemic Impact" title="Pandemic Impact Statement &lt;span class='clicktooltip' title='Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).&lt;br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).<br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="covid" type="Textarea" blobItem="COVID" optional="true" encrypt="true">
+            <![CDATA[
+                <p>You can either enter your pandemic impact statement below</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="covid_upload" type="Upload" blobType="BLOB_RAW" blobItem="COVID_UPLOAD" mimeType=".pdf" fileSize="5" optional="true" encrypt="true">
+            <![CDATA[
+                <p>or upload a pdf of the statement</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="covid_confirm" type="Checkbox" blobType="BLOB_ARRAY" blobItem="COVID_CONFIRM" options="I do not wish to provide an impact statement" encrypt="true">
+            <![CDATA[
+                <div id='covid_container' style='display:none;'>
+                    <p><b>Please confirm that you do not wish to provide an impact statement</b></p>
+                    {$item}
+                </div>
+                
+                <script type='text/javascript'>
+                    $('#PandemicImpact_covid').on("change keyup", function(){
+                        if($('#PandemicImpact_covid').val() == "" && 
+                           $('#fileFramePandemicImpact_covid_upload').contents().find("a").text().indexOf("Download") === -1){
+                            $('#covid_container').slideDown();
+                        }
+                        else{
+                            $('#covid_container').slideUp();
+                            $('#covid_container input').prop('checked', false);
+                        }
+                    });
+                    
+                    $('#PandemicImpact_covid').change();
+                    
+                    if(typeof covidInterval != "undefined"){
+                        clearInterval(covidInterval);
+                    }
+                    
+                    covidInterval = setInterval(function(){
+                        $('#PandemicImpact_covid').change();
+                    }, 100);
+                    
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection-->
+    <ReportSection id="sabbatical" tooltip="Sabbatical Report" name="Sabbatical Report" title="Sabbatical Report" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+        <ReportItem id="sabbatical" type="Upload" blobType="BLOB_RAW" blobItem="SABBATICAL" mimeType=".pdf" fileSize="5" optional="true" encrypt="true">
+            <![CDATA[
+                <p>Attach a <b>PDF</b> of your sabbatical report here if applicable.  It will be appended at the bottom of the generated Annual Report PDF.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="chair" tooltip="Signed &amp; Locked" name="Signed &amp; Locked" blobSection="CHAIR_REVIEW" type="ReportSection">
+        <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[
+                <!--p>PDF Generation is not enabled right now, it will be enabled at a later date.</p-->
+                <h2>Preview</h2>
+                <p>The following is just a preview of what the PDF will look like, the generated PDF may appear differently so make sure to look it over after generating it.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the FEC" name="Sign &amp; Lock" blobSection="FEC_SUBMIT" type="EditableReportSection" autosave="false" renderpdf="false">
+        <ReportItem id="lock" type="Checkbox" blobItem="LOCK" blobType="BLOB_ARRAY" orientation="vertical" options="Lock" encrypt="true">
+            <![CDATA[
+                <p>Once you are satisfied with the generated PDF, you can lock your annual report.<br />
+                <b style="color: red;">NOTE: You will be unable to make further changes after locking your annual report.</b>
+                <div id='lockContainer' style='display:none;'>{$item}</div>
+                <button id='lock' type="button" value="Save" name="submit" disabled>Sign & Lock</button><br /><br />
+                <script type="text/javascript">
+                    $('#reportFooter').prev().hide();
+                    $('#reportFooter').hide();
+                    setInterval(function(){
+                        if($("#reportBody iframe").length > 0){
+                            $('#lock').prop('disabled', false);
+                        }
+                        else{
+                            $('#lock').prop('disabled', true);
+                        }
+                    }, 100);
+                    $('#lock').click(function(){
+                        if(confirm('Are you sure you want to proceed?\n\nThis annual report will be locked. You will not be able to make further changes.')){
+                            $('#lockContainer input[type=checkbox]').prop('checked', true);
+                            findAutosaves();
+                            saveAll(function(){location.reload();});
+                        } else {
+                            $('#lockContainer input[type=checkbox]').prop('checked', false);
+                        }
+                        return false;
+                    });
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true" height="600px">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

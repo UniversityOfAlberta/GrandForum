@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/40" extends="Letters/Base">
+    <ReportSection id="letter" title="Sabbatical Request">
+        <ReportItem id="from">
+            <![CDATA[
+                Declan Ali<br />
+                Dean of Science
+            ]]>
+        </ReportItem>
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that your application for a <b>{getText({$report_type}, TABLE, SABB_DURATION, {$user_id}, 1, 0)}</b> sabbatical from <b>{getText({$report_type}, TABLE, SABB_START, {$user_id}, 1, 0)}</b> to <b>{getText({$report_type}, TABLE, SABB_END, {$user_id}, 1, 0)}</b> has been approved.</p>
+
+                <p>Further information concerning your sabbatical will be sent to you by Employment Services, Human Resources Services. Please ensure that you have read Article A4 and Appendix A.3 of Schedule A of the Collective Agreement for detailed information concerning sabbaticals.</p>
+
+                <p>I hope your sabbatical is satisfying and rewarding, and look forward to receiving your report on the sabbatical program as it was approved by FEC in accordance with Article A4.03.8 of Schedule A.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer">
+            <![CDATA[
+                Sincerely,<br />
+                <br />
+                <div class='previewnodisplay'><img src='skins/Signature.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <br />
+                Declan Ali<br />
+                Dean of Science<br />
+                DA/pw
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

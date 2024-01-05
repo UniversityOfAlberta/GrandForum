@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/22" extends="Letters/Base">
+    <ReportSection id="letter" title="Application for Promotion">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) does not endorse your Department Chair's recommendation and has decided to award you promotion to Professor effective July 1, 2024.</p>
+                
+                <p>Congratulations on this important achievement in your career. My very best wishes for continued success in your University endeavours.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
