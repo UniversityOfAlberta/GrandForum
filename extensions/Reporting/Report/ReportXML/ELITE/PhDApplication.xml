@@ -101,11 +101,12 @@
                     <tr>
                         <td class="label required">Canadian Immigration Status:</td>
                         <td class="value" colspan="3">
-                            Only Canadian citizens, permanent residents, and refugees are eligible for this fellowship.{$item}
+                            Only Canadian citizens, permanent residents, and refugees are eligible for this fellowship.
+                            <div class='immigration'>{$item}</div>
                             <div id="immigrationWarning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the engineering department that offers training in your field of interest to learn more about applying to the PhD program.</div>
                             <script type="text/javascript">
-                                $("select[name=Application_immigration]").change(function(){
-                                    var value = $("select[name=Application_immigration]").val();
+                                $("div.immigration select").change(function(){
+                                    var value = $("div.immigration select").val();
                                     if(value == "International Student" || value == "Other"){
                                         $("#immigrationWarning").slideDown();
                                     }
@@ -134,11 +135,11 @@
                     </tr>
                     <tr>
                         <td class="value" colspan="4">
-                            {$item}
+                            <div class='program'>{$item}</div>
                             <div id="programWarning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the engineering department that offers training in your field of interest to learn more about applying to the PhD program.</div>
                             <script type="text/javascript">
-                                $("input[name=Application_program]").change(function(){
-                                    var value = $("input[name=Application_program]:checked").val();
+                                $("div.program input").change(function(){
+                                    var value = $("div.program input:checked").val();
                                     if(value == "Yes"){
                                         $("#programWarning").slideDown();
                                     }
@@ -363,11 +364,11 @@
                 <![CDATA[
                     <h2 class="required">Acknowledgment and Agreement</h2>
                     <h3>If accepted to the Fellowship Program, I will apply for admission to the PhD program with a Faculty of Engineering department at the University of Alberta by the departmental deadline.</h3>
-                    {$item}
+                    <div class='acknowledgment1'>{$item}</div>
                     <div id="acknowledgment1Warning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the engineering department that offers training in your field of interest to learn more about applying to the PhD program.</div>
                     <script type="text/javascript">
-                        $("input[name=Application_acknowledgment1]").change(function(){
-                            var value = $("input[name=Application_acknowledgment1]:checked").val();
+                        $("div.acknowledgment1 input").change(function(){
+                            var value = $("div.acknowledgment1 input:checked").val();
                             if(value == "No"){
                                 $("#acknowledgment1Warning").slideDown();
                             }
@@ -381,11 +382,11 @@
             <ReportItem id="acknowledgment2" type="Radio" blobItem="ACKNOWLEDGMENT2" options="Yes|No" encrypt="true">
                 <![CDATA[
                     <h3>If accepted to the Fellowship Program, I will participate in the ELITE Program for Black Youth Entrepreneurship Design Series, if offered.</h3>
-                    {$item}
+                    <div class='acknowledgment2'>{$item}</div>
                     <div id="acknowledgment2Warning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the engineering department that offers training in your field of interest to learn more about applying to the PhD program.</div>
                     <script type="text/javascript">
-                        $("input[name=Application_acknowledgment2]").change(function(){
-                            var value = $("input[name=Application_acknowledgment2]:checked").val();
+                        $("div.acknowledgment2 input").change(function(){
+                            var value = $("div.acknowledgment2 input:checked").val();
                             if(value == "No"){
                                 $("#acknowledgment2Warning").slideDown();
                             }
