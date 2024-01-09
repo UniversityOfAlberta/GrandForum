@@ -11,6 +11,7 @@ behat/screenshots
 behat/vendor
 Photos/*.jpg
 images/*
+cache/
 Classes/dompdf/lib/fonts/log.htm
 Classes/dompdf/lib/fonts/*.afm.php
 Classes/dompdf/lib/fonts/*.ufm.php

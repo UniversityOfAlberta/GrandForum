@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/30" extends="Letters/Base">
+    <ReportSection id="letter" title="Preliminary Position of FEC Regarding Merit">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>Each year, the Faculty Evaluation Committee (FEC) is charged with the responsibility of awarding incrementation to its faculty, from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
+                
+                As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of December 7, 2023, the FEC did not support your Chair’s recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment instead, FEC is prepared to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. Under Article A6.19.1 of Schedule A, this becomes the preliminary position of FEC. The Chair now supports the preliminary position of FEC. This decision was based on the following concerns with your performance:
+                <ul><li>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
+                
+                You may wish to consider the following options: 
+                <ul>
+                    <li>I am offering to meet with you during the week of {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case as it was presented before FEC. Please contact me by email at dean.science@ualberta.ca for an appointment.</li>
+                    <li>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s preliminary position by informing me, in writing, within 5 working days from the receipt of this letter.</li>
+                </ul><br />
+
+                <p>Materials in support of your position should be submitted electronically, if feasible.</p>
+
+                <p>It is advisable that you consult the Association of Academic Staff University of Alberta (ASSUA), for advice.</p>
+                 
+                <p>If you have your case reconsidered by FEC and it stands by its preliminary position, you have the right to appeal to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of the letter confirming FEC’s reconsideration decision.</p>
+                
+                <p>If you did not appear before FEC to present your case or submit documentation in support of your position, the decision will be final and binding. Pursuant to Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC.</p>
+                
+                <p>Should you have any procedural questions, please contact the Secretary to FEC, Brigitte Martin, at 780-863-9232 or brigitt2@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

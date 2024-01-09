@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/24" extends="Letters/Base">
+    <ReportSection id="letter" title="Incrementation">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>I am writing to inform you that you will receive a pro-rated increment as per Article A6.11.2 of Schedule A, which provides that an Academic Faculty member whose appointment takes effect in the period October 2 to June 1, inclusive, is eligible to receive a pro-rated increment. The award takes effect on July 1, 2024.</p>
+                
+                <p>I would like to take this opportunity to wish you continued success in your teaching, research and service.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

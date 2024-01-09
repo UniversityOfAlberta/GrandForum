@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+" subRole="ATSEC">
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="" />
+        </Role>
+        <Role role="DEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="rw" />
+        </Role>
+        <Role role="VDEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="rw" />
+        </Role>
+        <Role role="HR" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="r" />
+        </Role>
+        <Role role="MANAGER+" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="" />
+        </Role>
+    </Permissions>
+    <Script>
+        <![CDATA[
+            <script type='text/javascript'>
+                var lastData = null;
+                var freezeUpdate = function(){
+                    $.get(wgServer + wgScriptPath + '/index.php?action=api.voteFreeze', function(response){
+                        var data = response.data;
+                        
+                        var sumATS = 0;
+                        
+                        var nATS = 0;
+                        
+                        var nRevATS = 0;
+                        
+                        var sumRevATS = 0;
+                        
+                        var sumDDATS = 0;
+                        
+                        var nDDATS = 0;
+                        
+                        // Get these numbers from sciea/scihr each year
+                        var targetATS = 22.80;
+                        
+                        var needsSaving = false;
+                        
+                        if(lastData == null){
+                            lastData = data;
+                        }
+                        
+                        table.rows().every(function(i){
+                            var el = $(this.nodes());
+                            var index = el.attr("data-id");
+                            var caseN = $(".casenumber", el).text();
+                            $(".revised_increment", el).empty();
+                            if(data['increment'][index] != undefined){
+                                $(".revised_increment", el).text(data['increment'][index]);
+                            }
+                            
+                            if(data['freeze'].indexOf(index) == -1 &&
+                               lastData['freeze'].indexOf(index) != -1){
+                                $(".vote .field select option[value='']", el).prop("selected", true);
+                                needsSaving = true;
+                            }
+                            
+                            if(data['t_freeze'].indexOf(index) == -1 &&
+                               lastData['t_freeze'].indexOf(index) != -1){
+                                $(".t_vote .field select option[value='']", el).prop("selected", true);
+                                needsSaving = true;
+                            }
+                            
+                            if(data['p_freeze'].indexOf(index) == -1 &&
+                               lastData['p_freeze'].indexOf(index) != -1){
+                                $(".p_vote .field select option[value='']", el).prop("selected", true);
+                                needsSaving = true;
+                            }
+                            
+                            if(data['freeze'].indexOf(index) != -1){
+                                // Frozen
+                                $(".vote .text", el).text($(".vote .field select option:selected", el).val());
+                                $(".vote .text", el).show();
+                                $(".vote .field", el).hide();
+                            }
+                            else{
+                                // Unfrozen
+                                $(".vote .text", el).hide();
+                                $(".vote .field", el).show();
+                            }
+                            
+                            if(data['t_freeze'].indexOf(index) != -1){
+                                // Frozen
+                                $(".t_vote .text", el).text($(".t_vote .field select option:selected", el).val());
+                                $(".t_vote .text", el).show();
+                                $(".t_vote .field", el).hide();
+                            }
+                            else{
+                                // Unfrozen
+                                $(".t_vote .text", el).hide();
+                                $(".t_vote .field", el).show();
+                            }
+                            
+                            if(data['p_freeze'].indexOf(index) != -1){
+                                // Frozen
+                                $(".p_vote .text", el).text($(".p_vote .field select option:selected", el).val());
+                                $(".p_vote .text", el).show();
+                                $(".p_vote .field", el).hide();
+                            }
+                            else{
+                                // Unfrozen
+                                $(".p_vote .text", el).hide();
+                                $(".p_vote .field", el).show();
+                            }
+                            
+                            var increment = $(".increment:not(.dd)", el).text();
+                            var revisedIncrement = $(".revised_increment", el).text();
+                            var ddIncrement = $(".increment.dd", el).text();
+                            
+                            if(increment != "" &&
+                               increment != "N/A" &&
+                               increment != "0.00" &&
+                               increment != "0.00 (PTC)" &&
+                               increment != "0A"){
+                                if(caseN.indexOf('T') != -1){
+                                    sumATS += parseFloat(increment);
+                                    if(revisedIncrement == ""){
+                                        revisedIncrement = increment;
+                                    }
+                                    nATS++;
+                                }
+                            }
+                            
+                            if(revisedIncrement != "" &&
+                               revisedIncrement != "N/A" &&
+                               revisedIncrement != "0.00" &&
+                               revisedIncrement != "0.00 (PTC)" &&
+                               revisedIncrement != "0A"){
+                                if(caseN.indexOf('T') != -1){
+                                    sumRevATS += parseFloat(revisedIncrement);
+                                    nRevATS++;
+                                }
+                            }
+                            
+                            if(ddIncrement != "" &&
+                               ddIncrement != "N/A" &&
+                               ddIncrement != "0.00" &&
+                               ddIncrement != "0.00 (PTC)" &&
+                               ddIncrement != "0A"){
+                                if(caseN.indexOf('T') != -1){
+                                    sumDDATS += parseFloat(ddIncrement);
+                                    nDDATS++;
+                                }
+                            }
+                        });
+                        
+                        table.rows().invalidate();
+                        if(needsSaving){
+                            saveAll();
+                        }
+                        
+                        var atsSign = (targetATS - sumRevATS > 0) ? "-" : "+";
+                        
+                        $("#averageATS").text(number_format(sumATS/Math.max(1,nATS)));
+                        $("#totalATS").text(number_format(sumATS));
+                        
+                        $("#runningAverageATS").text(number_format(sumRevATS/Math.max(1,nRevATS)));
+                        $("#runningTotalATS").text(number_format(sumRevATS));
+                        
+                        $("#ddAverageATS").text(number_format(sumDDATS/Math.max(1,nDDATS)));
+                        $("#ddTotalATS").text(number_format(sumDDATS));
+                        
+                        $("#targetATS").text(number_format(targetATS));
+                        $("#deltaATS").text(atsSign + number_format(Math.abs(targetATS - sumRevATS)));
+                        
+                        lastData = response.data;
+                    });
+                }
+                $(document).ready(freezeUpdate);
+                setInterval(freezeUpdate, 3000);
+            </script>
+        ]]>
+    </Script>
+    <ReportSection id="atsec" tooltip="ATSEC Table" name="ATSEC Table" title="ATSEC Table" blobSection="TABLE" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <style>
+                    table#chairTable * {
+                        font-size:11px !important;
+                    }
+                </style>
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th width="1%">Case#</th>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th>Department</th>
+                            <th width="1%">Annual Report</th>
+                            <th>Evaluation</th>
+                            <th>Recommended Increment</th>
+                            <th>Revised Increment</th>
+                            <th>Increment Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
+                            <th>Promotion Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
+                            <th>Comments <span class='tooltip' title='Comments will be visible to the FEC Chair'>&#9432;</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" atsec="true" start="{$last_year}-07-01" end="{$this_year}-07-01">
+            <Static>
+                <![CDATA[
+                    <tr data-id="{$user_id}">
+                        <td class="casenumber" style='white-space:nowrap;'>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                        <td>{$user_dept}</td>
+                ]]>
+            </Static>
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>{$item}</td>
+                        <td align='center'>
+                ]]>
+            </ReportItem>
+            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        {$item} Recommendation<br />
+                ]]>
+            </ReportItem>
+            <If if="{or({contains({$my_roles},ADMIN)},
+                        {contains({$my_roles},DEAN)},
+                        {contains({$my_roles},VDEAN)},
+                        {contains({$my_roles},HR)})}">
+                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                    <![CDATA[
+                            {$item} Dean's Advice<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                    <![CDATA[
+                            {$item} Dean's Decision<br />
+                    ]]>
+                </ReportItem>
+            </If>
+            <Static>
+                <![CDATA[
+                    </td>
+                ]]>
+            </Static>
+            <If if="{contains({user_sub_roles(;)},Dean's Decision)}">
+                <![CDATA[
+                    <td>
+                        <span class="increment dd">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span>
+                    </td>
+                ]]>
+            </If>
+            <Else>
+                <![CDATA[
+                    <td>
+                        <span class="increment">{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</span>
+                    </td>
+                ]]>
+            </Else>
+            <Static>
+                <![CDATA[
+                    <td>
+                        <span class="revised_increment">{getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}</span>
+                    </td>
+                ]]>
+            </Static>
+            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_sub_roles},Academic Teaching Staff Evaluation Committee)})}">
+                <!-- Increment Vote -->
+                <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
+                    <![CDATA[
+                        <td class="vote">
+                            <div class='text' style='display:none;'>
+                                
+                            </div>
+                            <div class='field' style='display:none;'>
+                                <span id='vote_{$user_id}'>{$item}</span>
+                            </div>
+                        </td>
+                    ]]>
+                </ReportItem>
+                <!-- Promotion Vote -->
+                <ReportItem id="p_vote" type="Select" blobType="BLOB_TEXT" blobItem="P_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
+                    <![CDATA[
+                        <td class="p_vote">
+                            <div class='text' style='display:none;'>
+                                
+                            </div>
+                            <div class='field' style='display:none;'>
+                                <span id='p_vote_{$user_id}'>{$item}</span>
+                            </div>
+                            <script type='text/javascript'>
+                                var promotion = "{getText(RP_CHAIR, FEC_REVIEW, PROMOTION, {$user_id}, 0, 0)}";
+                                if(promotion.indexOf("i recommend promotion") == -1){
+                                    $("#p_vote_{$user_id}").remove();
+                                }
+                            </script>
+                        </td>
+                    ]]>
+                </ReportItem>
+                
+                <!-- Comments -->
+                <If if="{contains({$my_roles},ViceDean)}">
+                    <Static>
+                        <![CDATA[
+                            <td>
+                        ]]>
+                    </Static>
+                    <ReportItemSet id="fec_comments" type="FECReportItemSet">
+                        <Static>
+                            <![CDATA[
+                                {set(comment, {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)})}
+                            ]]>
+                        </Static>
+                        <If id="comment_if" if="{!=({get(comment)},)}">
+                            <![CDATA[
+                                <b>{$user_name}:</b> {get(comment)}
+                                <hr />
+                            ]]>
+                        </If>
+                    </ReportItemSet>
+                    <Static>
+                        <![CDATA[
+                            </td>
+                        ]]>
+                    </Static>
+                </If>
+                <Else>
+                    <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" height="75px" encrypt="true">
+                        <![CDATA[
+                            <td>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </Else>
+            </If>
+            <Else>
+                <![CDATA[
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                ]]>
+            </Else>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    table = $('#chairTable').DataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1
+                    });
+                    $('#chairTable select, #chairTable textarea').change(function(){
+                        saveAll();
+                    });
+                </script>
+            ]]>
+        </Static>
+        <If if="{or({contains({$my_roles},ADMIN)},
+                    {contains({$my_roles},DEAN)},
+                    {contains({$my_roles},VDEAN)},
+                    {contains({$my_roles},HR)})}">
+            <![CDATA[
+                <h3>Recommended Increment Totals <small>(Excludes DD cases)</small></h3>
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Average<br />ATS Increment</th>
+                        <th>Total<br />ATS Increment</th>
+                    </tr>
+                    <tr>
+                        <td id='averageATS' align='right'></td>
+                        <td id='totalATS' align='right'></td>
+                    </tr>
+                </table>
+                
+                <h3>Running Increment Totals <small>(Excludes DD cases)</small></h3>
+                <table id='runningIncrements' class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Average<br />ATS Increment</th>
+                        <th>Total<br />ATS Increment</th>
+                    </tr>
+                    <tr>
+                        <td id='runningAverageATS' align='right'></td>
+                        <td id='runningTotalATS' align='right'></td>
+                    </tr>
+                </table>
+                
+                <h3>Dean's Decision Increment Totals</h3>
+                <table id='ddIncrements' class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Average<br />ATS Increment</th>
+                        <th>Total<br />ATS Increment</th>
+                    </tr>
+                    <tr>
+                        <td id='ddAverageATS' align='right'></td>
+                        <td id='ddTotalATS' align='right'></td>
+                    </tr>
+                </table>
+                
+                <h3>Target Totals</h3>
+                <table id='targetIncrements' class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Target<br />ATS Increment</th>
+                        <th>Diff<br />ATS Increment</th>
+                    </tr>
+                    <tr>
+                        <td id='targetATS' align='right'></td>
+                        <td id='deltaATS' align='right'></td>
+                    </tr>
+                </table>
+            ]]>
+        </If>
+    </ReportSection>
+    <ReportSection id="atsec_votes" tooltip="ATSEC Votes" name="ATSEC Votes" title="ATSEC Votes" blobSection="TABLE" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <style>
+                    table#chairTable * {
+                        font-size:11px !important;
+                    }
+                </style>
+                <button id='refresh' class='noDisable' type='button' style='margin-bottom: 1em;'>Refresh</button>
+                Dean's Decisions are not included in this table.
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th rowspan='2' width="1%">Case#</th>
+                            <th rowspan='2'>Name</th>
+                            <th rowspan='2'>Rank</th>
+                            <th rowspan='2'>Department</th>
+                            <th rowspan='2'>Recommended Increment</th>
+                            <th rowspan='2'>Revised Increment</th>
+                            <th colspan='4'>Increment Votes</th>
+                            <th colspan='4'>Promotion Votes</th>
+                        </tr>
+                        <tr>
+                            <th>Y</th>
+                            <th>N</th>
+                            <th>A</th>
+                            <th>Freeze</th>
+                            <th>Y</th>
+                            <th>N</th>
+                            <th>A</th>
+                            <th>Freeze</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" atsec="true" includeDD="false" start="{$last_year}-07-01" end="{$this_year}-07-01">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                        <td>{$user_dept}</td>
+                ]]>
+            </Static>
+            <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" personId="1" width="80px" history="false" encrypt="true">
+                <![CDATA[
+                    <td>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</td>
+                    <td>
+                        {$item}
+                    </td>
+                ]]>
+            </ReportItem>
+            
+            <!-- Increment Votes -->
+            <ReportItem id="freeze" type="VoteResultsReportItem" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="75px">
+                <![CDATA[
+                        {$item}
+                ]]>
+            </ReportItem>
+            
+            <!-- Promotion Votes -->
+            <ReportItem id="p_freeze" type="VoteResultsReportItem" freezeId="p_vote_{$user_id}" blobItem="P_FREEZE" blobSubItem="{$user_id}" voteBlobItem="P_VOTE" personId="1" width="75px">
+                <![CDATA[
+                        {$item}
+                        <script type='text/javascript'>
+                            var promotion = "{getText(RP_CHAIR, FEC_REVIEW, PROMOTION, {$user_id}, 0, 0)}";
+                            if(promotion.indexOf("i recommend promotion") == -1){
+                                $(".p_vote_{$user_id}").empty();
+                            }
+                        </script>
+                ]]>
+            </ReportItem>
+            
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    table = $('#chairTable').DataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "autoWidth": false,
+                        "iDisplayLength": -1
+                    });
+                    if(typeof order != 'undefined'){
+                        table.order(order);
+	                    table.search(searchStr);
+	                    table.draw();
+	                    $(".dataTables_scrollBody").scrollTop(scrollTop);
+	                    order = undefined;
+	                    search = undefined;
+	                    scrollTop = 0;
+	                }
+                    $('#chairTable select, #chairTable textarea').change(function(){
+                        saveAll(function(){
+                            $("#refresh").click();
+                        });
+                        $("#chairTable select, #chairTable input, #chairTable textarea").prop("disabled", true);
+                    });
+                    $("#refresh").click(function(){
+                        order = table.order();
+                        searchStr = table.search();
+                        scrollTop = $(".dataTables_scrollBody").scrollTop();
+                        $("#refresh").prop("disabled", true);
+                        $("#chairTable select, #chairTable input, #chairTable textarea").prop("disabled", true);
+                        dbWritable = false;
+                        $(".selectedReportTab").click();
+                        dbWritable = true;
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>
