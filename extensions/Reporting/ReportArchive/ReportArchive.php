@@ -172,69 +172,61 @@ class ReportArchive extends SpecialPage {
                 }
             }
             
-            // Check if DD for that year
-            $blob = new ReportBlob(BLOB_TEXT, $y, 0, 0);
-            $blob_address = ReportBlob::create_address("RP_CHAIR", "FEC_DEAN_DECISION", "INCREMENT", $person->getId());
-            $blob->load($blob_address);
-            $blob_data = $blob->getData();
-            $isDD = ($blob_data !== null);
-            
             // Letters
             $letterUrl = "";
             $letter1Url = "";
             $letter2Url = "";
             $letter3Url = "";
             $letter4Url = "";
-            if(!$isDD){
-                $letter = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER", $y); // Past Years
-                $letter1 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER1", $y);
-                $letter2 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER2", $y);
-                $letter3 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER3", $y);
-                $letter4 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER4", $y);
-                if(count($letter) > 0){
-                    $pdf = PDF::newFromToken($letter[0]['token']);
-                    $letterUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Letter</a><br />";
-                }
-                if(count($letter1) > 0){
-                    $pdf = PDF::newFromToken($letter1[0]['token']);
-                    
-                    $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
-                    $blob_address = ReportBlob::create_address("RP_LETTER1", "TABLE", "TEMPLATE", $person->getId());
-                    $blob->load($blob_address);
-                    $blob_data = $blob->getData();
-                    
-                    $letter1Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
-                }
-                if(count($letter2) > 0){
-                    $pdf = PDF::newFromToken($letter2[0]['token']);
-                    
-                    $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
-                    $blob_address = ReportBlob::create_address("RP_LETTER2", "TABLE", "TEMPLATE", $person->getId());
-                    $blob->load($blob_address);
-                    $blob_data = $blob->getData();
-                    
-                    $letter2Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
-                }
-                if(count($letter3) > 0){
-                    $pdf = PDF::newFromToken($letter3[0]['token']);
-                    
-                    $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
-                    $blob_address = ReportBlob::create_address("RP_LETTER3", "TABLE", "TEMPLATE", $person->getId());
-                    $blob->load($blob_address);
-                    $blob_data = $blob->getData();
-                    
-                    $letter3Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
-                }
-                if(count($letter4) > 0){
-                    $pdf = PDF::newFromToken($letter4[0]['token']);
-                    
-                    $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
-                    $blob_address = ReportBlob::create_address("RP_LETTER4", "TABLE", "TEMPLATE", $person->getId());
-                    $blob->load($blob_address);
-                    $blob_data = $blob->getData();
-                    
-                    $letter4Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
-                }
+
+            $letter = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER", $y); // Past Years
+            $letter1 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER1", $y);
+            $letter2 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER2", $y);
+            $letter3 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER3", $y);
+            $letter4 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER4", $y);
+            if(count($letter) > 0){
+                $pdf = PDF::newFromToken($letter[0]['token']);
+                $letterUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Letter</a><br />";
+            }
+            if(count($letter1) > 0){
+                $pdf = PDF::newFromToken($letter1[0]['token']);
+                
+                $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
+                $blob_address = ReportBlob::create_address("RP_LETTER1", "TABLE", "TEMPLATE", $person->getId());
+                $blob->load($blob_address);
+                $blob_data = $blob->getData();
+                
+                $letter1Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
+            }
+            if(count($letter2) > 0){
+                $pdf = PDF::newFromToken($letter2[0]['token']);
+                
+                $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
+                $blob_address = ReportBlob::create_address("RP_LETTER2", "TABLE", "TEMPLATE", $person->getId());
+                $blob->load($blob_address);
+                $blob_data = $blob->getData();
+                
+                $letter2Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
+            }
+            if(count($letter3) > 0){
+                $pdf = PDF::newFromToken($letter3[0]['token']);
+                
+                $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
+                $blob_address = ReportBlob::create_address("RP_LETTER3", "TABLE", "TEMPLATE", $person->getId());
+                $blob->load($blob_address);
+                $blob_data = $blob->getData();
+                
+                $letter3Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
+            }
+            if(count($letter4) > 0){
+                $pdf = PDF::newFromToken($letter4[0]['token']);
+                
+                $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
+                $blob_address = ReportBlob::create_address("RP_LETTER4", "TABLE", "TEMPLATE", $person->getId());
+                $blob->load($blob_address);
+                $blob_data = $blob->getData();
+                
+                $letter4Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
             }
             
             $wgOut->addHTML("<td align='center' style='padding-left:1em; padding-right:1em;'>{$arUrl}</td>
