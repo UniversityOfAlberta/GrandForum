@@ -9,9 +9,13 @@ class PersonSupervisesReportItemSet extends ReportItemSet {
         $startDate = $this->getAttr("start", REPORTING_CYCLE_START);
         $endDate = $this->getAttr("end", REPORTING_CYCLE_END);
         
-        $hqpType = $this->getAttr('hqpType', 'grad');
+        $hqpType = explode("|", $this->getAttr('hqpType', 'grad'));
+        $positions = array();
+        foreach($hqpType as $type){
+            $positions = array_merge($positions, Person::$studentPositions[$type]);
+        }
         
-        $hqps = $person->getStudentInfo(Person::$studentPositions[$hqpType], $startDate, $endDate);
+        $hqps = $person->getStudentInfo($positions, $startDate, $endDate);
         foreach($hqps as $row){
             $tuple = self::createTuple();
             $tuple['person_id'] = $row['hqp'];

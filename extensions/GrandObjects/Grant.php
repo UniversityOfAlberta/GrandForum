@@ -160,6 +160,14 @@ class Grant extends BackboneModel {
         return $this->total;
     }
     
+    function getAverage(){
+        $start = new DateTime(substr($this->getStartDate(), 0, 10));
+        $end = new DateTime(substr($this->getEndDate(), 0, 10));
+        $interval = intval($start->diff($end)->format('%a')); // Difference in days
+        $years = round($interval/365);
+        return $this->getTotal()/max(1, $years);
+    }
+    
     function getPortions(){
         return $this->portions;
     }

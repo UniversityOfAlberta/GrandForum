@@ -31,7 +31,12 @@ class RadioReportItem extends AbstractReportItem {
         $orientation = $this->getAttr('orientation', 'vertical');
         $descriptions = explode("|", $this->getAttr('descriptions', ''));
         if($orientation == 'vertical' && count($descriptions) != count($items)){
-            $output = implode("<br />\n", $items);
+            if(count($labels) == count($options)){
+                $output = implode("\n", $items);
+            }
+            else{
+                $output = implode("<br />\n", $items);
+            }
         }
         else if($orientation == 'horizontal' && count($descriptions) != count($items)){
             $output = implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $items);

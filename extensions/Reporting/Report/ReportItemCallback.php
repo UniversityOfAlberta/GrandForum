@@ -33,6 +33,8 @@ class ReportItemCallback {
             "course_title" => "getCourseTitle",
             "course_comp" => "getCourseComp",
             "course_section" => "getCourseSection",
+            "course_percent" => "getCoursePercent",
+            "course_calendar" => "getCourseCalendar",
             "course_enroll" => "getCourseEnroll",    
             "course_enroll_percent" => "getCourseEnrollPercent",
             // Student Relation
@@ -55,6 +57,9 @@ class ReportItemCallback {
             "grant_start_date" => "getGrantStartDate",
             "grant_end_date" => "getGrantEndDate",
             "grant_total" => "getGrantTotal",
+            "grant_average" => "getGrantAverage",
+            "grant_is_pi" => "isGrantPI",
+            "grant_people" => "getGrantPeople",
             // Outputs
             "output_id" => "getOutputId",
             "output_title" => "getOutputTitle",
@@ -96,6 +101,7 @@ class ReportItemCallback {
             "user_full_roles" => "getUserFullRoles",
             "user_sub_roles" => "getUserSubRoles",
             "user_uni_start" => "getUserUniStart",
+            "user_uni_end" => "getUserUniEnd",
             "user_level" => "getUserLevel",
             "user_dept" => "getUserDept",
             "user_uni" => "getUserUni",
@@ -104,6 +110,9 @@ class ReportItemCallback {
             "user_case_number" => "getUserCaseNumber",
             "user_keywords" => "getUserKeywords",
             "user_supervisors" => "getUserSupervisors",
+            "user_cosupervisors" => "getUserCoSupervisors",
+            "getUserHQPGraduatedCount" => "getUserHQPGraduatedCount",
+            "getUserHQPCalendarCount" => "getUserHQPCalendarCount",
             "user_grad_count" => "getUserGradCount",
             "user_msc_count" => "getUserMscCount",
             "user_phd_count" => "getUserPhdCount",
@@ -356,6 +365,16 @@ class ReportItemCallback {
         $course = Course::newFromId($this->reportItem->projectId);
         return $course->sect;
     }
+    
+    function getCoursePercent(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getCoursePercent($this->reportItem->projectId);
+    }
+    
+    function getCourseCalendar(){
+        $course = Course::newFromId($this->reportItem->projectId);
+        return $course->getCalendarString();
+    }
 
     function getCourseEnroll(){
         $course = Course::newFromId($this->reportItem->projectId);
@@ -414,6 +433,40 @@ class ReportItemCallback {
     function getGrantTotal(){
         $grant = Grant::newFromId($this->reportItem->productId);
         return number_format($grant->getTotal());
+    }
+    
+    function getGrantAverage(){
+        $grant = Grant::newFromId($this->reportItem->productId);
+        return number_format($grant->getAverage());
+    }
+    
+    function isGrantPI(){
+        $grant = Grant::newFromId($this->reportItem->productId);
+        $pi = $grant->getPI();
+        if($pi instanceof Person && $pi->getNameForForms() == $this->reportItem->getReport()->person->getNameForForms()){
+            return "Yes";
+        }
+        return "No";
+    }
+    
+    function getGrantPeople(){
+        $grant = Grant::newFromId($this->reportItem->productId);
+        $pi = $grant->getPI();
+        $externalPI = $grant->getExternalPI();
+        $copis = $grant->getCoPI();
+        $people = array();
+        if($pi instanceof Person && $pi->getNameForForms() != "" && $pi->getNameForForms() != $this->reportItem->getReport()->person->getNameForForms()){
+            $people[] = $pi->getNameForForms();
+        }
+        if(trim($externalPI) != ""){
+            $people[] = trim($externalPI);
+        }
+        foreach($copis as $copi){
+            if($copi->getNameForForms() != $this->reportItem->getReport()->person->getNameForForms()){
+                $people[] = $copi->getNameForForms();
+            }
+        }
+        return implode("; ", $people);
     }
     
     function getOutputId(){
@@ -596,6 +649,16 @@ class ReportItemCallback {
         return date_format($date, 'F Y');
     }
     
+    function getUserUniEnd(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $university = $person->getUniversity();
+        if($university['date'] == "0000-00-00 00:00:00"){
+            return "";
+        }
+        $date = new DateTime($university['date']);
+        return date_format($date, 'F Y');
+    }
+    
     function getUserLevel(){
         $person = Person::newFromId($this->reportItem->personId);
         $university = $person->getUniversity();
@@ -635,16 +698,23 @@ class ReportItemCallback {
         return $person->getKeywords(", ");
     }
     
-    function getUserSupervisors(){
+    function getUserSupervisors($excludeMe=false){
         $supervisors = array();
         $person = Person::newFromId($this->reportItem->personId);
         $university = $person->getUniversity();
         $supervisors = $person->getSupervisorsDuring($university['start'], $university['start']);
         $sups = array();
         foreach($supervisors as $supervisor){
+            if($excludeMe && $supervisor->getNameForForms() == $this->reportItem->getReport()->person->getNameForForms()){
+                continue;
+            }
             $sups[] = $supervisor->getNameForForms();
         }
         return implode("; ", $sups);
+    }
+    
+    function getUserCoSupervisors(){
+        return $this->getUserSupervisors(true);
     }
 
     function getUserPublicationCount($start_date,$end_date,$case='Publication'){
@@ -689,6 +759,11 @@ class ReportItemCallback {
                 $category = "Patent/Spin-Off";
                 $type = "Patent";
                 $histories = $person->getProductHistories($year, "Patent");
+                break;
+            case "Report of Invention":
+                $category = "Patent/Spin-Off";
+                $type = "Report of Invention";
+                $histories = $person->getProductHistories($year, "Report of Invention");
                 break;
             case "Award":
                 $category = "Award";
@@ -1404,6 +1479,28 @@ class ReportItemCallback {
     
     function getReportType(){
         return $this->reportItem->getSection()->getAttr("blobReport", $this->reportItem->getReport()->reportType);
+    }
+    
+    function getUserHQPGraduatedCount($type, $year){
+        $person = Person::newFromId($this->reportItem->personId);
+        $data = $person->getStudentInfo(Person::$studentPositions[$type], $year."-01-01", $year."-12-31");
+        $hqps = array();
+        foreach($data as $row){
+            if($row['status'] == "Completed" && substr($row['end_date'], 0, 4) == $year){
+                $hqps[$row['hqp']] = $row;
+            }
+        }
+        return count($hqps);
+    }
+    
+    function getUserHQPCalendarCount($type, $year){
+        $person = Person::newFromId($this->reportItem->personId);
+        $data = $person->getStudentInfo(Person::$studentPositions[$type], $year."-01-01", $year."-12-31");
+        $hqps = array();
+        foreach($data as $row){
+            $hqps[$row['hqp']] = $row;
+        }
+        return count($hqps);
     }
     
     function getUserHQPCount(){

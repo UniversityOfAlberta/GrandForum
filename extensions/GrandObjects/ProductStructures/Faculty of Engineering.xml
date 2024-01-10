@@ -899,6 +899,14 @@
             <date label="Date Awarded"></date>
         </Product>
         
+        <Product type="Report of Invention" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Product>
+        
         <Product type="Spin-Off" status="">
             <data>
                 <field label="URL" type="URL">url</field>

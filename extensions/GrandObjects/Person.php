@@ -33,6 +33,8 @@ class Person extends BackboneModel {
                                                       "graduate student - master&#39;s course",
                                                       "graduate student - master&#39;s thesis",
                                                       "graduate student - master&#39;s"),
+                                     'meng'  => array("meng",
+                                                      "graduate student - master of engineering"),
                                      'phd'   => array("phd",
                                                       "ph.d.",
                                                       "phd student",
@@ -69,7 +71,9 @@ class Person extends BackboneModel {
                                                       "bsc (honours)",
                                                       "undergraduate, honours",
                                                       "diplomaed engineer (dipl.ing.)",
-                                                      "diplomaed engineer")
+                                                      "diplomaed engineer"),
+                                     'visiting' => array("visiting student"),
+                                     'other' => array("other")
                                     );
 
     var $user = null;

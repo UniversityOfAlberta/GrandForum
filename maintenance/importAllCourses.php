@@ -53,6 +53,21 @@
         else if ($term == "Winter2020"){ $startEndDate["start"] = 43835; $startEndDate["end"]  = 43928;} //Winter2020: Jan 6, 2020 - Apr 8, 2020
         else if ($term == "Spring2020"){ $startEndDate["start"] = 43954; $startEndDate["end"]  = 43991;} //Spring2020: May 4, 2020 - Jun 10, 2020
         else if ($term == "Summer2020"){ $startEndDate["start"] = 44017; $startEndDate["end"]  = 44054;} //Summer2020: Jul 6, 2020 - Aug 12, 2020
+        
+        else if ($term == "Fall2020"){ $startEndDate["start"] = 44073; $startEndDate["end"]  = 44170;}   //Fall2020:   Sep 1, 2020 - Dec 7, 2020
+        else if ($term == "Winter2021"){ $startEndDate["start"] = 44205; $startEndDate["end"]  = 44300;} //Winter2021: Jan 11, 2021 - Apr 16, 2021
+        else if ($term == "Spring2021"){ $startEndDate["start"] = 44317; $startEndDate["end"]  = 44361;} //Spring2021: May 3, 2021 - Jun 16, 2021
+        else if ($term == "Summer2021"){ $startEndDate["start"] = 44380; $startEndDate["end"]  = 44417;} //Summer2021: Jul 5, 2021 - Aug 11, 2021
+        
+        else if ($term == "Fall2021"){ $startEndDate["start"] = 44439; $startEndDate["end"]  = 44536;}   //Fall2021:   Sep 1, 2021 - Dec 7, 2021
+        else if ($term == "Winter2022"){ $startEndDate["start"] = 44565; $startEndDate["end"]  = 44658;} //Winter2022: Jan 5, 2022 - Apr 8, 2022
+        else if ($term == "Spring2022"){ $startEndDate["start"] = 44689; $startEndDate["end"]  = 44726;} //Spring2022: May 9, 2022 - June 15, 2022
+        else if ($term == "Summer2022"){ $startEndDate["start"] = 44745; $startEndDate["end"]  = 44782;} //Summer2022: Jul 4, 2022 - Aug 10, 2022
+        
+        else if ($term == "Fall2022"){ $startEndDate["start"] = 44804; $startEndDate["end"]  = 44902;}   //Fall2022:   Sep 1, 2022 - Dec 8, 2022
+        else if ($term == "Winter2023"){ $startEndDate["start"] = 44930; $startEndDate["end"]  = 45027;} //Winter2023: Jan 5, 2023 - Apr 12, 2023
+        else if ($term == "Spring2023"){ $startEndDate["start"] = 45053; $startEndDate["end"]  = 45090;} //Spring2023: May 8, 2023 - June 14, 2023
+        else if ($term == "Summer2023"){ $startEndDate["start"] = 45116; $startEndDate["end"]  = 45146;} //Summer2023: Jul 10, 2023 - Aug 9, 2023
                     
         return $startEndDate; 
     }
@@ -61,8 +76,8 @@
     $start = microtime(true);
     
     // clean DB
-    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 17712", true);
-    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 17713", true);  
+    //DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 29615", true);
+    //DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 29616", true);  
     
     $dataDir = "csv/";
     $courseDescrFile = "allCoursesDescription.csv";
@@ -74,6 +89,7 @@
     $filename = $dataDir . $courseDescrFile;
     $descrMap = array_map("str_getcsv", file($filename)); 
     $map = array(); // map to be used like $map = array(key => array(('title' => $title, 'descr' => $descr)))
+    $notFound = array();
     
     foreach($descrMap as $rowIndex => $rowValues){
         $key = trim($rowValues[0]) . trim($rowValues[1]);
@@ -83,7 +99,6 @@
         $map[$key] = array('title' => $title, 'descr' => $descr);
     }
 
-    
     $auto_increment = DBFunctions::execSQL("SELECT `AUTO_INCREMENT`
                                             FROM  INFORMATION_SCHEMA.TABLES
                                             WHERE TABLE_SCHEMA = '{$config->getValue('dbName')}'
@@ -102,6 +117,7 @@
         
         $grandUserCourses = array();
         $grandCourses = array();
+        $courseIds = array();
         
         
         $grandCoursesData = array();
@@ -141,39 +157,50 @@
                 $key = $term . $classNbr . $component . $sect . $employeeID;
                 
                 // skip if key exists OR user is not a Faculty of Science Member
-                if (isset($grandCourses[$key]) || $userID == 0 || ($role != "PI" && $role != "CO")){
+                if (isset($grandCourses[$key]) || 
+                    //$userID == 0 || 
+                    ($role != "PI" && $role != "CO")){
                     continue;
                 }
 
                 // set course title and description
                 $mapKey = $subject . $catalog;
+                if(!isset($map[$mapKey])){
+                    $notFound[$mapKey] = $rowValues;
+                }
                 $title = @DBFunctions::escape($map[$mapKey]['title']); // some courses may not exist in the map
                 $descr = @DBFunctions::escape($map[$mapKey]['descr']); // @ gets rid of warnings
                 
                 
                 //if ($userID == 337){ echo "yoooooooooo" . $subject . " " . $catalog . "\n"; }
                 
-                //if($userID == 410){
-                    $courseID++; // # of total insertions
-                                                   
-                    // set the key to values string
+                //if($person->isRole("ATS")){
+                    if(!isset($grandCourses[$key])){
+                        $courseID++; // # of total insertions
+                        $courseIds[$key] = $courseID;
+                        
+                        // set the key to values string
+                        $grandCourses[$key] = "('{$courseIds[$key]}',
+                                                '{$acadOrg}','{$term}','{$termString}',
+                                                '{$classNbr}','{$subject}','{$catalog}',
+                                                '{$component}','{$sect}','{$crsStatus}',
+                                                '{$facilID}','{$startDate}','{$endDate}',
+                                                '{$hrsFrom}','{$hrsTo}','{$totEnrl}',
+                                                '{$campus}','{$note}', '{$title}', '{$descr}')";
+                    }
                     
-                    $grandCourses[$key] = "('{$acadOrg}','{$term}','{$termString}',
-                                            '{$classNbr}','{$subject}','{$catalog}',
-                                            '{$component}','{$sect}','{$crsStatus}',
-                                            '{$facilID}','{$startDate}','{$endDate}',
-                                            '{$hrsFrom}','{$hrsTo}','{$totEnrl}',
-                                            '{$campus}','{$note}', '{$title}', '{$descr}')";
-                    
-                   // set grandUserCourses         
-                   $grandUserCourses[] = "('{$userID}','{$courseID}')";
+                    // set grandUserCourses 
+                    if($userID != 0){      
+                        $grandUserCourses[] = "('{$userID}','{$courseIds[$key]}')";
+                    }
                //}
             }
         }
         
         if(count($grandUserCourses) > 0 && count($grandCourses) > 0){
             $insertSQLGC = "INSERT INTO `grand_courses` 
-                                   (`Acad Org`, `Term`, `term_string`,
+                                   (`id`,
+                                    `Acad Org`, `Term`, `term_string`,
                                     `Class Nbr`, `Subject`, `Catalog`, 
                                     `Component`, `Sect`, `Crs Status`,
                                     `Facil ID`, `Start Date`, `End Date`,
@@ -193,6 +220,15 @@
     $time_elapsed_secs = microtime(true) - $start;
     
     echo "\n\n\nProcess Successfully Completed in " . $time_elapsed_secs . " seconds.\n\n\n";
+    
+    /*
+    ksort($notFound);
+    if(count($notFound) > 0){
+        echo "Missing Course descriptions:\n";
+        foreach($notFound as $key => $values){
+            echo trim($values[9])."\t".trim($values[10])."\n";
+        }
+    }*/
 
 
 //ROW: 0 Term , 1 Acad Group, 2 ID, 3 Role, 4 Access, 5 Name, 6 Last, 7 First Name, 

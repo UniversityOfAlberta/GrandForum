@@ -118,7 +118,14 @@ class ImportBibTeXAPI extends API{
         if($product->description == ""){ $product->description = @$paper['abstract']; }
         if($product->status == ""){ $product->status = "Published"; }
         if($product->date == ""){ $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-{$paper['day']}"; }
-        if($product->acceptance_date == ""){$product->acceptance_date = @"{$paper['acceptance_date']}";}
+        if(str_replace("0000-00-00", "", $product->acceptance_date) == ""){
+            if(@$paper['acceptance_date'] != ""){
+                $product->acceptance_date = @"{$paper['acceptance_date']}";
+            }
+            else{
+                $product->acceptance_date = $product->date;
+            }
+        }
         if(!is_array($product->data)){ $product->data = array(); }
         if(!is_array($product->authors)){ $product->authors = array(); }
         if(!$product->exists()){
@@ -245,9 +252,9 @@ class ImportBibTeXAPI extends API{
                 foreach($createdProducts as $product){
                     $sqls = $product->syncAuthors(true);
                     foreach($sqls[1] as $s){
-                        $syncInserts[] = $s;
+                        $syncInserts[$product->getId()] = $s;
                     }
-                    $syncDeletes[] = $product->getId();
+                    $syncDeletes[$product->getId()] = $product->getId();
                 }
                 
                 if(count($syncInserts) > 0){

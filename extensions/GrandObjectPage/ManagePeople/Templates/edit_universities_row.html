@@ -7,11 +7,12 @@
             <tr><td align="right"><b>Position/Degree:</b></td><td>
             <% if(_.where(this.person.get('roles'), {role: HQP}).length > 0 && 
                   _.filter(this.person.get('roles'), function(r){ return !(r.role == HQP); }).length == 0){ %>
-                <%= HTML.Select(this, 'position', {options: ["Other", 
+                <%= HTML.Select(this, 'position', {options: ["Other",
                                                              "Graduate Student - Master's Course", 
                                                              "Graduate Student - Master's Thesis",
                                                              "Graduate Student - Master's",
-                                                             "Graduate Student - Doctoral", 
+                                                             "Graduate Student - Doctoral",
+                                                             "Graduate Student - Master of Engineering", 
                                                              "Post-Doctoral Fellow", 
                                                              "Research Associate", 
                                                              "Research Assistant", 
@@ -20,7 +21,8 @@
                                                              "Professional End User",
                                                              "High School Student",
                                                              "Undergraduate Student",
-                                                             "Honors Thesis"]}) %>
+                                                             "Honors Thesis",
+                                                             "Visiting Student"]}) %>
             <% } else { %>
                 <%= HTML.Select(this, 'position', {options: allPositions}) %>
             <% } %>

@@ -426,6 +426,29 @@ class Course extends BackboneModel{
         $term = $this->getTermUsingStartMonth($this->getStartMonth());
         return "$term $year";
     }
+    
+    function getCalendarString(){
+        $data = DBFunctions::select(array('grand_courses'),
+                                    array('*'),
+                                    array('term_string' => EQ($this->term_string),
+                                          'subject' => EQ($this->subject),
+                                          'catalog' => EQ($this->catalog)));
+        $string = array('LEC' => 0,
+                        'SEM' => 0,
+                        'LAB' => 0);
+        foreach($data as $row){
+            if($row['Component'] == "LEC"){
+                $string['LEC'] = 3;
+            }
+            if($row['Component'] == "SEM"){
+                $string['SEM'] = "1s";
+            }
+            if($row['Component'] == "LAB"){
+                $string['LAB'] = 3;
+            }
+        }
+        return implode("-", $string);
+    }
 
     function getTermUsingStartMonth($month){
         if($month == "Sep"){

@@ -240,7 +240,7 @@ class AddMember extends SpecialPage{
         $rolesRow->append($rolesLabel)->append($rolesField);
 
         $universities = Person::getAllUniversities();
-        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technical Assistant", "Research Internship", "Undergraduate Student");
+        $positions = array("Other", "Graduate Student - Master of Engineering", "Graduate Student - Master's Course", "Graduate Student - Master's Thesis", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technical Assistant", "Research Internship", "Undergraduate Student", "Honors Thesis", "Visiting Student");
         $departments = Person::getAllDepartments();
         
         $universityLabel = new Label("university_label", "Institution", "The intitution that the user is a member of", VALIDATE_NOTHING);
