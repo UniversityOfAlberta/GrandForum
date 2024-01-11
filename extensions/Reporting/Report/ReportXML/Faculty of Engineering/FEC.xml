@@ -86,8 +86,8 @@
         <Static>
             <![CDATA[
                 <table class='wikitable'>
-                    <tr><td><b>Reporting Period:</b></td><td>September 1, {$last_year} to August 31, {$this_year}</td></tr>
-                    <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
+                    <tr><td><b>Reporting Period:</b></td><td style='white-space:nowrap;'>September 1, {$last_year} to August 31, {$this_year}</td></tr>
+                    <tr><td><b>Name:</b></td><td>{$user_first_name} {$user_last_name}</td></tr>
                     <tr><td><b>Position:</b></td><td>{$user_level}</td></tr>
                     <tr><td><b>Department:</b></td><td>{$user_dept}</td></tr>
                     <tr><td><b>Date of Initial Appointment:&nbsp;&nbsp;&nbsp;</b></td><td>{$user_appointment_year}</td></tr>
@@ -109,7 +109,7 @@
                         {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="status_other" type="Text" width="175px" placeholder="other - specify jurisdiction" blobItem="STATUS">
+        <ReportItem id="status_other" type="Text" width="175px" placeholder="other - specify jurisdiction" blobItem="STATUS_OTHER">
             <![CDATA[
                         <div style='position:absolute; top:calc(1*(2em) - 5px); left: 55px; white-space:nowrap;'>({$item})</div>
                     </div>
@@ -269,7 +269,7 @@
         <Static>
             <![CDATA[
                 <h3>(b) Course evaluations over the last five years:</h3>
-                <table class='wikitable'>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
                     <tr>
                         <td rowspan='2' style='min-width: 5em;'></td>
                         <th colspan='5'>Academic Year</th>
@@ -283,27 +283,27 @@
                     </tr>
                     <tr>
                         <td>Total students taught in all courses</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
                     </tr>
                     <tr>
                         <td>Total students taught in all courses</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
                     </tr>
                     <tr>
                         <td>Student weighted USRI median across all courses for question #221 (instructor effectiveness)</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
+                        <td align='right'></td>
                     </tr>
                 </table>
             ]]>
@@ -319,7 +319,7 @@
         </ReportItem>
         <ReportItem id="course_development" type="MultiText" blobItem="COURSE_DEVELOPMENT" blobType="BLOB_ARRAY" labels="Course Number (indicate new course with *)|Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Text|Textarea|Text|Text" sizes="100|200|100|100" multiple="true">
             <![CDATA[
-                <p>Course/Laboratory development</p>
+                <p>Course/Laboratory development:</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -614,7 +614,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="consent" type="Checkbox" options="I do NOT consent to having the information on this form used for information and reporting purposes.">
+        <ReportItem id="consent" type="Checkbox" blobItem="CONSENT" blobType="BLOB_ARRAY" options="I do NOT consent to having the information on this form used for information and reporting purposes.">
             <![CDATA[
                 <table style='margin-top: 1em; font-weight: bold;'>
                     <tr>
@@ -844,13 +844,200 @@
         </Static>
     </ReportSection>
     <ReportSection id="university_activities" tooltip="UNIVERSITY AND RELATED LEADERSHIP ACTIVITIES" name="University Activities" title="6. UNIVERSITY AND RELATED LEADERSHIP ACTIVITIES" blobSection="FEC_UNIVERSITY_ACTIVITIES" type="EditableReportSection">
+        <ReportItem id="committees" type="MultiText" blobItem="COMMITTEES" blobType="BLOB_ARRAY" labels="Committee|Number of Members|Were You Chair?|Total Hours/Year" types="Text|Text|Select(Yes,No)|Text" sizes="300|75|50|75" multiple="true">
+            <![CDATA[
+                <h3>(a) Major university, faculty and department committees and office:</h3>
+                <p>(Indicate number of members, if chair of the committee, approximate hours spent/year.)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="initiative" type="Textarea" blobItem="INITIATIVE">
+            <![CDATA[
+                <h3>(b) Initiative taken to enhance student/faculty interaction:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extension" type="Textarea" blobItem="EXTENSION">
+            <![CDATA[
+                <h3>(c) Faculty of Extension Activities:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="Textarea" blobItem="OTHER">
+            <![CDATA[
+                <h3>(d) Other: (Describe)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         
+        <Static>
+            <![CDATA[
+                <h3>(e) Number of graduate student oral and examing committees you have served on in the past year, excluding your own students listed in section 3:</h3>
+                <table class='wikitable'>
+                    <tr>
+                        <th>Committee Role</th>
+                        <th>Departmental</th>
+                        <th style='width:100px;'>External to Departmental</th>
+                        <th style='width:100px;'>External to University</th>
+                    </tr>
+                    <tr>
+                        <td valign='top' style='line-height: 2.5em;'>
+                            Committee Chair<br />
+                            Examiner:<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;PhD Candidacy<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;PhD Thesis<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;MSc Thesis<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;MEng Project
+                        </td>
+            ]]>
+        </Static>
+        <!-- Departmental -->
+        <ReportItem id="committee1_1" type="Integer" blobItem="COMMITTEE1_1" width="100px">
+            <![CDATA[
+                    <td valign='top' style='line-height: 2.5em;'>
+                        {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee2_1" type="Integer" blobItem="COMMITTEE2_1" width="100px">
+            <![CDATA[
+                        <br />
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee3_1" type="Integer" blobItem="COMMITTEE3_1" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee4_1" type="Integer" blobItem="COMMITTEE4_1" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee5_1" type="Integer" blobItem="COMMITTEE5_1" width="100px">
+            <![CDATA[
+                        {$item}<br >
+                    </td>
+            ]]>
+        </ReportItem>
+        <!-- External to Departmental -->
+        <ReportItem id="committee1_2" type="Integer" blobItem="COMMITTEE1_2" width="100px">
+            <![CDATA[
+                    <td valign='top' style='line-height: 2.5em;'>
+                        {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee2_2" type="Integer" blobItem="COMMITTEE2_2" width="100px">
+            <![CDATA[
+                        <br />
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee3_2" type="Integer" blobItem="COMMITTEE3_2" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee4_2" type="Integer" blobItem="COMMITTEE4_2" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee5_2" type="Integer" blobItem="COMMITTEE5_2" width="100px">
+            <![CDATA[
+                        {$item}<br >
+                    </td>
+            ]]>
+        </ReportItem>
+        <!-- External to University -->
+        <ReportItem id="committee1_3" type="Integer" blobItem="COMMITTEE1_3" width="100px">
+            <![CDATA[
+                    <td valign='top' style='line-height: 2.5em;'>
+                        {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee2_3" type="Integer" blobItem="COMMITTEE2_3" width="100px">
+            <![CDATA[
+                        <br />
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee3_3" type="Integer" blobItem="COMMITTEE3_3" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee4_3" type="Integer" blobItem="COMMITTEE4_3" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee5_3" type="Integer" blobItem="COMMITTEE5_3" width="100px">
+            <![CDATA[
+                        {$item}<br >
+                    </td>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                    </tr>
+                </table>
+            ]]>
+        </Static>
     </ReportSection>
     <ReportSection id="professional_activities" tooltip="PROFESSIONAL LEADERSHIP ACTIVITIES" name="Professional Activities" title="7. PROFESSIONAL LEADERSHIP ACTIVITIES" blobSection="FEC_PROFESSIONAL_ACTIVITIES" type="EditableReportSection">
-        
+        <ReportItem id="committees" type="MultiText" blobItem="COMMITTEES" blobType="BLOB_ARRAY" labels="Committee|Office Held|Total Hours/Year" types="Text|Text|Text" sizes="300|75|75" multiple="true">
+            <![CDATA[
+                <h3>(a) National and regional committees including technical and professional societies:</h3>
+                <p>(List only those organizations in which you held a committee position or other office. Do not list organizations in which you had no role other than membership. Note office held and approximate hours/year.)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="consulting" type="MultiText" blobItem="CONSULTING" blobType="BLOB_ARRAY" labels="Generic Description of Project|Academic Year|Summer Period" types="Text|Text|Text" sizes="300|75|75" multiple="true">
+            <![CDATA[
+                <h3>(b) Professional consulting:</h3>
+                <p>(i)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="names" type="Textarea" blobItem="NAMES">
+            <![CDATA[
+                <p>(ii) Names and nature of any continuing contractual arrangements with outside organizations.</p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="awards" tooltip="HONOURS AND AWARDS" name="Awards" title="8. HONOURS AND AWARDS" blobSection="FEC_AWARDS" type="EditableReportSection">
-        
+        <Static>
+            <![CDATA[
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Award Category</th>
+                            <th>Scope</th>
+                            <th>Year</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <Static>
+                <![CDATA[
+                    <tr><td>{$product_title}</td>
+                        <td align='center'>{$product_type}</td>
+                        <td align='center'>{$award_scope}</td>
+                        <td align='center'>{$product_year}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table>
+            ]]>
+        </Static>
     </ReportSection>
     <ReportSection id="misc" tooltip="MISCELLANEOUS" name="Miscellaneous" title="9. MISCELLANEOUS" blobSection="FEC_MISCELLANEOUS" type="EditableReportSection">
         <ReportItem id="misc" type="Textarea" blobItem="MISC">
@@ -865,6 +1052,19 @@
             <![CDATA[
                 <p>(In addition to anything else that you wish to include on this page, please describe any special initiatives or activities that you wish to bring to the attention of the FEC, or that you believe were not adequately covered in the preceding sections.)</p>
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="consent" type="Checkbox" blobItem="CONSENT" blobType="BLOB_ARRAY" options="I do NOT consent to having the information on this form used for information and reporting purposes.">
+            <![CDATA[
+                <table style='margin-top: 1em; font-weight: bold;'>
+                    <tr>
+                        <td valign='top'>Note:</td>
+                        <td>Information provided in this section related to the Statement of Pandemic Impacts may only be used for information and reporting purposes.</td>
+                    </tr>
+                    <tr>
+                        <td colspan='2'>{$item}</td>
+                    </tr>
+                </table>
             ]]>
         </ReportItem>
     </ReportSection>

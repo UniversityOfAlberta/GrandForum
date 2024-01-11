@@ -204,6 +204,7 @@ class ReportItemCallback {
             "round" => "round",
             "set" => "set",
             "get" => "get",
+            "if" => "ifCond",
             "and" => "andCond",
             "or" => "orCond",
             "contains" => "contains",
@@ -1277,12 +1278,17 @@ class ReportItemCallback {
         }
     }
     
-    function getText($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+    function getText($rp, $section, $blobId, $subId, $personId, $projectId, $year=null, $clean=false){
         $year = ($year == null) ? $this->reportItem->getReport()->year : $year;
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
         $result = $blb->load($addr);
-        return nl2br($blb->getData());
+        $data = nl2br($blb->getData());
+        if($clean){
+            $data = str_replace("(", "", $data);
+            $data = str_replace(")", "", $data);
+        }
+        return $data;
     }
     
     function getNumber($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
@@ -1362,6 +1368,15 @@ class ReportItemCallback {
     
     function get($key){
         return $this->reportItem->getVariable($key);
+    }
+    
+    function ifCond($condition, $result){
+        $value = false;
+        @eval("\$value = ($condition);");
+        if($value){
+            return $result;
+        }
+        return "";
     }
     
     function andCond(){
