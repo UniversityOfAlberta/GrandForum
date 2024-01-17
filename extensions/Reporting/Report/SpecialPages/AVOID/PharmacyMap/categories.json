@@ -335,7 +335,7 @@
                 "tags": ["library"]
             },
             {
-                "text": "<en>Technology</en><fr>Technologie</fr>",
+                "text": "<en>Technology</en><fr>Cours d'informatique et soutien technologique</fr>",
                 "value": 88,
                 "code": "CFN-INT-TECH",
                 "description": "Find your local library to attend a workshop, event, or borrow a resource",
