@@ -308,7 +308,7 @@
                         <li>En cochant la case ci-dessous, je confirme que j’ai pris connaissance du formulaire d’information et de consentement. Je reconnais qu’on m’a expliqué le projet, qu’on a répondu à mes questions et qu’on m’a laissé le temps voulu pour prendre une décision. Après réflexion, je consens à participer à ce projet de recherche aux conditions qui y sont énoncées.<span id='consent_eula'>{$item}</span></li>
                 ]]>
             </ReportItem>
-           <ReportItem id="eulaContact" type="SingleCheckbox" blobItem="EULA_CONTACT" blobType="BLOB_TEXT" options="Yes" labels="">
+           <ReportItem id="eulaContact" type="SingleCheckbox" blobItem="EULA_CONTACT" blobType="BLOB_TEXT" options="Yes" optional="true" labels="">
                 <![CDATA[
                         <li>En cochant la case ci-dessous, je consens à être recontacté par l’équipe de recherche afin de sonder mon intérêt à participer à des entrevues d’optimisation et d’évaluation du programme Proactif et à un sondage.{$item}</li>
                 ]]>
