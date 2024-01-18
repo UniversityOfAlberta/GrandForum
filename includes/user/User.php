@@ -3968,7 +3968,7 @@ class User implements IDBAccessObject, UserIdentity {
 			'replyTo' => $replyto,
 		];
 		if($wgAllowHTMLEmail){
-		    $options['contentType'] = 'text/html; charset=iso-8859-1';
+		    $options['contentType'] = 'text/html; charset=UTF-8';
 		}
 		return UserMailer::send( $to, $sender, $subject, $body, $options );
 	}
