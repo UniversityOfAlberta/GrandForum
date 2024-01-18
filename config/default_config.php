@@ -58,6 +58,9 @@
     // API Key for gscholar-rss
     $config->setValue("gscholar-api", "");
     
+    // Default Language
+    $config->setValue("defaultLang", "en");
+    
     // Localization Cache Directory
     $config->setValue("localizationCache", "");
     

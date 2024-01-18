@@ -186,7 +186,7 @@ $wgUseTeX           = false;
 
 $wgLocalInterwiki   = strtolower( $wgSitename );
 
-$wgLanguageCode = "en";
+$wgLanguageCode = $config->getValue('defaultLang');
 
 ## Please edit Credentials.php to configure $wgSecretKey.
 #$wgSecretKey = "";
