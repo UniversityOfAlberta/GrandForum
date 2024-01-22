@@ -415,6 +415,10 @@ ul.compact {
 	padding-left: 20px;
 }
 
+.mw-userlogin-help {
+    display: none;
+}
+
 /* Emphasis */ /* Computers - General */
 kbd {
 	margin: 0.1em;
