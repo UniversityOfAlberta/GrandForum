@@ -178,7 +178,7 @@ class Report extends AbstractReport{
             }
             
             #status_notifications {
-                display: none;
+                display: none !important;
             }
         </style>");
         $wgOut->addHTML("<script type='text/javascript'>
