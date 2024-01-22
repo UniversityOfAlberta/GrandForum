@@ -176,6 +176,10 @@ class Report extends AbstractReport{
                     line-height: 1.25em;
                 }
             }
+            
+            #status_notifications {
+                display: none;
+            }
         </style>");
         $wgOut->addHTML("<script type='text/javascript'>
             if(!embed){
