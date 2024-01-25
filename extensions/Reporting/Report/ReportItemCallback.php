@@ -1048,6 +1048,7 @@ class ReportItemCallback {
     }
     
     function time2date($time, $format='F j, Y'){
+        $format = str_replace("#COMMA", ",", $format);
         return time2date($time, $format);
     }
     
