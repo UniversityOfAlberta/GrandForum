@@ -224,6 +224,18 @@ class InPersonAssessment extends SpecialPage {
                 <td>{$person->getNameForForms()}</td>
                 ".IntakeSummary::getRow($person, $report, "6 Month", true)."
             </tr>");
+            
+            $report->reportType = "RP_AVOID_NINEMO";
+            $wgOut->addHTML("<tr>
+                <td>{$person->getNameForForms()}</td>
+                ".IntakeSummary::getRow($person, $report, "9 Month", true)."
+            </tr>");
+            
+            $report->reportType = "RP_AVOID_TWELVEMO";
+            $wgOut->addHTML("<tr>
+                <td>{$person->getNameForForms()}</td>
+                ".IntakeSummary::getRow($person, $report, "12 Month", true)."
+            </tr>");
         }
         $wgOut->addHTML("</tbody>
                         </table>
