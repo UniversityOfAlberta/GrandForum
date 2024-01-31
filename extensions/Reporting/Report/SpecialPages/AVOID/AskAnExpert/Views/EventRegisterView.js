@@ -77,6 +77,7 @@ EventRegisterView = Backbone.View.extend({
         var dataToSend = {};
 
         dataToSend.topic = "Registration";
+        dataToSend.event = this.model.get("name_of_expert") + " / " + this.model.get("event");
         dataToSend.firstname = form.find('#firstname').val();
         dataToSend.lastname = form.find('#lastname').val();
         dataToSend.email = form.find('#email').val();
@@ -99,8 +100,33 @@ EventRegisterView = Backbone.View.extend({
     cancel: function(){
         
     },
+    
+    renderTinyMCE: function(){
+        _.defer(function(){
+            this.$('textarea').tinymce({
+                theme: 'modern',
+                menubar: false,
+                relative_urls : false,
+                convert_urls: false,
+                plugins: 'link image charmap lists table paste',
+                toolbar: [
+                    'undo redo | bold italic underline | link | bullist numlist outdent indent | alignleft aligncenter alignright'
+                ],
+                paste_data_images: true,
+                invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font',
+                imagemanager_insert_template : '<img src="{$url}" width="{$custom.width}" height="{$custom.height}" />'
+            });
+        }.bind(this));
+    },
 
     render: function(){
+        for (edId in tinyMCE.editors){
+            var e = tinyMCE.editors[edId];
+            if(e != undefined){
+                e.destroy();
+                e.remove();
+            }
+        }
         var data = this.model.toJSON();
         var date = "";
         var time = "";
@@ -116,6 +142,7 @@ EventRegisterView = Backbone.View.extend({
         }
 
         this.$el.html(this.template(data));
+        this.renderTinyMCE();
         return this.$el;
     }
 

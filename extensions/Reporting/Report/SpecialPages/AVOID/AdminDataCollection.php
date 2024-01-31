@@ -172,20 +172,24 @@ class AdminDataCollection extends SpecialPage{
                 $submitted = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID")) ? "Yes" : "No");
                 $submitted3 = $person->isRole("Provider") ? "N/A" : (
                     (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")) ? "Yes" : (
-                        ($baseDiff >= 30*3 && $baseDiff < 30*6) ? "Due" : "No"
-                ));
+                        ($baseDiff >= 30*3 && $baseDiff < 30*6) ? "Due" : (
+                            ($baseDiff < 30*3) ? "Not Due" : "No"
+                )));
                 $submitted6 = $person->isRole("Provider") ? "N/A" : (
                     (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")) ? "Yes" : (
-                        ($baseDiff >= 30*6 && $baseDiff < 30*9) ? "Due" : "No"
-                ));
+                        ($baseDiff >= 30*6 && $baseDiff < 30*9) ? "Due" : (
+                            ($baseDiff < 30*6) ? "Not Due" : "No"
+                )));
                 $submitted9 = $person->isRole("Provider") ? "N/A" : (
                     (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_NINEMO")) ? "Yes" : (
-                        ($baseDiff >= 30*9 && $baseDiff < 30*12) ? "Due" : "No"
-                ));
+                        ($baseDiff >= 30*9 && $baseDiff < 30*12) ? "Due" : (
+                            ($baseDiff < 30*9) ? "Not Due" : "No"
+                )));
                 $submitted12 = $person->isRole("Provider") ? "N/A" : (
                     (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")) ? "Yes" : (
-                        ($baseDiff >= 30*12) ? "Due" : "No"
-                ));
+                        ($baseDiff >= 30*12) ? "Due" : (
+                            ($baseDiff < 30*12) ? "Not Due" : "No"
+                )));
                 
                 $date = ($submitted == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID"), 0, 10) : "N/A";
                 $date3 = ($submitted3 == "Yes") ? substr(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID_THREEMO"), 0, 10) : "N/A";

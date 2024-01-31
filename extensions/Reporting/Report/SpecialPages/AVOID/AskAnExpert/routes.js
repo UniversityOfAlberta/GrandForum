@@ -31,7 +31,7 @@ var pageRouter = new PageRouter;
 pageRouter.on('route:defaultRoute', function (actions) {
     main.set('title', 'Ask An Expert');
     this.closeCurrentView();
-    var pharms= new AskAnExpertEvent();
+    var pharms = new AskAnExpertEvents();
     pharms.fetch();
     //change later to accomodate for more than 1 event if needed
     this.currentView = new ExpertDashboardView({el: $("#currentView"), model: pharms});
@@ -51,10 +51,8 @@ pageRouter.on('route:registerRoute', function (id) {
     this.closeCurrentView();
     var pharms = new AskAnExpertEvent();
     pharms.id = id;
-    console.log(pharms);
     //change this later
     pharms.fetch();
-    console.log(pharms);
     this.currentView = new EventRegisterView({el: $("#currentView"), model: pharms});
 });
 

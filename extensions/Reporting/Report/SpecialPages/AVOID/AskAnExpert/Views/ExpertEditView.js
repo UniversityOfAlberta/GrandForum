@@ -89,7 +89,32 @@ ExpertEditView = Backbone.View.extend({
     
     },
     
+    renderTinyMCE: function(){
+        _.defer(function(){
+            this.$('textarea').tinymce({
+                theme: 'modern',
+                menubar: false,
+                relative_urls : false,
+                convert_urls: false,
+                plugins: 'link image charmap lists table paste',
+                toolbar: [
+                    'undo redo | bold italic underline | link | bullist numlist outdent indent | alignleft aligncenter alignright'
+                ],
+                paste_data_images: true,
+                invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font',
+                imagemanager_insert_template : '<img src="{$url}" width="{$custom.width}" height="{$custom.height}" />'
+            });
+        }.bind(this));
+    },
+    
     render: function(){
+        for (edId in tinyMCE.editors){
+            var e = tinyMCE.editors[edId];
+            if(e != undefined){
+                e.destroy();
+                e.remove();
+            }
+        }
         var data = this.model.toJSON();
         var date = "";
         var time = "";
@@ -108,11 +133,11 @@ ExpertEditView = Backbone.View.extend({
             data["time"] = time;
         }
         if(data["end_of_event"] != null){
-                var split = data["end_of_event"].split(" ");
-                end_date = split[0];
-                end_time = split[1];
-                data["end_date"] = end_date;
-                data["end_time"] = end_time;
+            var split = data["end_of_event"].split(" ");
+            end_date = split[0];
+            end_time = split[1];
+            data["end_date"] = end_date;
+            data["end_time"] = end_time;
         }
         //format questiondate
         data["date_for_questionsstr"] = "";
@@ -123,6 +148,7 @@ ExpertEditView = Backbone.View.extend({
         }
 
         this.$el.html(this.template(data));
+        this.renderTinyMCE();
         return this.$el;
     }
 

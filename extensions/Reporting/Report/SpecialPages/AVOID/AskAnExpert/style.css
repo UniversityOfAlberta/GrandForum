@@ -251,16 +251,55 @@ table#listTable.dataTable tbody tr:hover > .sorting_1 {
   cursor: pointer;
 }
 
+#neweventbtn {
+    color: white;
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    line-height: 1em;
+    font-size: 0.5em;
+}
+
+#editeventbtn {
+    position: absolute;
+    top: 0.5em;
+    right: 1em;
+}
+
+#aae {
+    display: none;
+    position: absolute;
+    top: 0.5em;
+    left: 0.5em;
+    height: 2em;
+}
+
+#askHeader {
+    position: relative;
+    margin-bottom: 0.5em;
+}
+@media only screen and (max-width: 767px) {
+    #events {
+        flex-wrap: wrap;
+    }
+}
 
 .program-header {
 	padding-bottom: 1em;
 }
 
 .expert_announce {
-font-size: 1.2em;
+    font-size: 1.2em;
     padding: 0.5em;
 }
 
 .program-button{
     display:none;
+}
+
+.event {
+    position: relative;
+    border: 2px solid #005f9d;
+    margin-bottom: 1em;
+    border-radius: 1em;
 }

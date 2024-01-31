@@ -16,7 +16,6 @@ class AskAnExpert extends BackbonePage {
         return $me->isLoggedIn();
     }
     
-    
     function getTemplates(){
         global $wgOut;
         $me = Person::newFromWgUser();
@@ -70,6 +69,7 @@ class AskAnExpert extends BackbonePage {
             Gamification::log("SignAskAnExpert");
             $me = Person::newFromWgUser();
             $uid = md5(uniqid(time()));
+            $event = $_POST['event'];
             $firstName = $_POST['firstname'];
             $lastName = $_POST['lastname'];
             $email = $_POST['email'];
@@ -82,8 +82,7 @@ class AskAnExpert extends BackbonePage {
                 $subj = "Ask An Expert - {$_POST['topic']}";
             }
             $msg = "<p></p><br />
-                    <b>Firstname:</b>{$_POST['firstname']}<br /><b>Lastname</b>: {$_POST['lastname']} <br /><b>Email:</b>({$email})<br /><b>Phone:</b>{$_POST['phone']}
-                    <br />";
+                    <b>Firstname:</b>{$_POST['firstname']}<br /><b>Lastname</b>: {$_POST['lastname']} <br /><b>Email:</b>({$email})<br /><b>Phone:</b>{$_POST['phone']}<br /><b>Event:</b>{$_POST['event']}<br />";
             if($question != "No Question"){
                 $msg .= "<b>Question:</b>{$question}";
             }

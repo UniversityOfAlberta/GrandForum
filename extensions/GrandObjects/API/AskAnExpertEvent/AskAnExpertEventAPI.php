@@ -21,14 +21,8 @@ class AskAnExpertEventAPI extends RESTAPI {
         }
         else{
             $ask_an_expert_all = AskAnExpertEvent::getAllExpertEvents();
-            //change later if we need to accomodate more than 1 event
-            if(count($ask_an_expert_all)>0){
-                return $ask_an_expert_all[0]->toJSON();
-            }
-            else{
-                $ask_an_expert = new AskAnExpertEvent(array());
-                return $ask_an_expert->toJSON();
-            }
+            $collection = new Collection($ask_an_expert_all);
+            return $collection->toJSON();
         }
     }
 
@@ -51,7 +45,7 @@ class AskAnExpertEventAPI extends RESTAPI {
         $askanexpertevent->theme = $this->POST('theme');
         $askanexpertevent->details = $this->POST('details');
         $askanexpertevent->location = $this->POST('location');
-        $askanexpertevent->active = 1;
+        $askanexpertevent->active = $this->POST('active');
         $askanexpertevent->currently_on = 1;
         $status =$askanexpertevent->create();
         if(!$status){
@@ -84,7 +78,7 @@ class AskAnExpertEventAPI extends RESTAPI {
         $askanexpertevent->theme = $this->POST('theme');
         $askanexpertevent->details = $this->POST('details');
         $askanexpertevent->location = $this->POST('location');
-        $askanexpertevent->active = 1;
+        $askanexpertevent->active = $this->POST('active');
         $status = $askanexpertevent->update();
         if(!$status){
             $this->throwError("The Event could not be updated");

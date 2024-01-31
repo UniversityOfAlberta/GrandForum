@@ -300,8 +300,10 @@ class AVOIDDashboard extends SpecialPage {
         }
         if($membersOnly == ""){
             // Member Frailty Status
-            $facebookLink = "<img src='{$wgServer}{$wgScriptPath}/skins/icons/avoid/glyphicons_social_30_facebook.png' />
-                             <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Join the discussion in the <a target='_blank' href='https://www.facebook.com/groups/1751174705081179/'>member's only facebook group</a></span>";
+            $facebookLink = ($config->getValue('networkFullName') != "AVOID Australia") 
+                          ? "<img src='{$wgServer}{$wgScriptPath}/skins/icons/avoid/glyphicons_social_30_facebook.png' />
+                             <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Join the discussion in the <a target='_blank' href='https://www.facebook.com/groups/1751174705081179/'>member's only facebook group</a></span>" 
+                          : "";
             $gamificationLink = ($config->getValue('gamificationEnabled')) 
                               ? "<img src='{$wgServer}{$wgScriptPath}/skins/goldstar.png' style='height:24px;' />
                                  <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>
@@ -995,7 +997,7 @@ class AVOIDDashboard extends SpecialPage {
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         $me = Person::newFromId($wgUser->getId());
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
-        if($me->isRole(ADMIN) || $me->isRole(STAFF)){
+        if($me->isRole(ADMIN) || $me->isRole(STAFF) || $config->getValue('networkFullName') == "AVOID Australia"){
             return true;
         }
         $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID");

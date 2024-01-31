@@ -11,30 +11,24 @@ AskAnExpertEvent = Backbone.Model.extend({
         name_of_expert: "",
         expert_field:"",
         date_of_event:"",
-	end_of_event: "",
-	active:false,
-	date_created:"",
-	currently_on:false,
-	zoomlink:"",
-	date_for_questions:"",
-	theme: "",
-	host: "",
-	description: "",
-	evnt: "",
-	details: "",
-	locate: "",
+        end_of_event: "",
+        active:true,
+        date_created:"",
+        currently_on:false,
+        zoomlink:"",
+        date_for_questions:"",
+        theme: "",
+        host: "",
+        description: "",
+        event: "",
+        details: "",
+        location: "",
     }
 });
 
 AskAnExpertEvents = Backbone.Collection.extend({
-       model: AskAnExpertEvent,
+    model: AskAnExpertEvent,
 
-    url: function(){
-        url = 'index.php?action=api.askanexpert/';
-        if(this.get('id') != null){
-                url = 'index.php?action=api.askanexpert/'+this.get('id');
-
-        }
-        return url;
-    }
+    url: 'index.php?action=api.askanexpert/'
+    
 });

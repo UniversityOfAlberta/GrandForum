@@ -69,18 +69,18 @@ class AskAnExpertEvent extends BackboneModel {
             $this->id = $row['id'];
             $this->name_of_expert = $row['name_of_expert'];
             $this->expert_field = $row["expert_field"];
-	    $this->date_of_event = $row["date_of_event"];
-	    $this->end_of_event = $row["end_of_event"];
+            $this->date_of_event = $row["date_of_event"];
+            $this->end_of_event = $row["end_of_event"];
             $this->active = $row['active'];
             $this->date_created = $row['date_created'];
             $this->currently_on = $row['currently_on'];
-	    $this->zoomlink = $row['zoomlink'];
-	    $this->date_for_questions = $row["date_for_questions"];
-	    $this->host = $row["host"];
-	    $this->theme = $row["theme"];
-	    $this->desc = $row["description"];
-	    $this->event = $row["event"];
-	    $this->details = $row["details"];
+            $this->zoomlink = $row['zoomlink'];
+            $this->date_for_questions = $row["date_for_questions"];
+            $this->host = $row["host"];
+            $this->theme = $row["theme"];
+            $this->desc = $row["description"];
+            $this->event = $row["event"];
+            $this->details = $row["details"];
             $this->location = $row["location"];
 
         }
@@ -93,18 +93,18 @@ class AskAnExpertEvent extends BackboneModel {
                     'name_of_expert' => $this->name_of_expert,
                     'expert_field' => $this->expert_field,
                     'date_of_event' => $this->date_of_event,
-                    'active' => $this->active,
-		    'date_created' => $this->date_created,
-		    'end_of_event' => $this->end_of_event,
+                    'active' => ($this->active == 1),
+                    'date_created' => $this->date_created,
+                    'end_of_event' => $this->end_of_event,
                     'currently_on' => $this->currently_on,
-		    'zoomlink' => $this->zoomlink,
-		    'date_for_questions' => $this->date_for_questions,
-		    'event' => $this->event,
-		    'theme' => $this->theme,
-		    'description' => $this->desc,
-		    'host' => $this->host,
-		    'details' => $this->details,
-		    'location' => $this->location,
+                    'zoomlink' => $this->zoomlink,
+                    'date_for_questions' => $this->date_for_questions,
+                    'event' => $this->event,
+                    'theme' => $this->theme,
+                    'description' => $this->desc,
+                    'host' => $this->host,
+                    'details' => $this->details,
+                    'location' => $this->location,
                 );
         return $json;
     }
@@ -118,17 +118,17 @@ class AskAnExpertEvent extends BackboneModel {
                                                 'expert_field' => $this->expert_field,
                                                 'date_of_event' => $this->date_of_event,
                                                 'active' => $this->active,
-						'date_created' => $this->date_created,
-						'end_of_event' => $this->end_of_event,
+                                                'date_created' => $this->date_created,
+                                                'end_of_event' => $this->end_of_event,
                                                 'currently_on' => $this->currently_on,
-						'zoomlink' => $this->zoomlink,
-						'date_for_questions' => $this->date_for_questions,
-						'event' => $this->event,
-						'theme' => $this->theme,
-						'description' => $this->desc,
-						'host' => $this->host,
-						'details' => $this->details,
-						'location' => $this->location,
+                                                'zoomlink' => $this->zoomlink,
+                                                'date_for_questions' => $this->date_for_questions,
+                                                'event' => $this->event,
+                                                'theme' => $this->theme,
+                                                'description' => $this->desc,
+                                                'host' => $this->host,
+                                                'details' => $this->details,
+                                                'location' => $this->location,
                                           ), true);
             if($status){
                 DBFunctions::commit();
@@ -145,20 +145,20 @@ class AskAnExpertEvent extends BackboneModel {
             $status = DBFunctions::update('grand_avoid_expert_event',
                                           array('name_of_expert' => $this->name_of_expert,
                                                 'expert_field' => $this->expert_field,
-						'date_of_event' => $this->date_of_event,
-						'end_of_event' => $this->end_of_event,
+                                                'date_of_event' => $this->date_of_event,
+                                                'end_of_event' => $this->end_of_event,
                                                 'active' => $this->active,
                                                 'date_created' => $this->date_created,
                                                 'currently_on' => $this->currently_on,
-						'zoomlink' => $this->zoomlink,
-						'date_for_questions' => $this->date_for_questions,
-						'event' => $this->event,
+                                                'zoomlink' => $this->zoomlink,
+                                                'date_for_questions' => $this->date_for_questions,
+                                                'event' => $this->event,
                                                 'theme' => $this->theme,
                                                 'description' => $this->desc,
-						'host' => $this->host,
-						'details' => $this->details,
-						'location' => $this->location,
-					  ),
+                                                'host' => $this->host,
+                                                'details' => $this->details,
+                                                'location' => $this->location,
+                                          ),
                                           array('id' => EQ($this->id)),
                                           array(),
                                           true);

@@ -1,51 +1,59 @@
 <div class='program-body' style='overflow: auto;'>
     <div style='display:flex;'>
-        <div class='program-header' style="text-align:center; width:800px;line-height:0.8em;">
+        <div id='askHeader' class='program-header' style="text-align:center; width:100%;line-height:0.8em;">
+            <img id="aae" src="<%= wgServer + wgScriptPath %>/skins/AaE.png" />
             <en>ASK AN AVOID EXPERT</en>
             <fr>ÉVÉNEMENTS</fr>
+            <% if(this.canEdit()){ %>
+                <a href="#" id="neweventbtn" class="editbutton" title="Edit">
+                    <en>New Event</en>
+                    <fr>Suggérer un événement</fr>
+                </a>
+            <% } %>
             <br />
             <span style="font-size:0.4em;">
                 <en>A series of regional community events to support a healthy lifestyle</en>
                 <fr>Des événements offerts dans votre ville</fr>
             </span>
         </div>
-        <div class='' style='min-width: 200px;'>
-            <img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style="float: right; height: 140px;" />
-        </div>
-        <div style="position:absolute;top:0px;right:10px;">
-            <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){%>
-                <a href="#" id="editeventbtn" style="float:right" class="editbutton" title="Edit">
-                    <en>Edit Event</en>
-                    <fr>Suggérer un événement</fr>
-                </a>
-            <% } %>
-        </div>
     </div>
     <div id="editDialog" style="display:none;"></div>
     <div id="registerDialog" style="display:none;"></div>
     <div id="detailsDialog" style="display:none;"></div>
-    <div class="expert_announce"><b>
-        <span style="color:#005f9d;"><en>Current Theme</en><fr>Thème</fr>:</span> <%= output.theme %><br />
-        <span style="color:#005f9d;"><en>Host</en><fr>Hôte</fr>:</span> <%= output.host %><br />
-        <span style="color:#005f9d;"><en>Event</en><fr>Titre de l’événement</fr>:</span> <%= output.event %><br />
-        <span style="color:#005f9d;"><en>Description</en><fr>Description</fr>:</span></b> <%= output.description %> <br />
-    </div>
-    <div style='display:flex; clear: both;'>
-        <div style='width:40%; padding-right:1em;'>
-            <% if (output.end_of_event != '0000-00-00 00:00:00'){ %>
-                <div class='program-box' style="margin-left:0.5em; border-radius: 0em !important;">
-                    <ul>
-                        <li><span style=""><%= output.date %> @ <%= output.time %> - <%= output.end_time %></span></li>
-                        <li><%= output.location %></li>
-                        <% if (wgLang == 'en'){ %>
-                            <li><a id="registerevent" class="registerbtn" data-cat="register" href="#"><en>REGISTER</en><fr>S’INSCRIRE</fr></a></li>
+    <div id="events" style="display:flex;">
+        <div style="width:100%;">
+            <% _.each(_.sortBy(outputs, function(a){ return a.date_of_event; }), function(output){ %>
+                <% if(this.canEdit() || output.active){ %>
+                    <div class="event" data-id="<%= output.id %>" style="<% if(!output.active){ %>opacity:50%; height:5.25; overflow: hidden;<% } %>">
+                        <% if(this.canEdit()){ %>
+                            <a href="#" id="editeventbtn" class="editbutton" title="Edit">
+                                <en>Edit</en>
+                                <fr>Éditer</fr>
+                            </a>
                         <% } %>
-                    </ul>
-                </div>
-            <% } %>
+                        <div class="expert_announce"><b>
+                            <span style="color:#005f9d;"><en>Current Theme</en><fr>Thème</fr>:</span> <%= output.theme %><br />
+                            <span style="color:#005f9d;"><en>Host</en><fr>Hôte</fr>:</span> <%= output.host %><br />
+                            <span style="color:#005f9d;"><en>Event</en><fr>Titre de l’événement</fr>:</span> <%= output.event %><br />
+                            <span style="color:#005f9d;"><en>Description</en><fr>Description</fr>:</span></b><div><%= output.description %></div>
+                        </div>
+                        <% if (output.end_of_event != '0000-00-00 00:00:00'){ %>
+                            <div class='program-box' style="margin-left:0.5em; margin-bottom: 0.5em; margin-right: 0.5em;">
+                                <ul>
+                                    <li><span style=""><%= output.date %> @ <%= output.time %> - <%= output.end_time %></span></li>
+                                    <li><%= output.location %></li>
+                                    <% if (wgLang == 'en'){ %>
+                                        <li><a id="registerevent" class="registerbtn" data-cat="register" href="#"><en>REGISTER</en><fr>S’INSCRIRE</fr></a></li>
+                                    <% } %>
+                                </ul>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } %>
+            <% }.bind(this)) %>
         </div>
-        <div style="width:60%; padding-left:1em;">
-            <% if(wgScriptPath.indexOf('portal') != -1){ %>
+        <% if(networkFullName == "AVOID KFLA"){ %>
+            <div id="pastEventResources" style="width:100%; padding-left:1em;">
                 <div style="color:#005f9d;">
                     <b>Past Event Resources</b><br />
                     <ul>
@@ -58,7 +66,7 @@
                         <li><a href="https://docs.google.com/presentation/d/1Ow5jJQ4UlvVLznDAZvpmg1tnegTPm__f/edit?usp=sharing&ouid=105295311895815272560&rtpof=true&sd=true" target="_blank">Kingston Access Bus January 12, 2023</a></li>
                     </ul>
                 </div>
-            <% } %>
-        </div>
+            </div>
+        <% } %>
     </div>
 </div>

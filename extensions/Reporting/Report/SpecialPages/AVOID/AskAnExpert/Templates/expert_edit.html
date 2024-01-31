@@ -55,41 +55,46 @@
             <en>Host:</en>
             <fr>Organisme hôte :</fr>
         </td>
-        <td class="field"><input type="text" style="width:300px" id="host" name="host" value="<%= host %>"></td>
+        <td class="field"><input type="text" style="width:300px;" id="host" name="host" value="<%= host %>"></td>
     </tr>
     <tr>
         <td class="label">
             <en>Event:</en>
             <fr>Titre de l’événement :</fr>
         </td>
-        <td class="field"><input style="width:300px" type="text" id="event" name="event" value="<%= event %>"></td>
+        <td class="field"><input style="width:300px;" type="text" id="event" name="event" value="<%= event %>"></td>
     </tr>
     <tr>
         <td class="label">
             <en>Description:</en>
             <fr>Description :</fr>
         </td>
-	<td class="field"><textarea id="description" style="height:250px;" cols="20" rows="3" name="description"><%= description %></textarea></td>
+	<td class="field"><textarea id="description" style="height:150px;width:525px;" name="description"><%= description %></textarea></td>
     </tr>
     <tr>
         <td class="label">
             <en>Details:</en>
             <fr>Détails :</fr>
         </td>
-        <td class="field"><textarea id="details" style="height:100px;" cols="10" rows="2" name="details"><%= details %></textarea></td>
+        <td class="field"><textarea id="details" style="height:150px;width:525px;" name="details"><%= details %></textarea></td>
     </tr>
     <tr>
         <td class="label">
             <en>Location:</en>
             <fr>Lieu :</fr>
         </td>
-        <td class="field"><input type="text" style="width:300px" id="location" name="location" value="<%= location %>"></td>
+        <td class="field"><input type="text" style="width:515px;" id="location" name="location" value="<%= location %>"></td>
     </tr>
-
+    <tr>
+        <td class="label">
+            <en>Active:</en>
+            <fr>Actif :</fr>
+        </td>
+        <td class="field" style="vertical-align: middle;"><%= HTML.CheckBox(this, 'active', {value: 1}) %></td>
+    </tr>
 </table>
 <br />
-    <% if(!this.isDialog){ %>
-
+<% if(!this.isDialog){ %>
     <div style="display:inline-block;">
         <button id='saveEvent'>Save</button><span class="throbber" style="display:none;"></span>
     </div>
@@ -97,5 +102,5 @@
     <div style="display:inline-block;">
         <button id='cancel'>Cancel</button>
     </div>
-    <% } %>
+<% } %>
 </form>
