@@ -95,7 +95,7 @@ foreach($people as $person){
         addReminder("InactiveUser", $person);
         if($wgLang->getCode() == "en"){
             $subject = "We've missed you!";
-            $message = "<p>Just checking in to see how you've been.  We don't want you to miss out on the programs and resources that other older adults in KFL&A have been using.  Visit <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a> and be part of a growing community who is taking control of their health.</p>";
+            $message = "<p>Just checking in to see how you've been.  We don't want you to miss out on the programs and resources that other older adults in the region have been using.  Visit <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a> and be part of a growing community who is taking control of their health.</p>";
         }
         else {
             $subject = "Vous nous avez manqué!";
