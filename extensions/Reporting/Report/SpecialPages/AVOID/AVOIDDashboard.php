@@ -963,9 +963,9 @@ class AVOIDDashboard extends SpecialPage {
         $twelveMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($userId, "RP_AVOID_TWELVEMO")))/86400;
         
         if(!$baseLineSubmitted || 
-           (!$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*6) ||
+           (!$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*4) ||
            (!$sixMonthSubmitted && $baseDiff >= 30*6 && $baseDiff < 30*9) ||
-           (!$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*12) ||
+           (!$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*10) ||
            (!$twelveMonthSubmitted && $baseDiff >= 30*12)){
             return false;
         }
