@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Report" reportType="RP_PROJECT_REPORT" pdfType="RP_PROJECT_REPORT" pdfFiles="ProjectReport" year="0" personId="0" ajax="true" disabled="false">
     <Permissions>
+        <Role role="Staff+">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role role="PL">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
