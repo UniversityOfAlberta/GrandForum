@@ -249,10 +249,15 @@ class SpecialEventRegistration extends SpecialPage{
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);
         
-        $prepreamble = "<p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>";
+        $prepreamble = "<p>{$config->getValue('networkName')} holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>";
         $preamble = "";
         $appendix = "";
-        $showOther = "style='display:block;'";
+        if($config->getValue('networkName') == "AI4Society"){
+            $showOther = "style='display:block;'";
+        }
+        else{
+            $showOther = "style='display:none;'";
+        }
         if(trim($default->title) == "Replaying Japan Conference"){
             $preamble = "<p>Register for Replaying Japan 2021 Here!<br />
                            Replaying Japan 2021の参加登録はこちらから行って下さい。</p>
