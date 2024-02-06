@@ -9,7 +9,7 @@ class ProjectKPI2Tab extends ProjectKPITab {
     }
     
     function handleEdit(){
-        global $config, $wgMessage;
+        global $config, $wgMessage, $wgScriptPath;
         $me = Person::newFromWgUser();
 
         if(isset($_POST['kpi_delete'])){
@@ -23,6 +23,7 @@ class ProjectKPI2Tab extends ProjectKPITab {
         }
         
         if(isset($_FILES)){
+            $alreadySent = false;
             foreach($_FILES as $key => $file){
                 foreach($file['tmp_name'] as $year_q => $tmp){
                     if($tmp != ""){
@@ -32,6 +33,13 @@ class ProjectKPI2Tab extends ProjectKPITab {
                         $blb->store($contents, $addr);
                         Cache::delete("{$this->project->getId()}_KPI_{$year_q}");
                         $wgMessage->addSuccess(str_replace("_", " ", $year_q)." KPI Uploaded");
+                        if($wgScriptPath == "" && !$alreadySent){
+                            $from = "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+                            $headers = "Content-type: text/html\r\n"; 
+                            $headers .= $from;
+                            mail("vsharko@glyconet.ca", "GIS Report Updated", "A KPI Report was updated: <a href='{$this->project->getUrl()}'>{$this->project->getName()}</a>", $headers);
+                            $alreadySent = true;
+                        }
                     }
                 }
             }
