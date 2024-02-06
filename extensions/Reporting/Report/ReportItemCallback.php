@@ -271,6 +271,8 @@ class ReportItemCallback {
             "get" => "get",
             "and" => "andCond",
             "or" => "orCond",
+            "matches" => "matches",
+            "!matches" => "notMatches",
             "contains" => "contains",
             "!contains" => "notContains",
             "!" => "not",
@@ -2176,6 +2178,14 @@ class ReportItemCallback {
             $bool = ($bool || $arg);
         }
         return $bool;
+    }
+    
+    function matches($str, $pattern){
+        return preg_match("/$pattern/", $str);
+    }
+    
+    function notMatches($str, $pattern){
+        return !$this->matches($str, $pattern);
     }
     
     function contains($val1, $val2){

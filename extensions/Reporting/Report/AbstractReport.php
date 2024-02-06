@@ -546,12 +546,12 @@ abstract class AbstractReport extends SpecialPage {
     
     // Sets the type of Report
     function setReportType($type){
-        $this->reportType = $type;
+        $this->reportType = $this->varSubstitute($type);
     }
     
     // Sets the type of PDF to generate when generatePDF is called
     function setPDFType($type){
-        $this->pdfType = $type;
+        $this->pdfType = $this->varSubstitute($type);
     }
     
     // Sets the PDF Files that this Report will generate
