@@ -34,7 +34,7 @@
                                 <b>We</b> provide in-person instruction with a trained Otago fitness leader once per week.<br />
                                 <b>You</b> do the prescribed exercises 2 additional times each week on your own.
                             </p>
-                            <div class='program-box' style='width: 21em; margin-right: -14em; margin-top: 1em; float: right;'>
+                            <div class='program-box' style='width: 21em; margin-right: -14em; margin-top: 3em; float: right;'>
                                 <b>Best suited for:</b>
                                 <ul>
                                     <li>Persons who have fallen in the past year.</li>
@@ -49,18 +49,25 @@
             ]]>
         </ReportItem>
         <!--ReportItem id="register" type="Checkbox" 
-                    labels="Monday October 30, to January 15, no class Dec 25 or Jan 1. &lt;br />Time: 10:45 to 11:45am&lt;br />Location: Rideau Heights Community Centre, 85 MacCauley St." 
-                    options="Monday October 30, to January 15, no class Dec 25 or Jan 1. &lt;br />Time: 10:45 to 11:45am&lt;br />Location: Rideau Heights Community Centre, 85 MacCauley St." blobType="BLOB_ARRAY" blobItem="REGISTER2">
+                    labels="April 4 to June 6, 2024 - 10 weeks &lt;br />Time: Thursdays from 3:30 to 4:30pm &lt;br />Location: Rural Frontenac, Lennox &amp; Addington Allied Health Team 310 Bridge Street West Unit G1" 
+                    options="April 4 to June 6, 2024 - 10 weeks &lt;br />Time: Thursdays from 3:30 to 4:30pm &lt;br />Location: Rural Frontenac, Lennox &amp; Addington Allied Health Team 310 Bridge Street West Unit G1" blobType="BLOB_ARRAY" blobItem="REGISTER3">
             <![CDATA[
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
+        <Static>
+            <![CDATA[
+                <p>
+                    April 4 to June 6, 2024 - 10 weeks <br />
+                    Time: Thursdays from 3:30 to 4:30pm <br />
+                    Location: Rural Frontenac, Lennox & Addington Allied Health Team 310 Bridge Street West Unit G1
+                </p>
+            ]]>
+        </Static>
         <ReportItem id="phone" type="Text" width="180px" blobItem="PHONE">
             <![CDATA[
                 <b>Phone Number:</b> {$item} (optional)<br />
                 <p><span class='program-text'>You will be contacted with further details</span></p>
-                
-                
             ]]>
         </ReportItem>
         <ReportItem id="submit" type="SubmitEmail">
@@ -85,22 +92,17 @@
                     <tr>
                         <td valign='top'><b>Training Date:</b></td>
                         <td>
-                            <div>{getArray(RP_OTAGO,OTAGO,REGISTER2,0,{$user_id},0,register}</div>
+                            <div>
+                                April 4 to June 6, 2024 - 10 weeks <br />
+                                Time: Thursdays from 3:30 to 4:30pm <br />
+                                Location: Rural Frontenac, Lennox & Addington Allied Health Team 310 Bridge Street West Unit G1
+                            </div>
+                            <!--div>{getArray(RP_OTAGO,OTAGO,REGISTER3,0,{$user_id},0,register}</div-->
                         </td>
                     </tr>
                 </table>
             ]]>
-        </ReportItem-->
-        <Static>
-            <![CDATA[
-                <br />
-                January 15 to March 25, 2024 - 10 weeks, not including Family Day<br />
-                Location: Amherstview Leisure & Activity Centre - 177 Upper Park<br />
-                Mondays from 1:00 to - 2:00pm<br />
-                Cost: $70<br />
-                To Register: visit <a href='https://www.loyalist.ca/register' target='_blank'>www.loyalist.ca/register</a> or 613-386-7351 Ext. 300
-            ]]>
-        </Static>
+        </ReportItem>
         <Static>
             <![CDATA[   </div>
                         <div style='width: 16em; margin-left: 1em;'>
