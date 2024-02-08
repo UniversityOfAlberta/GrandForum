@@ -5,6 +5,8 @@
 
     global $wgUser;
     $wgUser = User::newFromId(1);
+    
+    $startDate = date(YEAR.'-07-01');
 
     $deptCodes = array();
     foreach(explode("\n", file_get_contents("deptCodes.csv")) as $line){
@@ -19,17 +21,26 @@
         if(count($csv) <= 1){ continue; }
         $emplid = $csv[0];
         $type = $csv[1];
-        $ccid = $csv[2];
-        $lastName = $csv[3];
-        $firstName = $csv[4];
-        $academicDept = $csv[5];
-        $academicDeptCode = $csv[6];
-        $hrDeptId = $csv[7];
-        $hrDept = $csv[8];
+        $pos = $csv[2];
+        $ccid = $csv[3];
+        $lastName = $csv[4];
+        $firstName = $csv[5];
+        $academicDept = $csv[6];
+        $academicDeptCode = $csv[7];
+        $hrDeptId = $csv[8];
+        $hrDept = $csv[9];
+        $program = $csv[10];
         
         if(strstr($hrDept, "SCI ") === false &&
            strstr($hrDept, "SC ") === false &&
-           strstr($hrDept, "ART Psychology") === false){
+           strstr($hrDept, "ART Psychology") === false &&
+           strstr($hrDept, "ENG ") === false &&
+           strstr($hrDept, "ALES ") === false){
+            continue;
+        }
+        
+        if($pos == "Other GS" ||
+           $pos == "Staff"){
             continue;
         }
         
@@ -85,42 +96,25 @@
                 DBFunctions::insert("grand_roles",
                                     array('user_id' => $person->getId(),
                                           'role' => $role,
-                                          'start_date' => COL('CURRENT_TIMESTAMP')));
+                                          'start_date' => $startDate));
             }
-            /*
+            
             if(count($person->getUniversities()) == 0){
                 $uni = "University of Alberta";
                 $dept = (isset($deptCodes[$hrDeptId])) ? $deptCodes[$hrDeptId] : "Unknown";
-                switch($type){
-                    case "Faculty":
-                        $pos = "Faculty";
-                        break;
-                    case "Undergraudate":
-                    case "Undergraduate":
-                        $pos = "Undergraduate";
-                        break;
-                    case "Post-Doctoral Fellows":
-                        $pos = "Post-Doctoral Fellow";
-                        break;
-                    case "Graduate":
-                        $pos = "Graduate Student";
-                        break;
-                    case "Staff";
-                        $pos = "Staff";
-                        break;
-                    default:
-                        $pos = "Unknown";
-                        break;
-                }
+                $pos = str_replace("Full Professor", "Professor", $pos);
+                $pos = str_replace("Post-Doctoral Fellows", "Post-Doctoral Fellow", $pos);
+                $pos = str_replace("Masters", "Graduate Student - Master's", $pos);
+                $pos = str_replace("PhD", "Graduate Student - Doctoral", $pos);
                 $api = new PersonUniversitiesAPI();
                 $api->params['id'] = $person->getId();
                 $_POST['university'] = $uni;
                 $_POST['department'] = $dept;
                 $_POST['position'] = $pos;
-                $_POST['startDate'] = date('Y-m-d');
+                $_POST['startDate'] = $startDate;
                 $api->doPOST();
             }
-            */
+            
         }
     }
     

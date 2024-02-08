@@ -37,6 +37,8 @@ class ReportItemCallback {
             "course_calendar" => "getCourseCalendar",
             "course_enroll" => "getCourseEnroll",    
             "course_enroll_percent" => "getCourseEnrollPercent",
+            "course_eval" => "getCourseEval",
+            "getAverageCourseEvalByTerm" => "getAverageCourseEvalByTerm",
             // Student Relation
             "hqp_name" => "getHqpName",
             "hqp_reversed_name" => "getHqpReversedName",
@@ -121,6 +123,7 @@ class ReportItemCallback {
             "user_ugrad_count" => "getUserUgradCount",
             "user_other_count" => "getUserOtherCount",
             "user_committee_count" => "getUserCommitteeCount",
+            "getUserCoursesEnrolledByTerm" => "getUserCoursesEnrolledByTerm",
             "user_courses_count" => "getUserCoursesCount",
             "user_student_count" => "getUserStudentCount",
             "user_lectures_count" => "getUserLecCount",
@@ -133,6 +136,7 @@ class ReportItemCallback {
             "user_phd_uni" => "getUserPhDUni",
             "user_appointment_year" => "getUserAppointmentYear",
             "user_appointment_date" => "getUserAppointmentDate",
+            "getFecPersonalInfo" => "getFecPersonalInfo",
             "getUserPublicationCount" => "getUserPublicationCount",
             "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
             "isAllowedToViewRecommendation" => "isAllowedToViewRecommendation",
@@ -385,6 +389,65 @@ class ReportItemCallback {
     function getCourseEnrollPercent(){
         $course = Course::newFromId($this->reportItem->projectId);
         return ($course->totEnrl/max(1,$course->capEnrl))*100;
+    }
+    
+    function getCourseEval(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $course = Course::newFromId($this->reportItem->projectId);
+        $evals = $person->getCourseEval($course->getId());
+        $ret = "";
+        foreach($evals as $key => $eval){
+            $ret .= "<tr>";
+            $qid = $eval['id'];
+            $r1 = $eval['votes'][0];
+            $r2 = $eval['votes'][1];
+            $r3 = $eval['votes'][2];
+            $r4 = $eval['votes'][3];
+            $r5 = $eval['votes'][4];
+            $qText = Course::$evalMap[$qid];
+            $count = $r1 + $r2 + $r3 + $r4 + $r5;
+            $avg = number_format(($r1*1+$r2*2+$r3*3+$r4*4+$r5*5)/$count, 2);
+            $ret .= "
+                <td align='right'>$qid</td>
+                <td style='white-space: nowrap;'>$qText</td>
+                <td align='right'>$r1</td>
+                <td align='right'>$r2</td>
+                <td align='right'>$r3</td>
+                <td align='right'>$r4</td>
+                <td align='right'>$r5</td>
+                <td style='background: white;'>
+                    <table padding='0' cellspacing='0' style='width:100%;'>
+                        <tr>
+                            <td style='background:#CC0000; width: ".((($r1+$r2)/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#FFD700; width: ".((($r3    )/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#008800; width: ".((($r4+$r5)/$count)*100)."%; height:1em; padding:0;'></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>";
+        }
+        return str_replace("\n", "", $ret);
+    }
+    
+    function getAverageCourseEvalByTerm($term, $q){
+        $person = Person::newFromId($this->reportItem->personId);
+        $courses = $person->getCoursesDuring("0000-00-00", "2100-01-01");
+        $avgs = array();
+        foreach($courses as $course){
+            if($course->component == "LEC" && strstr($term, $course->term_string) !== false){
+                $evals = $person->getCourseEval($course->getId());
+                $ret = array();
+                foreach($evals as $key => $eval){
+                    list($R, $G, $B) = $this->evalColor($eval);
+                    if("Q$q" == $key){
+                        $avgs[] = $eval;
+                    }
+                }
+            }
+        }
+        $avg = number_format(array_sum($avgs)/max(1, count($avgs)), 2);
+        list($R, $G, $B) = $this->evalColor($avg);
+        return "<span style='padding-left: 0.25em; padding-right: 0.25em; display: inline; background: rgb($R,$G,$B);'>{$avg}</span>";
     }
     
     function getGrantId(){
@@ -1671,6 +1734,18 @@ class ReportItemCallback {
         return count($hqps);
     }
     
+    function getUserCoursesEnrolledByTerm($term){
+        $person = Person::newFromId($this->reportItem->personId);
+        $courses = $person->getCoursesDuring("0000-00-00", "2100-01-01");
+        $enrolled = 0;
+        foreach($courses as $course){
+            if($course->component == "LEC" && strstr($term, $course->term_string) !== false){
+                $enrolled += $course->totEnrl;
+            }
+        }
+        return $enrolled;
+    }
+    
     function getUserCoursesCount(){
         $person = Person::newFromId($this->reportItem->personId);
         $courses = $person->getCoursesDuring(($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
@@ -1763,6 +1838,12 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $fecInfo = $person->getFecPersonalInfo();
         return substr($fecInfo->dateOfAppointment, 0, 10);
+    }
+    
+    function getFecPersonalInfo($field){
+        $person = Person::newFromId($this->reportItem->personId);
+        $fecInfo = $person->getFecPersonalInfo();
+        return substr($fecInfo->{$field}, 0, 10);
     }
     
     function getUserPhDUni(){

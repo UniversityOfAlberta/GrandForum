@@ -14,8 +14,8 @@ class PersonCoursesReportItemSet extends ReportItemSet {
         $alreadyDone = array();
         if(is_array($courses)){
             foreach($courses as $course){
-                if(($term == '' || $course->term_string == $term) &&
-                   ($component == '' || strstr($component, $course->component) !== false)){
+                if(($term == '' || strstr($term, $course->term_string) !== false) &&
+                   ($component == '' || $component == $course->component)){
                     if($unique && isset($alreadyDone[$course->subject.$course->catalog])){
                         continue;
                     }

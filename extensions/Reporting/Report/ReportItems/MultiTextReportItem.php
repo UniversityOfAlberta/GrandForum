@@ -97,13 +97,16 @@ EOF;
                         else if(strtolower(@$types[$j]) == "integer"){
                             $item .= @"\"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
+                        else if(strtolower(@$types[$j]) == "number"){
+                            $item .= @"\"<td align='$align'><input type='text' class='numeric decimals' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                        }
                         else if(strtolower(@$types[$j]) == "checkbox"){
                             $item .= @"\"<td align='center'><input type='checkbox' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='1' /></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
                             $item .= @"\"<td align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
                         }
-                        else if(strstr(strtolower(@$types[$j]), "checkbox") !== false){
+                        else if(strstr(strtolower(@$types[$j]), "checkbox(") !== false){
                             if(!$isVertical){
                                 $align = "left";
                             }
@@ -112,12 +115,12 @@ EOF;
                             preg_match("/^(Checkbox)\((.*)\)$/i", $types[$j], $matches);
                             $matches = @explode(",", $matches[2]);
                             foreach($matches as $match){
-                                $match = trim($match);
+                                $match = str_replace("#COMMA", ",", trim($match));
                                 $item .= "<div><input type='checkbox' name='{$this->getPostId()}[\" + i + \"][$index][]' value='{$match}'> {$match}</div>";
                             }
                             $item .= "</td>\" + \n";
                         }
-                        else if(strstr(strtolower(@$types[$j]), "radio") !== false){
+                        else if(strstr(strtolower(@$types[$j]), "radio(") !== false){
                             if(!$isVertical){
                                 $align = "left";
                             }
@@ -126,26 +129,26 @@ EOF;
                             preg_match("/^(Radio)\((.*)\)$/i", $types[$j], $matches);
                             $matches = @explode(",", $matches[2]);
                             foreach($matches as $match){
-                                $match = trim($match);
+                                $match = str_replace("#COMMA", ",", trim($match));
                                 $item .= "<div><input type='radio' name='{$this->getPostId()}[\" + i + \"][$index]' value='{$match}'> {$match}</div>";
                             }
                             $item .= "</td>\" + \n";
                         }
-                        else if(strstr(strtolower(@$types[$j]), "select") !== false || 
-                                strstr(strtolower(@$types[$j]), "combobox") !== false){
+                        else if(strstr(strtolower(@$types[$j]), "select(") !== false || 
+                                strstr(strtolower(@$types[$j]), "combobox(") !== false){
                             if(!$isVertical){
                                 $align = "center";
                             }
-                            $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
+                            $cls = (strstr(strtolower(@$types[$j]), "select(") !== false) ? "raw" : "";
                             $item .= @"\"<td align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
                             $matches = array();
                             preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
                             $matches = @explode(",", $matches[2]);
-                            if(array_search(@$value[$index], $matches) === false && @$value[$index] != ""){
+                            if(array_search(@str_replace(",", "#COMMA", $value[$index]), $matches) === false && @$value[$index] != ""){
                                 $item .= @"<option selected>{$value[$index]}</option>";
                             }
                             foreach($matches as $match){
-                                $match = trim($match);
+                                $match = str_replace("#COMMA", ",", trim($match));
                                 $item .= "<option>{$match}</option>";
                             }
                             $item .= "</select></td>\" + \n";
@@ -209,7 +212,8 @@ EOF;
                 else{
                     $("#table_{$this->getPostId()}").show();
                 }
-                $("input.numeric").forceNumeric({min: 0, max: 9999999999999999});
+                $("input.numeric:not(.decimals)").forceNumeric({min: 0, max: 9999999999999999});
+                $("input.numeric.decimals").forceNumeric({min: 0, max: 9999999999999999, decimals: 2});
                 $("input.calendar").each(function(i, el){
                     $(el).datepicker({
                         dateFormat: $(el).attr('data-dateFormat'),
@@ -293,6 +297,9 @@ EOF;
                     else if(strtolower(@$types[$j]) == "integer"){
                         $item .= @"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
                     }
+                    else if(strtolower(@$types[$j]) == "number"){
+                        $item .= @"<td align='$align'><input type='text' class='numeric decimals' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
+                    }
                     else if(strtolower(@$types[$j]) == "checkbox"){
                         $checked = (isset($value[$index]) && $value[$index] == "1") ? "checked" : "";
                         $item .= @"<td align='center'><input type='checkbox' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='1' $checked /></td>";
@@ -300,7 +307,7 @@ EOF;
                     else if(strtolower(@$types[$j]) == "textarea"){
                         $item .= @"<td align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
                     }
-                    else if(strstr(strtolower(@$types[$j]), "checkbox") !== false){
+                    else if(strstr(strtolower(@$types[$j]), "checkbox(") !== false){
                         if(!$isVertical){
                             $align = "left";
                         }
@@ -309,7 +316,7 @@ EOF;
                         preg_match("/^(Checkbox)\((.*)\)$/i", $types[$j], $matches);
                         $matches = @explode(",", $matches[2]);
                         foreach($matches as $match){
-                            $match = trim($match);
+                            $match = str_replace("#COMMA", ",", trim($match));
                             if((is_array(@$value[$index]) && in_array($match, @$value[$index])) || ($match == @$value[$index])){
                                 $item .= "<div><input type='checkbox' name='{$this->getPostId()}[$i][$index][]' value='{$match}' checked> {$match}</div>";
                             }
@@ -319,7 +326,7 @@ EOF;
                         }
                         $item .= "</td>";
                     }
-                    else if(strstr(strtolower(@$types[$j]), "radio") !== false){
+                    else if(strstr(strtolower(@$types[$j]), "radio(") !== false){
                         if(!$isVertical){
                             $align = "left";
                         }
@@ -328,7 +335,7 @@ EOF;
                         preg_match("/^(Radio)\((.*)\)$/i", $types[$j], $matches);
                         $matches = @explode(",", $matches[2]);
                         foreach($matches as $match){
-                            $match = trim($match);
+                            $match = str_replace("#COMMA", ",", trim($match));
                             if($match == @$value[$index]){
                                 $item .= "<div><input type='radio' name='{$this->getPostId()}[$i][$index]' value='{$match}' checked> {$match}</div>";
                             }
@@ -338,12 +345,12 @@ EOF;
                         }
                         $item .= "</td>";
                     }
-                    else if(strstr(strtolower(@$types[$j]), "select") !== false || 
-                            strstr(strtolower(@$types[$j]), "combobox") !== false){
+                    else if(strstr(strtolower(@$types[$j]), "select(") !== false || 
+                            strstr(strtolower(@$types[$j]), "combobox(") !== false){
                         if(!$isVertical){
                             $align = "center";
                         }
-                        $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
+                        $cls = (strstr(strtolower(@$types[$j]), "select(") !== false) ? "raw" : "";
                         $item .= @"<td align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
                         $matches = array();
                         preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
@@ -352,7 +359,7 @@ EOF;
                             $item .= @"<option selected>{$value[$index]}</option>";
                         }
                         foreach($matches as $match){
-                            $match = trim($match);
+                            $match = str_replace("#COMMA", ",", trim($match));
                             if($match == @$value[$index]){
                                 $item .= "<option selected>{$match}</option>";
                             }
@@ -534,9 +541,9 @@ EOF;
                             $item .= "<tr><td align='right'><b>{$labels[$j]}:</b></td>";
                         }
                         $size = (isset($sizes[$j])) ? "width:{$sizes[$j]};" : "";
-                        if(strstr(strtolower(@$types[$j]), "select") !== false || 
-                           strstr(strtolower(@$types[$j]), "combobox") !== false || 
-                           strstr(strtolower(@$types[$j]), "radio") !== false){
+                        if(strstr(strtolower(@$types[$j]), "select(") !== false || 
+                           strstr(strtolower(@$types[$j]), "combobox(") !== false || 
+                           strstr(strtolower(@$types[$j]), "radio(") !== false){
                            $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strstr(strtolower(@$types[$j]), "checkbox") !== false){
@@ -545,7 +552,7 @@ EOF;
                         else if(strtolower(@$types[$j]) == "random"){
                             //$item .= "<td align='right' valign='top' style='display:none; {$size}'>{$value[$index]}</td>";
                         }
-                        else if(strtolower(@$types[$j]) == "integer"){
+                        else if(strtolower(@$types[$j]) == "integer" || strtolower(@$types[$j]) == "number"){
                             $item .= @"<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "checkbox"){

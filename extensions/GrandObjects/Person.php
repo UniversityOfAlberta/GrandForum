@@ -4034,7 +4034,7 @@ class Person extends BackboneModel {
                                         array('course_id' => $course_id,
                                               'user_id' => $this->getId()));
             if(count($data)>0){
-                return unserialize($data[0]['course_evals']);
+                return json_decode($data[0]['course_evals'], true);
             }
         }
         return array();

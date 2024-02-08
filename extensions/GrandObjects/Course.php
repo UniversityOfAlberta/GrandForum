@@ -5,6 +5,17 @@
 
 class Course extends BackboneModel{
 
+    static $evalMap = array(5022 => "Contact time was used effectively",
+                            23   => "I am motivated to learn more about these subject areas",
+                            24   => "I increased my knowledge of the subject areas in this course",
+                            25	 => "Overall, the quality of the course content was excellent",
+                            221  => "Overall, this instructor was excellent",
+                            21   => "The goals and objectives of the course were clear",
+                            5674 => "The instructor communicated effectively",
+                            26   => "The instructor provided constructive feedback throughout this course",
+                            9    => "The instructor treated the students with respect",
+                            51   => "The instructor was well prepared");
+
     static $cache = array();
     static $userCoursesCache = array();
     

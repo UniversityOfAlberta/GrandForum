@@ -15,7 +15,7 @@ class PersonProfileTab extends AbstractEditableTab {
     }
 
     function generateBody(){
-        global $wgUser;
+        global $wgUser, $config;
         $this->person->getLastRole();
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
@@ -23,6 +23,15 @@ class PersonProfileTab extends AbstractEditableTab {
         $keywords = $this->person->getKeywords(", ");
         if($this->person->getProfile() != "" || $keywords != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
+            if($config->getValue('siteName') == "FoE Forum"){
+                $pengStatus = FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS", 0, 0, $this->person->getId());
+                $pengStatusOther = ($pengStatus == "P.Eng") ? " (".FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $this->person->getId()).")" : "";
+                $this->html .= ($keywords != "") ? "<b>P.Eng Status:</b> {$pengStatus}{$pengStatusOther}<br />" : "";
+            
+                $area = FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $this->person->getId());
+                $areaOther = ($area == "Other") ? " (".FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $this->person->getId()).")" : "";
+                $this->html .= ($keywords != "") ? "<b>Research Area:</b> {$area}{$areaOther}<br />" : "";
+            }
             $this->html .= ($keywords != "") ? "<b>Keywords:</b> {$keywords}" : "";
             $this->showProfile($this->person, $this->visibility);
         }
@@ -217,6 +226,12 @@ class PersonProfileTab extends AbstractEditableTab {
             
             $api = new UserEmailAPI();
             $api->doAction(true);
+            
+            @FECReflections::saveBlobValue($_POST['research_area'], "RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $this->person->getId());
+            @FECReflections::saveBlobValue($_POST['research_area_other'], "RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $this->person->getId());
+            
+            @FECReflections::saveBlobValue($_POST['peng_status'], "RP_FEC", "PENG_STATUS", "PENG_STATUS", 0, 0, $this->person->getId());
+            @FECReflections::saveBlobValue($_POST['peng_status_other'], "RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $this->person->getId());
         }
         
         //Reset the cache to use the changed data
@@ -256,6 +271,52 @@ EOF;
     
     function showEditProfile($person, $visibility){
         global $config;
+        if($config->getValue('siteName') == "FoE Forum"){
+            $pengStatus = FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS", 0, 0, $person->getId());
+            $pengStatusOther = str_replace("'", "&#39;", FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $person->getId()));
+            $pengStatusField = new VerticalRadioBox("peng_status", "P.Eng Status", $pengStatus, array("P.Eng (APEGA)",
+                                                                                                      "P.Eng",
+                                                                                                      "E.I.T",
+                                                                                                      "Examinee",
+                                                                                                      "Applicant in Process",
+                                                                                                      "Have Not Applied"));
+            
+            $area = FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $person->getId());
+            $areaOther = str_replace("'", "&#39;", FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $person->getId()));
+            $areaField = new VerticalRadioBox("research_area", "Research Area", $area, array("Energy and Environment",
+                                                                                             "Nanotechnology",
+                                                                                             "ICT",
+                                                                                             "Biomedical Engineering",
+                                                                                             "Other"));
+            $this->html .= "
+                    
+                    <style>
+                        div#area input[type=text], 
+                        div#peng input[type=text] {
+                            vertical-align: -1px;
+                        }
+                    </style>
+                    
+                    <h3>P.Eng Status:</h3>
+                    <div id='peng' style='position:relative;'>
+                        <div style='line-height: 2em;'>
+                            {$pengStatusField->render()}
+                        </div>
+                        <div style='position:absolute; top:calc(1*(2em) - 3px); left: 53px; white-space:nowrap;'>
+                            (<input type='text' placeholder='specify' name='peng_status_other' value='{$pengStatusOther}' />)
+                        </div>
+                    </div>
+                    
+                    <h3>Research Area:</h3>
+                    <div id='area' style='position:relative;'>
+                        <div style='line-height: 2em;'>
+                            {$areaField->render()}
+                        </div>
+                        <div style='position:absolute; top:calc(4*(2em) - 3px); left: 55px; white-space:nowrap;'>
+                            <input type='text' placeholder='specify' name='research_area_other' value='{$areaOther}' />
+                        </div>
+                    </div>";
+        }
         $this->html .= "
                 <h3>Keywords:</h3>
                 <input class='keywords' type='text' name='keywords' value='' />";
