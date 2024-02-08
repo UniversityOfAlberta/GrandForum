@@ -14,68 +14,60 @@
                 <script type="text/javascript">
                     $(document).ready(function(){
                         function checkPercent(){
+                            clearWarning("#percentWarning");
                             var p1 = parseInt($("[name=Responsibilities_teaching]").val());
-                            var p2 = parseInt($("[name=Responsibilities_admin]").val());
-                            var p3 = parseInt($("[name=Responsibilities_research]").val());
-                            var p4 = parseInt($("[name=Responsibilities_professional]").val());
+                            var p2 = parseInt($("[name=Responsibilities_research]").val());
+                            var p3 = parseInt($("[name=Responsibilities_service]").val());
+                            var p4 = parseInt($("[name=Responsibilities_admin]").val());
                             var sum = p1 + p2 + p3 + p4;
+                            console.log(sum);
                             if(sum != 100){
                                 addWarning("The percentages do not add up to 100%", false, "#percentWarning");
                             }
                         }
-                        $("[name=Responsibilities_teaching],[name=Responsibilities_admin],[name=Responsibilities_research],[name=Responsibilities_professional]").change(checkPercent);
+                        $("[name=Responsibilities_teaching],[name=Responsibilities_research],[name=Responsibilities_service],[name=Responsibilities_admin]").change(checkPercent);
                         checkPercent();
                     });
                 </script>
                 <p><i>A2.01.2 The responsibilities of an Academic Faculty member shall include Teaching, Research and Service as described below. [see remainder of Article A2] The proportion of Teaching, Research and Service shall be determined by agreement of the Department Chair and Academic Faculty member for the upcoming academic year, or as set out in the Academic Faculty member’s Letter of Appointment.</i></p>
-                <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of July {$last_year} to June {$this_year}</p>
             ]]>
         </Static>
+        <ReportItem id="start_date" type="Calendar" blobItem="START_DATE" width="80px">
+            <![CDATA[
+                <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="end_date" type="Calendar" blobItem="END_DATE" width="80px">
+            <![CDATA[
+                &nbsp;to {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="role" type="Text" blobItem="ROLE" width="300px">
+            <![CDATA[
+                , during which period you will be holding the role of {$item}.</p>
+            ]]>
+        </ReportItem>
         <ReportItem id="teaching" type="Integer" blobItem="TEACHING" min="0" max="100" default="40" width="30px">
             <![CDATA[
                 <div id="percentWarning"></div>
-                <ol type="a">
-                    <li>{$item}% Teaching<br />
+                <table>
+                    <tr><td align='right'>Teaching:</td><td align='right'>{$item}%</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="teaching_desc" type="Textarea" blobItem="TEACHING_DESC" placeholder="Enter Details, normally number of courses">
+        <ReportItem id="research" type="Integer" blobItem="RESEARCH" min="0" max="100" default="40" width="30px">
             <![CDATA[
-                        {$item}
-                    </li>
+                    <tr><td align='right'>Research:</td><td align='right'>{$item}%</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="admin" type="Integer" blobItem="ADMIN" min="0" max="100" default="40" width="30px">
+        <ReportItem id="service" type="Integer" blobItem="SERVICE" min="0" max="100" default="20" width="30px">
             <![CDATA[
-                    <li>{$item}% Administration and/or Service<br />
+                    <tr><td align='right'>Service:</td><td align='right'>{$item}%</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="admin_desc" type="Textarea" blobItem="ADMIN_DESC" placeholder="Enter Details if applicable">
+        <ReportItem id="admin" type="Integer" blobItem="ADMIN" min="0" max="100" default="0" width="30px">
             <![CDATA[
-                        {$item}
-                    </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="research" type="Integer" blobItem="RESEARCH" min="0" max="100" default="20" width="30px">
-            <![CDATA[
-                    <li>{$item}% Administration and/or Service<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="research_desc" type="Textarea" blobItem="RESEARCH_DESC" placeholder="Enter Details if applicable">
-            <![CDATA[
-                        {$item}
-                    </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="professional" type="Integer" blobItem="PROFESSIONAL" min="0" max="100" default="0" width="30px">
-            <![CDATA[
-                    <li>{$item}% Professional/Clinical<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="professional_desc" type="Textarea" blobItem="PROFESSIONAL_DESC" placeholder="Enter Details if applicable">
-            <![CDATA[
-                        {$item}
-                    </li>
-                </ol>
+                    <tr><td align='right'>Admin:</td><td align='right'>{$item}%</td></tr>
+                </table>
             ]]>
         </ReportItem>
         <Static>
