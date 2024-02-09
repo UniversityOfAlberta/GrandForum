@@ -16,7 +16,7 @@ class PersonStoriesTab extends AbstractTab {
         if(!$wgUser->isLoggedIn()){
             return "";
         }
-        $stories = $this->person->getStories();
+        $stories = array_reverse($this->person->getStories());
         if(count($stories) > 0){
             foreach($stories as $story){
                 $this->html .= "<p class='thread-message'>{$story}</p>";

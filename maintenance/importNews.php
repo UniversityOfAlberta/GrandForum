@@ -9,39 +9,30 @@
     
     $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end),
                              Person::getAllPeopleDuring("ATS", $start, $end));
-    
-    $file = file_get_contents("News Brief.mbox");
-    $file = str_replace("=\r\n", "", $file);
-    
-    $exploded = explode("Content-Type: text/plain;", $file);
-    
-    DBFunctions::execSQL("TRUNCATE TABLE `grand_stories`", true);
-    
-    foreach($exploded as $email){
-        @list($text, $html) = explode("Content-Type: text/html;", $email);
-        $paragraphs = array_values(array_filter(explode("\n", $text), function($text){ return (trim($text) != ""); }));
-        foreach($allPeople as $person){
-            if($person->getName() != "Eleni.Stroulia"){
-                continue;
-            }
-            $skipNext = false;
-            foreach($paragraphs as $key => $paragraph){
-                if($skipNext){
-                    $skipNext = false;
-                    continue;
-                }
-                if(isset($paragraphs[$key+1]) && strstr($paragraphs[$key+1], "Full Story") !== false){
-                    $paragraph .= "<br />{$paragraphs[$key+1]}";
-                    $skipNext = true;
-                }
-                $paragraph = urldecode(preg_replace("/=(.{2})=(.{2})=(.{2})/", "%$1%$2%$3", $paragraph));
-                $paragraph = preg_replace("/\[(http.*?)\]/", "<a href='$1' target='_blank'>$1</a>", $paragraph);
-                if(strstr($paragraph, "To: {$person->getFirstName()} {$person->getLastName()}") === false && 
-                  (strstr($paragraph, $person->getNameForForms()) !== false ||
-                   strstr($paragraph, "{$person->getFirstName()} {$person->getLastName()}")) !== false){
+    $json = file_get_contents("https://www.ualberta.ca/api/coveo/search/ualberta-news-feed?category=('Science%20and%20Technology')&news_source=('folio')&count=50");
+    $obj = json_decode($json);
+    $results = array_reverse($obj->data->results);
+    foreach($allPeople as $person){
+        foreach($results as $news){
+            $title = $news->title;
+            $excerpt = $news->excerpt;
+            $keywords = $news->raw->ua__keywords;
+            $date = $news->raw->ua__news_date;
+            $url = $news->uri;
+            
+            $paragraph = "$title $excerpt $keywords";
+            $text = "{$title}<br />{$excerpt}<br /><a href='{$url}' target='_blank'>Full Story</a>";
+            if(strstr($paragraph, $person->getNameForForms()) !== false ||
+               strstr($paragraph, "{$person->getFirstName()} {$person->getLastName()}") !== false){
+                $data = DBFunctions::select(array('grand_stories'),
+                                            array('*'),
+                                            array('user_id' => $person->getId(),
+                                                  'paragraph' => $text)); 
+                if(count($data) == 0){
+                    echo "FOUND {$person->getName()}\n";
                     DBFunctions::insert('grand_stories',
                                         array('user_id' => $person->getId(),
-                                              'paragraph' => $paragraph));
+                                              'paragraph' => $text));
                 }
             }
         }
