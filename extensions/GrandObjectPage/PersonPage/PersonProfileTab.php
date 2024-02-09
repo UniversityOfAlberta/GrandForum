@@ -16,6 +16,7 @@ class PersonProfileTab extends AbstractEditableTab {
 
     function generateBody(){
         global $wgUser, $config;
+        $me = Person::newFromWgUser();
         $this->person->getLastRole();
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
@@ -37,7 +38,7 @@ class PersonProfileTab extends AbstractEditableTab {
         }
         $this->showTopProducts($this->person, $this->visibility, 5);
         $extra = array();
-        if($this->visibility['isMe']){
+        if($this->visibility['isMe'] || $me->isSubRole('ViewProfile')){
             if($this->person->isRole(NI) || 
                $this->person->isRole(HQP) || 
                $this->person->isRole(EXTERNAL)){
@@ -538,6 +539,7 @@ EOF;
     */
     function showContact($person, $visibility){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
         $this->html .= "<div id='contact' style='white-space: nowrap;position:relative;height:226px;min-height:150px'>";
         $this->html .= <<<EOF
             <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;'></div>
@@ -549,7 +551,7 @@ EOF;
                 });
             </script>
 EOF;
-        if($this->visibility['isMe']){
+        if($this->visibility['isMe'] || $me->isSubRole('ViewProfile')){
             $this->html .= $this->showChord($person, $visibility);
         }
         $this->html .= "</div>";
@@ -660,7 +662,8 @@ EOF;
     
     function showTopProducts($person, $visibility, $max=5){
         global $config, $wgServer, $wgScriptPath;
-        if(!$visibility['isMe']){
+        $me = Person::newFromWgUser();
+        if(!$visibility['isMe'] || $me->isSubRole('ViewProfile')){
             return;
         }
         $products = $person->getTopProducts();

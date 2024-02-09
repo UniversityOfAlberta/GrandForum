@@ -248,7 +248,7 @@
     $config->setConst("EVALUATOR",  "Evaluator");
     $config->setConst("STAFF",      "Staff");
     $config->setConst("MANAGER",    "Manager");
-    $config->setConst("ADMIN",    "Admin");
+    $config->setConst("ADMIN",      "Admin");
     
     $config->setValue("roleDefs", array(
         $config->getConst('INACTIVE')       => "Inactive",
