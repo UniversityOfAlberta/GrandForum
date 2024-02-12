@@ -9,13 +9,13 @@
             <th width="15%">Address</th>
             <th width="54%">Posting</th>
             <% if(isAllowedToCreateEventPostings){ %>
-                <th width="1%">Delete?</th>
+                <th width="1%">Delete/Duplicate</th>
             <% } %>
         </tr>
     </thead>
     <tbody>
         <% this.model.each(function(event){ %>
-            <tr>
+            <tr data-id="<%= event.get('id') %>">
                 <td>
                     <span style="display:none;"><%= event.get('startDate') %></span>
                     <%= dateTimeHelpers.formatDate(event.get('startDate')) %><br />
@@ -34,7 +34,8 @@
                 <% if(isAllowedToCreateEventPostings){ %>
                     <td align="center">
                         <% if(event.get('isAllowedToEdit')){ %>
-                            <span id="<%= event.get('id') %>" class="delete-icon"></span>
+                            <span id="<%= event.get('id') %>" class="delete-icon"></span>&nbsp;
+                            <span class="copy-icon" title="Duplicate" style="margin-right:3px;"><span class="throbber" style="display:none;" ></span>
                         <% } %>
                     </td>
                 <% } %>
