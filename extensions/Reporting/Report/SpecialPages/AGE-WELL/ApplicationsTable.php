@@ -674,6 +674,7 @@ class ApplicationsTable extends SpecialPage{
     function generateEpicConference(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2024, "2024"));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2023, "2023"));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2021, "2021"));
