@@ -55,25 +55,26 @@
         </ReportItem>
         <ReportItem id="copresenting_name" type="Text" blobType="BLOB_TEXT" blobItem="COPRESENTING_NAME">
             <![CDATA[
-                <h3>Stakeholder</h3>
+                <h3>Stakeholder:</h3>
                 <table>
-                    <tr><td><b>Name:</b></td><td>{$item}</td></tr>
+                    <tr><td style='white-space: nowrap;'><b>Name:</b></td><td style='width:100%;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="copresenting_email" type="Text" blobType="BLOB_TEXT" blobItem="COPRESENTING_EMAIL">
             <![CDATA[
-                    <tr><td><b>Email:</b></td><td>{$item}</td></tr>
+                    <tr><td style='white-space: nowrap;'><b>Email:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="copresenting_affiliation" type="Text" blobType="BLOB_TEXT" blobItem="COPRESENTING_AFFILIATION">
             <![CDATA[
-                    <tr><td><b>Organizational Affiliation:</b></td><td>{$item}</td></tr>
+                    <tr><td style='white-space: nowrap;'><b>Organizational Affiliation:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="copresenting_relationship" type="Textarea" blobType="BLOB_TEXT" blobItem="COPRESENTING_RELATIONSHIP" rich="true" limit="100">
             <![CDATA[
-                    <tr><td valign='top'><b>Relationship to your project:</b></td><td>{$item}</td></tr>
-                </table>
+                    <tr><td style='white-space: nowrap;'><b>Relationship to your project:</b></td><td></td></tr>
+                    <tr><td colspan='2'>{$item}</td></tr>
+                </table><br />
             ]]>
         </ReportItem>
         <ReportItem id="consent" type="Radio" blobType="BLOB_TEXT" blobItem="CONSENT" options="Yes, we both agree|No, we do not agree">
