@@ -16,10 +16,19 @@ class ForReportItemSet extends ArrayReportItemSet {
             }
         }
         else{
-            for($i=$from; $i<=$to; $i++){
-                $tuple = self::createTuple();
-                $tuple['extra'] = "$i";
-                $data[] = $tuple;
+            if($from <= $to){
+                for($i=$from; $i<=$to; $i++){
+                    $tuple = self::createTuple();
+                    $tuple['extra'] = "$i";
+                    $data[] = $tuple;
+                }
+            }
+            else{
+                for($i=$from; $i>=$to; $i--){
+                    $tuple = self::createTuple();
+                    $tuple['extra'] = "$i";
+                    $data[] = $tuple;
+                }
             }
         }
         return $data;

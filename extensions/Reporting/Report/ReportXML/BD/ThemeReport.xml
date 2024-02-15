@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Report" reportType="RP_PROJECT_REPORT_{GET(id)}" pdfType="RP_PROJECT_REPORT_{GET(id)}" pdfFiles="ProjectReport" year="0" personId="0" ajax="true" disabled="false">
+<Report name="Theme Report" reportType="RP_THEME_REPORT_{GET(id)}" pdfType="RP_THEME_REPORT_{GET(id)}" pdfFiles="ThemeReport" year="0" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role role="Staff+">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="PL">
+        <Role role="TL">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="PS">
-            <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Project />
+        <Theme />
         <If if="{!matches({GET(id)},^[0-9][0-9][0-9][0-9]_Q[1-4])}">
             <SectionPermission id="report" permissions="--" />
             <SectionPermission id="submit" permissions="--" />
         </If>
     </Permissions>
-    <ReportSection id="report" type="NextPrevReportSection" name="Project Report" title="{$project_name} {replace(_,:,{GET(id)})} Report">
+    <ReportSection id="report" type="NextPrevReportSection" name="Theme Report" title="{$theme_name} {replace(_,:,{GET(id)})} Report">
         <!-- Past Reports -->
+        <Static>
+            {set(startYear, {timestamp(Y)})}
+        </Static>
+        <ReportItemSet type="ThemeProjects" all="true">
+            <Static>
+                {set(startYear, {min({get(startYear)},{substr({$project_start},0,4)})} )}
+            </Static>
+        </ReportItemSet>
         <Static>
             <![CDATA[
                 {set(year, {substr({GET(id)}, 0, 4)})}
@@ -29,10 +33,11 @@
                 <h3>Past Reports</h3>
                 <table class="wikitable">
                     <tr>
+                        <th rowspan='2'>Project</th>
             ]]>
         </Static>
         <!-- Year Header -->
-        <For from="{$project_start}" to="{timestamp(Y)}">
+        <For from="{get(startYear)}" to="{timestamp(Y)}">
             <Static>
                 <![CDATA[
                     <th colspan='4'>{$getExtra}</th>
@@ -46,7 +51,7 @@
             ]]>
         </Static>
         <!-- Quarter Header -->
-        <For from="{$project_start}" to="{timestamp(Y)}">
+        <For from="{get(startYear)}" to="{timestamp(Y)}">
             <Static>
                 <![CDATA[
                     {set(y, {$getExtra})}
@@ -64,32 +69,43 @@
         <Static>
             <![CDATA[
                     </tr>
-                    <tr>
             ]]>
         </Static>
         <!-- PDF Rows -->
-        <For from="{$project_start}" to="{timestamp(Y)}">
+        <ReportItemSet type="ThemeProjects" all="true">
             <Static>
                 <![CDATA[
-                    {set(y, {$getExtra})}
+                    <tr>
+                        <td><b>{$project_name}</b></td>
                 ]]>
             </Static>
-            <For from="1" to="4">
+            <For from="{get(startYear)}" to="{timestamp(Y)}">
                 <Static>
                     <![CDATA[
-                        {set(q, {$getExtra})}
+                        {set(y, {$getExtra})}
                     ]]>
                 </Static>
-                <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReport" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0">
-                    <![CDATA[
-                        <td style='padding-left:0.5em; padding-right:0.5em;'>{$item}</td>
-                    ]]>
-                </ReportItem>
+                <For from="1" to="4">
+                    <Static>
+                        <![CDATA[
+                            {set(q, {$getExtra})}
+                        ]]>
+                    </Static>
+                    <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReport" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0">
+                        <![CDATA[
+                            <td style='padding-left:0.5em; padding-right:0.5em;'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </For>
             </For>
-        </For>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
         <Static>
             <![CDATA[
-                    </tr>
                 </table>
                 </div>
             ]]>
@@ -99,7 +115,7 @@
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
             <![CDATA[
                 <h3>1. Description of work</h3>
-                <p>General description of the activities performed in the past 3 months in relation to the overall goals, objectives, and timelines of the project.</p>
+                <p>General description of the activities performed in the past 3 months in relation to the overall goals, objectives, and timelines of the theme.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -113,7 +129,7 @@
         <ReportItem id="edi" type="Textarea" blobItem="EDI" rich="true">
             <![CDATA[
                 <h3>3. Equity, diversity, and inclusion update</h3>
-                <p>Explain how EDI considerations have been incorporated in your work, including the design and implementation of your research activities, the composition of project teams, formation, and training of HQPs, participation in EDI events, etc.</p>
+                <p>Explain how EDI considerations have been incorporated in your work, including the design and implementation of your research activities, the composition of theme teams, formation, and training of HQPs, participation in EDI events, etc.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -127,7 +143,7 @@
         <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
             <![CDATA[
                 <h3>5. Milestones adjustments</h3>
-                <p>Have you modified your project milestones because of activities/ challenges you’ve encountered in the past 3 months? If so, provide a brief description of the changes and the rationale that supports them.</p>
+                <p>Have you modified your theme milestones because of activities/ challenges you’ve encountered in the past 3 months? If so, provide a brief description of the changes and the rationale that supports them.</p>
                 {$item}
             ]]>
         </ReportItem>

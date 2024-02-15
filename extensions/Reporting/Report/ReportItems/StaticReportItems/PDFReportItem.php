@@ -6,6 +6,8 @@ class PDFReportItem extends StaticReportItem {
         global $wgServer, $wgScriptPath, $wgOut;
         $me = $this->getReport()->person;
         $reportType = $this->getAttr("reportType", 'HQPReport');
+        $pdfType = $this->getAttr("pdfType", '');
+        $class = $this->getAttr("class", "button");
         $useProject = $this->getAttr("project", false);
         $buttonName = $this->getAttr("buttonName", "Report PDF");
         $noRenderIfNull = $this->getAttr("noRenderIfNull", "false");
@@ -36,6 +38,9 @@ class PDFReportItem extends StaticReportItem {
         $found = false;
         foreach($projects as $project){
             $report = new DummyReport($reportType, $person, $project, $year, true);
+            if($pdfType != ""){
+                $report->pdfType = $pdfType;
+            }
             $report->year = $year;
             if($report->allowIdProjects){
                 // Handle allowIdProjects
@@ -47,14 +52,15 @@ class PDFReportItem extends StaticReportItem {
             $len = 0;
             $sub = 0;
             $sto = new ReportStorage($person, $project);
-        	$check = $report->getPDF();
+            
+        	$check = $report->getPDF(false, $pdfType);
         	if (count($check) > 0 && ($reportType != "ProjectNIComments" || $person->getId() != $me->getId())) {
         		$tok = $check[0]['token'];
         		$sto->select_report($tok);
         		$tst = $sto->metadata('timestamp');
         		$len = $sto->metadata('len_pdf');
         		$sub = $sto->metadata('submitted');
-        		$item = "<a class='button' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
+        		$item = "<a class='{$class}' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
         		$item = $this->processCData($item);
 		        $wgOut->addHTML($item);
 		        $found = true;

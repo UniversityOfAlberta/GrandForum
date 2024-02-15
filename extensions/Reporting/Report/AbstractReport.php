@@ -409,10 +409,13 @@ abstract class AbstractReport extends SpecialPage {
         return $return;
     }
     
-    function getPDF($submittedByOwner=false){
+    function getPDF($submittedByOwner=false, $pdfType=''){
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
             $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
+            if($pdfType != ""){
+                $report->pdfType = $pdfType;
+            }
             $report->year = $this->year;
             return $report->getPDF();
         }
@@ -737,7 +740,9 @@ abstract class AbstractReport extends SpecialPage {
         $me = Person::newFromWgUser();
         $rResult = $me->isRoleAtLeast(MANAGER);
         $pResult = false;
+        $tResult = false;
         $nProjectTags = 0;
+        $nThemeTags = 0;
         foreach($this->permissions as $type => $perms){
             foreach($perms as $perm){
                 switch($type){
@@ -834,7 +839,7 @@ abstract class AbstractReport extends SpecialPage {
                         break;
                     case "Project":
                         $nProjectTags++;
-                        if($this->project != null){
+                        if($this->project != null && $this->project->getId() != 0){
                             if(isset($perm['perm']['deleted']) && $perm['perm']['deleted'] !== null){
                                 $pResult = ($pResult || (($perm['perm']['deleted'] && 
                                            $this->project->isDeleted() && 
@@ -855,6 +860,16 @@ abstract class AbstractReport extends SpecialPage {
                             }
                         }
                         break;
+                    case "Theme":
+                        $nThemeTags++;
+                        if($this->project != null && $this->project->getId() != 0){
+                            if($me->isThemeLeaderOf($this->project) || 
+                               $me->isThemeCoordinatorOf($this->project) ||
+                               $me->isRoleAtLeast(SD)){
+                                $tResult = true;
+                            }
+                        }
+                        break;
                     case "Person":
                         if($me->getId() == $perm['perm']['id']){
                             $rResult = true;
@@ -866,7 +881,10 @@ abstract class AbstractReport extends SpecialPage {
         if($nProjectTags == 0){
             $pResult = true;
         }
-        return ($pResult && $rResult);
+        if($nThemeTags == 0){
+            $tResult = true;
+        }
+        return ($tResult && $pResult && $rResult);
     }
     
     function getSectionPermissions($section){

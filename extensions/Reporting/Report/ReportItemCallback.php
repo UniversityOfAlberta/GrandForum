@@ -133,6 +133,11 @@ class ReportItemCallback {
             "project_n_progressed" => "getNProgressed",
             "project_intcomp_application" => "getIntCompApplication", // hard-coded strings
             "project_cic_partners" => "getCICPartners",
+            // Themes
+            "theme_id" => "getThemeId",
+            "theme_name" => "getThemeName",
+            "theme_full_name" => "getThemeFullName",
+            "theme_url" => "getThemeUrl",
             // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
@@ -615,6 +620,48 @@ class ReportItemCallback {
             }
         }
         return implode(", ", $newProjects);
+    }
+    
+    function getThemeId(){
+        return $this->getProjectId();
+    }
+    
+    function getThemeName(){
+        $theme_name = "";
+        if($this->reportItem->projectId != 0){
+            $theme = Theme::newFromId($this->reportItem->projectId);
+            if($theme == null){
+                return "";
+            }
+            $theme_name = $theme->getAcronym();
+        }
+        $theme_name = str_replace("<", "&lt;", $theme_name);
+        $theme_name = str_replace(">", "&gt;", $theme_name);
+        return $theme_name;
+    }
+    
+    function getThemeFullName(){
+        $theme_name = "";
+        if($this->reportItem->projectId != 0){
+            $theme = Theme::newFromId($this->reportItem->projectId);
+            if($theme == null){
+                return "";
+            }
+            $theme_name = $theme->getName();
+        }
+        return $theme_name;
+    }
+    
+    function getThemeUrl(){
+        $theme_name = "";
+        if($this->reportItem->projectId != 0){
+            $theme = Theme::newFromId($this->reportItem->projectId);
+            if($theme == null){
+                return "";
+            }
+            $theme_url = $theme->getUrl();
+        }
+        return $theme_url;
     }
     
     function getNFaceWithStakeholder($startDate = false, $endDate = false){

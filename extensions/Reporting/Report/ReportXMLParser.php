@@ -356,6 +356,20 @@ class ReportXMLParser {
                 $this->parseProjectSectionPermissions($child, $projName);
                 $this->report->addPermission("Project", array("deleted" => $deleted, "project" => $projName), "{$start}", "{$end}");
             }
+            else if($key == "Theme"){
+                $attributes = $child->attributes();
+                $themeName = (isset($attributes->theme)) ? "{$attributes->theme}" : "";
+                $start = (isset($attributes->start)) ? AbstractReport::blobConstant($attributes->start) : "0000-00-00";
+                $end = (isset($attributes->end)) ? AbstractReport::blobConstant($attributes->end) : "2100-12-31";
+                if($start == null){
+                    $this->errors[] = "Start time '{$attributes->start}' does not exist";
+                }
+                if($end == null){
+                    $this->errors[] = "Start time '{$attributes->end}' does not exist";
+                }
+                $this->parseProjectSectionPermissions($child, $themeName);
+                $this->report->addPermission("Theme", array("theme" => $themeName), "{$start}", "{$end}");
+            }
             else if($key == "Person"){
                 $attributes = $child->attributes();
                 $id = (isset($attributes->id)) ? "{$attributes->id}" : 0;

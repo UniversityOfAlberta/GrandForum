@@ -264,11 +264,11 @@ class Theme {
      * Returns all of the Projects in this Theme
      * @return array The Projects in this Theme
      */
-    function getProjects(){
+    function getProjects($all=false){
         $return = array();
         $projects = Project::getAllProjects();
         foreach($projects as $project){
-            if($project->getStatus() == "Active"){
+            if($all || $project->getStatus() == "Active"){
                 foreach($project->getChallenges() as $challenge){
                     if($challenge->getAcronym() == $this->getAcronym()){
                         $return[$project->getName()] = $project;
