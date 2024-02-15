@@ -79,6 +79,9 @@
     // Other Email Address (usually network contact)
     $config->setValue("otherEmail", "");
     
+    // Whether or not to set override the mail envelope (-f in mail)
+    $config->setValue("setMailEnvelope", true);
+    
     // Network Website
     $config->setValue("networkSite", "");
     

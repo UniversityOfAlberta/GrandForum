@@ -126,7 +126,9 @@ $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
 $wgEnableParserLimitReporting = false;
-$wgAdditionalMailParams = "-f{$config->getValue('supportEmail')}";
+if($config->getValue('setMailEnvelope')){
+    $wgAdditionalMailParams = "-f {$config->getValue('supportEmail')}";
+}
 
 if(TESTING){
     $wgEnableEmail      = false;
