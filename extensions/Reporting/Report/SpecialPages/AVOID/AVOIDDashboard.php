@@ -1025,7 +1025,7 @@ class AVOIDDashboard extends SpecialPage {
                 //redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=NineMonths");
             }
             else if($baseLineSubmitted && !$twelveMonthSubmitted && $baseDiff >= 30*12 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "TwelveMonths")){
-                //redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=TwelveMonths");
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=TwelveMonths");
             }
             else if($nsText == "Special" && $wgTitle->getText() == "Report" && ((@$_GET['report'] == "IntakeSurvey" && $baseLineSubmitted) || 
                                                                                 (@$_GET['report'] == "ThreeMonths" && $threeMonthSubmitted) ||
