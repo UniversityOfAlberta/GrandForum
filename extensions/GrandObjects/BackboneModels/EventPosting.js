@@ -26,6 +26,7 @@ EventPosting = Posting.extend({
         website: "",
         enableRegistration: false,
         enableMaterials: false,
+        extra: {},
         image1: "", // For Uploads
         image2: "", // For Uploads
         image3: "", // For Uploads

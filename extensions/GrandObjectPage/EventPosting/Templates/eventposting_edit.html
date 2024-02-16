@@ -51,6 +51,18 @@
                 <td class="value"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
             </tr>
             <tr>
+                <td class="label">Event Type:</td>
+                <td class="value"><%= HTML.Select(this, 'extra.event_type', {options: ["Conference", "Workshop", "Training", "Community meeting"]}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Participation Type:</td>
+                <td class="value"><%= HTML.Select(this, 'extra.participation_type', {options: ["In person", "Hybrid", "Virtual"]}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Host University:</td>
+                <td class="value"><%= HTML.TextBox(this, 'extra.host_uni', {}) %></td>
+            </tr>
+            <tr>
                 <td class="label">Address:</td>
                 <td class="value"><%= HTML.TextBox(this, 'address', {}) %></td>
             </tr>

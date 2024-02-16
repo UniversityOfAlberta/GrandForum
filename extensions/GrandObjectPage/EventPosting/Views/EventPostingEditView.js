@@ -4,6 +4,7 @@ EventPostingEditView = PostingEditView.extend({
     
     postRender: function(){
         this.renderTinyMCE();
+        this.$("[name=extra_event_type]").combobox();
     }
 
 });

@@ -20,6 +20,7 @@ class EventPosting extends Posting {
     var $banner2;
     var $enableRegistration;
     var $enableMaterials;
+    var $extra = array();
     
     function __construct($data){
         if(count($data) > 0){
@@ -32,6 +33,10 @@ class EventPosting extends Posting {
             $this->website = $row['website'];
             $this->enableRegistration = $row['enable_registration'];
             $this->enableMaterials = $row['enable_materials'];
+            $this->extra = json_decode($row['extra'], true);
+            if(!is_array($this->extra)){
+                $this->extra = array();
+            }
         }
     }
     
@@ -63,6 +68,10 @@ class EventPosting extends Posting {
         return ($this->enableMaterials == 1);
     }
     
+    function getExtra(){
+        return $this->extra;
+    }
+    
     function toArray(){
         $json = parent::toArray();
         $json['address'] = $this->getAddress();
@@ -77,6 +86,7 @@ class EventPosting extends Posting {
         $json['banner2'] = $this->getImageUrl(5);
         $json['enableRegistration'] = $this->isRegistrationEnabled();
         $json['enableMaterials'] = $this->isMaterialSubmissionEnabled();
+        $json['extra'] = $this->getExtra();
         return $json;
     }
     
@@ -90,7 +100,8 @@ class EventPosting extends Posting {
                                                 'country' => $this->country,
                                                 'website' => $this->website,
                                                 'enable_registration' => $this->enableRegistration,
-                                                'enable_materials' => $this->enableMaterials),
+                                                'enable_materials' => $this->enableMaterials,
+                                                'extra' => json_encode($this->extra)),
                                           array('id' => $this->id));
             $this->saveImage(1, $this->image1);
             $this->saveImage(2, $this->image2);
@@ -111,7 +122,8 @@ class EventPosting extends Posting {
                                                 'country' => $this->country,
                                                 'website' => $this->website,
                                                 'enable_registration' => $this->enableRegistration,
-                                                'enable_materials' => $this->enableMaterials),
+                                                'enable_materials' => $this->enableMaterials,
+                                                'extra' => json_encode($this->extra)),
                                           array('id' => $this->id));
             $this->saveImage(1, $this->image1);
             $this->saveImage(2, $this->image2);

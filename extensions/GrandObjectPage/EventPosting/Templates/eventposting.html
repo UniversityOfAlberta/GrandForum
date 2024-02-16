@@ -20,6 +20,24 @@
                 <td class="label">End Date:</td>
                 <td><%= endDate %></td>
             </tr>
+            <% if(extra.event_type != ""){ %>
+                <tr>
+                    <td class="label">Event Type:</td>
+                    <td><%= extra.event_type %></td>
+                </tr>
+            <% } %>
+            <% if(extra.participation_type != ""){ %>
+                <tr>
+                    <td class="label">Participation Type:</td>
+                    <td><%= extra.participation_type %></td>
+                </tr>
+            <% } %>
+            <% if(extra.host_uni != ""){ %>
+                <tr>
+                    <td class="label">Host University:</td>
+                    <td><%= extra.host_uni %></td>
+                </tr>
+            <% } %>
             <tr>
                 <td class="label">Address:</td>
                 <td><%= address %></td>
