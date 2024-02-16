@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="The EPIC Conference (2023)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2023">
+<Report name="EPIC Conference (2024)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2024">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>The EPIC Conference (2023)</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>EPIC Conference (2024)</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -43,36 +43,48 @@
         <ReportItem id="title" type="Text" blobType="BLOB_TEXT" blobItem="TITLE" width="300px">
             <![CDATA[
                 <h3>Abstract:</h3>
-                Project Title: {$item}
+                <b>Project Title:</b> {$item}
                 <br /><br />
             ]]>
         </ReportItem>
         <ReportItem id="abstract" type="Textarea" blobType="BLOB_TEXT" blobItem="ABSTRACT" rich="true" limit="250">
             <![CDATA[
-                <p>Abstract:</p>
+                <p><b>Abstract:</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="copresenting" type="Radio" blobItem="COPRESENTING" options="Yes|No">
+        <ReportItem id="copresenting_name" type="Text" blobType="BLOB_TEXT" blobItem="COPRESENTING_NAME">
             <![CDATA[
-                <h3>Are you co-presenting with a stakeholder?</h3>
-                {$item}<br />
+                <h3>Stakeholder:</h3>
+                <table>
+                    <tr><td style='white-space: nowrap;'><b>Name:</b></td><td style='width:100%;'>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="copresenting2" type="Textarea" blobType="BLOB_TEXT" blobItem="COPRESENTING2" rich="true" limit="100" optional="true">
+        <ReportItem id="copresenting_email" type="Text" blobType="BLOB_TEXT" blobItem="COPRESENTING_EMAIL">
             <![CDATA[
-                <p>If yes, please include the stakeholder’s name, organizational affiliation, and their relationship to your project:</p>
-                {$item}
+                    <tr><td style='white-space: nowrap;'><b>Email:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="consent" type="Radio" blobType="BLOB_TEXT" blobItem="CONSENT" options="Yes|No">
+        <ReportItem id="copresenting_affiliation" type="Text" blobType="BLOB_TEXT" blobItem="COPRESENTING_AFFILIATION">
+            <![CDATA[
+                    <tr><td style='white-space: nowrap;'><b>Organizational Affiliation:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="copresenting_relationship" type="Textarea" blobType="BLOB_TEXT" blobItem="COPRESENTING_RELATIONSHIP" rich="true" limit="100">
+            <![CDATA[
+                    <tr><td style='white-space: nowrap;'><b>Relationship to your project:</b></td><td></td></tr>
+                    <tr><td colspan='2'>{$item}</td></tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="consent" type="Radio" blobType="BLOB_TEXT" blobItem="CONSENT" options="Yes, we both agree|No, we do not agree">
             <![CDATA[
                 <h3>Consent Information</h3>
-                <p>Do you consent to your session being recorded by AGE-WELL?</p>
+                <p>Do all presenters consent to being recorded by AGE-WELL? (Recordings may be distributed and used for educational or promotional purposes and uploaded to the AGE-WELL YouTube channel, external website, and intranet)</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="requirements" type="Checkbox" blobType="BLOB_ARRAY" blobItem="REQUIREMENTS" delimiter="&lt;br />" options="I agree that I have access to the devices and internet connection required for my presentation|I agree to join the AGE-WELL-HQP Slack Channel, if I have not already done so">
+        <ReportItem id="requirements" type="Checkbox" blobType="BLOB_ARRAY" blobItem="REQUIREMENTS" delimiter="&lt;br />" options="We agree that we have access to the devices and internet connection required for the presentation">
             <![CDATA[
                 <h3>Technology Requirements</h3>
                 {$item}
