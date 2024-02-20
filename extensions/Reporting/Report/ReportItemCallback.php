@@ -103,6 +103,7 @@ class ReportItemCallback {
             "project_status" => "getProjectStatus",
             "project_description" => "getProjectDescription",
             "project_theme" => "getProjectTheme",
+            "project_theme_lead_emails" => "getProjectThemeLeadEmails",
             "project_start" => "getProjectStart",
             "project_end" => "getProjectEnd",
             "project_length" => "getProjectLength",
@@ -417,6 +418,23 @@ class ReportItemCallback {
             $project_theme = implode(", ", $challenges->pluck('getAcronym()'));
         }
         return $project_theme;
+    }
+    
+    function getProjectThemeLeadEmails($delim=","){
+        $leadEmails = array();
+        $project_theme = "";
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            if($project == null){
+                return "";
+            }
+            foreach($project->getChallenges() as $challenge){
+                foreach($challenge->getLeaders() as $leader){
+                    $leadEmails[$leader->getEmail()] = $leader->getEmail();
+                }   
+            }
+        }
+        return implode($delim, $leadEmails);
     }
     
     function getProjectStart(){
