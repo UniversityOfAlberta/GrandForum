@@ -20,18 +20,18 @@ class AnnokiControl extends SpecialPage {
             $message = "";
             break;
         case "passwordreset-emailtext-ip":
-            $message = "<html>A new password has been requested for {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>). A temporary password has been made for the following user:
+            $message = "A new password has been requested for {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>). A temporary password has been made for the following user:
 
 $2
                         
-Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.</html>";
+Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.";
             break;
         case "passwordremindertext":
-            $message = "<html>A new password has been requested for {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>). A temporary password for user
-\"$2\" has been created and was set to \"$3\".  Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.</html>";
+            $message = "A new password has been requested for {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>). A temporary password for user
+\"$2\" has been created and was set to \"$3\".  Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.";
             break;
         case "createaccount-text":
-            $message = "<html>An account has been created for your e-mail address on {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>) named \"$2\"";
+            $message = "An account has been created for your e-mail address on {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>) named \"$2\"";
             if(!isExtensionEnabled('Shibboleth')){
                 $message .= ', with password "$3".
 You should log in and change your password now.';
@@ -39,19 +39,19 @@ You should log in and change your password now.';
             else{
                 $message .= '.';
             }
-            $message .= "</html>";
+            $message .= "";
             break;
         case "readonlytext":
             $message = '$1';
             break;
         case "confirmemail_body":
-            $message = "<html><p>An account has been created for your e-mail address on {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>) named \"$2\"</p>
+            $message = "<p>An account has been created for your e-mail address on {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>) named \"$2\"</p>
 
                         <p>To confirm that this account really does belong to you and activate email features on {{SITENAME}}, open this link in your browser:</p>
 
                         <p><a href='$3'>$3</a></p>
 
-                        <p><b>This confirmation code will expire at $4.</b></p></html>";
+                        <p><b>This confirmation code will expire at $4.</b></p>";
             break;
         case "passwordreset-emailelement":
             $message = "<u>Username:</u> <b>$1</b><br />
