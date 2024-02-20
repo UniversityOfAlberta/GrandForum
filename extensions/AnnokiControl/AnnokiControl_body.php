@@ -20,10 +20,10 @@ class AnnokiControl extends SpecialPage {
             $message = "";
             break;
         case "passwordreset-emailtext-ip":
-            $message = "A new password has been requested for {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>). A temporary password has been made for the following user:
-
-$2
-                        
+            $message = "A new password has been requested for {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>). A temporary password has been made for the following user:<br />
+<br />
+$2<br />
+<br />                  
 Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.";
             break;
         case "passwordremindertext":
