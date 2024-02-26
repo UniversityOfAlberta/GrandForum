@@ -332,10 +332,35 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="leverage" type="Radio" blobItem="LEVERAGE" options="Yes|No">
+            <![CDATA[
+                <h3>3.6 Have you successfully leveraged MtS Funding to secure additional funding for your project?</h3>
+                <div id='leverage'>
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="leverage_reason" type="Textarea" blobItem="LEVERAGE_REASON" limit="200" rich="true">
+            <![CDATA[
+                <div id='leverage_reason' style='display:none;'><p><b>Please explain</b></p>
+                    {$item}
+                </div>
+                <script type='text/javascript'>
+                    $('#leverage input').change(function(){
+                        if($('#leverage input:checked').val() == "Yes"){
+                            $('#leverage_reason').show();
+                        }
+                        else{
+                            $('#leverage_reason').hide();
+                        }
+                    }).trigger('change');
+                </script>
+            ]]>
+        </ReportItem>
         <Static>
             <![CDATA[
                 <h2>Community Engagement in Research Index (CERI)</h2>
-                <h3>3.6 Indicate the extent to which community partner listed below is involved in aspects of your work (on a scale from 1–3):</h3>
+                <h3>3.7 Indicate the extent to which community partner listed below is involved in aspects of your work (on a scale from 1–3):</h3>
                 <p>Please fill out this section to the best of your ability. Although a number of areas may be designated ‘1’, we understand that not all categories and activities will apply across all projects. Please only leave sections blank that are not applicable to the current stage of your project, or study overall.<br /><small>
                     1 (Community partners do not participate in this activity) <br />
                     2 (Community partners are consulted on or advise on this activity)<br />
