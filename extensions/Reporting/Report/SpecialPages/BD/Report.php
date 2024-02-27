@@ -20,7 +20,8 @@ class Report extends AbstractReport{
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        $tabs["Reports"] = TabUtils::createTab("My Reports");
+        $tabs["ProjectReports"] = TabUtils::createTab("Project Reports");
+        $tabs["ThemeReports"] = TabUtils::createTab("Theme Reports");
         $tabs["Applications"] = TabUtils::createTab("Applications");
         return true;
     }
@@ -51,6 +52,7 @@ class Report extends AbstractReport{
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         $projects = $person->leadership();
+        $themes = $person->getLeadThemes();
         foreach($projects as $project){
             for($i=0;$i<4;$i++){
                 $date = date('Y-m-d', time() - 3600*24*30*3*$i);
@@ -59,9 +61,23 @@ class Report extends AbstractReport{
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReport" && @$_GET['project'] == $project->getName() && @$_GET['id'] == $quarter)) ? "selected" : false;
                     $link = "{$url}ProjectReport&project={$project->getName()}&id={$quarter}";
                     if($i == 0){
-                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", $link, $selected);
+                        $tabs["ProjectReports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", $link, $selected);
                     }
-                    $tabs["Reports"]['subtabs'][count($tabs["Reports"]['subtabs'])-1]['dropdown'][] = TabUtils::createSubTab(str_replace("_", " ", $quarter), $link, $selected);
+                    $tabs["ProjectReports"]['subtabs'][count($tabs["ProjectReports"]['subtabs'])-1]['dropdown'][] = TabUtils::createSubTab(str_replace("_", " ", $quarter), $link, $selected);
+                }
+            }
+        }
+        foreach($themes as $theme){
+            for($i=0;$i<4;$i++){
+                $date = date('Y-m-d', time() - 3600*24*30*3*$i);
+                if($date >= $theme->getCreated()){
+                    $quarter = self::dateToProjectQuarter($date);
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ThemeReport" && @$_GET['project'] == $theme->getAcronym() && @$_GET['id'] == $quarter)) ? "selected" : false;
+                    $link = "{$url}ThemeReport&project={$theme->getAcronym()}&id={$quarter}";
+                    if($i == 0){
+                        $tabs["ThemeReports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", $link, $selected);
+                    }
+                    $tabs["ThemeReports"]['subtabs'][count($tabs["ThemeReports"]['subtabs'])-1]['dropdown'][] = TabUtils::createSubTab(str_replace("_", " ", $quarter), $link, $selected);
                 }
             }
         }
