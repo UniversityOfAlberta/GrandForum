@@ -75,7 +75,7 @@ class Report extends AbstractReport{
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ThemeReport" && @$_GET['project'] == $theme->getAcronym() && @$_GET['id'] == $quarter)) ? "selected" : false;
                     $link = "{$url}ThemeReport&project={$theme->getAcronym()}&id={$quarter}";
                     if($i == 0){
-                        $tabs["ThemeReports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", $link, $selected);
+                        $tabs["ThemeReports"]['subtabs'][] = TabUtils::createSubTab("{$theme->getAcronym()}", $link, $selected);
                     }
                     $tabs["ThemeReports"]['subtabs'][count($tabs["ThemeReports"]['subtabs'])-1]['dropdown'][] = TabUtils::createSubTab(str_replace("_", " ", $quarter), $link, $selected);
                 }
