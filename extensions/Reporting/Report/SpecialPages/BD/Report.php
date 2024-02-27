@@ -26,6 +26,12 @@ class Report extends AbstractReport{
         return true;
     }
     
+    /**
+     * Q1: March 15, 2024
+     * Q2: June 15, 2024
+     * Q3: Sept 15, 2024
+     * Q4: Dec 15, 2024
+     */
     static function dateToProjectQuarter($date){
         $year = substr($date,0,4);
         $month = substr($date,5,5);
@@ -43,6 +49,33 @@ class Report extends AbstractReport{
         }
         else if($month > "12-15"){
             return ($year+1)."_Q1";
+        }
+        return "";
+    }
+    
+    /**
+     * Q1: April 15, 2024
+     * Q2: July 15, 2024
+     * Q3: Oct 15, 2024
+     * Q4: Jan 15, 2025 
+     */
+    static function dateToThemeQuarter($date){
+        $year = substr($date,0,4);
+        $month = substr($date,5,5);
+        if($month <= "01-15"){
+            return ($year-1)."_Q4";
+        }
+        else if($month <= "04-15"){
+            return "{$year}_Q1";
+        }
+        else if($month <= "07-15"){
+            return "{$year}_Q2";
+        }
+        else if($month <= "10-15"){
+            return "{$year}_Q3";
+        }
+        else{
+            return "{$year}_Q4";
         }
         return "";
     }
@@ -71,7 +104,7 @@ class Report extends AbstractReport{
             for($i=0;$i<4;$i++){
                 $date = date('Y-m-d', time() - 3600*24*30*3*$i);
                 if($date >= $theme->getCreated()){
-                    $quarter = self::dateToProjectQuarter($date);
+                    $quarter = self::dateToThemeQuarter($date);
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ThemeReport" && @$_GET['project'] == $theme->getAcronym() && @$_GET['id'] == $quarter)) ? "selected" : false;
                     $link = "{$url}ThemeReport&project={$theme->getAcronym()}&id={$quarter}";
                     if($i == 0){
