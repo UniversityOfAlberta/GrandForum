@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Theme Report" reportType="RP_THEME_REPORT_{GET(id)}" pdfType="RP_THEME_REPORT_{GET(id)}" year="0" personId="0" ajax="true" disabled="false">
+    <ReportSection id="report" type="NextPrevReportSection" name="Theme Report" title="{$theme_name} {replace(_,:,{GET(id)})} Report">
+        <!-- Start the Report -->
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
+            <![CDATA[
+                <h3>1. Description of theme work</h3>
+                <p>General description of the activities performed in the past 3 months in relation to the overall goals, objectives, and timelines of the theme.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones" type="Textarea" blobItem="MILESTONES" rich="true">
+            <![CDATA[
+                <h3>2. Summary of theme activities and milestones</h3>
+                <p>Explain the research progress made during the past 3 months, mentioning any notable administrative or research outcome.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="edi" type="Textarea" blobItem="EDI" rich="true">
+            <![CDATA[
+                <h3>3. Theme summary update on equity diversity and inclusion</h3>
+                <p>Explain how EDI considerations have been incorporated in your work, including the design and implementation of your research activities, the composition of theme teams, formation, and training of HQPs, participation in EDI events, etc.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true">
+            <![CDATA[
+                <h3>4. Identified of anticipated theme challenges</h3>
+                <p>Explain any challenges or concerns that have been identified during the past 3 months, including anticipated ones. If possible, explain how you have or are planning to address them.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
+            <![CDATA[
+                <h3>5. Summary of theme milestone adjustments</h3>
+                <p>Have you modified your theme milestones because of activities/ challenges you’ve encountered in the past 3 months? If so, provide a brief description of the changes and the rationale that supports them.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="nextsteps" type="Textarea" blobItem="NEXTSTEPS" rich="true">
+            <![CDATA[
+                <h3>6. Theme next steps</h3>
+                <p>Briefly explain next steps including expected outcomes, activities, and objectives for the next 3 months.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" rich="true">
+            <![CDATA[
+                <h3>7. Any other theme summary comments not captured above</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
