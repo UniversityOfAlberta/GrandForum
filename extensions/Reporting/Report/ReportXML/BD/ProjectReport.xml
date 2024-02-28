@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Report" reportType="RP_PROJECT_REPORT_{GET(id)}" pdfType="RP_PROJECT_REPORT_{GET(id)}" pdfFiles="ProjectReport" year="0" personId="0" ajax="true" disabled="false">
+<Report name="Project Report" reportType="RP_PROJECT_REPORT_{GET(id)}" pdfType="RP_PROJECT_REPORT_{GET(id)}" pdfFiles="ProjectReportPDF" year="0" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role role="Staff+">
             <SectionPermission id="report" permissions="rw" />

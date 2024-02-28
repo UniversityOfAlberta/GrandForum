@@ -96,7 +96,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		    $disabled = "disabled='true'";
 		}
 		$showWarning = (strtolower($this->getAttr('showWarning', 'false')) == 'true');
-		if(!$this->getReport()->isComplete() && $showWarning){
+		if($showWarning && !$this->getReport()->isComplete()){
 		    $wgOut->addHTML("<div class='warning'>The report is not 100% complete.  Double check to make sure you did not miss any fields.</div>");
 		}
 		$wgOut->addHTML("<h3><en>Generate a new PDF</en><fr>Créer un nouveau PDF</fr></h3>");
