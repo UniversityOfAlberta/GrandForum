@@ -18,7 +18,7 @@
     <ReportSection id="report" type="NextPrevReportSection" name="Theme Report" title="{$theme_name} {replace(_,:,{GET(id)})} Report">
         <!-- Past Reports -->
         <Static>
-            {set(startYear, {timestamp(Y)})}
+            {set(startYear, {timestamp(Y-m-d)})}
         </Static>
         <ReportItemSet type="ThemeProjects" all="true">
             <Static>

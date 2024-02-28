@@ -9,13 +9,18 @@ class ApplicationTab extends AbstractTab {
     var $extra;
     var $showAllWithPDFs;
     var $idProjectRange = array(0, 1);
+    var $gets = array();
 
-    function __construct($rp, $people=null, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null){
+    function __construct($rp, $people=null, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null, $gets=array()){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
         $this->extraCols = $extraCols;
         $this->showAllWithPDFs = $showAllWithPDFs;
+        $this->gets = $gets;
+        foreach($this->gets as $id => $get){
+            $_GET[$id] = $get;
+        }
         if($people !== null){
             $newPeople = array();
             foreach($people as $person){
@@ -72,9 +77,13 @@ class ApplicationTab extends AbstractTab {
 
     function generateBody(){
         global $wgServer, $wgScriptPath;
+        foreach($this->gets as $id => $get){
+            $_GET[$id] = $get;
+        }
         $me = Person::newFromWgUser();
         $rpId = (is_array($this->rp)) ? $this->rp[0] : $this->rp;
         $rpId .= $this->year;
+        $rpId .= md5(serialize($this->gets));
         
         $isPerson = true;
         foreach($this->people as $person){
