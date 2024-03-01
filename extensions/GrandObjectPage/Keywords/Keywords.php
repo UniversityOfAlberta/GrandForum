@@ -39,7 +39,7 @@ class Keywords extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
 	    global $wgServer, $wgScriptPath, $config, $wgUser;
 	    $me = Person::newFromWgUser();
-	    if($me->isRole('ViewProfile') || $me->isRoleAtLeast(MANAGER)){
+	    if($me->isRole('View Profile') || $me->isRoleAtLeast(MANAGER)){
 	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Keywords", 
 	                                                                      "$wgServer$wgScriptPath/index.php/Special:Keywords");
 	    }
