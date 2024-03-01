@@ -10,7 +10,8 @@ class Keywords extends BackbonePage {
     }
     
     function userCanExecute($user){
-        return true;
+        $me = Person::newFromUser($user);
+	    return ($me->isSubRole('ViewProfile') || $me->isRoleAtLeast(MANAGER));
     }
     
     function getTemplates(){
@@ -38,8 +39,7 @@ class Keywords extends BackbonePage {
     
     static function createToolboxLinks(&$toolbox){
 	    global $wgServer, $wgScriptPath, $config, $wgUser;
-	    $me = Person::newFromWgUser();
-	    if($me->isRole('View Profile') || $me->isRoleAtLeast(MANAGER)){
+	    if(self::userCanExecute($wgUser)){
 	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Keywords", 
 	                                                                      "$wgServer$wgScriptPath/index.php/Special:Keywords");
 	    }

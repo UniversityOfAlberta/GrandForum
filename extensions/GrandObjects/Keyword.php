@@ -77,7 +77,7 @@ class Keyword extends Grant {
         if(count($data) > 0 && $me->isLoggedIn()){
             $row = $data[0];
             $copi = unserialize($row['copi']);
-            if($me->getId() == $row['user_id'] || $me->getId() == $row['owner_id'] || $me->isRole('ViewProfile') || $me->isRoleAtLeast(MANAGER) ||
+            if($me->getId() == $row['user_id'] || $me->getId() == $row['owner_id'] || $me->isSubRole('ViewProfile') || $me->isRoleAtLeast(MANAGER) ||
                array_search($me->getId(), $copi) !== false){
                 $this->id = $row['id'];
                 $this->owner_id = $row['owner_id'];
