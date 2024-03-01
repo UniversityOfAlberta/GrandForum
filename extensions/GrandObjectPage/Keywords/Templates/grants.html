@@ -1,0 +1,29 @@
+<p><a href="#/new" class="button">Add Keyword</a><!--&nbsp;<a href="<%= wgServer + wgScriptPath %>/index.php/Special:GrantAwardPage" class="button">Show Awarded NSERC Applications</a></p>-->
+<table id="grants" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th style="white-space:nowrap;">Res#</th>
+            <th style="white-space:nowrap;">PI</th>
+            <th style="white-space:nowrap;">Co-PI</th>
+            <th style="white-space:nowrap;">Keywords</th>
+            <th style="white-space:nowrap;">Partners</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(grant){ %>
+            <tr>
+                <td>
+                    <a href="<%= grant.get('url') %>"><%= grant.get('project_id') %></a>
+                </td>
+                <td>
+                    <% if(grant.get('pi').id != 0){ %>
+                        <%= grant.get('pi').reversedName %>
+                    <% } %>
+                </td>
+                <td><div style="width:100%;max-height:118px;overflow-y:auto;"><%= grant.get('copi_string') %></div></td>
+                <td><div style="width:100%;max-height:118px;overflow-y:auto;"><%= grant.get('keywords').join(", ") %></div></td>
+                <td><div style="width:100%;max-height:118px;overflow-y:auto;"><%= grant.get('partners').join(", ") %></div></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

@@ -19,6 +19,7 @@ autoload_register('GrandObjects/API/University');
 autoload_register('GrandObjects/API/Wiki');
 autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Grant');
+autoload_register('GrandObjects/API/Keyword');
 autoload_register('GrandObjects/API/PDF');
 autoload_register('GrandObjects/API/Journal');
 
@@ -71,6 +72,11 @@ $apiRequest->addAction('Hidden','grantaward/:start/:count', 'GrantAwardAPI');
 $apiRequest->addAction('Hidden','grantaward/:id', 'GrantAwardAPI');
 $apiRequest->addAction('Hidden','grantpartner', 'GrantPartnerAPI');
 $apiRequest->addAction('Hidden','grantpartner/:id', 'GrantPartnerAPI');
+// Keywords
+$apiRequest->addAction('Hidden','keyword', 'KeywordAPI');
+$apiRequest->addAction('Hidden','keyword/keywords', 'KeywordAPI');
+$apiRequest->addAction('Hidden','keyword/partners', 'KeywordAPI');
+$apiRequest->addAction('Hidden','keyword/:id', 'KeywordAPI');
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI');
 //Journals
@@ -89,6 +95,7 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js?".filemtime("extensions/GrandObjects/BackboneModels/Product.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Grant.js?".filemtime("extensions/GrandObjects/BackboneModels/Grant.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/GrantAward.js?".filemtime("extensions/GrandObjects/BackboneModels/GrantAward.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Keyword.js?".filemtime("extensions/GrandObjects/BackboneModels/Keyword.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/GrantPartner.js?".filemtime("extensions/GrandObjects/BackboneModels/GrantPartner.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/University.js?".filemtime("extensions/GrandObjects/BackboneModels/University.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js?".filemtime("extensions/GrandObjects/BackboneModels/WikiPage.js")."'></script>\n";

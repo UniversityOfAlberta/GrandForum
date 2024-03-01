@@ -1,0 +1,40 @@
+<div id="deleteDialog" style="display:none;" title="Delete Keyword">
+    Are you sure you want to delete this Keyword?
+    <div class="throbber" style="float:right;display:none;"></div>
+</div>
+<p>
+    <%= description %>
+</p>
+<table>
+    <% if(this.person.get('id') != 0){ %>
+        <tr>
+            <td class="label">UofA PI:</td>
+            <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
+        </tr>
+    <% } %>
+    <% if(external_pi != ""){ %>
+        <tr>
+            <td class="label">External PI:</td>
+            <td><%= external_pi %></td>
+        </tr>
+    <% } %>
+    <% if(copi.length > 0) { %>
+        <tr>
+            <td class="label">Co-PI:</td>
+            <td id="copi"></td>
+        </tr>
+    <% } %>
+    <% if(keywords.length > 0) { %>
+        <tr>
+            <td class="label">Keywords:</td>
+            <td><%= keywords.join(', ') %></td>
+        </tr>
+    <% } %>
+    <% if(partners.length > 0) { %>
+        <tr>
+            <td class="label">Partners:</td>
+            <td><%= partners.join(', ') %></td>
+        </tr>
+    <% } %>
+</table><br />
+<button id="edit">Edit Keyword</button>&nbsp;<button id="delete">Delete Keyword</button>
