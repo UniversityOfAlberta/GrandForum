@@ -140,11 +140,11 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         
         // 8. ADL
         $adl1 = $this->getBlobValue(BLOB_ARRAY, YEAR, $reportType, "InPersonAssessment", "avoid_adl", $user_id);
-        $score += count($adl1['avoid_adl']);
+        $score += @count($adl1['avoid_adl']);
         
         // 9. IADL
         $iadl1 = $this->getBlobValue(BLOB_ARRAY, YEAR, $reportType, "InPersonAssessment", "avoid_iadl", $user_id);
-        $score += count($iadl1['avoid_iadl']);
+        $score += @count($iadl1['avoid_iadl']);
         
         // 10. Caregiver
         $caregiver1 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "InPersonAssessment", "avoid_caregiver", $user_id);
@@ -304,10 +304,10 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         // 22. Chronic
         $chronic1 = $this->getBlobValue(BLOB_ARRAY, YEAR, $reportType, "InPersonAssessment", "avoid_chronic", $user_id);
         
-        if(count($chronic1['avoid_chronic']) >= 1 && count($chronic1['avoid_chronic']) <= 2){
+        if(@count($chronic1['avoid_chronic']) >= 1 && @count($chronic1['avoid_chronic']) <= 2){
             $score += 0.5;
         }
-        else if(count($chronic1['avoid_chronic']) >= 3){
+        else if(@count($chronic1['avoid_chronic']) >= 3){
             $score += 1;
         }
         
