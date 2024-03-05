@@ -210,6 +210,7 @@ class IntakeSummary extends SpecialPage {
             $html .= "<th>EQ Health Score</th>";
             $html .= "<th>VAS Score</th>";
             $html .= "<th>CFS Score</th>";
+            $html .= "<th>In Person Frailty Score</th>";
             if($config->getValue('networkFullName') == "AVOID Alberta"){
                 $html .= "<th>VFS Score</th>";
                 $html .= "<th>HAAI Total</th>";
@@ -314,8 +315,15 @@ class IntakeSummary extends SpecialPage {
             $html .= "<td style='white-space:nowrap;'>{$type}</td>";
         }
         $api = new UserFrailtyIndexAPI();
+        $api2 = new UserInPersonFrailtyIndexAPI();
         if(static::$rpType != "RP_AVOID_THREEMO" && static::$rpType != "RP_AVOID_NINEMO"){
             $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
+            if(count($person->getRelations('Assesses', true, true)) >= 1){
+                $inPersonScore = number_format($api2->getFrailtyScore($person->getId()), 3);
+            }
+            else{
+                $inPersonScore = "N/A";
+            }
             if($report->reportType != "RP_AVOID_THREEMO" && $report->reportType != "RP_AVOID_NINEMO"){
                 // Full Reports
                 $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
@@ -323,6 +331,7 @@ class IntakeSummary extends SpecialPage {
                 $html .= "<td>".$EQ5D5L[implode("", $scores["Health"])]."</td>";
                 $html .= "<td>".$scores["VAS"]."</td>";
                 $html .= "<td>".$scores["CFS"]."</td>";
+                $html .= "<td>".$inPersonScore."</td>";
             }
             else{
                 // Partial Reports, don't show any numbers

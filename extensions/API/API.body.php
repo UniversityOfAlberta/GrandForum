@@ -129,6 +129,7 @@ class APIRequest{
         $this->addAction('User Accounts', 'importMetrics', 'ImportMetricsAPI');
         $this->addAction("User Accounts", "checkUserTags", "UserTagsAPI");
         $this->addAction("User Accounts", "checkFrailtyIndex", "UserFrailtyIndexAPI");
+        $this->addAction("User Accounts", "checkInPersonFrailtyIndex", "UserInPersonFrailtyIndexAPI");
         $this->addAction("User Accounts", "userunsub", "UserUnsubAPI");
 		//POST
 		$this->addAction('Projects', 'createProject', 'CreateProjectAPI');
