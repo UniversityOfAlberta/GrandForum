@@ -101,7 +101,6 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         if($depression5 == "Yes"){
             $subscore += 1;
         }
-        $score += $subscore;
         
         if($subscore >= 2){
             $score += 1;
@@ -168,9 +167,9 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $bowel2 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "InPersonAssessment", "avoid_bowel3", $user_id);
         $bowel3 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "InPersonAssessment", "avoid_bowel4", $user_id);
         
-        /*if($bowel1 == "Yes"){
+        if($bowel1 == "Yes"){
             $score += 1;
-        }*/
+        }
         if($bowel2 == "Yes"){
             $score += 1;
         }
@@ -264,8 +263,12 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
        
         // 18. Pain
         $pain1 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "InPersonAssessment", "avoid_pain", $user_id);
+        $pain2 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "InPersonAssessment", "avoid_pain2", $user_id);
         
         if($pain1 == "Yes"){
+            $score += 1;
+        }
+        if($pain2 >= 5){
             $score += 1;
         }
         
@@ -310,8 +313,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         else if(@count($chronic1['avoid_chronic']) >= 3){
             $score += 1;
         }
-        
-        return $score/65;
+        return $score/62;
     }
     
     function doAction($noEcho=false){
