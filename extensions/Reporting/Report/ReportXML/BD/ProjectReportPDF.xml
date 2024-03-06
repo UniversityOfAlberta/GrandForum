@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Report" reportType="RP_PROJECT_REPORT_{GET(id)}" pdfType="RP_PROJECT_REPORT_{GET(id)}" year="0" personId="0" ajax="true" disabled="false">
-    <ReportSection id="report" type="NextPrevReportSection" name="Project Report" title="{$project_name} {replace(_,:,{GET(id)})} Report">
+    <ReportSection id="report" type="NextPrevReportSection" name="Project Report" title="{$project_full_name} ({$project_name})&lt;br /&gt;{replace(_,:,{GET(id)})} Report" pagebreak="false">
         <!-- Start the Report -->
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
             <![CDATA[

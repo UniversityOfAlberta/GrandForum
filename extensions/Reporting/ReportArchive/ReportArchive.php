@@ -52,7 +52,37 @@ class ReportArchive extends SpecialPage {
 
         // Check for a download.
         $action = @$_GET['getpdf'];
-        if ($action !== "") {
+        $merge = @$_GET['merge'];
+        if(isset($_GET['merge']) && $merge != ""){
+            $pdfs = explode(",", $_GET['merge']);
+            $tomerge = array();
+            foreach($pdfs as $tok){
+                $pdf = PDF::newFromToken($tok);
+                $pdf->getPDF();
+                $md5 = md5($tok.rand(0, 100000000));
+                if($pdf != ""){
+                    file_put_contents("/tmp/{$md5}", $pdf->getPDF());
+                    $tomerge[] = "/tmp/$md5";
+                }
+            }
+            $file = md5(implode($tomerge));
+            exec("pdftk \"".implode("\" \"", $tomerge)."\" cat output \"/tmp/$file\"");
+            $contents = file_get_contents("/tmp/$file");
+            
+            foreach($tomerge as $delete){
+                unlink($delete);
+            }
+            unlink("/tmp/$file");
+            header("Content-Type: application/pdf");
+            header('Content-Length: ' . strlen($contents));
+            header('Content-Disposition: attachment; filename=Merged.pdf');
+            header('Cache-Control: private, max-age=0, must-revalidate');
+            header('Pragma: public');
+            ini_set('zlib.output_compression','0');
+            echo $contents;
+            exit;
+        }
+        if(isset($_GET['getpdf']) && $action != "") {
             $tok = $action;
             
             $sto = new ReportStorage($person, null);

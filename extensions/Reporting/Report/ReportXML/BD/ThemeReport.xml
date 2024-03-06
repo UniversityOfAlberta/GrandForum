@@ -31,7 +31,7 @@
                 {set(quarter,    {substr({GET(id)}, 6, 1)})}
                 <div class="pdfnodisplay">
                 <h3>Past Reports</h3>
-                <table class="wikitable">
+                <table id='past' class="wikitable">
                     <tr>
                         <th rowspan='2'>Project</th>
             ]]>
@@ -75,7 +75,7 @@
         <ReportItemSet type="ThemeProjects" all="true">
             <Static>
                 <![CDATA[
-                    <tr>
+                    <tr class="project">
                         <td><b>{$project_name}</b></td>
                 ]]>
             </Static>
@@ -106,8 +106,45 @@
         </ReportItemSet>
         <Static>
             <![CDATA[
+                <tr>
+                    <th style='text-align:left;'>Merged</th>
+            ]]>
+        </Static>
+        <For from="{get(startYear)}" to="{timestamp(Y)}">
+            <For from="1" to="4">
+                <Static>
+                    <![CDATA[
+                        <th>
+                            <a class='merged' style="width:auto;" href="#"><img src="http://localhost/forum/skins/pdf.gif"></a>
+                        </th>
+                    ]]>
+                </Static>
+            </For>
+        </For>
+        <Static>
+            <![CDATA[
+                    </tr>
                 </table>
                 </div>
+                <script type='text/javascript'>
+                    $('.merged').each(function(i, el){
+                        var id = i+1;
+                        var pdfs = [];
+                        $('#past tr.project').each(function(i, el){
+                            $("a", $('td', $(el)).eq(id)).each(function(j, a){
+                                var href = $(a).attr("href").split("?getpdf=");
+                                pdfs.push(href[1]);
+                            });
+                        });
+                        if(pdfs.length > 0){
+                            var url = wgServer + wgScriptPath + "/index.php/Special:ReportArchive?merge=" + pdfs.join(",");
+                            $(el).attr("href", url);
+                        }
+                        else{
+                            $(el).hide();
+                        }
+                    });
+                </script>
             ]]>
         </Static>
         
