@@ -6,7 +6,7 @@ GrantView = Backbone.View.extend({
     initialize: function(){
         this.model.fetch({
             error: function(e){
-                this.$el.html("This Revenue Account does not exist");
+                this.$el.html("This Grant does not exist");
             }.bind(this)
         });
         
@@ -41,7 +41,7 @@ GrantView = Backbone.View.extend({
         }
         else{
             clearAllMessages();
-            addError('This Revenue Account is already deleted');
+            addError('This Grant is already deleted');
         }
     },
     
@@ -51,10 +51,10 @@ GrantView = Backbone.View.extend({
                 success: function(){
                     clearAllMessages();
                     if(this.model.get('exclude')){
-                        addSuccess("The Revenue Account is now Excluded");
+                        addSuccess("The Grant is now Excluded");
                     }
                     else{
-                        addSuccess("The Revenue Account is no longer Excluded");
+                        addSuccess("The Grant is no longer Excluded");
                     }
                 }.bind(this),
                 error: function(o, e){
@@ -63,7 +63,7 @@ GrantView = Backbone.View.extend({
                         addError(e.responseText, true);
                     }
                     else{
-                        addError("There was a problem saving the Revenue Account", true);
+                        addError("There was a problem saving the Grant", true);
                     }
                 }.bind(this)
             });
@@ -113,14 +113,14 @@ GrantView = Backbone.View.extend({
 
     render: function(){
         main.set('title', this.model.get('title'));
-        $("#pageTitle").html("<a href='#'>Revenue Accounts</a> > " + this.model.get('scientific_title'));
+        $("#pageTitle").html("<a href='#'>Grants</a> > " + this.model.get('scientific_title'));
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributions();
         this.renderCoPI();
         if(this.model.get('deleted') == true){
             this.$el.find("#delete").prop('disabled', true);
             clearInfo();
-            addInfo('This Revenue Account has been deleted, and will not show up anywhere else on the ' + siteName + '.  You may still edit the Revenue Account.');
+            addInfo('This Grant has been deleted, and will not show up anywhere else on the ' + siteName + '.  You may still edit the Grant.');
         }
         this.deleteDialog = this.$("#deleteDialog").dialog({
             autoOpen: false,
@@ -158,18 +158,18 @@ GrantView = Backbone.View.extend({
                                     model.set(response);
                                     clearSuccess();
                                     clearError();
-                                    addSuccess('The Revenue Account <i>' + response.title + '</i> was deleted sucessfully');
+                                    addSuccess('The Grant <i>' + response.title + '</i> was deleted sucessfully');
                                 }
                                 else{
                                     clearSuccess();
                                     clearError();
-                                    addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
+                                    addError('The Grant <i>' + response.title + '</i> was not deleted sucessfully');
                                 }
                             }.bind(this),
                             error: function(model, response) {
                                 clearSuccess();
                                 clearError();
-                                addError('The Revenue Account <i>' + response.title + '</i> was not deleted sucessfully');
+                                addError('The Grant <i>' + response.title + '</i> was not deleted sucessfully');
                             }
                         });
                     }

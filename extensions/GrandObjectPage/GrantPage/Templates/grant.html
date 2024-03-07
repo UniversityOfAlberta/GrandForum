@@ -1,5 +1,5 @@
-<div id="deleteDialog" style="display:none;" title="Delete Revenue Account">
-    <div class="ui-icon ui-icon-alert" style="float:left; margin:50px 12px 50px 0;"></div><p>Use <b>"Exclude"</b> in to disassociate this revenue account from your record. "Delete" will delete it for all the co-PI. Are you sure you want to delete it?</p>
+<div id="deleteDialog" style="display:none;" title="Delete Grant">
+    <div class="ui-icon ui-icon-alert" style="float:left; margin:50px 12px 50px 0;"></div><p>Use <b>"Exclude"</b> in to disassociate this Grant from your record. "Delete" will delete it for all the co-PI. Are you sure you want to delete it?</p>
     <input id="deleteCheck" type="checkbox" /> I have read and understand the implications of the above statement.
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
@@ -70,8 +70,8 @@
         <td>$<%= number_format(myportion, 2) %></td>
     </tr>
     <tr>
-        <td class="label">Exclude<sup><span class="clicktooltip" style="font-size:1.25em;" title="If a Revenue Account is marked as excluded, it will NOT show up in your profile or Annual Report.">&#9432;</span></sup>:</td>
+        <td class="label">Exclude<sup><span class="clicktooltip" style="font-size:1.25em;" title="If a Grant is marked as excluded, it will NOT show up in your profile or Annual Report.">&#9432;</span></sup>:</td>
         <td><%= HTML.CheckBox(this, 'exclude', {value: 1, default: 0, style: 'vertical-align:bottom;'}) %></td>
     </tr>
 </table><br />
-<button id="edit">Edit Revenue Account</button>&nbsp;<button id="delete">Delete Revenue Account</button>
+<button id="edit">Edit Grant</button>&nbsp;<button id="delete">Delete Grant</button>
