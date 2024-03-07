@@ -16,6 +16,7 @@ images/*
 Classes/dompdf/lib/fonts/log.htm
 Classes/dompdf/lib/fonts/*.afm.php
 extensions/Cache/cache/
+test.tmp
 Path.php
 Credentials.php
 phpdoc.dist.xml

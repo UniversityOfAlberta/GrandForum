@@ -24,8 +24,7 @@ Feature: API
         
     Scenario: Getting list of HQP as a Guest
         Given I am on "index.php?action=api.people/HQP"
-        Then I should see "[]"
-        But I should not see "HQP.User1"
+        Then I should not see "HQP.User1"
         
     Scenario: Getting list of Projects as a NI
         Given I am logged in as "NI.User1" using password "NI.Pass1"

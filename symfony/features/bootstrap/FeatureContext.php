@@ -2,13 +2,43 @@
 define('TESTING', true);
 require_once("../config/Config.php");
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
+require_once("Patch.php");
+
+/**
+ * Scrolling doesn't seem to always happen automatically so this is needed in order to 
+ * force a scroll whenever an element is interacted with
+ */
+$objPatch = new Patch('vendor/instaclick/php-webdriver/lib/WebDriver/Session.php');
+$objPatch->redefineFunction("
+    public function moveto(\$parameters)
+    {
+        try {
+            \$result = \$this->curl('POST', '/scrollto', \$parameters);
+            \$result = \$this->curl('POST', '/moveto', \$parameters);
+        } catch (WebDriverException\ScriptTimeout \$e) {
+            throw WebDriverException::factory(WebDriverException::UNKNOWN_ERROR);
+        }
+
+        return \$result['value'];
+    }");
+eval($objPatch->getCode());
 
 putenv("OPENSSL_CONF=/dev/null");
 
-exec(sprintf("%s > %s 2>&1 & echo $! >> %s", 
-             "phantomjs --webdriver=8643 --ignore-ssl-errors=true", 
-             "phantomjs.log", 
-             "phantomjs.pid"));
+function getSeleniumPid(){
+    exec('netstat -nlap 2>&1 /dev/null | grep ":::4444"', $output);
+    $pid = @trim(explode("LISTEN", str_replace("/java", "", $output[0]))[1]);
+    return $pid;
+}
+
+$pid = getSeleniumPid();
+if($pid != ""){
+    exec("kill $pid");
+    sleep(1);
+}
+exec(sprintf("%s > %s 2>&1 &", 
+             "PATH=\$PATH:bin/ java -jar bin/selenium.jar", 
+             "selenium.log"));
 
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
@@ -64,7 +94,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function beforeScenario($event){
         global $currentSession;
-        $currentSession->getSession()->getDriver()->resizeWindow(1280, 1024,'current');
+        if(!$currentSession->getSession()->getDriver()->isStarted()){
+            $currentSession->getSession()->getDriver()->start();
+            $currentSession->getSession()->getDriver()->resizeWindow(1366, 1080,'current');
+        }
+        $currentSession->getSession()->getDriver()->reset();
         $this->currentScenario = $event->getScenario();
     }
     
@@ -91,6 +125,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
             system("php ../maintenance/cleanAllLists.php &> /dev/null");
         }
         unlink("../test.tmp");
+        $pid = getSeleniumPid();
+        if($pid != ""){
+            exec("kill $pid");
+            sleep(1);
+        }
     }
     
     /**
@@ -100,7 +139,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         global $currentSession;
         // Delay the session so that it doesn't process futher while the page is still loading
         try{
-            $currentSession->getSession()->wait(25);
+            $currentSession->getSession()->wait(5);
         }
         catch(Exception $e){
             
@@ -370,8 +409,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function fillInTinyMCEWith($id, $text){
         $text = addslashes($text);
-        $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().setContent('$text');");
-        $this->getSession()->evaluateScript("_.defer(function(){ $('textarea[name=$id]').tinymce().fire('keyup'); });");
+        $script = "$('textarea[name=$id]').tinymce().setContent('$text'); " .
+                  "_.defer(function(){ $('textarea[name=$id]').tinymce().fire('keyup'); });";
+        $this->getSession()->getDriver()->executeScript($script);
     }
     
     /**
@@ -379,7 +419,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function fillInTagItWith($id, $text){
         $text = addslashes($text);
-        $this->getSession()->evaluateScript("$('[name=$id]').tagit('createTag', '$text');");
+        $script = "$('[name=$id]').tagit('createTag', '$text');";
+        $this->getSession()->getDriver()->executeScript($script);
     }
     
     /**
@@ -387,14 +428,15 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function selectFromChosenWith($id, $text){
         $text = addslashes($text);
-        $this->getSession()->evaluateScript("chosenText = '$text';");
-        $this->getSession()->evaluateScript("$('select[name=$id] option').each(function(i, el){
+        $script = "chosenText = '$text'; " .
+                  "$('select[name=$id] option').each(function(i, el){
                                                 if($(el).val() == chosenText ||
                                                    $(el).text() == chosenText){
                                                     chosenText = $(el).val();
                                                 }
-                                            });");
-        $this->getSession()->evaluateScript("$('select[name=$id]').val(chosenText).trigger('chosen:updated').change();");
+                                            }); " .
+                  "$('select[name=$id]').val(chosenText).trigger('chosen:updated').change();";
+        $this->getSession()->getDriver()->executeScript($script);
     }
     
     /**
@@ -457,9 +499,10 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     */
     public function dragLiLeftOrRight($parent, $id, $source, $destination)
     {
-        $this->getSession()->evaluateScript('$("#'.$parent.' #'.$destination.'").append($("#'.$parent.' #'.$source.' li[data-id='.$id.']").detach());');
-        $this->getSession()->evaluateScript('$("#'.$parent.' #'.$source.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$source.'")});');
-        $this->getSession()->evaluateScript('$("#'.$parent.' #'.$destination.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$destination.'")});');
+        $script = '$("#'.$parent.' #'.$destination.'").append($("#'.$parent.' #'.$source.' li[data-id='.$id.']").detach()); ' .
+                  '$("#'.$parent.' #'.$source.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$source.'")}); ' .
+                  '$("#'.$parent.' #'.$destination.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$destination.'")});';
+        $this->getSession()->getDriver()->executeScript($script);
     }
     
     /**
@@ -480,6 +523,15 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $value = $this->getSession()->evaluateScript('return '.$js);
         $json = json_encode($value);
         Assert::assertTrue((strpos($json, $text) === false));
+    }
+    
+    /**
+    * @When /^I blur$/
+    */
+    public function iBlur()
+    {
+        $this->getSession()->getDriver()->executeScript("$(':focus').blur();");
+        $this->getSession()->wait(100);
     }
     
     static function listFiles($dir){

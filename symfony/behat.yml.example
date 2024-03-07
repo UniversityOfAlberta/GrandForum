@@ -1,16 +1,28 @@
 default:
-    filters:
-        tags: ~@grand
-        tags: ~@glyconet
-        tags: ~@agewell
-    formatter:
-        name: pretty,Behat\Behat\Formatter\MyHtmlFormatter
-        parameters:
-            output_path: null,output/output.html
+    suites:
+        default:
+          contexts:
+            - FeatureContext
+            - dwt\BehatHTMLFormatter\Context\ScreenshotContext:
+                screenshotDir: output/assets/screenshots
+    formatters:
+        html:
+            output_path: output/
+        pretty:
     extensions:
-        Behat\MinkExtension\Extension:
-            base_url: http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/
+        Behat\MinkExtension:
+            base_url: http://localhost/forum/
             files_path: "/opt/uploads"
             default_session: selenium2
+            javascript_session: selenium2
             selenium2:
-                wd_host: 'http://129.128.184.79:8643/wd/hub'
+                wd_host: 'http://localhost:4444/wd/hub'
+                capabilities:
+                    browserName: "firefox"
+        dwt\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+            name: html
+            renderer: Twig
+            file_name: index
+            print_args: true
+            print_outp: true
+            loop_break: true
