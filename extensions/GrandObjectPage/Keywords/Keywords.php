@@ -1,7 +1,7 @@
 <?php
 
 $wgHooks['ToolboxLinks'][] = 'Keywords::createToolboxLinks';
-BackbonePage::register('Keywords', 'Keywords', 'network-tools', dirname(__FILE__));
+BackbonePage::register('Keywords', 'Grants (Admin View)', 'network-tools', dirname(__FILE__));
 
 class Keywords extends BackbonePage {
     

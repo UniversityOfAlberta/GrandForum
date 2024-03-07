@@ -13,19 +13,19 @@ EditGrantView = Backbone.View.extend({
         if(!this.model.isNew()){
             this.model.fetch({
                 error: function(e){
-                    this.$el.html("This Keyword does not exist");
+                    this.$el.html("This Grant does not exist");
                 }.bind(this)
             });
         }
         this.listenTo(this.model, "change:project_id", function(){
             if(this.model.get('scientific_title') != ''){
-                main.set('title', "<a href='#'>Keywords</a> > " + this.model.get('project_id'));
+                main.set('title', "<a href='#'>Grants (Admin View)</a> > " + this.model.get('project_id'));
             }
             else if(this.model.isNew()){
-                main.set('title', "<a href='#'>Keywords</a> > " + 'New Keyword');
+                main.set('title', "<a href='#'>Grants (Admin View)</a> > " + 'New Grant');
             }
             else if(!this.model.isNew()){
-                main.set('title', "<a href='#'>Keywords</a> > " + 'Editing Keyword');
+                main.set('title', "<a href='#'>Grants (Admin View)</a> > " + 'Editing Grant');
             }
         });
         this.allPeople = new People();
@@ -67,7 +67,7 @@ EditGrantView = Backbone.View.extend({
                     addError(e.responseText, true);
                 }
                 else{
-                    addError("There was a problem saving the Keyword", true);
+                    addError("There was a problem saving the Grant", true);
                 }
             }.bind(this)
         });

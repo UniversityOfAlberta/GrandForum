@@ -1,12 +1,11 @@
 GrantView = Backbone.View.extend({
 
     person: null,
-    allContributions: null,
 
     initialize: function(){
         this.model.fetch({
             error: function(e){
-                this.$el.html("This Keyword does not exist");
+                this.$el.html("This Grant does not exist");
             }.bind(this)
         });
         
@@ -24,10 +23,6 @@ GrantView = Backbone.View.extend({
             }
         }.bind(this));
         
-        $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", function(response){
-            this.allContributions = response;
-        }.bind(this));
-        
         this.template = _.template($('#grant_template').html());
     },
     
@@ -41,7 +36,7 @@ GrantView = Backbone.View.extend({
         }
         else{
             clearAllMessages();
-            addError('This Keyword is already deleted');
+            addError('This Grant is already deleted');
         }
     },
     
@@ -51,10 +46,10 @@ GrantView = Backbone.View.extend({
                 success: function(){
                     clearAllMessages();
                     if(this.model.get('exclude')){
-                        addSuccess("The Keyword is now Excluded");
+                        addSuccess("The Grant is now Excluded");
                     }
                     else{
-                        addSuccess("The Keyword is no longer Excluded");
+                        addSuccess("The Grant is no longer Excluded");
                     }
                 }.bind(this),
                 error: function(o, e){
@@ -63,7 +58,7 @@ GrantView = Backbone.View.extend({
                         addError(e.responseText, true);
                     }
                     else{
-                        addError("There was a problem saving the Keyword", true);
+                        addError("There was a problem saving the Grant", true);
                     }
                 }.bind(this)
             });
@@ -74,18 +69,6 @@ GrantView = Backbone.View.extend({
         "click #edit": "edit",
         "click #delete": "delete",
         "change [name=exclude]": "save"
-    },
-    
-    renderContributions: function(){
-        if(this.allContributions != null && 
-           this.allContributions.length != null && 
-           this.model.get('contributions').length > 0){
-            this.$("#contributions").empty();
-            _.each(this.model.get('contributions'), function(cId){
-                var contribution = _.findWhere(this.allContributions, {id: cId.toString()});
-                this.$("#contributions").append("<li><a href='" + wgServer + wgScriptPath + "/index.php/Contribution:" + contribution.id + "'>" + contribution.name + "</a></li>");
-            }.bind(this));
-        }
     },
     
     renderCoPI: function(){
@@ -113,15 +96,15 @@ GrantView = Backbone.View.extend({
 
     render: function(){
         main.set('title', this.model.get('title'));
-        $("#pageTitle").html("<a href='#'>Keywords</a> > " + this.model.get('project_id'));
+        $("#pageTitle").html("<a href='#'>Grants (Admin View)</a> > " + this.model.get('project_id'));
         this.$el.html(this.template(this.model.toJSON()));
-        this.renderContributions();
         this.renderCoPI();
         if(this.model.get('deleted') == true){
             this.$el.find("#delete").prop('disabled', true);
             clearInfo();
-            addInfo('This Keyword has been deleted, and will not show up anywhere else on the ' + siteName + '.  You may still edit the Keyword.');
+            addInfo('This Grant has been deleted, and will not show up anywhere else on the ' + siteName + '.  You may still edit the Grant.');
         }
+        
         this.deleteDialog = this.$("#deleteDialog").dialog({
             autoOpen: false,
             modal: true,
@@ -130,7 +113,7 @@ GrantView = Backbone.View.extend({
             draggable: false,
             open: function(){
                 $("html").css("overflow", "hidden");
-                $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
+                /*$(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
                 $("#deleteCheck", this.deleteDialog).prop("checked", false);
                 $("#deleteCheck", this.deleteDialog).change(function(e){
                     var isChecked = $(e.currentTarget).is(":checked");
@@ -140,7 +123,7 @@ GrantView = Backbone.View.extend({
                     else{
                         $(".ui-dialog-buttonpane button:contains('Yes')", this.deleteDialog.parent()).prop("disabled", true);
                     }
-                }.bind(this));
+                }.bind(this));*/
             }.bind(this),
             beforeClose: function(){
                 $("html").css("overflow", "auto");
@@ -158,18 +141,18 @@ GrantView = Backbone.View.extend({
                                     model.set(response);
                                     clearSuccess();
                                     clearError();
-                                    addSuccess('The Keyword <i>' + response.title + '</i> was deleted sucessfully');
+                                    addSuccess('The Grant <i>' + response.title + '</i> was deleted sucessfully');
                                 }
                                 else{
                                     clearSuccess();
                                     clearError();
-                                    addError('The Keyword <i>' + response.title + '</i> was not deleted sucessfully');
+                                    addError('The Grant <i>' + response.title + '</i> was not deleted sucessfully');
                                 }
                             }.bind(this),
                             error: function(model, response) {
                                 clearSuccess();
                                 clearError();
-                                addError('The Keyword <i>' + response.title + '</i> was not deleted sucessfully');
+                                addError('The Grant <i>' + response.title + '</i> was not deleted sucessfully');
                             }
                         });
                     }
