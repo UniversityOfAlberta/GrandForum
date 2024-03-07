@@ -88,7 +88,7 @@ EventRegisterView = Backbone.View.extend({
         }
         else{
             dataToSend.question = "No Question";
-            successmsg = "We received your registration for Ask an Expert. We will be in contact closer to the event. If you have any questions in the meantime, please email martha@cfn-nce.ca";
+            successmsg = "We received your registration for Ask an Expert. We will be in contact closer to the event. If you have any questions in the meantime, please email hollycfncha@gmail.com";
         }
         $.post(wgServer + wgScriptPath + '/index.php?action=registerExpertEventAction', dataToSend, function(response){
             $(this).dialog('close');
