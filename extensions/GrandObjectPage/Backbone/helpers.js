@@ -437,10 +437,10 @@ HTML.TagIt = function(view, attr, options){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
             data[attr.substr(index+1)] = newItems;
-            view.model.set(attr.substr(0, index), _.clone(newItems), {silent: true});
+            view.model.set(attr.substr(0, index), _.clone(newItems));
         }
         else{                
-            view.model.set(attr, _.clone(newItems), {silent: true});
+            view.model.set(attr, _.clone(newItems));
         }
     };
     view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');

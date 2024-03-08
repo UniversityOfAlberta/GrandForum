@@ -222,43 +222,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="teaching" tooltip="TEACHING" name="Teaching" title="1. TEACHING" blobSection="FEC_TEACHING" type="EditableReportSection">
-        <Static>
-            <![CDATA[
-                <p>course name(give names of all instructors and percentage of course instruction); calendar hours; your actual weekly average hours of contact(indicate if a reading course); actual number of students; shared instruction. For example, an instructor teaching a lecture section to the full class and two seminar sections, each to approx. 25% of the class. Please include your involvement in any research or design courses, where you were the primary supervisor of students or student groups. For multi-section courses indicate the course coordinator with an asterisk (*).</p>
-                <table style='width:600px;'>
-                    <tr>
-                        <td valign='top'>
-                            MEC E 370
-                        </td>
-                        <td valign='top'>
-                            Heat Transfer<br />(40% of instruction;<br />60% provided by Dr. J. Jones)
-                        </td>
-                        <td valign='top'>
-                            3-1s-0
-                        </td>
-                        <td valign='top'>
-                            Lecture<br />
-                            Seminar<br />
-                            Seminar<br />
-                            Laboratory
-                        </td>
-                        <td valign='top'>
-                            (1): 1.2 hours<br />
-                            (1): 1 hour<br />
-                            (2): 1 hour<br />
-                            (1): 0 hours
-                        </td>
-                        <td valign='top'>
-                            112<br />
-                            29<br />
-                            27<br />
-                            0
-                        </td>
-                    </tr>
-                </table>
-            ]]>
-        </Static>
-        
         <!-- First Term of Last Academic Year -->
         <Static>
             <![CDATA[
@@ -284,21 +247,25 @@
                                 <td>{$course_enroll}</td>
                             </tr>
                         </table>
-                        <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                            <tr>
-                                <th style='width: 1%;'>Q#</th>
-                                <th style='width: 1%;'>QText</th>
-                                <th style='width: 1%;'>R1</th>
-                                <th style='width: 1%;'>R2</th>
-                                <th style='width: 1%;'>R3</th>
-                                <th style='width: 1%;'>R4</th>
-                                <th style='width: 1%;'>R5</th>
-                                <th>Chart</th>
-                            </tr>
-                            {$course_eval}
-                        </table>
                 ]]>
             </Static>
+            <If if="{!=({$course_eval}, )}">
+                <![CDATA[
+                    <table class='wikitable' frame='box' rules='all' style='width:100%;'>
+                        <tr>
+                            <th style='width: 1%;'>Q#</th>
+                            <th style='width: 1%;'>QText</th>
+                            <th style='width: 1%;'>R1</th>
+                            <th style='width: 1%;'>R2</th>
+                            <th style='width: 1%;'>R3</th>
+                            <th style='width: 1%;'>R4</th>
+                            <th style='width: 1%;'>R5</th>
+                            <th>Chart</th>
+                        </tr>
+                        {$course_eval}
+                    </table>
+                ]]>
+            </If>
             <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="400|100|400" class="wikitable">
                 <![CDATA[
                         {$item}
@@ -332,21 +299,25 @@
                                 <td>{$course_enroll}</td>
                             </tr>
                         </table>
-                        <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                            <tr>
-                                <th style='width: 1%;'>Q#</th>
-                                <th style='width: 1%;'>QText</th>
-                                <th style='width: 1%;'>R1</th>
-                                <th style='width: 1%;'>R2</th>
-                                <th style='width: 1%;'>R3</th>
-                                <th style='width: 1%;'>R4</th>
-                                <th style='width: 1%;'>R5</th>
-                                <th>Chart</th>
-                            </tr>
-                            {$course_eval}
-                        </table>
                 ]]>
             </Static>
+            <If if="{!=({$course_eval}, )}">
+                <![CDATA[
+                    <table class='wikitable' frame='box' rules='all' style='width:100%;'>
+                        <tr>
+                            <th style='width: 1%;'>Q#</th>
+                            <th style='width: 1%;'>QText</th>
+                            <th style='width: 1%;'>R1</th>
+                            <th style='width: 1%;'>R2</th>
+                            <th style='width: 1%;'>R3</th>
+                            <th style='width: 1%;'>R4</th>
+                            <th style='width: 1%;'>R5</th>
+                            <th>Chart</th>
+                        </tr>
+                        {$course_eval}
+                    </table>
+                ]]>
+            </If>
             <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="400|100|400" class="wikitable">
                 <![CDATA[
                         {$item}
@@ -358,7 +329,7 @@
         <!-- Third Term of Last Academic Year -->
         <Static>
             <![CDATA[
-                <h3>Intersession {$this_year}</h3>
+                <h3>Spring {$this_year} & Summer {$this_year}</h3>
             ]]>
         </Static>
         <ReportItemSet type="PersonCourses" term="Spring{$this_year}|Summer{$this_year}" component="LEC" unique="true">
@@ -380,21 +351,25 @@
                                 <td>{$course_enroll}</td>
                             </tr>
                         </table>
-                        <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                            <tr>
-                                <th style='width: 1%;'>Q#</th>
-                                <th style='width: 1%;'>QText</th>
-                                <th style='width: 1%;'>R1</th>
-                                <th style='width: 1%;'>R2</th>
-                                <th style='width: 1%;'>R3</th>
-                                <th style='width: 1%;'>R4</th>
-                                <th style='width: 1%;'>R5</th>
-                                <th>Chart</th>
-                            </tr>
-                            {$course_eval}
-                        </table>
                 ]]>
             </Static>
+            <If if="{!=({$course_eval}, )}">
+                <![CDATA[
+                    <table class='wikitable' frame='box' rules='all' style='width:100%;'>
+                        <tr>
+                            <th style='width: 1%;'>Q#</th>
+                            <th style='width: 1%;'>QText</th>
+                            <th style='width: 1%;'>R1</th>
+                            <th style='width: 1%;'>R2</th>
+                            <th style='width: 1%;'>R3</th>
+                            <th style='width: 1%;'>R4</th>
+                            <th style='width: 1%;'>R5</th>
+                            <th>Chart</th>
+                        </tr>
+                        {$course_eval}
+                    </table>
+                ]]>
+            </If>
             <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="400|100|400" class="wikitable">
                 <![CDATA[
                         {$item}
@@ -503,121 +478,6 @@
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <Static>
-            <![CDATA[
-                <h3>(c) Number of graduate student oral and examing committees you have served on in the past year, excluding your own students listed in this section:</h3>
-                <table class='wikitable'>
-                    <tr>
-                        <th>Committee Role</th>
-                        <th>Departmental</th>
-                        <th style='width:100px;'>External to Departmental</th>
-                        <th style='width:100px;'>External to University</th>
-                    </tr>
-                    <tr>
-                        <td valign='top' style='line-height: 2.5em;'>
-                            Committee Chair<br />
-                            Examiner:<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;PhD Candidacy<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;PhD Thesis<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;MSc Thesis<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;MEng Project
-                        </td>
-            ]]>
-        </Static>
-        <!-- Departmental -->
-        <ReportItem id="committee1_1" type="Integer" blobItem="COMMITTEE1_1" width="100px">
-            <![CDATA[
-                    <td valign='top' style='line-height: 2.5em;'>
-                        {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee2_1" type="Integer" blobItem="COMMITTEE2_1" width="100px">
-            <![CDATA[
-                        <br />
-                        {$item}<br >
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee3_1" type="Integer" blobItem="COMMITTEE3_1" width="100px">
-            <![CDATA[
-                        {$item}<br >
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee4_1" type="Integer" blobItem="COMMITTEE4_1" width="100px">
-            <![CDATA[
-                        {$item}<br >
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee5_1" type="Integer" blobItem="COMMITTEE5_1" width="100px">
-            <![CDATA[
-                        {$item}<br >
-                    </td>
-            ]]>
-        </ReportItem>
-        <!-- External to Departmental -->
-        <ReportItem id="committee1_2" type="Integer" blobItem="COMMITTEE1_2" width="100px">
-            <![CDATA[
-                    <td valign='top' style='line-height: 2.5em;'>
-                        {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee2_2" type="Integer" blobItem="COMMITTEE2_2" width="100px">
-            <![CDATA[
-                        <br />
-                        {$item}<br >
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee3_2" type="Integer" blobItem="COMMITTEE3_2" width="100px">
-            <![CDATA[
-                        {$item}<br >
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee4_2" type="Integer" blobItem="COMMITTEE4_2" width="100px">
-            <![CDATA[
-                        {$item}<br >
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee5_2" type="Integer" blobItem="COMMITTEE5_2" width="100px">
-            <![CDATA[
-                        {$item}<br >
-                    </td>
-            ]]>
-        </ReportItem>
-        <!-- External to University -->
-        <ReportItem id="committee1_3" type="Integer" blobItem="COMMITTEE1_3" width="100px">
-            <![CDATA[
-                    <td valign='top' style='line-height: 2.5em;'>
-                        {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee2_3" type="Integer" blobItem="COMMITTEE2_3" width="100px">
-            <![CDATA[
-                        <br />
-                        {$item}<br >
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee3_3" type="Integer" blobItem="COMMITTEE3_3" width="100px">
-            <![CDATA[
-                        {$item}<br >
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee4_3" type="Integer" blobItem="COMMITTEE4_3" width="100px">
-            <![CDATA[
-                        {$item}<br >
-            ]]>
-        </ReportItem>
-        <ReportItem id="committee5_3" type="Integer" blobItem="COMMITTEE5_3" width="100px">
-            <![CDATA[
-                        {$item}<br >
-                    </td>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                    </tr>
                 </table>
             ]]>
         </Static>
@@ -867,6 +727,121 @@
                 {$item}
             ]]>
         </ReportItem>
+        
+        <Static>
+            <![CDATA[
+                <h3>(e) Number of graduate student oral and examing committees you have served on in the past year, excluding your own students listed in this section:</h3>
+                <table class='wikitable'>
+                    <tr>
+                        <th>Committee Role</th>
+                        <th>Departmental</th>
+                        <th style='width:100px;'>External to Departmental</th>
+                        <th style='width:100px;'>External to University</th>
+                    </tr>
+                    <tr>
+                        <td valign='top' style='line-height: 2.5em;'>
+                            Committee Chair<br />
+                            Examiner:<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;PhD Candidacy<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;PhD Thesis<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;MSc Thesis<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;MEng Project
+                        </td>
+            ]]>
+        </Static>
+        <!-- Departmental -->
+        <ReportItem id="committee1_1" type="Integer" blobItem="COMMITTEE1_1" width="100px">
+            <![CDATA[
+                    <td valign='top' style='line-height: 2.5em;'>
+                        {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee2_1" type="Integer" blobItem="COMMITTEE2_1" width="100px">
+            <![CDATA[
+                        <br />
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee3_1" type="Integer" blobItem="COMMITTEE3_1" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee4_1" type="Integer" blobItem="COMMITTEE4_1" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee5_1" type="Integer" blobItem="COMMITTEE5_1" width="100px">
+            <![CDATA[
+                        {$item}<br >
+                    </td>
+            ]]>
+        </ReportItem>
+        <!-- External to Departmental -->
+        <ReportItem id="committee1_2" type="Integer" blobItem="COMMITTEE1_2" width="100px">
+            <![CDATA[
+                    <td valign='top' style='line-height: 2.5em;'>
+                        {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee2_2" type="Integer" blobItem="COMMITTEE2_2" width="100px">
+            <![CDATA[
+                        <br />
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee3_2" type="Integer" blobItem="COMMITTEE3_2" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee4_2" type="Integer" blobItem="COMMITTEE4_2" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee5_2" type="Integer" blobItem="COMMITTEE5_2" width="100px">
+            <![CDATA[
+                        {$item}<br >
+                    </td>
+            ]]>
+        </ReportItem>
+        <!-- External to University -->
+        <ReportItem id="committee1_3" type="Integer" blobItem="COMMITTEE1_3" width="100px">
+            <![CDATA[
+                    <td valign='top' style='line-height: 2.5em;'>
+                        {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee2_3" type="Integer" blobItem="COMMITTEE2_3" width="100px">
+            <![CDATA[
+                        <br />
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee3_3" type="Integer" blobItem="COMMITTEE3_3" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee4_3" type="Integer" blobItem="COMMITTEE4_3" width="100px">
+            <![CDATA[
+                        {$item}<br >
+            ]]>
+        </ReportItem>
+        <ReportItem id="committee5_3" type="Integer" blobItem="COMMITTEE5_3" width="100px">
+            <![CDATA[
+                        {$item}<br >
+                    </td>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                    </tr>
+                </table>
+            ]]>
+        </Static>
     </ReportSection>
     <ReportSection id="professional_activities" tooltip="PROFESSIONAL LEADERSHIP ACTIVITIES" name="Professional Activities" title="7. PROFESSIONAL LEADERSHIP ACTIVITIES" blobSection="FEC_PROFESSIONAL_ACTIVITIES" type="EditableReportSection">
         <ReportItem id="committees" type="MultiText" blobItem="COMMITTEES" blobType="BLOB_ARRAY" labels="Committee|Office Held|Total Hours/Year" types="Text|Text|Number" sizes="300|75|75" multiple="true">

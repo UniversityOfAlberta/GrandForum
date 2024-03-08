@@ -37,6 +37,7 @@ EditGrantView = Backbone.View.extend({
                 $.when(xhr1).then(this.render);
             }
         });
+        this.listenTo(this.model, 'change:copi', this.renderPortions.bind(this));
         
         $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", function(response){
             this.allContributions = response;
@@ -330,11 +331,22 @@ EditGrantView = Backbone.View.extend({
             }, this);
         }
     },
+    
+    renderPortions: function(){
+        this.$('#portions').empty();
+        _.each(this.model.get('copi'), function(copi){
+            if(copi.id != undefined){
+                var textbox = HTML.TextBox(this, 'portions.fullname', {});
+                this.$('#portions').append("<b>" + copi.fullname + ": </b>" + textbox + "<br />");
+            }
+        }.bind(this));
+    },
 
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributionsWidget();
         this.renderCoapplicants();
+        //this.renderPortions();
         this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
         this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
         this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
