@@ -1,7 +1,7 @@
 <?php
 
 $wgHooks['ToolboxLinks'][] = 'GrantPage::createToolboxLinks';
-BackbonePage::register('GrantPage', 'Revenue Accounts', 'network-tools', dirname(__FILE__));
+BackbonePage::register('GrantPage', 'Grants', 'network-tools', dirname(__FILE__));
 
 class GrantPage extends BackbonePage {
     

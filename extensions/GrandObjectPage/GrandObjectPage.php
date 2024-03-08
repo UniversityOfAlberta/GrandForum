@@ -9,6 +9,7 @@
     require_once("ProductHistories/ProductHistories.php");
     require_once("GrantPage/GrantPage.php");
     require_once("GrantAwardPage/GrantAwardPage.php");
+    require_once("Keywords/Keywords.php");
     require_once("Products/Products.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';

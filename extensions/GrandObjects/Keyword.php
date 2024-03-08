@@ -1,65 +1,42 @@
 <?php
 
-class Grant extends BackboneModel {
+class Keyword extends Grant {
 
-    static $exclusionCache = null;
-
-    var $id;
-    var $owner_id;
-    var $user_id;
-    var $project_id;
-    var $sponsor;
-    var $external_pi;
-    var $copi = array();
-    var $total;
-    var $portions = array();
-    var $funds_before;
-    var $funds_after;
-    var $title;
-    var $scientific_title;
-    var $description;
-    var $role;
-    var $seq_no;
-    var $prog_description;
-    var $request;
-    var $start_date;
-    var $end_date;
-    var $deleted;
-    var $contributions = null;
-    var $exclude = false; // This is sort of a weird one since it relates to the current logged in user
+    var $keywords = array();
+    var $partners = array();
     
     static function newFromId($id){
-        $data = DBFunctions::select(array('grand_grants'),
+        $data = DBFunctions::select(array('grand_keywords'),
                                     array('*'),
                                     array('id' => EQ($id)));
-        $grant = new Grant($data);
+        $grant = new Keyword($data);
         return $grant;
     }
     
     static function newFromTitle($title){
         // Warning: There could be grants with duplicate titles
-        $data = DBFunctions::select(array('grand_grants'),
+        $data = DBFunctions::select(array('grand_keywords'),
                                     array('*'),
                                     array('title' => EQ($title)));
-        $grant = new Grant($data);
+        $grant = new Keyword($data);
         return $grant;
     }
     
     static function newFromProjectId($projectId){
-        $data = DBFunctions::select(array('grand_grants'),
+        $data = DBFunctions::select(array('grand_keywords'),
                                     array('*'),
                                     array('project_id' => EQ($projectId)));
-        $grant = new Grant($data);
+        $grant = new Keyword($data);
         return $grant;
     }
     
     static function getAllGrants(){
         $grants = array();
-        $data = DBFunctions::select(array('grand_grants'),
+        $data = DBFunctions::select(array('grand_keywords'),
                                     array('*'),
                                     array('deleted' => '0'));
         foreach($data as $row){
-            $grant = new Grant(array($row));
+            $grant = new Keyword(array($row));
             if($grant != null && $grant->getId() != 0){
                 $grants[] = $grant;
             }
@@ -67,12 +44,40 @@ class Grant extends BackboneModel {
         return $grants;
     }
     
-    function Grant($data){
+    static function getAllEnteredKeywords(){
+        $keywords = array();
+        $data = DBFunctions::select(array('grand_keywords'),
+                                    array('keywords'),
+                                    array('deleted' => '0'));
+        foreach($data as $row){
+            foreach(json_decode($row['keywords']) as $keyword){
+                $trimmed = trim(strtolower($keyword));
+                $keywords[$trimmed] = $keyword;
+            }
+        }
+        return array_values($keywords);
+    }
+    
+    static function getAllEnteredPartners(){
+        $partners = array();
+        $data = DBFunctions::select(array('grand_keywords'),
+                                    array('partners'),
+                                    array('deleted' => '0'));
+        foreach($data as $row){
+            foreach(json_decode($row['partners']) as $partner){
+                $trimmed = trim(strtolower($partner));
+                $partners[$trimmed] = $partner;
+            }
+        }
+        return array_values($partners);
+    }
+    
+    function Keyword($data){
         $me = Person::newFromWgUser();
         if(count($data) > 0 && $me->isLoggedIn()){
             $row = $data[0];
             $copi = unserialize($row['copi']);
-            if($me->getId() == $row['user_id'] || $me->getId() == $row['owner_id'] || $me->isRoleAtLeast(STAFF) ||
+            if($me->getId() == $row['user_id'] || $me->getId() == $row['owner_id'] || $me->isSubRole('ViewProfile') || $me->isRoleAtLeast(MANAGER) ||
                array_search($me->getId(), $copi) !== false){
                 $this->id = $row['id'];
                 $this->owner_id = $row['owner_id'];
@@ -85,6 +90,8 @@ class Grant extends BackboneModel {
                 $this->portions = json_decode($row['portions'], true);
                 $this->funds_before = $row['funds_before'];
                 $this->funds_after = $row['funds_after'];
+                $this->keywords = json_decode($row['keywords']);
+                $this->partners = json_decode($row['partners']);
                 $this->title = $row['title'];
                 $this->scientific_title = $row['scientific_title'];
                 $this->description = $row['description'];
@@ -99,161 +106,21 @@ class Grant extends BackboneModel {
                 if($this->portions == null){
                     $this->portions = array();
                 }
-                foreach($this->getExclusions() as $exclusion){
-                    if($exclusion->getId() == $me->getId()){
-                        $this->exclude = true;
-                    }
-                }
             }
         }
     }
     
-    function getId(){
-        return $this->id;
+    function getKeywords(){
+        return $this->keywords;
     }
     
-    function getUserId(){
-        return $this->user_id;
-    }
-    
-    function getProjectId(){
-        return $this->project_id;
-    }
-    
-    function getSponsor(){
-        return $this->sponsor;
-    }
-    
-    function getExternalPI(){
-        return $this->external_pi;
-    }
-    
-    function getPI(){
-        return Person::newFromId($this->user_id);
-    }
-    
-    function getCoPI(){
-        $copis = array();
-        foreach($this->copi as $copi){
-            $person = Person::newFromId($copi);
-            if($person != null && $person->getId() != 0){
-                $copis[] = $person;
-            }
-            else{
-                $copis[] = $copi;
-            }
-        }
-        return $copis;
-    }
-    
-    function getGrantAward(){
-        $data = DBFunctions::select(array('grand_new_grants'),
-                                    array('id'),
-                                    array('grant_id' => EQ($this->getId())));
-        if(count($data) > 0){
-            return GrantAward::newFromId($data[0]['id']);
-        }
-        return null;
-    }
-    
-    function getTotal(){
-        return $this->total;
-    }
-    
-    function getAverage(){
-        $start = new DateTime(substr($this->getStartDate(), 0, 10));
-        $end = new DateTime(substr($this->getEndDate(), 0, 10));
-        $interval = intval($start->diff($end)->format('%a')); // Difference in days
-        $years = round($interval/365);
-        return $this->getTotal()/max(1, $years);
-    }
-    
-    function getPortions(){
-        return $this->portions;
-    }
-    
-    function getMyPortion(){
-        $me = Person::newFromWgUser();
-        return (isset($this->portions[$me->getId()])) ? $this->portions[$me->getId()] : $this->total;
-    }
-    
-    function getFundsBefore(){
-        return $this->funds_before;
-    }
-    
-    function getFundsAfter(){
-        return $this->funds_after;
-    }
-  
-    function getTitle(){
-        return $this->title;
-    }
-    
-    function getScientificTitle(){
-        return $this->scientific_title;
-    }
-    
-    function getDescription(){
-        return $this->description;
-    }
-    
-    function getRole(){
-        return $this->role;
-    }
-    
-    function getSeqNo(){
-        return $this->seq_no;
-    }
-    
-    function getProgDescription(){
-        return $this->prog_description;
-    }
-    
-    function getRequest(){
-        return $this->request;
-    }
-    
-    function getStartDate(){
-        return $this->start_date;
-    }
-    
-    function getEndDate(){
-        return $this->end_date;
+    function getPartners(){
+        return $this->partners;
     }
     
     function getUrl(){
         global $wgServer, $wgScriptPath;
-        return "$wgServer$wgScriptPath/index.php/Special:GrantPage#/{$this->getId()}";
-    }
-    
-    /**
-     * Returns a list of People who want this Product to be exluded from them
-     * @return array the list of People who want this Product to be excluded from them
-     */
-    function getExclusions(){
-        if(self::$exclusionCache === null){
-            self::$exclusionCache = array();
-            $data = DBFunctions::select(array('grand_grants_exclude'),
-                                        array('*'));
-            self::$exclusionCache = array();
-            foreach($data as $row){
-                self::$exclusionCache[$row['grant_id']][] = Person::newFromId($row['user_id']);
-            }
-        }
-        return (isset(self::$exclusionCache[$this->getId()])) ? self::$exclusionCache[$this->getId()] : array();
-    }
-    
-    function getContributions(){
-        if($this->contributions == null){
-            $this->contributions = array();
-            $data = DBFunctions::select(array('grand_grant_contributions'),
-                                        array('contribution_id'),
-                                        array('grant_id' => EQ($this->getId())));
-            foreach($data as $row){
-                $this->contributions[] = $row['contribution_id'];
-            }
-        }
-        return $this->contributions;
+        return "$wgServer$wgScriptPath/index.php/Special:Keywords#/{$this->getId()}";
     }
     
     function create(){
@@ -268,7 +135,7 @@ class Grant extends BackboneModel {
                 $copis[] = $copi->fullname;
             }
         }
-        DBFunctions::insert('grand_grants',
+        DBFunctions::insert('grand_keywords',
                             array('owner_id' => $this->owner_id,
                                   'user_id' => $this->user_id,
                                   'project_id' => $this->project_id,
@@ -279,6 +146,8 @@ class Grant extends BackboneModel {
                                   'portions' => json_encode($this->portions),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
+                                  'keywords' => json_encode($this->keywords),
+                                  'partners' => json_encode($this->partners),
                                   'title' => $this->title,
                                   'scientific_title' => $this->scientific_title,
                                   'description' => $this->description,
@@ -289,20 +158,7 @@ class Grant extends BackboneModel {
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date));
         $this->id = DBFunctions::insertId();
-        if($this->exclude){
-            DBFunctions::insert('grand_grants_exclude',
-                                array('grant_id' => $this->id,
-                                      'user_id' => $me->id));
-        }
-        DBFunctions::delete('grand_grant_contributions',
-                            array('grant_id' => EQ($this->getId())));
-        foreach($this->getContributions() as $contribution){
-            DBFunctions::insert('grand_grant_contributions',
-                                array('grant_id' => $this->getId(),
-                                      'contribution_id' => $contribution));
-        }
         $this->copi = $copis;
-        self::$exclusionCache = null;
         DBFunctions::commit();
         return $this;
     }
@@ -310,6 +166,8 @@ class Grant extends BackboneModel {
     function update(){
         $me = Person::newFromWgUser();
         $copis = array();
+        $keywords = array();
+        $partners = array();
         foreach($this->copi as $copi){
             if(isset($copi->id) && $copi->id != 0){
                 // Only add them if an id was specified
@@ -319,7 +177,23 @@ class Grant extends BackboneModel {
                 $copis[] = $copi->fullname;
             }
         }
-        DBFunctions::update('grand_grants',
+        foreach($this->keywords as $keyword){
+            if(isset($keyword->keywords)){
+                $keywords[] = $keyword->keywords;
+            }
+            else{
+                $keywords[] = $keyword;
+            }
+        }
+        foreach($this->partners as $partner){
+            if(isset($partner->partners)){
+                $partners[] = $partner->partners;
+            }
+            else{
+                $partners[] = $partner;
+            }
+        }
+        DBFunctions::update('grand_keywords',
                             array('user_id' => $this->user_id,
                                   'project_id' => $this->project_id,
                                   'sponsor' => $this->sponsor,
@@ -329,6 +203,8 @@ class Grant extends BackboneModel {
                                   'portions' => json_encode($this->portions),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
+                                  'keywords' => json_encode($keywords),
+                                  'partners' => json_encode($partners),
                                   'title' => $this->title,
                                   'scientific_title' => $this->scientific_title,
                                   'description' => $this->description,
@@ -339,21 +215,6 @@ class Grant extends BackboneModel {
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date),
                             array('id' => EQ($this->id)));
-        DBFunctions::delete('grand_grants_exclude',
-                            array('grant_id' => $this->id,
-                                  'user_id' => $me->id));
-        if($this->exclude){
-            DBFunctions::insert('grand_grants_exclude',
-                                array('grant_id' => $this->id,
-                                      'user_id' => $me->id));
-        }
-        DBFunctions::delete('grand_grant_contributions',
-                            array('grant_id' => EQ($this->getId())));
-        foreach($this->getContributions() as $contribution){
-            DBFunctions::insert('grand_grant_contributions',
-                                array('grant_id' => $this->getId(),
-                                      'contribution_id' => $contribution));
-        }
         $this->copi = $copis;
         self::$exclusionCache = null;
         DBFunctions::commit();
@@ -362,16 +223,7 @@ class Grant extends BackboneModel {
     
     function delete(){
         $me = Person::newFromWgUser();
-        $pi = $this->getPI();
-        if($pi instanceof Person && $pi->getId() != $me->getId()){
-            Notification::addNotification($me, $pi, "Grant Deleted", "Your Grant entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
-        }
-        foreach($this->getCoPI() as $copi){
-            if($copi instanceof Person && $copi->getId() != $me->getId()){
-                Notification::addNotification($me, $copi, "Grant Deleted", "Your Grant entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
-            }
-        }
-        DBFunctions::update('grand_grants',
+        DBFunctions::update('grand_keywords',
                             array('deleted' => 1),
                             array('id' => EQ($this->id)));
         DBFunctions::commit();
@@ -414,6 +266,8 @@ class Grant extends BackboneModel {
             'myportion' => $this->getMyPortion(),
             'funds_before' => $this->funds_before,
             'funds_after' => $this->funds_after,
+            'keywords' => $this->keywords,
+            'partners' => $this->partners,
             'title' => $this->title,
             'scientific_title' => $this->scientific_title,
             'description' => $this->description,
@@ -424,9 +278,7 @@ class Grant extends BackboneModel {
             'start_date' => time2date($this->getStartDate(), "Y-m-d"),
             'end_date' => time2date($this->getEndDate(), "Y-m-d"),
             'deleted' => $this->deleted,
-            'url' => $this->getUrl(),
-            'contributions' => $this->getContributions(),
-            'exclude' => $this->exclude
+            'url' => $this->getUrl()
         );
         return $json;
     }
@@ -436,7 +288,7 @@ class Grant extends BackboneModel {
     }
     
     function getCacheId(){
-        return 'grant'.$this->getId();
+        return 'keyword'.$this->getId();
     }
 
     // this is for when type is different than grant

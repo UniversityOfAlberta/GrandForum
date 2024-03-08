@@ -8,19 +8,19 @@ EditGrantView = Backbone.View.extend({
         if(!this.model.isNew()){
             this.model.fetch({
                 error: function(e){
-                    this.$el.html("This Revenue Account does not exist");
+                    this.$el.html("This Grant does not exist");
                 }.bind(this)
             });
         }
         this.listenTo(this.model, "change:scientific_title", function(){
             if(this.model.get('scientific_title') != ''){
-                main.set('title', "<a href='#'>Revenue Accounts</a> > " + this.model.get('scientific_title'));
+                main.set('title', "<a href='#'>Grants</a> > " + this.model.get('scientific_title'));
             }
             else if(this.model.isNew()){
-                main.set('title', "<a href='#'>Revenue Accounts</a> > " + 'New Revenue Account');
+                main.set('title', "<a href='#'>Grants</a> > " + 'New Grant');
             }
             else if(!this.model.isNew()){
-                main.set('title', "<a href='#'>Revenue Accounts</a> > " + 'Editing Revenue Account');
+                main.set('title', "<a href='#'>Grants</a> > " + 'Editing Grant');
             }
         });
         this.allPeople = new People();
@@ -67,7 +67,7 @@ EditGrantView = Backbone.View.extend({
                     addError(e.responseText, true);
                 }
                 else{
-                    addError("There was a problem saving the Revenue Account", true);
+                    addError("There was a problem saving the Grant", true);
                 }
             }.bind(this)
         });

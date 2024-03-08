@@ -1,0 +1,31 @@
+<p>
+    <h3>Res#:</h3>
+    <%= HTML.TextBox(this, 'project_id') %>
+    
+    <h3>Description (Public Layman's Summary):</h3>
+    <%= HTML.TextArea(this, 'description', {style: 'height:150px;width:615px;'}) %>
+</p>
+<div id="preview" style="display:none;"></div>
+<table>
+    <tr><td colspan="2"><hr /></td></tr>
+    <tr>
+        <td class="label">UofA PI:</td>
+        <td colspan="3"><%= HTML.Select(this, 'pi.id', {options: [{option: "", value: 0}].concat(this.allPeople.map(function(o){ return {option: o.get('fullName'), value: o.get('id')}; }))}) %></td>
+    </tr>
+    <tr>
+        <td class="label" style="padding-top:0.6em;">Co-PI:</td>
+        <td colspan="3">
+            <div id="coapplicants"></div>
+        </td>
+    </tr>
+    <tr><td colspan="2"><hr /></td></tr>
+    <tr>
+        <td class="label" style="padding-top:0.6em;">Keywords:</td>
+        <td colspan="3"><div id="keywords"></div></td>
+    </tr>
+    <tr>
+        <td class="label" style="padding-top:0.6em;">Partners:</td>
+        <td colspan="3"><div id="partners"></div></td>
+    </tr>
+</table>
+<button id="save"><% if(this.model.isNew()) { %>Create Grant<% } else { %>Save Grant<% } %></button><span class="throbber" style="display:none;"></span>

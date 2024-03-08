@@ -1,11 +1,16 @@
 <p>
-    <h3>Title</h3>
+    <h3>Project Title:</h3>
     <%= HTML.TextBox(this, 'scientific_title', {size: '60'}) %>
-    <h3>Description:</h3>
-    <%= HTML.TextArea(this, 'description', {style: 'height:150px;width:650px;'}) %>
+    
+    <h3>Res#:</h3>
+    <%= HTML.TextBox(this, 'project_id') %>
+    
+    <h3>Description (Public Layman's Summary):</h3>
+    <%= HTML.TextArea(this, 'description', {style: 'height:150px;width:615px;'}) %>
 </p>
 <div id="preview" style="display:none;"></div>
 <table>
+    <tr><td colspan="2"><hr /></td></tr>
     <tr>
         <td class="label">UofA PI:</td>
         <td colspan="3"><%= HTML.Select(this, 'pi.id', {options: [{option: "", value: 0}].concat(this.allPeople.map(function(o){ return {option: o.get('fullName'), value: o.get('id')}; }))}) %></td>
@@ -18,11 +23,12 @@
         </td>
     </tr>
     <tr>
-        <td class="label">Co-Applicants:</td>
+        <td class="label" style="padding-top:0.6em;">Co-PI:</td>
         <td colspan="3">
             <div id="coapplicants"></div>
         </td>
     </tr>
+    <tr><td colspan="2"><hr /></td></tr>
     <tr>
         <td class="label">Sponsor:</td>
         <td colspan="3"><%= HTML.TextBox(this, 'sponsor') %></td>
@@ -35,14 +41,11 @@
         <td class="label">End Date:</td>
         <td colspan="3"><%= HTML.DatePicker(this, 'end_date', {format: 'yy-mm-dd', id: 'end_date'}) %></td>
     </tr>
-    <tr>
+    <!--tr>
         <td class="label">Project Title:</td>
         <td colspan="3"><%= HTML.TextBox(this, 'title', {size: '40'}) %></td>
-    </tr>
-    <tr>
-        <td class="label">Project ID:</td>
-        <td colspan="3"><%= HTML.TextBox(this, 'project_id') %></td>
-    </tr>
+    </tr-->
+    <tr><td colspan="2"><hr /></td></tr>
     <tr>
         <td class="label">Total Amount ($):</td>
         <td colspan="3"><span style="vertical-align: middle;"><%= HTML.TextBox(this, 'total') %></td>
@@ -83,4 +86,4 @@
         </div>
     </div>
 </div-->
-<button id="save"><% if(this.model.isNew()) { %>Create Revenue Account<% } else { %>Save Revenue Account<% } %></button><span class="throbber" style="display:none;"></span>
+<button id="save"><% if(this.model.isNew()) { %>Create Grant<% } else { %>Save Grant<% } %></button><span class="throbber" style="display:none;"></span>

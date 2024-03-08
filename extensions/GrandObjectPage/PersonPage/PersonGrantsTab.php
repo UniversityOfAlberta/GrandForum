@@ -13,7 +13,7 @@ class PersonGrantsTab extends AbstractTab {
         $this->visibility = $visibility;
         $this->startRange = $startRange;
         $this->endRange = $endRange;
-        $this->tooltip = "Contains two tables listing the faculty member's Revenue Accounts, as shown in the UoA's Peoplesoft system, and the corresponding Awarded NSERC Applications between the specified start and end dates.";
+        $this->tooltip = "Contains two tables listing the faculty member's Grants, as shown in the UoA's Peoplesoft system, and the corresponding Awarded NSERC Applications between the specified start and end dates.";
     }
 
     function generateBody(){
