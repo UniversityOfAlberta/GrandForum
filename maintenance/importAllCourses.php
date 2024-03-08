@@ -1,5 +1,20 @@
 <?php
 
+    /*
+        USRIS
+        [{"id": "5022", "votes": [2,0,2,4,5]},
+         {"id": "23", "votes": [1,1,4,4,3]},
+         {"id": "24", "votes": [1,0,4,4,4]},
+         {"id": "25", "votes": [2,0,0,8,3]},
+         {"id": "221", "votes": [1,1,4,5,2]},
+         {"id": "21", "votes": [1,1,4,5,2]},
+         {"id": "5674", "votes": [1,0,5,4,3]},
+         {"id": "26", "votes": [1,1,4,6,1]},
+         {"id": "9", "votes": [1,0,2,5,5]},
+         {"id": "51", "votes": [1,0,4,5,3]}
+        ]
+    */
+
     // necessary code for commandline use
     require_once('commandLine.inc');
     global $wgUser;
