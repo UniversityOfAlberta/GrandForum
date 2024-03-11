@@ -80,6 +80,12 @@ abstract class AbstractReport extends SpecialPage {
         $year = $sto->metadata('year');
         if($type == ""){
             $type = $sto->metadata('type');
+            if(strstr($type, "RP_PROJECT_REPORT_") !== false){
+                $type = "RP_PROJECT_REPORT_{GET(id)}";
+            }
+            if(strstr($type, "RP_THEME_REPORT_") !== false){
+                $type = "RP_THEME_REPORT_{GET(id)}";
+            }
             $type = ReportXMLParser::findPDFReport($type, true);
         }
         $proj = Project::newFromHistoricId($sto->get_report_project_id());

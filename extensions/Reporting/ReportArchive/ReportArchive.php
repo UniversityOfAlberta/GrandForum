@@ -54,6 +54,7 @@ class ReportArchive extends SpecialPage {
         $action = @$_GET['getpdf'];
         $merge = @$_GET['merge'];
         if(isset($_GET['merge']) && $merge != ""){
+            $cover = isset($_GET['cover']);
             $pdfs = explode(",", $_GET['merge']);
             $tomerge = array();
             foreach($pdfs as $tok){
@@ -66,6 +67,23 @@ class ReportArchive extends SpecialPage {
                 }
             }
             $file = md5(implode($tomerge));
+            
+            if($cover){
+                // Create cover page
+                $html = "";
+                $html .= (isset($_GET['headerName'])) ? "<h1>{$_GET['headerName']}</h1>" : "";
+                $html .= "<ul>";
+                foreach($pdfs as $tok){
+                    $pdf = PDF::newFromToken($tok);
+                    $html .= "<li>" . $pdf->getTitle() . "</li>";
+                }
+                $html .= "</ul>";
+                $coverPDF = PDFGenerator::generate("", $html, "");
+                file_put_contents("/tmp/{$file}cover", $coverPDF['pdf']);
+                $splice = array("/tmp/{$file}cover");
+                array_splice($tomerge, 0, 0, $splice);
+            }
+            
             exec("pdftk \"".implode("\" \"", $tomerge)."\" cat output \"/tmp/$file\"");
             $contents = file_get_contents("/tmp/$file");
             

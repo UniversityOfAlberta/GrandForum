@@ -751,7 +751,10 @@ EOF;
 		</head>";
 		$headerName = @$report->headerName;
 		if($headerName == ""){
-            if($project != null){
+            if(isset($_GET['headerName'])){
+                $headerName = $_GET['headerName'];
+            }
+            else if($project != null){
                 if($project->getName() == ""){
                     $headerName = "{$person->getReversedName()}";
                 }

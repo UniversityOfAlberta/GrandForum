@@ -137,7 +137,7 @@
                             });
                         });
                         if(pdfs.length > 0){
-                            var url = wgServer + wgScriptPath + "/index.php/Special:ReportArchive?merge=" + pdfs.join(",");
+                            var url = wgServer + wgScriptPath + "/index.php/Special:ReportArchive?merge=" + pdfs.join(",") + "&cover&generatePDF&headerName={$theme_name}";
                             $(el).attr("href", url);
                         }
                         else{
