@@ -261,6 +261,9 @@ class ReportXMLParser {
             if(isset($attributes->headerName)){
                 $this->report->setHeaderName("{$attributes->headerName}");
             }
+            if(isset($attributes->skipTopLine) && strtolower($attributes->skipTopLine) == 'true'){
+                $this->report->setSkipTopLine(true);
+            }
             if(isset($attributes->reportType)){
                 $type = AbstractReport::blobConstant($attributes->reportType);
                 $this->report->setReportType($type);

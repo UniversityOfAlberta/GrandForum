@@ -47,6 +47,7 @@ abstract class AbstractReport extends SpecialPage {
     var $ajax;
     var $header;
     var $headerName;
+    var $skipTopLine = false;
     var $sections;
     var $currentSection;
     var $permissions;
@@ -541,6 +542,10 @@ abstract class AbstractReport extends SpecialPage {
             $item->setProjectId($this->project->getId());
         }
         $this->headerName = $item->varSubstitute($name);
+    }
+    
+    function setSkipTopline($skipTopLine){
+        $this->skipTopLine = $skipTopLine;
     }
     
     // Specifies which report this one inherits from

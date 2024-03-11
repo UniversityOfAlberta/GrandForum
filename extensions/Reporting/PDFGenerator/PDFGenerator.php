@@ -785,11 +785,13 @@ if ( isset($pdf) ) {
 
   // Draw a line along the bottom
   $y = $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).';
-  $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
-             '.PDFGenerator::cmToPixels($margins['top']).', 
-             $w - '.PDFGenerator::cmToPixels($margins['right']).', 
-             '.PDFGenerator::cmToPixels($margins['top']).', 
-             $color, 0.5);
+  if(!'.var_export($report->skipTopLine, true).'){
+          $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
+                     '.PDFGenerator::cmToPixels($margins['top']).', 
+                     $w - '.PDFGenerator::cmToPixels($margins['right']).', 
+                     '.PDFGenerator::cmToPixels($margins['top']).', 
+                     $color, 0.5);
+  }
   $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
              $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
              $w - '.PDFGenerator::cmToPixels($margins['right']).', 
