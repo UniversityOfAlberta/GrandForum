@@ -5,16 +5,25 @@
 
 class Course extends BackboneModel{
 
-    static $evalMap = array(5022 => "Contact time was used effectively",
-                            23   => "I am motivated to learn more about these subject areas",
-                            24   => "I increased my knowledge of the subject areas in this course",
-                            25	 => "Overall, the quality of the course content was excellent",
-                            221  => "Overall, this instructor was excellent",
-                            21   => "The goals and objectives of the course were clear",
-                            5674 => "The instructor communicated effectively",
-                            26   => "The instructor provided constructive feedback throughout this course",
-                            9    => "The instructor treated the students with respect",
-                            51   => "The instructor was well prepared");
+    static $evalMap = array(5022  => "Contact time was used effectively",
+                            23    => "I am motivated to learn more about these subject areas",
+                            24    => "I increased my knowledge of the subject areas in this course",
+                            25	  => "Overall, the quality of the course content was excellent",
+                            221   => "Overall, this instructor was excellent",
+                            21    => "The goals and objectives of the course were clear",
+                            5674  => "The instructor communicated effectively",
+                            26    => "The instructor provided constructive feedback throughout this course",
+                            9     => "The instructor treated the students with respect",
+                            51    => "The instructor was well prepared",
+                            13025 => "Overall, the lab component was excellent",                                                                                
+                            3009  => "The teaching assistant treated students with respect",
+                            13674 => "The teaching assistant communicated effectively",                                                                   
+                            3221  => "Overall, the teaching assistant was excellent",
+                            3026  => "The teaching assistant provided constructive feedback throughout this course",
+                            3051  => "The teaching assistant was well prepared",
+                            674   => "The instructor spoke clearly",
+                            22    => "In-class time was used effectively",
+                            3674  => "The teaching assistant spoke clearly");
 
     static $cache = array();
     static $userCoursesCache = array();

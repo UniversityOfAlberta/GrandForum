@@ -395,6 +395,9 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $course = Course::newFromId($this->reportItem->projectId);
         $evals = $person->getCourseEval($course->getId());
+        if(!is_array($evals)){
+            return "";
+        }
         $ret = "";
         foreach($evals as $key => $eval){
             $ret .= "<tr>";
@@ -404,7 +407,7 @@ class ReportItemCallback {
             $r3 = $eval['votes'][2];
             $r4 = $eval['votes'][3];
             $r5 = $eval['votes'][4];
-            $qText = Course::$evalMap[$qid];
+            $qText = @Course::$evalMap[$qid];
             $count = $r1 + $r2 + $r3 + $r4 + $r5;
             $avg = number_format(($r1*1+$r2*2+$r3*3+$r4*4+$r5*5)/$count, 2);
             $ret .= "

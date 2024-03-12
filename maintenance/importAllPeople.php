@@ -99,13 +99,15 @@
                                           'start_date' => $startDate));
             }
             
+            $pos = str_replace("Full Professor", "Professor", $pos);
+            $pos = str_replace("Post-Doctoral Fellows", "Post-Doctoral Fellow", $pos);
+            $pos = str_replace("Masters", "Graduate Student - Master's", $pos);
+            $pos = str_replace("PhD", "Graduate Student - Doctoral", $pos);
+            
             if(count($person->getUniversities()) == 0){
                 $uni = "University of Alberta";
                 $dept = (isset($deptCodes[$hrDeptId])) ? $deptCodes[$hrDeptId] : "Unknown";
-                $pos = str_replace("Full Professor", "Professor", $pos);
-                $pos = str_replace("Post-Doctoral Fellows", "Post-Doctoral Fellow", $pos);
-                $pos = str_replace("Masters", "Graduate Student - Master's", $pos);
-                $pos = str_replace("PhD", "Graduate Student - Doctoral", $pos);
+                
                 $api = new PersonUniversitiesAPI();
                 $api->params['id'] = $person->getId();
                 $_POST['university'] = $uni;
@@ -115,6 +117,22 @@
                 $api->doPOST();
             }
             
+            // Update FEC Info
+            if($pos == "Assistant Professor"){
+                $person->dateOfAppointment = $startDate;
+                $person->dateOfAssistant = $startDate;
+                $person->updateFecInfo();
+            }
+            else if($pos == "Associate Professor"){
+                $person->dateOfAppointment = $startDate;
+                $person->dateOfAssociate = $startDate;
+                $person->updateFecInfo();
+            }
+            else if($pos == "Professor"){
+                $person->dateOfAppointment = $startDate;
+                $person->dateOfProfessor = $startDate;
+                $person->updateFecInfo();
+            }
         }
     }
     
