@@ -54,7 +54,7 @@
     }
     
     function reportIssueAction($action){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         if($action == 'reportIssue'){
             $me = Person::newFromWgUser();
             $comments = nl2br($_POST['comments']);
@@ -111,7 +111,7 @@
             }
             $message .= "--".$uid."--";
             
-            mail($config->getValue('supportEmail'), "[{$config->getValue('networkName')}] {$subj}", $message, $header);
+            mail($config->getValue('supportEmail'), "[{$config->getValue('networkName')}] {$subj}", $message, $header, $wgAdditionalMailParams);
             exit;
         }
         return true;

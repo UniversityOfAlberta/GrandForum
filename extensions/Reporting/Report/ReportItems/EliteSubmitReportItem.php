@@ -12,7 +12,7 @@ class EliteSubmitReportItem extends AbstractReportItem {
     }
     
     function mailApplicant(){
-        global $wgOut, $config;
+        global $wgOut, $config, $wgAdditionalMailParams;
         // Email
         $subject = "";
         $message = "";
@@ -71,12 +71,12 @@ Faculty of Engineering, University of Alberta
             $message = nl2br($message);
             $headers  = "Content-type: text/html\r\n"; 
             $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-            mail($this->getReport()->person->getEmail(), $subject, $message, $headers);
+            mail($this->getReport()->person->getEmail(), $subject, $message, $headers, $wgAdditionalMailParams);
         }
     }
     
     function mailProjects(){
-        global $wgServer, $wgScriptPath, $config;
+        global $wgServer, $wgScriptPath, $config, $wgAdditionalMailParams;
         $blob = new ReportBlob(BLOB_ARRAY, $this->getReport()->year, $this->personId, $this->projectId);
         $blob_address = ReportBlob::create_address($this->getReport()->reportType, "PROFILE", "PROJECTS_OTHER", 0);
         $blob->load($blob_address);
@@ -93,7 +93,7 @@ An applicant for the Engineering-ELITE-IBET PhD Fellowship has indicated you as 
                 $message = nl2br($message);
                 $headers  = "Content-type: text/html\r\n"; 
                 $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-                mail($row['email'], $subject, $message, $headers);
+                mail($row['email'], $subject, $message, $headers, $wgAdditionalMailParams);
             }
         }
     }

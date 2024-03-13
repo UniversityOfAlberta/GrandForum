@@ -78,7 +78,7 @@ class ElitePosting extends Posting {
     }
     
     function sendCreateMail(){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         $subject = "";
         $message = "";
         if($this->type == "Intern"){
@@ -132,12 +132,12 @@ Faculty of Engineering, University of Alberta
             $message = nl2br($message);
             $headers  = "Content-type: text/html\r\n"; 
             $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-            mail($this->getUser()->getEmail(), $subject, $message, $headers);
+            mail($this->getUser()->getEmail(), $subject, $message, $headers, $wgAdditionalMailParams);
         }
     }
     
     function sendMoreInfoMail(){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         $subject = "";
         $message = "";
         if($this->type == "Intern"){
@@ -172,12 +172,12 @@ Programme ELITE pour la Jeunesse Noire
             $message = nl2br($message);
             $headers  = "Content-type: text/html\r\n"; 
             $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-            mail($this->getUser()->getEmail(), $subject, $message, $headers);
+            mail($this->getUser()->getEmail(), $subject, $message, $headers, $wgAdditionalMailParams);
         }
     }
     
     function sendAcceptedMail(){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         $subject = "";
         $message = "";
         if($this->type == "Intern"){
@@ -213,12 +213,12 @@ Programme ELITE pour la Jeunesse Noire
             $message = nl2br($message);
             $headers  = "Content-type: text/html\r\n"; 
             $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-            mail($this->getUser()->getEmail(), $subject, $message, $headers);
+            mail($this->getUser()->getEmail(), $subject, $message, $headers, $wgAdditionalMailParams);
         }
     }
     
     function sendNotMatchedMail(){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         $subject = "";
         $message = "";
         if($this->type == "Intern"){
@@ -251,12 +251,12 @@ Programme ELITE pour la Jeunesse Noire
             $message = nl2br($message);
             $headers  = "Content-type: text/html\r\n"; 
             $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-            mail($this->getUser()->getEmail(), $subject, $message, $headers);
+            mail($this->getUser()->getEmail(), $subject, $message, $headers, $wgAdditionalMailParams);
         }
     }
     
     function sendRejectedMail(){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         $subject = "";
         $message = "";
         if($this->type == "Intern"){
@@ -290,7 +290,7 @@ Programme ELITE pour la Jeunesse Noire
             $message = nl2br($message);
             $headers  = "Content-type: text/html\r\n"; 
             $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-            mail($this->getUser()->getEmail(), $subject, $message, $headers);
+            mail($this->getUser()->getEmail(), $subject, $message, $headers, $wgAdditionalMailParams);
         }
     }
     

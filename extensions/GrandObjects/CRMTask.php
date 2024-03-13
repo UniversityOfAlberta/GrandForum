@@ -104,7 +104,7 @@ class CRMTask extends BackboneModel {
      * @param string $type The type of message to send (one of 'new', 'assignee', 'due_date', 'reminder')
      */
     function sendMail($assignee, $type){
-        global $config, $wgScriptPath;
+        global $config, $wgScriptPath, $wgAdditionalMailParams;
         if($wgScriptPath != ""){
             // Don't send any mail if in a test environment
             return;
@@ -137,7 +137,7 @@ class CRMTask extends BackboneModel {
         if($assignee->getEmail() != "" && $title != "" && $message != ""){
             $headers  = "Content-type: text/html\r\n"; 
             $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-            mail($assignee->getEmail(), $title, $message, $headers);
+            mail($assignee->getEmail(), $title, $message, $headers, $wgAdditionalMailParams);
         }
     }
 	

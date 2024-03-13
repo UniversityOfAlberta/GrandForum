@@ -11,7 +11,7 @@ class EliteLettersReportItem extends MultiTextReportItem {
     }
     
     function sendEmail($sto=null){
-        global $wgServer, $wgScriptPath, $config;
+        global $wgServer, $wgScriptPath, $config, $wgAdditionalMailParams;
         $data = $this->getBlobValue();
         $report = $this->getReport();
         if(!is_array($data)){
@@ -55,7 +55,7 @@ class EliteLettersReportItem extends MultiTextReportItem {
                            "X-Mailer: PHP/" . phpversion();
                 
                 $message = "<p>{$report->person->getNameForForms()} has requested that you submit a letter of reference for their {$report->name}.  You can submit your letter of reference <a href='{$url}'><b>here</b></a>.";
-                mail($email, "Letter of Reference", $message, $headers);
+                mail($email, "Letter of Reference", $message, $headers, $wgAdditionalMailParams);
             }
         }
         return true;
