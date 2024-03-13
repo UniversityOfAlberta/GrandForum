@@ -76,7 +76,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=proposals'>Proj Proposals</a>";
         }
         
-        $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
+        $wgOut->addHTML("<h1>".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
         if(!isset($_GET['program'])){
             return;
         }
@@ -501,7 +501,7 @@ class ApplicationsTable extends SpecialPage{
         
         if(self::userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ApplicationsTable") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Reports", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected);
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Applications/Reports", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected);
         }
         return true;
     }
