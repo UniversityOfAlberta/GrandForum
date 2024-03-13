@@ -209,7 +209,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function execute(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser, $config;
+        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser, $config, $wgAdditionalMailParams;
         $me = Person::newFromWgUser();
         if($this->name != ""){
             if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
@@ -310,7 +310,7 @@ abstract class AbstractReport extends SpecialPage {
                         $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
                         $subject = (isset($_GET['subject'])) ? $_GET['subject'] : "Report Submitted";
                         foreach(explode(",", $_GET['emails']) as $email){
-                            mail($email, $subject, $message, $headers);
+                            mail($email, $subject, $message, $headers, $wgAdditionalMailParams);
                         }
                     }
                     break; //Temporary solution to not submitting NI Report Comments PDF (2nd PDF and only 1 2nd PDF among all reports)
@@ -934,7 +934,7 @@ abstract class AbstractReport extends SpecialPage {
     
     // Generates the PDF for the report, and saves it to the Database
     function generatePDF($person=null, $submit=false){
-        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath, $wgAdditionalMailParams;
         session_write_close();
         if($this->disabled){
             echo "This Report is disabled until further notice";
@@ -1001,7 +1001,7 @@ abstract class AbstractReport extends SpecialPage {
                 $message = "'{$this->name}' has been submitted by {$personSubmitting->getName()}.\n\nClick here to download: $url";
                 $subject = (isset($_GET['subject'])) ? $_GET['subject'] : "Report Submitted";
                 foreach(explode(",", $_GET['emails']) as $email){
-                    mail($email, $subject, $message, $headers);
+                    mail($email, $subject, $message, $headers, $wgAdditionalMailParams);
                 }
             }
             wfRunHooks('AfterGeneratePDF', array($sto));
