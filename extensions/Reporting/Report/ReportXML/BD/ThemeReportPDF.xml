@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Theme Report" skipTopLine="true" headerName=" " reportType="RP_THEME_REPORT_{GET(id)}" pdfType="RP_THEME_REPORT_{GET(id)}" year="0" personId="0" ajax="true" disabled="false">
+<Report name="Theme Report" reportType="RP_THEME_REPORT_{GET(id)}" pdfType="RP_THEME_REPORT_{GET(id)}" year="0" personId="0" ajax="true" disabled="false">
     <ReportSection id="cover" type="HeaderReportSection" name="Cover" pagebreak="true">
         <!-- Year -->
         <Static>
@@ -30,57 +30,26 @@
                 {set(year, {add({get(year)}, 1)})}
             ]]>
         </ElseIf>
-        
-        <!-- Colours -->
-        <If if="{==({$theme_name},TRS1)}">
-            <![CDATA[
-                {set(background, #D9D9D9)}
-                {set(secondary, Black)}
-            ]]>
-        </If>
-        <ElseIf if="{==({$theme_name},TRS2)}">
-            <![CDATA[
-                {set(background, #6BBFAE)}
-                {set(secondary, White)}
-            ]]>
-        </ElseIf>
-        <ElseIf if="{==({$theme_name},TRS3)}">
-            <![CDATA[
-                {set(background, #FFEE00)}
-                {set(secondary, Black)}
-            ]]>
-        </ElseIf>
-        <ElseIf if="{==({$theme_name},TRS4)}">
-            <![CDATA[
-                {set(background, #5BC2F4)}
-                {set(secondary, White)}
-            ]]>
-        </ElseIf>
         <Static>
             <![CDATA[
-                <div style='position: relative; background: {get(background)}; margin-left: -1em; margin-right: -1em; margin-top: -1.6em; z-index: 10000;'>
-                    <img style='margin-top:10em; margin-left: 5em; width: 35%;' src='{$wgServer}{$wgScriptPath}/skins/BD_Logo_{get(secondary)}.png' />
-                    <img style='position: absolute; top:5.5em; right: -1px; width: 50%;' src='{$wgServer}{$wgScriptPath}/skins/BD_Partial_Logo_{get(secondary)}.png' />
-                    <div style='margin-left: 5em; margin-top: 23em;'>
-                        <div style='font-size: 1.75em; font-weight: bold;'>
-                            <span style='font-size: 0.75em; font-weight: normal;'>{get(month)} {get(year)}</span><br />
-                            &nbsp;<br />
-                            {$theme_name} Theme Report<br />
-                            {$theme_full_name}
-                            &nbsp;<br />
-                            &nbsp;<br />
-                            &nbsp;<br />
-                            &nbsp;<br />
-                            <span style='font-size: 0.75em;'>www.torontomu.ca/bridging-divides</span>
-                            &nbsp;<br />
-                            &nbsp;<br />
-                            &nbsp;<br />
-                            &nbsp;<br />
-                            &nbsp;<br />
-                        </div>
+                <div style='margin-top: 23em;'>
+                    <div style='font-size: 1.75em; font-weight: bold; text-align: center;'>
+                        <span style='font-size: 0.75em; font-weight: normal;'>{get(month)} {get(year)}</span><br />
+                        &nbsp;<br />
+                        {$theme_name} Theme Report<br />
+                        {$theme_full_name}
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        <span style='font-size: 0.75em;'>www.torontomu.ca/bridging-divides</span>
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        &nbsp;<br />
                     </div>
                 </div>
-                <div style='width:100%; margin-top: 3em; text-align: center;'><img style='width:75%;' src='{$wgServer}{$wgScriptPath}/skins/TMU Bridging Divides Partner Logo_ALL.png' /></div>
             ]]>
         </Static>
     </ReportSection>

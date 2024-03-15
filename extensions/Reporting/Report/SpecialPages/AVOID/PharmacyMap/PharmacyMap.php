@@ -55,6 +55,8 @@ class PharmacyMap extends BackbonePage {
                 foreach($categoryJSON->children as $category){
                     $categories = array_merge($categories, PharmacyMap::getCategoryLeaves($category));
                 }
+                unset($categoryJSON->children);
+                $categories[] = $categoryJSON;
             }
             else{
                 // Leaf found
