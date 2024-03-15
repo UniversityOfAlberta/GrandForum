@@ -924,6 +924,19 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
         }
+        foreach($this->sectionPermissions as $if => $sections){
+            if(strstr($if, "If_") !== false){
+                $found = true;
+                if(isset($this->sectionPermissions[$if][$section->id])){
+                    foreach($this->sectionPermissions[$if][$section->id] as $key => $perm){
+                        $permissions[$key] = $perm;
+                        if($key == "-"){
+                            return array();
+                        }
+                    }
+                }
+            }
+        }
         if(!$found){
             // If neither the section permissions were never defined, initialize them here as true
             $permissions['r'] = true;

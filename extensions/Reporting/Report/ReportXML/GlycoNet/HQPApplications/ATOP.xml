@@ -17,6 +17,14 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <If if="{>({timestamp(Y-m-d)},2024-04-00)}">
+            <SectionPermission id="background" permissions="-" />
+            <SectionPermission id="application" permissions="-" />
+            <SectionPermission id="proposal" permissions="-" />
+            <SectionPermission id="declaration" permissions="-" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
+        </If>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
         <Static>
