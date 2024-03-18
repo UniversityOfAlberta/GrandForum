@@ -1243,7 +1243,8 @@ class Descriptors extends SpecialPage {
                 </table>
             </div>
             <div>
-                <h2>Progress Aggregate Report</h2>
+                <h2>Aggregate Behavioural Progress</h2>
+                <small>any improvement for each category since baseline</small>
                 <table class='wikitable' style='width:100%;'>
                     <tr>
                         <th colspan='2'></th>
