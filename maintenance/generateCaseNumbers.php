@@ -11,8 +11,8 @@
     $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end));//, 
                              //Person::getAllPeopleDuring("ATS", $start, $end));
     
-    /*DBFunctions::delete('grand_case_numbers',
-                        array('year' => 2020));*/
+    DBFunctions::delete('grand_case_numbers',
+                        array('year' => YEAR));
     $data = DBFunctions::execSQL("SELECT `user_id`, `date_of_phd`, `date_of_appointment` 
                                   FROM `grand_personal_fec_info` 
                                   WHERE `date_retirement` >= '{$end}' OR 
@@ -91,10 +91,10 @@
 
     foreach($data as $row){
         echo strip_tags($row['case']).": {$row['person']->getNameForForms()}\n"; // ({$row['person']->getId()})\n";
-        /*DBFunctions::insert('grand_case_numbers',
+        DBFunctions::insert('grand_case_numbers',
                             array('user_id' => $row['person']->getId(),
-                                  'year' => 2020,
-                                  'number' => $row['case']));*/
+                                  'year' => YEAR,
+                                  'number' => $row['case']));
     }
 
 ?>
