@@ -247,61 +247,61 @@ class Descriptors extends SpecialPage {
     
     static function aggregateStats($person, &$aggregates, &$status){
         $sit = self::getBlobData("behaviouralassess", "behave1_avoid", $person, YEAR, "RP_AVOID");
-        $sit = self::compareProgress($aggregates[0][0], $status[0][0], $sit, "RP_AVOID_THREEMO", "behave1_avoid", "Physical Activity", $person);
-        $sit = self::compareProgress($aggregates[0][1], $status[0][1], $sit, "RP_AVOID_SIXMO", "behave1_avoid", "Physical Activity", $person);
-        $sit = self::compareProgress($aggregates[0][2], $status[0][2], $sit, "RP_AVOID_NINEMO", "behave1_avoid", "Physical Activity", $person);
-        $sit = self::compareProgress($aggregates[0][3], $status[0][3], $sit, "RP_AVOID_TWELVEMO", "behave1_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[0][0], $status[0][0], $sit, "RP_AVOID_THREEMO", "behave1_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[0][1], $status[0][1], $sit, "RP_AVOID_SIXMO", "behave1_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[0][2], $status[0][2], $sit, "RP_AVOID_NINEMO", "behave1_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[0][3], $status[0][3], $sit, "RP_AVOID_TWELVEMO", "behave1_avoid", "Physical Activity", $person);
         
         $walk = self::getBlobData("behaviouralassess", "behave0_avoid", $person, YEAR, "RP_AVOID");
-        $walk = self::compareProgress($aggregates[1][0], $status[1][0], $walk, "RP_AVOID_THREEMO", "behave0_avoid", "Physical Activity", $person);
-        $walk = self::compareProgress($aggregates[1][1], $status[1][1], $walk, "RP_AVOID_SIXMO", "behave0_avoid", "Physical Activity", $person);
-        $walk = self::compareProgress($aggregates[1][2], $status[1][2], $walk, "RP_AVOID_NINEMO", "behave0_avoid", "Physical Activity", $person);
-        $walk = self::compareProgress($aggregates[1][3], $status[1][3], $walk, "RP_AVOID_TWELVEMO", "behave0_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[1][0], $status[1][0], $walk, "RP_AVOID_THREEMO", "behave0_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[1][1], $status[1][1], $walk, "RP_AVOID_SIXMO", "behave0_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[1][2], $status[1][2], $walk, "RP_AVOID_NINEMO", "behave0_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[1][3], $status[1][3], $walk, "RP_AVOID_TWELVEMO", "behave0_avoid", "Physical Activity", $person);
         
         $activity = self::getBlobData("behaviouralassess", "behave2_avoid", $person, YEAR, "RP_AVOID");
-        $activity = self::compareProgress($aggregates[2][0], $status[2][0], $activity, "RP_AVOID_THREEMO", "behave2_avoid", "Physical Activity", $person);
-        $activity = self::compareProgress($aggregates[2][1], $status[2][1], $activity, "RP_AVOID_SIXMO", "behave2_avoid", "Physical Activity", $person);
-        $activity = self::compareProgress($aggregates[2][2], $status[2][2], $activity, "RP_AVOID_NINEMO", "behave2_avoid", "Physical Activity", $person);
-        $activity = self::compareProgress($aggregates[2][3], $status[2][3], $activity, "RP_AVOID_TWELVEMO", "behave2_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[2][0], $status[2][0], $activity, "RP_AVOID_THREEMO", "behave2_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[2][1], $status[2][1], $activity, "RP_AVOID_SIXMO", "behave2_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[2][2], $status[2][2], $activity, "RP_AVOID_NINEMO", "behave2_avoid", "Physical Activity", $person);
+        self::compareProgress($aggregates[2][3], $status[2][3], $activity, "RP_AVOID_TWELVEMO", "behave2_avoid", "Physical Activity", $person);
         
         // Vaccine Stats
         $count = 0;
         $count = self::compareVaccines($aggregates[3][-1], $status[3][-1], $count, "RP_AVOID", $person);
-        $count = self::compareVaccines($aggregates[3][0],  $status[3][0], $count, "RP_AVOID_THREEMO", $person);
-        $count = self::compareVaccines($aggregates[3][1],  $status[3][1], $count, "RP_AVOID_SIXMO", $person);
-        $count = self::compareVaccines($aggregates[3][2],  $status[3][2], $count, "RP_AVOID_NINEMO", $person);
-        $count = self::compareVaccines($aggregates[3][3],  $status[3][3], $count, "RP_AVOID_TWELVEMO", $person);
+        self::compareVaccines($aggregates[3][0],  $status[3][0], $count, "RP_AVOID_THREEMO", $person);
+        self::compareVaccines($aggregates[3][1],  $status[3][1], $count, "RP_AVOID_SIXMO", $person);
+        self::compareVaccines($aggregates[3][2],  $status[3][2], $count, "RP_AVOID_NINEMO", $person);
+        self::compareVaccines($aggregates[3][3],  $status[3][3], $count, "RP_AVOID_TWELVEMO", $person);
         
         // Meds
         $meds = self::getBlobData("behaviouralassess", "meds3_avoid", $person, YEAR, "RP_AVOID");
-        $meds = self::compareMeds($aggregates[4][0], $status[4][0], $meds, "RP_AVOID_THREEMO", $person);
-        $meds = self::compareMeds($aggregates[4][1], $status[4][1], $meds, "RP_AVOID_SIXMO", $person);
-        $meds = self::compareMeds($aggregates[4][2], $status[4][2], $meds, "RP_AVOID_NINEMO", $person);
-        $meds = self::compareMeds($aggregates[4][3], $status[4][3], $meds, "RP_AVOID_TWELVEMO", $person);
+        self::compareMeds($aggregates[4][0], $status[4][0], $meds, "RP_AVOID_THREEMO", $person);
+        self::compareMeds($aggregates[4][1], $status[4][1], $meds, "RP_AVOID_SIXMO", $person);
+        self::compareMeds($aggregates[4][2], $status[4][2], $meds, "RP_AVOID_NINEMO", $person);
+        self::compareMeds($aggregates[4][3], $status[4][3], $meds, "RP_AVOID_TWELVEMO", $person);
         
         // Interact
         $count = 0;
         $count = self::compareInteract($aggregates[5][-1], $status[5][-1], $count, "RP_AVOID", $person);
-        $count = self::compareInteract($aggregates[5][0],  $status[5][0], $count, "RP_AVOID_THREEMO", $person);
-        $count = self::compareInteract($aggregates[5][1],  $status[5][1], $count, "RP_AVOID_SIXMO", $person);
-        $count = self::compareInteract($aggregates[5][2],  $status[5][2], $count, "RP_AVOID_NINEMO", $person);
-        $count = self::compareInteract($aggregates[5][3],  $status[5][3], $count, "RP_AVOID_TWELVEMO", $person);
+        self::compareInteract($aggregates[5][0],  $status[5][0], $count, "RP_AVOID_THREEMO", $person);
+        self::compareInteract($aggregates[5][1],  $status[5][1], $count, "RP_AVOID_SIXMO", $person);
+        self::compareInteract($aggregates[5][2],  $status[5][2], $count, "RP_AVOID_NINEMO", $person);
+        self::compareInteract($aggregates[5][3],  $status[5][3], $count, "RP_AVOID_TWELVEMO", $person);
         
         // Loneliness
         $count = 0;
         $count = self::compareLoneliness($aggregates[6][-1], $status[6][-1], $count, "RP_AVOID", $person);
-        $count = self::compareLoneliness($aggregates[6][0],  $status[6][0], $count, "RP_AVOID_THREEMO", $person);
-        $count = self::compareLoneliness($aggregates[6][1],  $status[6][1], $count, "RP_AVOID_SIXMO", $person);
-        $count = self::compareLoneliness($aggregates[6][2],  $status[6][2], $count, "RP_AVOID_NINEMO", $person);
-        $count = self::compareLoneliness($aggregates[6][3],  $status[6][3], $count, "RP_AVOID_TWELVEMO", $person);
+        self::compareLoneliness($aggregates[6][0],  $status[6][0], $count, "RP_AVOID_THREEMO", $person);
+        self::compareLoneliness($aggregates[6][1],  $status[6][1], $count, "RP_AVOID_SIXMO", $person);
+        self::compareLoneliness($aggregates[6][2],  $status[6][2], $count, "RP_AVOID_NINEMO", $person);
+        self::compareLoneliness($aggregates[6][3],  $status[6][3], $count, "RP_AVOID_TWELVEMO", $person);
         
         // Nutrition
         $count = 0;
         $count = self::compareNutrition($aggregates[7][-1], $status[7][-1], $count, "RP_AVOID", $person);
-        $count = self::compareNutrition($aggregates[7][0],  $status[7][0], $count, "RP_AVOID_THREEMO", $person);
-        $count = self::compareNutrition($aggregates[7][1],  $status[7][1], $count, "RP_AVOID_SIXMO", $person);
-        $count = self::compareNutrition($aggregates[7][2],  $status[7][2], $count, "RP_AVOID_NINEMO", $person);
-        $count = self::compareNutrition($aggregates[7][3],  $status[7][3], $count, "RP_AVOID_TWELVEMO", $person);
+        self::compareNutrition($aggregates[7][0],  $status[7][0], $count, "RP_AVOID_THREEMO", $person);
+        self::compareNutrition($aggregates[7][1],  $status[7][1], $count, "RP_AVOID_SIXMO", $person);
+        self::compareNutrition($aggregates[7][2],  $status[7][2], $count, "RP_AVOID_NINEMO", $person);
+        self::compareNutrition($aggregates[7][3],  $status[7][3], $count, "RP_AVOID_TWELVEMO", $person);
         return $aggregates;
     }
     
