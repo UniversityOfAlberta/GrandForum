@@ -1331,26 +1331,28 @@ class Descriptors extends SpecialPage {
                     </tr>
                 </table>
                 
-                <b>Most Improved (Delta)</b>
+                <h2>Individual Behavioural: Most/Least Improved</h2>
+                <small>Difference in AVOID behaviour from baseline; 1 level change +/- 1 point</small>
+                <h3>Most Improved</h3>
                 <table class='wikitable'>");
                 $count = 0;
                 foreach($deltaImproved as $key => $delta){
                     if($count < 15 && $delta > 0){
                         $person = Person::newFromId($key);
-                        $wgOut->addHTML("<tr><td>{$person->getName()}</td><td>+{$delta}</td></tr>");
+                        $wgOut->addHTML("<tr><td>{$person->getName()}</td><td>{$person->getId()}</td><td>+{$delta}</td></tr>");
                     }
                     $count++;
                 }
                 $wgOut->addHTML("
                 </table>
                 
-                <b>Least Improved (Delta)</b>
+                <h3>Least Improved</h3>
                 <table class='wikitable'>");
                 $count = 0;
                 foreach($deltaWorsened as $key => $delta){
                     if($count < 15 && $delta < 0){
                         $person = Person::newFromId($key);
-                        $wgOut->addHTML("<tr><td>{$person->getName()}</td><td>{$delta}</td></tr>");
+                        $wgOut->addHTML("<tr><td>{$person->getName()}</td><td>{$person->getId()}</td><td>{$delta}</td></tr>");
                     }
                     $count++;
                 }
