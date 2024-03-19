@@ -656,7 +656,7 @@ class Descriptors extends SpecialPage {
             }
         }
         asort($deltas);
-        $deltaImproved = array_reverse($deltas);
+        $deltaImproved = array_reverse($deltas, true);
         $deltaWorsened = $deltas;
         $wgOut->addHTML("<div class='modules'>");
         @$wgOut->addHTML("<div class='module-3cols-outer'>
