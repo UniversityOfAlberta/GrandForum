@@ -102,7 +102,7 @@ class Report extends AbstractReport {
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("ACCESS Application", "{$url}AccessApplication072023", $selected);
         }*/
         
-        if($person->isRole(HQP) || $person->isSubRole("EPIC AT") || $person->isSubRole("ECR Applicant")){
+        if($person->isRole(HQP) || $person->isSubRole("EPIC AT")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SummerApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Summer Institute", "{$url}SummerApplication", $selected);
         }
