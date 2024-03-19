@@ -1334,12 +1334,28 @@ class Descriptors extends SpecialPage {
                 <h2>Individual Behavioural: Most/Least Improved</h2>
                 <small>Difference in AVOID behaviour from baseline; 1 level change +/- 1 point</small>
                 <h3>Most Improved</h3>
-                <table class='wikitable'><tr><th>Name</th><th>ID</th><th>Delta</th></tr>");
+                <table class='wikitable'><tr><th>Name</th><th>ID</th><th>Delta</th><th>Last Completed</th></tr>");
                 $count = 0;
                 foreach($deltaImproved as $key => $delta){
                     if($count < 15 && $delta > 0){
                         $person = Person::newFromId($key);
-                        $wgOut->addHTML("<tr><td>{$person->getName()}</td><td>{$person->getId()}</td><td>+{$delta}</td></tr>");
+                        $lastCompleted = "";
+                        if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")){
+                            $lastCompleted = "Twelve Month";
+                        }
+                        else if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_NINEMO")){
+                            $lastCompleted = "Nine Month";
+                        }
+                        else if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")){
+                            $lastCompleted = "Six Month";
+                        }
+                        else if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")){
+                            $lastCompleted = "Three Month";
+                        }
+                        else {
+                            $lastCompleted = "Intake";
+                        }
+                        $wgOut->addHTML("<tr><td>{$person->getName()}</td><td>{$person->getId()}</td><td>+{$delta}</td><td>{$lastCompleted}</td></tr>");
                     }
                     $count++;
                 }
@@ -1347,12 +1363,28 @@ class Descriptors extends SpecialPage {
                 </table>
                 
                 <h3>Least Improved</h3>
-                <table class='wikitable'><tr><th>Name</th><th>ID</th><th>Delta</th></tr>");
+                <table class='wikitable'><tr><th>Name</th><th>ID</th><th>Delta</th><th>Last Completed</th></tr>");
                 $count = 0;
                 foreach($deltaWorsened as $key => $delta){
                     if($count < 15 && $delta < 0){
                         $person = Person::newFromId($key);
-                        $wgOut->addHTML("<tr><td>{$person->getName()}</td><td>{$person->getId()}</td><td>{$delta}</td></tr>");
+                        $lastCompleted = "";
+                        if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")){
+                            $lastCompleted = "Twelve Month";
+                        }
+                        else if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_NINEMO")){
+                            $lastCompleted = "Nine Month";
+                        }
+                        else if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")){
+                            $lastCompleted = "Six Month";
+                        }
+                        else if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")){
+                            $lastCompleted = "Three Month";
+                        }
+                        else {
+                            $lastCompleted = "Intake";
+                        }
+                        $wgOut->addHTML("<tr><td>{$person->getName()}</td><td>{$person->getId()}</td><td>{$delta}</td><td>{$lastCompleted}</td></tr>");
                     }
                     $count++;
                 }
