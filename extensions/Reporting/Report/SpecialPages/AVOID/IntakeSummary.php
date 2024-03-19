@@ -340,6 +340,7 @@ class IntakeSummary extends SpecialPage {
                 $html .= "<td></td>";
                 $html .= "<td></td>";
                 $html .= "<td></td>";
+                $html .= "<td></td>";
             }
             if($config->getValue('networkFullName') == "AVOID Alberta"){
                 $html .= "<td>".$scores["VFS"]."</td>";
