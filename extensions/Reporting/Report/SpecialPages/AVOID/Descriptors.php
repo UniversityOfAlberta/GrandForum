@@ -1334,7 +1334,7 @@ class Descriptors extends SpecialPage {
                 <h2>Individual Behavioural: Most/Least Improved</h2>
                 <small>Difference in AVOID behaviour from baseline; 1 level change +/- 1 point</small>
                 <h3>Most Improved</h3>
-                <table class='wikitable'>");
+                <table class='wikitable'><tr><th>Name</th><th>ID</th><th>Delta</th></tr>");
                 $count = 0;
                 foreach($deltaImproved as $key => $delta){
                     if($count < 15 && $delta > 0){
@@ -1347,7 +1347,7 @@ class Descriptors extends SpecialPage {
                 </table>
                 
                 <h3>Least Improved</h3>
-                <table class='wikitable'>");
+                <table class='wikitable'><tr><th>Name</th><th>ID</th><th>Delta</th></tr>");
                 $count = 0;
                 foreach($deltaWorsened as $key => $delta){
                     if($count < 15 && $delta < 0){
