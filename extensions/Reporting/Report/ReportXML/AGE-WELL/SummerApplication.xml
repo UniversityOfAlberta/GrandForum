@@ -13,6 +13,18 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role subType="EPIC AT">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role subType="ECR Applicant">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="description" tooltip="AGE-WELL's 7th Annual EPIC Summer Institute" name="Program Description" type="ReportSection" title="AGE-WELL's 7th Annual EPIC Summer Institute">
         <Static>
