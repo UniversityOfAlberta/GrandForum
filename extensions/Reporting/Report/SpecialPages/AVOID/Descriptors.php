@@ -267,10 +267,10 @@ class Descriptors extends SpecialPage {
         // Vaccine Stats
         $count = 0;
         $count = self::compareVaccines($aggregates[3][-1], $status[3][-1], $count, "RP_AVOID", $person);
-        self::compareVaccines($aggregates[3][0],  $status[3][0], $count, "RP_AVOID_THREEMO", $person);
-        self::compareVaccines($aggregates[3][1],  $status[3][1], $count, "RP_AVOID_SIXMO", $person);
-        self::compareVaccines($aggregates[3][2],  $status[3][2], $count, "RP_AVOID_NINEMO", $person);
-        self::compareVaccines($aggregates[3][3],  $status[3][3], $count, "RP_AVOID_TWELVEMO", $person);
+        self::compareVaccines($aggregates[3][0], $status[3][0], $count, "RP_AVOID_THREEMO", $person);
+        self::compareVaccines($aggregates[3][1], $status[3][1], $count, "RP_AVOID_SIXMO", $person);
+        self::compareVaccines($aggregates[3][2], $status[3][2], $count, "RP_AVOID_NINEMO", $person);
+        self::compareVaccines($aggregates[3][3], $status[3][3], $count, "RP_AVOID_TWELVEMO", $person);
         
         // Meds
         $meds = self::getBlobData("behaviouralassess", "meds3_avoid", $person, YEAR, "RP_AVOID");
@@ -282,26 +282,26 @@ class Descriptors extends SpecialPage {
         // Interact
         $count = 0;
         $count = self::compareInteract($aggregates[5][-1], $status[5][-1], $count, "RP_AVOID", $person);
-        self::compareInteract($aggregates[5][0],  $status[5][0], $count, "RP_AVOID_THREEMO", $person);
-        self::compareInteract($aggregates[5][1],  $status[5][1], $count, "RP_AVOID_SIXMO", $person);
-        self::compareInteract($aggregates[5][2],  $status[5][2], $count, "RP_AVOID_NINEMO", $person);
-        self::compareInteract($aggregates[5][3],  $status[5][3], $count, "RP_AVOID_TWELVEMO", $person);
+        self::compareInteract($aggregates[5][0], $status[5][0], $count, "RP_AVOID_THREEMO", $person);
+        self::compareInteract($aggregates[5][1], $status[5][1], $count, "RP_AVOID_SIXMO", $person);
+        self::compareInteract($aggregates[5][2], $status[5][2], $count, "RP_AVOID_NINEMO", $person);
+        self::compareInteract($aggregates[5][3], $status[5][3], $count, "RP_AVOID_TWELVEMO", $person);
         
         // Loneliness
         $count = 0;
         $count = self::compareLoneliness($aggregates[6][-1], $status[6][-1], $count, "RP_AVOID", $person);
-        self::compareLoneliness($aggregates[6][0],  $status[6][0], $count, "RP_AVOID_THREEMO", $person);
-        self::compareLoneliness($aggregates[6][1],  $status[6][1], $count, "RP_AVOID_SIXMO", $person);
-        self::compareLoneliness($aggregates[6][2],  $status[6][2], $count, "RP_AVOID_NINEMO", $person);
-        self::compareLoneliness($aggregates[6][3],  $status[6][3], $count, "RP_AVOID_TWELVEMO", $person);
+        self::compareLoneliness($aggregates[6][0], $status[6][0], $count, "RP_AVOID_THREEMO", $person);
+        self::compareLoneliness($aggregates[6][1], $status[6][1], $count, "RP_AVOID_SIXMO", $person);
+        self::compareLoneliness($aggregates[6][2], $status[6][2], $count, "RP_AVOID_NINEMO", $person);
+        self::compareLoneliness($aggregates[6][3], $status[6][3], $count, "RP_AVOID_TWELVEMO", $person);
         
         // Nutrition
         $count = 0;
         $count = self::compareNutrition($aggregates[7][-1], $status[7][-1], $count, "RP_AVOID", $person);
-        self::compareNutrition($aggregates[7][0],  $status[7][0], $count, "RP_AVOID_THREEMO", $person);
-        self::compareNutrition($aggregates[7][1],  $status[7][1], $count, "RP_AVOID_SIXMO", $person);
-        self::compareNutrition($aggregates[7][2],  $status[7][2], $count, "RP_AVOID_NINEMO", $person);
-        self::compareNutrition($aggregates[7][3],  $status[7][3], $count, "RP_AVOID_TWELVEMO", $person);
+        self::compareNutrition($aggregates[7][0], $status[7][0], $count, "RP_AVOID_THREEMO", $person);
+        self::compareNutrition($aggregates[7][1], $status[7][1], $count, "RP_AVOID_SIXMO", $person);
+        self::compareNutrition($aggregates[7][2], $status[7][2], $count, "RP_AVOID_NINEMO", $person);
+        self::compareNutrition($aggregates[7][3], $status[7][3], $count, "RP_AVOID_TWELVEMO", $person);
         return $aggregates;
     }
     
@@ -374,6 +374,8 @@ class Descriptors extends SpecialPage {
             array(array(),array(),array(),array()),
             array(array(),array(),array(),array())
         );
+        
+        $deltas = array();
         
         foreach($people as $person){
             if(!$person->isRoleAtMost(CI)){
@@ -600,6 +602,16 @@ class Descriptors extends SpecialPage {
                 // Aggregate Stats
                 $status = array();
                 self::aggregateStats($person, $aggregates, $status);
+                foreach($status as $stat){
+                    foreach($stat as $s){
+                        if($s == AGG_BETTER){
+                            @$deltas[$person->getId()] += 1;
+                        }
+                        else if($s == AGG_WORSE){
+                            @$deltas[$person->getId()] -= 1;
+                        }
+                    }
+                }
             }
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO") && self::getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
@@ -643,6 +655,9 @@ class Descriptors extends SpecialPage {
                 $n6Month++;
             }
         }
+        asort($deltas);
+        $deltaImproved = array_reverse($deltas);
+        $deltaWorsened = $deltas;
         $wgOut->addHTML("<div class='modules'>");
         @$wgOut->addHTML("<div class='module-3cols-outer'>
             <h2>Distribution of EQ-5D-5L</h2>
@@ -1314,6 +1329,32 @@ class Descriptors extends SpecialPage {
                         <td>".number_format(array_sum($aggregates[7][2])/max(1, count($aggregates[7][2]))*100, 1)."% (N=".count($aggregates[7][2]).")</td>
                         <td>".number_format(array_sum($aggregates[7][3])/max(1, count($aggregates[7][3]))*100, 1)."% (N=".count($aggregates[7][3]).")</td>
                     </tr>
+                </table>
+                
+                <b>Most Improved (Delta)</b>
+                <table class='wikitable'>");
+                $count = 0;
+                foreach($deltaImproved as $key => $delta){
+                    if($count < 15 && $delta > 0){
+                        $person = Person::newFromId($key);
+                        $wgOut->addHTML("<tr><td>{$person->getName()}</td><td>+{$delta}</td></tr>");
+                    }
+                    $count++;
+                }
+                $wgOut->addHTML("
+                </table>
+                
+                <b>Least Improved (Delta)</b>
+                <table class='wikitable'>");
+                $count = 0;
+                foreach($deltaWorsened as $key => $delta){
+                    if($count < 15 && $delta < 0){
+                        $person = Person::newFromId($key);
+                        $wgOut->addHTML("<tr><td>{$person->getName()}</td><td>{$delta}</td></tr>");
+                    }
+                    $count++;
+                }
+                $wgOut->addHTML("
                 </table>
             </div>
         </div>");
