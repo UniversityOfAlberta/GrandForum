@@ -785,6 +785,21 @@ class ApplicationsTable extends SpecialPage{
         $refs->setId("letters");
         
         $tabbedPage = new InnerTabbedPage("reports");
+        
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT2', null, 2024, "2024", array("Academic Status" => $stat,
+                                                                                        "Institution" => $uni,
+                                                                                        "Level" => $lvl,
+                                                                                        "Title" => $title,
+                                                                                        "Age" => $age,
+                                                                                        "Gender" => $gender,
+                                                                                        "Gender (Other)" => $gender_other,
+                                                                                        "Indigenous" => $indigenous,
+                                                                                        "Ethnicities" => $ethnicities,
+                                                                                        "Ethnicities (Other)" => $ethnicities_other,
+                                                                                        "Disability" => $disability,
+                                                                                        "Post-Secondary" => $postsecondary,
+                                                                                        "References" => $refs
+                                                                                       )));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT2', null, 2023, "2023", array("Academic Status" => $stat,
                                                                                         "Institution" => $uni,
                                                                                         "Level" => $lvl,
