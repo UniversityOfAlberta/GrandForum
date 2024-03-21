@@ -203,7 +203,8 @@ class Report extends AbstractReport {
                     //    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}PlatformReport&project={$project->getName()}", $selected);
                     //}
                     else if($project->getType() != 'Administrative' && 
-                            $project->getType() != 'Innovation Hub'){
+                            $project->getType() != 'Innovation Hub' &&
+                            $project->getPhase() != 1){
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CRPReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (End-of-Term)", "{$url}CRPReport&project={$project->getName()}", $selected);
                     
