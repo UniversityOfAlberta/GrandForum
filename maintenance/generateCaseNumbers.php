@@ -8,8 +8,8 @@
     $start = (YEAR-1)."-07-01";
     $end = (YEAR)."-07-01";
     
-    $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end));//, 
-                             //Person::getAllPeopleDuring("ATS", $start, $end));
+    $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end),
+                             Person::getAllPeopleDuring("ATS", $start, $end));
     
     DBFunctions::delete('grand_case_numbers',
                         array('year' => YEAR));
@@ -60,7 +60,9 @@
            $fecType == "D1" ||
            $fecType == "E1" ||
            $fecType == "F1" ||
-           $fecType == "T1"){
+           $fecType == "T1" ||
+           $fecType == "T2" ||
+           $fecType == "T3"){
             if($row['date_of_appointment'] == "0000-00-00 00:00:00"){
                 echo "Missing Appointment date: {$person->getNameForForms()}\n";
             }
