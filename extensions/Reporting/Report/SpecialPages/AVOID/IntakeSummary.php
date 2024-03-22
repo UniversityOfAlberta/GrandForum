@@ -211,6 +211,12 @@ class IntakeSummary extends SpecialPage {
             $html .= "<th>VAS Score</th>";
             $html .= "<th>CFS Score</th>";
             $html .= "<th>In Person Frailty Score</th>";
+            
+            $html .= "<th>&Delta; Frailty Score</th>";
+            $html .= "<th>&Delta; EQ Health Score</th>";
+            $html .= "<th>&Delta; VAS Score</th>";
+            $html .= "<th>&Delta; CFS Score</th>";
+
             if($config->getValue('networkFullName') == "AVOID Alberta"){
                 $html .= "<th>VFS Score</th>";
                 $html .= "<th>HAAI Total</th>";
@@ -317,6 +323,7 @@ class IntakeSummary extends SpecialPage {
         $api = new UserFrailtyIndexAPI();
         $api2 = new UserInPersonFrailtyIndexAPI();
         if(static::$rpType != "RP_AVOID_THREEMO" && static::$rpType != "RP_AVOID_NINEMO"){
+            $initialScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
             $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
             if(count($person->getRelations('Assesses', true, true)) >= 1){
                 $inPersonScore = number_format($api2->getFrailtyScore($person->getId()), 3);
@@ -332,11 +339,21 @@ class IntakeSummary extends SpecialPage {
                 $html .= "<td>".$scores["VAS"]."</td>";
                 $html .= "<td>".$scores["CFS"]."</td>";
                 $html .= "<td>".$inPersonScore."</td>";
+                
+                $html .= "<td>".number_format($scores["Total"]/36 - $initialScores["Total"]/36, 3)."</td>";
+                $html .= "<td>".($EQ5D5L[implode("", $scores["Health"])] - $EQ5D5L[implode("", $initialScores["Health"])])."</td>";
+                $html .= "<td>".($scores["VAS"] - $initialScores["VAS"])."</td>";
+                $html .= "<td>".($scores["CFS"] - $initialScores["CFS"])."</td>";
             }
             else{
                 // Partial Reports, don't show any numbers
                 $html .= "<td></td>";
                 $html .= "<td></td>";
+                $html .= "<td></td>";
+                $html .= "<td></td>";
+                $html .= "<td></td>";
+                $html .= "<td></td>";
+                
                 $html .= "<td></td>";
                 $html .= "<td></td>";
                 $html .= "<td></td>";
