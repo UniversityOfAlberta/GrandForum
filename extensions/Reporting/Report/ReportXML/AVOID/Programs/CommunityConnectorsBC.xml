@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Community Connectors" reportType="RP_COMMUNITY_CONNECTORS" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'Programs-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                dc.init(me.get('id'), 'Program-CommunityConnectorsBC');
+                dc.increment('count');
+            </script>
+        ]]>
+    </Script>
+    <ReportSection id="community" tooltip="Program Details" name="Program Details" title="Program Details" blobSection="COMMUNITY" type="NextPrevReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                    _.defer(function(){
+                        $("#reportFooter").prev().hide();
+                        $("#reportFooter").hide();
+                    });
+                </script>
+                <div style='overflow: auto;'>
+                    <div class='program-header' style='min-width: 14em; text-align: center;'>
+                        Seniors' Community Connectors-Social Prescribing
+                    </div>
+                    <p>A seniors' community connector can connect you with services in your community that support health and social well-being. This pathway and program is called Social Prescribing. It is a province-wide program funded by the British Columbia Ministry of Health and operated in local community organizations throughout the province.</p>
+                    A seniors' community connector can help you find: 
+                    <ul>
+                        <li>Financial support</li>
+                        <li>Transportation support</li>
+                        <li>Mental health and substance use services</li>
+                        <li>Physical and social activity</li>
+                        <li>Housing support</li>
+                        <li>Social activities and programs</li>
+                        <li>Physical activity and exercise programs</li>
+                        <li>Meal delivery and nutrition programs</li>
+                        <li>Family and caregivers' support</li>
+                    </ul>
+                    <p>Your local seniors' community connector will meet with you and help develop a personalized wellness plan. They can connect you with community resources that suit your needs and work with your primary care provider for additional support in your healthy aging journey.</p>
+                    There are three ways to find your local seniors' community connector:
+                    <ol>
+                        <li>Call or text 2-1-1 to reach a BC211 navigator and ask about the "social prescribing program", and other resources you might be interested in exploring.</li>
+                        <li>Talk with your primary care provider about connecting with a seniors' community connector or social prescribing program.</li>
+                        <li>Visit <a href='https://pathwaysbc.ca/community' target='_blank'>Pathwaysbc.ca</a>, find your community, and type "social prescribing" in the search box to find information and contact information for your local seniors' community connector.</li>
+                    </ol>
+                </div>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

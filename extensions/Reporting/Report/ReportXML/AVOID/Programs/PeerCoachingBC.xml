@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Peer Coaching" reportType="RP_PEER_COACHING" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+        <Script>
+        <![CDATA[
+            <script type="text/javascript">var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'Programs-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                dc.init(me.get('id'), 'Program-PeerCoachingBC');
+                dc.increment('count');
+            </script>
+        ]]>
+    </Script>
+    <ReportSection id="consent" tooltip="Program Details" name="Program Details" title="Program Details" blobSection="CONSENT" type="NextPrevReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                    _.defer(function(){
+                        $("#reportFooter").prev().hide();
+                        $("#reportFooter").hide();
+                    });
+                </script>
+                <div style='overflow: auto;'>
+                    <div class='program-header' style='min-width: 14em; text-align: center;'>
+                        Self-Management BC (including Peer Coaching program)
+                    </div>
+                    <p>Self-Management BC, supported by the Province of British Columbia, offers FREE health programs for adults of all ages with one or more ongoing health conditions. Programs provide people with the knowledge, skills, and confidence to manage their health. Programs are offered in person, virtually, online, by telephone, or by mail for adults living in BC. For more information and to register, please visit the website <a href='https://www.selfmanagementbc.ca/' target='_blank'>www.selfmanagementbc.ca</a>, where you can navigate based on type of chronic condition.</p>
+                </div>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

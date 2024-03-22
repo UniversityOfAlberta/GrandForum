@@ -22,15 +22,29 @@ class Programs extends SpecialPage {
         global $config;
         $dir = dirname(__FILE__) . '/';
         $n = "";
-        $n = ($config->getValue('dbName') == "forum2") ? "2" : $n;
-        $n = ($config->getValue('dbName') == "forum3") ? "3" : $n;
-        $n = ($config->getValue('dbName') == "forum4") ? "4" : $n;
+        switch($config->getValue('networkFullName')){
+            case "AVOID KFLA":
+                $n = "";
+                break;
+            case "AVOID Alberta":
+                $n = "2";
+                break;
+            case "AVOID Pacific":
+                $n = "3";
+                break;
+            case "AVOID Quebec":
+                $n = "4";
+                break;
+            case "AVOID Australia":
+                $n = "5";
+                break;
+        }
         $json = json_decode(file_get_contents("{$dir}programs{$n}.json"));
         return $json;
     }
 	
 	function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath, $wgLang;
+        global $wgOut, $wgServer, $wgScriptPath, $wgLang, $config;
         $me = Person::newFromWgUser();
         if($wgLang->getCode() == 'en'){
             $wgOut->setPageTitle("AVOID Programs");
@@ -45,13 +59,24 @@ class Programs extends SpecialPage {
         }
         
         $cols = 3;
+        $wgOut->addHTML("<style>
+            .module-2cols-outer {
+                max-width: 66%;
+            }
+        </style>");
+        $clickProgram = "Click on the program that you are interested in and sign up using the orange link at the bottom of the page.";
+        if($config->getValue("networkFullName") == "AVOID Pacific"){
+            $clickProgram = "";
+        }
         $wgOut->addHTML("<p class='program-body'>
-                            <en>The AVOID Frailty programs are designed to keep you connected with your peers and community as well as support the development of healthy behaviour. You can choose to participate as a volunteer or find the help you need to be empowered to take control of your health. Click on the program that you are interested in and sign up using the orange link at the bottom of the page.</en>
+                            <en>The AVOID Frailty programs are designed to keep you connected with your peers and community as well as support the development of healthy behaviour. You can choose to participate as a volunteer or find the help you need to be empowered to take control of your health. {$clickProgram}</en>
                             <fr>Les programmes PROACTIF visent à renforcer le sentiment de communauté et l’entraide entre pairs, et à contribuer à l’adoption de saines habitudes de vie. Vous pouvez participer en tant que bénévole ou bien y trouvez l’aide dont vous avez besoin pour vous motiver à prendre le contrôle de votre santé. Cliquez sur le programme qui vous intéresse et inscrivez-vous ci-dessous.</fr>
                         </p><div class='modules'>");
         foreach($categories as $category){
-            $wgOut->addHTML("<div class='modules module-2cols-outer'>
-            <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>{$category}</div>");
+            $wgOut->addHTML("<div class='modules module-2cols-outer'>");
+            if(count($categories) > 1){
+                $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>{$category}</div>");
+            }
             $n = 0;
             foreach($programs as $program){
                 $membersOnly = ($me->isRole("Provider") && $program->id == "PeerCoaching") ? "members-only" : "";
