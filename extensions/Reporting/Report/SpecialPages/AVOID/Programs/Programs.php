@@ -60,8 +60,10 @@ class Programs extends SpecialPage {
         
         $cols = 3;
         $wgOut->addHTML("<style>
-            .module-2cols-outer {
-                max-width: 66%;
+            @media only screen and (min-width: 1024px) {
+                .module-2cols-outer {
+                    max-width: 66%;
+                }
             }
         </style>");
         $clickProgram = "Click on the program that you are interested in and sign up using the orange link at the bottom of the page.";
