@@ -91,7 +91,7 @@
                             {set(q, {$getExtra})}
                         ]]>
                     </Static>
-                    <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReportPDF" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0">
+                    <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReportPDF" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0" showWord="true">
                         <![CDATA[
                             <td style='padding-left:0.5em; padding-right:0.5em;'>{$item}</td>
                         ]]>
@@ -131,7 +131,7 @@
                         var id = i+1;
                         var pdfs = [];
                         $('#past tr.project').each(function(i, el){
-                            $("a", $('td', $(el)).eq(id)).each(function(j, a){
+                            $("a.pdf", $('td', $(el)).eq(id)).each(function(j, a){
                                 var href = $(a).attr("href").split("?getpdf=");
                                 pdfs.push(href[1]);
                             });

@@ -80,7 +80,7 @@
                         {set(q, {$getExtra})}
                     ]]>
                 </Static>
-                <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReport" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0">
+                <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReport" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0" showWord="true">
                     <![CDATA[
                         <td style='padding-left:0.5em; padding-right:0.5em;'>{$item}</td>
                     ]]>

@@ -113,73 +113,119 @@ class ReportArchive extends SpecialPage {
                 $pdf_owner = Person::newFromId($user_id);
                 $pdf_project = Project::newFromHistoricId($project_id);
                 $pdf_owner_name = $pdf_owner->getName();
-                if ($pdf == false || $len == 0) {
-                    $wgOut->addHTML("<h4>Warning</h4><p>Could not retrieve PDF for report ID<tt>{$tok}</tt>.  Please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>, and include the report ID in your request.</p>");
+                
+                $ext = (strstr($type, "_ZIP") !== false) ? "zip" : "pdf";
+                $tst = $sto->metadata('timestamp');
+                // Make timestamp usable in filename.
+                $tst = strtr($tst, array(':' => '', '-' => '', ' ' => '_'));
+                if(isset($_GET['doc'])){
+                    $ext = "doc";
                 }
-                else {
-                    $ext = (strstr($type, "_ZIP") !== false) ? "zip" : "pdf";
-                    $tst = $sto->metadata('timestamp');
-                    // Make timestamp usable in filename.
-                    $tst = strtr($tst, array(':' => '', '-' => '', ' ' => '_'));
-                    if($wgTitle->getText() == "ReportArchive"){
-                        if($ext == "zip"){
-                            if($pdf_project != null && $pdf_project->getId() != 0){
-                                $name = "{$pdf_project->getName()}.zip";
-                            }
-                            else if($pdf_owner != null && $pdf_owner->getId() != 0){
-                                $name = "{$pdf_owner_name}.zip";
+                if($wgTitle->getText() == "ReportArchive"){
+                    if($ext == "zip"){
+                        if($pdf_project != null && $pdf_project->getId() != 0){
+                            $name = "{$pdf_project->getName()}.zip";
+                        }
+                        else if($pdf_owner != null && $pdf_owner->getId() != 0){
+                            $name = "{$pdf_owner_name}.zip";
+                        }
+                        else{
+                            $name = "Report.zip";
+                        }
+                    }
+                    else{
+                        $report = AbstractReport::newFromToken($tok, @$_GET['type']);
+                        $year = substr($tst, 0, 4);
+                        $month = substr($tst, 4, 2);
+                        $day = substr($tst, 6, 2);
+                        $hour = substr($tst, 9, 2);
+                        $minute = substr($tst, 11, 2);
+                        $date = "{$year}-{$month}-{$day}_{$hour}-{$minute}";
+                        $reportName = str_replace(" ", "-", trim(str_replace(":", "", str_replace("Report", "", $report->name))));
+                        if($report->project != null){
+                            $project = $report->project;
+                            if($report->person->getId() == 0){
+                                $reportName = trim(str_replace($project->getName(), "", $reportName), " \t\n\r\0\x0B-");
+                                // Project Reports
+                                $name = "{$project->getName()}-{$reportName}_{$date}.{$ext}";
                             }
                             else{
-                                $name = "Report.zip";
+                                // Individual Reports, but project version
+                                $firstName = $report->person->getFirstName();
+                                $lastName = $report->person->getLastName();
+                                $name = "{$lastName}".substr($firstName, 0, 1)."-{$reportName}:{$project->getName()}_{$date}.{$ext}";
                             }
                         }
                         else{
-                            $report = AbstractReport::newFromToken($tok, @$_GET['type']);
-                            $year = substr($tst, 0, 4);
-                            $month = substr($tst, 4, 2);
-                            $day = substr($tst, 6, 2);
-                            $hour = substr($tst, 9, 2);
-                            $minute = substr($tst, 11, 2);
-                            $date = "{$year}-{$month}-{$day}_{$hour}-{$minute}";
-                            $reportName = str_replace(" ", "-", trim(str_replace(":", "", str_replace("Report", "", $report->name))));
-                            if($report->project != null){
-                                $project = $report->project;
-                                if($report->person->getId() == 0){
-                                    $reportName = trim(str_replace($project->getName(), "", $reportName), " \t\n\r\0\x0B-");
-                                    // Project Reports
-                                    $name = "{$project->getName()}-{$reportName}_{$date}.{$ext}";
-                                }
-                                else{
-                                    // Individual Reports, but project version
-                                    $firstName = $report->person->getFirstName();
-                                    $lastName = $report->person->getLastName();
-                                    $name = "{$lastName}".substr($firstName, 0, 1)."-{$reportName}:{$project->getName()}_{$date}.{$ext}";
-                                }
-                            }
-                            else{
-                                // Individual Reports
-                                $firstName = $report->person->getFirstName();
-                                $lastName = $report->person->getLastName();
-                                $name = "{$lastName}".substr($firstName, 0, 1)."-{$reportName}_{$date}.{$ext}";
-                            }
+                            // Individual Reports
+                            $firstName = $report->person->getFirstName();
+                            $lastName = $report->person->getLastName();
+                            $name = "{$lastName}".substr($firstName, 0, 1)."-{$reportName}_{$date}.{$ext}";
                         }
                     }
-                    if ($len == 0) {
-                        // No data, or no report at all.
-                        $wgOut->addHTML("No reports available for download.");
-                        return false;
-                    }
-                    // Good -- transmit it.
-                    $wgOut->disable();
-                    ob_clean();
-                    header("Content-Type: application/{$ext}");
-                    header('Content-Length: ' . $len);
+                }
+                
+                if(isset($_GET['doc'])){
+                    $html = $sto->getBody();
+                    header("Content-Type: application/force-download");
+                    header("Content-Description: File Transfer");
                     header('Content-Disposition: attachment; filename="'.$name.'"');
-                    header('Cache-Control: private, max-age=0, must-revalidate');
-                    header('Pragma: public');
-                    ini_set('zlib.output_compression','0');
-                    echo $pdf;
-                    return true;
+                    $content = '<html xmlns:v="urn:schemas-microsoft-com:vml" '
+                                   . 'xmlns:o="urn:schemas-microsoft-com:office:office" '
+                                   . 'xmlns:w="urn:schemas-microsoft-com:office:word" '
+                                   . 'xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"= '
+                                   . 'xmlns="http://www.w3.org/TR/REC-html40">'
+                                   . '<head><meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">'
+                                   . '<title></title>'
+                                   . '<!--[if gte mso 9]>'
+                                   . '<xml>'
+                                   . '<w:WordDocument>'
+                                   . '<w:View>Print'
+                                   . '<w:Zoom>100'
+                                   . '<w:DoNotOptimizeForBrowser/>'
+                                   . '</w:WordDocument>'
+                                   . '</xml>'
+                                   . '<![endif]-->'
+                                   . '<style>
+                                @page
+                                {
+                                    font-family: Arial;
+                                    size:215.9mm 279.4mm;  /* A4 */
+                                    margin:14.2mm 17.5mm 14.2mm 16mm; /* Margins: 2.5 cm on each side */
+                                }
+                                h2 { font-family: Arial; font-size: 18px; text-align:center; }
+                                p.para {font-family: Arial; font-size: 13.5px; text-align: justify;}
+                                </style>'
+                                    . '</head>'
+                                    . '<body>'
+                                    . $html
+                                    . '</body>'
+                                    . '</html>';
+                    echo $content;
+                    exit;
+                }
+                else{
+                    if ($pdf == false || $len == 0) {
+                        $wgOut->addHTML("<h4>Warning</h4><p>Could not retrieve PDF for report ID<tt>{$tok}</tt>.  Please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>, and include the report ID in your request.</p>");
+                    }
+                    else {
+                        if ($len == 0) {
+                            // No data, or no report at all.
+                            $wgOut->addHTML("No reports available for download.");
+                            return false;
+                        }
+                        // Good -- transmit it.
+                        $wgOut->disable();
+                        ob_clean();
+                        header("Content-Type: application/{$ext}");
+                        header('Content-Length: ' . $len);
+                        header('Content-Disposition: attachment; filename="'.$name.'"');
+                        header('Cache-Control: private, max-age=0, must-revalidate');
+                        header('Pragma: public');
+                        ini_set('zlib.output_compression','0');
+                        echo $pdf;
+                        return true;
+                    }
                 }
             }
         }

@@ -60,7 +60,11 @@ class PDFReportItem extends StaticReportItem {
         		$tst = $sto->metadata('timestamp');
         		$len = $sto->metadata('len_pdf');
         		$sub = $sto->metadata('submitted');
-        		$item = "<a class='{$class}' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
+        		$item = "<a class='{$class} pdf' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
+        		if(strtolower($this->getAttr("showWord", "false")) == "true"){
+        		    $wordButton = "<img src='{$wgServer}{$wgScriptPath}/skins/word.gif' />";
+        		    $item .= "&nbsp;<a class='{$class}' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&doc'>{$wordButton}</a>";
+        		}
         		$item = $this->processCData($item);
 		        $wgOut->addHTML($item);
 		        $found = true;
