@@ -120,8 +120,13 @@ class UploadReportItem extends AbstractReportItem {
                     <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/main.css' type='text/css' />
                     <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/cavendish.css' type='text/css' />
                     <script type='text/javascript'>
-                        function load_page() {
-                            parent.alertsize_{$this->getPostId()}($(\"body > div\").height() + 10);
+                        function load_page(){
+                            var interval = setInterval(function(){
+                                if($(\"body > div\").is(':visible')){
+                                    parent.alertsize_{$this->getPostId()}($(\"body > div\").height() + 10);
+                                    clearInterval(interval);
+                                }
+                            }, 200);
                         }
                     </script>
                     <style type='text/css'>
@@ -200,7 +205,6 @@ class UploadReportItem extends AbstractReportItem {
                 <script type='text/javascript'>
                     $(document).ready(function(){
                         load_page();
-                        setTimeout(load_page, 200);
                         parent.uploadFramesSaving['fileFrame{$this->getPostId()}'] = false;
                     });
                     
