@@ -177,28 +177,28 @@ class AdminUsageStats extends SpecialPage {
             if($submitted3 == "Yes"){
                 $completion[3][$person->getId()] = 1;
             }
-            else if($submitted3 == "No"){
+            else if($submitted3 == "No" || $submitted3 == "Due"){
                 $completion[3][$person->getId()] = 0;
             }
             
             if($submitted6 == "Yes"){
                 $completion[6][$person->getId()] = 1;
             }
-            else if($submitted6 == "No"){
+            else if($submitted6 == "No" || $submitted6 == "Due"){
                 $completion[6][$person->getId()] = 0;
             }
             
             if($submitted9 == "Yes"){
                 $completion[9][$person->getId()] = 1;
             }
-            else if($submitted9 == "No"){
+            else if($submitted9 == "No" || $submitted9 == "Due"){
                 $completion[9][$person->getId()] = 0;
             }
             
             if($submitted12 == "Yes"){
                 $completion[12][$person->getId()] = 1;
             }
-            else if($submitted12 == "No"){
+            else if($submitted12 == "No" || $submitted12 == "Due"){
                 $completion[12][$person->getId()] = 0;
             }
         }
