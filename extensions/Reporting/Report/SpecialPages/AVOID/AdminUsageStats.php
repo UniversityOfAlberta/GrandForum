@@ -24,6 +24,7 @@ class AdminUsageStats extends SpecialPage {
         $this->showEducationStats();
         $this->showResourcesStats();
         $this->showIntakeStats();
+        $this->showCompletionStats();
     }
     
     function exclude($userId){
@@ -138,6 +139,96 @@ class AdminUsageStats extends SpecialPage {
             <tr>
                 <td class='label'>Total number completed Assessments</td>
                 <td align='right'>".count($submitted)."</td>
+            </tr>
+        </table>");
+    }
+    
+    function showCompletionStats(){
+        global $wgOut;
+        $completion = array(3 => array(),
+                            6 => array(),
+                            9 => array(),
+                            12 => array());
+        foreach(Person::getAllPeople() as $person){
+            if($this->exclude($person->getId())){ continue; }
+            $baseDiff = (time() - strtotime(AVOIDDashboard::submissionDate($person->getId(), "RP_AVOID")))/86400;
+            $submitted = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID")) ? "Yes" : "No");
+            $submitted3 = $person->isRole("Provider") ? "N/A" : (
+                (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")) ? "Yes" : (
+                    ($baseDiff >= 30*3 && $baseDiff < 30*6) ? "Due" : (
+                        ($baseDiff < 30*3) ? "Not Due" : "No"
+            )));
+            $submitted6 = $person->isRole("Provider") ? "N/A" : (
+                (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")) ? "Yes" : (
+                    ($baseDiff >= 30*6 && $baseDiff < 30*9) ? "Due" : (
+                        ($baseDiff < 30*6) ? "Not Due" : "No"
+            )));
+            $submitted9 = $person->isRole("Provider") ? "N/A" : (
+                (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_NINEMO")) ? "Yes" : (
+                    ($baseDiff >= 30*9 && $baseDiff < 30*12) ? "Due" : (
+                        ($baseDiff < 30*9) ? "Not Due" : "No"
+            )));
+            $submitted12 = $person->isRole("Provider") ? "N/A" : (
+                (AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")) ? "Yes" : (
+                    ($baseDiff >= 30*12) ? "Due" : (
+                        ($baseDiff < 30*12) ? "Not Due" : "No"
+            )));
+            
+            if($submitted3 == "Yes"){
+                $completion[3][$person->getId()] = 1;
+            }
+            else if($submitted3 == "No"){
+                $completion[3][$person->getId()] = 0;
+            }
+            
+            if($submitted6 == "Yes"){
+                $completion[6][$person->getId()] = 1;
+            }
+            else if($submitted6 == "No"){
+                $completion[6][$person->getId()] = 0;
+            }
+            
+            if($submitted9 == "Yes"){
+                $completion[9][$person->getId()] = 1;
+            }
+            else if($submitted9 == "No"){
+                $completion[9][$person->getId()] = 0;
+            }
+            
+            if($submitted12 == "Yes"){
+                $completion[12][$person->getId()] = 1;
+            }
+            else if($submitted12 == "No"){
+                $completion[12][$person->getId()] = 0;
+            }
+        }
+        
+        $wgOut->addHTML("<h1>Followup Assessment Completion Rates</h1>");
+        $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <th>Assessment</th>
+                <th>Completion Rate % (#)</th>
+                <th># Eligible Members</th>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>".number_format(array_sum($completion[3])/max(count($completion[3]), 1), 2)." (".array_sum($completion[3]).")</td>
+                <td>".count($completion[3])."</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>".number_format(array_sum($completion[6])/max(count($completion[6]), 1), 2)." (".array_sum($completion[6]).")</td>
+                <td>".count($completion[6])."</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>".number_format(array_sum($completion[9])/max(count($completion[9]), 1), 2)." (".array_sum($completion[9]).")</td>
+                <td>".count($completion[9])."</td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td>".number_format(array_sum($completion[12])/max(count($completion[12]), 1), 2)." (".array_sum($completion[12]).")</td>
+                <td>".count($completion[12])."</td>
             </tr>
         </table>");
     }
