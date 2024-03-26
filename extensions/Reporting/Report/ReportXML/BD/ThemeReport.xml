@@ -115,8 +115,8 @@
                 <Static>
                     <![CDATA[
                         <th>
-                            <a class='merged pdf' style="width:auto;" href="#"><img src="http://localhost/forum/skins/pdf.gif"></a>
-                            <a class='merged doc' style="width:auto;" href="#"><img src="http://localhost/forum/skins/word.gif"></a>
+                            <a class='merged pdf' style="width:auto;" href="#"><img src="{$wgServer}{$wgScriptPath}/skins/pdf.gif"></a>
+                            <a class='merged doc' style="width:auto;" href="#"><img src="{$wgServer}{$wgScriptPath}/skins/word.gif"></a>
                         </th>
                     ]]>
                 </Static>
