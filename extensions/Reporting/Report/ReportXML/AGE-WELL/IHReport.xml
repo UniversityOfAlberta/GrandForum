@@ -12,14 +12,14 @@
         <Person id="1567" />
     </Permissions>
     <ReportSection id="summary">
-        <ReportItem id="summary" limit="2000">
+        <ReportItem id="summary" limit="4000">
             <![CDATA[
                 <h3>Report Description</h3>
                 <p>This report is designed to capture activity and impact over the past year to inform AGE-WELL’s federal reporting requirements. Importantly, we will also use the content to help position Innovation Hubs within new AGE-WELL initiatives such as envisAGE and Strategic Science Fund programs and in new funding applications (e.g. forward-looking plans in 2.c are important for the latter).</p>
                 
                 <p>It is understood and expected that Innovation Hubs receive funding from a variety of sources and engage in activities in support of organizational goals that may diverge, in some cases, from those of AGE-WELL. <b>Please answer the questions to the best of your ability.</b></p>
                 
-                <h3>Executive Summary (2000 characters / ½ pg)</h3>
+                <h3>Executive Summary (4000 characters / 1 pg)</h3>
                 <p>Describe the top three achievements, contributions and/or success stories from your Innovation Hub as they relate to the realization of your Hub’s overarching goals and to AGE-WELL’s <a href="http://agewell-nce.ca/about-us" target="_blank">mission and vision</a></p>
                 
                 Highlight key achievements or progress in the following areas:
@@ -35,7 +35,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="nce" delete="true" />
-    <ReportSection id="additional" >
+    <ReportSection id="additional" name="Additional Information" title="Additional Information">
         <ReportItem id="outcomes">
             <![CDATA[
                 <h3>a) Other Outcomes</h3>

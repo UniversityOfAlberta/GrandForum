@@ -23,7 +23,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="summary" name="Executive Summary" title="Executive Summary">
-        <ReportItem id="summary" limit="2000">
+        <ReportItem id="summary" limit="4000">
             <![CDATA[
                 {$item}
             ]]>
