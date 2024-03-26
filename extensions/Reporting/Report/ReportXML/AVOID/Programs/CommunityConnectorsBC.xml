@@ -28,7 +28,7 @@
                 </script>
                 <div style='overflow: auto;'>
                     <div class='program-header' style='min-width: 14em; text-align: center;'>
-                        Seniors' Community Connectors-Social Prescribing
+                        Seniors' Community Connectors
                     </div>
                     <p>A seniors' community connector can connect you with services in your community that support health and social well-being. This pathway and program is called Social Prescribing. It is a province-wide program funded by the British Columbia Ministry of Health and operated in local community organizations throughout the province.</p>
                     <img src="{$wgServer}{$wgScriptPath}/EducationModules/Social Prescribing process.png" style="width: 90%;" /><br />
