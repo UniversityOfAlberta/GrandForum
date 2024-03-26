@@ -30,7 +30,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="nce" delete="true" />
-    <ReportSection id="additional" name="Additional Information" title="2. Additional Information">
+    <ReportSection id="additional" name="Additional Information" title="2. Additional Information" pagebreak="false">
         <ReportItem id="outcomes">
             <![CDATA[
                 <h3>a) Other Outcomes</h3>
