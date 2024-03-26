@@ -115,7 +115,8 @@
                 <Static>
                     <![CDATA[
                         <th>
-                            <a class='merged' style="width:auto;" href="#"><img src="http://localhost/forum/skins/pdf.gif"></a>
+                            <a class='merged pdf' style="width:auto;" href="#"><img src="http://localhost/forum/skins/pdf.gif"></a>
+                            <a class='merged doc' style="width:auto;" href="#"><img src="http://localhost/forum/skins/word.gif"></a>
                         </th>
                     ]]>
                 </Static>
@@ -127,7 +128,7 @@
                 </table>
                 </div>
                 <script type='text/javascript'>
-                    $('.merged').each(function(i, el){
+                    $('.merged.pdf').each(function(i, el){
                         var id = i+1;
                         var pdfs = [];
                         $('#past tr.project').each(function(i, el){
@@ -137,11 +138,14 @@
                             });
                         });
                         if(pdfs.length > 0){
-                            var url = wgServer + wgScriptPath + "/index.php/Special:ReportArchive?merge=" + pdfs.join(",") + "&cover&generatePDF&headerName={$theme_name}";
-                            $(el).attr("href", url);
+                            var urlPdf = wgServer + wgScriptPath + "/index.php/Special:ReportArchive?merge=" + pdfs.join(",") + "&cover&generatePDF&headerName={$theme_name}";
+                            var urlDoc = urlPdf + "&doc";
+                            $(el).attr("href", urlPdf);
+                            $(el).next().attr("href", urlDoc);
                         }
                         else{
                             $(el).hide();
+                            $(el).next().hide();
                         }
                     });
                 </script>

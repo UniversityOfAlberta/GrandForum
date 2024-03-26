@@ -16,6 +16,41 @@ class ReportArchive extends SpecialPage {
         SpecialPage::__construct("ReportArchive", '', true, 'runReportArchive');
     }
     
+    static function htmlContents($html){
+        $content = '<html xmlns:v="urn:schemas-microsoft-com:vml" '
+                                   . 'xmlns:o="urn:schemas-microsoft-com:office:office" '
+                                   . 'xmlns:w="urn:schemas-microsoft-com:office:word" '
+                                   . 'xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"= '
+                                   . 'xmlns="http://www.w3.org/TR/REC-html40">'
+                                   . '<head><meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">'
+                                   . '<title></title>'
+                                   . '<!--[if gte mso 9]>'
+                                   . '<xml>'
+                                   . '<w:WordDocument>'
+                                   . '<w:View>Print'
+                                   . '<w:Zoom>100'
+                                   . '<w:DoNotOptimizeForBrowser/>'
+                                   . '</w:WordDocument>'
+                                   . '</xml>'
+                                   . '<![endif]-->'
+                                   . '<style>
+                                @page
+                                {
+                                    font-family: Arial;
+                                    size:215.9mm 279.4mm;  /* A4 */
+                                    margin:14.2mm 17.5mm 14.2mm 16mm; /* Margins: 2.5 cm on each side */
+                                }
+                                h2 { font-family: Arial; font-size: 18px; text-align:center; }
+                                p.para {font-family: Arial; font-size: 13.5px; text-align: justify;}
+                                </style>'
+                                    . '</head>'
+                                    . '<body>'
+                                    . $html
+                                    . '</body>'
+                                    . '</html>';
+        return $content;
+    }
+    
     function userCanExecute($user){
         if($user->isLoggedIn()){
             $person = Person::newFromWgUser();
@@ -53,13 +88,41 @@ class ReportArchive extends SpecialPage {
         // Check for a download.
         $action = @$_GET['getpdf'];
         $merge = @$_GET['merge'];
-        if(isset($_GET['merge']) && $merge != ""){
+        if(isset($_GET['merge']) && $merge != "" && isset($_GET['doc'])){
             $cover = isset($_GET['cover']);
             $pdfs = explode(",", $_GET['merge']);
             $tomerge = array();
             foreach($pdfs as $tok){
                 $pdf = PDF::newFromToken($tok);
-                $pdf->getPDF();
+                if($pdf != ""){
+                    $tomerge[] = $pdf->getBody();
+                }
+            }
+            
+            if($cover){
+                // Create cover page
+                $html = "";
+                $html .= (isset($_GET['headerName'])) ? "<h1>{$_GET['headerName']}</h1>" : "";
+                $html .= "<ul>";
+                foreach($pdfs as $tok){
+                    $pdf = PDF::newFromToken($tok);
+                    $html .= "<li>" . $pdf->getTitle() . "</li>";
+                }
+                $html .= "</ul>";
+                array_splice($tomerge, 0, 0, $html);
+            }
+            header("Content-Type: application/force-download");
+            header("Content-Description: File Transfer");
+            header('Content-Disposition: attachment; filename="Merged.doc"');
+            echo self::htmlContents(implode("<br clear=all style='mso-special-character:line-break;page-break-before:always'>", $tomerge));
+            exit;
+        }
+        else if(isset($_GET['merge']) && $merge != ""){
+            $cover = isset($_GET['cover']);
+            $pdfs = explode(",", $_GET['merge']);
+            $tomerge = array();
+            foreach($pdfs as $tok){
+                $pdf = PDF::newFromToken($tok);
                 $md5 = md5($tok.rand(0, 100000000));
                 if($pdf != ""){
                     file_put_contents("/tmp/{$md5}", $pdf->getPDF());
@@ -170,37 +233,7 @@ class ReportArchive extends SpecialPage {
                     header("Content-Type: application/force-download");
                     header("Content-Description: File Transfer");
                     header('Content-Disposition: attachment; filename="'.$name.'"');
-                    $content = '<html xmlns:v="urn:schemas-microsoft-com:vml" '
-                                   . 'xmlns:o="urn:schemas-microsoft-com:office:office" '
-                                   . 'xmlns:w="urn:schemas-microsoft-com:office:word" '
-                                   . 'xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"= '
-                                   . 'xmlns="http://www.w3.org/TR/REC-html40">'
-                                   . '<head><meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">'
-                                   . '<title></title>'
-                                   . '<!--[if gte mso 9]>'
-                                   . '<xml>'
-                                   . '<w:WordDocument>'
-                                   . '<w:View>Print'
-                                   . '<w:Zoom>100'
-                                   . '<w:DoNotOptimizeForBrowser/>'
-                                   . '</w:WordDocument>'
-                                   . '</xml>'
-                                   . '<![endif]-->'
-                                   . '<style>
-                                @page
-                                {
-                                    font-family: Arial;
-                                    size:215.9mm 279.4mm;  /* A4 */
-                                    margin:14.2mm 17.5mm 14.2mm 16mm; /* Margins: 2.5 cm on each side */
-                                }
-                                h2 { font-family: Arial; font-size: 18px; text-align:center; }
-                                p.para {font-family: Arial; font-size: 13.5px; text-align: justify;}
-                                </style>'
-                                    . '</head>'
-                                    . '<body>'
-                                    . $html
-                                    . '</body>'
-                                    . '</html>';
+                    $content = self::htmlContents($html);
                     echo $content;
                     exit;
                 }
