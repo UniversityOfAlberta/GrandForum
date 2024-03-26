@@ -1429,7 +1429,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     static function blobConstant($constant){
-        $plus = (strstr($constant, "+") !== false);
+        $plus = (substr($constant, -1) == "+");
         if($plus){
             $constant = str_replace("+", "", $constant);
             $plus = true;

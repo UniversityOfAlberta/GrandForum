@@ -1919,7 +1919,10 @@ class ReportItemCallback {
     
     function getGet($var1){
         if(isset($_GET[$var1])){
-            return $_GET[$var1];
+            return str_replace("(", "&#40;", 
+                   str_replace(")", "&#41;", 
+                   str_replace("{", "&#123;", 
+                   str_replace("}", "&#125;", $_GET[$var1]))));
         }
         return "";
     }
