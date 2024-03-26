@@ -254,6 +254,7 @@ class ReportItemCallback {
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra",
+            "isValidUserId" => "isValidUserId",
             "getPDFUserId" => "getPDFUserId",
             "showLanguage" => "showLanguage",
             "concat" =>"concat",
@@ -273,6 +274,8 @@ class ReportItemCallback {
             "substr" => "substr",
             "nl2br" => "nl2br",
             "comma" => "comma",
+            "encrypt" => "encrypt",
+            "decrypt" => "decrypt",
             "set" => "set",
             "get" => "get",
             "and" => "andCond",
@@ -2219,6 +2222,14 @@ class ReportItemCallback {
         return ",";
     }
     
+    function encrypt($string){
+        return encrypt($string);
+    }
+    
+    function decrypt($string){
+        return decrypt($string);
+    }
+    
     function set($key, $val){
         $this->reportItem->setVariable($key, $val);
     }
@@ -2310,6 +2321,15 @@ class ReportItemCallback {
             return $set[$index];
         }
         return "";
+    }
+    
+    function isValidUserId($id){
+        $id = decrypt($id);
+        $data = DBFunctions::execSQL("SELECT user_id
+                                      FROM mw_user
+                                      WHERE user_id = '".DBFunctions::escape($id)."'
+                                      AND deleted != 1");
+        return (count($data) > 0);
     }
     
     function getPDFUserId($tok){

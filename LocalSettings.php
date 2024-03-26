@@ -605,6 +605,10 @@ function showLanguage($english, $french){
     return ($wgLang->getCode() == 'en') ? $english : $french;
 }
 
+if(file_exists($config->getValue("encryptionKey"))){
+    $_SERVER['ENC_KEY'] = file_get_contents($config->getValue("encryptionKey"));
+}
+
 function encrypt($plaintext, $ignoreError=false){
     if(!isset($_SERVER['ENC_KEY'])){
         if($ignoreError){ return $plaintext; }
