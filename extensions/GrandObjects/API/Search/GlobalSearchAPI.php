@@ -108,7 +108,8 @@ class GlobalSearchAPI extends RESTAPI {
                 $data = array();
                 $products = DBFunctions::select(array('grand_products'),
                                                 array('title', 'id'),
-                                                array('deleted' => '0'));
+                                                array('deleted' => '0',
+                                                      'access_id' => '0'));
                 foreach($products as $product){
                     $pTitle = unaccentChars($product['title']);
                     $names = array_merge(explode(" ", $pTitle));
@@ -121,28 +122,35 @@ class GlobalSearchAPI extends RESTAPI {
                         }
                     }
                     if($found){
-                        $data[] = $product['id'];
+                        $data[$product['id']] = $pTitle;
                     }
                 }
                 $results = array();
                 $myProducts = new Collection($me->getPapers('all', false, 'both'));
                 $productIds = $myProducts->pluck('id');
                 $flippedProductIds = @array_flip($productIds);
-                
-                $products = Product::getByIds($data);
+
                 $origSearch2 = unaccentChars($origSearch);
-                foreach($products as $product){
+                foreach($data as $id => $title){
                     $percent = 0;
-                    similar_text(unaccentChars($product->getTitle()), $origSearch2, $percent);
-                    if(isset($flippedProductIds[$product->getId()])){
+                    similar_text($title, $origSearch2, $percent);
+                    if(isset($flippedProductIds[$id])){
                         $percent += 50;
                     }
-                    $results[$product->getId()] = $percent;
+                    $results[$id] = $percent;
                 }
                 asort($results);
                 $results = array_reverse($results, true);
 	            foreach($results as $key => $row){
-	                $ids[] = intval($key);
+	                if(count($ids) < 100){
+	                    $product = Product::newFromId($key);
+	                    if($product->canView()){
+	                        $ids[] = intval($key);
+	                    }
+	                }
+	                else{
+	                    break;
+	                }
 	            }
                 break;
             case 'wikipage':

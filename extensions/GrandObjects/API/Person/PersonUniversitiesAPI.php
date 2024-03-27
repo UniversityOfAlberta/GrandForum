@@ -100,6 +100,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         Cache::delete("user_university");
         Cache::delete("user_university_{$person->id}");
         Cache::delete("user_university_{$person->id}", true);
+        Cache::delete("user_universities_{$person->id}", true);
         return $this->doGET();
     }
     

@@ -7,7 +7,7 @@
 class Paper extends BackboneModel{
 
     static $structure = null;
-    static $illegalAuthorsCache = array();
+    static $illegalAuthorsCache = null;
     static $oldSyncCache = array();
     static $cache = array();
     static $dataCache = array();
@@ -417,7 +417,7 @@ class Paper extends BackboneModel{
     }
     
     static function generateIllegalAuthorsCache(){
-        if(empty(self::$illegalAuthorsCache)){
+        if(self::$illegalAuthorsCache === null){
             $data = DBFunctions::select(array('grand_illegal_authors'),
                                         array('author'));
             self::$illegalAuthorsCache[""] = "";
@@ -954,7 +954,7 @@ class Paper extends BackboneModel{
                 $pdata[0]['user_registration'] = "";
                 $pdata[0]['user_public_profile'] = "";
                 $pdata[0]['user_private_profile'] = "";
-                $person = new Person($pdata);
+                $person = new LimitedPerson($pdata);
                 if($cache){
                     Person::$cache[strtolower($person->getName())] = $person;
                 }
@@ -1038,6 +1038,7 @@ class Paper extends BackboneModel{
         $insertSQL = "INSERT INTO `grand_product_authors`
                       (`author`, `product_id`, `order`) VALUES\n";
         
+        $authors = array();
         $authors = $this->getAuthors();
         
         if(!is_array($authors)){
@@ -1047,6 +1048,7 @@ class Paper extends BackboneModel{
         $alreadyDone = array();
         $invalidate = false;
         $keyOffset = 0;
+        
         foreach($authors as $key => $author){
             if($author->getId() == "" && is_numeric($author->getName())){
                 // This person was deleted, clean it up
@@ -1120,6 +1122,7 @@ class Paper extends BackboneModel{
             }
             $order++;
         }
+        
         if($invalidate){
             // The Author data has changed, so invalidate the cache
             Cache::delete($this->getCacheId());

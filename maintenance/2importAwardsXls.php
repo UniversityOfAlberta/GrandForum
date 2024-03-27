@@ -95,7 +95,7 @@
                             $user = User::createNew($username, array('real_name' => "$first_name $last_name", 
                                                                      'password' => User::crypt(mt_rand())));
                             if($user != null){
-                                $person = new Person(array());
+                                $person = new LimitedPerson(array());
                                 $person->id = $user->getId();
                                 $person->name = $username;
                                 $person->realname = "$first_name $last_name";

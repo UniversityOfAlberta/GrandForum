@@ -38,7 +38,7 @@ class ShibAuthPlugin extends AuthPlugin {
 	function userExists( $username ) {
 		return true;
 	}
- 
+	
  
 	/**
 	 * Check if a username+password pair is a valid login.
@@ -366,7 +366,7 @@ function ShibUserLoadFromSession($user, &$result)
 	}
  
 	//Is the user already in the database?
-	$person = new Person(array());
+	$person = new LimitedPerson(array());
 	//$person = Person::newFromEmployeeId($shib_employeeId);
 	if($person == null || $person->getId() == 0){
 	    $person = Person::newFromEmail($shib_email);

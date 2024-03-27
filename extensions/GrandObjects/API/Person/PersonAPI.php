@@ -14,13 +14,13 @@ class PersonAPI extends RESTAPI {
     }
     
     function doPOST(){
-        $person = new Person(array());
+        $person = new LimitedPerson(array());
         $person->email = $this->POST('email');
         $person->name = $this->POST('name');
-        $person->twitter = $this->POST('twitter');
-        $person->website = $this->POST('website');
-        $person->publicProfile = $this->POST('publicProfile');
-        $person->privateProfile = $this->POST('privateProfile');
+        if(isset($person->twitter)){ $person->twitter = $this->POST('twitter'); }
+        if(isset($person->website)){ $person->website = $this->POST('website'); }
+        if(isset($person->publicProfile)){ $person->publicProfile = $this->POST('publicProfile'); }
+        if(isset($person->privateProfile)){ $person->privateProfile = $this->POST('privateProfile'); }
         if($person->exists()){
             $this->throwError("A user by the name of <i>{$person->getName()}</i> already exists");
         }
@@ -41,10 +41,10 @@ class PersonAPI extends RESTAPI {
         $person->realname = $this->POST('realName');
         $person->email = $this->POST('email');
         $person->name = $this->POST('name');
-        $person->twitter = $this->POST('twitter');
-        $person->website = $this->POST('website');
-        $person->publicProfile = $this->POST('publicProfile');
-        $person->privateProfile = $this->POST('privateProfile');
+        if(isset($person->twitter)){ $person->twitter = $this->POST('twitter'); }
+        if(isset($person->website)){ $person->website = $this->POST('website'); }
+        if(isset($person->publicProfile)){ $person->publicProfile = $this->POST('publicProfile'); }
+        if(isset($person->privateProfile)){ $person->privateProfile = $this->POST('privateProfile'); }
         $status = $person->update();
         if(!$status){
             $this->throwError("The user <i>{$person->getName()}</i> could not be updated");

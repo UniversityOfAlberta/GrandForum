@@ -95,7 +95,7 @@ function importCSV($file) {
 				}
 			}
 			if ($hqp == null) {
-				$hqp = new Person(array());
+				$hqp = new LimitedPerson(array());
 				$hqp->id = $hqpUser->getId();
 				$hqp->name = $hqpUser->getName();
 				Person::$namesCache[$hqp->getName()] = $hqp;

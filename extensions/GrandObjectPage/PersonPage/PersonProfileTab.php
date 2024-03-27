@@ -68,9 +68,12 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</td><td style='padding-right:25px;' valign='top'>";
         $this->showEditContact($this->person, $this->visibility);
         $this->html .= "</table>";
-        $this->html .= "<h2>Profile</h2>";
-        $this->showEditProfile($this->person, $this->visibility);
-        $this->showEditTopProducts($this->person, $this->visibility, 5);
+        if($this->person instanceof FullPerson){
+            $this->html .= "<h2>Profile</h2>";
+            $this->showEditProfile($this->person, $this->visibility);
+            $this->showEditTopProducts($this->person, $this->visibility, 5);
+        }
+        
         $this->html .= "<script type='text/javascript'>
             $(document).ready(function(){
                 $('select.chosen:visible').chosen();
@@ -500,38 +503,40 @@ EOF;
                                 <td></td><td><small><li>For best results, the image should be 300x396</li>
                                                     <li>Max file size is 5MB</li>
                                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
-                            </tr>
-                            <tr>
+                            </tr>";
+        if($person instanceof FullPerson){
+            $this->html .= "<tr>
                                 <td align='right'><b>Website URL:</b></td>
                                 <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
                             </tr>";
-        if($config->getValue('singleUniversity')){
-                $this->html .= "<tr>
-                                <td align='right'><b>Google Scholar URL:</b></td>
-                                <td><input type='text' size='30' name='googleScholarUrl' placeholder='https://scholar.google.ca/citations?user=XXXXXXXXX' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
-                            </tr>";
-                $this->html .= "<tr>
-                                <td align='right'><b>Sciverse Id:</b></td>
-                                <td><input type='text' size='30' name='sciverseId' placeholder='0000000000' value='".str_replace("'", "&#39;", $person->getSciverseId())."' /></td>
-                            </tr>";
-                $this->html .= "<tr>
-                                <td align='right'><b>ORCID:</b></td>
-                                <td><input type='text' size='30' name='orcId' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcId())."' /></td>
-                            </tr>";
-                $this->html .= "<tr>
-                                <td align='right'><b>ResearcherID:</b></td>
-                                <td><input type='text' size='30' name='wos' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getWOS())."' /></td>
-                            </tr>";
+            if($config->getValue('singleUniversity')){
+                    $this->html .= "<tr>
+                                    <td align='right'><b>Google Scholar URL:</b></td>
+                                    <td><input type='text' size='30' name='googleScholarUrl' placeholder='https://scholar.google.ca/citations?user=XXXXXXXXX' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
+                                </tr>";
+                    $this->html .= "<tr>
+                                    <td align='right'><b>Sciverse Id:</b></td>
+                                    <td><input type='text' size='30' name='sciverseId' placeholder='0000000000' value='".str_replace("'", "&#39;", $person->getSciverseId())."' /></td>
+                                </tr>";
+                    $this->html .= "<tr>
+                                    <td align='right'><b>ORCID:</b></td>
+                                    <td><input type='text' size='30' name='orcId' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcId())."' /></td>
+                                </tr>";
+                    $this->html .= "<tr>
+                                    <td align='right'><b>ResearcherID:</b></td>
+                                    <td><input type='text' size='30' name='wos' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getWOS())."' /></td>
+                                </tr>";
+            }
+            $this->html .=  "<tr>
+                                    <td align='right'><b>Twitter Account:</b></td>
+                                    <td><input type='text' name='twitter' placeholder='@twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
+                                </tr>
+                                <tr>
+                                    <td align='right'><b>Phone Number:</b></td>
+                                    <td><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
+                                </tr>";
         }
-        $this->html .=  "<tr>
-                                <td align='right'><b>Twitter Account:</b></td>
-                                <td><input type='text' name='twitter' placeholder='@twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>Phone Number:</b></td>
-                                <td><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
-                            </tr>
-                        </table></td>";
+        $this->html .= "</table></td>";
     }
     
    /**

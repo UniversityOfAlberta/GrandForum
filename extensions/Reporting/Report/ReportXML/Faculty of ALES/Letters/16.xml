@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/16" extends="Letters/Base">
+    <ReportSection id="letter" title="FEC's Position on Tenure">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) did not support your Department Chair’s recommendation to award you tenure, but rather has made the decision that your second probationary period be extended by one year. As per Article A6.19.4 of Schedule A, this decision is final and binding.</p>
+                
+                <p>In accordance with the provisions of Article A5.04.2(c) of Schedule A, your second probationary appointment will be extended to June 30, 2025. Your appointment will be governed by the Common Agreement and Schedule A, as amended from time to time.</p>
+                
+                The matters of concern to FEC were as follows:
+                <ul><li>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
+                
+                <p>I encourage you to remain familiar with the standards for tenure and promotion of the Faculty and understand the expectations of your Department Chair. You may wish to consult with your Chair about the matters of concern to FEC.</p>
+                
+                <p>Thank you for your contributions to the University and I wish you great success during the coming year.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

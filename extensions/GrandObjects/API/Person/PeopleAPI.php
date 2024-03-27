@@ -72,7 +72,7 @@ class PeopleAPI extends RESTAPI {
                                                   'middle_name'),
                                             array('user_id' => IN($peopleIds)));
                 foreach($data as $row){
-                    $person = new Person(array());
+                    $person = new LimitedPerson(array());
                     $person->id = $row['user_id'];
                     $person->name = $row['user_name'];
                     $person->realname = $row['user_real_name'];

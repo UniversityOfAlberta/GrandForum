@@ -41,7 +41,7 @@ class Impersonate extends SpecialPage {
 	    $wgOut->addHTML("<span id='pageDescription'>Impersonating allows you to temporarily view the {$config->getValue('siteName')} as another user.<br />Select a user from the list below, and then click the 'Impersonate' button to begin a session.</span><table>
 	                        <tr><td>
 	                            <select id='names' data-placeholder='Choose a Person...' name='name' size='10' style='width:100%;display:none;'>");
-	    $person = new Person(array());
+	    $person = new LimitedPerson(array());
 	    foreach($allPeople as $id){
 	        $id = ($id instanceof Person) ? $id->getId() : $id;
 	        $row = Person::getUserRow($id);

@@ -157,7 +157,7 @@ class DBFunctions {
     // Executes an sql statement.  By default a query is assumed, and processes the resultset into an array.
     // If $update is set to true, then an update is performed instead.
     // If $rollback is set to true, the DB is rolledback in the event of an error
-    static function execSQL($sql, $update=false, $rollback=false){
+    static function execSQL($sql, $update=false, $rollback=false, $returnResult=false){
         global $wgImpersonating, $wgRealUser, $wgUser, $wgOut, $wgMessage, $config;
         try{
             DBFunctions::initDB();
@@ -182,6 +182,17 @@ class DBFunctions {
 		    }
 		    $peakMemBefore = memory_get_peak_usage(true)/1024/1024;
 		    $result = DBFunctions::$dbr->query($sql);
+		    if($returnResult){
+		        if(self::$queryDebug){
+		            $end = microtime(true);
+		            $diff = number_format(($end - $start)*1000, 5);
+		            self::$queryLength += $diff;
+		            
+		            $printedSql = "<!-- ".self::$queryCount.": ($diff ms) $printedSql -->\n";
+		            $wgOut->addHTML($printedSql);
+		        }
+		        return $result;
+		    }
 		    
 	        $rows = array();
 	        if($result != null){
@@ -239,16 +250,7 @@ class DBFunctions {
 		}
 	}
 	
-	/**
-	 * Performs a sanitized DB Selection
-	 * @param array $tables The hash of tables to select (<b>key:</b> The name of the table; <b>value:<b> The alias of the table)
-	 * @param array $cols The hash of columns to select (<b>key:</b> The name of the column; <b>value:</b> The alias of the column)
-	 * @param array $where The hash of column/values for the where clause
-	 * @param array $order The hash of columns to order by (<b>key:</b> The name of the column; <b>value:</b> DESC/ASC)
-	 * @param array $limit How to limit results (array of 1 or 2 values)
-	 * @return array Returns the result set
-	 */
-	static function select($tables=array(), $cols=array(), $where=array(), $order=array(), $limit=array()){
+	private static function selectSQL($tables=array(), $cols=array(), $where=array(), $order=array(), $limit=array()){
 	    $colSQL = array();
 	    $fromSQL = array();
 	    $whereSQL = array();
@@ -325,7 +327,26 @@ class DBFunctions {
         if(count($limitSQL) > 0){
             $sql .= "LIMIT ".implode(", ", $limitSQL);
         }
+        return $sql;
+	}
+	
+	/**
+	 * Performs a sanitized DB Selection
+	 * @param array $tables The hash of tables to select (<b>key:</b> The name of the table; <b>value:<b> The alias of the table)
+	 * @param array $cols The hash of columns to select (<b>key:</b> The name of the column; <b>value:</b> The alias of the column)
+	 * @param array $where The hash of column/values for the where clause
+	 * @param array $order The hash of columns to order by (<b>key:</b> The name of the column; <b>value:</b> DESC/ASC)
+	 * @param array $limit How to limit results (array of 1 or 2 values)
+	 * @return array Returns the result set
+	 */
+	static function select($tables=array(), $cols=array(), $where=array(), $order=array(), $limit=array()){
+	    $sql = self::selectSQL($tables, $cols, $where, $order, $limit);
         return DBFunctions::execSQL($sql);
+	}
+	
+	static function rawSelect($tables=array(), $cols=array(), $where=array(), $order=array(), $limit=array()){
+	    $sql = self::selectSQL($tables, $cols, $where, $order, $limit);
+        return DBFunctions::execSQL($sql, false, false, true);
 	}
 	
 	/**

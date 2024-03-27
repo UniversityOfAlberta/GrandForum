@@ -104,7 +104,7 @@ class PersonPage {
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
-                if($person->isRole(NI) || $person->isRole("ATS")){
+                if($person instanceof FullPerson && ($person->isRole(NI) || $person->isRole("ATS"))){
                     $tabbedPage->addTab(new PersonFECTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){

@@ -10,6 +10,8 @@ define("EXAMINER", "Examining-Committee member");
 define("COMMITTEE_CHAIR", "Examining-Committee chair");
 
 // Autoloads
+require_once("BackboneModel.php");
+require_once("Person.php");
 autoload_register('GrandObjects');
 autoload_register('GrandObjects/API');
 autoload_register('GrandObjects/API/Person');

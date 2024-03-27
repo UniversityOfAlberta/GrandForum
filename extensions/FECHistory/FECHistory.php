@@ -45,10 +45,9 @@ class FECHistory extends SpecialPage{
                             <tbody>");
         foreach($data as $row){
             $person = Person::newFromId($row['user_id']);
-            if($person->getId() != 0){
+            if($person->getId() != 0 && $person instanceof FullPerson){
                 $fec = $person->getFecPersonalInfo();
                 $goingToFec = ($person->getCaseNumber() == "") ? "No" : "Yes";
-                
                 $wgOut->addHTML("<tr>
                                      <td><a href='{$person->getUrl()}'>{$person->getNameForForms()}</a></td>
                                      <td>{$person->getDepartment()}</td>

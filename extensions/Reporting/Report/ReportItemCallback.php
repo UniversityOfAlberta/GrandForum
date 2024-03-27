@@ -206,6 +206,8 @@ class ReportItemCallback {
             "multiply" => "multiply",
             "divide" => "divide",
             "round" => "round",
+            "max" => "max",
+            "min" => "min",
             "set" => "set",
             "get" => "get",
             "if" => "ifCond",
@@ -726,10 +728,19 @@ class ReportItemCallback {
         return date_format($date, 'F Y');
     }
     
-    function getUserLevel(){
+    function getUserLevel($start=null, $end=null, $delim=", "){
         $person = Person::newFromId($this->reportItem->personId);
-        $university = $person->getUniversity();
-        return $university['position'];
+        if($start != null && $end != null){
+            $levels = array();
+            foreach($person->getUniversitiesDuring($start, $end) as $university){
+                $levels[] = $university['position'];
+            }
+            return implode($delim, $levels);
+        }
+        else{
+            $university = $person->getUniversity();
+            return $university['position'];
+        }
     }
     
     function getUserDept(){
@@ -1427,6 +1438,16 @@ class ReportItemCallback {
     
     function round($val, $dec=0){
         return number_format(round($val, $dec), $dec, ".", "");
+    }
+    
+    function max(){
+        $args = func_get_args();
+        return max($args);
+    }
+    
+    function min(){
+        $args = func_get_args();
+        return min($args);
     }
     
     function set($key, $val){

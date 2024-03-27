@@ -122,6 +122,7 @@ Person = Backbone.Model.extend({
         email: '',
         photo: wgServer + wgScriptPath + '/skins/face.png',
         cachedPhoto: wgServer + wgScriptPath + '/skins/face.png',
+        phone: '',
         twitter: '',
         website: '',
         ldap: '',

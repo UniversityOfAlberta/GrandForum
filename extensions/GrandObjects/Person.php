@@ -73,24 +73,14 @@ class Person extends BackboneModel {
                                                       "diplomaed engineer (dipl.ing.)",
                                                       "diplomaed engineer"),
                                      'visiting' => array("visiting student"),
-                                     'other' => array("other")
+                                     'other' => array("other"),
+                                     'committee' => array("committee")
                                     );
 
     var $user = null;
     var $name;
     var $employeeId;
     var $email;
-    var $phone;
-    var $photo;
-    var $twitter;
-    var $website;
-    var $googleScholar;
-    var $sciverseId;
-    var $orcId;
-    var $wos;
-    var $publicProfile;
-    var $profileStartDate;
-    var $profileEndDate;
     var $realname;
     var $firstName;
     var $lastName;
@@ -99,35 +89,10 @@ class Person extends BackboneModel {
     var $universityDuring;
     var $roles;
     var $rolesDuring;
-    var $relations = array();
-    var $hqps;
-    var $historyHqps;
-    var $grants;
     var $aliases = false;
     var $roleHistory;
-    var $hqpCache = array();
     var $splitName = array();
-    
-    var $dateOfPhd;
-    var $dateOfAppointment;
-    var $dateOfAssistant;
-    var $dateOfAssociate;
-    var $dateOfProfessor;
-    var $dateOfTenure;
-    var $dateOfProbation1;
-    var $dateOfProbation2;
-    var $dateOfRetirement;
-    var $dateOfLastDegree;
-    var $lastDegree;
-    //var $publicationHistoryRefereed;
-    //var $publicationHistoryBooks;
-    //var $publicationHistoryPatents;
-    var $dateFso2;
-    var $dateFso3;
-    var $dateFso4;
-    var $dateAtsec1;
-    var $dateAtsec2;
-    var $dateAtsec3;
+    var $full;
     
     /**
      * Returns a new Person from the given id
@@ -140,8 +105,12 @@ class Person extends BackboneModel {
         }
 
         $data = self::getUserRow($id);
-        
-        $person = new Person(array($data));
+        if(isset($data['full']) && $data['full'] == true){
+            $person = new FullPerson(array($data));
+        }
+        else {
+            $person = new LimitedPerson(array($data));
+        }
         self::$cache[$person->id] = $person;
         self::$cache['eId'.$person->employeeId] = $person;
         self::$cache[strtolower($person->name)] = $person;
@@ -163,7 +132,14 @@ class Person extends BackboneModel {
         if(isset(self::$employeeIdCache[$id])){
             $data[] = self::getUserRow(self::$employeeIdCache[$id]);
         }
-        $person = new Person($data);
+
+        if(isset($data[0]['full']) && $data[0]['full'] == true){
+            $person = new FullPerson($data);
+        }
+        else {
+            $person = new LimitedPerson($data);
+        }
+        
         self::$cache[$person->id] = $person;
         self::$cache['eId'.$person->employeeId] = $person;
         self::$cache[strtolower($person->name)] = $person;
@@ -187,7 +163,14 @@ class Person extends BackboneModel {
         if(count($namesCache) > 0){
             $data[] = self::getUserRow($namesCache[0]['user_id']);
         }
-        $person = new Person($data);
+        
+        if(isset($data[0]['full']) && $data[0]['full'] == true){
+            $person = new FullPerson($data);
+        }
+        else {
+            $person = new LimitedPerson($data);
+        }
+        
         self::$cache[$person->id] = $person;
         self::$cache['eId'.$person->employeeId] = $person;
         self::$cache[strtolower($person->name)] = $person;
@@ -224,7 +207,7 @@ class Person extends BackboneModel {
             return Person::newFromId($data[0]['user_id']);
         }
         else{
-            return new Person(array());
+            return new LimitedPerson(array());
         }
     }
 
@@ -297,7 +280,7 @@ class Person extends BackboneModel {
                 $alias);
         $alias = trim($alias);
 
-        if (array_key_exists($alias, self::$cache)) {
+        if (isset(self::$cache[$alias])) {
              return self::$cache[$alias];
         }
         else {
@@ -319,12 +302,19 @@ class Person extends BackboneModel {
             // Check again the cache, in case the alias is an alternate
             // for an already-instantiated user.
             $id = $data[0]['user_id'];
-            if (array_key_exists($id, self::$cache)) {
+            if (isset(self::$cache[$id])) {
                 // Mark this alias too.
                 self::$cache[$alias] = self::$cache[$id];
                 return self::$cache[$id];
             }
-            $person = new Person($data);
+
+            if(isset($data[0]['full']) && $data[0]['full'] == true){
+                $person = new FullPerson($data);
+            }
+            else {
+                $person = new LimitedPerson($data);
+            }
+
             self::$cache[$alias] = &$person;
             self::$cache[$person->getId()] = &$person;
             self::$cache[$person->getName()] = &$person;
@@ -385,30 +375,46 @@ class Person extends BackboneModel {
             // Not loaded yet
             $keys = array_keys(self::$userRows);
             self::$userRows[$id] = array(); // This is to make sure that this doesn't get called too many times
-            $data = DBFunctions::select(array('mw_user'),
-                                        array('user_id',
-                                              'user_name',
-                                              'user_real_name',
-                                              'first_name',
-                                              'middle_name',
-                                              'last_name',
-                                              'employee_id',
-                                              'user_email',
-                                              'user_twitter',
-                                              'user_website',
-                                              'google_scholar_url',
-                                              'sciverse_id',
-                                              'orcid',
-                                              'wos',
-                                              'user_public_profile',
-                                              'profile_start_date',
-                                              'profile_end_date'),
-                                        array('deleted' => NEQ(1),
-                                              'user_id' => NOT_IN($keys)));
-            foreach($data as $row){
-                Cache::store("mw_user_{$row['user_id']}", $row);
-                if(php_sapi_name() === "cli" || $row['user_id'] == $id){
-                    self::$userRows[$row['user_id']] = $row;
+            $result = DBFunctions::rawSelect(array('mw_user'),
+                                             array('user_id',
+                                                   'user_name',
+                                                   'user_real_name',
+                                                   'first_name',
+                                                   'middle_name',
+                                                   'last_name',
+                                                   'employee_id',
+                                                   'user_email',
+                                                   'user_twitter',
+                                                   'user_website',
+                                                   'google_scholar_url',
+                                                   'sciverse_id',
+                                                   'orcid',
+                                                   'wos',
+                                                   'user_public_profile',
+                                                   'profile_start_date',
+                                                   'profile_end_date',
+                                                   'full',
+                                                   'deleted'),
+                                             array('user_id' => NOT_IN($keys)));
+            while($row = mysqli_fetch_array($result->result, MYSQLI_ASSOC)){
+                $userId = $row['user_id'];
+                if(!$row['full']){
+                    unset($row['user_twitter']);
+                    unset($row['user_website']);
+                    unset($row['google_scholar_url']);
+                    unset($row['sciverse_id']);
+                    unset($row['orcid']);
+                    unset($row['wos']);
+                    unset($row['user_public_profile']);
+                    unset($row['profile_start_date']);
+                    unset($row['profile_end_date']);
+                }
+                if($row['deleted'] == 1){
+                    $row = array();
+                }
+                Cache::store("mw_user_{$userId}", $row);
+                if(!empty($row) && (php_sapi_name() === "cli" || $userId == $id)){
+                    self::$userRows[$userId] = $row;
                 }
             }
         }
@@ -429,6 +435,36 @@ class Person extends BackboneModel {
                 }
             }
         }
+    }
+    
+    static function getSalaryIncrement($year, $type){
+        if(!isset(self::$salaryCache["increment_{$type}_{$year}"])){
+            $increment = DBFunctions::select(array('grand_salary_scales'),
+                                             array("increment_$type"),
+                                             array('year' => $year));
+            self::$salaryCache["increment_{$type}_{$year}"] = @$increment[0]["increment_$type"];
+        }
+        return self::$salaryCache["increment_{$type}_{$year}"];
+    }
+    
+    static function getMinSalary($year, $type){
+        if(!isset(self::$salaryCache["min_salary_{$type}_{$year}"])){
+            $increment = DBFunctions::select(array('grand_salary_scales'),
+                                             array("min_salary_$type"),
+                                             array('year' => $year));
+            self::$salaryCache["min_salary_{$type}_{$year}"] = @$increment[0]["min_salary_$type"];
+        }
+        return self::$salaryCache["min_salary_{$type}_{$year}"];
+    }
+    
+    static function getMaxSalary($year, $type){
+        if(!isset(self::$salaryCache["max_salary_{$type}_{$year}"])){
+            $increment = DBFunctions::select(array('grand_salary_scales'),
+                                             array("max_salary_$type"),
+                                             array('year' => $year));
+            self::$salaryCache["max_salary_{$type}_{$year}"] = @$increment[0]["max_salary_$type"];
+        }
+        return self::$salaryCache["max_salary_{$type}_{$year}"];
     }
     
     function updateNamesCache(){
@@ -523,8 +559,8 @@ class Person extends BackboneModel {
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
                     ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
+            $result = DBFunctions::execSQL($sql, false, false, true);
+            while($row = mysqli_fetch_array($result->result, MYSQLI_ASSOC)){
                 if(!isset(self::$universityCache[$row['user_id']]) || $row['primary'] == true){
                     self::$universityCache[$row['user_id']] = 
                         array("id"         => $row['id'],
@@ -590,419 +626,6 @@ class Person extends BackboneModel {
                 Cache::store("allPeopleCache", self::$allPeopleCache);
             }
         }
-    }
-
-    function getFecPersonalInfo(){
-        if(!isset(self::$fecInfoCache[$this->getId()])){
-            $data = DBFunctions::select(array('grand_personal_fec_info'),
-                                        array('user_id', 
-                                              'date_of_phd',
-                                              'date_of_appointment',
-                                              'date_assistant',
-                                              'date_associate',
-                                              'date_professor',
-                                              'date_probation1',
-                                              'date_probation2',
-                                              'date_tenure',
-                                              'date_retirement',
-                                              'date_last_degree',
-                                              'last_degree',
-                                              //'publication_history_refereed',
-                                              //'publication_history_books',
-                                              //'publication_history_patents',
-                                              'date_fso2',
-                                              'date_fso3',
-                                              'date_fso4',
-                                              'date_atsec1',
-                                              'date_atsec2',
-                                              'date_atsec3'),
-                                        array('user_id' => EQ($this->getId())));
-            self::$fecInfoCache[$this->getId()] = $data;
-            if(count($data) >0){
-                $row = $data[0];
-                foreach($row as $key => $value){
-                    $row[$key] = str_replace("0000-00-00 00:00:00", "", $value);
-                }
-                $this->dateOfPhd = $row['date_of_phd'];
-                $this->dateOfAppointment = $row['date_of_appointment'];
-                $this->dateOfAssistant = $row['date_assistant'];
-                $this->dateOfAssociate = $row['date_associate'];
-                $this->dateOfProfessor = $row['date_professor'];
-                $this->dateOfProbation1 = $row['date_probation1'];
-                $this->dateOfProbation2 = $row['date_probation2'];
-                $this->dateOfTenure = $row['date_tenure'];
-                $this->dateOfRetirement = $row['date_retirement'];
-                $this->dateOfLastDegree = $row['date_last_degree'];
-                $this->lastDegree = $row['last_degree'];
-                //$this->publicationHistoryRefereed = $row['publication_history_refereed'];
-                //$this->publicationHistoryBooks = $row['publication_history_books'];
-                //$this->publicationHistoryPatents = $row['publication_history_patents'];
-                $this->dateFso2 = $row['date_fso2'];
-                $this->dateFso3 = $row['date_fso3'];
-                $this->dateFso4 = $row['date_fso4'];
-                $this->dateAtsec1 = $row['date_atsec1'];
-                $this->dateAtsec2 = $row['date_atsec2'];
-                $this->dateAtsec3 = $row['date_atsec3'];
-            }
-        }
-        return $this;
-    }
-
-    function updateFecInfo(){
-        //TODO: This can be done in another file separate from this object. Did this to save time and should
-        //fix in the future
-        $me = Person::newFromWgUser();
-        if($me->getId() == $this->getId() || $me->isRoleAtLeast(STAFF)){
-            unset(self::$fecInfoCache[$this->getId()]);
-            $fec = DBFunctions::select(array('grand_personal_fec_info'),
-                                       array('*'),
-                                       array('user_id' => EQ($this->getId())));
-            if(count($fec) > 0){
-                $status = DBFunctions::update('grand_personal_fec_info', 
-                                        array('date_of_phd' => $this->dateOfPhd,
-                                              'date_of_appointment' => $this->dateOfAppointment,
-                                              'date_assistant' => $this->dateOfAssistant,
-                                              'date_associate' => $this->dateOfAssociate,
-                                              'date_professor' => $this->dateOfProfessor,
-                                              'date_tenure' => $this->dateOfTenure,
-                                              'date_probation1' => $this->dateOfProbation1,
-                                              'date_probation2' => $this->dateOfProbation2,
-                                              'date_retirement' => $this->dateOfRetirement,
-                                              'date_last_degree' => $this->dateOfLastDegree,
-                                              'last_degree' => $this->lastDegree,
-                                              //'publication_history_refereed' => $this->publicationHistoryRefereed,
-                                              //'publication_history_books' => $this->publicationHistoryBooks,
-                                              //'publication_history_patents' => $this->publicationHistoryPatents,
-                                              'date_fso2' => $this->dateFso2,
-                                              'date_fso3' => $this->dateFso3,
-                                              'date_fso4' => $this->dateFso4,
-                                              'date_atsec1' => $this->dateAtsec1,
-                                              'date_atsec2' => $this->dateAtsec2,
-                                              'date_atsec3' => $this->dateAtsec3),
-                                        array('user_id' => EQ($this->getId())));
-                if($status){
-                    DBFunctions::commit();
-                }
-                return $status;
-            }
-            else{
-                $status = DBFunctions::insert('grand_personal_fec_info',
-                                    array('user_id' => $this->getId(),
-                                          'date_of_phd' => $this->dateOfPhd,
-                                          'date_of_appointment' => $this->dateOfAppointment,
-                                          'date_assistant' => $this->dateOfAssistant,
-                                          'date_associate' => $this->dateOfAssociate,
-                                          'date_professor' => $this->dateOfProfessor,
-                                          'date_tenure' => $this->dateOfTenure,
-                                          'date_probation1' => $this->dateOfProbation1,
-                                          'date_probation2' => $this->dateOfProbation2,
-                                          'date_retirement' => $this->dateOfRetirement,
-                                          'date_last_degree' => $this->dateOfLastDegree,
-                                          'last_degree' => $this->lastDegree,
-                                          //'publication_history_refereed' => $this->publicationHistoryRefereed,
-                                          //'publication_history_books' => $this->publicationHistoryBooks,
-                                          //'publication_history_patents' => $this->publicationHistoryPatents,
-                                          'date_fso2' => $this->dateFso2,
-                                          'date_fso3' => $this->dateFso3,
-                                          'date_fso4' => $this->dateFso4,
-                                          'date_atsec1' => $this->dateAtsec1,
-                                          'date_atsec2' => $this->dateAtsec2,
-                                          'date_atsec3' => $this->dateAtsec3),
-                                           true);
-               if($status){
-                    DBFunctions::commit();
-                }
-                return $status;
-            }
-        }
-        return false;
-    }
-    
-    function hasTenure($date=null){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateOfTenure == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateOfTenure != "" && $date >= substr($this->dateOfTenure, 0, 10));
-    }
-    
-    function isAssistantProfessor($date){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateOfAssistant == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateOfAssistant != "" && $date >= substr($this->dateOfAssistant, 0, 10) && !$this->isAssociateProfessor($date) &&
-                                                                                                  !$this->isProfessor($date));
-    }
-    
-    function isAssociateProfessor($date){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateOfAssociate == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateOfAssociate != "" && $date >= substr($this->dateOfAssociate, 0, 10) && !$this->isProfessor($date));
-    }
-    
-    function isProfessor($date){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateOfProfessor == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateOfProfessor != "" && $date >= substr($this->dateOfProfessor, 0, 10));
-    }
-    
-    function isFSO2($date=null){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateFso2 == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateFso2 != "" && $date >= substr($this->dateFso2, 0, 10) && !$this->isFSO3($date) &&
-                                                                                    !$this->isFSO4($date));
-    }
-    
-    function isFSO3($date=null){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateFso3 == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateFso3 != "" && $date >= substr($this->dateFso3, 0, 10) && !$this->isFSO4($date));
-    }
-    
-    function isFSO4($date=null){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateFso4 == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateFso4 != "" && $date >= substr($this->dateFso4, 0, 10));
-    }
-    
-    function isATSEC1($date=null){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateAtsec1 == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateAtsec1 != "" && $date >= substr($this->dateAtsec1, 0, 10) && !$this->isATSEC2($date) &&
-                                                                                        !$this->isATSEC3($date));
-    }
-    
-    function isATSEC2($date=null){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateAtsec2 == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateAtsec2 != "" && $date >= substr($this->dateAtsec2, 0, 10) && !$this->isATSEC3($date));
-    }
-    
-    function isATSEC3($date=null){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateAtsec3 == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateAtsec3 != "" && $date >= substr($this->dateAtsec3, 0, 10));
-    }
-    
-    function isNew($date=null){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateOfAppointment == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateOfAppointment != "" && $date <= substr($this->dateOfAppointment, 0, 10));
-    }
-    
-    function isRetired($date=null){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        $date = substr($date, 0, 10);
-        if($this->dateOfRetirement == null){
-            $this->getFecPersonalInfo();
-        }
-        return ($this->dateOfRetirement != "" && $date >= substr($this->dateOfRetirement, 0, 10));
-    }
-    
-    /**
-     * N1XXX - New assistant professor, associate professor, or professor.
-     * M1XXX - New FSO2, FSO3, or FSO4.
-     * A1XXX - Assistant professor.
-     * B1XXX - Untenured associate professor.
-     * B2XXX - Tenured associate professor.
-     * C1XXX - Professor.
-     * D1XXX - FSO2.
-     * E1XXX - FSO3.
-     * F1XXX - FSO4.
-     * T1XXX - Assistant Lecturer
-     * T2XXX - Associate Lecturer
-     * T3XXX - Full Lecturer
-     */
-    function getFECType($date=null){
-        if($date == null){
-            $date = date('Y-m-d');
-        }
-        if($this->isRetired($date)){
-            return "";
-        }
-        if($this->isRoleOn("ATS", $date) && $this->isATSEC1($date)){
-            return "T1";
-        }
-        else if($this->isRoleOn("ATS", $date) && $this->isATSEC2($date)){
-            return "T2";
-        }
-        else if($this->isRoleOn("ATS", $date) && $this->isATSEC3($date)){
-            return "T3";
-        }
-        else if($this->isNew($date) && ($this->isAssistantProfessor($date) ||
-                                        $this->isAssociateProfessor($date) ||
-                                        $this->isProfessor($date))){
-            return "N1";                          
-        }
-        else if($this->isNew($date) && ($this->isFSO2($date) ||
-                                        $this->isFSO3($date) ||
-                                        $this->isFSO4($date))){
-            return "M1";
-        }
-        else if($this->isAssistantProfessor($date)){
-            return "A1";
-        }
-        else if($this->isAssociateProfessor($date) && !$this->hasTenure($date)){
-            return "B1";
-        }
-        else if($this->isAssociateProfessor($date) && $this->hasTenure($date)){
-            return "B2";
-        }
-        else if($this->isProfessor($date)){
-            return "C1";
-        }
-        else if($this->isFSO2($date)){
-            return "D1";
-        }
-        else if($this->isFSO3($date)){
-            return "E1";
-        }
-        else if($this->isFSO4($date)){
-            return "F1";
-        }
-        return "";
-    }
-    
-    /**
-     * Returns the precomputed case number for this Person
-     */
-    function getCaseNumber($year=YEAR){
-        if(Cache::exists("case_number{$this->getId()}_{$year}")){
-            return Cache::fetch("case_number{$this->getId()}_{$year}");
-        }
-        else{
-            $data = DBFunctions::select(array('grand_case_numbers'),
-                                        array('*'),
-                                        array('user_id' => $this->getId(),
-                                              'year' => $year));
-            if(!empty($data)){
-                Cache::store("case_number{$this->getId()}_{$year}", $data[0]['number']);
-                return $data[0]['number'];
-            }
-            Cache::store("case_number{$this->getId()}_{$year}", "");
-            return "";
-        }
-    }
-    
-    function getSalary($year){
-        if(!Cache::exists("salary_{$this->id}_{$year}")){
-            $salary = DBFunctions::select(array('grand_user_salaries'),
-                                          array('salary', 'increment'),
-                                          array('user_id' => $this->getId(),
-                                                'year' => $year));
-            Cache::store("salary_{$this->id}_{$year}", @$salary[0]['salary']);
-        }
-        return Cache::fetch("salary_{$this->id}_{$year}");
-    }
-    
-    function getIncrement($year){
-        if(!Cache::exists("increment_{$this->id}_{$year}")){
-            $increment = DBFunctions::select(array('grand_user_salaries'),
-                                          array('salary', 'increment'),
-                                          array('user_id' => $this->getId(),
-                                                'year' => $year));
-            Cache::store("increment_{$this->id}_{$year}", @$increment[0]['increment']);
-        }
-        $increment = Cache::fetch("increment_{$this->id}_{$year}");
-        if($increment == ""){
-            return "N/A";
-        }
-        return $increment;
-    }
-    
-    function getCNA($year){
-        if(!Cache::exists("cna_{$this->id}_{$year}")){
-            $increment = DBFunctions::select(array('grand_cna'),
-                                             array('increment'),
-                                             array('user_id' => $this->getId(),
-                                                    'year' => $year));
-            Cache::store("cna_{$this->id}_{$year}", @$increment[0]['increment']);
-        }
-        return Cache::fetch("cna_{$this->id}_{$year}");
-    }
-    
-    static function getSalaryIncrement($year, $type){
-        if(!isset(self::$salaryCache["increment_{$type}_{$year}"])){
-            $increment = DBFunctions::select(array('grand_salary_scales'),
-                                             array("increment_$type"),
-                                             array('year' => $year));
-            self::$salaryCache["increment_{$type}_{$year}"] = @$increment[0]["increment_$type"];
-        }
-        return self::$salaryCache["increment_{$type}_{$year}"];
-    }
-    
-    static function getMinSalary($year, $type){
-        if(!isset(self::$salaryCache["min_salary_{$type}_{$year}"])){
-            $increment = DBFunctions::select(array('grand_salary_scales'),
-                                             array("min_salary_$type"),
-                                             array('year' => $year));
-            self::$salaryCache["min_salary_{$type}_{$year}"] = @$increment[0]["min_salary_$type"];
-        }
-        return self::$salaryCache["min_salary_{$type}_{$year}"];
-    }
-    
-    static function getMaxSalary($year, $type){
-        if(!isset(self::$salaryCache["max_salary_{$type}_{$year}"])){
-            $increment = DBFunctions::select(array('grand_salary_scales'),
-                                             array("max_salary_$type"),
-                                             array('year' => $year));
-            self::$salaryCache["max_salary_{$type}_{$year}"] = @$increment[0]["max_salary_$type"];
-        }
-        return self::$salaryCache["max_salary_{$type}_{$year}"];
     }
     
     function isTAEligible($date=null){
@@ -1123,7 +746,12 @@ class Person extends BackboneModel {
                 $people[] = self::$cache[$row['user_id']];
             }
             else{
-                $person = new Person(array($row));
+                if(isset($row['full']) && $row['full'] == true){
+                    $person = new FullPerson(array($row));
+                }
+                else {
+                    $person = new LimitedPerson(array($row));
+                }
                 self::$cache[$person->getId()] = $person;
                 $people[$person->getId()] = $person;
             }
@@ -1344,18 +972,8 @@ class Person extends BackboneModel {
             $this->middleName = @$data[0]['middle_name'];
             $this->employeeId = @$data[0]['employee_id'];
             $this->email = @$data[0]['user_email'];
+            $this->full = @$data[0]['full'];
             $this->university = false;
-            $this->twitter = @$data[0]['user_twitter'];
-            $this->website = @$data[0]['user_website'];
-            $this->googleScholar = @$data[0]['google_scholar_url'];
-            $this->sciverseId = @$data[0]['sciverse_id'];
-            $this->orcId = @$data[0]['orcid'];
-            $this->wos = @$data[0]['wos'];
-            $this->publicProfile = @$data[0]['user_public_profile'];
-            $this->profileStartDate = @$data[0]['profile_start_date'];
-            $this->profileEndDate = @$data[0]['profile_end_date'];
-            $this->hqps = null;
-            $this->historyHqps = null;
         }
     }
     
@@ -1375,7 +993,6 @@ class Person extends BackboneModel {
     
     function toArray(){
         global $wgUser;
-        $publicProfile = $this->getProfile(false);
         $roles = array();
         foreach($this->getRoles() as $role){
             if($role->getId() != -1){
@@ -1391,16 +1008,6 @@ class Person extends BackboneModel {
                       'fullName' => $this->getNameForForms(),
                       'reversedName' => $this->getReversedName(),
                       'email' => $this->getEmail(),
-                      'phone' => $this->getPhoneNumber(),
-                      'twitter' => $this->getTwitter(),
-                      'website' => $this->getWebsite(),
-                      'ldap' => $this->getLdap(),
-                      'googleScholarId' => $this->getGoogleScholar(),
-                      'sciverseId' => $this->getSciverseId(),
-                      'orcId' => $this->getOrcId(),
-                      'wos' => $this->getWOS(),
-                      'photo' => $this->getPhoto(),
-                      'cachedPhoto' => $this->getPhoto(true),
                       'university' => $university['university'],
                       'department' => $university['department'],
                       'position' => $university['position'],
@@ -1409,9 +1016,6 @@ class Person extends BackboneModel {
                       'researchArea' => $university['research_area'],
                       'universities' => $universities,
                       'roles' => $roles,
-                      'publicProfile' => $publicProfile,
-                      'profile_start_date' => $this->getProfileStartDate(),
-                      'profile_end_date' => $this->getProfileEndDate(),
                       'url' => $this->getUrl());
         return $json;
     }
@@ -1426,15 +1030,7 @@ class Person extends BackboneModel {
             $this->id = $user->getId();
             $status = DBFunctions::update('mw_user', 
                                     array('employee_id' => $this->getEmployeeId(),
-                                          'user_twitter' => $this->getTwitter(),
-                                          'user_website' => $this->getWebsite(),
-                                          'google_scholar_url' => $this->getGoogleScholar(),
-                                          'sciverse_id' => $this->getSciverseId(),
-                                          'orcid' => $this->getOrcId(),
-                                          'wos' => $this->getWOS(),
-                                          'user_public_profile' => $this->getProfile(false),
-                                          'profile_start_date' => $this->getProfileStartDate(),
-                                          'profile_end_date' => $this->getProfileEndDate()),
+                                          'full' => $this->full),
                                     array('user_name' => EQ($this->getName())));
             DBFunctions::commit();
             $this->updateNamesCache();
@@ -1460,21 +1056,8 @@ class Person extends BackboneModel {
                                           'middle_name' => $this->getMiddleName(),
                                           'last_name' => $this->getLastName(),
                                           'employee_id' => $this->getEmployeeId(),
-                                          'user_twitter' => $this->getTwitter(),
-                                          'user_website' => $this->getWebsite(),
-                                          'google_scholar_url' => $this->getGoogleScholar(),
-                                          'sciverse_id' => $this->getSciverseId(),
-                                          'orcid' => $this->getOrcId(),
-                                          'wos' => $this->getWOS(),
-                                          'user_public_profile' => $this->getProfile(false)
-                                          ),
+                                          'full' => $this->full),
                                     array('user_id' => EQ($this->getId())));
-            if(!$wgImpersonating && !$wgDelegating){
-                DBFunctions::update('mw_user',
-                                    array('profile_start_date' => $this->getProfileStartDate(),
-                                          'profile_end_date' => $this->getProfileEndDate()),
-                                    array('user_id' => EQ($this->getId())));
-            }
             $this->updateNamesCache();
             Person::$cache = array();
             Person::$aliasCache = array();
@@ -1616,65 +1199,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the phone number of this Person
-     * @return string The phone number of this Person
-     */
-    function getPhoneNumber(){
-        $me = Person::newFromWgUser();
-        if($me->isAllowedToEdit($this)){
-            $data = DBFunctions::select(array('grand_user_telephone'),
-                                        array('number'),
-                                        array('primary_indicator' => EQ(1),
-                                              'user_id' => EQ($this->getId())));
-            return @trim($data[0]['number']);
-        }
-        return "";
-    }
-    
-    /**
-     * Returns the handle of this Person's twitter account
-     * @return string The handle of this Person's twitter account
-     */
-    function getTwitter(){
-        return $this->twitter;
-    }
-    
-    /**
-     * Returns the url of this Person's website
-     * @return string The url of this Person's website
-     */
-    function getWebsite(){
-        if (preg_match("#https?://#", $this->website) === 0) {
-            $this->website = 'http://'.$this->website;
-        }
-        return $this->website;
-    }
-
-    function getLdap(){
-        if(strstr($this->getEmail(), "ualberta.ca") !== false){
-            $ccid = explode("@", $this->getEmail());
-            return @"https://apps.ualberta.ca/directory/person/{$ccid[0]}";
-        }
-        return "";
-    }
-
-    function getGoogleScholar(){
-        return $this->googleScholar;
-    }
-    
-    function getSciverseId(){
-        return $this->sciverseId;
-    }
-    
-    function getOrcId(){
-        return $this->orcId;
-    }
-    
-    function getWOS(){
-        return $this->wos;
-    }
-    
-    /**
      * Returns the url of this Person's profile page
      * @return string The url of this Person's profile page
      */
@@ -1688,27 +1212,6 @@ class Person extends BackboneModel {
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}?embed";
         }
         return "";
-    }
-    
-    /**
-     * Returns the path to a photo of this Person if it exists
-     * @param boolen $cached Whether or not to use a cached version
-     * @return string The path to a photo of this Person
-     */
-    function getPhoto($cached=false){
-        global $wgServer, $wgScriptPath;
-        if($this->photo == null || !$cached){
-            if(file_exists("Photos/".str_ireplace(".", "_", $this->name).".jpg")){
-                $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg";
-                if(!$cached){
-                    return $this->photo."?".microtime(true);
-                }
-            }
-            else {
-                $this->photo = "$wgServer$wgScriptPath/skins/face.png";
-            }
-        }
-        return $this->photo;
     }
     
     /**
@@ -1922,33 +1425,6 @@ class Person extends BackboneModel {
             self::$aliasCache = array();
         }
         return $aliases;
-    }
-    
-    // Returns the user's profile.
-    // If $private is true, then it grabs the private version, otherwise it gets the public
-    /**
-     * Returns the text from this Person's profile
-     * @param boolean $private If tru, then it grabs the private version, otherwise it gets the public
-     * @return string This Person's profile text
-     */
-    function getProfile($private=false){
-        return $this->publicProfile;
-    }
-    
-    /**
-     * Returns the start date range for the user's profile
-     * @return string This Person's start date for the user's profile
-     */
-    function getProfileStartDate(){
-        return substr($this->profileStartDate, 0, 10);
-    }
-    
-    /**
-     * Returns the end date range for the user's profile
-     * @return string This Person's end date for the user's profile
-     */
-    function getProfileEndDate(){
-        return substr($this->profileEndDate, 0, 10);
     }
     
     /**
@@ -2205,20 +1681,41 @@ class Person extends BackboneModel {
      * @return array The Universities that this Person was at between the given range
      */ 
     function getUniversitiesDuring($startRange, $endRange, $id=null){
+        $id = ($id == null) ? $this->getId() : $id;
         $startRange = substr($startRange,0,10);
         $endRange = substr($endRange,0,10);
-        if(empty(self::$allUniversityCache)){
-            if(Cache::exists("user_university")){
-                $data = Cache::fetch("user_university");
+        
+        // Fetch the rows from the db/cache
+        if(!isset(self::$allUniversityCache[$id])){
+            $data = array();
+            if(count(self::$allUniversityCache) <= 500){
+                if(Cache::exists("user_universities_{$id}")){
+                    $data = Cache::fetch("user_universities_{$id}");
+                }
+                else{
+                    $sql = "SELECT id, user_id, university_name, department, position, research_area, SUBSTR(start_date,1,10) as start_date, SUBSTR(end_date,1,10) as end_date
+                            FROM grand_user_university uu, grand_universities u, grand_positions p
+                            WHERE u.university_id = uu.university_id
+                            AND uu.position_id = p.position_id
+                            AND uu.user_id = '{$id}'
+                            ORDER BY REPLACE(end_date, '0000-00-00', '9999-99-99') DESC, start_date DESC, id DESC";
+                    $data = DBFunctions::execSQL($sql);
+                    Cache::store("user_universities_{$id}", $data);
+                }
             }
             else{
-                $sql = "SELECT id, user_id, university_name, department, position, research_area, start_date, end_date
-                        FROM grand_user_university uu, grand_universities u, grand_positions p
-                        WHERE u.university_id = uu.university_id
-                        AND uu.position_id = p.position_id
-                        ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-99-99 99:99:99') DESC, start_date DESC, id DESC";
-                $data = DBFunctions::execSQL($sql);
-                Cache::store("user_university", $data);
+                if(Cache::exists("user_university")){
+                    $data = Cache::fetch("user_university");
+                }
+                else{
+                    $sql = "SELECT id, user_id, university_name, department, position, research_area, SUBSTR(start_date,1,10) as start_date, SUBSTR(end_date,1,10) as end_date
+                            FROM grand_user_university uu, grand_universities u, grand_positions p
+                            WHERE u.university_id = uu.university_id
+                            AND uu.position_id = p.position_id
+                            ORDER BY REPLACE(end_date, '0000-00-00', '9999-99-99') DESC, start_date DESC, id DESC";
+                    $data = DBFunctions::execSQL($sql);
+                    Cache::store("user_university", $data);
+                }
             }
             foreach($data as $row){
                 if($row['university_name'] != "Unknown"){
@@ -2232,14 +1729,15 @@ class Person extends BackboneModel {
                 }
             }
         }
+        
+        // Return the unis in the timeframe
         $unis = array();
-        $id = ($id == null) ? $this->getId() : $id;
         if(isset(self::$allUniversityCache[$id])){
             foreach(self::$allUniversityCache[$id] as $uni){
-                if(($uni['end'] != "0000-00-00 00:00:00" && ((substr($uni['start'],0,10) >= $startRange && substr($uni['start'],0,10) <= $endRange) || 
-                                                             (substr($uni['end'],0,10) >= $startRange && substr($uni['end'],0,10) <= $endRange) ||
-                                                             (substr($uni['start'],0,10) <= $endRange && substr($uni['end'],0,10) >= $endRange))) || 
-                   ($uni['end'] == "0000-00-00 00:00:00" && substr($uni['start'],0,10) <= $endRange)){
+                if(($uni['end'] != "0000-00-00" && (($uni['start'] >= $startRange && $uni['start'] <= $endRange) || 
+                                                    ($uni['end']   >= $startRange && $uni['end']   <= $endRange) ||
+                                                    ($uni['start'] <= $endRange   && $uni['end']   >= $endRange))) || 
+                   ($uni['end'] == "0000-00-00" && $uni['start'] <= $endRange)){
                     $unis[] = $uni;
                 }
             }
@@ -2724,49 +2222,6 @@ class Person extends BackboneModel {
         return $universities;
     }
     
-    /**
-     * Returns the Relationships this Person has between the given dates
-     * @param string $type The type of Relationship
-     * @param string $startRange The start date
-     * @param string $endRange The end date
-     * @return array The Relationships this Person has
-     */
-    function getRelationsDuring($type='all', $startRange, $endRange){
-        $type = DBFunctions::escape($type);
-        $startRange = DBFunctions::escape($startRange);
-        $endRange = DBFunctions::escape($endRange);
-        if(isset($this->relations["{$type}{$startRange}{$endRange}"])){
-            return $this->relations["{$type}{$startRange}{$endRange}"];
-        }
-        $sql = "SELECT r.*
-                FROM grand_relations r, mw_user u
-                WHERE user1 = '{$this->id}'\n";
-        if($type == "public" || $type == "all"){
-            // do nothing
-        }
-        else{
-            $sql .= "AND type = '$type'\n";
-        }
-        $sql .= "AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
-                OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
-                )
-                AND u.user_id = r.user2
-                AND u.deleted != 1
-        ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
-        $data = DBFunctions::execSQL($sql);
-        $relations = array();
-        foreach($data as $row){
-            $relation = Relationship::newFromId($row['id']);
-            $relations[] = $relation;
-        }
-        $this->relations["{$type}{$startRange}{$endRange}"] = $relations;
-        return $relations;
-    }
-    
     /*
      * Returns an array of People that this Person manages
      * @return array The People that this Person manages
@@ -2783,220 +2238,6 @@ class Person extends BackboneModel {
             } 
         }
         return $people;
-    }
-    
-    /**
-     * Returns the Relationships this Person has
-     * @param string $type The type of Relationship
-     * @param boolean $history Whether or not to include the full history of Relationships
-     * @return array The Relationships this Person has
-     */
-    function getRelations($type='all', $history=false){
-        if($type == "all"){
-            $sql = "SELECT id, type
-                    FROM grand_relations, mw_user u1, mw_user u2
-                    WHERE user1 = '{$this->id}'
-                    AND u1.user_id = user1
-                    AND u2.user_id = user2
-                    AND u1.deleted != '1'
-                    AND u2.deleted != '1'";
-            if(!$history){
-                $sql .= " AND start_date >= end_date";
-            }
-            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $relation = Relationship::newFromId($row['id']);
-                $this->relations[$row['type']][$row['id']] = $relation;
-            }
-            return $this->relations;
-        }
-        else if($type == "public"){
-            $sql = "SELECT id, type
-                    FROM grand_relations, mw_user u1, mw_user u2
-                    WHERE user1 = '{$this->id}'
-                    AND u1.user_id = user1
-                    AND u2.user_id = user2
-                    AND u1.deleted != '1'
-                    AND u2.deleted != '1'";
-            if(!$history){
-                $sql .= " AND start_date >= end_date";
-            }
-            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $relation = Relationship::newFromId($row['id']);
-                $this->relations[$row['type']][$row['id']] = $relation;
-            }
-            return $this->relations;
-        }
-        //if(!isset($this->relations[$type])){
-            $this->relations[$type] = array();
-            $sql = "SELECT id, type
-                    FROM grand_relations, mw_user u1, mw_user u2
-                    WHERE user1 = '{$this->id}'
-                    AND u1.user_id = user1
-                    AND u2.user_id = user2
-                    AND u1.deleted != '1'
-                    AND u2.deleted != '1'
-                    AND type = '{$type}'";
-            if(!$history){
-                $sql .= " AND start_date >= end_date";
-            }
-            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $relation = Relationship::newFromId($row['id']);
-                $this->relations[$row['type']][$row['id']] = $relation;
-            }
-        //}
-        return $this->relations[$type];
-    }
-   
-    function getGrants($exclude=true){
-        if($this->grants == null){
-            $this->grants = array();
-            $data = DBFunctions::select(array('grand_grants'),
-                                        array('id'),
-                                        array('user_id' => EQ($this->getId()),
-                                              WHERE_OR('copi') => LIKE("%\"{$this->getId()}\";%") ));
-            foreach($data as $row){
-                $grant = Grant::newFromId($row['id']);
-                if($grant != null && $grant->getId() != 0 && !$grant->deleted){
-                    $this->grants[] = $grant;
-                }
-            }
-        }
-        $grants = $this->grants;
-        if($exclude){
-            foreach($grants as $key => $grant){
-                $skip = false;
-                foreach($grant->getExclusions() as $exclusion){
-                    if($exclusion->getId() == $this->getId()){
-                        // This Person doesn't want to be associated with this Product
-                        $skip = true;
-                    }
-                }
-                if($skip){ 
-                    unset($grants[$key]);
-                }
-            }
-        }
-        return $this->grants;
-    }
-    
-    function getGrantsBetween($start, $end, $filter=false, $exclude=true){
-        $grants = array();
-        foreach($this->getGrants() as $grant){
-            $grantStart = $grant->getStartDate();
-            $grantEnd = $grant->getEndDate();
-            if(($grantStart >= $start && $grantStart <= $end) ||
-               ($grantEnd >= $start && $grantEnd <= $end) ||
-               ($grantStart <= $start && $grantEnd >= $end)){
-                if($filter){
-                    if(strtolower($grant->getSponsor()) == "university of alberta" &&
-                       array_search($grant->getSeqNo(), array(0, 35)) !== false){
-                        // Rule 1: inside Fac of Science and start up funds
-                        continue;
-                    }
-                    else if(strtolower($grant->getSponsor()) == "university of alberta" &&
-                            array_search($grant->getSeqNo(), array(60)) !== false){
-                        // Rule 1.1: inside Fac of Science and start up funds
-                        continue;
-                    }
-                    else if($grant->getTotal() == 0){
-                        // Rule 2: blank PI names or 0 funding signal a reason to exclude
-                        continue;
-                    }
-                    else if(strpos($grant->getProjectId(), 'Z') === 0){
-                        // Rule 101: Not interesting – internal facilities support/ centre support
-                        continue;
-                    }
-                    else if(strpos($grant->getProjectId(), 'Y224') === 0){
-                        // Rule 102: AITF Centre support
-                        continue;
-                    }
-                    else if(strpos($grant->getProjectId(), 'Y000') === 0){
-                        // Rule 103: Internal Centre Funding
-                        continue;
-                    }
-                    else if(strpos($grant->getProjectId(), 'B') === 0 ||
-                            strpos($grant->getProjectId(), 'P') === 0 ||
-                            strtolower($grant->getSponsor()) === "national research council of canada"){
-                        // Rule 104: Project ID scan – Billing/Journal productions/services
-                        continue;
-                    }
-                    else if(strpos($grant->getProjectId(), 'N') === 0){
-                        // Rule 105: Other internally transferred research funds
-                        continue;
-                    }
-                    else if(strpos($grant->getProjectId(), 'D') === 0 ||
-                            strpos($grant->getProjectId(), 'W') === 0){
-                        // Rule 106: donations
-                        continue;
-                    }
-                    else if(strpos($grant->getProjectId(), 'G022') === 0 ||
-                            strpos($grant->getProjectId(), 'G099') === 0){
-                        // Rule 107: “General Research Funds”
-                        continue;
-                    }
-                    else if(strtolower($grant->getRole()) == "student" ||
-                            strstr(strtolower($grant->getProgDescription()), "fellowship") !== false ||
-                            strstr(strtolower($grant->getProgDescription()), "student") !== false ||
-                            strstr(strtolower($grant->getProgDescription()), "scholarship") !== false){
-                        // Rule 200: awards to students seems to capture all student cases
-                        continue;
-                    }
-                    else if(strtolower($grant->getSponsor()) == "university of alberta" &&
-                        (array_search($grant->getSeqNo(), array(33, 51, 53, 55, 65, 137)) !== false ||
-                         strstr(strtolower($grant->getProjectId()), "triumf") !== false
-                        )){
-                        // Rule 300: Miscellaneous not interesting for different kinds of reasons
-                        continue;
-                    }
-                    else if($grant->getTotal() < 10000){
-                        // Total funding < $10k
-                        continue;
-                    }
-                }
-                $grants[$grantStart.$grantEnd.$grant->getId()] = $grant;
-            }
-        }
-        if($exclude){
-            foreach($grants as $key => $grant){
-                $skip = false;
-                foreach($grant->getExclusions() as $exclusion){
-                    if($exclusion->getId() == $this->getId()){
-                        // This Person doesn't want to be associated with this Product
-                        $skip = true;
-                    }
-                }
-                if($skip){ 
-                    unset($grants[$key]);
-                }
-            }
-        }
-        ksort($grants);
-        $grants = array_reverse($grants);
-        return $grants;
-    }
-    
-    function getGrantAwards(){
-        return GrantAward::getAllGrantAwards(0, 999999999, $this);
-    }
-    
-    function getGrantAwardsBetween($start, $end){
-        $grants = array();
-        foreach($this->getGrantAwards() as $grant){
-            $grantStart = $grant->start_year;
-            $grantEnd = $grant->end_year;
-            if(($grantStart >= $start && $grantStart <= $end) ||
-               ($grantEnd >= $start && $grantEnd <= $end) ||
-               ($grantStart <= $start && $grantEnd >= $end)){
-                $grants[] = $grant;
-            }
-        }
-        return $grants;
     }
     
     function isActive(){
@@ -3178,114 +2419,6 @@ class Person extends BackboneModel {
         }
         return $creators;
     }
-
-    /**
-     * Returns this Person's HQP
-     * @param mixed $history Whether or not to include all HQP in history (can also be a specific date)
-     * @return array This Person's HQP
-     */
-    function getHQP($history=false, $onlySupervises=false){
-        $extraSQL = "";
-        if(!$onlySupervises){
-            $extraSQL = " OR type LIKE '%Supervisory-Committee member%' OR
-                             type LIKE '%Examining-Committee member%' OR
-                             type LIKE '%Examining-Committee chair%'";
-        }
-        if($history !== false && $this->id != null){
-            $this->roles = array();
-            if($history === true){
-                if($this->historyHqps != null){
-                    return $this->historyHqps;
-                }
-                
-                $sql = "SELECT *
-                        FROM grand_relations
-                        WHERE user1 = '{$this->id}'
-                        AND (type LIKE '%Supervises%' OR 
-                             type LIKE '%Co-Supervises%'
-                             $extraSQL)";
-            }
-            else{
-                $sql = "SELECT *
-                        FROM grand_relations
-                        WHERE user1 = '{$this->id}'
-                        AND (type LIKE '%Supervises%' OR 
-                             type LIKE '%Co-Supervises%'
-                             $extraSQL)
-                        AND start_date <= '{$history}'
-                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
-            }
-            $data = DBFunctions::execSQL($sql);
-            $hqps = array();
-            foreach($data as $row){
-                $hqp = Person::newFromId($row['user2']);
-                $hqps[strtolower($hqp->getName())] = $hqp;
-            }
-            if($history === true){
-                $this->historyHqps = $hqps;
-            }
-            return $hqps;
-        }
-        if($this->hqps !== null){
-            return $this->hqps;
-        }
-        $sql = "SELECT *
-                FROM grand_relations
-                WHERE user1 = '{$this->id}'
-                AND (type LIKE '%Supervises%' OR 
-                     type LIKE '%Co-Supervises%'
-                     $extraSQL)
-                AND start_date > end_date";
-        $data = DBFunctions::execSQL($sql);
-        $hqps = array();
-        foreach($data as $row){
-            $hqp = Person::newFromId($row['user2']);
-            if($hqp->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
-                $hqps[strtolower($hqp->getName())] = $hqp;
-            }
-        }
-        $this->hqps = $hqps;
-        return $this->hqps;
-    }
-       
-    /**
-     * Returns this Person's HQP during the given dates
-     * @param string $startRange The start date
-     * @param string $endRange The end date
-     * @return array This Person's HQP
-     */
-    function getHQPDuring($startRange, $endRange){
-        if(isset($this->hqpCache[$startRange.$endRange])){
-            return $this->hqpCache[$startRange.$endRange];
-        }
-        $sql = "SELECT *
-                FROM grand_relations
-                WHERE user1 = '{$this->id}'
-                AND type LIKE '%Supervises%'
-                AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
-                OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
-                )";
-    
-        $data = DBFunctions::execSQL($sql);
-        $hqps = array();
-        $hqps_uniq_ids = array();
-        foreach($data as $row){
-            $hqp = Person::newFromId($row['user2']);
-            if( !in_array($hqp->getId(), $hqps_uniq_ids) && $hqp->getId() != null){
-                $hqps_uniq_ids[] = $hqp->getId();
-                //if(!$hqp->isRoleDuring(HQP, $startRange, $endRange)){
-                //    continue;
-                //}
-                $hqps[] = $hqp;
-            }
-        }
-        $this->hqpCache[$startRange.$endRange] = $hqps;
-        return $hqps;
-    }
     
     /**
      * Returns this Person's Supervisors
@@ -3447,7 +2580,7 @@ class Person extends BackboneModel {
         foreach($relations as $r){
             $universities = $this->getUniversitiesDuring("0000-00-00", "2100-00-00", $r->user2);
             $role = $r->getType();
-            if($hqpTypes == "committee"){
+            if(implode($hqpTypes) == "committee" || $hqpTypes == "committee"){
                 if($role == SUPERVISES || $role == CO_SUPERVISES){
                     continue;
                 }
@@ -3478,7 +2611,7 @@ class Person extends BackboneModel {
                 $minInterval = 1000000;
                 $relStart = new DateTime($r->getStartDate());
                 foreach($universities as $university){
-                    if($hqpTypes == "committee" ||
+                    if(implode($hqpTypes) == "committee" || $hqpTypes == "committee" ||
                        @in_array(strtolower($university['position']), $hqpTypes) || 
                        ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))){
                         $uniStart = new DateTime($university['start']);
@@ -3505,7 +2638,10 @@ class Person extends BackboneModel {
             $research_area = $university['research_area'];
             $position = $university['position'];
             
-            if($hqpTypes != "committee" && !@in_array(strtolower($position), $hqpTypes) && !($hqpTypes == "other" && !in_array(strtolower($position), $merged))){
+            if(implode($hqpTypes) != "committee" && 
+               $hqpTypes == "committee" && 
+               !@in_array(strtolower($position), $hqpTypes) && 
+               !(implode($hqpTypes) != "other" && $hqpTypes != "other" && !in_array(strtolower($position), $merged))){
                 continue;
             }
 
@@ -4009,7 +3145,7 @@ class Person extends BackboneModel {
      * @return Person The Person from the given email
      */
     static function newFromUniversityId($id){
-        $person = new Person(array());
+        $person = new LimitedPerson(array());
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id'),
                                     array('university_id' => $id));
@@ -4079,8 +3215,1125 @@ class Person extends BackboneModel {
         }
         return false;
     }
+    
+    /**
+     * The following functions are used for FullPerson objects, 
+     * but so things don't break they should be defined here and return default values
+     */
+    function getPhoto($cached=false){
+        global $wgServer, $wgScriptPath;
+        return "$wgServer$wgScriptPath/skins/face.png";
+    }
+    
+    function getPhoneNumber(){ return ""; }
+
+    function getTwitter(){ return ""; }
+
+    function getWebsite(){ return ""; }
+    
+    function getGoogleScholar(){ return ""; }
+    
+    function getSciverseId(){ return ""; }
+    
+    function getOrcId(){ return ""; }
+    
+    function getWOS(){ return ""; }
+
+    function getProfile($private=false){ return ""; }
+
+    function getProfileStartDate(){ return ""; }
+
+    function getProfileEndDate(){ return ""; }
+    
+    function getLdap(){ return ""; }
+    
+    function getHQP($history=false, $onlySupervises=false){ return array(); }
+       
+    function getHQPDuring($startRange, $endRange){ return array(); }
+
+    function getRelationsDuring($type='all', $startRange, $endRange){ return array(); }
+
+    function getRelations($type='all', $history=false){ return array(); }
+    
+    function getGrants($exclude=true){ return array(); }
+    
+    function getGrantsBetween($start, $end, $filter=false, $exclude=true){ return array(); }
+    
+    function getGrantAwards(){ return array(); }
+    
+    function getGrantAwardsBetween($start, $end){ return array();}
+    
+    function getFecPersonalInfo(){ return $this; }
+
+    function updateFecInfo(){ return true; }
+    
+    function hasTenure($date=null){ return false; }
+    
+    function isAssistantProfessor($date){ return false; }
+    
+    function isAssociateProfessor($date){ return false; }
+    
+    function isProfessor($date){ return false; }
+    
+    function isFSO2($date=null){ return false; }
+    
+    function isFSO3($date=null){ return false; }
+    
+    function isFSO4($date=null){ return false; }
+    
+    function isATSEC1($date=null){ return false; }
+    
+    function isATSEC2($date=null){ return false; }
+    
+    function isATSEC3($date=null){ return false; }
+    
+    function isNew($date=null){ return false; }
+    
+    function isRetired($date=null){ return false; }
+    
+    function getFECType($date=null){ return ""; }
+
+    function getCaseNumber($year=YEAR){ return ""; }
+    
+    function getSalary($year){ return ""; }
+    
+    function getIncrement($year){ return "N/A"; }
+    
+    function getCNA($year){ return ""; }
 }
 
 Person::$studentPositions['grad'] = array_merge(Person::$studentPositions['msc'], Person::$studentPositions['phd']);
+
+class FullPerson extends Person {
+    
+    var $photo;
+    var $phone;
+    var $twitter;
+    var $website;
+    var $googleScholar;
+    var $sciverseId;
+    var $orcId;
+    var $wos;
+    var $publicProfile;
+    var $profileStartDate;
+    var $profileEndDate;
+    var $relations = array();
+    var $hqps;
+    var $historyHqps;
+    var $hqpCache = array();
+    var $grants;
+    
+    var $dateOfPhd;
+    var $dateOfAppointment;
+    var $dateOfAssistant;
+    var $dateOfAssociate;
+    var $dateOfProfessor;
+    var $dateOfTenure;
+    var $dateOfProbation1;
+    var $dateOfProbation2;
+    var $dateOfRetirement;
+    var $dateOfLastDegree;
+    var $lastDegree;
+    //var $publicationHistoryRefereed;
+    //var $publicationHistoryBooks;
+    //var $publicationHistoryPatents;
+    var $dateFso2;
+    var $dateFso3;
+    var $dateFso4;
+    var $dateAtsec1;
+    var $dateAtsec2;
+    var $dateAtsec3;
+    
+    function FullPerson($data){
+        self::Person($data);
+        if(!empty($data)){
+            $this->twitter = @$data[0]['user_twitter'];
+            $this->website = @$data[0]['user_website'];
+            $this->googleScholar = @$data[0]['google_scholar_url'];
+            $this->sciverseId = @$data[0]['sciverse_id'];
+            $this->orcId = @$data[0]['orcid'];
+            $this->wos = @$data[0]['wos'];
+            $this->publicProfile = @$data[0]['user_public_profile'];
+            $this->profileStartDate = @$data[0]['profile_start_date'];
+            $this->profileEndDate = @$data[0]['profile_end_date'];
+            $this->hqps = null;
+            $this->historyHqps = null;
+        }
+        $this->full = 1;
+    }
+    
+    /**
+     * Returns the path to a photo of this Person if it exists
+     * @param boolen $cached Whether or not to use a cached version
+     * @return string The path to a photo of this Person
+     */
+    function getPhoto($cached=false){
+        global $wgServer, $wgScriptPath;
+        if($this->photo == null || !$cached){
+            if(file_exists("Photos/".str_ireplace(".", "_", $this->name).".jpg")){
+                $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg";
+                if(!$cached){
+                    return $this->photo."?".microtime(true);
+                }
+            }
+            else {
+                $this->photo = "$wgServer$wgScriptPath/skins/face.png";
+            }
+        }
+        return $this->photo;
+    }
+    
+    /**
+     * Returns the phone number of this Person
+     * @return string The phone number of this Person
+     */
+    function getPhoneNumber(){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEdit($this)){
+            $data = DBFunctions::select(array('grand_user_telephone'),
+                                        array('number'),
+                                        array('primary_indicator' => EQ(1),
+                                              'user_id' => EQ($this->getId())));
+            return @trim($data[0]['number']);
+        }
+        return "";
+    }
+    
+    /**
+     * Returns the handle of this Person's twitter account
+     * @return string The handle of this Person's twitter account
+     */
+    function getTwitter(){
+        return $this->twitter;
+    }
+    
+    /**
+     * Returns the url of this Person's website
+     * @return string The url of this Person's website
+     */
+    function getWebsite(){
+        if (preg_match("#https?://#", $this->website) === 0) {
+            $this->website = 'http://'.$this->website;
+        }
+        return $this->website;
+    }
+    
+    function getGoogleScholar(){
+        return $this->googleScholar;
+    }
+    
+    function getSciverseId(){
+        return $this->sciverseId;
+    }
+    
+    function getOrcId(){
+        return $this->orcId;
+    }
+    
+    function getWOS(){
+        return $this->wos;
+    }
+    
+    // Returns the user's profile.
+    // If $private is true, then it grabs the private version, otherwise it gets the public
+    /**
+     * Returns the text from this Person's profile
+     * @param boolean $private If tru, then it grabs the private version, otherwise it gets the public
+     * @return string This Person's profile text
+     */
+    function getProfile($private=false){
+        return $this->publicProfile;
+    }
+    
+    /**
+     * Returns the start date range for the user's profile
+     * @return string This Person's start date for the user's profile
+     */
+    function getProfileStartDate(){
+        return substr($this->profileStartDate, 0, 10);
+    }
+    
+    /**
+     * Returns the end date range for the user's profile
+     * @return string This Person's end date for the user's profile
+     */
+    function getProfileEndDate(){
+        return substr($this->profileEndDate, 0, 10);
+    }
+    
+    function getLdap(){
+        if(strstr($this->getEmail(), "ualberta.ca") !== false){
+            $ccid = explode("@", $this->getEmail());
+            return @"https://apps.ualberta.ca/directory/person/{$ccid[0]}";
+        }
+        return "";
+    }
+    
+    /**
+     * Returns this Person's HQP
+     * @param mixed $history Whether or not to include all HQP in history (can also be a specific date)
+     * @return array This Person's HQP
+     */
+    function getHQP($history=false, $onlySupervises=false){
+        $extraSQL = "";
+        if(!$onlySupervises){
+            $extraSQL = " OR type LIKE '%Supervisory-Committee member%' OR
+                             type LIKE '%Examining-Committee member%' OR
+                             type LIKE '%Examining-Committee chair%'";
+        }
+        if($history !== false && $this->id != null){
+            $this->roles = array();
+            if($history === true){
+                if($this->historyHqps != null){
+                    return $this->historyHqps;
+                }
+                
+                $sql = "SELECT *
+                        FROM grand_relations
+                        WHERE user1 = '{$this->id}'
+                        AND (type LIKE '%Supervises%' OR 
+                             type LIKE '%Co-Supervises%'
+                             $extraSQL)";
+            }
+            else{
+                $sql = "SELECT *
+                        FROM grand_relations
+                        WHERE user1 = '{$this->id}'
+                        AND (type LIKE '%Supervises%' OR 
+                             type LIKE '%Co-Supervises%'
+                             $extraSQL)
+                        AND start_date <= '{$history}'
+                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+            }
+            $data = DBFunctions::execSQL($sql);
+            $hqps = array();
+            foreach($data as $row){
+                $hqp = Person::newFromId($row['user2']);
+                $hqps[strtolower($hqp->getName())] = $hqp;
+            }
+            if($history === true){
+                $this->historyHqps = $hqps;
+            }
+            return $hqps;
+        }
+        if($this->hqps !== null){
+            return $this->hqps;
+        }
+        $sql = "SELECT *
+                FROM grand_relations
+                WHERE user1 = '{$this->id}'
+                AND (type LIKE '%Supervises%' OR 
+                     type LIKE '%Co-Supervises%'
+                     $extraSQL)
+                AND start_date > end_date";
+        $data = DBFunctions::execSQL($sql);
+        $hqps = array();
+        foreach($data as $row){
+            $hqp = Person::newFromId($row['user2']);
+            if($hqp->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
+                $hqps[strtolower($hqp->getName())] = $hqp;
+            }
+        }
+        $this->hqps = $hqps;
+        return $this->hqps;
+    }
+       
+    /**
+     * Returns this Person's HQP during the given dates
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return array This Person's HQP
+     */
+    function getHQPDuring($startRange, $endRange){
+        if(isset($this->hqpCache[$startRange.$endRange])){
+            return $this->hqpCache[$startRange.$endRange];
+        }
+        $sql = "SELECT *
+                FROM grand_relations
+                WHERE user1 = '{$this->id}'
+                AND type LIKE '%Supervises%'
+                AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )";
+    
+        $data = DBFunctions::execSQL($sql);
+        $hqps = array();
+        $hqps_uniq_ids = array();
+        foreach($data as $row){
+            $hqp = Person::newFromId($row['user2']);
+            if( !in_array($hqp->getId(), $hqps_uniq_ids) && $hqp->getId() != null){
+                $hqps_uniq_ids[] = $hqp->getId();
+                //if(!$hqp->isRoleDuring(HQP, $startRange, $endRange)){
+                //    continue;
+                //}
+                $hqps[] = $hqp;
+            }
+        }
+        $this->hqpCache[$startRange.$endRange] = $hqps;
+        return $hqps;
+    }
+    
+    /**
+     * Returns the Relationships this Person has between the given dates
+     * @param string $type The type of Relationship
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return array The Relationships this Person has
+     */
+    function getRelationsDuring($type='all', $startRange, $endRange){
+        $type = DBFunctions::escape($type);
+        $startRange = DBFunctions::escape($startRange);
+        $endRange = DBFunctions::escape($endRange);
+        if(isset($this->relations["{$type}{$startRange}{$endRange}"])){
+            return $this->relations["{$type}{$startRange}{$endRange}"];
+        }
+        $sql = "SELECT r.*
+                FROM grand_relations r, mw_user u
+                WHERE user1 = '{$this->id}'\n";
+        if($type == "public" || $type == "all"){
+            // do nothing
+        }
+        else{
+            $sql .= "AND type = '$type'\n";
+        }
+        $sql .= "AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )
+                AND u.user_id = r.user2
+                AND u.deleted != 1
+        ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
+        $data = DBFunctions::execSQL($sql);
+        $relations = array();
+        foreach($data as $row){
+            $relation = Relationship::newFromId($row['id']);
+            $relations[] = $relation;
+        }
+        $this->relations["{$type}{$startRange}{$endRange}"] = $relations;
+        return $relations;
+    }
+    
+    /**
+     * Returns the Relationships this Person has
+     * @param string $type The type of Relationship
+     * @param boolean $history Whether or not to include the full history of Relationships
+     * @return array The Relationships this Person has
+     */
+    function getRelations($type='all', $history=false){
+        if($type == "all"){
+            $sql = "SELECT id, type
+                    FROM grand_relations, mw_user u1, mw_user u2
+                    WHERE user1 = '{$this->id}'
+                    AND u1.user_id = user1
+                    AND u2.user_id = user2
+                    AND u1.deleted != '1'
+                    AND u2.deleted != '1'";
+            if(!$history){
+                $sql .= " AND start_date >= end_date";
+            }
+            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                $relation = Relationship::newFromId($row['id']);
+                $this->relations[$row['type']][$row['id']] = $relation;
+            }
+            return $this->relations;
+        }
+        else if($type == "public"){
+            $sql = "SELECT id, type
+                    FROM grand_relations, mw_user u1, mw_user u2
+                    WHERE user1 = '{$this->id}'
+                    AND u1.user_id = user1
+                    AND u2.user_id = user2
+                    AND u1.deleted != '1'
+                    AND u2.deleted != '1'";
+            if(!$history){
+                $sql .= " AND start_date >= end_date";
+            }
+            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                $relation = Relationship::newFromId($row['id']);
+                $this->relations[$row['type']][$row['id']] = $relation;
+            }
+            return $this->relations;
+        }
+        //if(!isset($this->relations[$type])){
+            $this->relations[$type] = array();
+            $sql = "SELECT id, type
+                    FROM grand_relations, mw_user u1, mw_user u2
+                    WHERE user1 = '{$this->id}'
+                    AND u1.user_id = user1
+                    AND u2.user_id = user2
+                    AND u1.deleted != '1'
+                    AND u2.deleted != '1'
+                    AND type = '{$type}'";
+            if(!$history){
+                $sql .= " AND start_date >= end_date";
+            }
+            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                $relation = Relationship::newFromId($row['id']);
+                $this->relations[$row['type']][$row['id']] = $relation;
+            }
+        //}
+        return $this->relations[$type];
+    }
+    
+    function getGrants($exclude=true){
+        if($this->grants == null){
+            $this->grants = array();
+            $data = DBFunctions::select(array('grand_grants'),
+                                        array('id'),
+                                        array('user_id' => EQ($this->getId()),
+                                              WHERE_OR('copi') => LIKE("%\"{$this->getId()}\";%") ));
+            foreach($data as $row){
+                $grant = Grant::newFromId($row['id']);
+                if($grant != null && $grant->getId() != 0 && !$grant->deleted){
+                    $this->grants[] = $grant;
+                }
+            }
+        }
+        $grants = $this->grants;
+        if($exclude){
+            foreach($grants as $key => $grant){
+                $skip = false;
+                foreach($grant->getExclusions() as $exclusion){
+                    if($exclusion->getId() == $this->getId()){
+                        // This Person doesn't want to be associated with this Product
+                        $skip = true;
+                    }
+                }
+                if($skip){ 
+                    unset($grants[$key]);
+                }
+            }
+        }
+        return $this->grants;
+    }
+    
+    function getGrantsBetween($start, $end, $filter=false, $exclude=true){
+        $grants = array();
+        foreach($this->getGrants() as $grant){
+            $grantStart = $grant->getStartDate();
+            $grantEnd = $grant->getEndDate();
+            if(($grantStart >= $start && $grantStart <= $end) ||
+               ($grantEnd >= $start && $grantEnd <= $end) ||
+               ($grantStart <= $start && $grantEnd >= $end)){
+                if($filter){
+                    if(strtolower($grant->getSponsor()) == "university of alberta" &&
+                       array_search($grant->getSeqNo(), array(0, 35)) !== false){
+                        // Rule 1: inside Fac of Science and start up funds
+                        continue;
+                    }
+                    else if(strtolower($grant->getSponsor()) == "university of alberta" &&
+                            array_search($grant->getSeqNo(), array(60)) !== false){
+                        // Rule 1.1: inside Fac of Science and start up funds
+                        continue;
+                    }
+                    else if($grant->getTotal() == 0){
+                        // Rule 2: blank PI names or 0 funding signal a reason to exclude
+                        continue;
+                    }
+                    else if(strpos($grant->getProjectId(), 'Z') === 0){
+                        // Rule 101: Not interesting – internal facilities support/ centre support
+                        continue;
+                    }
+                    else if(strpos($grant->getProjectId(), 'Y224') === 0){
+                        // Rule 102: AITF Centre support
+                        continue;
+                    }
+                    else if(strpos($grant->getProjectId(), 'Y000') === 0){
+                        // Rule 103: Internal Centre Funding
+                        continue;
+                    }
+                    else if(strpos($grant->getProjectId(), 'B') === 0 ||
+                            strpos($grant->getProjectId(), 'P') === 0 ||
+                            strtolower($grant->getSponsor()) === "national research council of canada"){
+                        // Rule 104: Project ID scan – Billing/Journal productions/services
+                        continue;
+                    }
+                    else if(strpos($grant->getProjectId(), 'N') === 0){
+                        // Rule 105: Other internally transferred research funds
+                        continue;
+                    }
+                    else if(strpos($grant->getProjectId(), 'D') === 0 ||
+                            strpos($grant->getProjectId(), 'W') === 0){
+                        // Rule 106: donations
+                        continue;
+                    }
+                    else if(strpos($grant->getProjectId(), 'G022') === 0 ||
+                            strpos($grant->getProjectId(), 'G099') === 0){
+                        // Rule 107: “General Research Funds”
+                        continue;
+                    }
+                    else if(strtolower($grant->getRole()) == "student" ||
+                            strstr(strtolower($grant->getProgDescription()), "fellowship") !== false ||
+                            strstr(strtolower($grant->getProgDescription()), "student") !== false ||
+                            strstr(strtolower($grant->getProgDescription()), "scholarship") !== false){
+                        // Rule 200: awards to students seems to capture all student cases
+                        continue;
+                    }
+                    else if(strtolower($grant->getSponsor()) == "university of alberta" &&
+                        (array_search($grant->getSeqNo(), array(33, 51, 53, 55, 65, 137)) !== false ||
+                         strstr(strtolower($grant->getProjectId()), "triumf") !== false
+                        )){
+                        // Rule 300: Miscellaneous not interesting for different kinds of reasons
+                        continue;
+                    }
+                    else if($grant->getTotal() < 10000){
+                        // Total funding < $10k
+                        continue;
+                    }
+                }
+                $grants[$grantStart.$grantEnd.$grant->getId()] = $grant;
+            }
+        }
+        if($exclude){
+            foreach($grants as $key => $grant){
+                $skip = false;
+                foreach($grant->getExclusions() as $exclusion){
+                    if($exclusion->getId() == $this->getId()){
+                        // This Person doesn't want to be associated with this Product
+                        $skip = true;
+                    }
+                }
+                if($skip){ 
+                    unset($grants[$key]);
+                }
+            }
+        }
+        ksort($grants);
+        $grants = array_reverse($grants);
+        return $grants;
+    }
+    
+    function getGrantAwards(){
+        return GrantAward::getAllGrantAwards(0, 999999999, $this);
+    }
+    
+    function getGrantAwardsBetween($start, $end){
+        $grants = array();
+        foreach($this->getGrantAwards() as $grant){
+            $grantStart = $grant->start_year;
+            $grantEnd = $grant->end_year;
+            if(($grantStart >= $start && $grantStart <= $end) ||
+               ($grantEnd >= $start && $grantEnd <= $end) ||
+               ($grantStart <= $start && $grantEnd >= $end)){
+                $grants[] = $grant;
+            }
+        }
+        return $grants;
+    }
+    
+    function getFecPersonalInfo(){
+        if(!isset(self::$fecInfoCache[$this->getId()])){
+            $data = DBFunctions::select(array('grand_personal_fec_info'),
+                                        array('user_id', 
+                                              'date_of_phd',
+                                              'date_of_appointment',
+                                              'date_assistant',
+                                              'date_associate',
+                                              'date_professor',
+                                              'date_probation1',
+                                              'date_probation2',
+                                              'date_tenure',
+                                              'date_retirement',
+                                              'date_last_degree',
+                                              'last_degree',
+                                              //'publication_history_refereed',
+                                              //'publication_history_books',
+                                              //'publication_history_patents',
+                                              'date_fso2',
+                                              'date_fso3',
+                                              'date_fso4',
+                                              'date_atsec1',
+                                              'date_atsec2',
+                                              'date_atsec3'),
+                                        array('user_id' => EQ($this->getId())));
+            self::$fecInfoCache[$this->getId()] = $data;
+            if(count($data) >0){
+                $row = $data[0];
+                foreach($row as $key => $value){
+                    $row[$key] = str_replace("0000-00-00 00:00:00", "", $value);
+                }
+                $this->dateOfPhd = $row['date_of_phd'];
+                $this->dateOfAppointment = $row['date_of_appointment'];
+                $this->dateOfAssistant = $row['date_assistant'];
+                $this->dateOfAssociate = $row['date_associate'];
+                $this->dateOfProfessor = $row['date_professor'];
+                $this->dateOfProbation1 = $row['date_probation1'];
+                $this->dateOfProbation2 = $row['date_probation2'];
+                $this->dateOfTenure = $row['date_tenure'];
+                $this->dateOfRetirement = $row['date_retirement'];
+                $this->dateOfLastDegree = $row['date_last_degree'];
+                $this->lastDegree = $row['last_degree'];
+                //$this->publicationHistoryRefereed = $row['publication_history_refereed'];
+                //$this->publicationHistoryBooks = $row['publication_history_books'];
+                //$this->publicationHistoryPatents = $row['publication_history_patents'];
+                $this->dateFso2 = $row['date_fso2'];
+                $this->dateFso3 = $row['date_fso3'];
+                $this->dateFso4 = $row['date_fso4'];
+                $this->dateAtsec1 = $row['date_atsec1'];
+                $this->dateAtsec2 = $row['date_atsec2'];
+                $this->dateAtsec3 = $row['date_atsec3'];
+            }
+        }
+        return $this;
+    }
+
+    function updateFecInfo(){
+        //TODO: This can be done in another file separate from this object. Did this to save time and should
+        //fix in the future
+        $me = Person::newFromWgUser();
+        if($me->getId() == $this->getId() || $me->isRoleAtLeast(STAFF)){
+            unset(self::$fecInfoCache[$this->getId()]);
+            $fec = DBFunctions::select(array('grand_personal_fec_info'),
+                                       array('*'),
+                                       array('user_id' => EQ($this->getId())));
+            if(count($fec) > 0){
+                $status = DBFunctions::update('grand_personal_fec_info', 
+                                        array('date_of_phd' => $this->dateOfPhd,
+                                              'date_of_appointment' => $this->dateOfAppointment,
+                                              'date_assistant' => $this->dateOfAssistant,
+                                              'date_associate' => $this->dateOfAssociate,
+                                              'date_professor' => $this->dateOfProfessor,
+                                              'date_tenure' => $this->dateOfTenure,
+                                              'date_probation1' => $this->dateOfProbation1,
+                                              'date_probation2' => $this->dateOfProbation2,
+                                              'date_retirement' => $this->dateOfRetirement,
+                                              'date_last_degree' => $this->dateOfLastDegree,
+                                              'last_degree' => $this->lastDegree,
+                                              //'publication_history_refereed' => $this->publicationHistoryRefereed,
+                                              //'publication_history_books' => $this->publicationHistoryBooks,
+                                              //'publication_history_patents' => $this->publicationHistoryPatents,
+                                              'date_fso2' => $this->dateFso2,
+                                              'date_fso3' => $this->dateFso3,
+                                              'date_fso4' => $this->dateFso4,
+                                              'date_atsec1' => $this->dateAtsec1,
+                                              'date_atsec2' => $this->dateAtsec2,
+                                              'date_atsec3' => $this->dateAtsec3),
+                                        array('user_id' => EQ($this->getId())));
+                if($status){
+                    DBFunctions::commit();
+                }
+                return $status;
+            }
+            else{
+                $status = DBFunctions::insert('grand_personal_fec_info',
+                                    array('user_id' => $this->getId(),
+                                          'date_of_phd' => $this->dateOfPhd,
+                                          'date_of_appointment' => $this->dateOfAppointment,
+                                          'date_assistant' => $this->dateOfAssistant,
+                                          'date_associate' => $this->dateOfAssociate,
+                                          'date_professor' => $this->dateOfProfessor,
+                                          'date_tenure' => $this->dateOfTenure,
+                                          'date_probation1' => $this->dateOfProbation1,
+                                          'date_probation2' => $this->dateOfProbation2,
+                                          'date_retirement' => $this->dateOfRetirement,
+                                          'date_last_degree' => $this->dateOfLastDegree,
+                                          'last_degree' => $this->lastDegree,
+                                          //'publication_history_refereed' => $this->publicationHistoryRefereed,
+                                          //'publication_history_books' => $this->publicationHistoryBooks,
+                                          //'publication_history_patents' => $this->publicationHistoryPatents,
+                                          'date_fso2' => $this->dateFso2,
+                                          'date_fso3' => $this->dateFso3,
+                                          'date_fso4' => $this->dateFso4,
+                                          'date_atsec1' => $this->dateAtsec1,
+                                          'date_atsec2' => $this->dateAtsec2,
+                                          'date_atsec3' => $this->dateAtsec3),
+                                           true);
+               if($status){
+                    DBFunctions::commit();
+                }
+                return $status;
+            }
+        }
+        return false;
+    }
+    
+    function hasTenure($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateOfTenure == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateOfTenure != "" && $date >= substr($this->dateOfTenure, 0, 10));
+    }
+    
+    function isAssistantProfessor($date){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateOfAssistant == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateOfAssistant != "" && $date >= substr($this->dateOfAssistant, 0, 10) && !$this->isAssociateProfessor($date) &&
+                                                                                                  !$this->isProfessor($date));
+    }
+    
+    function isAssociateProfessor($date){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateOfAssociate == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateOfAssociate != "" && $date >= substr($this->dateOfAssociate, 0, 10) && !$this->isProfessor($date));
+    }
+    
+    function isProfessor($date){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateOfProfessor == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateOfProfessor != "" && $date >= substr($this->dateOfProfessor, 0, 10));
+    }
+    
+    function isFSO2($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateFso2 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateFso2 != "" && $date >= substr($this->dateFso2, 0, 10) && !$this->isFSO3($date) &&
+                                                                                    !$this->isFSO4($date));
+    }
+    
+    function isFSO3($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateFso3 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateFso3 != "" && $date >= substr($this->dateFso3, 0, 10) && !$this->isFSO4($date));
+    }
+    
+    function isFSO4($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateFso4 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateFso4 != "" && $date >= substr($this->dateFso4, 0, 10));
+    }
+    
+    function isATSEC1($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateAtsec1 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateAtsec1 != "" && $date >= substr($this->dateAtsec1, 0, 10) && !$this->isATSEC2($date) &&
+                                                                                        !$this->isATSEC3($date));
+    }
+    
+    function isATSEC2($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateAtsec2 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateAtsec2 != "" && $date >= substr($this->dateAtsec2, 0, 10) && !$this->isATSEC3($date));
+    }
+    
+    function isATSEC3($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateAtsec3 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateAtsec3 != "" && $date >= substr($this->dateAtsec3, 0, 10));
+    }
+    
+    function isNew($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateOfAppointment == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateOfAppointment != "" && $date <= substr($this->dateOfAppointment, 0, 10));
+    }
+    
+    function isRetired($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateOfRetirement == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateOfRetirement != "" && $date >= substr($this->dateOfRetirement, 0, 10));
+    }
+    
+    /**
+     * N1XXX - New assistant professor, associate professor, or professor.
+     * M1XXX - New FSO2, FSO3, or FSO4.
+     * A1XXX - Assistant professor.
+     * B1XXX - Untenured associate professor.
+     * B2XXX - Tenured associate professor.
+     * C1XXX - Professor.
+     * D1XXX - FSO2.
+     * E1XXX - FSO3.
+     * F1XXX - FSO4.
+     * T1XXX - Assistant Lecturer
+     * T2XXX - Associate Lecturer
+     * T3XXX - Full Lecturer
+     */
+    function getFECType($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        if($this->isRetired($date)){
+            return "";
+        }
+        if($this->isRoleOn("ATS", $date) && $this->isATSEC1($date)){
+            return "T1";
+        }
+        else if($this->isRoleOn("ATS", $date) && $this->isATSEC2($date)){
+            return "T2";
+        }
+        else if($this->isRoleOn("ATS", $date) && $this->isATSEC3($date)){
+            return "T3";
+        }
+        else if($this->isNew($date) && ($this->isAssistantProfessor($date) ||
+                                        $this->isAssociateProfessor($date) ||
+                                        $this->isProfessor($date))){
+            return "N1";                          
+        }
+        else if($this->isNew($date) && ($this->isFSO2($date) ||
+                                        $this->isFSO3($date) ||
+                                        $this->isFSO4($date))){
+            return "M1";
+        }
+        else if($this->isAssistantProfessor($date)){
+            return "A1";
+        }
+        else if($this->isAssociateProfessor($date) && !$this->hasTenure($date)){
+            return "B1";
+        }
+        else if($this->isAssociateProfessor($date) && $this->hasTenure($date)){
+            return "B2";
+        }
+        else if($this->isProfessor($date)){
+            return "C1";
+        }
+        else if($this->isFSO2($date)){
+            return "D1";
+        }
+        else if($this->isFSO3($date)){
+            return "E1";
+        }
+        else if($this->isFSO4($date)){
+            return "F1";
+        }
+        return "";
+    }
+    
+    /**
+     * Returns the precomputed case number for this Person
+     */
+    function getCaseNumber($year=YEAR){
+        if(Cache::exists("case_number{$this->getId()}_{$year}")){
+            return Cache::fetch("case_number{$this->getId()}_{$year}");
+        }
+        else{
+            $data = DBFunctions::select(array('grand_case_numbers'),
+                                        array('*'),
+                                        array('user_id' => $this->getId(),
+                                              'year' => $year));
+            if(!empty($data)){
+                Cache::store("case_number{$this->getId()}_{$year}", $data[0]['number']);
+                return $data[0]['number'];
+            }
+            Cache::store("case_number{$this->getId()}_{$year}", "");
+            return "";
+        }
+    }
+    
+    function getSalary($year){
+        if(!Cache::exists("salary_{$this->id}_{$year}")){
+            $salary = DBFunctions::select(array('grand_user_salaries'),
+                                          array('salary', 'increment'),
+                                          array('user_id' => $this->getId(),
+                                                'year' => $year));
+            Cache::store("salary_{$this->id}_{$year}", @$salary[0]['salary']);
+        }
+        return Cache::fetch("salary_{$this->id}_{$year}");
+    }
+    
+    function getIncrement($year){
+        if(!Cache::exists("increment_{$this->id}_{$year}")){
+            $increment = DBFunctions::select(array('grand_user_salaries'),
+                                          array('salary', 'increment'),
+                                          array('user_id' => $this->getId(),
+                                                'year' => $year));
+            Cache::store("increment_{$this->id}_{$year}", @$increment[0]['increment']);
+        }
+        $increment = Cache::fetch("increment_{$this->id}_{$year}");
+        if($increment == ""){
+            return "N/A";
+        }
+        return $increment;
+    }
+    
+    function getCNA($year){
+        if(!Cache::exists("cna_{$this->id}_{$year}")){
+            $increment = DBFunctions::select(array('grand_cna'),
+                                             array('increment'),
+                                             array('user_id' => $this->getId(),
+                                                    'year' => $year));
+            Cache::store("cna_{$this->id}_{$year}", @$increment[0]['increment']);
+        }
+        return Cache::fetch("cna_{$this->id}_{$year}");
+    }
+    
+    static function getSalaryIncrement($year, $type){
+        if(!isset(self::$salaryCache["increment_{$type}_{$year}"])){
+            $increment = DBFunctions::select(array('grand_salary_scales'),
+                                             array("increment_$type"),
+                                             array('year' => $year));
+            self::$salaryCache["increment_{$type}_{$year}"] = @$increment[0]["increment_$type"];
+        }
+        return self::$salaryCache["increment_{$type}_{$year}"];
+    }
+    
+    static function getMinSalary($year, $type){
+        if(!isset(self::$salaryCache["min_salary_{$type}_{$year}"])){
+            $increment = DBFunctions::select(array('grand_salary_scales'),
+                                             array("min_salary_$type"),
+                                             array('year' => $year));
+            self::$salaryCache["min_salary_{$type}_{$year}"] = @$increment[0]["min_salary_$type"];
+        }
+        return self::$salaryCache["min_salary_{$type}_{$year}"];
+    }
+    
+    static function getMaxSalary($year, $type){
+        if(!isset(self::$salaryCache["max_salary_{$type}_{$year}"])){
+            $increment = DBFunctions::select(array('grand_salary_scales'),
+                                             array("max_salary_$type"),
+                                             array('year' => $year));
+            self::$salaryCache["max_salary_{$type}_{$year}"] = @$increment[0]["max_salary_$type"];
+        }
+        return self::$salaryCache["max_salary_{$type}_{$year}"];
+    }
+    
+    function create(){
+        global $wgRequest;
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(STAFF)){
+            parent::update();
+            $status = DBFunctions::update('mw_user', 
+                                    array('user_twitter' => $this->getTwitter(),
+                                          'user_website' => $this->getWebsite(),
+                                          'google_scholar_url' => $this->getGoogleScholar(),
+                                          'sciverse_id' => $this->getSciverseId(),
+                                          'orcid' => $this->getOrcId(),
+                                          'wos' => $this->getWOS(),
+                                          'user_public_profile' => $this->getProfile(false),
+                                          'profile_start_date' => $this->getProfileStartDate(),
+                                          'profile_end_date' => $this->getProfileEndDate(),
+                                          'full' => $this->full),
+                                    array('user_name' => EQ($this->getName())));
+            DBFunctions::commit();
+            Person::$cache = array();
+            Person::$aliasCache = array();
+            Person::$userRows = array();
+            Cache::delete("rolesCache");
+            Cache::delete("allPeopleCache");
+            Cache::delete("mw_user_{$this->getId()}");
+            return true;
+        }
+        return false;
+    }
+    
+    function update(){
+        global $wgImpersonating, $wgDelegating;
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEdit($this)){
+            parent::update();
+            $status = DBFunctions::update('mw_user', 
+                                          array('user_twitter' => $this->getTwitter(),
+                                                'user_website' => $this->getWebsite(),
+                                                'google_scholar_url' => $this->getGoogleScholar(),
+                                                'sciverse_id' => $this->getSciverseId(),
+                                                'orcid' => $this->getOrcId(),
+                                                'wos' => $this->getWOS(),
+                                                'user_public_profile' => $this->getProfile(false)),
+                                          array('user_id' => EQ($this->getId())));
+            if(!$wgImpersonating && !$wgDelegating){
+                DBFunctions::update('mw_user',
+                                    array('profile_start_date' => $this->getProfileStartDate(),
+                                          'profile_end_date' => $this->getProfileEndDate()),
+                                    array('user_id' => EQ($this->getId())));
+            }
+            Person::$cache = array();
+            Person::$aliasCache = array();
+            Person::$userRows = array();
+            Cache::delete("rolesCache");
+            Cache::delete("allPeopleCache");
+            Cache::delete("mw_user_{$this->getId()}");
+            return $status;
+        }
+        return false;
+    }
+    
+    function toArray(){
+        $json = parent::toArray();
+        $json['photo'] = $this->getPhoto();
+        $json['cachedPhoto'] = $this->getPhoto(true);
+        $json['phone'] = $this->getPhoneNumber();
+        $json['twitter'] = $this->getTwitter();
+        $json['website'] = $this->getWebsite();
+        $json['googleScholarId'] = $this->getGoogleScholar();
+        $json['sciverseId'] = $this->getSciverseId();
+        $json['orcId'] = $this->getOrcId();
+        $json['wos'] = $this->getWOS();
+        $json['profile_start_date'] = $this->getProfileStartDate();
+        $json['profile_end_date'] = $this->getProfileEndDate();
+        $json['publicProfile'] = $this->getProfile(false);
+        $json['ldap'] = $this->getLdap();
+        return $json;
+    }
+    
+}
+
+class LimitedPerson extends Person {
+    
+    function LimitedPerson($data){
+        self::Person($data);
+        $this->full = 0;
+    }
+    
+}
 
 ?>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/35" extends="Letters/Base">
+    <ReportSection id="letter" title="FEC Decision Regarding Merit">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>Each year, the Faculty Evaluation Committee (FEC) is charged with the responsibility of awarding incrementation to its faculty, from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
+                
+                Pursuant to Article A6.21.5(h) of Schedule A, I wish to advise that at its reconsideration meeting on December 7, 2023, FEC did not accept your minimal acceptable position which was supported by the recommendation of your Department Chair. Instead it decided to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} for the following reasons:
+                
+                <ul><li>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
+                
+                <p>Having sought reconsideration by the FEC, you have the right to appeal its decision to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A. Written notice of your intention to appeal must be provided to the Chair of the GAC through the Office of the Provost, cc’d to Faculty Relations, within 10 working days from the receipt of the letter confirming FEC’s reconsideration decision.</p>
+                
+                <p>It is advisable that you consult the Associate of Academic Staff University of Alberta (AASUA).</p>
+                
+                <p>Should you have any procedural questions, please contact the Secretary to FEC, Lori Dammann-Thomson, at 780-492-6232 or sciea@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

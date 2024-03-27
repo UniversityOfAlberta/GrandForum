@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/32" extends="Letters/Base">
+    <ReportSection id="letter" title="FEC Decision Regarding Merit">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>Each year, the Faculty Evaluation Committee (FEC) is charged with the responsibility of awarding incrementation to its faculty, from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
+                
+                At its meeting of December 7, 2023, the FEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair. This decision was based on the following: 
+                <ul><li>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
+
+                <p>Since you chose to appear before FEC to {getText({$report_type}, TABLE, PRESENT_CASE, {$user_id}, 1, 0)}, as per Article A6.16.8 of Schedule A, you have the right to appeal this decision to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of the letter confirming FEC’s decision.</p>
+                
+                <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
+                
+                <p>Should you have any procedural questions, please contact the Secretary to FEC, Lori Dammann-Thomson, at 780-492-6232 or sciea@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
