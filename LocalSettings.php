@@ -422,6 +422,9 @@ function adjustBrightness($hex, $steps) {
  */
 function time2date($time, $format='F j, Y'){
     $strtime = strtotime($time);
+    if($strtime === false){
+        return $time;
+    }
     return date($format, $strtime);
 }
 

@@ -37,6 +37,7 @@ class FECHistory extends SpecialPage{
                                     <th>Probation1</th>
                                     <th>Probation2</th>
                                     <th>Tenure</th>
+                                    <th>Sabbaticals</th>
                                     <th>Retirement</th>
                                     <th>Date of Last Degree</th>
                                     <th>Last Degree</th>
@@ -48,6 +49,13 @@ class FECHistory extends SpecialPage{
             if($person->getId() != 0 && $person instanceof FullPerson){
                 $fec = $person->getFecPersonalInfo();
                 $goingToFec = ($person->getCaseNumber() == "") ? "No" : "Yes";
+                $sabbs = array();
+                if(!empty($person->sabbatical)){
+                    foreach($person->sabbatical as $sabbatical){
+                        $end = date('Y-m-d', strtotime("+{$sabbatical['duration']} month -1 day", strtotime($sabbatical['start'])));
+                        $sabbs[] = "{$sabbatical['start']} - {$end}";
+                    }
+                }
                 $wgOut->addHTML("<tr>
                                      <td><a href='{$person->getUrl()}'>{$person->getNameForForms()}</a></td>
                                      <td>{$person->getDepartment()}</td>
@@ -67,6 +75,7 @@ class FECHistory extends SpecialPage{
                                      <td>".str_replace("00:00:00", "", $fec->dateOfProbation1)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfProbation2)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfTenure)."</td>
+                                     <td style='white-space:nowrap;'>".implode("<br />", $sabbs)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfRetirement)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfLastDegree)."</td>
                                      <td>{$fec->lastDegree}</td>

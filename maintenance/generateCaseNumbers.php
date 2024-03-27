@@ -8,11 +8,11 @@
     $start = (YEAR-1)."-07-01";
     $end = (YEAR)."-07-01";
     
-    $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end));//, 
-                             //Person::getAllPeopleDuring("ATS", $start, $end));
+    $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end),
+                             Person::getAllPeopleDuring("ATS", $start, $end));
     
-    /*DBFunctions::delete('grand_case_numbers',
-                        array('year' => 2020));*/
+    DBFunctions::delete('grand_case_numbers',
+                        array('year' => YEAR));
     $data = DBFunctions::execSQL("SELECT `user_id`, `date_of_phd`, `date_of_appointment` 
                                   FROM `grand_personal_fec_info` 
                                   WHERE `date_retirement` >= '{$end}' OR 
@@ -60,7 +60,9 @@
            $fecType == "D1" ||
            $fecType == "E1" ||
            $fecType == "F1" ||
-           $fecType == "T1"){
+           $fecType == "T1" ||
+           $fecType == "T2" ||
+           $fecType == "T3"){
             if($row['date_of_appointment'] == "0000-00-00 00:00:00"){
                 echo "Missing Appointment date: {$person->getNameForForms()}\n";
             }
@@ -91,10 +93,10 @@
 
     foreach($data as $row){
         echo strip_tags($row['case']).": {$row['person']->getNameForForms()}\n"; // ({$row['person']->getId()})\n";
-        /*DBFunctions::insert('grand_case_numbers',
+        DBFunctions::insert('grand_case_numbers',
                             array('user_id' => $row['person']->getId(),
-                                  'year' => 2020,
-                                  'number' => $row['case']));*/
+                                  'year' => YEAR,
+                                  'number' => $row['case']));
     }
 
 ?>

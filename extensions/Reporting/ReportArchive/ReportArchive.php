@@ -130,7 +130,7 @@ class ReportArchive extends SpecialPage {
         }
         $wgOut->addHTML("<p>You can view your submitted Annual Reports below (starting from 2018):</p>
             <table class='wikitable'>");
-        for($y=YEAR;$y>=2018;$y--){
+        for($y=YEAR+1;$y>=2018;$y--){
             $wgOut->addHTML("<tr>
                 <td align='center' style='padding-left:1em; padding-right:1em;'>{$y}</td>");
                 
@@ -178,12 +178,14 @@ class ReportArchive extends SpecialPage {
             $letter2Url = "";
             $letter3Url = "";
             $letter4Url = "";
+            $varianceUrl = "";
 
             $letter = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER", $y); // Past Years
             $letter1 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER1", $y);
             $letter2 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER2", $y);
             $letter3 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER3", $y);
             $letter4 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER4", $y);
+            $variance = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER5", $y-1);
             if(count($letter) > 0){
                 $pdf = PDF::newFromToken($letter[0]['token']);
                 $letterUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Letter</a><br />";
@@ -228,8 +230,12 @@ class ReportArchive extends SpecialPage {
                 
                 $letter4Url = "<a href='{$pdf->getUrl()}' target='_blank'>Letter Template {$blob_data}</a><br />";
             }
+            if(count($variance) > 0){
+                $pdf = PDF::newFromToken($variance[0]['token']);
+                $varianceUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Variance of Responsibilities</a><br />";
+            }
             
-            $wgOut->addHTML("<td align='center' style='padding-left:1em; padding-right:1em;'>{$arUrl}</td>
+            $wgOut->addHTML("<td align='center' style='padding-left:1em; padding-right:1em;'>{$varianceUrl}{$arUrl}</td>
                              <td align='center' style='padding-left:1em; padding-right:1em;'>{$reccUrl}</td>
                              <td align='center' style='padding-left:1em; padding-right:1em;'>{$letter1Url}{$letter2Url}{$letter3Url}{$letter4Url}</td>");
             $wgOut->addHTML("</tr>");

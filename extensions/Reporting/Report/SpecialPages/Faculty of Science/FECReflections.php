@@ -552,6 +552,12 @@ class FECReflections extends SpecialPage {
 	    return $blob_data;
     }
     
+    static function saveBlobValue($value, $rpType, $rpSection, $rpItem, $rpSubItem=0, $year=YEAR, $userId=0){
+        $blob = new ReportBlob(BLOB_TEXT, $year, $userId, 0);
+	    $blob_address = ReportBlob::create_address($rpType, $rpSection, $rpItem, $rpSubItem);
+        $blob->store($value, $blob_address);
+    }
+    
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
