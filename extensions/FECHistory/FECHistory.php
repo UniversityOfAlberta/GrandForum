@@ -53,7 +53,7 @@ class FECHistory extends SpecialPage{
                 $sabbs = array();
                 if(!empty($person->sabbatical)){
                     foreach($person->sabbatical as $sabbatical){
-                        $end = date('Y-m-d', strtotime("+{$sabbatical['duration']} month", strtotime($sabbatical['start'])));
+                        $end = date('Y-m-d', strtotime("+{$sabbatical['duration']} month -1 day", strtotime($sabbatical['start'])));
                         $sabbs[] = "{$sabbatical['start']} - {$end}";
                     }
                 }

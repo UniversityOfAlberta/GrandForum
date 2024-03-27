@@ -169,7 +169,7 @@ class PersonFECTab extends AbstractEditableTab {
         if(!empty($this->person->sabbatical)){
             $sabbs = array();
             foreach($this->person->sabbatical as $sabbatical){
-                $end = date('Y-m-d', strtotime("+{$sabbatical['duration']} month", strtotime($sabbatical['start'])));
+                $end = date('Y-m-d', strtotime("+{$sabbatical['duration']} month -1 day", strtotime($sabbatical['start'])));
                 $sabbs[] = "{$sabbatical['start']} - {$end}";
             }
             $this->html .= "<tr><td align='right' valign='top' style='white-space:nowrap;'><b>Sabbaticals:</b></td><td>".implode("<br />", $sabbs)."</td></tr>";
