@@ -17,9 +17,11 @@ class PersonFECTab extends AbstractEditableTab {
         $this->person->getFecPersonalInfo();
         if($me->isRoleAtLeast(STAFF)){
             $sabbaticals = array();
-            foreach(@$_POST['sabbatical_start'] as $key => $start){
-                $sabbaticals[] = array('start' => $start,
-                                       'duration' => @$_POST['sabbatical_duration'][$key]);
+            if(isset($_POST['sabbatical_start']) && is_array($_POST['sabbatical_start'])){
+                foreach($_POST['sabbatical_start'] as $key => $start){
+                    $sabbaticals[] = array('start' => $start,
+                                           'duration' => @$_POST['sabbatical_duration'][$key]);
+                }
             }
             $this->person->dateOfPhd = @$_POST['dateOfPhd'];
             $this->person->dateOfAppointment = @$_POST['dateOfAppointment'];
