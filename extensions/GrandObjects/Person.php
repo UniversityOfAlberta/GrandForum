@@ -631,6 +631,19 @@ class Person extends BackboneModel {
         }
     }
     
+    /**
+     * Filters people to only include people within the instance's faculty
+     */
+    static function filterFaculty($people){
+        return array_filter($people, function($person){
+            if($person instanceof FullPerson){
+                $person->getFecPersonalInfo();
+                return ($person->faculty == getFaculty());
+            }
+            return false;
+        });
+    }
+    
     function isTAEligible($date=null){
         if($date == null){
             $date = date('Y-m-d');

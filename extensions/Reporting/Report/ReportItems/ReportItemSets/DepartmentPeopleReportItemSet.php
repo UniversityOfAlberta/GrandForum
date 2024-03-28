@@ -31,13 +31,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
             $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         }
         
-        $allPeople = array_filter($allPeople, function($person){
-            if($person instanceof FullPerson){
-                $person->getFecPersonalInfo();
-                return ($person->faculty == getFaculty());
-            }
-            return false;
-        });
+        $allPeople = Person::filterFaculty($allPeople);
         
         foreach($allPeople as $person){
             if($person->getCaseNumber($this->getReport()->year) == ""){

@@ -10,6 +10,8 @@
     
     $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end),
                              Person::getAllPeopleDuring("ATS", $start, $end));
+                             
+    $allPeople = Person::filterFaculty($allPeople);
     
     DBFunctions::delete('grand_case_numbers',
                         array('year' => YEAR));
