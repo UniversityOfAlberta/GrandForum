@@ -153,7 +153,7 @@ class ApplicationTab extends AbstractTab {
         }
         else{
             $this->html .= "<th>Generation Date</th>
-                            <th width='1%'>PDF&nbsp;Download</th>";
+                            <th width='1%'>Download</th>";
             foreach($this->extraCols as $key => $extra){
                 $this->html .= (!is_numeric($key)) ? "<th>$key</th>" : "<th>Extra</th>";
             }
@@ -213,9 +213,10 @@ class ApplicationTab extends AbstractTab {
                         foreach($report as $rep){
                             $pdf = $rep->getPDF();
                             $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download</a>" : "";
+                            $docButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}&doc'>Download</a>" : "";
                             $pdfDate = (count($pdf) > 0) ? "{$pdf[0]['timestamp']}" : "";
                             $this->html .= "<td align='center'>{$pdfDate}</td>
-                                            <td>{$pdfButton}</td>";
+                                            <td align='center'>{$pdfButton}&nbsp;{$docButton}</td>";
                             foreach($this->extraCols as $extra){
                                 $section = new EditableReportSection();
                                 $section->setParent($rep);
@@ -251,10 +252,11 @@ class ApplicationTab extends AbstractTab {
                                     $this->html .= "<td></td>";
                                 }
                             }
-                            $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download</a>" : "";
+                            $pdfButton = (count($pdf) > 0) ? "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'><img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /></a>" : "";
+                            $docButton = (count($pdf) > 0) ? "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}&doc'><img src='{$wgServer}{$wgScriptPath}/skins/word.gif' /></a>" : "";
                             $pdfDate = (count($pdf) > 0) ? "{$pdf[0]['timestamp']}" : "";
                             $this->html .= "<td align='center'>{$pdfDate}</td>
-                                            <td>{$pdfButton}</td>";
+                                            <td align='center'>{$pdfButton}&nbsp;{$docButton}</td>";
                             foreach($this->extraCols as $extra){
                                 $section = new EditableReportSection();
                                 $section->setParent($rep);
