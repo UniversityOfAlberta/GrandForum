@@ -21,6 +21,7 @@ class PersonFECTab extends AbstractEditableTab {
                 $sabbaticals[] = array('start' => $start,
                                        'duration' => @$_POST['sabbatical_duration'][$key]);
             }
+            $this->person->faculty = @$_POST['faculty'];
             $this->person->dateOfPhd = @$_POST['dateOfPhd'];
             $this->person->dateOfAppointment = @$_POST['dateOfAppointment'];
             $this->person->dateOfAssistant = @$_POST['dateOfAssistant'];
@@ -75,13 +76,8 @@ class PersonFECTab extends AbstractEditableTab {
     }
     
     function isChair(){
-        $departments = array("Mathematical And Statistical Sciences",
-                             "Chemistry",
-                             "Psychology",
-                             "Biological Sciences",
-                             "Computing Science",
-                             "Physics",
-                             "Earth And Atmospheric Sciences");
+        global $facultyMap, $config;
+        $departments = $facultyMap[str_replace("Faculty of ", "", $config->getValue('networkName'))]; 
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(STAFF)){
             return true;
@@ -152,6 +148,7 @@ class PersonFECTab extends AbstractEditableTab {
         $hrNoteLink = ($hrNoteMD5 != "") ? "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$hrNoteMD5}'>Download</a>" : "";
         
         $this->html .= "<table>";
+        $this->html .= ($this->person->faculty != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Faculty:</b></td><td>{$this->person->faculty}</td></tr>" : "";
         $this->html .= ($this->person->dateOfPhd != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of PhD:</b></td><td>".substr($this->person->dateOfPhd, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->dateOfAppointment != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of Appointment:</b></td><td>".substr($this->person->dateOfAppointment, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->dateOfAssistant != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of Assistant:</b></td><td>".substr($this->person->dateOfAssistant, 0, 10)."</td></tr>" : "";
@@ -182,6 +179,7 @@ class PersonFECTab extends AbstractEditableTab {
     }
     
     function generateEditBody(){
+        global $facultyMap;
         if(!$this->userCanView()){
             return "";
         }
@@ -200,7 +198,8 @@ class PersonFECTab extends AbstractEditableTab {
                                           </div>";
                 }
             }
-            
+            $facultySelect = new SelectBox('faculty', 'faculty', $this->person->faculty, array_merge(array(''), array_keys($facultyMap)));
+            $this->html .= "<tr><td align='right'><b>Faculty:</b></td><td>{$facultySelect->render()}</td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of PhD:</b></td><td><input type='text' name='dateOfPhd' class='calendar' style='display:none;' value='".substr($this->person->dateOfPhd, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of Appointment:</b></td><td><input type='text' name='dateOfAppointment' class='calendar' style='display:none;' value='".substr($this->person->dateOfAppointment, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of Assistant:</b></td><td><input type='text' name='dateOfAssistant' class='calendar' style='display:none;' value='".substr($this->person->dateOfAssistant, 0, 10)."' /></td></tr>";

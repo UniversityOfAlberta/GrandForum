@@ -3,6 +3,8 @@
 /**
  * @package GrandObjects
  */
+ 
+@include_once("facultyMap.php");
 
 class Person extends BackboneModel {
 
@@ -20,6 +22,7 @@ class Person extends BackboneModel {
     static $fecInfoCache = array();
     static $salaryCache = array();
     static $personSalaryCache = array();
+    static $facultyMap = array();
     
     static $studentPositions = array('msc'   => array("msc",
                                                       "m.sc.",
@@ -3323,6 +3326,7 @@ class FullPerson extends Person {
     var $hqpCache = array();
     var $grants;
     
+    var $faculty;
     var $dateOfPhd;
     var $dateOfAppointment;
     var $dateOfAssistant;
@@ -3839,6 +3843,7 @@ class FullPerson extends Person {
         if(!isset(self::$fecInfoCache[$this->getId()])){
             $data = DBFunctions::select(array('grand_personal_fec_info'),
                                         array('user_id', 
+                                              'faculty',
                                               'date_of_phd',
                                               'date_of_appointment',
                                               'date_assistant',
@@ -3867,6 +3872,7 @@ class FullPerson extends Person {
                 foreach($row as $key => $value){
                     $row[$key] = str_replace("0000-00-00 00:00:00", "", $value);
                 }
+                $this->faculty = $row['faculty'];
                 $this->dateOfPhd = $row['date_of_phd'];
                 $this->dateOfAppointment = $row['date_of_appointment'];
                 $this->dateOfAssistant = $row['date_assistant'];
@@ -3904,7 +3910,8 @@ class FullPerson extends Person {
                                        array('user_id' => EQ($this->getId())));
             if(count($fec) > 0){
                 $status = DBFunctions::update('grand_personal_fec_info', 
-                                        array('date_of_phd' => $this->dateOfPhd,
+                                        array('faculty' => $this->faculty,
+                                              'date_of_phd' => $this->dateOfPhd,
                                               'date_of_appointment' => $this->dateOfAppointment,
                                               'date_assistant' => $this->dateOfAssistant,
                                               'date_associate' => $this->dateOfAssociate,
@@ -3934,6 +3941,7 @@ class FullPerson extends Person {
             else{
                 $status = DBFunctions::insert('grand_personal_fec_info',
                                     array('user_id' => $this->getId(),
+                                          'faculty' => $this->faculty,
                                           'date_of_phd' => $this->dateOfPhd,
                                           'date_of_appointment' => $this->dateOfAppointment,
                                           'date_assistant' => $this->dateOfAssistant,
@@ -4339,6 +4347,14 @@ class LimitedPerson extends Person {
         $this->full = 0;
     }
     
+}
+
+if(isset($facultyMap)){
+    Person::$facultyMap = array_flip(array_flatten($facultyMap));
+    foreach(Person::$facultyMap as $key => $val){
+        $exploded = explode(".", $val);
+        Person::$facultyMap[$key] = $exploded[0];
+    }
 }
 
 ?>

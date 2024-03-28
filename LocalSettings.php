@@ -457,6 +457,20 @@ function wfReportTimeOld() {
 		: sprintf( "<!-- Served in %01.3f secs (%01.1f %s used). -->", $elapsed, $mem, $bytes[$ind] );
 }
 
+// https://arjunphp.com/flatten-nested-arrays-using-php/
+function array_flatten($array, $prefix = '') {     
+    $result = array();     
+    foreach($array as $key=>$value) {
+        if(is_array($value)) {
+            $result = $result + array_flatten($value, $prefix . $key . '.');
+        }
+        else {
+            $result[$prefix.$key] = $value;
+        }
+    }
+    return $result;
+}
+
 function sanitizeInput($str){
     $str = str_replace("&", "&amp;", $str);
     $str = str_replace("<", "&lt;", $str);
