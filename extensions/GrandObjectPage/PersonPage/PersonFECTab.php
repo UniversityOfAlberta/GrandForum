@@ -78,8 +78,8 @@ class PersonFECTab extends AbstractEditableTab {
     }
     
     function isChair(){
-        global $facultyMap, $config;
-        $departments = $facultyMap[str_replace("Faculty of ", "", $config->getValue('networkName'))]; 
+        global $facultyMap;
+        $departments = $facultyMap[getFaculty()]; 
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(STAFF)){
             return true;

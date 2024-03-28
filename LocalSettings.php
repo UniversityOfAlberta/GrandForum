@@ -293,6 +293,11 @@ function unaccentChars($str){
     return $str;
 }
 
+function getFaculty(){
+    global $config;
+    return str_replace("Faculty of ", "", $config->getValue('networkName'));
+}
+
 // Encodes a large json object (usually arrays)
 // It still returns a string, but constructs it incrementally
 function large_json_encode($data){
@@ -391,6 +396,20 @@ function array_pluck($array, $field){
     return $ret;
 }
 
+// https://arjunphp.com/flatten-nested-arrays-using-php/
+function array_flatten($array, $prefix = '') {     
+    $result = array();     
+    foreach($array as $key=>$value) {
+        if(is_array($value)) {
+            $result = $result + array_flatten($value, $prefix . $key . '.');
+        }
+        else {
+            $result[$prefix.$key] = $value;
+        }
+    }
+    return $result;
+}
+
 function adjustBrightness($hex, $steps) {
     // Steps should be between -255 and 255. Negative = darker, positive = lighter
     $steps = max(-255, min(255, $steps));
@@ -455,20 +474,6 @@ function wfReportTimeOld() {
 	return $wgShowHostnames
 		? sprintf( "<!-- Served by %s in %01.3f secs (%01.1f %s used). -->", wfHostname(), $elapsed, $mem, $bytes[$ind] )
 		: sprintf( "<!-- Served in %01.3f secs (%01.1f %s used). -->", $elapsed, $mem, $bytes[$ind] );
-}
-
-// https://arjunphp.com/flatten-nested-arrays-using-php/
-function array_flatten($array, $prefix = '') {     
-    $result = array();     
-    foreach($array as $key=>$value) {
-        if(is_array($value)) {
-            $result = $result + array_flatten($value, $prefix . $key . '.');
-        }
-        else {
-            $result[$prefix.$key] = $value;
-        }
-    }
-    return $result;
 }
 
 function sanitizeInput($str){
