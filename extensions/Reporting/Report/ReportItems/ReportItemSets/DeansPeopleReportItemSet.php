@@ -13,6 +13,14 @@ class DeansPeopleReportItemSet extends ReportItemSet {
         }
         
         $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
+        $allPeople = array_filter($allPeople, function($person){
+            if($person instanceof FullPerson){
+                $person->getFecPersonalInfo();
+                return ($person->faculty == getFaculty());
+            }
+            return false;
+        });
+        
         $data = array();
         foreach($allPeople as $person){
             if($person->getCaseNumber($this->getReport()->year) == ""){

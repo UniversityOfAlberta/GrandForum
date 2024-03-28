@@ -15,6 +15,15 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         else {
             $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         }
+        
+        $allPeople = array_filter($allPeople, function($person){
+            if($person instanceof FullPerson){
+                $person->getFecPersonalInfo();
+                return ($person->faculty == getFaculty());
+            }
+            return false;
+        });
+        
         $includeDean = (strtolower($this->getAttr("includeDean", "false")) == "true");
         $includeDD = (strtolower($this->getAttr("includeDD", "true")) == "true");
         $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
