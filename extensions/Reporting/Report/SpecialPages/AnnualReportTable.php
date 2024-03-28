@@ -72,6 +72,7 @@ class AnnualReportTable extends SpecialPage{
                     $people[] = Person::newFromId($row['person_id']);
                 }
             }
+            $people = Person::filterFaculty($people);
             foreach($people as $person){
                 $case = $person->getCaseNumber($y);
                 if($case != ""){

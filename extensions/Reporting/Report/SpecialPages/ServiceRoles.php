@@ -33,6 +33,10 @@ class ServiceRoles extends SpecialPage {
                             <tbody>");
         foreach(Person::getAllServiceRoles() as $service){
             $person = Person::newFromId($service['user_id']);
+            $fec = $person->getFecPersonalInfo();
+            if($person->faculty != getFaculty()){
+                continue;
+            }
             $wgOut->addHTML("<tr>
                                 <td><a href='{$person->getUrl()}'>{$person->getReversedName()}</a></td>
                                 <td>{$service['dept']}</td>

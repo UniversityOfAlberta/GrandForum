@@ -48,6 +48,9 @@ class FECHistory extends SpecialPage{
             $person = Person::newFromId($row['user_id']);
             if($person->getId() != 0 && $person instanceof FullPerson){
                 $fec = $person->getFecPersonalInfo();
+                if($person->faculty != getFaculty()){
+                    continue;
+                }
                 $goingToFec = ($person->getCaseNumber() == "") ? "No" : "Yes";
                 $sabbs = array();
                 if(!empty($person->sabbatical)){

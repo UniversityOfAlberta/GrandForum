@@ -8,11 +8,6 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 
-require_once("GraduateStudents.php");
-require_once("AnnualReportTable.php");
-require_once("FECReflections.php");
-require_once("ServiceRoles.php");
-
 class Report extends AbstractReport{
     
     function Report(){

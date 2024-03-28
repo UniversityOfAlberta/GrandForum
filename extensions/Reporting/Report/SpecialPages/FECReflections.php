@@ -9,17 +9,12 @@ $wgHooks['SubLevelTabs'][] = 'FECReflections::createSubTabs';
 
 class FECReflections extends SpecialPage {
     
-    static $validDepts = array("All",
-                               "Earth And Atmospheric Sciences",
-                               "Mathematical And Statistical Sciences",
-                               "Physics",
-                               "Psychology",
-                               "Biological Sciences",
-                               "Computing Science",
-                               "Chemistry");
+    static $validDepts = array("All");
     
     function FECReflections(){
+        global $config, $facultyMap;
         parent::__construct("FECReflections", null, true);
+        self::$validDepts = array_merge(self::$validDepts, $facultyMap[getFaculty()]);
     }
     
     function userCanExecute($user){
@@ -30,7 +25,7 @@ class FECReflections extends SpecialPage {
     function showStats($year){
         global $wgOut, $wgServer, $wgScriptPath;
         $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
-	    $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
+	    $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", getFaculty());
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
 	    //$blob_data = null;
@@ -59,6 +54,7 @@ class FECReflections extends SpecialPage {
         }
         else{
             $people = Person::getAllPeopleDuring(NI, "2000-01-01", "2100-01-01");
+            $people = Person::filterFaculty($people);
             $publications = array('pr' => array(),
                                   'nonpr' => array());
             $rankings = array();
@@ -351,7 +347,7 @@ class FECReflections extends SpecialPage {
                           'students' => $students);
             
             $blob = new ReportBlob(BLOB_ARRAY, $year, 0, 0);
-            $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", 0);
+            $blob_address = ReportBlob::create_address("RP_FEC_REFLECTIONS", "REFLECTIONS", "REFLECTIONS", getFaculty());
             $blob->store($data, $blob_address, false);
         }
         
@@ -389,16 +385,16 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("   <tr><td><b>Other Refereed:</b></td><td>".@count($publications['pr']['others'])."</td></tr>");
         $wgOut->addHTML("   <tr><td><b>Total Refereed:</b></td><td>".($totalRefereed)."</td></tr>");
         $wgOut->addHTML("   <tr><td><b># Faculty:</b></td><td>$nPeople</td></tr>");
-        $wgOut->addHTML("   <tr><td><b>Average/Faculty:</b></td><td>".number_format($totalRefereed/$nPeople, 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Average/Faculty:</b></td><td>".number_format($totalRefereed/max(1, $nPeople), 4)."</td></tr>");
         $wgOut->addHTML("   <tr><td><b>Non-refereed:</b></td><td>".@count($publications['nonpr']['journals'])."</td></tr>");
         $wgOut->addHTML("   <tr><td><b>Books:</b></td><td>".@count($publications['nonpr']['books'])."</td></tr>");
         $wgOut->addHTML("   <tr><td><b>Patents:</b></td><td>".@count($publications['nonpr']['patents'])."</td></tr>");
         $wgOut->addHTML("   <tr><th colspan='2'>Ranking Percentiles</th></tr>");
-        $wgOut->addHTML("   <tr><td><b>1-10%:</b></td><td>".number_format($n1_10/count($rankings), 4)."</td></tr>");
-        $wgOut->addHTML("   <tr><td><b>10-30%:</b></td><td>".number_format($n10_30/count($rankings), 4)."</td></tr>");
-        $wgOut->addHTML("   <tr><td><b>30-50%:</b></td><td>".number_format($n30_50/count($rankings), 4)."</td></tr>");
-        $wgOut->addHTML("   <tr><td><b>50-100%:</b></td><td>".number_format($n50_100/count($rankings), 4)."</td></tr>");
-        $wgOut->addHTML("   <tr><td><b>Unranked:</b></td><td>".number_format($unranked/count($rankings), 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>1-10%:</b></td><td>".number_format($n1_10/max(1, count($rankings)), 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>10-30%:</b></td><td>".number_format($n10_30/max(1, count($rankings)), 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>30-50%:</b></td><td>".number_format($n30_50/max(1, count($rankings)), 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>50-100%:</b></td><td>".number_format($n50_100/max(1, count($rankings)), 4)."</td></tr>");
+        $wgOut->addHTML("   <tr><td><b>Unranked:</b></td><td>".number_format($unranked/max(1, count($rankings)), 4)."</td></tr>");
         $wgOut->addHTML("</table>");
         
         // FEC Stats
@@ -504,13 +500,15 @@ class FECReflections extends SpecialPage {
                                     <th style='width:6em;'>Associate</th>
                                     <th style='width:6em;'>Full</th>
                                 </tr>");
-            foreach($studentRows as $key => $row){
-                $wgOut->addHTML("<tr>
-                                    <td><b>{$key}</b></td>
-                                    <td align='right'>".@intval($students["A"][$dept][$key])."</td>
-                                    <td align='right'>".@intval($students["B"][$dept][$key])."</td>
-                                    <td align='right'>".@intval($students["C"][$dept][$key])."</td>
-                                 </tr>");
+            if(is_array($studentRows)){
+                foreach($studentRows as $key => $row){
+                    $wgOut->addHTML("<tr>
+                                        <td><b>{$key}</b></td>
+                                        <td align='right'>".@intval($students["A"][$dept][$key])."</td>
+                                        <td align='right'>".@intval($students["B"][$dept][$key])."</td>
+                                        <td align='right'>".@intval($students["C"][$dept][$key])."</td>
+                                     </tr>");
+                }
             }
             $wgOut->addHTML("</table></div>");
         }
