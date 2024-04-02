@@ -1865,10 +1865,10 @@ class ReportItemCallback {
         return substr($fecInfo->dateOfAppointment, 0, 10);
     }
     
-    function getFecPersonalInfo($field){
+    function getFecPersonalInfo($field, $formatAsDate=true){
         $person = Person::newFromId($this->reportItem->personId);
         $fecInfo = $person->getFecPersonalInfo();
-        return substr($fecInfo->{$field}, 0, 10);
+        return ($formatAsDate) ? substr($fecInfo->{$field}, 0, 10) : $fecInfo->{$field};
     }
     
     function getUserPhDUni(){

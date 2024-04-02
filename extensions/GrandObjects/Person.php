@@ -2596,7 +2596,7 @@ class Person extends BackboneModel {
         foreach($relations as $r){
             $universities = $this->getUniversitiesDuring("0000-00-00", "2100-00-00", $r->user2);
             $role = $r->getType();
-            if(implode($hqpTypes) == "committee" || $hqpTypes == "committee"){
+            if(@implode($hqpTypes) == "committee" || $hqpTypes == "committee"){
                 if($role == SUPERVISES || $role == CO_SUPERVISES){
                     continue;
                 }
@@ -2627,7 +2627,7 @@ class Person extends BackboneModel {
                 $minInterval = 1000000;
                 $relStart = new DateTime($r->getStartDate());
                 foreach($universities as $university){
-                    if(implode($hqpTypes) == "committee" || $hqpTypes == "committee" ||
+                    if(@implode($hqpTypes) == "committee" || $hqpTypes == "committee" ||
                        @in_array(strtolower($university['position']), $hqpTypes) || 
                        ($hqpTypes == "other" && !in_array(strtolower($university['position']), $merged))){
                         $uniStart = new DateTime($university['start']);
@@ -2654,10 +2654,10 @@ class Person extends BackboneModel {
             $research_area = $university['research_area'];
             $position = $university['position'];
             
-            if(implode($hqpTypes) != "committee" && 
-               $hqpTypes == "committee" && 
+            if(@implode($hqpTypes) != "committee" && 
+               $hqpTypes != "committee" && 
                !@in_array(strtolower($position), $hqpTypes) && 
-               !(implode($hqpTypes) != "other" && $hqpTypes != "other" && !in_array(strtolower($position), $merged))){
+               !(@implode($hqpTypes) != "other" && $hqpTypes != "other" && !in_array(strtolower($position), $merged))){
                 continue;
             }
 

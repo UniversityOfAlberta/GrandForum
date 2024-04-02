@@ -508,6 +508,11 @@ EOF;
 		        padding: ".(1*$DPI_CONSTANT)."px;
 		    }
 		    
+		    #pdfBody .nospacing td {
+		        padding: 0;
+		        white-spacing: nowrap;
+		    }
+		    
 		    #pdfBody th {
 		        text-align: center;
 		    }
