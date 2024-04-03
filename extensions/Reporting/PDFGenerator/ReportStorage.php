@@ -114,14 +114,16 @@ class ReportStorage {
     
     function fetch_html($tok){
         $tok = DBFunctions::escape($tok);
-        $sql = "SELECT html FROM grand_pdf_report WHERE token = '{$tok}';";
+        $sql = "SELECT html, encrypted FROM grand_pdf_report 
+                WHERE ((encrypted = 0 AND token = '{$tok}') OR 
+                       (encrypted = 1 AND token = '".@decrypt($tok, true)."'))";
         $res = DBFunctions::execSQL($sql);
         if (DBFunctions::getNRows() <= 0) {
             return false;
         }
 
         // FIXME: dangerous.
-        return $res[0]['html'];
+        return ($res[0]['encrypted']) ? decrypt($res[0]['html']) : $res[0]['html'];
     }
 
     function fetch_data($tok) {
