@@ -19,7 +19,7 @@
             <SectionPermission id="submit" permissions="--" />
         </If>
     </Permissions>
-    <ReportSection id="report" type="NextPrevReportSection" name="Project Report" title="{$project_name} {replace(_,:,{GET(id)})} Report">
+    <ReportSection id="report" type="EditableReportSection" name="Project Report" title="{$project_name} {replace(_,:,{GET(id)})} Report">
         <!-- Past Reports -->
         <Static>
             <![CDATA[
