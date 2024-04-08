@@ -97,12 +97,24 @@ class PersonGradStudentsTab extends AbstractTab {
         $rows = array();
         $data = $this->person->getStudentInfo($hqpTypes, $startDate, $endDate);
         foreach($data as $key => $row){
+            $hqp = Person::newFromId($row['hqp']);
+            $supervisors = array();
+            $university = $hqp->getUniversity();
+            $supervisors = $hqp->getSupervisorsDuring($startDate, $endDate);
+            $sups = array();
+            foreach($supervisors as $supervisor){
+                if($supervisor->getNameForForms() == $this->person->getNameForForms()){
+                    continue;
+                }
+                $sups[] = " - ".$supervisor->getNameForForms();
+            }
+            $coSups = ($row['role'] == "Co-Supervisor" && count($sups) > 0) ? "<br />".implode("<br />", $sups) : "";
             $rows[$row['hqp']][$key] = "
                 <td style='white-space: nowrap;'>{$row['position']}</td>
                 <td style='white-space: nowrap;'>{$row['start_date']}</td>
                 <td style='white-space: nowrap;'>{$row['end_date']}</td>
                 <td style='white-space: nowrap;'>{$row['status']}</td>
-                <td style='white-space: nowrap;'>{$row['role']}</td>";
+                <td style='white-space: nowrap;'>{$row['role']}{$coSups}</td>";
         }
         
         foreach($rows as $key => $row){

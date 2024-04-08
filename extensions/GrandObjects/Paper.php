@@ -1580,6 +1580,21 @@ class Paper extends BackboneModel{
         $amonth = date('F', strtotime($acceptance_date));
         $amon = date('M', strtotime($acceptance_date));
         
+        $dates = "";
+        $datesA = "";
+        $datesP = "";
+        $datesA = ($ayyyy != "0000") ? "accepted: {$amon} {$ayyyy}" : "";
+        $datesP = ($yyyy != "0000") ? "published: {$mon} {$yyyy}" : "";
+        if($datesA != "" && $datesP != ""){
+            $dates = "$datesA; $datesP";
+        }
+        else if($datesA != ""){
+            $dates = $datesA;
+        }
+        else if($datesP != ""){
+            $dates = $datesP;
+        }
+        
         if($ayyyy == "0000"){
             $ayyyy = "";
             $ayy = "";
@@ -1606,6 +1621,7 @@ class Paper extends BackboneModel{
             $match1 = $match;
             $match2 = $match;
             
+            $match1 = str_ireplace("%dates",     $dates,     $match1);
             $match1 = str_ireplace("%yyyy",      $yyyy,      $match1);
             $match1 = str_ireplace("%yy",        $yy,        $match1);
             $match1 = str_ireplace("%mm",        $mm,        $match1);
@@ -1633,6 +1649,7 @@ class Paper extends BackboneModel{
             $match1 = str_ireplace("%data_syyyy",$data_syyyy,$match1);
             $match1 = str_ireplace("%data_eyyyy",$data_eyyyy,$match1);
 
+            $match2 = str_ireplace("%dates",     "", $match2);
             $match2 = str_ireplace("%yyyy",      "", $match2);
             $match2 = str_ireplace("%yy",        "", $match2);
             $match2 = str_ireplace("%mm",        "", $match2);

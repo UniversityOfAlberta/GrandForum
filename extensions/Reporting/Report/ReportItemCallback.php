@@ -193,6 +193,7 @@ class ReportItemCallback {
             "getArray" => "getArray",
             "getExtra" => "getExtra",
             "getIncrement" => "getIncrement",
+            "removeSpaces" => "removeSpaces",
             "replace" => "replace",
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
@@ -1398,6 +1399,10 @@ class ReportItemCallback {
             $concat .= $arg;
         }
         return $concat;
+    }
+    
+    function removeSpaces($string){
+        return str_replace(" ", "", $string);
     }
     
     function replace($pattern, $replacement, $string){

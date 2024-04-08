@@ -182,7 +182,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
                 if(strtolower($this->getAttr("awards", "false")) == "true"){
                     // Header & Edit
                     $th = $dom->createDocumentFragment();
-                    $th->appendXML("<th>Awards</th>");
+                    $th->appendXML("<th>Awards/Scholarships</th>");
                     $tr->appendChild($th);
                 }
                 if(!$pdf && strtolower($this->getAttr("footnotes", "false")) == "true"){
