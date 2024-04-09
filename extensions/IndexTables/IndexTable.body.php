@@ -148,6 +148,7 @@ class IndexTable {
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
         $me = Person::newFromId($wgUser->getId());
         $data = Person::getAllPeople($table);
+        $data = Person::filterFaculty($data, true);
         $idHeader = "";
         $idsHeader = "";
         $contactHeader = "";

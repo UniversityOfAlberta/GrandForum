@@ -634,13 +634,13 @@ class Person extends BackboneModel {
     /**
      * Filters people to only include people within the instance's faculty
      */
-    static function filterFaculty($people){
-        return array_filter($people, function($person){
+    static function filterFaculty($people, $includeLimitedPeople=false){
+        return array_filter($people, function($person) use ($includeLimitedPeople) {
             if($person instanceof FullPerson){
                 $person->getFecPersonalInfo();
                 return ($person->faculty == getFaculty());
             }
-            return false;
+            return $includeLimitedPeople;
         });
     }
     
