@@ -102,7 +102,7 @@
                         </td>
                         <td valign='top' style='white-space:nowrap;'>
                             <table>
-                                <tr><td valign='top'><b>Highest Qualiﬁcation Achieved:</b></td><td valign='top'></td></tr>
+                                <tr><td valign='top'><b>Highest Qualiﬁcation Achieved:</b></td><td valign='top'>{getFecPersonalInfo(lastDegree, false)}</td></tr>
                                 <tr><td valign='top'><b>Rank Hired:</b></td><td valign='top'>{$user_phd_year}</td></tr>
                                 <tr><td valign='top'><b>Current Rank:</b></td><td valign='top'>{$user_level}</td></tr>
                                 <tr><td valign='top'><b>Ranks During Reporting Period:</td><td valign='top'>{user_level({$last_year}-07-01,{$this_year}-06-30,<br />)}</td></tr>
