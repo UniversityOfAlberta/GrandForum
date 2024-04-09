@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL's 7th Annual EPIC Summer Institute" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2024" disabled="false">
+<Report name="AGE-WELL's 7th Annual EPIC Summer Institute" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2024" disabled="true">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="description" permissions="rw" />
