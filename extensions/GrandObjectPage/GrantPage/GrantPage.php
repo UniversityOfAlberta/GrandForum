@@ -35,8 +35,8 @@ class GrantPage extends BackbonePage {
 	    global $wgServer, $wgScriptPath, $config, $wgUser;
 	    $me = Person::newFromWgUser();
 	    if($me->isRoleAtLeast(NI)){
-	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Funding", 
-	                                                                      "$wgServer$wgScriptPath/index.php/Special:GrantPage");
+	        $toolbox['Tools']['links'][] = TabUtils::createToolboxLink("Manage Funding", 
+	                                                                   "$wgServer$wgScriptPath/index.php/Special:GrantPage");
 	    }
 	    return true;
 	}

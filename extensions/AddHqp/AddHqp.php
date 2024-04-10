@@ -192,7 +192,7 @@ class AddHqp extends SpecialPage{
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(NI)){
-            $toolbox['People']['links'][] = TabUtils::createToolboxLink("Add ".HQP, "$wgServer$wgScriptPath/index.php/Special:AddHqp");
+            $toolbox['Tools']['links'][] = TabUtils::createToolboxLink("Add ".HQP, "$wgServer$wgScriptPath/index.php/Special:AddHqp");
         }
         return true;
     }

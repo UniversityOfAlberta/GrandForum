@@ -44,7 +44,7 @@ class CCVImport extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
         if(self::userCanExecute($wgUser)){
-            array_splice($toolbox['Products']['links'], 0, 0, array(TabUtils::createToolboxLink("Import UoA Data", "$wgServer$wgScriptPath/index.php/Special:CCVImport")));
+            array_splice($toolbox['Tools']['links'], 0, 0, array(TabUtils::createToolboxLink("Import UoA Data", "$wgServer$wgScriptPath/index.php/Special:CCVImport")));
         }
         return true;
     }

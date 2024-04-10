@@ -59,7 +59,7 @@ class ManagePeople extends BackbonePage {
             if($me->isRoleAtLeast(STAFF)){
                 $title = "Manage People";
             }
-            $toolbox['People']['links'][] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:ManagePeople");
+            $toolbox['Tools']['links'][] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:ManagePeople");
         }
         return true;
     }

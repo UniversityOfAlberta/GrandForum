@@ -40,7 +40,7 @@ class MyDuplicateProducts extends SpecialPage{
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    if($me->isRoleAtLeast(HQP)){
-	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Review Duplicates", "$wgServer$wgScriptPath/index.php/Special:MyDuplicateProducts");
+	        $toolbox['Tools']['links'][] = TabUtils::createToolboxLink("Review Duplicates", "$wgServer$wgScriptPath/index.php/Special:MyDuplicateProducts");
 	    }
 	    return true;
 	}

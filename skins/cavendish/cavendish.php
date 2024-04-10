@@ -919,8 +919,9 @@ class CavendishTemplate extends QuickTemplate {
 	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config;
 	    $GLOBALS['toolbox'] = array();
         
-        $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
-        $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
+        //$GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
+        //$GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
+        $GLOBALS['toolbox']['Tools'] = TabUtils::createToolboxHeader("Tools");
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
         
 		if($wgUser->isLoggedIn()){

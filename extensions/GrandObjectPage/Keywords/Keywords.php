@@ -40,8 +40,8 @@ class Keywords extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
 	    global $wgServer, $wgScriptPath, $config, $wgUser;
 	    if(self::userCanExecute($wgUser)){
-	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Keywords", 
-	                                                                      "$wgServer$wgScriptPath/index.php/Special:Keywords");
+	        $toolbox['Tools']['links'][] = TabUtils::createToolboxLink("Manage Keywords", 
+	                                                                   "$wgServer$wgScriptPath/index.php/Special:Keywords");
 	    }
 	    return true;
 	}
