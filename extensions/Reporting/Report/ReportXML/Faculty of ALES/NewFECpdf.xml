@@ -193,28 +193,64 @@
                 <h2>HQP Supervision</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="students" type="PersonSupervisesReportItem" blobSection="FEC_STUDENTS" blobItem="HQP" splitGrad="true" showCommittees="true" awards="true" footnotes="true" isTopAnchor="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- HQP Footnotes -->
-        <Static>
-            <![CDATA[
-                <ul>
-            ]]>
-        </Static>
-        <ReportItem id="students" type="PersonSupervisesReportItem" blobSection="FEC_STUDENTS" blobItem="HQP" splitGrad="true" showCommittees="true" footnotes="true" isTopAnchor="false">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                </ul>
-            ]]>
-        </Static>
+        <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|tech|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Research/Technical Assistants|Student Committee Responsibilities">
+            <Static>
+                <![CDATA[
+                    <h3>{getExtra(label)}</h3>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                        <tr>
+                            <th style='width: 25%;'>Student</th>
+                            <th style='width: 10%;'>Year<br />Admitted</th>
+                            <th style='width: 25%;'>Degree<br />Sought</th>
+                            <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
+                            <th style='width: 20%;'>Co-Supervisors</th>
+                        </tr>
+                ]]>
+            </Static>
+            <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td rowspan='3'>{$user_name}</td>
+                    ]]>
+                </Static>
+                
+                <Static>
+                    <![CDATA[
+                            <td align='center'>{substr({$user_uni_start},-4,4)}</td>
+                            <td>{$user_level}</td>
+                            <td align='center'>{substr({$user_uni_end},-4,4)}</td>
+                            <td>{$user_cosupervisors}</td>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        </tr>
+                    ]]>
+                </Static>
+                <ReportItem id="times" type="Textarea" blobItem="TIMES" blobSubItem="{$user_id}" height="48px">
+                    <![CDATA[
+                        <tr><td colspan='4'>
+                            How many times have you met with the student and the supervisory committee?<br />
+                            {$item}
+                        </td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" height="48px">
+                    <![CDATA[
+                        <tr><td colspan='4'>
+                            Name of Scholarships, if any<br />
+                            {$item}
+                        </td></tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </table>
+                ]]>
+            </Static>
+        </ReportItemSet>
         
         <!-- Publications -->
         <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">

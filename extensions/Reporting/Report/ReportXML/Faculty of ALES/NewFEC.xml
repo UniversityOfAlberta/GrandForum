@@ -333,12 +333,73 @@
                 <p>The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.</p>
             ]]>
         </Instructions>
-        <ReportItem id="students" type="PersonSupervisesReportItem" blobItem="HQP" splitGrad="true" showCommittees="true" awards="true" footnotes="true" encrypt="true">
+        
+        <!-- HQP -->
+        <Static>
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople">Manage HQP</a>
-                {$item}<br />
             ]]>
-        </ReportItem>
+        </Static>
+        <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|tech|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Research/Technical Assistants|Student Committee Responsibilities">
+            <Static>
+                <![CDATA[
+                    <h3>{getExtra(label)}</h3>
+                    <table class='wikitable' width='100%'>
+                        <tr>
+                            <th style='width: 25%;'>Student</th>
+                            <th style='width: 10%;'>Year<br />Admitted</th>
+                            <th style='width: 25%;'>Degree<br />Sought</th>
+                            <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
+                            <th style='width: 20%;'>Co-Supervisors</th>
+                        </tr>
+                ]]>
+            </Static>
+            <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td rowspan='3'>{$user_name}</td>
+                    ]]>
+                </Static>
+                
+                <Static>
+                    <![CDATA[
+                            <td align='center'>{substr({$user_uni_start},-4,4)}</td>
+                            <td>{$user_level}</td>
+                            <td align='center'>{substr({$user_uni_end},-4,4)}</td>
+                            <td>{$user_cosupervisors}</td>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        </tr>
+                    ]]>
+                </Static>
+                <ReportItem id="times" type="Textarea" blobItem="TIMES" blobSubItem="{$user_id}" height="48px">
+                    <![CDATA[
+                        <tr><td colspan='4'>
+                            How many times have you met with the student and the supervisory committee?<br />
+                            {$item}
+                        </td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" height="48px">
+                    <![CDATA[
+                        <tr><td colspan='4'>
+                            Name of Scholarships, if any<br />
+                            {$item}
+                        </td></tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </table>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        
+        <!-- HQP Publications -->
         <Static>
             <![CDATA[
                 <h2>HQP Publications <span class='clicktooltip' title='The publications should have your HQP listed as an author, but cannot include yourself as an author.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
