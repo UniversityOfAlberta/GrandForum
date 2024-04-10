@@ -1485,7 +1485,8 @@ class Paper extends BackboneModel{
                     }
                     $name = $a->getNameForProduct();
                     if($a->isRoleOn(NI, $date) || $a->isRole(NI) || $a->wasLastRole(NI)){
-                        $name = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
+                        $isMe = ($a->isMe()) ? "text-decoration: underline;" : "";
+                        $name = "<span style='background: #dfdfdf; {$isMe}' class='citation_author faculty_author'>{$a->getNameForProduct()}{$ccid}</span>";
                     }
                     else if(($a->isRoleOn(HQP, $date) || $a->isRole(HQP) || $a->wasLastRole(HQP)) &&
                             (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || 

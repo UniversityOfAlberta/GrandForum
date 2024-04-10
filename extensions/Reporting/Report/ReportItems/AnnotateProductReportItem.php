@@ -115,7 +115,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
             </table>
         </script>";
         $html .= "<script type='text/javascript'>
-            $('#{$this->getPostId()}_span span.citation_author').css('padding', '3');
+            $('#{$this->getPostId()}_span span.citation_author').css('padding', '1px 3px');
             $('#{$this->getPostId()}_span span.citation_author').css('border-radius', '3px');
             $('#{$this->getPostId()}_span span.citation_author').css('cursor', 'pointer');
             
@@ -127,6 +127,9 @@ class AnnotateProductReportItem extends AbstractReportItem {
             $('#{$this->getPostId()}_span span.citation_author').mouseout(function(){
                 $(this).css('background', '');
                 $(this).css('color', '');
+                if($(this).hasClass('faculty_author')){
+                    $(this).css('background', '#dfdfdf');
+                }
             });
             
             var str = $('textarea[name={$this->getPostId()}]').val();
@@ -142,25 +145,39 @@ class AnnotateProductReportItem extends AbstractReportItem {
                     var type = (obj != undefined) ? obj.type : '';
                     switch(type){
                         case 'Undergraduate Student':
+                            $(el).css('background', '');
                             $(el).css('font-style', 'normal');
                             $(el).css('text-decoration', 'underline');
                             $(el).css('font-weight', 'normal');
+                            $(el).removeClass('faculty_author');
                             break;
                         case 'Postdoctoral Student':
+                            $(el).css('background', '');
                             $(el).css('font-style', 'italic');
                             $(el).css('font-weight', 'normal');
                             $(el).css('text-decoration', 'none');
+                            $(el).removeClass('faculty_author');
                             break;
                         case 'Graduate Student':
+                            $(el).css('background', '');
                             $(el).css('font-style', 'normal');
                             $(el).css('font-weight', 'bold');
                             $(el).css('text-decoration', 'none');
+                            $(el).removeClass('faculty_author');
                             break;
                         case 'Faculty':
-                        case 'None of the Above':
+                            $(el).css('background', '#dfdfdf');
                             $(el).css('font-style', 'normal');
                             $(el).css('text-decoration', 'none');
                             $(el).css('font-weight', 'normal');
+                            $(el).addClass('faculty_author');
+                            break;
+                        case 'None of the Above':
+                            $(el).css('background', '');
+                            $(el).css('font-style', 'normal');
+                            $(el).css('text-decoration', 'none');
+                            $(el).css('font-weight', 'normal');
+                            $(el).removeClass('faculty_author');
                             break;
                         case '':
                             $(el)[0].style.textDecoration = $(el)[0].oldStyle.textDecoration;
