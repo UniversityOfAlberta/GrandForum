@@ -20,7 +20,7 @@ class AnnualReportTable extends SpecialPage{
     function userCanExecute($user){
         $person = Person::newFromUser($user);
         return ($person->isRoleAtLeast(STAFF) || $person->isRole(HR) || 
-                $person->isRole(CHAIR) || $person->isRole(ACHAIR) || $person->isRole(EA) ||
+                $person->isRole(CHAIR) || $person->isRole(EA) ||
                 $person->isRole(DEAN) || $person->isRole(DEANEA) || $person->isRole(VDEAN));
     }
 
@@ -56,7 +56,7 @@ class AnnualReportTable extends SpecialPage{
                     <tbody>");
             $ar = new DummyReport("FEC", $me, null, $y);
             $rec = new DummyReport("ChairTable", $me, null, $y);
-            if($me->isRole(CHAIR) || $me->isRole(ACHAIR) || $me->isRole(EA)){
+            if($me->isRole(CHAIR) || $me->isRole(EA)){
                 $report = new DummyReport("", $me, null, $y);
                 $section = new EditableReportSection();
                 $set = new DepartmentPeopleReportItemSet();
@@ -112,7 +112,7 @@ class AnnualReportTable extends SpecialPage{
                 });
             </script>");
         }
-        if($me->isRole(CHAIR) || $me->isRole(ACHAIR) || $me->isRole(EA)){
+        if($me->isRole(CHAIR) || $me->isRole(EA)){
             $wgOut->addHTML("<style>
                 .deptCol {
                     display: none;
@@ -130,7 +130,7 @@ class AnnualReportTable extends SpecialPage{
         $person = Person::newFromWgUser();
         if(self::userCanExecute($wgUser)){
             $tab = "Manager";
-            if($person->isRole(CHAIR) || $person->isRole(ACHAIR) || $person->isRole(EA)){
+            if($person->isRole(CHAIR) || $person->isRole(EA)){
                 $tab = "Chair";
             }
             $selected = @($wgTitle->getText() == "AnnualReportTable") ? "selected" : false;

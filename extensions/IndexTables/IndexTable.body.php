@@ -11,7 +11,9 @@ class IndexTable {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
-        
+        if(!$me->isRoleAtLeast(STAFF)){
+            return true;
+        }
         $lastRole = "";
         if($wgTitle->getNSText() == INACTIVE && !($me->isRole(INACTIVE) && $wgTitle->getText() == $me->getName())){
             $person = Person::newFromName($wgTitle->getText());
@@ -84,16 +86,8 @@ class IndexTable {
 
     function userCanExecute(&$title, &$user, $action, &$result){
         global $wgOut, $wgServer, $wgScriptPath, $config;
-        if($title->getNSText() == "{$config->getValue('networkName')}"){
-            $me = Person::newFromUser($user);
-            $text = $title->getText();
-            switch ($title->getText()) {
-                case 'ALL '.HQP:
-                case 'Forms':
-                    $result = $me->isRoleAtLeast(MANAGER);
-                    break;
-            }
-        }
+        $me = Person::newFromUser($user);
+        $result = $me->isRoleAtLeast(STAFF);
         return true;
     }
 
@@ -104,10 +98,7 @@ class IndexTable {
             $result = true;
             self::userCanExecute($wgTitle, $wgUser, "read", $result);
             if(!$result){
-                $wgOut->loginToUse();
-                $wgOut->output();
-                $wgOut->disable();
-                return true;
+                permissionError();
             }
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
@@ -157,12 +148,6 @@ class IndexTable {
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>
                          <th style='white-space: nowrap;'>Employee Id</th>";
-        }
-        if($me->isRoleAtLeast(ADEAN)){
-            $idsHeader = "<th style='white-space: nowrap;'>Google Scholar</th>
-                          <th style='white-space: nowrap;'>Sciverse</th>
-                          <th style='white-space: nowrap;'>ORCID</th>
-                          <th style='white-space: nowrap;'>WoS</th>";
         }
         if($me->isLoggedIn()){
             $contactHeader = "<th style='white-space: nowrap;'>Email</th>";

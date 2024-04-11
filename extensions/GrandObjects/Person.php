@@ -114,6 +114,7 @@ class Person extends BackboneModel {
     var $dateOfAssociate;
     var $dateOfProfessor;
     var $dateOfTenure;
+    var $sabbatical = array();
     var $dateOfProbation1;
     var $dateOfProbation2;
     var $dateOfRetirement;
@@ -604,6 +605,7 @@ class Person extends BackboneModel {
                                               'date_probation1',
                                               'date_probation2',
                                               'date_tenure',
+                                              'sabbatical',
                                               'date_retirement',
                                               'date_last_degree',
                                               'last_degree',
@@ -631,6 +633,7 @@ class Person extends BackboneModel {
                 $this->dateOfProbation1 = $row['date_probation1'];
                 $this->dateOfProbation2 = $row['date_probation2'];
                 $this->dateOfTenure = $row['date_tenure'];
+                $this->sabbatical = json_decode($row['sabbatical'], true);
                 $this->dateOfRetirement = $row['date_retirement'];
                 $this->dateOfLastDegree = $row['date_last_degree'];
                 $this->lastDegree = $row['last_degree'];
@@ -665,6 +668,7 @@ class Person extends BackboneModel {
                                               'date_associate' => $this->dateOfAssociate,
                                               'date_professor' => $this->dateOfProfessor,
                                               'date_tenure' => $this->dateOfTenure,
+                                              'sabbatical' => json_encode($this->sabbatical),
                                               'date_probation1' => $this->dateOfProbation1,
                                               'date_probation2' => $this->dateOfProbation2,
                                               'date_retirement' => $this->dateOfRetirement,
@@ -694,6 +698,7 @@ class Person extends BackboneModel {
                                           'date_associate' => $this->dateOfAssociate,
                                           'date_professor' => $this->dateOfProfessor,
                                           'date_tenure' => $this->dateOfTenure,
+                                          'sabbatical' => json_encode($this->sabbatical),
                                           'date_probation1' => $this->dateOfProbation1,
                                           'date_probation2' => $this->dateOfProbation2,
                                           'date_retirement' => $this->dateOfRetirement,

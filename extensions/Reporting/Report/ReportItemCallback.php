@@ -398,6 +398,11 @@ class ReportItemCallback {
         if(!is_array($evals)){
             return "";
         }
+        
+        usort($evals, function($a, $b){
+            return ($a['id'] >= $b['id']);
+        });
+        
         $ret = "";
         foreach($evals as $key => $eval){
             $ret .= "<tr>";
