@@ -12,17 +12,12 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
         $me = Person::newFromWgUser();
 
-        if($me->getName() != "Christopher.Sturdy" && !$me->isRole(CHAIR) && !$me->isRole(ACHAIR) && !$me->isRole(EA) && !$me->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+        if($me->getName() != "Christopher.Sturdy" && !$me->isRole(CHAIR) && !$me->isRole(EA) && !$me->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
             // Person isn't a Chair/EA, so don't return anyone
             return $data;
         }
 
         $atsec = (strtolower($this->getAttr("atsec", "false")) == "true");
-        
-        if($me->isRole(ACHAIR)){
-            // Associate Chair should only see ATS
-            $atsec = true;
-        }
         
         if($atsec){
             $allPeople = Person::getAllPeopleDuring("ATS", $start, $end);
