@@ -16,8 +16,12 @@ class PersonPage {
 
     function userCanExecute(&$title, &$user, $action, &$result){
         $name = $title->getNSText();
+        $me = Person::newFromUser($user);
         if($name == "HQP"){
             $result = $user->isLoggedIn();
+        }
+        if($me->isRole(HQP) || $me->isRole(INACTIVE)){
+            $result = false;
         }
         return true;
     }
@@ -205,7 +209,7 @@ class PersonPage {
     static function createSubTabs(&$tabs){
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
+        if($me->isLoggedIn() && $me->isRoleAtLeast("Faculty")){
             $selected = ($me->isRole($wgTitle->getNSText()) && $me->getName() == $wgTitle->getText()) ? "selected" : "";
             $tabs['Profile']['subtabs'][] = TabUtils::createSubTab($me->getNameForForms(), $me->getUrl(), $selected);
         }

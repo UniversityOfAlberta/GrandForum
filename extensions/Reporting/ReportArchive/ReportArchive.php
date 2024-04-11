@@ -299,6 +299,17 @@ class ReportArchive extends SpecialPage {
                 <tr><td colspan='2'><b>FSO Promotion</b></tr>
                 <tr><td>Template 50&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO III</td></tr>
                 <tr><td>Template 51&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO IV</td></tr>
+                <tr><td colspan='2'><b>ATS</b></tr>
+                <tr><td>Template ATS11&nbsp;&nbsp;&nbsp;</td><td>Agree with Chair (1.0 or Higher)</td></tr>
+                <tr><td>Template ATS12&nbsp;&nbsp;&nbsp;</td><td>Contestable from ATSEC</td></tr>
+                <tr><td>Template ATS13&nbsp;&nbsp;&nbsp;</td><td>Higher than Recommendation</td></tr>
+                <tr><td>Template ATS14&nbsp;&nbsp;&nbsp;</td><td>Lower but not less than 1.0</td></tr>
+                <tr><td>Template ATS15&nbsp;&nbsp;&nbsp;</td><td>0A</td></tr>
+                <tr><td>Template ATS16&nbsp;&nbsp;&nbsp;</td><td>0B</td></tr>
+                <tr><td>Template ATS17&nbsp;&nbsp;&nbsp;</td><td>0C</td></tr>
+                <tr><td>Template ATS18&nbsp;&nbsp;&nbsp;</td><td>0D</td></tr>
+                <tr><td>Template ATS19&nbsp;&nbsp;&nbsp;</td><td>Promotion</td></tr>
+                <tr><td>Template ATS20&nbsp;&nbsp;&nbsp;</td><td>Agree for Lower than 1</td></tr>
             </table>");
     }
     
