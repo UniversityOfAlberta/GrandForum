@@ -937,6 +937,7 @@ class AVOIDDashboard extends SpecialPage {
     }
     
     static function checkAllSubmissions($userId){
+        global $config;
         $me = Person::newFromId($userId);
         
         $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID");
@@ -952,7 +953,7 @@ class AVOIDDashboard extends SpecialPage {
             Gamification::log('3MonthFollowup');
         }
         
-        if($me->isRole(ADMIN) || $me->isRole(STAFF)){
+        if($me->isRole(ADMIN) || $me->isRole(STAFF) || $config->getValue('networkFullName') == "AVOID Australia"){
             return true;
         }
         
