@@ -317,7 +317,7 @@ class ReportArchive extends SpecialPage {
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
         
-        if($person->isRole(NI)){
+        if($person->isRole(NI) || $person->isRole("ATS")){
             $selected = @($wgTitle->getText() == "ReportArchive") ? "selected" : false;
             $tabs["ReportArchive"]['subtabs'][] = TabUtils::createSubTab("Archive", "$wgServer$wgScriptPath/index.php/Special:ReportArchive", $selected);
         }
