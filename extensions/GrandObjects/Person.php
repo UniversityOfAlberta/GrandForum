@@ -213,6 +213,27 @@ class Person extends BackboneModel {
             return new LimitedPerson(array());
         }
     }
+    
+    /**
+     * Returns a new Person from the given orcid (null if not found)
+     * In the event of a collision, the first user is returned
+     * NOTE: this might be slow since orcid is not a table index
+     * @param string $email The email address of the Person
+     * @return Person The Person from the given email
+     */
+    static function newFromOrcid($orcid){
+        $orcid = trim(str_replace("http://orcid.org/", "", 
+                      str_replace("https://orcid.org/", "", $orcid)));
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id'),
+                                    array('orcid' => $orcid));
+        if(count($data) > 0){
+            return Person::newFromId($data[0]['user_id']);
+        }
+        else{
+            return new LimitedPerson(array());
+        }
+    }
 
     /**
      * Returns a new Person from the given Mediawiki User
@@ -3445,7 +3466,8 @@ class FullPerson extends Person {
     }
     
     function getOrcId(){
-        return $this->orcId;
+        return trim(str_replace("http://orcid.org/", "", 
+                    str_replace("https://orcid.org/", "", $this->orcId)));
     }
     
     function getWOS(){

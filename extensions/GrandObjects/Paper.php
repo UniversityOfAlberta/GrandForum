@@ -109,7 +109,7 @@ class Paper extends BackboneModel{
         $bibtex_id = DBFunctions::escape($bibtex_id);
         $sql = "SELECT *
                 FROM grand_products
-                WHERE bibtex_id = '$bibtex_id'
+                WHERE (bibtex_id = '{$bibtex_id}' OR data LIKE '%{$bibtex_id}\"%')
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
                 AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
                 LIMIT 1";
@@ -1841,11 +1841,13 @@ class Paper extends BackboneModel{
                     $this->syncAuthors();
                 }
                 Cache::delete($this->getCacheId());
-                if($this->getAccessId() == 0){
-                    // Only send out notifications if the Product is public
-                    foreach($this->getAuthors() as $author){
-                        if($author instanceof Person && $me->getId() != $author->getId()){
-                            Notification::addNotification($me, $author, "Author Added", "You have been added as an author to the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
+                if(PHP_SAPI != 'cli'){
+                    if($this->getAccessId() == 0){
+                        // Only send out notifications if the Product is public
+                        foreach($this->getAuthors() as $author){
+                            if($author instanceof Person && $me->getId() != $author->getId()){
+                                Notification::addNotification($me, $author, "Author Added", "You have been added as an author to the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
+                            }
                         }
                     }
                 }
@@ -1933,30 +1935,32 @@ class Paper extends BackboneModel{
                     $this->syncAuthors();
                 }
                 Cache::delete($this->getCacheId());
-                if($this->getAccessId() == 0){
-                    // Only send out notifications if the Product was public
-                    foreach($oldProduct->getAuthors() as $oldAuthor){
-                        $found = false;
-                        foreach($this->getAuthors() as $author){
-                            if($author->getId() == $oldAuthor->getId()){
-                                $found = true;
-                            }
-                        }
-                        if(!$found && $oldAuthor instanceof Person && $me->getId() != $oldAuthor->getId()){
-                            // Author was Deleted
-                            Notification::addNotification($me, $oldAuthor, "Author Removed", "You have been removed as an author from the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
-                        }
-                    }
-                    foreach($this->getAuthors() as $author){
-                        $found = false;
+                if(PHP_SAPI != 'cli'){
+                    if($this->getAccessId() == 0){
+                        // Only send out notifications if the Product was public
                         foreach($oldProduct->getAuthors() as $oldAuthor){
-                            if($author->getId() == $oldAuthor->getId()){
-                                $found = true;
+                            $found = false;
+                            foreach($this->getAuthors() as $author){
+                                if($author->getId() == $oldAuthor->getId()){
+                                    $found = true;
+                                }
+                            }
+                            if(!$found && $oldAuthor instanceof Person && $me->getId() != $oldAuthor->getId()){
+                                // Author was Deleted
+                                Notification::addNotification($me, $oldAuthor, "Author Removed", "You have been removed as an author from the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
                             }
                         }
-                        if(!$found && $author instanceof Person && $me->getId() != $author->getId()){
-                            // Author was Added
-                            Notification::addNotification($me, $author, "Author Added", "You have been added as an author to the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
+                        foreach($this->getAuthors() as $author){
+                            $found = false;
+                            foreach($oldProduct->getAuthors() as $oldAuthor){
+                                if($author->getId() == $oldAuthor->getId()){
+                                    $found = true;
+                                }
+                            }
+                            if(!$found && $author instanceof Person && $me->getId() != $author->getId()){
+                                // Author was Added
+                                Notification::addNotification($me, $author, "Author Added", "You have been added as an author to the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
+                            }
                         }
                     }
                 }
@@ -1990,11 +1994,13 @@ class Paper extends BackboneModel{
             }
             if($status){
                 Cache::delete($this->getCacheId());
-                if($this->getAccessId() == 0){
-                    // Only send out notifications if the Product was public
-                    foreach($this->getAuthors() as $author){
-                        if($author instanceof Person && $me->getId() != $author->getId()){
-                            Notification::addNotification($me, $author, "{$this->getCategory()} Deleted", "Your ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
+                if(PHP_SAPI != 'cli'){
+                    if($this->getAccessId() == 0){
+                        // Only send out notifications if the Product was public
+                        foreach($this->getAuthors() as $author){
+                            if($author instanceof Person && $me->getId() != $author->getId()){
+                                Notification::addNotification($me, $author, "{$this->getCategory()} Deleted", "Your ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
+                            }
                         }
                     }
                 }

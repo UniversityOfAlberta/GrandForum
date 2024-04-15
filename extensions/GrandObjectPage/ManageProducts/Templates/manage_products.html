@@ -85,8 +85,10 @@
     </p>
 </div>
 <p>
+    <b>Publications are imported automatically on a regular basis *if* you have specified your ORCID in your <a href="<%= me.get('url') %>">profile</a>.</b><br />
     <b>If, in this table, there exists an output that should not be associated with your record, use <b>"Exclude"</b> to disassociate it from your record.  "Delete" will delete it for all the co-authors.</b><br />
-    <b>If you make any changes on this page and have other tabs open, the changes will not be reflected on those other tabs until you refresh the page.</b>
+    <b>If you make any changes on this page and have other tabs open, the changes will not be reflected on those other tabs until you refresh the page.</b><br />
+    
 </p>
 <p>
     <% if(this.category != null){ %>
@@ -100,7 +102,7 @@
     &nbsp;
     &nbsp;
     <% if(orcidId != ""){ %>
-        <button id="importOrcidButton" style="height: 27px;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" />&nbsp;Import ORCID</button>
+        <!--button id="importOrcidButton" style="height: 27px;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" />&nbsp;Import ORCID</button-->
     <% } %>
     <% if(productStructure.categories['Activity'] != undefined && 
           productStructure.categories['Activity'].types['Meeting'] != undefined){ %>
