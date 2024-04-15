@@ -149,6 +149,12 @@ class IndexTable {
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>
                          <th style='white-space: nowrap;'>Employee Id</th>";
         }
+        if($me->isRoleAtLeast(DEAN)){
+            $idsHeader = "<th style='white-space: nowrap;'>Google Scholar</th>
+                          <th style='white-space: nowrap;'>Sciverse</th>
+                          <th style='white-space: nowrap;'>ORCID</th>
+                          <th style='white-space: nowrap;'>WoS</th>";
+        }
         if($me->isLoggedIn()){
             $contactHeader = "<th style='white-space: nowrap;'>Email</th>";
         }
