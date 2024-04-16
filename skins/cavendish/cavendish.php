@@ -1092,6 +1092,7 @@ class CavendishTemplate extends QuickTemplate {
             }
         </style>
         <a class="administration highlights-background-hover" href="<?php echo "$wgServer$wgScriptPath/index.php/"; ?>Administration">Administration</a>
+        <a class="administration highlights-background-hover" href="<?php echo "$wgServer$wgScriptPath/index.php/"; ?>EDI">Equity, Diversity & Inclusion</a>
 <?php } ?>
 <?php
 	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config;
