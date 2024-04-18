@@ -15,7 +15,8 @@
                 $faculty = @Person::$facultyMap[$dept];
                 if($faculty != ""){
                     DBFunctions::update('grand_personal_fec_info',
-                                        array('faculty' => $faculty),
+                                        array('faculty' => $faculty,
+                                              'departments' => json_encode(array($dept => 100))),
                                         array('user_id' => $person->getId()));
                     echo "{$person->getName()}: {$faculty}\n";
                     break;

@@ -13,18 +13,31 @@ class SelectBox extends UIElement {
     function renderSelect(){
         $html = "<select {$this->renderAttr()} name='{$this->id}' id='{$this->id}'>";
         $selectedFound = false;
-        foreach($this->options as $key => $option){
-            $selected = "";
-            if($this->value == str_replace("'", "&#39;", $key) || $this->value == str_replace("'", "&#39;", $option)){
-                $selected = " selected";
-                $selectedFound = true;
+        foreach($this->options as $key => $options){
+            $optgroup = false;
+            if(is_array($options)){
+                $optgroup = true;
+                $html .= "<optgroup label='{$key}'>";
             }
-            $value = $option;
-            if(is_string($key) || $this->forceKey){
-                $value = $key;
+            else{
+                $options = array($key => $options);
             }
-            $value = sanitizeInput($value);
-            $html .= "<option value='".str_replace("'", "&#39;", $value)."' $selected>{$option}</option>";
+            foreach($options as $key => $option){
+                $selected = "";
+                if($this->value == str_replace("'", "&#39;", $key) || $this->value == str_replace("'", "&#39;", $option)){
+                    $selected = " selected";
+                    $selectedFound = true;
+                }
+                $value = $option;
+                if(is_string($key) || $this->forceKey){
+                    $value = $key;
+                }
+                $value = sanitizeInput($value);
+                $html .= "<option value='".str_replace("'", "&#39;", $value)."' $selected>{$option}</option>";
+            }
+            if($optgroup){
+                $html .= "</optgroup>";
+            }
         }
         if(!$selectedFound && $this->value != "" && !in_array($this->value, $this->options)){
             $value = sanitizeInput($this->value);

@@ -24,6 +24,13 @@ class PersonFECTab extends AbstractEditableTab {
                 }
             }
             $this->person->faculty = @$_POST['faculty'];
+            $this->person->departments = array();
+            if(isset($_POST['department1']) && $_POST['department1'] != ""){
+                $this->person->departments[$_POST['department1']] = intval($_POST['department1_percent']);
+            }
+            if(isset($_POST['department2']) && $_POST['department2'] != ""){
+                $this->person->departments[$_POST['department2']] = intval($_POST['department2_percent']);
+            }
             $this->person->dateOfPhd = @$_POST['dateOfPhd'];
             $this->person->dateOfAppointment = @$_POST['dateOfAppointment'];
             $this->person->dateOfAssistant = @$_POST['dateOfAssistant'];
@@ -149,8 +156,14 @@ class PersonFECTab extends AbstractEditableTab {
         $hrNoteMD5 = $blb->getMD5();
         $hrNoteLink = ($hrNoteMD5 != "") ? "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$hrNoteMD5}'>Download</a>" : "";
         
+        $departments = array_keys($this->person->departments);
+        $percents = array_values($this->person->departments);
+        
         $this->html .= "<table>";
         $this->html .= ($this->person->faculty != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Faculty:</b></td><td>{$this->person->faculty}</td></tr>" : "";
+        $this->html .= (isset($departments[0])) ? "<tr><td align='right' style='white-space:nowrap;'><b>Department 1:</b></td><td>{$departments[0]} ({$percents[0]}%)</td></tr>" : "";
+        $this->html .= (isset($departments[1])) ? "<tr><td align='right' style='white-space:nowrap;'><b>Department 2:</b></td><td>{$departments[1]} ({$percents[1]}%)</td></tr>" : "";
+        
         $this->html .= ($this->person->dateOfPhd != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of PhD:</b></td><td>".substr($this->person->dateOfPhd, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->dateOfAppointment != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of Appointment:</b></td><td>".substr($this->person->dateOfAppointment, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->dateOfAssistant != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of Assistant:</b></td><td>".substr($this->person->dateOfAssistant, 0, 10)."</td></tr>" : "";
@@ -181,7 +194,7 @@ class PersonFECTab extends AbstractEditableTab {
     }
     
     function generateEditBody(){
-        global $facultyMap;
+        global $facultyMap, $facultyMapSimple;
         if(!$this->userCanView()){
             return "";
         }
@@ -200,8 +213,16 @@ class PersonFECTab extends AbstractEditableTab {
                                           </div>";
                 }
             }
+            $departments = array_keys($this->person->departments);
+            $percents = array_values($this->person->departments);
+            
             $facultySelect = new SelectBox('faculty', 'faculty', $this->person->faculty, array_merge(array(''), array_keys($facultyMap)));
+            $department1Select = new SelectBox('department1', 'department1', @$departments[0], array_merge(array(''), $facultyMapSimple));
+            $department2Select = new SelectBox('department2', 'department2', @$departments[1], array_merge(array(''), $facultyMapSimple));
+            
             $this->html .= "<tr><td align='right'><b>Faculty:</b></td><td>{$facultySelect->render()}</td></tr>";
+            $this->html .= @"<tr><td align='right'><b>Department 1:</b></td><td>{$department1Select->render()} <input type='text' name='department1_percent' value='{$percents[0]}' style='width:3em;' />%</td></tr>";
+            $this->html .= @"<tr><td align='right'><b>Department 2:</b></td><td>{$department2Select->render()} <input type='text' name='department2_percent' value='{$percents[1]}' style='width:3em;' />%</td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of PhD:</b></td><td><input type='text' name='dateOfPhd' class='calendar' style='display:none;' value='".substr($this->person->dateOfPhd, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of Appointment:</b></td><td><input type='text' name='dateOfAppointment' class='calendar' style='display:none;' value='".substr($this->person->dateOfAppointment, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of Assistant:</b></td><td><input type='text' name='dateOfAssistant' class='calendar' style='display:none;' value='".substr($this->person->dateOfAssistant, 0, 10)."' /></td></tr>";

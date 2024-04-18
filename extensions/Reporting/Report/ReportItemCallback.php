@@ -107,6 +107,7 @@ class ReportItemCallback {
             "user_level" => "getUserLevel",
             "user_dept" => "getUserDept",
             "user_uni" => "getUserUni",
+            "user_depts" => "getUserDepts",
             "user_research_area" => "getUserResearchArea",
             "user_fec" => "getUserFEC",
             "user_case_number" => "getUserCaseNumber",
@@ -759,6 +760,27 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $university = $person->getUniversity();
         return $university['department'];
+    }
+    
+    function getUserDepts(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $fecInfo = $person->getFecPersonalInfo();
+        $departments = array_keys($person->departments);
+        $percents = array_values($person->departments);
+        
+        switch(count($departments)){
+            case 0:
+                // Fallback
+                $html = $this->getUserDept();
+                break;
+            case 1:
+                $html = "{$departments[0]}";
+                break;
+            case 2:
+                $html = "{$departments[0]} ({$percents[0]}%), {$departments[1]} ({$percents[1]}%)";
+                break;
+        }
+        return $html;        
     }
     
     function getUserUni(){

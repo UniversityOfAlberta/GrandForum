@@ -3361,6 +3361,7 @@ class FullPerson extends Person {
     var $grants;
     
     var $faculty;
+    var $departments;
     var $dateOfPhd;
     var $dateOfAppointment;
     var $dateOfAssistant;
@@ -3879,6 +3880,7 @@ class FullPerson extends Person {
             $data = DBFunctions::select(array('grand_personal_fec_info'),
                                         array('user_id', 
                                               'faculty',
+                                              'departments',
                                               'date_of_phd',
                                               'date_of_appointment',
                                               'date_assistant',
@@ -3908,6 +3910,9 @@ class FullPerson extends Person {
                     $row[$key] = str_replace("0000-00-00 00:00:00", "", $value);
                 }
                 $this->faculty = $row['faculty'];
+                $this->departments = json_decode($row['departments'], true);
+                asort($this->departments);
+                $this->departments = array_reverse($this->departments);
                 $this->dateOfPhd = $row['date_of_phd'];
                 $this->dateOfAppointment = $row['date_of_appointment'];
                 $this->dateOfAssistant = $row['date_assistant'];
@@ -3946,6 +3951,7 @@ class FullPerson extends Person {
             if(count($fec) > 0){
                 $status = DBFunctions::update('grand_personal_fec_info', 
                                         array('faculty' => $this->faculty,
+                                              'departments' => json_encode($this->departments),
                                               'date_of_phd' => $this->dateOfPhd,
                                               'date_of_appointment' => $this->dateOfAppointment,
                                               'date_assistant' => $this->dateOfAssistant,
@@ -3976,7 +3982,7 @@ class FullPerson extends Person {
             else{
                 $status = DBFunctions::insert('grand_personal_fec_info',
                                     array('user_id' => $this->getId(),
-                                          'faculty' => $this->faculty,
+                                          'faculty' => json_encode($this->faculty),
                                           'date_of_phd' => $this->dateOfPhd,
                                           'date_of_appointment' => $this->dateOfAppointment,
                                           'date_assistant' => $this->dateOfAssistant,
