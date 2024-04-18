@@ -468,6 +468,9 @@ class ReportItemCallback {
  
     function getGrantTitle(){
         $grant = Grant::newFromId($this->reportItem->productId);
+        if($grant->getScientificTitle() != ""){
+            return $grant->getScientificTitle();
+        }
         return $grant->getTitle();
     }
     
@@ -537,8 +540,11 @@ class ReportItemCallback {
             $people[] = trim($externalPI);
         }
         foreach($copis as $copi){
-            if($copi->getNameForForms() != $this->reportItem->getReport()->person->getNameForForms()){
-                $people[] = $copi->getNameForForms();
+            if(is_string($copi)){
+                $people[] = $copi;
+            }
+            else if($copi->getNameForForms() != $this->reportItem->getReport()->person->getNameForForms()){
+                $people[] = "<span style='background: #dfdfdf;' class='citation_author faculty_author'>{$copi->getNameForForms()}</span>";
             }
         }
         return implode("; ", $people);

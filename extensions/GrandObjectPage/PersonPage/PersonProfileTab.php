@@ -24,7 +24,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $keywords = $this->person->getKeywords(", ");
         if($this->person->getProfile() != "" || $keywords != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
-            if($config->getValue('siteName') == "FoE Forum"){
+            if($config->getValue('networkName') == "Faculty of Engineering"){
                 $pengStatus = FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS", 0, 0, $this->person->getId());
                 $pengStatusOther = ($pengStatus == "P.Eng") ? " (".FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $this->person->getId()).")" : "";
                 $this->html .= ($keywords != "") ? "<b>P.Eng Status:</b> {$pengStatus}{$pengStatusOther}<br />" : "";
@@ -275,7 +275,7 @@ EOF;
     
     function showEditProfile($person, $visibility){
         global $config;
-        if($config->getValue('siteName') == "FoE Forum"){
+        if($config->getValue('networkName') == "Faculty of Engineering"){
             $pengStatus = FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS", 0, 0, $person->getId());
             $pengStatusOther = str_replace("'", "&#39;", FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $person->getId()));
             $pengStatusField = new VerticalRadioBox("peng_status", "P.Eng Status", $pengStatus, array("P.Eng (APEGA)",
