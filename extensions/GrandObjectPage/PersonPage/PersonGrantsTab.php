@@ -78,13 +78,14 @@ class PersonGrantsTab extends AbstractTab {
                 <div>
                 {$this->generateUofAGrantTable()}
                 </div>
-            </div>
-            <!--div class='grantAccordion'>
+            </div>";
+        /*$this->html .= "
+            <div class='grantAccordion'>
                 <h3><a href='#'>Awarded NSERC Applications</a></h3>
                 <div>
                 {$this->generateGrantTable()}
                 </div>
-            </div-->";
+            </div>";*/
         if($me->isAllowedToEdit($this->person)){
             $this->html .= "<br /><a id='manage{$this->id}' href='$wgServer$wgScriptPath/index.php/Special:GrantPage' class='button'>Manage Funding</a>";
         }
@@ -133,11 +134,11 @@ class PersonGrantsTab extends AbstractTab {
                     <th style='white-space:nowrap;'>End Date</th>
                     <th style='white-space:nowrap;'>Total</th></tr></thead><tbody>";
         foreach($grants as $grant){
-            $grantAward = $grant->getGrantAward();
             $grantAwardText = "";
+            /*$grantAward = $grant->getGrantAward();
             if($grantAward != null){
                 $grantAwardText = "<br />Grant Award: <a href='{$grantAward->getUrl()}'>{$grantAward->application_title}</a>";
-            }
+            }*/
             $string .= "<tr><td><a href='{$grant->getUrl()}'>{$grant->getTitle()}</a><br />{$grant->getDescription()}{$grantAwardText}</td>
                                 <td>{$grant->getSponsor()}</td>
                                 <td style='white-space:nowrap;'>".time2date($grant->getStartDate(), "Y-m-d")."</td>

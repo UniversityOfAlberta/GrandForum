@@ -35,13 +35,6 @@ Person = Backbone.Model.extend({
             //     addSuccess("<i>" + this.get('name') + "</i> was updated successfully");
             // }
         });*/
-        
-        this.bind("error", function(e, response, options){
-            if(response.responseText != ''){
-                clearAllMessages();
-                addError(response.responseText);
-            }
-        });
     },
     
     getLink: function(){

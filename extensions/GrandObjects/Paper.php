@@ -889,7 +889,11 @@ class Paper extends BackboneModel{
                 $person = Person::newFromId($author);
             }
             else{
-                if($me->isRole(ADMIN)){
+                if(strstr($author, '"') !== false){
+                    // Interpret as a raw string
+                    $person = null;
+                } 
+                else if($me->isRole(ADMIN)){
                     $person = Person::newFromNameLike($author);
                 }
                 else{
