@@ -758,8 +758,15 @@ class ReportItemCallback {
     
     function getUserDept(){
         $person = Person::newFromId($this->reportItem->personId);
-        $university = $person->getUniversity();
-        return $university['department'];
+        $fecInfo = $person->getFecPersonalInfo();
+        $departments = array_keys($person->departments);
+        if(count($departments) > 0){
+            return $departments[0];
+        }
+        else{
+            $university = $person->getUniversity();
+            return $university['department'];
+        }
     }
     
     function getUserDepts(){

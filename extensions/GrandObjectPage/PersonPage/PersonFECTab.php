@@ -161,7 +161,7 @@ class PersonFECTab extends AbstractEditableTab {
         
         $this->html .= "<table>";
         $this->html .= ($this->person->faculty != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Faculty:</b></td><td>{$this->person->faculty}</td></tr>" : "";
-        $this->html .= (isset($departments[0])) ? "<tr><td align='right' style='white-space:nowrap;'><b>Department 1:</b></td><td>{$departments[0]} ({$percents[0]}%)</td></tr>" : "";
+        $this->html .= (isset($departments[0])) ? "<tr><td align='right' style='white-space:nowrap;'><b>Department:</b></td><td>{$departments[0]} ({$percents[0]}%)</td></tr>" : "";
         $this->html .= (isset($departments[1])) ? "<tr><td align='right' style='white-space:nowrap;'><b>Department 2:</b></td><td>{$departments[1]} ({$percents[1]}%)</td></tr>" : "";
         
         $this->html .= ($this->person->dateOfPhd != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of PhD:</b></td><td>".substr($this->person->dateOfPhd, 0, 10)."</td></tr>" : "";
@@ -221,7 +221,7 @@ class PersonFECTab extends AbstractEditableTab {
             $department2Select = new SelectBox('department2', 'department2', @$departments[1], array_merge(array(''), $facultyMapSimple));
             
             $this->html .= "<tr><td align='right'><b>Faculty:</b></td><td>{$facultySelect->render()}</td></tr>";
-            $this->html .= @"<tr><td align='right'><b>Department 1:</b></td><td>{$department1Select->render()} <input type='text' name='department1_percent' value='{$percents[0]}' style='width:3em;' />%</td></tr>";
+            $this->html .= @"<tr><td align='right'><b>Department:</b></td><td>{$department1Select->render()} <input type='text' name='department1_percent' value='{$percents[0]}' style='width:3em;' />%</td></tr>";
             $this->html .= @"<tr><td align='right'><b>Department 2:</b></td><td>{$department2Select->render()} <input type='text' name='department2_percent' value='{$percents[1]}' style='width:3em;' />%</td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of PhD:</b></td><td><input type='text' name='dateOfPhd' class='calendar' style='display:none;' value='".substr($this->person->dateOfPhd, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of Appointment:</b></td><td><input type='text' name='dateOfAppointment' class='calendar' style='display:none;' value='".substr($this->person->dateOfAppointment, 0, 10)."' /></td></tr>";
