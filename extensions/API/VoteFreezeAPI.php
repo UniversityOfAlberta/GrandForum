@@ -13,8 +13,8 @@
                $me->isRole(DEAN) || 
                $me->isRole(HR) || 
                $me->isRole(ADMIN) || 
-               $me->isSubRole("FEC") ||
-               $me->isSubRole("ATSEC")){
+               $me->isRole(FEC) ||
+               $me->isRole(ATSEC)){
                 $freeze = DBFunctions::execSQL("SELECT rp_subitem, data, encrypted
                                                 FROM grand_report_blobs
                                                 WHERE year = ".YEAR."

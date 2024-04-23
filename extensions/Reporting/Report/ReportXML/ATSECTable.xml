@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="ATSEC Table" title="ATSEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="false">
     <Permissions>
-        <Role role="INACTIVE+" subRole="ATSEC">
+        <Role role="ATSEC" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="atsec_votes" permissions="" />
             <SectionPermission id="atsec_numbers" permissions="" />

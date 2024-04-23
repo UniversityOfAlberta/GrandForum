@@ -3911,8 +3911,13 @@ class FullPerson extends Person {
                 }
                 $this->faculty = $row['faculty'];
                 $this->departments = json_decode($row['departments'], true);
-                asort($this->departments);
-                $this->departments = array_reverse($this->departments);
+                if(is_array($this->departments)){
+                    asort($this->departments);
+                    $this->departments = array_reverse($this->departments);
+                }
+                else{
+                    $this->departments = array();
+                }
                 $this->dateOfPhd = $row['date_of_phd'];
                 $this->dateOfAppointment = $row['date_of_appointment'];
                 $this->dateOfAssistant = $row['date_assistant'];

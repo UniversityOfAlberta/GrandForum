@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="false">
     <Permissions>
-        <Role role="INACTIVE+" subRole="FEC">
+        <Role role="FEC" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
             <SectionPermission id="fec_votes" permissions="" />
             <SectionPermission id="fec_numbers" permissions="" />
