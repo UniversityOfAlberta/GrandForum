@@ -77,8 +77,8 @@ class PersonFECTab extends AbstractEditableTab {
     
     function isCommittee(){
         $me = Person::newFromWgUser();
-        if(($me->isRole(FEC) && $this->person->isRole("Faculty")) ||
-           ($me->isRole(ATSEC) && $this->person->isRole("ATS"))){
+        if(($me->isRole("FEC") && $this->person->isRole("Faculty")) ||
+           ($me->isRole("ATSEC") && $this->person->isRole("ATS"))){
            return true;
         }
         return false;
