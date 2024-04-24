@@ -10,7 +10,7 @@
     <ReportSection id="information" title="Project and Team Information" blobSection="FINAL_INFORMATION" type="HeaderReportSection" pagebreak="true">
         <Static>
             <![CDATA[
-                <h4 style='font-size:1.40em;'>Final Project Report<br />Period Ending {getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id}}</h4><br />
+                <h4 style='font-size:1.40em;'>Final Project Report</h4><br />
                 <p><b><u>CFN Project File Number</u></b></p>{$project_name}<br /><br />
                 <p><b><u>Project Title</u></b></p>{$project_full_name}<br /><br />
                 <p><b><u>Project Leader</u></b></p>{$project_leaders}<br />
@@ -36,8 +36,8 @@
             ]]>
         </Static>
         <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="PI,PL" blobIndex="personId"
-                       startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
-                       endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
+                       startDate="2022-11-01" 
+                       endDate="2024-03-31">
             <Static>
                 <![CDATA[
                     <tr>
@@ -46,7 +46,7 @@
             </Static>
             <Static>
                 <![CDATA[
-                    <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}</td>
+                    <td>{user_full_roles(2022-11-01, 2024-03-31)}</td>
                 ]]>
             </Static>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -68,8 +68,8 @@
             ]]>
         </Static>
         <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="CI"
-                       startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
-                       endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
+                       startDate="2022-11-01" 
+                       endDate="2024-03-31">
             <Static>
                 <![CDATA[
                     <tr>
@@ -78,7 +78,7 @@
             </Static>
             <Static>
                 <![CDATA[
-                    <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
+                    <td>{user_full_roles(2022-11-01, 2024-03-31)}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </Static>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -100,8 +100,8 @@
             ]]>
         </Static>
         <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,PS,Collaborator,Knowledge,Partner"
-                       startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
-                       endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
+                       startDate="2022-11-01" 
+                       endDate="2024-03-31">
             <Static>
                 <![CDATA[
                     <tr>
@@ -110,7 +110,7 @@
             </Static>
             <Static>
                 <![CDATA[
-                    <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
+                    <td>{user_full_roles(2022-11-01, 2024-03-31)}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </Static>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -290,8 +290,8 @@
             ]]>
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true"
-                    start="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
-                    end="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
+                    start="2022-11-01" 
+                    end="2024-03-31">
             <![CDATA[
                 <h2>Dissemination of Project Research Results</h2>
                 {$item}<br />
@@ -451,8 +451,8 @@
             ]]>
         </Static>
         <ReportItemSet id="nis" type="ProjectAllPeopleReportItemSet" role="PI"
-                       startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
-                       endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
+                       startDate="2022-11-01" 
+                       endDate="2024-03-31">
             <ReportItem id="ni_download" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" blobSubItem="{$user_id}" budgetText="Financial Report" downloadOnly="true">
                 <![CDATA[
                     <h3>{$user_name}</h3>
@@ -463,8 +463,8 @@
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="FINAL_HQP" name="HQP Trainees" pagebreak="false">
         <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP"
-                       startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
-                       endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
+                       startDate="2022-11-01" 
+                       endDate="2024-03-31">
             <ReportItemSet id="notfirst" type="NotFirstReportItemSet">
                 <ReportItem id="pagebreak" type="PageBreakReportItem">
                     <![CDATA[
@@ -555,8 +555,8 @@
                     ]]>
                 </Static>
                 <ReportItem id="dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true" tableType="Person"
-                            start="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
-                            end="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
+                            start="2022-11-01" 
+                            end="2024-03-31">
                     <![CDATA[
                         {$item}
                     ]]>
