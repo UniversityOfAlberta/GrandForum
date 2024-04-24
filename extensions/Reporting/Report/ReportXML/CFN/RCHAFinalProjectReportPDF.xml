@@ -22,7 +22,7 @@
                 <table class='wikitable smaller' width='100%' frame='box' rules='all'>
                     <tr>
                         <th>Team Member and<br />Institution/Organization</th>
-                        <th>Role in project and<br />Date Withdrawn</th>
+                        <th>Role in project</th>
                         <th>% of time<br />dedicated to Project</th>
                         <th>Status</th>
                     </tr>
@@ -46,7 +46,7 @@
             </Static>
             <Static>
                 <![CDATA[
-                    <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}<br /><span class='smaller'>{$user_project_end_date}</span></td>
+                    <td>{user_full_roles({getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})},{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})})}</td>
                 ]]>
             </Static>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -144,12 +144,6 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones3" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES3" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable smaller">
-            <![CDATA[
-                <h3>Year 3</h3>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)"  multiple="true" class="wikitable smaller">
             <![CDATA[
                 <br /><br />
@@ -161,12 +155,6 @@
         <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable smaller">
             <![CDATA[
                 <h3>Year 2</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="deliverables3" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES3" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable smaller">
-            <![CDATA[
-                <h3>Year 3</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -350,7 +338,7 @@
 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="description1" type="TextareaReportItem" blobItem="FINAL_PART_DESC1" rich="true" limit="1000">
+        <ReportItem id="description1_new" type="MultiTextReportItem" blobItem="FINAL_PART_DESC1_NEW" blobType="BLOB_ARRAY" multiple="true" labels="Name of partner|Main Sector|Sub-Sector|Describe the benefits &amp; challenges of working with each partner, partnership activities and why the partner was chosen." class="wikitable">
             <![CDATA[
                 <h4>Describe the significant partnership activities that occurred during this project. If any partnerships were dissolved over the course of the project, describe why.</h4>
                 {$item}<br />
