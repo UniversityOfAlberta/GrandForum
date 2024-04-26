@@ -107,22 +107,25 @@ class GlobalSearchAPI extends RESTAPI {
             case 'products':
                 $data = array();
                 $products = DBFunctions::select(array('grand_products'),
-                                                array('title', 'id'),
+                                                array('title', 'id', 'category'),
                                                 array('deleted' => '0',
                                                       'access_id' => '0'));
                 foreach($products as $product){
-                    $pTitle = unaccentChars($product['title']);
-                    $names = array_merge(explode(" ", $pTitle));
-                    $found = true;
-                    foreach($searchNames as $name){
-                        $grepped = preg_grep("/^$name.*/", $names);
-                        if(count($grepped) == 0){
-                            $found = false;
-                            break;
+                    if($product['category'] == "Publication" ||
+                       $product['category'] == "Presentation"){
+                        $pTitle = unaccentChars($product['title']);
+                        $names = array_merge(explode(" ", $pTitle));
+                        $found = true;
+                        foreach($searchNames as $name){
+                            $grepped = preg_grep("/^$name.*/", $names);
+                            if(count($grepped) == 0){
+                                $found = false;
+                                break;
+                            }
                         }
-                    }
-                    if($found){
-                        $data[$product['id']] = $pTitle;
+                        if($found){
+                            $data[$product['id']] = $pTitle;
+                        }
                     }
                 }
                 $results = array();
