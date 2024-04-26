@@ -1154,11 +1154,13 @@ class Paper extends BackboneModel{
         if($journal_title == "" && $issn == ""){
             return array();
         }
+        $ranking = explode("/", $this->getData('category_ranking'));
+        $numerator = @$ranking[0];
+        $denominator = @$ranking[1];
         $data = DBFunctions::execSQL("SELECT * FROM `grand_journals` 
-                                      WHERE (`title` = '{$journal_title}' 
-                                             AND CONCAT(`ranking_numerator`, '/', `ranking_denominator`) = '{$this->getData('category_ranking')}')
-                                      OR ((`issn` = '{$issn}' OR `eissn` = '{$issn}')
-                                          AND CONCAT(`ranking_numerator`, '/', `ranking_denominator`) = '{$this->getData('category_ranking')}')
+                                      WHERE (`issn` = '{$issn}' OR `eissn` = '{$issn}' OR `title` = '{$journal_title}')
+                                      AND `ranking_numerator` = '{$numerator}'
+                                      AND `ranking_denominator` = '{$denominator}'
                                       LIMIT 1");
         if(count($data) > 0){
             return $data[0];
@@ -1412,8 +1414,8 @@ class Paper extends BackboneModel{
                     $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
                 }
             }
-            if($showReported){
-                $reportedYear = $this->getReportedForPerson($me->getId());
+            if($showReported !== false){
+                $reportedYear = (is_numeric($showReported)) ? $this->getReportedForPerson($showReported) : $this->getReportedForPerson($me->getId());
                 if($reportedYear != ""){
                     $reportedYear++;
                     $reported = "&nbsp;/&nbsp;Reported: $reportedYear";

@@ -115,6 +115,7 @@ class PersonFECTab extends AbstractEditableTab {
             return "";
         }
         $this->person->getFecPersonalInfo();
+        /*
         $eFECLastYear = $this->person->getProductHistoryLastYear();
         if($eFECLastYear != ""){
             $eFECLastYear++;
@@ -147,7 +148,7 @@ class PersonFECTab extends AbstractEditableTab {
                 $count++;
             }
             $this->html .= "<div style='float: right; display: inline-block;'>{$count} publications (of which {$peerCount} refereed) have been imported to the Forum.</div>";
-        }
+        }*/
         
         // HR Note
         $blb = new ReportBlob(BLOB_RAW, 0, $this->person->getId(), 0);
