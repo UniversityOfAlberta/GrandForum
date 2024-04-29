@@ -307,7 +307,7 @@ class AVOIDDashboard extends SpecialPage {
             $gamificationLink = ($config->getValue('gamificationEnabled')) 
                               ? "<img src='{$wgServer}{$wgScriptPath}/skins/goldstar.png' style='height:24px;' />
                                  <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>
-                                    <span style='float: right;border: 2px solid #005f9d;border-radius: 10px;padding: 5px;text-align: center;'>
+                                    <span style='float: right;border: 2px solid {$config->getValue("hyperlinkColor")};border-radius: 10px;padding: 5px;text-align: center;'>
                                         <span style='font-weight: bold;'>My Points<br /></span>
                                         <span style='font-size: 3em; line-height: 1em;'>".Gamification::calculatePoints($me)."</span>
                                     </span>
