@@ -16,7 +16,7 @@
                 
                 <div style='display: inline-block; vertical-align: top; width: 50%;'>
                     <table class='wikitable'>
-                        <tr><td><b>Reporting Period:</b></td><td style='white-space:nowrap;'>September 1, {$last_year} to August 31, {$this_year}</td></tr>
+                        <tr><td><b>Reporting Period:</b></td><td style='white-space:nowrap;'>September 1, {$last_year} to June 30, {$this_year}</td></tr>
                         <tr><td><b>Name:</b></td><td>{$user_first_name} {$user_last_name}</td></tr>
                         <tr><td><b>Position:</b></td><td>{$user_level}</td></tr>
                         <tr><td><b>Department:</b></td><td>{$user_dept}</td></tr>
@@ -130,13 +130,11 @@
                             <tr>
                                 <th>Percentage of course instruction</th>
                                 <th>Calendar Hours</th>
-                                <th>Your Actual Weekly Average Contact Hours (indicate if a reading course)</th>
                                 <th>Actual Number of Students</th>
                             </tr>
                             <tr>
                                 <td>{$course_percent}% of instruction</td>
                                 <td align='center'>{$course_calendar}</td>
-                                <td></td>
                                 <td>{$course_enroll}</td>
                             </tr>
                         </table><br />
@@ -182,13 +180,11 @@
                             <tr>
                                 <th>Percentage of course instruction</th>
                                 <th>Calendar Hours</th>
-                                <th>Your Actual Weekly Average Contact Hours (indicate if a reading course)</th>
                                 <th>Actual Number of Students</th>
                             </tr>
                             <tr>
                                 <td>{$course_percent}% of instruction</td>
                                 <td align='center'>{$course_calendar}</td>
-                                <td></td>
                                 <td>{$course_enroll}</td>
                             </tr>
                         </table><br />
@@ -222,10 +218,10 @@
         <!-- Third Term of Last Academic Year -->
         <Static>
             <![CDATA[
-                <h3>Spring {$this_year} & Summer {$this_year}</h3>
+                <h3>Spring {$this_year}</h3>
             ]]>
         </Static>
-        <ReportItemSet type="PersonCourses" term="Spring{$this_year}|Summer{$this_year}" component="LEC" unique="true">
+        <ReportItemSet type="PersonCourses" term="Spring{$this_year}" component="LEC" unique="true">
             <Static>
                 <![CDATA[
                     <h4 style='padding: 0; margin-top:0; margin-bottom: 0.25em; margin-left:2em; font-size: 1em;'>{$course_subject} {$course_number} - {$course_title}</h4>
@@ -234,13 +230,11 @@
                             <tr>
                                 <th>Percentage of course instruction</th>
                                 <th>Calendar Hours</th>
-                                <th>Your Actual Weekly Average Contact Hours (indicate if a reading course)</th>
                                 <th>Actual Number of Students</th>
                             </tr>
                             <tr>
                                 <td>{$course_percent}% of instruction</td>
                                 <td align='center'>{$course_calendar}</td>
-                                <td></td>
                                 <td>{$course_enroll}</td>
                             </tr>
                         </table><br />

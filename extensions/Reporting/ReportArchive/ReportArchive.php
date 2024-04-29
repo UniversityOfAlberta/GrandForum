@@ -93,14 +93,14 @@ class ReportArchive extends SpecialPage {
                                 $caseNumber = ($caseNumber != "") ? "{$caseNumber}-" : "";
                                 $firstName = $report->person->getFirstName();
                                 $lastName = $report->person->getLastName();
-                                $name = str_replace(" ", "-", $caseNumber."{$lastName}".substr($lastName, 0, 1)."-".trim(str_replace(":", "", $type)))."_$date.$ext";
+                                $name = str_replace(" ", "-", $caseNumber."{$lastName}".substr($firstName, 0, 1)."-".trim(str_replace(":", "", $type)))."_$date.$ext";
                             }
                             else{
                                 // Individual Reports
                                 $firstName = $report->person->getFirstName();
                                 $lastName = $report->person->getLastName();
                                 $caseNumber = $report->person->getCaseNumber();
-                                $name = "{$caseNumber}-{$lastName}".substr($lastName, 0, 1)."-{$reportName}_{$date}.{$ext}";
+                                $name = "{$caseNumber}-{$lastName}".substr($firstName, 0, 1)."-{$reportName}_{$date}.{$ext}";
                             }
                         }
                     }

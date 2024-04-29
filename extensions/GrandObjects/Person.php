@@ -530,8 +530,9 @@ class Person extends BackboneModel {
                 $keys[] = strtolower("$firstName ".substr($explodedMiddle[0], 0, 1)."-".substr($explodedMiddle[1], 0, 1)." $lastName");
             }
         }
-        DBFunctions::delete('grand_names_cache',
-                            array('user_id' => $this->getId()));
+        foreach($keys as $i => $key){
+            $keys[$i] = trim($key);
+        }
         $keys = array_unique($keys);
         $inserts = array();
         foreach($keys as $key){
@@ -539,6 +540,8 @@ class Person extends BackboneModel {
                 $inserts[] = "('".DBFunctions::escape($key)."','".DBFunctions::escape($this->getId())."')";
             }
         }
+        DBFunctions::delete('grand_names_cache',
+                            array('user_id' => $this->getId()));
         DBFunctions::execSQL("INSERT INTO `grand_names_cache` (`name`, `user_id`) VALUES ".implode(", ", $inserts), true);
     }
     

@@ -84,9 +84,6 @@ $egAnnokiExtensions['AddHqp'] = array('name' => 'AddHqp',
 $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
                                           'path' => "$IP/extensions/EditMember/EditMember.php");
 
-$egAnnokiExtensions['GradDB'] = array('name' => 'GradDB',
-                                      'path' => "$IP/extensions/GradDB/GradDB.php");
-
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");
 
@@ -104,9 +101,6 @@ $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
 
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
-                                         
-$egAnnokiExtensions['CrossForumExport'] = array('name' => 'CrossForumExport', 
-                                                'path' => "$IP/extensions/CrossForumExport/CrossForumExport.php");
                                                                        
 $egAnnokiExtensions['QASummary'] = array('name' => 'QASummary', 
                                          'path' => "$IP/extensions/QASummary/QASummary.php");
@@ -134,8 +128,6 @@ foreach($egAnnokiExtensions as $key => $extension){
         $egAnnokiExtensions[$key]['time'] = "0.00";
     }
 }
-
-require_once("$IP/extensions/CrossForumExport/CrossForumExport.php");
 
 require_once("AnnokiControl_body.php");
 $wgHooks['BeforePageDisplay'][] = 'AnnokiControl::addCustomJavascript';
