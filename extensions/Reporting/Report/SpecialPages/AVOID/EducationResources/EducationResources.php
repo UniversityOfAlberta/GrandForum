@@ -56,7 +56,7 @@ class EducationResources extends SpecialPage {
     }
 	
 	function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath, $wgLang;        
+        global $wgOut, $wgServer, $wgScriptPath, $wgLang, $config;        
         $dir = dirname(__FILE__) . '/';
         $wgOut->setPageTitle(showLanguage("AVOID Education", "PROACTIF pour éviter la fragilisation – Éducation"));
         $categories = self::JSON();
@@ -71,7 +71,7 @@ class EducationResources extends SpecialPage {
         foreach($categories as $category){
             $wgOut->addHTML("<a id='category{$category->id}' title='".showLanguage($category->title, $category->titleFr)."' data-id='{$category->id}' class='category module module-{$cols}cols-outer' href='#'>
                 <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}.png' alt='".showLanguage($category->title, $category->titleFr)."' />
-                <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>".showLanguage($category->title, $category->titleFr)."</div>
+                <div class='module-progress-text' style='border-top: 2px solid {$config->getValue("hyperlinkColor")};'>".showLanguage($category->title, $category->titleFr)."</div>
             </a>");
             $n++;
         }
