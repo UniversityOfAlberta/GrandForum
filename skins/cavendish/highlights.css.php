@@ -390,6 +390,16 @@ a:active {
     background: $th;
 }
 
+/* AVOID */
+
+.program-header {
+    background: {$th};
+}
+
+.module, .module:hover, .module:visited {
+    border: 2px solid {$hlc};
+}
+
 EOF;
 
 if($config->getValue("topInverted")){

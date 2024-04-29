@@ -225,6 +225,9 @@ class ReportItemCallback {
             "contribution_total" => "getContributionTotal",
             // ELITE
             "getElitePostingField" => "getElitePostingField",
+            // BD
+            "themeSurveyStats" => "getThemeSurveyStats",
+            "projectSurveyStats" => "getProjectSurveyStats",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -1895,6 +1898,16 @@ class ReportItemCallback {
     function getElitePostingField($field){
         $elitePosting = ElitePosting::newFromId($this->reportItem->productId);
         return @$elitePosting->{$field};
+    }
+    
+    function getThemeSurveyStats(){
+        $theme = Theme::newFromId($this->reportItem->projectId);
+        return str_replace("\n", "", SurveyTab::getHTML("", null, $theme));
+    }
+    
+    function getProjectSurveyStats(){
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
+        return str_replace("\n", "", SurveyTab::getHTML("", $project, null));
     }
     
     function getWgUserId(){

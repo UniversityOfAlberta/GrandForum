@@ -15,7 +15,8 @@
         <Else>
             <ReportItemSet type="PersonReportItemSet" userId="{decrypt({GET(candidate)})}">
                 <!-- Skipped -->
-                <If if="{==({getText(RP_SELF_IDENTIFICATION,FORM,SKIP,0,{$user_id},0)},SKIP)}">
+                <If if="{and({==({getText(RP_SELF_IDENTIFICATION,FORM,SKIP,0,{$user_id},0)},SKIP)},
+                             {>=({getText(RP_SELF_IDENTIFICATION,FORM,SUBMITTED,0,{$user_id},0)},{subtract({substr({timestamp(Y-m-d)},0,4)},1)}{timestamp(-m-d)})})}">
                     <![CDATA[
                         Thank you for submitting the self identification survey.
                         <script type='text/javascript'>
@@ -36,7 +37,8 @@
                                  {!=({getText(RP_SELF_IDENTIFICATION,FORM,IMMIGRANT,0,{$user_id},0)},)},
                                  {!=({getText(RP_SELF_IDENTIFICATION,FORM,DISABILITIES,0,{$user_id},0)},)},
                                  {!=({getText(RP_SELF_IDENTIFICATION,FORM,LANGUAGE,0,{$user_id},0)},)},
-                                 {!=({getText(RP_SELF_IDENTIFICATION,FORM,EDUCATION,0,{$user_id},0)},)})}">
+                                 {!=({getText(RP_SELF_IDENTIFICATION,FORM,EDUCATION,0,{$user_id},0)},)},
+                                 {>=({getText(RP_SELF_IDENTIFICATION,FORM,SUBMITTED,0,{$user_id},0)},{subtract({substr({timestamp(Y-m-d)},0,4)},1)}{timestamp(-m-d)})})}">
                     <![CDATA[
                         Thank you for submitting the self identification survey.
                         <script type='text/javascript'>
@@ -56,6 +58,7 @@
                             <script type='text/javascript'>
                                 $('#skipButton').click(function(){
                                     $('#skip input').val('SKIP');
+                                    updateSnapshot();
                                     saveAll(function(){
                                         window.location.reload(false);
                                     });
@@ -162,15 +165,41 @@
                             {$item}
                         ]]>
                     </ReportItem>
+                    <ReportItem id="submitted" type="Hidden" blobItem="SUBMITTED" personId="{$user_id}" optional="true">
+                        <![CDATA[
+                            <div id='submitted'>{$item}</div>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="snapshot" type="Hidden" blobItem="SNAPSHOT" blobSubItem="{timestamp(Y-m)}" personId="{$user_id}" encrypt="true" optional="true">
+                        <![CDATA[
+                            <div id='snapshot'>{$item}</div>
+                        ]]>
+                    </ReportItem>
                     <Static>
                         <![CDATA[
                             <script type='text/javascript'>
+                                
+                                function updateSnapshot(){
+                                    $('#submitted input').val(new Date().toISOString().slice(0, 10));
+                                    var data = {};
+                                    _.each($("#reportMain form").serializeArray(), function(el){
+                                        var id = el.name.split('extra0_').at(-1);
+                                        if(id != 'snapshot'){
+                                            data[el.name.split('extra0_').at(-1)] = el.value;
+                                        }
+                                    });
+                                    $('#snapshot input').val(JSON.stringify(data));
+                                }
+                                
                                 $(document).ready(function(){
                                     $('button[value=Save]').click(function(){
                                         var percent = $("#reportProgressBar").attr("data-percent");
                                         if(percent == 100){
+                                            updateSnapshot();
                                             alert('Thank you for submitting the self identification survey.');
-                                            window.location.reload(false);
+                                            saveAll(function(){
+                                                window.location.reload(false);
+                                            });
                                         }
                                         else{
                                             alert('Please answer all required questions.');

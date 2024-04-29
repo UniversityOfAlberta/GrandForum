@@ -114,6 +114,10 @@
             <![CDATA[
                 <h3>3. Equity, diversity, and inclusion update</h3>
                 <p>Explain how EDI considerations have been incorporated in your work, including the design and implementation of your research activities, the composition of project teams, formation, and training of HQPs, participation in EDI events, etc.</p>
+                <b><a href='#' onClick='$("#surveyStats").slideToggle();'>Toggle Survey Stats</a></b>
+                <div id='surveyStats' style='display:none;'>
+                    {$projectSurveyStats}
+                </div>
                 {$item}
             ]]>
         </ReportItem>

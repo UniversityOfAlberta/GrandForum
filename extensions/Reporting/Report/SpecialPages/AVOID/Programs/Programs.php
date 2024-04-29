@@ -91,7 +91,7 @@ class Programs extends SpecialPage {
                     else{
                         $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols $membersOnly' href='{$url}'>
                             <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
-                            <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$program->title}</div>
+                            <div class='module-progress-text' style='border-top: 2px solid {$config->getValue("hyperlinkColor")};'>{$program->title}</div>
                         </a>");
                         $n++;
                     }
