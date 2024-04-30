@@ -114,154 +114,55 @@
         </If>
     </ReportSection>
     <ReportSection id="teaching" tooltip="TEACHING" name="Teaching" title="1. TEACHING" blobSection="FEC_TEACHING" type="EditableReportSection" pagebreak="false" hLevel="2">
-        <!-- First Term of Last Academic Year -->
-        <Static>
-            <![CDATA[
-                <h3>Fall {$last_year}</h3>
-            ]]>
-        </Static>
-        <ReportItemSet type="PersonCourses" term="Fall{$last_year}" component="LEC" unique="true">
+        <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
             <Static>
                 <![CDATA[
-                    <h4 style='padding: 0; margin-top:0; margin-bottom: 0.25em; margin-left:2em; font-size: 1em;'>{$course_subject} {$course_number} - {$course_title}</h4>
-                    <div style='margin-left: 4em;'>
-                        <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                            <tr>
-                                <th>Percentage of course instruction</th>
-                                <th>Calendar Hours</th>
-                                <th>Actual Number of Students</th>
-                            </tr>
-                            <tr>
-                                <td>{$course_percent}% of instruction</td>
-                                <td align='center'>{$course_calendar}</td>
-                                <td>{$course_enroll}</td>
-                            </tr>
-                        </table><br />
+                    <h3>{getExtra()}</h3>
                 ]]>
             </Static>
-            <If if="{!=({$course_eval}, )}">
-                <![CDATA[
-                    <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                        <tr>
-                            <th style='width: 1%;'>Q#</th>
-                            <th style='width: 1%;'>QText</th>
-                            <th style='width: 1%;'>R1</th>
-                            <th style='width: 1%;'>R2</th>
-                            <th style='width: 1%;'>R3</th>
-                            <th style='width: 1%;'>R4</th>
-                            <th style='width: 1%;'>R5</th>
-                            <th>Chart</th>
-                        </tr>
-                        {$course_eval}
-                    </table><br />
-                ]]>
-            </If>
-            <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="62.60%|10%|27.40%" class="wikitable">
-                <![CDATA[
-                        {$item}
-                    </div>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        
-        <!-- Second Term of Last Academic Year -->
-        <Static>
-            <![CDATA[
-                <h3>Winter {$this_year}</h3>
-            ]]>
-        </Static>
-        <ReportItemSet type="PersonCourses" term="Winter{$this_year}" component="LEC" unique="true">
-            <Static>
-                <![CDATA[
-                    <h4 style='padding: 0; margin-top:0; margin-bottom: 0.25em; margin-left:2em; font-size: 1em;'>{$course_subject} {$course_number} - {$course_title}</h4>
-                    <div style='margin-left: 4em;'>
+            <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" component="LEC" unique="true">
+                <Static>
+                    <![CDATA[
+                        <h4 style='padding: 0; margin-top:0; margin-bottom: 0.25em; margin-left:2em; font-size: 1em;'>{$course_subject} {$course_number} - {$course_title}</h4>
+                        <div style='margin-left: 4em;'>
+                            <table class='wikitable' frame='box' rules='all' style='width:100%;'>
+                                <tr>
+                                    <th>Percentage of course instruction</th>
+                                    <th>Calendar Hours</th>
+                                    <th>Actual Number of Students</th>
+                                </tr>
+                                <tr>
+                                    <td>{$course_percent}% of instruction</td>
+                                    <td align='center'>{$course_calendar}</td>
+                                    <td>{$course_enroll}</td>
+                                </tr>
+                            </table><br />
+                    ]]>
+                </Static>
+                <If if="{!=({$course_eval}, )}">
+                    <![CDATA[
                         <table class='wikitable' frame='box' rules='all' style='width:100%;'>
                             <tr>
-                                <th>Percentage of course instruction</th>
-                                <th>Calendar Hours</th>
-                                <th>Actual Number of Students</th>
+                                <th style='width: 1%;'>Q#</th>
+                                <th style='width: 1%;'>QText</th>
+                                <th style='width: 1%;'>R1</th>
+                                <th style='width: 1%;'>R2</th>
+                                <th style='width: 1%;'>R3</th>
+                                <th style='width: 1%;'>R4</th>
+                                <th style='width: 1%;'>R5</th>
+                                <th>Chart</th>
                             </tr>
-                            <tr>
-                                <td>{$course_percent}% of instruction</td>
-                                <td align='center'>{$course_calendar}</td>
-                                <td>{$course_enroll}</td>
-                            </tr>
+                            {$course_eval}
                         </table><br />
-                ]]>
-            </Static>
-            <If if="{!=({$course_eval}, )}">
-                <![CDATA[
-                    <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                        <tr>
-                            <th style='width: 1%;'>Q#</th>
-                            <th style='width: 1%;'>QText</th>
-                            <th style='width: 1%;'>R1</th>
-                            <th style='width: 1%;'>R2</th>
-                            <th style='width: 1%;'>R3</th>
-                            <th style='width: 1%;'>R4</th>
-                            <th style='width: 1%;'>R5</th>
-                            <th>Chart</th>
-                        </tr>
-                        {$course_eval}
-                    </table><br />
-                ]]>
-            </If>
-            <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="62.60%|10%|27.40%" class="wikitable">
-                <![CDATA[
-                        {$item}
-                    </div>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        
-        <!-- Third Term of Last Academic Year -->
-        <Static>
-            <![CDATA[
-                <h3>Spring {$this_year}</h3>
-            ]]>
-        </Static>
-        <ReportItemSet type="PersonCourses" term="Spring{$this_year}" component="LEC" unique="true">
-            <Static>
-                <![CDATA[
-                    <h4 style='padding: 0; margin-top:0; margin-bottom: 0.25em; margin-left:2em; font-size: 1em;'>{$course_subject} {$course_number} - {$course_title}</h4>
-                    <div style='margin-left: 4em;'>
-                        <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                            <tr>
-                                <th>Percentage of course instruction</th>
-                                <th>Calendar Hours</th>
-                                <th>Actual Number of Students</th>
-                            </tr>
-                            <tr>
-                                <td>{$course_percent}% of instruction</td>
-                                <td align='center'>{$course_calendar}</td>
-                                <td>{$course_enroll}</td>
-                            </tr>
-                        </table><br />
-                ]]>
-            </Static>
-            <If if="{!=({$course_eval}, )}">
-                <![CDATA[
-                    <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                        <tr>
-                            <th style='width: 1%;'>Q#</th>
-                            <th style='width: 1%;'>QText</th>
-                            <th style='width: 1%;'>R1</th>
-                            <th style='width: 1%;'>R2</th>
-                            <th style='width: 1%;'>R3</th>
-                            <th style='width: 1%;'>R4</th>
-                            <th style='width: 1%;'>R5</th>
-                            <th>Chart</th>
-                        </tr>
-                        {$course_eval}
-                    </table><br />
-                ]]>
-            </If>
-            <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="62.60%|10%|27.40%" class="wikitable">
-                <![CDATA[
-                        {$item}
-                    </div>
-                ]]>
-            </ReportItem>
+                    ]]>
+                </If>
+                <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="62.60%|10%|27.40%" class="wikitable">
+                    <![CDATA[
+                            {$item}
+                        </div>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="initiatives" tooltip="EDUCATIONAL INITIATIVES" name="Educational Initiatives" title="2. EDUCATIONAL INITIATIVES" blobSection="FEC_INITIATIVES" type="EditableReportSection" pagebreak="false" hLevel="2">
