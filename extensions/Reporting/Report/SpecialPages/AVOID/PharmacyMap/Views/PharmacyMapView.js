@@ -356,13 +356,9 @@ PharmacyMapView = Backbone.View.extend({
 
     AddMarkers: function (group) {
         var pinImage = new google.maps.MarkerImage("https://developers.google.com/static/maps/documentation/javascript/images/default-marker.png",
-            new google.maps.Size(21, 34),
+            new google.maps.Size(26, 37),
             new google.maps.Point(0, 0),
-            new google.maps.Point(10, 34));
-        var pinShadow = new google.maps.MarkerImage("https://developers.google.com/static/maps/documentation/javascript/images/default-marker.png",
-            new google.maps.Size(40, 37),
-            new google.maps.Point(0, 0),
-            new google.maps.Point(12, 35));
+            new google.maps.Point(13, 37));
         var i = 0;
         var lat = 0;
         var long = 0;
@@ -378,8 +374,7 @@ PharmacyMapView = Backbone.View.extend({
                         map: map,
                         data: "pharm",
                         title: val.name,
-                        icon: pinImage,
-                        shadow: pinShadow
+                        icon: pinImage
                     });
                     bounds.extend(pharmLoc);
                     this.arrmarkers.push(marker);
