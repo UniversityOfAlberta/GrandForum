@@ -545,7 +545,7 @@
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Outputs</a>
                 <p>
-                    Do <b>not</b> include articles submitted but not yet accepted. List the most recent first, <b>using the standard NSERC format</b>. Use all capital letters to indicate names of students. One copy of each publication or manuscript is to be deposited with the Department Chair, including letter of acceptance for articles in press.
+                    Do <b>not</b> include articles submitted but not yet accepted. One copy of each publication or manuscript is to be deposited with the Department Chair, including letter of acceptance for articles in press.
                 </p>
             ]]>
         </Static>
@@ -554,7 +554,7 @@
         <Static>
             <![CDATA[
                 <h3>(a) Refereed journals</h3>
-                (For those accepted, give acceptance date and number of manuscript pages; use all capital letters to indicate names of students)
+                (For those accepted, give acceptance date and number of manuscript pages)
                 <table class='wikitable'>
             ]]>
         </Static>
@@ -575,7 +575,7 @@
         <Static>
             <![CDATA[
                 <h3>(b) Conference proceedings</h3>
-                (specify number of ms. pages; use * to indicate presenter)
+                (specify number of ms)
                 <table class='wikitable'>
             ]]>
         </Static>
