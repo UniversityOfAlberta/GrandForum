@@ -65,7 +65,7 @@ class Programs extends SpecialPage {
         $wgOut->addHTML("<style>
             @media only screen and (min-width: 1024px) {
                 .module-2cols-outer {
-                    max-width: 66%;
+                    max-width: 50%;
                 }
             }
         </style>");
