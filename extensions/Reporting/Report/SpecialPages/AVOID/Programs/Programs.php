@@ -70,13 +70,14 @@ class Programs extends SpecialPage {
             }
         </style>");
         $clickProgram = "Click on the program that you are interested in and sign up using the orange link at the bottom of the page.";
-        if($config->getValue("networkFullName") == "AVOID Pacific"){
+        if($config->getValue("networkFullName") == "AVOID Pacific" || 
+           $config->getValue("networkFullName") == "AVOID AB"){
             $clickProgram = "";
         }
         $wgOut->addHTML("<p class='program-body'>
                             <en>The AVOID Frailty programs are designed to keep you connected with your peers and community as well as support the development of healthy behaviour. You can choose to participate as a volunteer or find the help you need to be empowered to take control of your health. {$clickProgram}</en>
                             <fr>Les programmes PROACTIF visent à renforcer le sentiment de communauté et l’entraide entre pairs, et à contribuer à l’adoption de saines habitudes de vie. Vous pouvez participer en tant que bénévole ou bien y trouvez l’aide dont vous avez besoin pour vous motiver à prendre le contrôle de votre santé. Cliquez sur le programme qui vous intéresse et inscrivez-vous ci-dessous.</fr>
-                        </p><div class='modules'>");
+                        </p><div class='modules' style='justify-content: center;'>");
         foreach($categories as $category){
             $wgOut->addHTML("<div class='modules module-2cols-outer'>");
             if(count($categories) > 1){

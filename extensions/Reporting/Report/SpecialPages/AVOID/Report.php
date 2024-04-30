@@ -77,12 +77,16 @@ class Report extends AbstractReport{
         $me = Person::newFromWgUser();
         if($config->getValue("networkFullName") == "AVOID AB") {
             $wgOut->addScript("<style>
+            
+            .program-body {
+                max-width: initial;
+            }
+            
             .program-button, .program-button:visited {
                 background: #F2CD00 !important;
-            color: black !important;
-            text-shadow: none;
-            font-weight: 500 !important;
-            
+                color: black !important;
+                text-shadow: none;
+                font-weight: 500 !important;
           }
 
           .program-button:hover{
