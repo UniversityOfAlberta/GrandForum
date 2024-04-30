@@ -85,9 +85,9 @@
     <ReportSection id="cover" tooltip="Annual Report" name="Annual Report" title="Annual Report" blobSection="FEC_COVER" type="EditableReportSection">
         <Static>
             <![CDATA[
+                <b>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</b><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a> or <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf' target='_blank'>FSO Agreement</a>. The information submitted will be used in arriving at decisions regarding salaries, tenure, and promotion.</p>
                 <div style='display: inline-block; vertical-align: top; margin-right: 1em;'>
                     <table class='wikitable'>
-                        <tr><td><b>Reporting Period:</b></td><td style='white-space:nowrap;'>September 1, {$last_year} to June 30, {$this_year}</td></tr>
                         <tr><td><b>Name:</b></td><td>{$user_first_name} {$user_last_name}</td></tr>
                         <tr><td><b>Position:</b></td><td>{$user_level}</td></tr>
                         <tr><td><b>Department:</b></td><td>{$user_dept}</td></tr>
