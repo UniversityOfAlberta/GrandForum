@@ -13,10 +13,9 @@
                     ANNUAL REPORT of FACULTY MEMBER to<br />
                     the FACULTY EVALUATION COMMITTEE
                 </h1>
-                
+                <h3 style='margin-top: -0.5em;'>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</h3>
                 <div style='display: inline-block; vertical-align: top; width: 50%;'>
                     <table class='wikitable'>
-                        <tr><td><b>Reporting Period:</b></td><td style='white-space:nowrap;'>September 1, {$last_year} to June 30, {$this_year}</td></tr>
                         <tr><td><b>Name:</b></td><td>{$user_first_name} {$user_last_name}</td></tr>
                         <tr><td><b>Position:</b></td><td>{$user_level}</td></tr>
                         <tr><td><b>Department:</b></td><td>{$user_dept}</td></tr>
