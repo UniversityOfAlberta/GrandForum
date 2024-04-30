@@ -38,6 +38,9 @@ class Programs extends SpecialPage {
             case "AVOID Australia":
                 $n = "5";
                 break;
+            case "AVOID AB":
+                $n = "6";
+                break;
         }
         $json = json_decode(file_get_contents("{$dir}programs{$n}.json"));
         return $json;
@@ -83,7 +86,7 @@ class Programs extends SpecialPage {
             foreach($programs as $program){
                 $membersOnly = ($me->isRole("Provider") && $program->id == "PeerCoaching") ? "members-only" : "";
                 if($program->category == $category){
-                    $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
+                    $url = (isset($program->href)) ? $program->href : "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
                     if($program->id == ""){
                         // Placeholder text
                         $wgOut->addHTML("<span class='program-body'>{$program->title}</span>");

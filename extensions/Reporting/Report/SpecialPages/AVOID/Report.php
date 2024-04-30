@@ -73,8 +73,24 @@ class Report extends AbstractReport{
     }
     
     static function addFooter($wgOut, $skin){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
+        if($config->getValue("networkFullName") == "AVOID AB") {
+            $wgOut->addScript("<style>
+            .program-button, .program-button:visited {
+                background: #F2CD00 !important;
+            color: black !important;
+            text-shadow: none;
+            font-weight: 500 !important;
+            
+          }
+
+          .program-button:hover{
+            background: #F4D526 !important;
+            color: black !important;
+          }
+        </style>");
+        }
         $wgOut->addScript("<style>
             #avoidButtons {
                 margin-top: 15px;
