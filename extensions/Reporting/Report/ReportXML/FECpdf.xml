@@ -3,7 +3,7 @@
     <ReportSection id="information" tooltip="Information" name="Information" title="Annual Report of Faculty Member - {$networkName}" blobSection="FEC_INFORMATION" type="EditableReportSection" pagebreak="false">
         <Static>
             <![CDATA[
-                <h3 style='margin-top: -0.5em;'>Period: July {$start_year} to June {$this_year}</h3>
+                <h3 style='margin-top: -0.5em;'>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</h3>
                 <table class="nospacing" style="line-height:1.75em; width: 100%;" cellpadding='0' cellspacing='0'>
                     <tr>
                         <td valign='top'>
