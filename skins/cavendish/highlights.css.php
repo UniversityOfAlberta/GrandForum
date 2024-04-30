@@ -396,6 +396,10 @@ a:active {
     background: {$th};
 }
 
+.program-box {
+    background: {$th};
+}
+
 .module, .module:hover, .module:visited {
     border: 2px solid {$hlc};
 }
