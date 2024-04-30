@@ -1,0 +1,23 @@
+[
+    {
+        "id": "vm",
+        "title": "Vibrant Mind",
+        "category": "Get Support",
+        "tags": ["peer coaching participant"],
+        "href": "https://vibrant-minds.org/vibrantminds2/start"
+    },
+    {
+        "id": "vg",
+        "title": "Virtual Gym",
+        "category": "Get Support",
+        "tags": ["peer navigator"],
+        "href": "http://142.244.110.140:8052/virtualgym/start"
+    },
+    {
+        "id": "vi",
+        "title": "Voice Indicators",
+        "category": "Get Support",
+        "tags": ["otago"],
+        "href": "https://healthyagingcentres.ca/ab/index.php/DepressionData"
+    }
+]
