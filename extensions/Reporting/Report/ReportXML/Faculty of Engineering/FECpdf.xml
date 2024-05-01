@@ -607,23 +607,43 @@
                             <th>Year</th>
                         </tr>
                     </thead>
-                    <tbody>
             ]]>
         </Static>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <Static>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                 <![CDATA[
-                    <tr><td>{$product_title}</td>
+                    <tr><td>{$product_title} <sup>{$item}</sup></td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
                     </tr>
                 ]]>
-            </Static>
+            </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </tbody></table>
+                </table>
+            ]]>
+        </Static>
+        
+        <!-- Awards Footnotes -->
+        <Static>
+            <![CDATA[
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
             ]]>
         </Static>
     </ReportSection>

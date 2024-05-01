@@ -772,21 +772,23 @@
                             <th>Award Category</th>
                             <th>Scope</th>
                             <th>Year</th>
+                            <th>Footnotes</th>
                         </tr>
                     </thead>
                     <tbody>
             ]]>
         </Static>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <Static>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr><td>{$product_title}</td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
+                        <td align='center'>{$item}</td>
                     </tr>
                 ]]>
-            </Static>
+            </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
