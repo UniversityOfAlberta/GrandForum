@@ -544,12 +544,12 @@
                             <td><b>Total Pool&nbsp;</b></td>
                 ]]>
             </Static>
-            <ReportItem id="targetFac" type="Integer" blobItem="TARGET_FAC" decimals="2" personId="0" width="80px" placeholder="Value...">
+            <ReportItem id="targetFac" type="Integer" blobItem="TARGET_FAC" decimals="2" personId="0" width="80px" placeholder="0.00">
                 <![CDATA[
                     <td id='targetFac' class='target' align='right'>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="targetFso" type="Integer" blobItem="TARGET_FSO" decimals="2" personId="0" width="80px" placeholder="Value...">
+            <ReportItem id="targetFso" type="Integer" blobItem="TARGET_FSO" decimals="2" personId="0" width="80px" placeholder="0.00">
                 <![CDATA[
                     <td id='targetFso' class='target' align='right'>{$item}</td>
                 ]]>

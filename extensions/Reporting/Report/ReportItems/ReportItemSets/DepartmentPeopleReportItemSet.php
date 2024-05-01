@@ -45,8 +45,9 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 goto create;
             }
             $person->getFecPersonalInfo();
+            $depts = array_keys($person->departments);
             if(($dept == "") || 
-               (@$person->departments[0] == $dept) ||
+               (@$depts[0] == $dept) ||
                ($found)){
                 if(($me->getName() == "PSYCH.ExecutiveAssistant" || $me->getName() == "Jannie.Boulter") && $person->getName() == "Anthony.Singhal"){
                     // This is also a special case, but needs to be put here

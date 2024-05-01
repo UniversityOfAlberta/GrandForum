@@ -78,7 +78,8 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 continue;
             }
             $person->getFecPersonalInfo();
-            if($dept != "" && @$person->departments[0] != $dept){
+            $depts = array_keys($person->departments);
+            if($dept != "" && @$depts[0] != $dept){
                 // If department is specified, only inlclude people from that department
                 continue;
             }

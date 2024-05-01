@@ -8,7 +8,7 @@
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="rw" />
-            <SectionPermission id="atsec" permissions="" />
+            <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="rw" />
         </Role>
         <Role role="EA">
@@ -18,7 +18,7 @@
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="r" />
-            <SectionPermission id="atsec" permissions="" />
+            <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="rw" />
         </Role>
         <Role role="DEAN">
@@ -28,7 +28,7 @@
             <SectionPermission id="deans_advice" permissions="rw" />
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
-            <SectionPermission id="atsec" permissions="" />
+            <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="" />
         </Role>
         <Role role="DEANEA">
@@ -38,7 +38,7 @@
             <SectionPermission id="deans_advice" permissions="rw" />
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
-            <SectionPermission id="atsec" permissions="" />
+            <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="" />
         </Role>
         <!--Role role="CHAIR">
@@ -391,6 +391,9 @@
                     });
                     
                     $(".increment select").change(function(){
+                        var targetFac = $('#targetFac input').val();
+                        var targetFSO = $('#targetFso input').val();
+                        
                         var fac_sum = 0;
                         var fac_count = 0;
                         var fso_sum = 0;
@@ -417,9 +420,41 @@
                                 }
                             }
                         });
+                        
+                        var facSign = (targetFac - fac_sum > 0) ? "-" : "+";
+                        var fsoSign = (targetFSO - fso_sum > 0) ? "-" : "+";
+                        
                         $('#averageFac').html((fac_sum/Math.max(1, fac_count)).toFixed(3));
                         $('#averageFSO').html((fso_sum/Math.max(1, fso_count)).toFixed(3));
+                        
+                        $("#totalFac").text(number_format(fac_sum));
+                        $("#totalFSO").text(number_format(fso_sum));
+                        
+                        $("#deltaFac").text(facSign + number_format(Math.abs(targetFac - fac_sum)));
+                        $("#deltaFSO").text(fsoSign + number_format(Math.abs(targetFSO - fso_sum)));
+                        
+                        if(facSign == "+"){
+                            $("#deltaFac").css("background", "red");
+                            $("#deltaFac").css("color", "white");
+                        }
+                        else{
+                            $("#deltaFac").css("background", "white");
+                            $("#deltaFac").css("color", "black");
+                        }
+                        
+                        if(fsoSign == "+"){
+                            $("#deltaFSO").css("background", "red");
+                            $("#deltaFSO").css("color", "white");
+                        }
+                        else{
+                            $("#deltaFSO").css("background", "white");
+                            $("#deltaFSO").css("color", "black");
+                        }
                     });
+                    
+                    setInterval(function(){
+                        $(".increment select:first-child").change();
+                    }, 1000);
                     
                     var increments = new Array();
                     var fac_counts = new Array();
@@ -468,6 +503,65 @@
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
             ]]>
         </Static>
+        <Static>
+                <![CDATA[
+                    <style>
+                        #summary {
+                            border: 2px solid #aaaaaa;
+                        }
+                    
+                        .target {
+                            padding: 0 !important;
+                            border: 2px solid #007d43 !important;
+                        }
+                        
+                        .target input {
+                            font-size: 9pt;
+                            margin: 0;
+                            border: none;
+                            border-radius: 0;
+                        }
+                        
+                        .target input:focus {
+                            border: none !important;
+                        }
+                    </style>
+                    <table id='summary' class='wikitable' frame='box' rules='all'>
+                        <tr>
+                            <th></th>
+                            <th style='width:6em;'>Faculty</th>
+                            <th style='width:6em;'>FSO</th>
+                        </tr>
+                        <tr>
+                            <td><b>Recommendations to FEC&nbsp;</b></td>
+                            <td id='totalFac' align='right'></td>
+                            <td id='totalFSO' align='right'></td>
+                        </tr>
+                        <tr>
+                            <td><b>Total Pool&nbsp;</b></td>
+                ]]>
+            </Static>
+            <ReportItem id="targetFac" type="Integer" blobItem="TARGET_FAC" blobSubItem="{$my_id}" decimals="2" personId="0" width="80px" placeholder="0.00">
+                <![CDATA[
+                    <td id='targetFac' class='target' align='right'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="targetFso" type="Integer" blobItem="TARGET_FSO" blobSubItem="{$my_id}" decimals="2" personId="0" width="80px" placeholder="0.00">
+                <![CDATA[
+                    <td id='targetFso' class='target' align='right'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                        </tr>
+                        <tr>
+                            <td><b>Running Targets&nbsp;</b></td>
+                            <td id='deltaFac' align='right'></td>
+                            <td id='deltaFSO' align='right'></td>
+                        </tr>
+                    </table>
+                ]]>
+            </Static>
     </ReportSection>
     <ReportSection id="atsec" tooltip="ATSEC" name="ATSEC" title="ATSEC Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
         <Static>
