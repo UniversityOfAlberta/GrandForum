@@ -44,7 +44,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 continue;
                 // Don't show if no case number
             }
-            if(!$includeDean && $person->isRoleDuring(DEAN, $start, $end) || $person->isSubRole("VPR")){
+            if(!$includeDean && $person->isRoleDuring(DEAN, $start, $end)){
                 // Don't show Deans
                 continue;
             }
