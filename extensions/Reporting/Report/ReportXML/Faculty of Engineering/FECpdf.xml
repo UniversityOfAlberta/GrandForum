@@ -411,20 +411,28 @@
         <!-- Journal Papers -->
         <Static>
             <![CDATA[
+                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>
                 <h3>(a) Refereed journals</h3>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
+                <ul>
             ]]>
         </Static>
         <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" peerReviewed="Yes" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <li style="page-break-inside: avoid;">
+                        {$item} 
+                ]]>
+            </ReportItem>
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                <![CDATA[
+                        <b>({$product_type})</b> {$item}
+                    </li>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </table>
+                </ul>
             ]]>
         </Static>
         
@@ -432,19 +440,26 @@
         <Static>
             <![CDATA[
                 <h3>(b) Conference proceedings</h3>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
+                <ul>
             ]]>
         </Static>
         <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <li style="page-break-inside: avoid;">
+                        {$item} 
+                ]]>
+            </ReportItem>
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                <![CDATA[
+                        <b>({$product_type})</b> {$item}
+                    </li>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </table>
+                </ul>
             ]]>
         </Static>
         
@@ -452,19 +467,26 @@
         <Static>
             <![CDATA[
                 <h3>(c) Books; chapters in books</h3>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
+                <ul>
             ]]>
         </Static>
         <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Book|Book Chapter" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <li style="page-break-inside: avoid;">
+                        {$item} 
+                ]]>
+            </ReportItem>
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                <![CDATA[
+                        <b>({$product_type})</b> {$item}
+                    </li>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </table>
+                </ul>
             ]]>
         </Static>
         
@@ -472,19 +494,26 @@
         <Static>
             <![CDATA[
                 <h3>(d) Reports of invention, patents filed or patents awarded</h3>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
+                <ul>
             ]]>
         </Static>
         <ReportItemSet id="products4" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <li style="page-break-inside: avoid;">
+                        {$item} 
+                ]]>
+            </ReportItem>
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                <![CDATA[
+                        <b>({$product_type})</b> {$item}
+                    </li>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </table>
+                </ul>
             ]]>
         </Static>
         
@@ -492,19 +521,26 @@
         <Static>
             <![CDATA[
                 <h3>(e) Unrefereed papers and technical reports published</h3>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
+                <ul>
             ]]>
         </Static>
         <ReportItemSet id="products5" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|White Paper|Tech Report|Manual" useProductYear="true" includeHQP="false" peerReviewed="No" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <li style="page-break-inside: avoid;">
+                        {$item} 
+                ]]>
+            </ReportItem>
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                <![CDATA[
+                        <b>({$product_type})</b> {$item}
+                    </li>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </table>
+                </ul>
             ]]>
         </Static>
         
@@ -512,19 +548,26 @@
         <Static>
             <![CDATA[
                 <h3>(f) Presentations, indicating by an asterisk which author made the presentation</h3>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
+                <ul>
             ]]>
         </Static>
         <ReportItemSet id="products6" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <li style="page-break-inside: avoid;">
+                        {$item} 
+                ]]>
+            </ReportItem>
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                <![CDATA[
+                        <b>({$product_type})</b> {$item}
+                    </li>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </table>
+                </ul>
             ]]>
         </Static>
         
@@ -532,19 +575,101 @@
         <Static>
             <![CDATA[
                 <h3>(g) Other publications</h3>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
+                <ul>
             ]]>
         </Static>
         <ReportItemSet id="products7" type="PersonProductsReportItemSet" category="Publication" productType="Poster|Workshop Paper|Magazine/Newspaper Article|Edited Book|Book Review|Misc" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <li style="page-break-inside: avoid;">
+                        {$item} 
+                ]]>
+            </ReportItem>
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                <![CDATA[
+                        <b>({$product_type})</b> {$item}
+                    </li>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </table>
+                </ul>
+            ]]>
+        </Static>
+        
+        <!-- Publication Footnotes -->
+        <Static>
+            <![CDATA[
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" peerReviewed="Yes" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Book|Book Chapter" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="products4" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="products5" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|White Paper|Tech Report|Manual" useProductYear="true" includeHQP="false" peerReviewed="No" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="products6" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="products7" type="PersonProductsReportItemSet" category="Publication" productType="Poster|Workshop Paper|Magazine/Newspaper Article|Edited Book|Book Review|Misc" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
             ]]>
         </Static>
     </ReportSection>
@@ -610,7 +735,7 @@
             ]]>
         </Static>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr><td>{$product_title} <sup>{$item}</sup></td>
                         <td align='center'>{$product_type}</td>
@@ -633,7 +758,7 @@
             ]]>
         </Static>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
                         {$item}
