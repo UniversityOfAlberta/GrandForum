@@ -32,7 +32,7 @@ foreach($lines as $line){
             $grantById = Grant::newFromProjectId($id);
             if($person->getId() != 0 && 
                $grantById->getId() == 0 && // Grant with the same id 
-               ($grantByTitle->getId() == 0 || ($grantByTitle->getProjectId() != "" && $grantByTitle->getProjectId() != $id)) // Grant with same title, but different id
+               ($grantByTitle->getId() == 0 || $grantByTitle->getProjectId() != "") // Grant with same title, but different id
             ){
                 $_POST['user_id'] = $person->getId();
                 $_POST['copi'] = array();
