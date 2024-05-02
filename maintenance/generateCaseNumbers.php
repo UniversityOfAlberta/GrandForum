@@ -12,9 +12,7 @@
                              Person::getAllPeopleDuring("ATS", $start, $end));
                              
     $allPeople = Person::filterFaculty($allPeople);
-    
-    DBFunctions::delete('grand_case_numbers',
-                        array('year' => YEAR));
+
     $data = DBFunctions::execSQL("SELECT `user_id`, `date_of_phd`, `date_of_appointment` 
                                   FROM `grand_personal_fec_info` 
                                   WHERE `date_retirement` >= '{$end}' OR 

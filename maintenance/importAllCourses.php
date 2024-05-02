@@ -83,6 +83,11 @@
         else if ($term == "Winter2023"){ $startEndDate["start"] = 44930; $startEndDate["end"]  = 45027;} //Winter2023: Jan 5, 2023 - Apr 12, 2023
         else if ($term == "Spring2023"){ $startEndDate["start"] = 45053; $startEndDate["end"]  = 45090;} //Spring2023: May 8, 2023 - June 14, 2023
         else if ($term == "Summer2023"){ $startEndDate["start"] = 45116; $startEndDate["end"]  = 45146;} //Summer2023: Jul 10, 2023 - Aug 9, 2023
+        
+        else if ($term == "Fall2023"){ $startEndDate["start"] = 45173; $startEndDate["end"]  = 45267;}   //Fall2023:   Sep 5, 2023 - Dec 8, 2023
+        else if ($term == "Winter2024"){ $startEndDate["start"] = 45298; $startEndDate["end"]  = 45393;} //Winter2024: Jan 8, 2024 - Apr 12, 2024
+        else if ($term == "Spring2024"){ $startEndDate["start"] = 45417; $startEndDate["end"]  = 45454;} //Spring2024: May 6, 2024 - June 12, 2024
+        else if ($term == "Summer2024"){ $startEndDate["start"] = 45480; $startEndDate["end"]  = 45517;} //Summer2024: Jul 8, 2024 - Aug 14, 2024
                     
         return $startEndDate; 
     }
