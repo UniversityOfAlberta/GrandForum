@@ -12,6 +12,7 @@ $wgHooks['UnknownAction'][] = 'AbstractReport::downloadReportZip';
 $wgHooks['UnknownAction'][] = 'AbstractReport::tinyMCEUpload';
 
 require_once("ReportConstants.php");
+require_once("SpecialPages/Report.php");
 require_once("SpecialPages/{$config->getValue('networkName')}/Report.php");
 require_once("SpecialPages/AnnualReportTable.php");
 require_once("SpecialPages/ServiceRoles.php");
