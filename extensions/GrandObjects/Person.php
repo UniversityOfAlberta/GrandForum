@@ -13,6 +13,7 @@ class Person extends BackboneModel {
     static $rolesCache = array();
     static $universityCache = array();
     static $allUniversityCache = array();
+    static $allUniversityCacheDone = false;
     static $aliasCache = array();
     static $authorshipCache = array();
     static $employeeIdCache = array();
@@ -1726,7 +1727,7 @@ class Person extends BackboneModel {
         $endRange = substr($endRange,0,10);
         
         // Fetch the rows from the db/cache
-        if(!isset(self::$allUniversityCache[$id])){
+        if(!isset(self::$allUniversityCache[$id]) && !self::$allUniversityCacheDone){
             $data = array();
             if(count(self::$allUniversityCache) <= 500){
                 if(Cache::exists("user_universities_{$id}")){
@@ -1756,6 +1757,8 @@ class Person extends BackboneModel {
                     $data = DBFunctions::execSQL($sql);
                     Cache::store("user_university", $data);
                 }
+                self::$allUniversityCache = array();
+                self::$allUniversityCacheDone = true;
             }
             foreach($data as $row){
                 if($row['university_name'] != "Unknown"){
