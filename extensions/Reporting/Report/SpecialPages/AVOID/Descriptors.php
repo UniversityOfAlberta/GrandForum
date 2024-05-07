@@ -347,6 +347,7 @@ class Descriptors extends SpecialPage {
         
         $cfs = array(0,0,0,0,0,0,0,0,0,0);
         $cfs6 = array(0,0,0,0,0,0,0,0,0,0);
+        $cfs12 = array(0,0,0,0,0,0,0,0,0,0);
         $cfsByAge = array("<60-64" => array(0,0,0,0,0,0,0,0,0,0),
                           "65-74" => array(0,0,0,0,0,0,0,0,0,0),
                           "75+" => array(0,0,0,0,0,0,0,0,0,0));
@@ -919,6 +920,7 @@ class Descriptors extends SpecialPage {
                         <th>Frailty Status (%Deficits)</th>
                         <th>Baseline<br />n (%)</th>
                         <th>6 Month<br />n (%)</th>
+                        <th>12 Month<br />n (%)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -927,24 +929,28 @@ class Descriptors extends SpecialPage {
 	                    <td>Non-Frail (0 to 10%)</td>
 	                    <td>{$frailty[0]} (".number_format($frailty[0]/max(1, $nIntake)*100, 1).")</td>
 	                    <td>{$frailty6[0]} (".number_format($frailty6[0]/max(1, $n6Month)*100, 1).")</td>
+	                    <td>{$frailty12[0]} (".number_format($frailty12[0]/max(1, $n12Month)*100, 1).")</td>
 	                </tr>
 	                <tr>
 	                    <td>0.11 - 0.21</td>
 	                    <td>Vulnerable (>10 to 21%)</td>
 	                    <td>{$frailty[1]} (".number_format($frailty[1]/max(1, $nIntake)*100, 1).")</td>
 	                    <td>{$frailty6[1]} (".number_format($frailty6[1]/max(1, $n6Month)*100, 1).")</td>
+	                    <td>{$frailty12[1]} (".number_format($frailty12[1]/max(1, $n12Month)*100, 1).")</td>
 	                </tr>
 	                <tr>
 	                    <td>0.22 - 0.45</td>
 	                    <td>Frail (>21 to <45%)</td>
 	                    <td>{$frailty[2]} (".number_format($frailty[2]/max(1, $nIntake)*100, 1).")</td>
 	                    <td>{$frailty6[2]} (".number_format($frailty6[2]/max(1, $n6Month)*100, 1).")</td>
+	                    <td>{$frailty12[2]} (".number_format($frailty12[2]/max(1, $n12Month)*100, 1).")</td>
 	                </tr>
 	                <tr>
 	                    <td>0.45+</td>
 	                    <td>Severely Frail (≥45%)</td>
 	                    <td>{$frailty[3]} (".number_format($frailty[3]/max(1, $nIntake)*100, 1).")</td>
 	                    <td>{$frailty6[3]} (".number_format($frailty6[3]/max(1, $n6Month)*100, 1).")</td>
+	                    <td>{$frailty12[3]} (".number_format($frailty12[3]/max(1, $n12Month)*100, 1).")</td>
                     </tr>
                 </tbody>
             </table>
@@ -986,6 +992,7 @@ class Descriptors extends SpecialPage {
                         <th colspan='2'>Score</th>
                         <th>Baseline<br />n (%)</th>
                         <th>6 Month<br />n (%)</th>
+                        <th>12 Month<br />n (%)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -994,54 +1001,63 @@ class Descriptors extends SpecialPage {
                         <td>Very Fit</td>
                         <td>{$cfs[1]} (".number_format($cfs[1]/max(1, $nIntake)*100, 1).")</td>
                         <td>{$cfs6[1]} (".number_format($cfs6[1]/max(1, $n6Month)*100, 1).")</td>
+                        <td>{$cfs12[1]} (".number_format($cfs12[1]/max(1, $n12Month)*100, 1).")</td>
                     </tr>
                     <tr>
                         <td>2</td>
                         <td>Fit</td>
                         <td>{$cfs[2]} (".number_format($cfs[2]/max(1, $nIntake)*100, 1).")</td>
                         <td>{$cfs6[2]} (".number_format($cfs6[2]/max(1, $n6Month)*100, 1).")</td>
+                        <td>{$cfs12[2]} (".number_format($cfs12[2]/max(1, $n12Month)*100, 1).")</td>
                     </tr>
                     <tr>
                         <td>3</td>
                         <td>Managing Well</td>
                         <td>{$cfs[3]} (".number_format($cfs[3]/max(1, $nIntake)*100, 1).")</td>
                         <td>{$cfs6[3]} (".number_format($cfs6[3]/max(1, $n6Month)*100, 1).")</td>
+                        <td>{$cfs12[3]} (".number_format($cfs12[3]/max(1, $n12Month)*100, 1).")</td>
                     </tr>
                     <tr>
                         <td>4</td>
                         <td>Living with Very Mild Frailty</td>
                         <td>{$cfs[4]} (".number_format($cfs[4]/max(1, $nIntake)*100, 1).")</td>
                         <td>{$cfs6[4]} (".number_format($cfs6[4]/max(1, $n6Month)*100, 1).")</td>
+                        <td>{$cfs12[4]} (".number_format($cfs12[4]/max(1, $n12Month)*100, 1).")</td>
                     </tr>
                     <tr>
                         <td>5</td>
                         <td>Living with Mild Frailty</td>
                         <td>{$cfs[5]} (".number_format($cfs[5]/max(1, $nIntake)*100, 1).")</td>
                         <td>{$cfs6[5]} (".number_format($cfs6[5]/max(1, $n6Month)*100, 1).")</td>
+                        <td>{$cfs12[5]} (".number_format($cfs12[5]/max(1, $n12Month)*100, 1).")</td>
                     </tr>
                     <tr>
                         <td>6</td>
                         <td>Living with Moderate Frailty</td>
                         <td>{$cfs[6]} (".number_format($cfs[6]/max(1, $nIntake)*100, 1).")</td>
                         <td>{$cfs6[6]} (".number_format($cfs6[6]/max(1, $n6Month)*100, 1).")</td>
+                        <td>{$cfs12[6]} (".number_format($cfs12[6]/max(1, $n12Month)*100, 1).")</td>
                     </tr>
                     <tr>
                         <td>7</td>
                         <td>Living with Severe Frailty</td>
                         <td>{$cfs[7]} (".number_format($cfs[7]/max(1, $nIntake)*100, 1).")</td>
                         <td>{$cfs6[7]} (".number_format($cfs6[7]/max(1, $n6Month)*100, 1).")</td>
+                        <td>{$cfs12[7]} (".number_format($cfs12[7]/max(1, $n12Month)*100, 1).")</td>
                     </tr>
                     <tr>
                         <td>8</td>
                         <td>Living with Very Severe Frailty</td>
                         <td>{$cfs[8]} (".number_format($cfs[8]/max(1, $nIntake)*100, 1).")</td>
                         <td>{$cfs6[8]} (".number_format($cfs6[8]/max(1, $n6Month)*100, 1).")</td>
+                        <td>{$cfs12[8]} (".number_format($cfs12[8]/max(1, $n12Month)*100, 1).")</td>
                     </tr>
                     <tr>
                         <td>9</td>
                         <td>Terminaly Ill</td>
                         <td>{$cfs[9]} (".number_format($cfs[9]/max(1, $nIntake)*100, 1).")</td>
                         <td>{$cfs6[9]} (".number_format($cfs6[9]/max(1, $n6Month)*100, 1).")</td>
+                        <td>{$cfs12[9]} (".number_format($cfs12[9]/max(1, $n12Month)*100, 1).")</td>
                     </tr>
                 </tbody>
             </table>
