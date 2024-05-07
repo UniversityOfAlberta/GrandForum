@@ -3367,7 +3367,7 @@ class FullPerson extends Person {
     var $grants;
     
     var $faculty;
-    var $departments;
+    var $departments = array();
     var $dateOfPhd;
     var $dateOfAppointment;
     var $dateOfAssistant;
