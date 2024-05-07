@@ -243,7 +243,7 @@ class ReportArchive extends SpecialPage {
             
             $wgOut->addHTML("<td align='center' style='padding-left:1em; padding-right:1em;'>{$varianceUrl}{$arUrl}</td>
                              <td align='center' style='padding-left:1em; padding-right:1em;'>{$reccUrl}</td>
-                             <td align='center' style='padding-left:1em; padding-right:1em;'>{$letter1Url}{$letter2Url}{$letter3Url}{$letter4Url}</td>");
+                             <td align='center' style='padding-left:1em; padding-right:1em;'>{$ddUrl}{$letter1Url}{$letter2Url}{$letter3Url}{$letter4Url}</td>");
             $wgOut->addHTML("</tr>");
         }
         $wgOut->addHTML("</table>");
