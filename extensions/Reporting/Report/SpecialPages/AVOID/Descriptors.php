@@ -991,7 +991,7 @@ class Descriptors extends SpecialPage {
 	                    <td>".number_format(array_sum($frailtyByAge['75+'])/max(1,count($frailtyByAge['75+'])), 2)." (".number_format(stdev($frailtyByAge['75+']), 2).")</td>
                     </tr>
                 </tbody>
-            </table><br />");
+            </table>");
             
         @$wgOut->addHTML("
             <h2>CFS Score</h2>
