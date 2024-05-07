@@ -715,7 +715,7 @@ class Descriptors extends SpecialPage {
         $deltaImproved = array_reverse($deltas, true);
         $deltaWorsened = $deltas;
         $wgOut->addHTML("<div class='modules'>");
-        @$wgOut->addHTML("<div class='module-2cols-outer'>
+        @$wgOut->addHTML("<div class='module-3cols-outer'>
             <h2>Distribution of EQ-5D-5L</h2>
             <table class='wikitable'>
                 <thead>
@@ -916,7 +916,7 @@ class Descriptors extends SpecialPage {
             </table>
             </div>");
         
-        @$wgOut->addHTML("<div class='module-2cols-outer'>
+        @$wgOut->addHTML("<div class='module-3cols-outer'>
             <h2>Frailty Status</h2>
             <table class='wikitable'>
                 <thead>
@@ -945,17 +945,17 @@ class Descriptors extends SpecialPage {
                 <tbody>");
         foreach(self::$frailtyLabels as $i => $labels){
             @$wgOut->addHTML("<tr>
-                                <td>{$labels[0]}</td>
-	                            <td>{$labels[1]}</td>
-	                            <td>".count($frailty[$i])." (".number_format(count($frailty[$i])/max(1, $nIntake)*100, 1).")</td>
+                                <td style='white-space:nowrap;'>{$labels[0]}</td>
+	                            <td style='white-space:nowrap;'>{$labels[1]}</td>
+	                            <td style='white-space:nowrap;'>".count($frailty[$i])." (".number_format(count($frailty[$i])/max(1, $nIntake)*100, 1).")</td>
 	                            <td>".number_format(avg($frailty[$i]), 2)."</td>
 	                            <td>".number_format(median($frailty[$i]), 2)."</td>
 	                            <td>".number_format(stdev($frailty[$i]), 2)."</td>
-	                            <td>".count($frailty6[$i])." (".number_format(count($frailty6[$i])/max(1, $n6Month)*100, 1).")</td>
+	                            <td style='white-space:nowrap;'>".count($frailty6[$i])." (".number_format(count($frailty6[$i])/max(1, $n6Month)*100, 1).")</td>
 	                            <td>".number_format(avg($frailty6[$i]), 2)."</td>
 	                            <td>".number_format(median($frailty6[$i]), 2)."</td>
 	                            <td>".number_format(stdev($frailty6[$i]), 2)."</td>
-	                            <td>".count($frailty12[$i])." (".number_format(count($frailty12[$i])/max(1, $n12Month)*100, 1).")</td>
+	                            <td style='white-space:nowrap;'>".count($frailty12[$i])." (".number_format(count($frailty12[$i])/max(1, $n12Month)*100, 1).")</td>
 	                            <td>".number_format(avg($frailty12[$i]), 2)."</td>
 	                            <td>".number_format(median($frailty12[$i]), 2)."</td>
 	                            <td>".number_format(stdev($frailty12[$i]), 2)."</td>
@@ -991,11 +991,9 @@ class Descriptors extends SpecialPage {
 	                    <td>".number_format(array_sum($frailtyByAge['75+'])/max(1,count($frailtyByAge['75+'])), 2)." (".number_format(stdev($frailtyByAge['75+']), 2).")</td>
                     </tr>
                 </tbody>
-            </table>
-            </div></div>");
+            </table><br />");
             
-        @$wgOut->addHTML("<div class='modules'>
-            <div class='module-2cols-outer'>
+        @$wgOut->addHTML("
             <h2>CFS Score</h2>
             <table class='wikitable'>
                 <thead>
@@ -1108,8 +1106,9 @@ class Descriptors extends SpecialPage {
                     </tr>
                 </tbody>
             </table>
-            </div>
-            <div class='module-2cols-outer'>
+            </div></div>
+            <div class='modules'>
+            <div class='module-3cols-outer'>
                 <h2>Member Characteristics Distribution</h2>
                 <table class='wikitable'>
                     <thead>
