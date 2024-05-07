@@ -85,9 +85,9 @@
     <ReportSection id="cover" tooltip="Annual Report" name="Annual Report" title="Annual Report" blobSection="FEC_COVER" type="EditableReportSection">
         <Static>
             <![CDATA[
+                <b>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</b><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a> or <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf' target='_blank'>FSO Agreement</a>. The information submitted will be used in arriving at decisions regarding salaries, tenure, and promotion.</p>
                 <div style='display: inline-block; vertical-align: top; margin-right: 1em;'>
                     <table class='wikitable'>
-                        <tr><td><b>Reporting Period:</b></td><td style='white-space:nowrap;'>September 1, {$last_year} to August 31, {$this_year}</td></tr>
                         <tr><td><b>Name:</b></td><td>{$user_first_name} {$user_last_name}</td></tr>
                         <tr><td><b>Position:</b></td><td>{$user_level}</td></tr>
                         <tr><td><b>Department:</b></td><td>{$user_dept}</td></tr>
@@ -237,13 +237,11 @@
                             <tr>
                                 <th>Percentage of course instruction</th>
                                 <th>Calendar Hours</th>
-                                <th>Your Actual Weekly Average Contact Hours (indicate if a reading course)</th>
                                 <th>Actual Number of Students</th>
                             </tr>
                             <tr>
                                 <td>{$course_percent}% of instruction</td>
                                 <td align='center'>{$course_calendar}</td>
-                                <td></td>
                                 <td>{$course_enroll}</td>
                             </tr>
                         </table>
@@ -289,13 +287,11 @@
                             <tr>
                                 <th>Percentage of course instruction</th>
                                 <th>Calendar Hours</th>
-                                <th>Your Actual Weekly Average Contact Hours (indicate if a reading course)</th>
                                 <th>Actual Number of Students</th>
                             </tr>
                             <tr>
                                 <td>{$course_percent}% of instruction</td>
                                 <td align='center'>{$course_calendar}</td>
-                                <td></td>
                                 <td>{$course_enroll}</td>
                             </tr>
                         </table>
@@ -329,10 +325,10 @@
         <!-- Third Term of Last Academic Year -->
         <Static>
             <![CDATA[
-                <h3>Spring {$this_year} & Summer {$this_year}</h3>
+                <h3>Spring {$this_year}</h3>
             ]]>
         </Static>
-        <ReportItemSet type="PersonCourses" term="Spring{$this_year}|Summer{$this_year}" component="LEC" unique="true">
+        <ReportItemSet type="PersonCourses" term="Spring{$this_year}" component="LEC" unique="true">
             <Static>
                 <![CDATA[
                     <h4 style='padding: 0; margin-top:0; margin-bottom: 0.25em; margin-left:2em; font-size: 1em;'>{$course_subject} {$course_number} - {$course_title}</h4>
@@ -341,13 +337,11 @@
                             <tr>
                                 <th>Percentage of course instruction</th>
                                 <th>Calendar Hours</th>
-                                <th>Your Actual Weekly Average Contact Hours (indicate if a reading course)</th>
                                 <th>Actual Number of Students</th>
                             </tr>
                             <tr>
                                 <td>{$course_percent}% of instruction</td>
                                 <td align='center'>{$course_calendar}</td>
-                                <td></td>
                                 <td>{$course_enroll}</td>
                             </tr>
                         </table>
@@ -422,7 +416,7 @@
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}" options="FT|PT" width="42px">
+            <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}" options="FT|PT" width="3.5em">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
@@ -486,7 +480,11 @@
         <Static>
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
-                <h3>(a) Grants:</h3>
+                <h3>(a) Research Area:</h3>
+                <p><b>(i) Major Area:</b> {getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA,0,{$user_id},0,0)}{if("{getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA,0,{$user_id},0,0,true)}" == "Other", : {getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA_OTHER,0,{$user_id},0,0)})}</p>
+                <p><b>(ii) Keywords:</b> {$user_keywords}</p>
+                
+                <h3>(b) Grants:</h3>
                 <p>(Individual, operating, equipment, and share of other grants. For shared grants, indicate if you are the Principal Investigator (The Principal Investigator is the holder and signing authority of the grant account). Indicate if a grant is not being administered through the Faculty of Engineering, and, if not, state where it is being administered. Do not list internal university startup funds, AIF or other graduate scholarships listed in section 3. Also, do not list unsuccessful applications and/or grants applied for but not yet awarded. List start and finish date (e.g., NSERC (Discovery), April 2008 - March 2012).</p>
                 <table class='wikitable'>
                     <tr>
@@ -518,9 +516,6 @@
         <Static>
             <![CDATA[
                 </table>
-                <h3>(b) Research Area:</h3>
-                <p><b>(i) Major Area:</b> {getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA,0,{$user_id},0,0)}{if("{getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA,0,{$user_id},0,0,true)}" == "Other", : {getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA_OTHER,0,{$user_id},0,0)})}</p>
-                <p><b>(ii) Keywords:</b> {$user_keywords}</p>
             ]]>
         </Static>
         
@@ -550,8 +545,9 @@
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Outputs</a>
                 <p>
-                    Do <b>not</b> include articles submitted but not yet accepted. List the most recent first, <b>using the standard NSERC format</b>. Use all capital letters to indicate names of students. One copy of each publication or manuscript is to be deposited with the Department Chair, including letter of acceptance for articles in press.
+                    Do <b>not</b> include articles submitted but not yet accepted. One copy of each publication or manuscript is to be deposited with the Department Chair, including letter of acceptance for articles in press.
                 </p>
+                <p><small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small></p>
             ]]>
         </Static>
         
@@ -559,14 +555,23 @@
         <Static>
             <![CDATA[
                 <h3>(a) Refereed journals</h3>
-                (For those accepted, give acceptance date and number of manuscript pages; use all capital letters to indicate names of students)
+                (For those accepted, give acceptance date and number of manuscript pages)
                 <table class='wikitable'>
+                    <tr>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
             ]]>
         </Static>
         <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" peerReviewed="Yes" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -580,14 +585,23 @@
         <Static>
             <![CDATA[
                 <h3>(b) Conference proceedings</h3>
-                (specify number of ms. pages; use * to indicate presenter)
+                (specify number of ms)
                 <table class='wikitable'>
+                    <tr>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
             ]]>
         </Static>
         <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -603,12 +617,21 @@
                 <h3>(c) Books; chapters in books</h3>
                 (specify number of pages)
                 <table class='wikitable'>
+                    <tr>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
             ]]>
         </Static>
         <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Book|Book Chapter" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -623,12 +646,21 @@
             <![CDATA[
                 <h3>(d) Reports of invention, patents filed or patents awarded</h3>
                 <table class='wikitable'>
+                    <tr>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
             ]]>
         </Static>
         <ReportItemSet id="products4" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -644,12 +676,21 @@
                 <h3>(e) Unrefereed papers and technical reports published</h3>
                 (specify number of pages)
                 <table class='wikitable'>
+                    <tr>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
             ]]>
         </Static>
         <ReportItemSet id="products5" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|White Paper|Tech Report|Manual" useProductYear="true" includeHQP="false" peerReviewed="No" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -665,12 +706,21 @@
                 <h3>(f) Presentations, indicating by an asterisk which author made the presentation</h3>
                 (do not include presentations of papers listed in section 5(b) or elsewhere)
                 <table class='wikitable'>
+                    <tr>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
             ]]>
         </Static>
         <ReportItemSet id="products6" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -686,12 +736,21 @@
                 <h3>(g) Other publications</h3>
                 (specify number of pages)
                 <table class='wikitable'>
+                    <tr>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
             ]]>
         </Static>
         <ReportItemSet id="products7" type="PersonProductsReportItemSet" category="Publication" productType="Poster|Workshop Paper|Magazine/Newspaper Article|Edited Book|Book Review|Misc" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
-                    <tr><td>{$item}</td></tr>
+                    <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -876,21 +935,23 @@
                             <th>Award Category</th>
                             <th>Scope</th>
                             <th>Year</th>
+                            <th>Footnotes</th>
                         </tr>
                     </thead>
                     <tbody>
             ]]>
         </Static>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <Static>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr><td>{$product_title}</td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
+                        <td align='center'>{$item}</td>
                     </tr>
                 ]]>
-            </Static>
+            </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
