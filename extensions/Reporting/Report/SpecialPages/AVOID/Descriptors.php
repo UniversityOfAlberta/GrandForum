@@ -314,6 +314,7 @@ class Descriptors extends SpecialPage {
         $api = new UserFrailtyIndexAPI();
         $nIntake = 0;
         $n6Month = 0;
+        $n12Month = 0;
         
         $mobility = array(0,0,0,0,0,0);
         $selfcare = array(0,0,0,0,0,0);
@@ -338,6 +339,7 @@ class Descriptors extends SpecialPage {
         
         $frailty = array(0,0,0,0);
         $frailty6 = array(0,0,0,0);
+        $frailty12 = array(0,0,0,0);
         $frailtyByAge = array("All" => array(),
                               "<60-64" => array(),
                               "65-74" => array(),
