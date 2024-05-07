@@ -585,6 +585,27 @@ function recursive_implode($glue, $array, $include_keys = false, $trim_all = tru
 	return (string) $glued_string;
 }
 
+function avg($a){
+    return array_sum($a)/max(count($a),1);
+}
+
+// https://www.designcise.com/web/tutorial/how-to-calculate-the-median-of-an-array-of-numbers-in-php
+function median($a){
+    // 1: sort array in ascending order
+    sort($a);
+
+    $totalArrElems = count($a);
+    $middleIndex = $totalArrElems / 2;
+
+    // 2.1: if odd, return middle element
+    if ($totalArrElems % 2 !== 0) {
+        return $a[floor($middleIndex)];
+    }
+
+    // 2.2: if even, return average of two middle elements
+    return ($a[$middleIndex - 1] + $a[$middleIndex]) / 2;
+}
+
 // https://learnetutorials.com/php/programs/calculate-standard-deviation
 function stdev($a){
     $count = count($a);
