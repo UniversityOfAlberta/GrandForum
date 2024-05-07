@@ -173,6 +173,7 @@ class ReportArchive extends SpecialPage {
             }
             
             // Letters
+            $ddUrl = "";
             $letterUrl = "";
             $letter1Url = "";
             $letter2Url = "";
@@ -180,12 +181,17 @@ class ReportArchive extends SpecialPage {
             $letter4Url = "";
             $varianceUrl = "";
 
+            $dd = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALDean Decision", $y);
             $letter = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER", $y); // Past Years
             $letter1 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER1", $y);
             $letter2 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER2", $y);
             $letter3 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER3", $y);
             $letter4 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER4", $y);
             $variance = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER5", $y-1);
+            if(count($dd) > 0){
+                $pdf = PDF::newFromToken($dd[0]['token']);
+                $ddUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Dean's Decision</a><br />";
+            }
             if(count($letter) > 0){
                 $pdf = PDF::newFromToken($letter[0]['token']);
                 $letterUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Letter</a><br />";
