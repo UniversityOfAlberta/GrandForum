@@ -14,6 +14,13 @@
                 $dept = $uni['department'];
                 $faculty = @Person::$facultyMap[$dept];
                 if($faculty != ""){
+                    $check = DBFunctions::select(array('grand_personal_fec_info'),
+                                                 array('*'),
+                                                 array('user_id' => $person->getId()));
+                    if(count($check) == 0){
+                        DBFunctions::insert('grand_personal_fec_info',
+                                            array('user_id' => $person->getId()));
+                    }
                     DBFunctions::update('grand_personal_fec_info',
                                         array('faculty' => $faculty,
                                               'departments' => json_encode(array($dept => 100))),
