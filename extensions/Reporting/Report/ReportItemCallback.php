@@ -759,7 +759,7 @@ class ReportItemCallback {
     function getUserDept(){
         $person = Person::newFromId($this->reportItem->personId);
         $fecInfo = $person->getFecPersonalInfo();
-        $departments = array_keys($person->departments);
+        $departments = @array_keys($person->departments);
         if(count($departments) > 0){
             return $departments[0];
         }
@@ -772,8 +772,8 @@ class ReportItemCallback {
     function getUserDepts(){
         $person = Person::newFromId($this->reportItem->personId);
         $fecInfo = $person->getFecPersonalInfo();
-        $departments = array_keys($person->departments);
-        $percents = array_values($person->departments);
+        $departments = @array_keys($person->departments);
+        $percents = @array_values($person->departments);
         
         switch(count($departments)){
             case 0:
