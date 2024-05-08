@@ -2338,16 +2338,18 @@ class Person extends BackboneModel {
                     $this->isRoleOn(CI, $date));
         }
         $roles = array();
-        $role_objs = $this->getRolesOn($date);
+        $role_objs = $this->getRolesDuring("1900-01-01", "2100-01-01");
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $roles[] = $r->getRole();
+                $startDate = substr($r->getStartDate(), 0, 10);
+                $endDate = substr($r->getEndDate(), 0, 10);
+                if($r->getRole() == $role && (($date >= $startDate && $date <= $endDate) || 
+                                              ($date >= $startDate && $endDate == "0000-00-00"))){
+                    return true;
+                }
             }
         }
-        if(empty($roles)){
-            return false;
-        }
-        return (array_search($role, $roles) !== false);
+        return false;
     }
     
     /**
@@ -2369,13 +2371,12 @@ class Person extends BackboneModel {
         $role_objs = $this->getRolesDuring($startRange, $endRange);
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $roles[] = $r->getRole();
+                if($r->getRole() == $role){
+                    return true;
+                }
             }
         }
-        if(empty($roles)){
-            return false;
-        }
-        return (array_search($role, $roles) !== false);
+        return false;
     }
     
     /**
@@ -3739,11 +3740,11 @@ class FullPerson extends Person {
         if($this->grants == null){
             $this->grants = array();
             $data = DBFunctions::select(array('grand_grants'),
-                                        array('id'),
+                                        array('*'),
                                         array('user_id' => EQ($this->getId()),
                                               WHERE_OR('copi') => LIKE("%\"{$this->getId()}\";%") ));
             foreach($data as $row){
-                $grant = Grant::newFromId($row['id']);
+                $grant = new Grant(array($row));
                 if($grant != null && $grant->getId() != 0 && !$grant->deleted){
                     $this->grants[] = $grant;
                 }
