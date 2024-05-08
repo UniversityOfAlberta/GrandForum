@@ -77,6 +77,7 @@ class Report extends AbstractReport{
                 $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Alberta", "{$url}AlbertaReport", $selected);
             }*/
         }
+        /*
         if($person->isSubRole('SSFLOI')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSFLOI")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("SSF LOI", "{$url}SSFLOI", $selected);
@@ -116,7 +117,7 @@ class Report extends AbstractReport{
         if($person->isSubRole('LegacyApplicant')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LegacyApplication")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Legacy", "{$url}LegacyApplication", $selected);
-        }
+        }*/
         /*if(count($person->getEvaluates("SAB")) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABReview")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SAB Review", "{$url}SABReview", $selected);
