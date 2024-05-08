@@ -1063,7 +1063,7 @@
                 </script>
             ]]>
         </Static>
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,enanak@ualberta.ca" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,enanak@ualberta.ca,vsharko@glyconet.ca" />
         <Static>
             <![CDATA[
                 <br />

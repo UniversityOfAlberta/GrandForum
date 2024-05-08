@@ -399,6 +399,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,vsharko@glyconet.ca" />
     </ReportSection>
 </Report>

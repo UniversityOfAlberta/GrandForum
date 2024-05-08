@@ -156,7 +156,7 @@
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <If id="if_eula" if="{==({getText(RP_SEMINAR_SERIES,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca" />
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,vsharko@glyconet.ca" />
         </If>
         <If id="if_not_eula" if="{!=({getText(RP_SEMINAR_SERIES,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
