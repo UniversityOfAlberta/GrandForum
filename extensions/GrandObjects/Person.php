@@ -3994,7 +3994,8 @@ class FullPerson extends Person {
             else{
                 $status = DBFunctions::insert('grand_personal_fec_info',
                                     array('user_id' => $this->getId(),
-                                          'faculty' => json_encode($this->faculty),
+                                          'faculty' => $this->faculty,
+                                          'departments' => json_encode($this->departments),
                                           'date_of_phd' => $this->dateOfPhd,
                                           'date_of_appointment' => $this->dateOfAppointment,
                                           'date_assistant' => $this->dateOfAssistant,
