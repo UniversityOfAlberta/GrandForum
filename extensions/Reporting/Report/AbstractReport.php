@@ -570,6 +570,10 @@ abstract class AbstractReport extends SpecialPage {
         $rResult = $me->isRoleAtLeast(MANAGER);
         $pResult = false;
         $nProjectTags = 0;
+        $me->getFecPersonalInfo();
+        if(!$rResult && $me->faculty != getFaculty()){
+            return false;
+        }
         foreach($this->permissions as $type => $perms){
             foreach($perms as $perm){
                 switch($type){
