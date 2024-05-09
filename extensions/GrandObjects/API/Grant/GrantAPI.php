@@ -12,7 +12,7 @@ class GrantAPI extends RESTAPI {
             return $grant->toJSON();
         }
         else{
-            $grants = new Collection(Grant::getAllGrants());
+            $grants = new Collection(Grant::getAllMyGrants());
             return $grants->toJSON();
         }
     }

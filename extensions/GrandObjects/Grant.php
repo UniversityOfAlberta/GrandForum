@@ -67,6 +67,20 @@ class Grant extends BackboneModel {
         return $grants;
     }
     
+    static function getAllMyGrants(){
+        $grants = array();
+        $data = DBFunctions::select(array('grand_grants'),
+                                    array('*'),
+                                    array('deleted' => '0'));
+        foreach($data as $row){
+            $grant = new Grant(array($row));
+            if($grant != null && $grant->getId() != 0 && $grant->isMine()){
+                $grants[] = $grant;
+            }
+        }
+        return $grants;
+    }
+    
     function Grant($data){
         $me = Person::newFromWgUser();
         if(count($data) > 0 && $me->isLoggedIn()){
@@ -106,6 +120,13 @@ class Grant extends BackboneModel {
                 }
             }
         }
+    }
+    
+    function isMine(){
+        $me = Person::newFromWgUser();
+        return ($me->getId() == $this->user_id || 
+                $me->getId() == $this->owner_id ||
+                array_search($me->getId(), $this->copi) !== false);
     }
     
     function getId(){
