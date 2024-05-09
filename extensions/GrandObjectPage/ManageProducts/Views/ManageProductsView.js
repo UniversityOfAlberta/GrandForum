@@ -84,7 +84,7 @@ ManageProductsView = Backbone.View.extend({
         }
         if(this.onlyRecent){
             products = new Products(products.filter(function(p){
-                return ((p.get('date') >= (YEAR - 6) + "-04-01") || (p.get('date') == '0000-00-00') || (p.get('acceptance_date') >= (YEAR - 6) + "-04-01"));
+                return ((p.get('date') >= (YEAR - 2) + "-04-01") || (p.get('date') == '0000-00-00') || (p.get('acceptance_date') >= (YEAR - 2) + "-04-01"));
             }));
         }
         if(this.hideExcluded){

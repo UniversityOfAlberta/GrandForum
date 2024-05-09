@@ -15,9 +15,9 @@
                                 <tr><td><span class='header'>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</span>&nbsp;<b>{$user_fellow_count}</b></td></tr>
                                 <tr><td><span class='header'>Research/Technical Assistants:</span>&nbsp;<b>{$user_tech_count}</b></td></tr>
                                 <tr><td><span class='header'>Undergraduates (Supervised or Co-supervised):</span>&nbsp;<b>{$user_ugrad_count}</b></td></tr>
-                                <tr><td><span class='header'>Refereed Publications:&nbsp;</span><b>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</b></td></tr>
-                                <tr><td><span class='header'>Books:&nbsp;</span><b>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</b></td></tr>
-                                <tr><td><span class='header'>Patents:&nbsp;</span><b>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</b></td></tr>
+                                <tr><td><span class='header'>Refereed Publications:&nbsp;</span><b>{getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)}</b></td></tr>
+                                <tr><td><span class='header'>Books:&nbsp;</span><b>{getUserPublicationCount(CYCLE_START, CYCLE_END, Book)}</b></td></tr>
+                                <tr><td><span class='header'>Patents:&nbsp;</span><b>{getUserPublicationCount(CYCLE_START, CYCLE_END, Patent)}</b></td></tr>
                             </table>
                         </td>
                         <td valign='top' align='right'>
@@ -143,9 +143,30 @@
                         </table><br />
                     ]]>
                 </If>
-                <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobSection="FEC_COURSES" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="62.60%|10%|27.40%" class="wikitable">
+                <ReportItem id="teaching_methods1" type="Textarea" blobItem="TEACHING_METHODS1" blobSection="FEC_COURSES">
                     <![CDATA[
-                            {$item}
+                        <table style='width:100%;'>
+                            <tr>
+                                <td style='width: 50%;' valign='top'>
+                                    <b>(i) Course Design:</b>
+                                </td>
+                                <td style='width: 50%;' valign='top'>
+                                    <b>(ii) Instructional Practices</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {$item}
+                                </td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="teaching_methods2" type="Textarea" blobItem="TEACHING_METHODS2" blobSection="FEC_COURSES">
+                    <![CDATA[
+                                <td>
+                                    {$item}
+                                </td>
+                            </tr>
+                        </table>
                         </div>
                     ]]>
                 </ReportItem>
@@ -196,7 +217,7 @@
         <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|tech|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Research/Technical Assistants|Student Committee Responsibilities">
             <Static>
                 <![CDATA[
-                    <h3>{getExtra(label)}</h3>
+                    <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>
                     <table class='wikitable' frame='box' rules='all' width='100%'>
                         <tr>
                             <th style='width: 25%;'>Student</th>
@@ -228,7 +249,7 @@
                         </tr>
                     ]]>
                 </Static>
-                <ReportItem id="times" type="Textarea" blobItem="TIMES" blobSubItem="{$user_id}" height="48px">
+                <ReportItem id="times" type="Textarea" blobItem="TIMES" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS" height="48px">
                     <![CDATA[
                         <tr><td colspan='4'>
                             How many times have you met with the student and the supervisory committee?<br />
@@ -236,7 +257,7 @@
                         </td></tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" height="48px">
+                <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS" height="48px">
                     <![CDATA[
                         <tr><td colspan='4'>
                             Name of Scholarships, if any<br />
@@ -255,7 +276,7 @@
         <!-- Publications -->
         <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
             <![CDATA[
-                <h2>Publications</h2>
+                <h2>Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)})</h2>
                 <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>
                 <ul>
             ]]>
@@ -350,7 +371,7 @@
         <!-- Presentations -->
         <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="Presentations">
             <![CDATA[
-                <h2>Presentations</h2>
+                <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)})</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
@@ -411,7 +432,7 @@
         <!-- Patents/Spin-Offs -->
         <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents/Spin-Offs">
             <![CDATA[
-                <h2>Patents/Spin-Offs</h2>
+                <h2>Patents/Spin-Offs ({getUserPublicationCount(CYCLE_START, CYCLE_END, Patent/Spin-Off)})</h2>
                 <ul>
             ]]>
         </ReportItem>
@@ -458,7 +479,7 @@
         <!-- Awards Received -->
         <ReportItem id="awardsbookmark" type="BookmarkReportItem" title="Awards Received">
             <![CDATA[
-                <h2>Awards Received</h2>
+                <h2>Awards Received ({getUserPublicationCount(CYCLE_START, CYCLE_END, Award)})</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
@@ -511,7 +532,7 @@
         <!-- Grants -->
         <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
             <![CDATA[
-                <h2>Research Grants and Contracts</h2>
+                <h2>Research Grants and Contracts ({$user_grant_count})</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>

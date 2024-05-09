@@ -118,9 +118,9 @@
                         <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</td></tr>
                         <tr><td style='width:350px;'><b>Research/Technical Assistants:</b></td><td>{$user_tech_count}</td></tr>
                         <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</td></tr>
-                        <tr><td><b>Refereed Publications:</b></td><td>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</td></tr>
-                        <tr><td><b>Books:</b></td><td>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td></tr>
-                        <tr><td><b>Patents:</b></td><td>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td></tr>
+                        <tr><td><b>Refereed Publications:</b></td><td>{getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)}</td></tr>
+                        <tr><td><b>Books:</b></td><td>{getUserPublicationCount(CYCLE_START, CYCLE_END, Book)}</td></tr>
+                        <tr><td><b>Patents:</b></td><td>{getUserPublicationCount(CYCLE_START, CYCLE_END, Patent)}</td></tr>
                     </table>
                 </div>
                 <div style='display:inline-block;width:40%;vertical-align:top;'>
@@ -343,7 +343,7 @@
         <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|tech|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Research/Technical Assistants|Student Committee Responsibilities">
             <Static>
                 <![CDATA[
-                    <h3>{getExtra(label)}</h3>
+                    <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>
                     <table class='wikitable' width='100%'>
                         <tr>
                             <th style='width: 25%;'>Student</th>
@@ -495,7 +495,7 @@
         </Instructions>
         <Static>
             <![CDATA[
-                <h2 style='margin-top:-5px;padding-top:0;'>Publications <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
+                <h2 style='margin-top:-5px;padding-top:0;'>Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)}) <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
                 <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
                 <table class='wikitable' style='width:100%'>
                     <thead>
@@ -551,7 +551,7 @@
         </Static>
         <Static>
             <![CDATA[
-                <h2>Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user during the reporting year.<br />
+                <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)}) <span class='clicktooltip' title='The Presentations section lists any presentations given by the user during the reporting year.<br />
 <br />
 (Do not include presentations given by your students or by others.  HQP presentations are included on the Additional Info section.)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
                 <small></small>
@@ -596,7 +596,7 @@
         <Static>
             <![CDATA[
                 
-                <h2>Patents/Spin-Offs <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Patent%2FSpin-Off">Manage Patents/Spin-Offs</a></h2>
+                <h2>Patents/Spin-Offs ({getUserPublicationCount(CYCLE_START, CYCLE_END, Patent/Spin-Off)}) <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Patent%2FSpin-Off">Manage Patents/Spin-Offs</a></h2>
                 <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
                 <table class='wikitable' style='width:100%'>
                     <thead>
@@ -635,7 +635,7 @@
         </Instructions>
         <Static>
             <![CDATA[
-                <h2 style='margin-top:-5px;padding-top:0;'>Awards <span class='clicktooltip' style='font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
+                <h2 style='margin-top:-5px;padding-top:0;'>Awards Received ({getUserPublicationCount(CYCLE_START, CYCLE_END, Award)}) <span class='clicktooltip' style='font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
@@ -667,7 +667,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts &lt;span class='clicktooltip' title='(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)'>&#9432;&lt;/span>" blobSection="FEC_GRANTS" type="EditableReportSection">
+    <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts ({$user_grant_count}) &lt;span class='clicktooltip' title='(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)'>&#9432;&lt;/span>" blobSection="FEC_GRANTS" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <p>(Do not include U of A Sabbatical Leave Research Grant received in lieu of salary. Include all new, continuing, and ending grants in the reporting period. Do not include awards given to students.)</p>

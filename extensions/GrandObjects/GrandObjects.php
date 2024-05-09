@@ -5,6 +5,7 @@ require_once(dirname(__FILE__)."/../Reporting/Addressing.php");
 // Relations Constants
 define("SUPERVISES", 'Supervises');
 define("CO_SUPERVISES", 'Co-Supervises');
+define("SUPERVISES_BOTH", "Supervises Both");
 define("SUPERVISORY_COMMITTEE", "Supervisory-Committee member");
 define("EXAMINER", "Examining-Committee member");
 define("COMMITTEE_CHAIR", "Examining-Committee chair");

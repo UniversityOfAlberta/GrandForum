@@ -315,7 +315,7 @@
                     </td>
                 ]]>
             </Static>
-            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_sub_roles},Academic Teaching Staff Evaluation Committee)})}">
+            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_roles},ATSEC)})}">
                 <!-- Increment Vote -->
                 <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
                     <![CDATA[
