@@ -307,7 +307,7 @@
                         <td class="casenumber" style='white-space:nowrap;'>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                         <td>{$user_level}</td>
-                        <td>{$user_dept}</td>
+                        <td>{$user_depts}</td>
                 ]]>
             </Static>
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="downloadPDF" buttonName=" AR ">
@@ -378,7 +378,7 @@
                     </td>
                 ]]>
             </Static>
-            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_sub_roles},Faculty Evaluation Committee)})}">
+            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_roles},FEC)})}">
                 <!-- Increment Vote -->
                 <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
                     <![CDATA[

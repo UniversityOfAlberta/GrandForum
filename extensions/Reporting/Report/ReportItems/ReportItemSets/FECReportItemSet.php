@@ -7,12 +7,7 @@ class FECReportItemSet extends ReportItemSet {
     
     static function generateFECCache(){
         if(count(self::$people) == 0){
-            $people = DBFunctions::select(array('grand_role_subtype'),
-                                          array('user_id'),
-                                          array('sub_role' => EQ('FEC')));
-            foreach($people as $row){
-                self::$people[] = Person::newFromId($row['user_id']);
-            }
+            self::$people = Person::getAllPeople('FEC');
         }
     }
     

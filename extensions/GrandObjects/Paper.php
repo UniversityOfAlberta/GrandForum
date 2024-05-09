@@ -1495,8 +1495,7 @@ class Paper extends BackboneModel{
                         $name = "<span style='background: #dfdfdf; {$isMe}' class='citation_author faculty_author'>{$a->getNameForProduct()}{$ccid}</span>";
                     }
                     else if(($a->isRoleOn(HQP, $date) || $a->isRole(HQP) || $a->wasLastRole(HQP)) &&
-                            (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || 
-                                                                $me->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))) ||
+                            (($highlightOnlyMyHQP !== false && $me->isRelatedToDuring($a, SUPERVISES_BOTH, "0000-00-00", "2100-00-00")) ||
                              ($highlightOnlyMyHQP === false))){
                         $unis = array_merge($a->getUniversitiesDuring($yearAgo, $date), 
                                             $a->getUniversitiesDuring($yearAgo, $nextYear));

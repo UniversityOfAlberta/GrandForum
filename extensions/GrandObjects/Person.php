@@ -1148,8 +1148,7 @@ class Person extends BackboneModel {
             // User is at least Staff
             return true;
         }
-        if($this->isRelatedToDuring($person, SUPERVISES, "0000-00-00", "2100-00-00") ||
-           $this->isRelatedToDuring($person, CO_SUPERVISES, "0000-00-00", "2100-00-00") ||
+        if($this->isRelatedToDuring($person, SUPERVISES_BOTH, "0000-00-00", "2100-00-00") ||
            $this->isRelatedToDuring($person, SUPERVISORY_COMMITTEE, "0000-00-00", "2100-00-00") ||
            $this->isRelatedToDuring($person, EXAMINER, "0000-00-00", "2100-00-00") ||
            $this->isRelatedToDuring($person, COMMITTEE_CHAIR, "0000-00-00", "2100-00-00")){
@@ -2476,13 +2475,13 @@ class Person extends BackboneModel {
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user2 = '{$this->id}'
-                        AND type LIKE '%Supervises%'";
+                        AND (type = 'Supervises' OR type = 'Co-Supervises')";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user2 = '{$this->id}'
-                        AND type LIKE '%Supervises%'
+                        AND (type = 'Supervises' OR type = 'Co-Supervises')
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
             }
@@ -2497,7 +2496,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user2 = '{$this->id}'
-                AND type LIKE '%Supervises%'
+                AND (type = 'Supervises' OR type = 'Co-Supervises')
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
         $people = array();
@@ -2518,7 +2517,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user2 = '{$this->id}'
-                AND type LIKE '%Supervises%'
+                AND (type = 'Supervises' OR type = 'Co-Supervises')
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
                 (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
@@ -2563,13 +2562,13 @@ class Person extends BackboneModel {
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
-                        AND type LIKE '%Supervises%'";
+                        AND (type = 'Supervises' OR type = 'Co-Supervises')";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
-                        AND type LIKE '%Supervises%'
+                        AND (type = 'Supervises' OR type = 'Co-Supervises')
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
             }
@@ -2579,7 +2578,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
-                AND type LIKE '%Supervises%'
+                AND (type = 'Supervises' OR type = 'Co-Supervises')
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
         return count($data);
@@ -3525,9 +3524,9 @@ class FullPerson extends Person {
     function getHQP($history=false, $onlySupervises=false){
         $extraSQL = "";
         if(!$onlySupervises){
-            $extraSQL = " OR type LIKE '%Supervisory-Committee member%' OR
-                             type LIKE '%Examining-Committee member%' OR
-                             type LIKE '%Examining-Committee chair%'";
+            $extraSQL = " OR type = 'Supervisory-Committee member' OR
+                             type = 'Examining-Committee member' OR
+                             type = 'Examining-Committee chair'";
         }
         if($history !== false && $this->id != null){
             $this->roles = array();
@@ -3539,16 +3538,16 @@ class FullPerson extends Person {
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
-                        AND (type LIKE '%Supervises%' OR 
-                             type LIKE '%Co-Supervises%'
+                        AND (type = 'Supervises' OR 
+                             type = 'Co-Supervises' 
                              $extraSQL)";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
-                        AND (type LIKE '%Supervises%' OR 
-                             type LIKE '%Co-Supervises%'
+                        AND (type = 'Supervises' OR 
+                             type = 'Co-Supervises' 
                              $extraSQL)
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
@@ -3570,8 +3569,8 @@ class FullPerson extends Person {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
-                AND (type LIKE '%Supervises%' OR 
-                     type LIKE '%Co-Supervises%'
+                AND (type = 'Supervises' OR 
+                     type = 'Co-Supervises' 
                      $extraSQL)
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
@@ -3599,7 +3598,7 @@ class FullPerson extends Person {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
-                AND type LIKE '%Supervises%'
+                AND (type = 'Supervises' OR type = 'Co-Supervises')
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
                 (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
@@ -3646,7 +3645,12 @@ class FullPerson extends Person {
             // do nothing
         }
         else{
-            $sql .= "AND type = '$type'\n";
+            if($type == SUPERVISES_BOTH){
+                $sql .= "AND (type = '".SUPERVISES."' OR type = '".CO_SUPERVISES."')\n";
+            }
+            else{
+                $sql .= "AND type = '$type'\n";
+            }
         }
         $sql .= "AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
