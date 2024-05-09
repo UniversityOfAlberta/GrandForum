@@ -2,12 +2,12 @@
 
 class FECReportItemSet extends ReportItemSet {
     
-    static $people = array();
+    static $people = null;
     static $vdeans = array();
     
     static function generateFECCache(){
-        if(count(self::$people) == 0){
-            self::$people = Person::getAllPeople('FEC');
+        if(self::$people == null){
+            self::$people = Person::filterFaculty(Person::getAllPeople('FEC'));
         }
     }
     
