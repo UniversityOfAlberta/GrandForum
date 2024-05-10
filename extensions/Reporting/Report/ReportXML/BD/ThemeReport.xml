@@ -15,7 +15,33 @@
             <SectionPermission id="submit" permissions="--" />
         </If>
     </Permissions>
-    <ReportSection id="report" type="EditableReportSection" name="Theme Report" title="{$theme_name} {replace(_,:,{GET(id)})} Report">
+    <ReportSection id="report" type="EditableReportSection" name="Theme Report" title="{$theme_name}">
+        <!-- Variables -->
+        <Static>
+            {set(year,    {substr({GET(id)}, 0, 4)})}
+            {set(quarter, {substr({GET(id)}, 6, 1)})}
+        </Static>
+        <If if="{==({get(quarter)},1)}">
+            <![CDATA[
+                <h3>{get(year)}:Q{get(quarter)} Report - Submit by: April 15, {get(year)}</h3>
+            ]]>
+        </If>
+        <ElseIf if="{==({get(quarter)},2)}">
+            <![CDATA[
+                <h3>{get(year)}:Q{get(quarter)} Report - Submit by: July 15, {get(year)}</h3>
+            ]]>
+        </ElseIf>
+        <ElseIf if="{==({get(quarter)},3)}">
+            <![CDATA[
+                <h3>{get(year)}:Q{get(quarter)} Report - Submit by: Oct 15, {get(year)}</h3>
+            ]]>
+        </ElseIf>
+        <ElseIf if="{==({get(quarter)},4)}">
+            <![CDATA[
+                <h3>{get(year)}:Q{get(quarter)} Report - Submit by: Jan 15, {add({get(year)},1)}</h3>
+            ]]>
+        </ElseIf>
+        
         <!-- Past Reports -->
         <Static>
             {set(startYear, {timestamp(Y-m-d)})}
@@ -27,8 +53,6 @@
         </ReportItemSet>
         <Static>
             <![CDATA[
-                {set(year, {substr({GET(id)}, 0, 4)})}
-                {set(quarter,    {substr({GET(id)}, 6, 1)})}
                 <div class="pdfnodisplay">
                 <h3>Past Reports</h3>
                 <table id='past' class="wikitable">
