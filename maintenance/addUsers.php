@@ -6,7 +6,7 @@ global $wgUser;
 $wgUser = User::newFromId(1);
 
 // Staff
-$people = array(array("Catherine.Pretzlaw", "hajmrle@ualberta.ca"));
+$people = array(array("", ""));
 
 foreach($people as $person){
     $name = $person[0];
