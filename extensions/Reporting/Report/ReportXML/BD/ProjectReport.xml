@@ -19,7 +19,7 @@
             <SectionPermission id="submit" permissions="--" />
         </If>
     </Permissions>
-    <ReportSection id="report" type="EditableReportSection" name="Project Report" title="{$project_full_name}">
+    <ReportSection id="report" type="EditableReportSection" name="Project Report" title="{$project_name}: {$project_full_name}">
         <!-- Variables -->
         <Static>
             {set(year,    {substr({GET(id)}, 0, 4)})}

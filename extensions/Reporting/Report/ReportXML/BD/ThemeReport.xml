@@ -15,7 +15,7 @@
             <SectionPermission id="submit" permissions="--" />
         </If>
     </Permissions>
-    <ReportSection id="report" type="EditableReportSection" name="Theme Report" title="{$theme_full_name}">
+    <ReportSection id="report" type="EditableReportSection" name="Theme Report" title="{$theme_name}: {$theme_full_name}">
         <!-- Variables -->
         <Static>
             {set(year,    {substr({GET(id)}, 0, 4)})}
