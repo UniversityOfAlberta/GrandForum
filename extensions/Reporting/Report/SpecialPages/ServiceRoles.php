@@ -33,6 +33,9 @@ class ServiceRoles extends SpecialPage {
                             <tbody>");
         foreach(Person::getAllServiceRoles() as $service){
             $person = Person::newFromId($service['user_id']);
+            if($person instanceof LimitedPerson){
+                continue;
+            }
             $fec = $person->getFecPersonalInfo();
             if($person->faculty != getFaculty()){
                 continue;

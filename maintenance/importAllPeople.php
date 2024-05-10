@@ -86,7 +86,7 @@
             echo "Already exists: {$firstName} {$lastName} <{$ccid}@ualberta.ca>\n";
         }
         
-        if($person != null || $person->getId() != 0){
+        if($person != null && $person->getId() != 0){
             DBFunctions::update('mw_user',
                                 array('employee_id' => $emplid),
                                 array('user_id' => $person->getId()));
@@ -99,12 +99,12 @@
                                           'start_date' => $startDate));
             }
             
-            $pos = str_replace("Full Professor", "Professor", $pos);
-            $pos = str_replace("Post-Doctoral Fellows", "Post-Doctoral Fellow", $pos);
-            $pos = str_replace("Masters", "Graduate Student - Master's", $pos);
-            $pos = str_replace("PhD", "Graduate Student - Doctoral", $pos);
-            
             if(count($person->getUniversities()) == 0){
+                $pos = str_replace("Full Professor", "Professor", $pos);
+                $pos = str_replace("Post-Doctoral Fellows", "Post-Doctoral Fellow", $pos);
+                $pos = str_replace("Masters", "Graduate Student - Master's", $pos);
+                $pos = str_replace("PhD", "Graduate Student - Doctoral", $pos);
+                
                 $uni = "University of Alberta";
                 $dept = (isset($deptCodes[$hrDeptId])) ? $deptCodes[$hrDeptId] : "Unknown";
                 
@@ -115,23 +115,24 @@
                 $_POST['position'] = $pos;
                 $_POST['startDate'] = $startDate;
                 $api->doPOST();
-            }
-            
-            // Update FEC Info
-            if($pos == "Assistant Professor"){
-                $person->dateOfAppointment = $startDate;
-                $person->dateOfAssistant = $startDate;
-                $person->updateFecInfo();
-            }
-            else if($pos == "Associate Professor"){
-                $person->dateOfAppointment = $startDate;
-                $person->dateOfAssociate = $startDate;
-                $person->updateFecInfo();
-            }
-            else if($pos == "Professor"){
-                $person->dateOfAppointment = $startDate;
-                $person->dateOfProfessor = $startDate;
-                $person->updateFecInfo();
+                
+                // Update FEC Info
+                $person->getFecPersonalInfo();
+                if($pos == "Assistant Professor"){
+                    $person->dateOfAppointment = $startDate;
+                    $person->dateOfAssistant = $startDate;
+                    $person->updateFecInfo();
+                }
+                else if($pos == "Associate Professor"){
+                    $person->dateOfAppointment = $startDate;
+                    $person->dateOfAssociate = $startDate;
+                    $person->updateFecInfo();
+                }
+                else if($pos == "Professor"){
+                    $person->dateOfAppointment = $startDate;
+                    $person->dateOfProfessor = $startDate;
+                    $person->updateFecInfo();
+                }
             }
         }
     }
