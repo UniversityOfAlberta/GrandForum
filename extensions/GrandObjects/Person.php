@@ -660,13 +660,22 @@ class Person extends BackboneModel {
      * Filters people to only include people within the instance's faculty
      */
     static function filterFaculty($people, $includeLimitedPeople=false){
-        return array_filter($people, function($person) use ($includeLimitedPeople) {
+        $fecInfo = DBFunctions::select(array('grand_personal_fec_info'),
+                                       array('user_id'),
+                                       array('faculty' => getFaculty()));
+        $fecInfo = array_flip(flatten($fecInfo));
+        $ret = array();
+        foreach($people as $key => $person){
             if($person instanceof FullPerson){
-                $person->getFecPersonalInfo();
-                return ($person->faculty == getFaculty());
+                if(isset($fecInfo[$person->getId()])){
+                    $ret[$key] = $person;
+                }
             }
-            return $includeLimitedPeople;
-        });
+            else if($includeLimitedPeople){
+                $ret[$key] = $person;
+            }
+        }
+        return $ret;
     }
     
     function isTAEligible($date=null){

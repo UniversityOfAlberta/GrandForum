@@ -77,11 +77,14 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 // Secondary check for Chairs.  Chairs should only show up for Dean, Vice Dean, HR
                 continue;
             }
-            $person->getFecPersonalInfo();
-            $depts = array_keys($person->departments);
-            if($dept != "" && @$depts[0] != $dept){
-                // If department is specified, only inlclude people from that department
-                continue;
+            
+            if($dept != ""){
+                $person->getFecPersonalInfo();
+                $depts = array_keys($person->departments);
+                if(@$depts[0] != $dept){
+                    // If department is specified, only inlclude people from that department
+                    continue;
+                }
             }
             
             // SPECIAL CASES BELOW

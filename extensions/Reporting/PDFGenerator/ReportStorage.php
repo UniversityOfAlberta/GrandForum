@@ -75,6 +75,8 @@ class ReportStorage {
         DBFunctions::execSQL($sql, true);
         DBFunctions::commit();
         // Update metadata.
+        $cacheId = "pdf_{$this->_uid}_{$type}_{$year}";
+        Cache::delete($cacheId);
         return $this->load_metadata($tok);
     }
 
@@ -327,33 +329,43 @@ class ReportStorage {
     /// can be changed with #subm.  #uarr is either an array of numeric user IDs
     /// or an integer (for the user ID).
     static function list_reports($uarr, $subm = 1, $lim = 1, $special = 0, $type = 0, $year = "") {
+        $cacheId = "";
         if (is_array($uarr)) {
             $uarr = implode(', ', $uarr);
         }
-
-        if (strlen($uarr) === 0)
-            return array();
-        if($lim == 0){
-            $lim = "";
+        else{
+            $cacheId = "pdf_{$uarr}_{$type}_{$year}";
+        }
+        
+        if($cacheId != "" && Cache::exists($cacheId)){
+            $data = Cache::fetch($cacheId);
         }
         else{
-            $lim = "LIMIT {$lim}";
-        }
-        if($year != ""){
-            $year = "AND year = {$year}";
-        }
-        $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, token, timestamp, year, encrypted
-                FROM grand_pdf_report 
-                WHERE user_id IN ({$uarr})
-                AND type = '{$type}' 
-                {$year}
-                ORDER BY submitted, timestamp DESC
-                {$lim};";
-        $data = DBFunctions::execSQL($sql);
-        foreach($data as $key => $row){
-            if($row['encrypted']){
-                $data[$key]['token'] = urlencode(encrypt($row['token']));
+            if (strlen($uarr) === 0)
+                return array();
+            if($lim == 0){
+                $lim = "";
             }
+            else{
+                $lim = "LIMIT {$lim}";
+            }
+            if($year != ""){
+                $year = "AND year = {$year}";
+            }
+            $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, token, timestamp, year, encrypted
+                    FROM grand_pdf_report 
+                    WHERE user_id IN ({$uarr})
+                    AND type = '{$type}' 
+                    {$year}
+                    ORDER BY submitted, timestamp DESC
+                    {$lim};";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $key => $row){
+                if($row['encrypted']){
+                    $data[$key]['token'] = urlencode(encrypt($row['token']));
+                }
+            }
+            Cache::store($cacheId, $data);
         }
         return $data;
     }
