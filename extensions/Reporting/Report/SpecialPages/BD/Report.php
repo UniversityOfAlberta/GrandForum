@@ -90,7 +90,7 @@ class Report extends AbstractReport{
         $themes = $person->getLeadThemes();
         foreach($projects as $project){
             for($i=0;$i<4;$i++){
-                $date = date('Y-m-d', time() - 3600*24*30*3*$i + 3600*24*15);
+                $date = date('Y-m-d', time() - 3600*24*30*3*$i - 3600*24*15);
                 if($date >= $project->getStartDate()){
                     $quarter = self::dateToProjectQuarter($date);
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReport" && @$_GET['project'] == $project->getName() && @$_GET['id'] == $quarter)) ? "selected" : false;
@@ -104,7 +104,7 @@ class Report extends AbstractReport{
         }
         foreach($themes as $theme){
             for($i=0;$i<4;$i++){
-                $date = date('Y-m-d', time() - 3600*24*30*3*$i + 3600*24*15);
+                $date = date('Y-m-d', time() - 3600*24*30*3*$i - 3600*24*15);
                 if($date >= $theme->getCreated()){
                     $quarter = self::dateToThemeQuarter($date);
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ThemeReport" && @$_GET['project'] == $theme->getAcronym() && @$_GET['id'] == $quarter)) ? "selected" : false;
