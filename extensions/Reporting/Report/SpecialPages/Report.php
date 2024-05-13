@@ -7,7 +7,6 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
-$wgHooks['OutputPageParserOutput'][] = 'Report::checkFaculty';
 
 class TemplateReport extends AbstractReport{
     
@@ -92,15 +91,6 @@ class TemplateReport extends AbstractReport{
             }
         }
         return true;
-    }
-    
-    function checkFaculty($out, $parseroutput){
-        global $config;
-        $me = Person::newFromWgUser();
-        $me->getFecPersonalInfo();
-        if($me->faculty != getFaculty() && !$me->isRoleAtLeast(MANAGER)){
-            permissionError("You are on the wrong AIMS instance.  Make sure you clicked on the correct faculty.  Contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a> if you still don't have access.");
-        }
     }
 }
 
