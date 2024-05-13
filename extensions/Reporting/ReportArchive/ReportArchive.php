@@ -132,7 +132,7 @@ class ReportArchive extends SpecialPage {
             <table class='wikitable'>");
         for($y=YEAR+1;$y>=2018;$y--){
             $wgOut->addHTML("<tr>
-                <td align='center' style='padding-left:1em; padding-right:1em;'>{$y}</td>");
+                <td align='center' style='padding-left:1em; padding-right:1em;'>".($y-1)."/".substr($y,2,2)."</td>");
                 
             // Annual Report
             $arUrl = "";
