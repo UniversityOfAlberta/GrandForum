@@ -30,6 +30,8 @@ class RelationshipIndex extends AbstractMigration
         $table = $this->table('grand_relations');
         $table->changeColumn('type', 'string', array('limit' => 32))
               ->addIndex('type')
+              ->addIndex('user1')
+              ->addIndex('user2')
               ->update();
     }
 }
