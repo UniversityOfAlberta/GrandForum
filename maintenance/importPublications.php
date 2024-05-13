@@ -77,7 +77,12 @@ foreach($people as $person){
                             else{
                                 // Not at UofA
                                 $names = explode(" ", trim($author->author->display_name), 2);
-                                $obj->name = "\"{$names[1]}, {$names[0]}\"";
+                                if(count($names) > 1){
+                                    $obj->name = "\"{$names[1]}, {$names[0]}\"";
+                                }
+                                else{
+                                    $obj->name = $names[0];
+                                }
                             }
                             $pub->authors[] = $obj;
                         }
