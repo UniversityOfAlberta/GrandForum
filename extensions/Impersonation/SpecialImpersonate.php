@@ -37,6 +37,7 @@ class Impersonate extends SpecialPage {
         else if(count($user->getDelegates()) > 0){
             $allPeople = $user->getDelegates();
         }
+        
 	    
 	    $wgOut->addHTML("<span id='pageDescription'>Impersonating allows you to temporarily view the {$config->getValue('siteName')} as another user.<br />Select a user from the list below, and then click the 'Impersonate' button to begin a session.</span><table>
 	                        <tr><td>
@@ -45,16 +46,17 @@ class Impersonate extends SpecialPage {
 	    foreach($allPeople as $id){
 	        $id = ($id instanceof Person) ? $id->getId() : $id;
 	        $row = Person::getUserRow($id);
-	        
-	        $person->id = $id;
-	        $person->splitName = array();
-	        $person->name = $row['user_name'];
-	        $person->firstName = $row['first_name'];
-	        $person->lastName = $row['last_name'];
-	        $person->middleName = $row['middle_name'];
-	        $person->realname = $row['user_real_name'];
-	        
-	        $wgOut->addHTML("<option value=\"{$person->getName()}\">{$person->getNameForForms()}</option>\n");
+	        if($row['full'] == 1){
+	            $person->id = $id;
+	            $person->splitName = array();
+	            $person->name = $row['user_name'];
+	            $person->firstName = $row['first_name'];
+	            $person->lastName = $row['last_name'];
+	            $person->middleName = $row['middle_name'];
+	            $person->realname = $row['user_real_name'];
+	            
+	            $wgOut->addHTML("<option value=\"{$person->getName()}\">{$person->getNameForForms()}</option>\n");
+	        }
 	        unset(Person::$userRows[$id]);
 	    }
 	    $wgOut->addHTML("</select>
