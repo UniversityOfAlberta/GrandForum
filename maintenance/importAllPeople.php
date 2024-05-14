@@ -6,7 +6,7 @@
     global $wgUser;
     $wgUser = User::newFromId(1);
     
-    $startDate = date(YEAR.'-07-01');
+    $startDate = date((YEAR-1).'-04-01');
 
     $deptCodes = array();
     foreach(explode("\n", file_get_contents("deptCodes.csv")) as $line){
