@@ -23,8 +23,8 @@ foreach($people as $person){
                 $alreadyImported[$doi] = true;
                 echo "\t{$doi} ... ";
                 $res = array('created' => array());
-                if(!Product::newFromBibTeXId(str_replace("https://doi.org/", "", $doi))->exists() &&
-                   !Product::newFromTitle($title)->exists()){
+                if(!Product::newFromTitle($title)->exists() &&
+                   !Product::newFromBibTeXId(str_replace("https://doi.org/", "", $doi))->exists()){
                     $_POST['doi'] = $doi;
                     $api = new ImportDOIAPI();
                     $res = $api->doAction();
