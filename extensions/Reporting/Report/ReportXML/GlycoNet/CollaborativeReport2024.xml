@@ -148,17 +148,10 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="letters" name="Partner Involvement" blobSection="CAT_SUPPORT" tooltip="Partner Involvement" type="EditableReportSection">
+    <ReportSection id="letters" name="Partner Letters" title="Partner Letters of Support" blobSection="CAT_SUPPORT" tooltip="Partner Letters of Support" type="EditableReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <p>A letter must be provided supporting all Partner contributions listed in the budget.</p>
-                Letters must:
-                <ul>
-                    <li>Come from a senior executive with signing authority for the contributions being committed.</li>
-                    <li>Indicate the amount, duration, and nature (cash and/or in-kind) of support for the project.</li>
-                    <li>Be on partner letterhead, be dated and signed within the past two months.</li>
-                </ul>
-                <br />
+                <p>You can upload up to 5 Partner Support Letters</p>
                 {$item}
             ]]>
         </ReportItem>

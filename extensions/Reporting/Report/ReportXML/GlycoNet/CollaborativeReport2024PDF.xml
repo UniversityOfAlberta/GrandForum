@@ -43,7 +43,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="letters" name="Partner Letters" blobSection="CAT_SUPPORT" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
+    <ReportSection id="letters" name="Partner Letters" title="Partner Letters of Support" blobSection="CAT_SUPPORT" tooltip="Partner Letters of Support" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="appendix_bookmark" type="BookmarkReportItem" offset="1" text="Appendix"></ReportItem>
         <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
         </ReportItem>
