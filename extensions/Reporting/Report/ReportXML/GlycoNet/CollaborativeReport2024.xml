@@ -1,45 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" pdfFiles="CatalystReportPDF" ajax="true" disabled="false" year="2024">
+<Report name="Collaborative Team Grant Application" reportType="RP_COLLAB" pdfType="RPTP_COLLAB" pdfFiles="CollaborativeReport2024PDF" ajax="true" allowIdProjects="true" disabled="false" year="2024">
     <Permissions>
-        <Role role="" subRole="Catalyst2024">
+        <Role role="" subRole="Collab2024">
 
         </Role>
         <Role role="Staff">
         
         </Role>
     </Permissions>
-    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Catalyst" blobSection="SEC_NONE" type="ReportSection">
+    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Collaborative Team" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
-                <p>In this Request for Proposals, we are seeking to fund exploratory projects the successful completion of which would provide preliminary data to support other funding applications either to GlycoNet, or other funding sources. This opportunity is open <b>only</b> to individuals who are considered <b>Early Career Researchers</b>, and who are eligible to hold research funds at a Canadian University.</p>
+                <p>In this Request for Proposals, we are seeking to fund collaborative team projects (that involve two or more research groups, preferably in different institutions) the successful completion of which would provide preliminary data to support other funding applications either to GlycoNet, or other funding sources.</p>
+                
                 <h3>Requirements</h3>
                 Projects should:
                 <ul>
-                    <li>Be aligned with GlycoNet’s research mandate (see <a href='https://canadianglycomics.ca/research/' target='_blank'>glyconet.ca</a>).</li>
-                    <li>Be of an applied nature so that after additional funding through other means, the outcomes could lead to the development of a project with a translational direction.</li>
-                    <li>Involve the training of Highly Qualified Personnel.</li>
-                </ul>
-                Projects should not:
-                <ul>
-                    <li>Concern development or performance of a high-throughput screen for ligands/inhibitors.</li>
-                    <li>Concern development of synthetic methodology.</li>
-                    <li>Concern basic biochemistry or biology with no tangible translational outcome.</li>
+                    <li>Be aligned with <b><i>GlycoNet’s research mandate</i></b> (see <a href='https://canadianglycomics.ca/research/' target='_blank'>glyconet.ca</a>)</li>
+                    <li>Be of an <b><i>applied nature with well-defined translational strategy</i></b></li>
+                    <li>Involve the <b><i>training of Highly Qualified Personnel</i></b>.</li>
+                    <li>Projects must involve two or more research groups, <b><i>preferably at different institutions</i></b>.</li>
                 </ul>
                 
-                <p><b>Matching contributions are required, although these do not need to be cash. Eligible matching (please see <a href='https://drive.google.com/file/d/1htIEuiU1weYrAB5g1DX4JTOKD3oM9KPX/view
-' target='_blank'>Appendix A</a>) contributions can come from non-federally funded student/post-doctoral scholarships, start-up funding, or other partner contributions. Matching of 10% or $7,500 is required (can be in-kind).</b></p>
+                Projects should not:
+                <ul><li>Concern basic biochemistry or biology with no tangible translational outcome.</li></ul>
+                
+                <p><b><i>Matching contributions are required at a minimum of 1:1, where 50% must be a cash contribution (please see Appendix A). Projects with larger matching contributions will be given preference.</i></b></p>
                 
                 <h3>Funding Available</h3>
-                <p>Proposals may request up to $75,000 in funding. All projects should be completed within 12 – 18 months.</p>
+                <p>Proposals may request up to $150,000/yr over two years. All projects should be planned to be completed within 24 months. The second year’s funding is contingent upon meeting and reporting on milestones. Failure to report on the milestones will lead to loss of funding.</p>
                 
                 <h3>Eligibility</h3>
-                <p>This opportunity is open <b>only</b> to individuals who are considered <b>Early Career Researchers</b>, and who are eligible to hold research funds at a Canadian University. Having obtained other research funding would be viewed favorably.</p>
-                
-                <p>GlycoNet defines an ECR as pre-tenure, or within one year of having obtained tenure.</p>
-                
-                <p><b>Individuals who have previously received funding from GlycoNet are not eligible.</b></p>
-                
-                <p>An individual may serve as the Project Leader on only one Catalyst Grant application and may not be involved in more than two GlycoNet Grant applications.</p>
+                <p>This opportunity is open only to individuals who are eligible to hold Tri-Council funds: CIHR, NSERC or SSHRC. Network investigators can only participate in three concurrent projects (but can only lead up two projects). Previous service within the Network and a willingness to provide service will be taken into consideration for funding decisions.</p>
                 
                 <p>Questions about project suitability can be directed to the GlycoNet Administrative Centre (<a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> cc: <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>).</p>
                 
@@ -69,7 +61,7 @@
                     <li>Partner Letters of Support (as separate PDF files)</li>
                     <li>CCV (CIHR/NSERC Academic Format) for each Network Investigator (as separate PDF files)</li>
                 </ol>
-                <p><b>Deadline: 23:59 MDT on July 2, 2024.</b></p>
+                <p><b><i>Deadline: 23:59 MDT on July 2, 2024.</i></b></p>
             ]]>
         </Static>
     </ReportSection>
@@ -80,8 +72,8 @@
                     <li>The application must be uploaded as a single PDF file to the GlycoNet Forum (after completing the application template, convert it to PDF format).</li>
                     <li>Please ensure that each section of the document is filled out carefully. All sections are obligatory to complete. Partially filled proposals will not be considered.</li>
                     <li>Use Times Roman/Times New Roman 11 for the text format</li>
-                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Catalyst Grant Application Template.docx"><b>Application Template</b></a></li>
-                    <li>Use <a href="{$wgServer}{$wgScriptPath}/data/2024 Catalyst Grant Application Instructions.pdf" target='_blank'><b>Application Instructions</b></a> to complete the application</li>
+                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Collaborative Team Grant Application Template.docx"><b>Application Template</b></a></li>
+                    <li>Use <a href="{$wgServer}{$wgScriptPath}/data/2024-2026 Collaborative Team Grant Application Instructions.pdf" target='_blank'><b>Application Instructions</b></a> to complete the application</li>
                 </ul>
                 <h3>Application Upload</h3>
                 {$item}
@@ -98,13 +90,15 @@
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
         <Static>
             <![CDATA[
-                <p>The front page in the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. <b><i>The project leader is responsible for combining all of the NI budgets into a single Excel file.</i></b> Failure to report on milestones will lead to loss of funding.</p>
+                <p>The front page in the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2, etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. The project leader is responsible for combining all of the NI budgets into a single Excel file. Failure to report on milestones will lead to loss of funding.</p>
                 
                 <b>Budget Guidelines:</b>
                 <ul>
-                    <li>Projects can request maximum of $75,000 from GlycoNet. Project can also request less than $75,000.</li>
-                    <li>Projects require a 10% budget match which need not be cash. Matching funds cannot be from Canadian Federal funding sources (i.e. CIHR, NSERC, SSHRC, and CFI), as these are ineligible for matching.
-                        <ul><li>Projects with a higher level of matching funds will be viewed more favorably.</li></ul>
+                    <li>Projects can request up to $150,000/year for two years from GlycoNet.</li>
+                    <li>Projects require a 1:1 match with Partner funding; at least 50% of the matching funds must be cash. Partner funding cannot come from Canadian Federal funding sources (i.e., CIHR, NSERC, SSHRC, and CFI) as these are ineligible for matching.
+                        <ul>
+                            <li>Projects with a higher level of matching funds (e.g. 2:1, Partners:GlycoNet) will be viewed more favorably.</li>
+                        </ul>
                     </li>
                     <li>The project budget should clearly show the co-contribution of partner funds in alignment with SSF and eligible project expenses.</li>
                     <li>The maximum salary for Graduate Students is $30,000/year and for Postdoctoral Fellows is $55,000/year.</li>
@@ -116,10 +110,10 @@
                             <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li>
                         </ul>
                     </li>
-                    <li>Work with <b>GlycoNet Integrated Services</b>. Network investigators will receive a 20% discount on requested services. A quote can be provided upon request by <a href='mailto:coreservices@glyconet.ca'>coreservices@glyconet.ca</a></li>
+                    <li>Work with <b>GlycoNet Integrated Services</b>. Network investigators will receive a 20% discount on requested services. A quote can be provided upon request by <a href='mailto:coreservices@glyconet.ca' target='_blank'>coreservices@glyconet.ca</a></li>
                     <li>All partner contributions need to be supported by a letter from the partner institution (see below)
                         <ul>
-                            <li>Based on federal funding guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from federal sources cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
+                            <li>Based on federal funding guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from federal sources cannot be counted as matching.  Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
                         </ul>
                     </li>
                 </ul>
@@ -154,29 +148,41 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="letters" name="Partner Letters" blobSection="CAT_SUPPORT" tooltip="Partner Support Letters" type="ReportSection">
-        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
+    <ReportSection id="letters" name="Partner Involvement" blobSection="CAT_SUPPORT" tooltip="Partner Involvement" type="EditableReportSection">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <p>You can upload up to 5 Partner Support Letters</p>
+                <p>A letter must be provided supporting all Partner contributions listed in the budget.</p>
+                Letters must:
+                <ul>
+                    <li>Come from a senior executive with signing authority for the contributions being committed.</li>
+                    <li>Indicate the amount, duration, and nature (cash and/or in-kind) of support for the project.</li>
+                    <li>Be on partner letterhead, be dated and signed within the past two months.</li>
+                </ul>
+                <br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD2" mimeType="application/pdf">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD3" mimeType="application/pdf">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD4" mimeType="application/pdf">
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD2" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD3" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD4" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
