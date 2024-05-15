@@ -38,7 +38,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
+    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Catalyst" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
                 <p>In this Request for Proposals, we are seeking to fund exploratory projects the successful completion of which would provide preliminary data to support other funding applications either to GlycoNet, or other funding sources. This opportunity is open <b>only</b> to individuals who are considered <b>Early Career Researchers</b>, and who are eligible to hold research funds at a Canadian University.</p>
