@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC Conference (2024)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2024">
+<Report name="EPIC Conference (2024)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="true" year="2024">
     <Permissions>
         <Role role="HQP+">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="application" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role role="HQP-Candidate">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -29,12 +23,12 @@
                 
                 <p>AGE-WELL has identified <a href="https://agewell-nce.ca/challenge-areas" target="_blank">8 Challenge Areas</a> – difficult and complex problem areas found through extensive public consultation – that demand innovation and deployment of real-world solutions. EPIC Conference (2024) is an opportunity for AGE-WELL and EPIC-AT students, postdoctoral fellows, research staff and ECRs to present their research alongside their stakeholder partners, highlight its potential impact, and connect with colleagues from around the world.  Each session will also feature a new segment called Moving the Dial that highlights how AGE-WELL partners and supported startups are improving quality of life for Canada’s older adults and caregivers.</p>
 
-                <p>Interested AGE-WELL HQP and EPIC-AT Fellows are asked to submit an application that includes a presentation abstract and the details of a co-presenter who is an older adult, caregiver, community, or industry partner in their research. Only applications that include a stakeholder co-presenter will be considered.</p>
+                <p>Interested AGE-WELL HQP and EPIC-AT Fellows are asked to submit an application that includes a presentation abstract and the details of a co-presenter who is an older adult, caregiver, community, or industry partner in their research. Applications that include a stakeholder co-presenter will be given preference over those that do not.</p>
                 
                 <p><b>HQP/EPIC-AT Fellow Presentation</b><br />
                 All sessions will be hosted on Zoom and comprise of an introduction to the Challenge Area by the session Chair, live presentations from researchers and their stakeholder partners, and a Moving the Dial presentation. Q&A will follow the each of the presentations.</p>
                 
-                <p>Presenters are required to accompany their 10-minute talks with a presentation of 10 slides maximum (inclusive of title slide and bibliography). They are also required to co-present alongside a stakeholder in their research. For example, this stakeholder may be an older adult or caregiver with lived experience, an industry or community partner, or government decision-maker.</p>
+                <p>Presenters are required to accompany their 10-minute talks with a presentation of 10 slides maximum (inclusive of title slide and bibliography). They are also strongly encouraged to co-present alongside a stakeholder in their research. For example, this stakeholder may be an older adult or caregiver with lived experience, an industry or community partner, or government decision-maker.</p>
                 
                 <p>Check out the EPIC Conference 2023 presentations and workshops <a href='https://agewell-nce.ca/epic-conference-2023' target='_blank'>here</a>.</p>
                 
@@ -42,7 +36,7 @@
                     Presentation proposals are invited from <b>all AGE-WELL HQP and EPIC-AT Fellows including alumni</b>. Applicants are encouraged to review the full challenge area booklet <a href='https://agewell-nce.ca/wp-content/uploads/2018/05/Booklet_8_Challenges_English_2019oct2_digital.pdf' target='_blank'>here</a> and ensure they are available for their sessions on the dates below. Applicants may also wish to review <a href='https://blog.prezi.com/co-presenting-tips/' target="_blank">Co-presenting tips: How to deliver an engaging and cohesive presentation</a>
                 </p>
                 
-                <p>Applications will be open in Forum from March 1 to 31, 2024.</p>
+                <p>Applications will be open in Forum from March 1 to April 8, 2024.</p>
                 <table class='wikitable'>
                     <tr>
                         <th>Challenge Area Sessions</th>

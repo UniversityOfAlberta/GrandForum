@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL National Innovation Hub Report" extends="WPReportPDF">
+<Report name="AGE-WELL National Innovation Hub (AWNIH) Report" extends="WPReportPDF">
     <ReportSection id="status">
         <ReportItem id="report_info_head">
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL National Innovation Hub Report</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL National Innovation Hub (AWNIH) Report</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -22,40 +22,15 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="summary">
-        <ReportItem id="summary" limit="2000">
+    <ReportSection id="summary" name="Executive Summary" title="1. Executive Summary">
+        <ReportItem id="summary" limit="4000">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="nce">
-        <ReportItem id="excellence" limit="2000">
-            <![CDATA[
-                <h3>a) Excellence of the Research Program</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="hqp" limit="2000">
-            <![CDATA[
-                <h3>b) Development of Highly Qualified Personnel</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="networking" limit="2000">
-            <![CDATA[
-                <h3>c) Networking and Partnerships</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="ktee" limit="2000">
-            <![CDATA[
-                <h3>d) Knowledge Exchange and Exploitation</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="additional">
+    <ReportSection id="nce" delete="true" />
+    <ReportSection id="additional" name="Additional Information" title="2. Additional Information" pagebreak="false">
         <ReportItem id="outcomes">
             <![CDATA[
                 <h3>a) Other Outcomes</h3>
@@ -75,4 +50,5 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="initiatives" delete="true" />
 </Report>

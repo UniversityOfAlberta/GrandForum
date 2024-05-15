@@ -133,7 +133,7 @@ Programme ELITE pour la Jeunesse Noire
     }
     
     function sendMatchedMail($person){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         $subject = "ELITE Program for Black Youth – Request for Interview and Decision";
         $message = "Dear Internship Host Applicant,
 Thank you, again, for offering a position in the paid work-integrated internship program offered by the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth.
@@ -171,11 +171,11 @@ Programme ELITE pour la Jeunesse Noire
         $message = nl2br($message);
         $headers  = "Content-type: text/html\r\n"; 
         $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-        mail($person->getEmail(), $subject, $message, $headers);
+        mail($person->getEmail(), $subject, $message, $headers, $wgAdditionalMailParams);
     }
     
     function sendHiresMail($person){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         $subject = "ELITE Program for Black Youth – Feedback Received";
         $message = "Dear Internship Host,
 Thank you, again, for offering a position in the paid work-integrated internship program offered by the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth.
@@ -205,7 +205,7 @@ Programme ELITE pour la Jeunesse Noire
         $message = nl2br($message);
         $headers  = "Content-type: text/html\r\n"; 
         $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-        mail($person->getEmail(), $subject, $message, $headers);
+        mail($person->getEmail(), $subject, $message, $headers, $wgAdditionalMailParams);
         
         // Now send email to coordinator
         $subject = "ELITE Program for Black Youth – Feedback Submitted";
@@ -233,7 +233,7 @@ Programme ELITE pour la Jeunesse Noire
                         ELITE Program Director";
         }
         $message = nl2br($message);
-        mail("elite@ualberta.ca", $subject, $message, $headers);
+        mail("elite@ualberta.ca", $subject, $message, $headers, $wgAdditionalMailParams);
     }
     
 }

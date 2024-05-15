@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" pdfFiles="CatalystReportPDF" ajax="true" disabled="true" year="2017">
+<Report name="Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" pdfFiles="CatalystReportPDF" ajax="true" disabled="false" year="2024">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="instructions" permissions="rw" />
@@ -41,229 +41,84 @@
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
-                <h3>Background and Description of Opportunity</h3>
-                <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence (NCE) that focuses on the role of glycans (carbohydrates) in health. Areas of focus are therapeutic proteins & vaccines, antimicrobials and chronic disease, in particular diabetes & obesity, genetic diseases involving errors in glycan metabolism, and cancer. Additional information about Network research can be found at www.glyconet.ca.</p>
-                <p>In this Request for Proposals we are seeking to fund exploratory projects the successful completion of which would provide preliminary data to support other funding applications either to GlycoNet, the Canadian Institutes of Health Research or a private disease-specific foundation.</p>
-                
+                <p>In this Request for Proposals, we are seeking to fund exploratory projects the successful completion of which would provide preliminary data to support other funding applications either to GlycoNet, or other funding sources. This opportunity is open only to individuals who are considered <b>Early Career Researchers</b>, and who are eligible to hold research funds at a Canadian University. Having obtained other research funding would be viewed favorably.</p>
                 <h3>Requirements</h3>
-                <p>Projects should:</p>
+                Projects should:
                 <ul>
-                    <li>Be aligned with one of the GlycoNet research themes (see glyconet.ca) and be targeted to a specific disease.</li>
-                    <li>Be of an applied nature so that after additional funding through other means, the outcomes could lead to novel treatments for disease.</li>
+                    <li>Be aligned with GlycoNet’s research mandate (see glyconet.ca).</li>
+                    <li>Be of an applied nature so that after additional funding through other means, the outcomes could lead to the development of a project with a translational direction.</li>
                     <li>Involve the training of Highly Qualified Personnel.</li>
-                    <li>Multidisciplinary projects involving two or more research groups will be given preference.</li>
                 </ul>
-                <p>Projects should not:</p>
+                Projects should not:
                 <ul>
                     <li>Concern development or performance of a high-throughput screen for ligands/inhibitors.</li>
                     <li>Concern development of synthetic methodology.</li>
                     <li>Concern basic biochemistry or biology with no tangible translational outcome.</li>
                 </ul>
-                <p>Although not required, partner funding would be an asset.</p>
+                
+                <p><b>Matching contributions are required, although these do not need to be cash. Eligible matching (please see Appendix A) contributions can come from non-federally funded student/post-doctoral scholarships, start-up funding, or other partner contributions. Matching of 10% or $7,500 is required (can be in-kind).</b></p>
                 
                 <h3>Funding Available</h3>
-                <p>GlycoNet has set aside up to $500,000 for this competition. Proposals may request up to $75,000 in funding. All projects should be completed within 12 months.</p>
+                <p>Proposals may request up to $75,000 in funding. All projects should be completed within 12 – 18 months.</p>
                 
                 <h3>Eligibility</h3>
-                <p>Based on NCE requirements, this opportunity is open only to individuals who are eligible to hold Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Councilof Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC). Furthermore, GlycoNet requires that all investigators receiving Network funding must have other peer-reviewed support. Such support need not be from the Tri-Council.</p>
-                <p>Individuals serving as a Project Leader on another GlycoNet-funded project, including the Catalyst grants awarded in 2016, or receiving more than $75,000 a year from GlycoNet, are not eligible. Holders of Catalyst grants awarded in 2015 <b>are</b> eligible to apply, although the project must be distinct from that supported previously.</p>
-                <p>An individual may serve as the Project Leader on only one Catalyst Grant application and may not be involved in more than two Catalyst Grant applications.</p>
-                <p>Questions about project suitability can be directed to the GlycoNet Administrative Centre (glyconet@ualberta.ca).</p>
+                <p>This opportunity is open only to individuals who are considered <b>Early Career Researchers</b>, and who are eligible to hold research funds at a Canadian University. Having obtained other research funding would be viewed favorably.</p>
                 
-                <h3>Application Form and Submission</h3>
-                <p>Potential applicants must register by email to Karli Buckle (kbuckle@ualberta.ca) by Friday, July 14, 2017. Please provide the project title, anticipated budget request, and list of investigators involved in the project. This information is not binding and can change when the application is submitted. Upon registration, applicants will receive instructions for completing the application. Funding is anticipated to begin on January 1, 2018.</p>
+                <p>GlycoNet defines an ECR as pre-tenure, or within one year of having obtained tenure.</p>
                 
-                <h3>Deadline</h3>
-                <p>Applications must be submitted by midnight PST Monday, August 14, 2017. Proposals received after this deadline will not be considered.</p>
+                <p><b>Individuals who have previously received funding from GlycoNet are not eligible.</b></p>
                 
-                <h3>Additional Information</h3>
-                <p>Questions about this opportunity can be sent to glyconet@ualberta.ca.</p>
+                <p>An individual may serve as the Project Leader on only one Catalyst Grant application and may not be involved in more than two GlycoNet Grant applications.</p>
+                
+                <p>Questions about project suitability can be directed to the GlycoNet Administrative Centre (info@glyconet.ca cc: vsharko@glyconet.ca).</p>
+                
+                <h3>General Instructions and Deadline</h3>
+                <p>All applications will be completed in the GlycoNet Forum, https://forum.glyconet.ca. Please read the following in-structions carefully. A complete application consists of:</p>
+                <ol>
+                    <li>Application/Proposal (single PDF file, use Application Template)
+                        <ul>
+                            <li>Project Title</li>
+                            <li>Project Leader / Lead Investigator</li>
+                            <li>Other Investigators</li>
+                            <li>Key Words</li>
+                            <li>List of Partners and Matching Funds (Companies, Agencies, etc.)</li>
+                            <li>Suggested Reviewers</li>
+                            <li>Environmental Impact</li>
+                            <li>Project Summary</li>
+                            <li>Translational Strategy and Impact Statement</li>
+                            <li>Project Proposal</li>
+                            <li>References</li>
+                            <li>Training Environment, including Equity, Diversity and Inclusion considerations</li>
+                            <li>Conflict of Interest</li>
+                        </ul>
+                    </li>
+                    <li>Budget (a single Excel file in the correct format and with a budget for the project (12 – 18 months))</li>
+                    <li>Budget Justification</li>
+                    <li>Milestones (a single Excel file)</li>
+                    <li>Partner Letters of Support (as separate PDF files)</li>
+                    <li>CCV (CIHR/NSERC Academic Format) for each Network Investigator (as separate PDF files)</li>
+                </ol>
+                <p><b>Deadline: 23:59 MDT on July 2, 2024.</b></p>
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="CAT_DESC" type="EditableReportSection" renderpdf="false">
-        <!-- Theme -->
-        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Diabetes/Obesity|Therapeutic proteins/Vaccines|Chronic Disease|Antimicrobials|Rare Genetic diseases">
+    <ReportSection id="description" tooltip="Application" name="Application" blobSection="CAT_DESC" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_APPLICATION" mimeType="application/pdf" fileSize="10">
             <![CDATA[
-                <h3>Theme</h3>
+                <ul>
+                    <li>The application must be uploaded as a single PDF file to the GlycoNet Forum at <a href='https://forum.glyconet.ca'>https://forum.glyconet.ca</a> (after completing the application template, convert it to PDF format).</li>
+                    <li>Please ensure that each section of the document is filled out carefully. All sections are obligatory to complete. Partially filled proposals will not be considered.</li>
+                    <li>Use Times Roman/Times New Roman 11 for the text format</li>
+                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Catalyst Grant Application Template.docx">Application Template</a></li>
+                    <li>Use <a href="{$wgServer}{$wgScriptPath}/data/2024 Catalyst Grant Application Instructions.pdf" target='_blank'>Application Instructions</a> to complete the application</li>
+                </ul><br />
                 {$item}
             ]]>
         </ReportItem>
-        
-        <!-- Project Title -->
-        <ReportItem id="title" type="TextReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TITLE" width="400px">
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_ENV_IMPACT" mimeType="application/pdf" fileSize="10">
             <![CDATA[
-                <h3>Project Title</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Lead Investigator -->
-        <ReportItem id="lead" type="MultiTextReportItem" 
-                              blobType="BLOB_ARRAY" 
-                              blobItem="CAT_DESC_LEAD" 
-                              multiple="true" 
-                              max="2" 
-                              labels="Name|Affiliation|Phone|E-Mail" 
-                              types="NI|text|text|text"
-                              sizes="0|150|125|150">
-            <![CDATA[
-                <h2>Lead Investigator</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Other Investigators -->
-        <ReportItem id="other" type="MultiTextReportItem" 
-                               blobType="BLOB_ARRAY" 
-                               blobItem="CAT_DESC_OTHER" 
-                               multiple="true" 
-                               labels="Name|Affiliation|Phone|E-Mail" 
-                               types="NI|text|text|text"
-                               sizes="0|150|125|150">
-            <![CDATA[
-                <h2>Other Investigators</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Key Words -->
-        <ReportItem id="keywords" type="MultiTextReportItem" 
-                                  blobType="BLOB_ARRAY" 
-                                  blobItem="CAT_DESC_WORDS" 
-                                  multiple="true" 
-                                  labels="Key Word" 
-                                  types="text"
-                                  sizes="150"
-                                  max="10">
-            <![CDATA[
-                <h2>Key Words</h2>
-                <p>A minimum of 5 keywords must be provided.  There can be no more than 10 keywords</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Partners involved (Companies, agencies etc) -->
-        <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_PART" multiple="true" labels="Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
-            <![CDATA[
-                <h2>Partners involved (Companies, agencies etc)</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Suggested reviewers -->
-        <ReportItem id="reviewers" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_REV" multiple="true" labels="Name|E-Mail|Affiliation" types="text|text|text">
-            <![CDATA[
-                <h2>Suggested Reviewers</h2>
-                Please suggest at least 5 reviewers for the application.  At least three of the five suggested reviewers must be working at locations outside of Canada. Suggested reviewers should not be members of the GlycoNet  Scientific Advisory Board or Research Management Committee.  In addition, the Network follows the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/CIHR_Harmonized_COIC_Form-e.pdf'>CIHR/NSERC Conflict of Interest Policy</a>; please consult that policy before suggesting reviewers.
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Environmental Impact Question -->
-        <ReportItem id="env_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ENV" orientation="horizontal" options="Yes|No">
-            <![CDATA[
-                <h2>Environmental Impact</h2>
-                Does any phase of the research described in this proposal take place outside an office or a laboratory?
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Environmental Impact Upload -->
-        <ReportItem id="env_u" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_DESC_ENV_UP">
-            <![CDATA[
-                <p>
-                If Yes, please go to the NSERC web site (<a href="http://www.nserc.ca" target="_blank">www.nserc.ca</a>) and obtain the environmental impact form (Appendix A), complete this and submit it with your application.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Conflict of Interest Question -->
-        <ReportItem id="conflict_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_CONFLICT" orientation="horizontal" options="Yes|No">
-            <![CDATA[
-                <h2>Conflict of Interest</h2>
-                Do any of the researchers involved in this project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research?
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Conflict of Interest Multi -->
-        <ReportItem id="conflict_which" type="MultiTextReportItem" optional="true" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_WHICH" multiple="true" labels="Name|Company" types="NI|text">
-            <![CDATA[
-                <p>If Yes, please indicate which researcher and the relevant company.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Conflict of Interest Companies -->
-        <ReportItem id="conflict_comp" type="MultiTextReportItem" optional="true" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_COMP" multiple="true" labels="Company" types="text">
-            <![CDATA[
-                <p>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="resub" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESUB" options="Yes|No">
-            <![CDATA[
-                <p>Is this application a resubmission of a previously unsuccessful GlycoNet Catalyst grant</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000" recommended="true">
-            <![CDATA[
-                <script type="text/javascript">
-                    var resub = function(){
-                        var value = $("input[name=Description_resub]:checked").val();
-                        if(value == "Yes"){
-                            $("#response_div").show();
-                        }
-                        else{
-                            $("#response_div").hide();
-                        }
-                    }
-                    $("input[name=Description_resub]").change(resub);
-                    resub();
-                </script>
-                <div id="response_div">
-                    <p>Please provide a response to the previous reviews</p>
-                    {$item}
-                </div>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px" limit="500" recommended="true">
-            <![CDATA[
-                <h2>Project Summary</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-
-        <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
-            <![CDATA[
-                <h2>Figures & Schemes</h2>
-                <p>Upload a PDF document containing your application's figures & schemes</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="2000" recommended="true">
-            <![CDATA[
-                <h2>Project Proposal</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500" recommended="true">
-            <![CDATA[
-                <h2>Knowledge and Technology Exchange and Exploitation</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500" recommended="true">
-            <![CDATA[
-                <h2>Training Potential</h2>
+                <h3>Environmental Impact Form</h3>
+                If you have an environment form, please upload it as a pdf below.
                 {$item}
             ]]>
         </ReportItem>
@@ -274,7 +129,7 @@
                 <p><b>Note:</b> Only 1 year should be filled out for the Catalyst Grant.</p>
             ]]>
         </Static>
-        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template.xlsx">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="" template="GlycoNet Budget Template.xlsx">
             <![CDATA[
                 {$item}
             ]]>
@@ -290,7 +145,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Milestones.xls">milestone template</a> and upload it below.
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template (for Catalyst).xlsx">milestone template</a> and upload it below.
                 </p>
                 {$item}
             ]]>
@@ -383,6 +238,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email}" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
     </ReportSection>
 </Report>

@@ -281,6 +281,7 @@ class ApplicationTab extends AbstractTab {
         $this->html .= "<script type='text/javascript'>
             $('#application_{$rpId}').dataTable({
                 autoWidth: false,
+                order: [[2, 'desc']],
                 aLengthMenu: [
                     [25, 50, 100, -1],
                     [25, 50, 100, 'All']

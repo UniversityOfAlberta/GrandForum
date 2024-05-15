@@ -77,7 +77,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=proposals'>Proj Proposals</a>";
         }
         
-        $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
+        $wgOut->addHTML("<h1>".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
         if(!isset($_GET['program'])){
             return;
         }
@@ -391,6 +391,7 @@ class ApplicationsTable extends SpecialPage{
     function generateSummer(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), null, 2024, "2024", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), null, 2023, "2023", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), null, 2022, "2022", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), null, 2021, "2021", array(), true));
@@ -405,6 +406,7 @@ class ApplicationsTable extends SpecialPage{
     function generateATOP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), null, 2024, "2024", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), null, 2022, "2022", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), null, 2021, "2021", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), null, 2020, "2020", array(), true));
@@ -465,6 +467,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2023, "2023"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2021, "2021"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2020, "2020"));
@@ -479,6 +482,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProjectMilestones(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), null, 2023, "2023"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), null, 2020, "2020"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), null, 2019, "2019"));
@@ -502,7 +506,7 @@ class ApplicationsTable extends SpecialPage{
         
         if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ApplicationsTable") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Reports", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected);
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Applications/Reports", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected);
         }
         return true;
     }

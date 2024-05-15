@@ -44,7 +44,7 @@ class Notification{
 	}
 	
 	static function addNotification($creator, $user, $name, $message, $url, $mail=false){
-	    global $wgServer, $wgScriptPath, $wgImpersonating, $config, $wgPasswordSender;
+	    global $wgServer, $wgScriptPath, $wgImpersonating, $config, $wgAdditionalMailParams, $wgPasswordSender;
 	    if($wgImpersonating){
 	        return;
 	    }
@@ -70,7 +70,7 @@ class Notification{
             $headers = "Content-type: text/html\r\n"; 
             $headers .= $from;
             $wUser = User::newFromId($user->getId());
-            mail($wUser->getEmail(), $name, nl2br($message)."<br /><br /><a href='$url'>Notification URL</a><br /><br /><a href='{$wgServer}{$wgScriptPath}'>{$config->getValue('siteName')}</a>", $headers);
+            mail($wUser->getEmail(), $name, nl2br($message)."<br /><br /><a href='$url'>Notification URL</a><br /><br /><a href='{$wgServer}{$wgScriptPath}'>{$config->getValue('siteName')}</a>", $headers, $wgAdditionalMailParams);
         }
         DBFunctions::execSQL($sql, true);
 	}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="GlycoNet Summer Awards Final Report" reportType="RP_HQP_SUMMER_REPORT" pdfType="HQP_SUMMER_REPORT" pdfFiles="HQPApplications/SummerAwardReportPDF" ajax="true" disabled="false" year="2023">
+<Report name="GlycoNet Summer Awards Final Report" reportType="RP_HQP_SUMMER_REPORT" pdfType="HQP_SUMMER_REPORT" pdfFiles="HQPApplications/SummerAwardReportPDF" ajax="true" disabled="false" year="2024">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="report" permissions="rw" />

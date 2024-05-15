@@ -37,7 +37,7 @@ class SpecialEventRegistration extends SpecialPage{
     }
     
     function handleEdit(){
-        global $wgServer, $wgScriptPath, $wgMessage, $config;
+        global $wgServer, $wgScriptPath, $wgMessage, $config, $wgAdditionalMailParams;
         if(!$this->validateCaptcha()){
             $wgMessage->addError("The robot test failed");
         }
@@ -121,7 +121,7 @@ class SpecialEventRegistration extends SpecialPage{
             $headers .= 'From: '.$from."\r\n".
                         'Reply-To: '.$from."\r\n" .
                         'X-Mailer: PHP/' . phpversion();
-            mail($to, $subject, $message, $headers);
+            mail($to, $subject, $message, $headers, $wgAdditionalMailParams);
             if($event != null && $event->title != ""){
                 if(trim($event->title) == "3rd AI4IA Conference"){
                     redirect("https://www.ai4iaconference.com/");

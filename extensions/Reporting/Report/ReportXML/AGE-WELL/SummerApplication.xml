@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL's 7th Annual EPIC Summer Institute" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2024" disabled="false">
+<Report name="AGE-WELL's 7th Annual EPIC Summer Institute" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2024" disabled="true">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="description" permissions="rw" />
@@ -13,7 +13,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="HQP-Candidate">
+        <Role subType="EPIC AT">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -41,7 +41,7 @@
 
                 <p>AGE-WELL and/or EPIC-AT will cover the cost of economy travel, breakfasts and lunches for successful applicants. Double occupancy accommodation will also be covered for those who are not based in Toronto. Successful applicants requiring international flights will be asked to cover the cost of their travel to Pearson International Airport.</p>
                 
-                <p>Application Deadline: April 1, 2024 (via Forum)</p>
+                <p>Application Deadline: April 8, 2024 (via Forum)</p>
                 
                 <p>Contact: <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a></p>
 

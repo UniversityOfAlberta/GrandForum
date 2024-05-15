@@ -260,7 +260,8 @@ class ReportItemCallback {
             "isValidUserId" => "isValidUserId",
             "getPDFUserId" => "getPDFUserId",
             "showLanguage" => "showLanguage",
-            "concat" =>"concat",
+            "concat" => "concat",
+            "trim" => "trim",
             "add" => "add",
             "subtract" => "subtract",
             "multiply" => "multiply",
@@ -2151,6 +2152,10 @@ class ReportItemCallback {
             $concat .= $arg;
         }
         return $concat;
+    }
+    
+    function trim($str){
+        return trim($str);
     }
     
     function add(){

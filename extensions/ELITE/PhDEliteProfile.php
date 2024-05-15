@@ -109,7 +109,7 @@ Programme ELITE pour la Jeunesse Noire
     }
     
     function sendMatchedMail($person){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         $subject = "Engineering-IBET-ELITE PhD Fellowship – Confirmation and Decision";
         $message = "Dear PhD Fellowship Supervisor,
 Thank you, again, for participating in the Engineering-IBET-ELITE PhD Fellowship initiative.
@@ -147,11 +147,11 @@ Programme ELITE pour la Jeunesse Noire
         $message = nl2br($message);
         $headers  = "Content-type: text/html\r\n"; 
         $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-        mail($person->getEmail(), $subject, $message, $headers);
+        mail($person->getEmail(), $subject, $message, $headers, $wgAdditionalMailParams);
     }
     
     function sendHiresMail($person){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         $subject = "Engineering-IBET-ELITE PhD Fellowship – Feedback Received";
         $message = "Dear PhD Fellowship Supervisor,
 Thank you, again, for participating in the Engineering-IBET-ELITE PhD Fellowship initiative.
@@ -181,7 +181,7 @@ Programme ELITE pour la Jeunesse Noire
         $message = nl2br($message);
         $headers  = "Content-type: text/html\r\n"; 
         $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-        mail($person->getEmail(), $subject, $message, $headers);
+        mail($person->getEmail(), $subject, $message, $headers, $wgAdditionalMailParams);
         
         // Now send email to coordinator
         $subject = "Engineering-IBET-ELITE PhD Fellowship – Feedback Submitted";
@@ -209,7 +209,7 @@ Programme ELITE pour la Jeunesse Noire
                         ELITE Program Director";
         }
         $message = nl2br($message);
-        mail("elite@ualberta.ca", $subject, $message, $headers);
+        mail("elite@ualberta.ca", $subject, $message, $headers, $wgAdditionalMailParams);
     }
     
 }

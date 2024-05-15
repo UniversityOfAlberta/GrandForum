@@ -75,7 +75,7 @@ class Role extends BackboneModel {
 	}
 	
 	function create(){
-	    global $config, $wgScriptPath;
+	    global $config, $wgScriptPath, $wgAdditionalMailParams;
 	    $me = Person::newFromWgUser();
 	    $person = $this->getPerson();
 	    MailingList::unsubscribeAll($this->getPerson());
@@ -110,7 +110,7 @@ class Role extends BackboneModel {
             }
             Notification::addNotification($me, Person::newFromId(0), "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
             if($config->getValue("networkName") == "CFN" && ($this->getPerson()->isRoleDuring(HQP, "1900-01-01", "2100-01-01") || $this->getRole() == "HQP") && $wgScriptPath == ""){
-                mail("training@cfn-nce.ca", "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
+                mail("training@cfn-nce.ca", "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")), $wgAdditionalMailParams);
             }
             Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
             $supervisors = $person->getSupervisors();
@@ -125,7 +125,7 @@ class Role extends BackboneModel {
 	}
 	
 	function update(){
-	    global $config, $wgScriptPath;
+	    global $config, $wgScriptPath, $wgAdditionalMailParams;
 	    $me = Person::newFromWgUser();
 	    MailingList::unsubscribeAll($this->getPerson());
 	    $status = DBFunctions::update('grand_roles',
@@ -156,14 +156,14 @@ class Role extends BackboneModel {
 	    Cache::delete("rolesCache");
 	    Notification::addNotification($me, Person::newFromId(0), "Role Changed", "The role ({$this->getRole()}) of <b>{$this->getPerson()->getNameForForms()}</b> has been changed", "{$this->getPerson()->getUrl()}");
 	    if($config->getValue("networkName") == "CFN" && ($this->getPerson()->isRoleDuring(HQP, "1900-01-01", "2100-01-01") || $this->getRole() == "HQP") && $wgScriptPath == ""){
-            mail("training@cfn-nce.ca", "Role Changed", "The role ({$this->getRole()}) of <b>{$this->getPerson()->getNameForForms()}</b> has been changed", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
+            mail("training@cfn-nce.ca", "Role Changed", "The role ({$this->getRole()}) of <b>{$this->getPerson()->getNameForForms()}</b> has been changed", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")), $wgAdditionalMailParams);
         }
         MailingList::subscribeAll($this->getPerson());
 	    return $status;
 	}
 	
 	function delete(){
-	    global $config, $wgScriptPath;
+	    global $config, $wgScriptPath, $wgAdditionalMailParams;
 	    $me = Person::newFromWgUser();
 	    $person = $this->getPerson();
 	    MailingList::unsubscribeAll($this->getPerson());
@@ -186,7 +186,7 @@ class Role extends BackboneModel {
 	    if($status){
 	        Notification::addNotification($me, Person::newFromId(0), "Role Removed", "<b>{$person->getNameForForms()}</b> is no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
 	        if($config->getValue("networkName") == "CFN" && ($this->getPerson()->isRoleDuring(HQP, "1900-01-01", "2100-01-01") || $this->getRole() == "HQP") && $wgScriptPath == ""){
-                mail("training@cfn-nce.ca", "Role Removed", "<b>{$person->getNameForForms()}</b> is no longer <b>{$this->getRole()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
+                mail("training@cfn-nce.ca", "Role Removed", "<b>{$person->getNameForForms()}</b> is no longer <b>{$this->getRole()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")), $wgAdditionalMailParams);
             }
 	        Notification::addNotification($me, $person, "Role Removed", "You are no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
 	        $supervisors = $person->getSupervisors();

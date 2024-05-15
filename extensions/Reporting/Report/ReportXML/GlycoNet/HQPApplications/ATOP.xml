@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Advanced Training Opportunity Program" reportType="RP_ATOP" pdfType="ATOP" pdfFiles="HQPApplications/ATOPPDF" ajax="true" disabled="false" year="2022">
+<Report name="Advanced Training Opportunity Program" reportType="RP_ATOP" pdfType="ATOP" pdfFiles="HQPApplications/ATOPPDF" ajax="true" disabled="false" year="2024">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
@@ -17,6 +17,14 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <If if="{>({timestamp(Y-m-d)},2024-04-00)}">
+            <SectionPermission id="background" permissions="-" />
+            <SectionPermission id="application" permissions="-" />
+            <SectionPermission id="proposal" permissions="-" />
+            <SectionPermission id="declaration" permissions="-" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
+        </If>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
         <Static>
@@ -42,7 +50,7 @@
                 <p>GlycoNet will fund up to four proposals each year. Each proposal may request up to $8,000.</p>
 
                 <h3>Deadline</h3>
-                <p>Proposals must be submitted through the Forum no later than <b>February 1</b>, with projects carried out in the period between April 1<sup>st</sup> to March 31<sup>st</sup>.</p>
+                <p>Proposals must be submitted through the Forum no later than <b>March 31, 2024</b>, with projects carried out in the period between April 1<sup>st</sup> to March 31<sup>st</sup>.</p>
             ]]>
         </Static>
     </ReportSection>

@@ -3,7 +3,7 @@
 class SaveDialogReportItem extends StaticReportItem {
 
 	function render(){
-		global $wgOut, $wgServer, $wgScriptPath, $config;
+		global $wgOut, $wgServer, $wgScriptPath, $config, $wgAdditionalMailParams;
 		$message = $this->getAttr("message", "");
 		$emails = $this->getAttr('emails', '');
 		$item = $this->processCData("<div title='Section Complete' id='saveDialog' style='display:none;'>
@@ -15,7 +15,7 @@ class SaveDialogReportItem extends StaticReportItem {
                            "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "X-Mailer: PHP/" . phpversion();
                 foreach(explode(",", $emails) as $email){
-                    mail($email, $this->getSection()->title." Submitted", $message, $headers);
+                    mail($email, $this->getSection()->title." Submitted", $message, $headers, $wgAdditionalMailParams);
                 }
             }
 		}

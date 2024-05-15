@@ -203,7 +203,7 @@ abstract class EliteProfile extends BackboneModel {
     abstract function sendHiresMail($person);
     
     function sendMail(){
-        global $config;
+        global $config, $wgAdditionalMailParams;
         $subject = "";
         $message = "";
         $to = $this->person->getEmail();
@@ -257,7 +257,7 @@ abstract class EliteProfile extends BackboneModel {
                 $message .= @chunk_split($exploded[1]).$eol.$eol;
             }
             $message .= "--".$uid."--";
-            mail($to, $subject, $message, $headers);
+            mail($to, $subject, $message, $headers, $wgAdditionalMailParams);
         }
     }
     

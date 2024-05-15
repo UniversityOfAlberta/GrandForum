@@ -20,7 +20,7 @@ class PersonThemesAPI extends RESTAPI {
     }
     
     function doPOST(){
-        global $config, $wgScriptPath;
+        global $config, $wgScriptPath, $wgAdditionalMailParams;
         $person = Person::newFromId($this->getParam('id'));
         $theme = Theme::newFromName($this->POST('name'));
         $me = Person::newFromWgUser();
@@ -51,7 +51,7 @@ class PersonThemesAPI extends RESTAPI {
         
         Notification::addNotification($me, Person::newFromId(0), "Theme Leader Added", "Effective {$this->POST('startDate')} <b>{$person->getNameForForms()}</b> is a theme leader of <b>{$theme->getAcronym()}</b>", "{$person->getUrl()}");
         if($config->getValue("networkName") == "CFN" && $person->isRoleDuring(HQP, "1900-01-01", "2100-01-01") && $wgScriptPath == ""){
-            mail("training@cfn-nce.ca", "Theme Leader Added", "Effective {$this->POST('startDate')} <b>{$person->getNameForForms()}</b> becomes a theme leader of <b>{$theme->getAcronym()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
+            mail("training@cfn-nce.ca", "Theme Leader Added", "Effective {$this->POST('startDate')} <b>{$person->getNameForForms()}</b> becomes a theme leader of <b>{$theme->getAcronym()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")), $wgAdditionalMailParams);
         }
         Notification::addNotification($me, $person, "Theme Leader Added", "Effective {$this->POST('startDate')} you become a theme leader of <b>{$theme->getAcronym()}</b>", "{$person->getUrl()}");
         MailingList::subscribeAll($person);
@@ -59,7 +59,7 @@ class PersonThemesAPI extends RESTAPI {
     }
     
     function doPUT(){
-        global $config, $wgScriptPath;
+        global $config, $wgScriptPath, $wgAdditionalMailParams;
         $person = Person::newFromId($this->getParam('id'));
         $theme = Theme::newFromName($this->POST('name'));
         $me = Person::newFromWgUser();
@@ -85,7 +85,7 @@ class PersonThemesAPI extends RESTAPI {
         Person::$themeLeaderCache = array();
         Notification::addNotification($me, Person::newFromId(0), "Theme Leader Changed", "The theme leadership ({$theme->getAcronym()}) of <b>{$person->getNameForForms()}</b> has been changed", "{$person->getUrl()}");
         if($config->getValue("networkName") == "CFN" && $person->isRoleDuring(HQP, "1900-01-01", "2100-01-01") && $wgScriptPath == ""){
-            mail("training@cfn-nce.ca", "Theme Leader Changed", "The theme leadership ({$theme->getAcronym()}) of <b>{$person->getNameForForms()}</b> has been changed", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
+            mail("training@cfn-nce.ca", "Theme Leader Changed", "The theme leadership ({$theme->getAcronym()}) of <b>{$person->getNameForForms()}</b> has been changed", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")), $wgAdditionalMailParams);
         }
         if($this->POST('endDate') != '0000-00-00 00:00:00'){
             Notification::addNotification($me, $person, "Theme Leader Removed", "Effective {$this->POST('endDate')} you are no longer a leader of <b>{$theme->getAcronym()}</b>", "{$person->getUrl()}");
@@ -98,7 +98,7 @@ class PersonThemesAPI extends RESTAPI {
     }
     
     function doDELETE(){
-        global $config, $wgScriptPath;
+        global $config, $wgScriptPath, $wgAdditionalMailParams;
         $person = Person::newFromId($this->getParam('id'));
         $me = Person::newFromWgUser();
         if(!$me->isLoggedIn()){
@@ -123,7 +123,7 @@ class PersonThemesAPI extends RESTAPI {
         Person::$themeLeaderCache = array();
         Notification::addNotification($me, Person::newFromId(0), "Theme Leader Removed", "<b>{$person->getNameForForms()}</b> is no longer leader of <b>{$theme->getAcronym()}</b>", "{$person->getUrl()}");
         if($config->getValue("networkName") == "CFN" && $person->isRoleDuring(HQP, "1900-01-01", "2100-01-01") && $wgScriptPath == ""){
-            mail("training@cfn-nce.ca", "Theme Leader Removed", "<b>{$person->getNameForForms()}</b> is no longer leader of <b>{$theme->getAcronym()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")));
+            mail("training@cfn-nce.ca", "Theme Leader Removed", "<b>{$person->getNameForForms()}</b> is no longer leader of <b>{$theme->getAcronym()}</b>", implode("\r\n", array('Content-type: text/html; charset=iso-8859-1',"From: {$config->getValue('supportEmail')}")), $wgAdditionalMailParams);
         }
         Notification::addNotification($me, $person, "Theme Leader Removed", "You are no longer a leader of <b>{$theme->getAcronym()}</b>", "{$person->getUrl()}");
         MailingList::subscribeAll($person);

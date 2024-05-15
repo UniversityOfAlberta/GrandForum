@@ -9,7 +9,7 @@ class ProjectKPI2Tab extends ProjectKPITab {
     }
     
     function handleEdit(){
-        global $config, $wgMessage, $wgScriptPath;
+        global $config, $wgMessage, $wgScriptPath, $wgAdditionalMailParams;
         $me = Person::newFromWgUser();
 
         if(isset($_POST['kpi_delete'])){
@@ -37,7 +37,7 @@ class ProjectKPI2Tab extends ProjectKPITab {
                             $from = "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
                             $headers = "Content-type: text/html\r\n"; 
                             $headers .= $from;
-                            mail("vsharko@glyconet.ca", "GIS Report Updated", "A KPI Report was updated: <a href='{$this->project->getUrl()}'>{$this->project->getName()}</a>", $headers);
+                            mail("vsharko@glyconet.ca", "GIS Report Updated", "A KPI Report was updated: <a href='{$this->project->getUrl()}'>{$this->project->getName()}</a>", $headers, $wgAdditionalMailParams);
                             $alreadySent = true;
                         }
                     }

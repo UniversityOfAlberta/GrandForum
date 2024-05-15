@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Core Research Program 2015-2020 End-of-Term Project Report" reportType="RP_CRP_REPORT" pdfType="RPTP_CRP_REPORT" pdfFiles="CRPReportPDF" personId="0" ajax="true" disabled="false">
+<Report name="AGE-WELL Core Research Program / Platform Project Program 2020-2024 End-of-Term Project Report" reportType="RP_CRP_REPORT" pdfType="RPTP_CRP_REPORT" pdfFiles="CRPReportPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role role="SD+">
         
@@ -20,7 +20,7 @@
     <ReportSection id="part1" tooltip="Impact Case Study" name="Impact Case Study" title="Part 1: Impact Case Study" blobSection="PART1" type="EditableReportSection">
         <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="250">
             <![CDATA[
-                <p>Please provide a short case study of outstanding work or achievement in any of the evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization, and HQP Training). Case studies provide a concrete example of how a research project and its findings have contributed to real-world impact. These stories are a great opportunity to promote the amazing work accomplished within AGE-WELL. We will draw on these case studies as we promote the work accomplished over the past five years. We encourage teams to insert, attach or provide links to any relevant images connected to this work.</p>
+                <p>Please provide a short case study of outstanding work or achievement in any of the evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization, and HQP Training). Case studies provide a concrete example of how a research project and its findings have contributed to real-world impact. These stories are a great opportunity to promote the amazing work accomplished within AGE-WELL. We will draw on these case studies as we promote the work accomplished over the past nine years. We encourage teams to insert, attach or provide links to any relevant images connected to this work.</p>
                 <u>Language</u>
                 <p>The case study is aimed at a very wide audience:</p>
                 <ul>
@@ -83,7 +83,7 @@
     <ReportSection id="part2" tooltip="Future Impact" name="Future Impact" title="Part 2: Future Impact" blobSection="PART2" type="EditableReportSection">
         <ReportItem id="future_impact" type="TextareaReportItem" blobItem="FUTURE_IMPACT" rich="true">
             <![CDATA[
-                <p>The long term impact of AGE-WELL’s Core Research Program will likely only be realized after the award term end date. Please list any anticipated outputs and outcomes beyond the 5 year award term.</p>
+                <p>The long-term impact of AGE-WELL’s Core Research Program / Platform Project Program will likely only be realized after the award term end date. Please list any anticipated outputs and outcomes beyond the award term.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -103,9 +103,9 @@
     <ReportSection id="part4" tooltip="Key Outputs" name="Key Outputs" title="Part 4: Key Outputs" blobSection="PART4" type="EditableReportSection">
         <ReportItem id="outputs" type="TextareaReportItem" blobItem="OUTPUTS" rich="true">
             <![CDATA[
-                <p>An important part of AGE-WELL’s mandate is to promote and put into action key outputs from our first five years. To achieve this, we are developing a knowledge repository of ‘shareable’ outputs to support and educate other project teams or trainees within the network, or make available outside the network, if appropriate and with permission. Note that we are not looking for academic journal publications, but rather guidelines, manuals, scoping reviews, white papers, policy briefs, educational materials, data sets, frameworks, toolkits, video/films and/or websites etc.</p>
+                <p>An important part of AGE-WELL’s mandate is to promote and put into action key outputs from our federal funding. To achieve this, we are developing a knowledge repository of ‘shareable’ outputs to support and educate other project teams or trainees within the network, or make available outside the network, if appropriate and with permission. Note that we are not looking for academic journal publications, but rather guidelines, manuals, scoping reviews, white papers, policy briefs, educational materials, data sets, frameworks, toolkits, video/films and/or websites etc.</p>
                 
-                <p>Since your team has been reporting outputs on Forum for five years now, we expect that these key outputs have already been reported—we are looking for you to help us understand which ones you consider appropriate and relevant to share in order to support continued growth of AGE-WELL and development of the sector as a whole.</p>
+                <p>Since your team has been reporting outputs on Forum for four years now, we expect that these key outputs have already been reported—we are looking for you to help us understand which ones you consider appropriate and relevant to share in order to support continued growth of AGE-WELL and development of the sector as a whole.</p>
                 
                 <p>Please list what you consider the top 5 ‘shareable’ outputs of this project. Please indicate whether each output should remain internal to AGE-WELL or whether you think it is ripe for broader dissemination (external). Please provide links and/or attachments of materials below.</p>
                 {$item}

@@ -786,6 +786,21 @@ class ApplicationsTable extends SpecialPage{
         $refs->setId("letters");
         
         $tabbedPage = new InnerTabbedPage("reports");
+        
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT2', null, 2024, "2024", array("Academic Status" => $stat,
+                                                                                        "Institution" => $uni,
+                                                                                        "Level" => $lvl,
+                                                                                        "Title" => $title,
+                                                                                        "Age" => $age,
+                                                                                        "Gender" => $gender,
+                                                                                        "Gender (Other)" => $gender_other,
+                                                                                        "Indigenous" => $indigenous,
+                                                                                        "Ethnicities" => $ethnicities,
+                                                                                        "Ethnicities (Other)" => $ethnicities_other,
+                                                                                        "Disability" => $disability,
+                                                                                        "Post-Secondary" => $postsecondary,
+                                                                                        "References" => $refs
+                                                                                       )));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT2', null, 2023, "2023", array("Academic Status" => $stat,
                                                                                         "Institution" => $uni,
                                                                                         "Level" => $lvl,
@@ -883,13 +898,14 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_CRP_REPORT', $this->projects, 2023, "CRP End of Term 2"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_PLAN_UPDATE', $this->projects, 2023, "CRP-PPP Progress 2023"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_PLAN_UPDATE', $this->projects, 2022, "CRP-PPP Progress 2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_CRP_PPP_REPORT', $this->projects, 2022, "CRP-PPP Mid-Year 2023"));
         $tabbedPage->addTab(new ApplicationTab('RP_CRP_PPP_REPORT', $this->projects, 2021, "CRP-PPP Mid-Year 2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_PLAN_UPDATE', $this->projects, 2021, "Progress Evaluation"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_PLAN_UPDATE', $this->projects, 2020, "Project Plan Update"));
-        $tabbedPage->addTab(new ApplicationTab('RP_CRP_REPORT', $this->projects, 2019, "CRP End of Term"));
+        $tabbedPage->addTab(new ApplicationTab('RP_CRP_REPORT', $this->projects, 2019, "CRP End of Term 1"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $this->projects, 2019, "2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_PLAT_REPORT', $this->platform, 2019, "PLAT-2019 Report"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT_REPORT', $this->catalyst, 2019, "CAT-2019 Report"));
