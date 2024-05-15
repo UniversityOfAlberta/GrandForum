@@ -4,7 +4,7 @@ class BudgetReportItem extends AbstractReportItem {
 
 	function render(){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-		$structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
+		$structure = @constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
 		$template = $this->getAttr('template', 'GRAND Researcher Budget Request (2015-16).xls');
 		$budgetText = $this->getAttr('budgetText', 'Budget');
 		if(strtolower($this->getAttr("downloadOnly", "false")) == "true"){
@@ -78,7 +78,7 @@ class BudgetReportItem extends AbstractReportItem {
             }
 	    }
 	    else{
-	        $structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
+	        $structure = @constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
             $data = $this->getBlobValue();
 		    if($data !== null){
 		        $budget = new Budget("XLS", $structure, $data);
@@ -106,7 +106,7 @@ class BudgetReportItem extends AbstractReportItem {
 	
 	function budgetUploadForm(){
 	    global $wgServer, $wgScriptPath;
-	    $structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
+	    $structure = @constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
 	    $budgetText = $this->getAttr('budgetText', 'Budget');
 	    if(isset($_POST['upload'])){
 	        $this->save();
