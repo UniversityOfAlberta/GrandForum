@@ -41,11 +41,11 @@
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
-                <p>In this Request for Proposals, we are seeking to fund exploratory projects the successful completion of which would provide preliminary data to support other funding applications either to GlycoNet, or other funding sources. This opportunity is open only to individuals who are considered <b>Early Career Researchers</b>, and who are eligible to hold research funds at a Canadian University. Having obtained other research funding would be viewed favorably.</p>
+                <p>In this Request for Proposals, we are seeking to fund exploratory projects the successful completion of which would provide preliminary data to support other funding applications either to GlycoNet, or other funding sources. This opportunity is open <b>only</b> to individuals who are considered <b>Early Career Researchers</b>, and who are eligible to hold research funds at a Canadian University.</p>
                 <h3>Requirements</h3>
                 Projects should:
                 <ul>
-                    <li>Be aligned with GlycoNet’s research mandate (see glyconet.ca).</li>
+                    <li>Be aligned with GlycoNet’s research mandate (see <a href='https://canadianglycomics.ca/research/' target='_blank'>glyconet.ca</a>).</li>
                     <li>Be of an applied nature so that after additional funding through other means, the outcomes could lead to the development of a project with a translational direction.</li>
                     <li>Involve the training of Highly Qualified Personnel.</li>
                 </ul>
@@ -56,13 +56,14 @@
                     <li>Concern basic biochemistry or biology with no tangible translational outcome.</li>
                 </ul>
                 
-                <p><b>Matching contributions are required, although these do not need to be cash. Eligible matching (please see Appendix A) contributions can come from non-federally funded student/post-doctoral scholarships, start-up funding, or other partner contributions. Matching of 10% or $7,500 is required (can be in-kind).</b></p>
+                <p><b>Matching contributions are required, although these do not need to be cash. Eligible matching (please see <a href='https://drive.google.com/file/d/1htIEuiU1weYrAB5g1DX4JTOKD3oM9KPX/view
+' target='_blank'>Appendix A</a>) contributions can come from non-federally funded student/post-doctoral scholarships, start-up funding, or other partner contributions. Matching of 10% or $7,500 is required (can be in-kind).</b></p>
                 
                 <h3>Funding Available</h3>
                 <p>Proposals may request up to $75,000 in funding. All projects should be completed within 12 – 18 months.</p>
                 
                 <h3>Eligibility</h3>
-                <p>This opportunity is open only to individuals who are considered <b>Early Career Researchers</b>, and who are eligible to hold research funds at a Canadian University. Having obtained other research funding would be viewed favorably.</p>
+                <p>This opportunity is open <b>only</b> to individuals who are considered <b>Early Career Researchers</b>, and who are eligible to hold research funds at a Canadian University. Having obtained other research funding would be viewed favorably.</p>
                 
                 <p>GlycoNet defines an ECR as pre-tenure, or within one year of having obtained tenure.</p>
                 
@@ -70,7 +71,7 @@
                 
                 <p>An individual may serve as the Project Leader on only one Catalyst Grant application and may not be involved in more than two GlycoNet Grant applications.</p>
                 
-                <p>Questions about project suitability can be directed to the GlycoNet Administrative Centre (info@glyconet.ca cc: vsharko@glyconet.ca).</p>
+                <p>Questions about project suitability can be directed to the GlycoNet Administrative Centre (<a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> cc: <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>).</p>
                 
                 <h3>General Instructions and Deadline</h3>
                 <p>All applications will be completed in the GlycoNet Forum, https://forum.glyconet.ca. Please read the following in-structions carefully. A complete application consists of:</p>
@@ -106,11 +107,11 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_APPLICATION" mimeType="application/pdf" fileSize="10">
             <![CDATA[
                 <ul>
-                    <li>The application must be uploaded as a single PDF file to the GlycoNet Forum at <a href='https://forum.glyconet.ca'>https://forum.glyconet.ca</a> (after completing the application template, convert it to PDF format).</li>
+                    <li>The application must be uploaded as a single PDF file to the GlycoNet Forum (after completing the application template, convert it to PDF format).</li>
                     <li>Please ensure that each section of the document is filled out carefully. All sections are obligatory to complete. Partially filled proposals will not be considered.</li>
                     <li>Use Times Roman/Times New Roman 11 for the text format</li>
-                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Catalyst Grant Application Template.docx">Application Template</a></li>
-                    <li>Use <a href="{$wgServer}{$wgScriptPath}/data/2024 Catalyst Grant Application Instructions.pdf" target='_blank'>Application Instructions</a> to complete the application</li>
+                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Catalyst Grant Application Template.docx"><b>Application Template</b></a></li>
+                    <li>Use <a href="{$wgServer}{$wgScriptPath}/data/2024 Catalyst Grant Application Instructions.pdf" target='_blank'><b>Application Instructions</b></a> to complete the application</li>
                 </ul><br />
                 {$item}
             ]]>
@@ -118,7 +119,7 @@
         <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_ENV_IMPACT" mimeType="application/pdf" fileSize="10">
             <![CDATA[
                 <h3>Environmental Impact Form</h3>
-                If you have an environment form, please upload it as a pdf below.
+                If you have an Environmental Impact Form, please upload it as a pdf below.
                 {$item}
             ]]>
         </ReportItem>
@@ -126,7 +127,33 @@
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
         <Static>
             <![CDATA[
-                <p><b>Note:</b> Only 1 year should be filled out for the Catalyst Grant.</p>
+                <p>The front page in the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. <b><i>The project leader is responsible for combining all of the NI budgets into a single Excel file.</i></b> Failure to report on milestones will lead to loss of funding.</p>
+                
+                Budget Guidelines:
+                <ul>
+                    <li>Projects can request maximum of $75,000 from GlycoNet. Project can also request less than $75,000.</li>
+                    <li>Projects require a 10% budget match which need not be cash. Matching funds cannot be from Canadian Federal funding sources (i.e. CIHR, NSERC, SSHRC, and CFI), as these are ineligible for matching.
+                        <ul><li>Projects with a higher level of matching funds will be viewed more favorably.</li></ul>
+                    </li>
+                    <li>The project budget should clearly show the co-contribution of partner funds in alignment with SSF and eligible project expenses.</li>
+                    <li>The maximum salary for Graduate Students is $30,000/year and for Postdoctoral Fellows is $55,000/year.</li>
+                    <li>Trainee support should be limited to co-op students and should be listed in the technician line item.</li>
+                    <li>Equipment is capped at $2,000/year/project.</li>
+                    <li>Travel
+                        <ul>
+                            <li>Conference travel is capped at $1,500/year/NI/project. Travel to the Annual General Meeting will NOT be fully funded centrally through GlycoNet. It should be incorporated into project budgets.</li>
+                            <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li>
+                        </ul>
+                    </li>
+                    <li>Work with <b>GlycoNet Integrated Services</b>. Network investigators will receive a 20% discount on requested services. A quote can be provided upon request by <a href='mailto:coreservices@glyconet.ca'>coreservices@glyconet.ca</a></li>
+                    <li>All partner contributions need to be supported by a letter from the partner institution (see below)
+                        <ul>
+                            <li>Based on federal funding guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from federal sources cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <p>Questions on eligibility of matching can be directed to GlycoNet Administrative Centre (<a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> cc: <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>).</p>
             ]]>
         </Static>
         <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="" template="GlycoNet Budget Template.xlsx">
@@ -137,6 +164,10 @@
         <ReportItem id="budget_justification" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_BUD_JUSTIF">
             <![CDATA[
                 <h3>Budget Justification</h3>
+                <ul>
+                    <li>Provide concise, but sufficient, justification for expenses. Benefit rates for employees should be clearly stipulated.</li>
+                    <li>The project leader is responsible for generating a single budget justification document containing information from all NI groups.</li>
+                </ul>
                 {$item}
             ]]>
         </ReportItem>
@@ -145,7 +176,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template (for Catalyst).xlsx">milestone template</a> and upload it below.
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template (for Catalyst).xlsx"><b>Milestone Template</b></a> and upload it below.
                 </p>
                 {$item}
             ]]>
