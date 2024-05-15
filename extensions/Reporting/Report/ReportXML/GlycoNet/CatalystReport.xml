@@ -112,7 +112,8 @@
                     <li>Use Times Roman/Times New Roman 11 for the text format</li>
                     <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Catalyst Grant Application Template.docx"><b>Application Template</b></a></li>
                     <li>Use <a href="{$wgServer}{$wgScriptPath}/data/2024 Catalyst Grant Application Instructions.pdf" target='_blank'><b>Application Instructions</b></a> to complete the application</li>
-                </ul><br />
+                </ul>
+                <h3>Application Upload</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -178,6 +179,7 @@
                 <p>
                     Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template (for Catalyst).xlsx"><b>Milestone Template</b></a> and upload it below.
                 </p>
+                <h3>Milestones Upload</h3>
                 {$item}
             ]]>
         </ReportItem>
