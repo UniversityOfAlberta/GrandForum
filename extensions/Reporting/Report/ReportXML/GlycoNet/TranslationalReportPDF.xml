@@ -1,196 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" ajax="true" year="2022" allowIdProjects="true" disabled="false">
+<Report name="Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" ajax="true" year="2024" allowIdProjects="true" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
                     <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                    <h4 style='font-size: 2em; margin-top: 1.5em; margin-bottom:2em;'>Translational Grant Application</h4>
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="description" tooltip="General Information about the project" name="Information" blobSection="CAT_DESC" type="HeaderReportSection">
-        <!-- Theme -->
-        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Infectious Diseases|Chronic Diseases|Cancer|Neurodegenerative Diseases">
-            <![CDATA[
-                <h4 style='font-size:1.40em;'>Translational Funding Application</h4>
-                <br />
-                <p><b><u>Theme:</u>&nbsp;{$item}</b></p>
-                <br />
-                <br />
-            ]]>
-        </ReportItem>
-        
-        <!-- Project Title -->
-        <ReportItem id="title" type="TextReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TITLE" width="400px">
-            <![CDATA[
-                <p><b><u>Project Title</u></b></p>
-                {$item}<br /><br />
-            ]]>
-        </ReportItem>
-        
-        <!-- Lead Investigator -->
-        <ReportItem id="lead" type="MultiTextReportItem" 
-                              blobType="BLOB_ARRAY" 
-                              blobItem="CAT_DESC_LEAD" 
-                              multiple="true" 
-                              max="2" 
-                              labels="Name|Affiliation|Phone|E-Mail" 
-                              sizes="25%|25%|25%|25%"
-                              showHeader="false">
-            <![CDATA[
-                <p><b><u>Lead Investigator</u> (Name, Affiliation, Telephone, E-mail)</b></p>
-                <div style='font-size: smaller;'>{$item}</div>
-            ]]>
-        </ReportItem>
-        
-        <!-- Other Investigators -->
-        <ReportItem id="other" type="MultiTextReportItem" 
-                               blobType="BLOB_ARRAY" 
-                               blobItem="CAT_DESC_OTHER" 
-                               multiple="true" 
-                               labels="Name|Affiliation|Phone|E-Mail" 
-                               sizes="25%|25%|25%|25%"
-                               showHeader="false">
-            <![CDATA[
-                <p><b><u>Other Investigators</u> (Name, Affiliation, Telephone, E-mail)</b></p>
-                <div style='font-size: smaller;'>{$item}</div>
-            ]]>
-        </ReportItem>
-        
-        <!-- EDI -->
-        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="200">
-            <![CDATA[
-                <p><b><u>Equity, Diversity and Inclusion</u></b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        
-        <!-- Key Words -->
-        <ReportItem id="keywords" type="MultiTextReportItem" 
-                                  blobType="BLOB_ARRAY" 
-                                  blobItem="CAT_DESC_WORDS" 
-                                  multiple="true" 
-                                  labels="Key Word" 
-                                  types="text"
-                                  max="10"
-                                  showHeader="false"
-                                  orientation="list">
-            <![CDATA[
-                <p><b><u>Keywords</u></b></p>
-                <div style='font-size: smaller;'>{$item}</div><br />
-            ]]>
-        </ReportItem>
-        
-        <!-- Partners involved (Companies, agencies etc) -->
-        <ReportItem id="part" type="MultiTextReportItem" 
-                              blobType="BLOB_ARRAY" 
-                              blobItem="CAT_DESC_PART" 
-                              multiple="true" 
-                              labels="Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" 
-                              sizes="25%|25%|25%|25%"
-                              showHeader="false">
-            <![CDATA[
-                <p><b><u>Partners involved</u> (Name, Dollars requested, Cash, In-Kind)</b></p>
-                <div style='font-size: smaller;'>{$item}</div>
-            ]]>
-        </ReportItem>
-        
-        <!-- Environmental Impact Question -->
-        <ReportItem id="env_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ENV" orientation="horizontal" options="Yes|No">
-            <![CDATA[
-                <p><b><u>Environmental Impact</u></b></p>
-                Does any phase of the research described in this proposal take place outside an office or a laboratory?
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Environmental Impact Upload -->
-        <ReportItem id="env_u" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ENV_UP">
-            <![CDATA[
-                <p>
-                If Yes, please go to the NSERC web site (<a href="http://www.nserc.ca">www.nserc.ca</a>) and obtain the environmental impact form (Appendix A), complete this and submit it with your application.</p>
-                {$item}
-                <br />
-                <br />
-            ]]>
-        </ReportItem>
-        
-        <!-- Conflict of Interest Question -->
-        <ReportItem id="conflict_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_CONFLICT" orientation="horizontal" options="Yes|No">
-            <![CDATA[
-                <p><b><u>Conflict of Interest</u></b></p>
-                Do any of the researchers involved in this project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research?
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- Conflict of Interest Multi -->
-        <ReportItem id="conflict_which" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_WHICH" multiple="true" labels="Name|Company" sizes="50%|50%" showHeader="false">
-            <![CDATA[
-                <p>If Yes, please indicate which researcher and the relevant company.</p>
-                <div style='font-size: smaller;'>{$item}</div>
-            ]]>
-        </ReportItem>
-        
-        <!-- Conflict of Interest Companies -->
-        <ReportItem id="conflict_comp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_COMP" multiple="true" labels="Company" sizes="100%" showHeader="false">
-            <![CDATA[
-                <br />
-                <p>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</p>
-                <div style='font-size: smaller;'><i>{$item}</i></div>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="resub" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESUB" options="Yes|No">
-            <![CDATA[
-                <br />
-                <p><b>Is this application a resubmission of a previously unsuccessful GlycoNet Translational grant</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <!-- Response -->
-        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true">
-            <![CDATA[
-                <br />
-                <p><b>Response to Reviewer's Comments (if applicable)</b></p>
-                {$item}
-            ]]>
-        </ReportItem> 
-    </ReportSection>
-    <ReportSection id="description" name="Project Summary" blobSection="CAT_DESC" type="EditableReportSection">
-        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px" limit="500">
+    <ReportSection id="description" tooltip="Application" name="Application" blobSection="CAT_DESC" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="upload" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_APPLICATION">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="abstract_upload" type="UploadPDFReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="description" name="Project Proposal" blobSection="CAT_DESC" type="EditableReportSection">
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px">
-            <![CDATA[
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
-            <![CDATA[
-                <b>References</b>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="description" name="Relevance and Impact" blobSection="CAT_DESC" type="EditableReportSection">
-        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" limit="500">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="description" name="Training Potential" blobSection="CAT_DESC" type="EditableReportSection">
-        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
+        <If if="{!=({getBlobMD5(RP_TRANS,CAT_DESC,CAT_ENV_IMPACT,0,{$user_id},{$project_id})},)}">
+            <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_ENV_IMPACT" mimeType="application/pdf" fileSize="10">
+                <![CDATA[
+                    <center><h1>Environmental Impact Form</h1></center>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
     </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection" pagebreak="false">
         <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" structure="GLYCONET_BUDGET_STRUCTURE" downloadOnly="true">
@@ -206,7 +37,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" name="Milestones" blobSection="CAT_MILESTONES" tooltip="Project Milestones" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 {$item}
             ]]>
@@ -216,7 +47,7 @@
         <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
         </ReportItem>
     </ReportSection>
-    <ReportSection id="letters" name="Partner Letters" blobSection="CAT_SUPPORT" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
+    <ReportSection id="letters" name="Partner Letters" title="Partner Letters of Support" blobSection="CAT_SUPPORT" tooltip="Partner Letters of Support" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="appendix_bookmark" type="BookmarkReportItem" offset="1" text="Appendix"></ReportItem>
         <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
         </ReportItem>

@@ -184,6 +184,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), null, 2024, "2024"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), null, 2017, "2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), null, 2016, "2016", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), null, 2015, "2015"));
@@ -204,6 +205,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, null, 2024, "2024"));
         $tabbedPage->addTab(new ApplicationTab(RP_TRANS, null, 2022, "2022", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(RP_TRANS, null, 2021, "2021", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(RP_TRANS, null, 2020, "2020", array($reviewers)));
@@ -233,6 +235,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', null, 2024, "2024"));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', null, 2022, "2022", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', null, 2020, "2020", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', null, 2018, "2018"));
@@ -351,6 +354,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', null, 2024, "2024"));
         $tabbedPage->addTab(new ApplicationTab('RP_STRAT', null, 2022, "2022", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_STRAT', null, 2021, "2021", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_STRAT', null, 2020, "2020", array($reviewers)));
