@@ -57,7 +57,7 @@ class BudgetReportItem extends AbstractReportItem {
                             </script>
                         <div>";
 		if($template != ""){
-		    $html .= "<h4>Download {$budgetText} Template</h4><ul><li><a href='$wgServer$wgScriptPath/data/{$template}'>{$budgetText} Template</a></li></ul>";
+		    $html .= "<h4>Download {$budgetText} Template</h4><ul><li><a href='$wgServer$wgScriptPath/data/{$template}'><b>{$budgetText} Template</b></a></li></ul>";
 		}
 		$html .= "<h4>{$budgetText} Upload</h4>
 		                 <div id='budgetDiv{$this->getPostId()}'><iframe name='{$this->getPostId()}' id='budgetFrame{$this->getPostId()}' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>";
