@@ -11,7 +11,7 @@
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Translational" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
-                <p>In this Request for Proposals, we are seeking to fund This Request for Proposals seeks to fund more mature projects needing Network support to de-risk and advance them to a state at which translation is possible. Eligible activities could include pre-clinical studies, synthesis scale-up, etc.</p>
+                <p>This Request for Proposals seeks to fund more <b>mature projects</b> needing Network support to <b>de-risk</b> and <b>advance</b> them to a state at which translation is possible. Eligible activities could include pre-clinical studies, synthesis scale-up, etc.</p>
                 
                 <h3>Requirements</h3>
                 
@@ -109,7 +109,7 @@
                             <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li>
                         </ul>
                     </li>
-                    <li>Work with <b>GlycoNet Integrated Services</b>. Network investigators will receive a 20% discount on requested services. A quote can be provided upon request by <a href='mailto:coreservices@glyconet.ca'>coreservices@glyconet.ca</a></li>
+                    <li>Work with <b><a href='https://canadianglycomics.ca/integrated-services/' target='_blank'>GlycoNet Integrated Services</a></b>. Network investigators will receive a 20% discount on requested services. A quote can be provided upon request by <a href='mailto:coreservices@glyconet.ca'>coreservices@glyconet.ca</a></li>
                     <li>All partner contributions need to be supported by a letter from the partner institution (see below)
                         <ul>
                             <li>Based on federal funding guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from federal sources cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
