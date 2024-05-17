@@ -37,7 +37,7 @@ if($pid != ""){
     sleep(1);
 }
 exec(sprintf("%s > %s 2>&1 &", 
-             "PATH=\$PATH:bin/ java -jar bin/selenium.jar", 
+             "PATH=bin/firefox/:bin/:\$PATH xvfb-run java -jar bin/selenium.jar", 
              "selenium.log"));
 
 use Behat\Behat\Context\ClosuredContextInterface,
