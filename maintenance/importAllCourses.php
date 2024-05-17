@@ -96,8 +96,8 @@
     $start = microtime(true);
     
     // clean DB
-    //DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 29615", true);
-    //DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 29616", true);  
+    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 38542", true);
+    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 38545", true);  
     
     $dataDir = "csv/";
     $courseDescrFile = "allCoursesDescription.csv";
