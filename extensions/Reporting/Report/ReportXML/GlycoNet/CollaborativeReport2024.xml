@@ -90,7 +90,7 @@
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
         <Static>
             <![CDATA[
-                <p>The front page in the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2, etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. The project leader is responsible for combining all of the NI budgets into a single Excel file. Failure to report on milestones will lead to loss of funding.</p>
+                <p>The front page in the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2, etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. <b><i>The project leader is responsible for combining all of the NI budgets into a single Excel file. Failure to report on milestones will lead to loss of funding</i></b>.</p>
                 
                 <b>Budget Guidelines:</b>
                 <ul>
@@ -100,7 +100,7 @@
                             <li>Projects with a higher level of matching funds (e.g. 2:1, Partners:GlycoNet) will be viewed more favorably.</li>
                         </ul>
                     </li>
-                    <li>The project budget should clearly show the co-contribution of partner funds in alignment with SSF and eligible project expenses.</li>
+                    <li> The project budget should clearly show the co-contribution of partner funds in alignment with SSF and eligible project expenses.</li>
                     <li>The maximum salary for Graduate Students is $30,000/year and for Postdoctoral Fellows is $55,000/year.</li>
                     <li>Trainee support should be limited to co-op students and should be listed in the technician line item.</li>
                     <li>Equipment is capped at $5,000/year/project.</li>
@@ -113,7 +113,7 @@
                     <li>Work with <b>GlycoNet Integrated Services</b>. Network investigators will receive a 20% discount on requested services. A quote can be provided upon request by <a href='mailto:coreservices@glyconet.ca' target='_blank'>coreservices@glyconet.ca</a></li>
                     <li>All partner contributions need to be supported by a letter from the partner institution (see below)
                         <ul>
-                            <li>Based on federal funding guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from federal sources cannot be counted as matching.  Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
+                            <li>Based on federal funding guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from federal sources cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
                         </ul>
                     </li>
                 </ul>
