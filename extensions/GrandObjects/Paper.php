@@ -1482,7 +1482,10 @@ class Paper extends BackboneModel{
             $yearAgo = date('Y-m-d', $yearAgo);
             $nextYear = strtotime("{$date} +1 year"); // Extend the year to next year so that publications slighly before supervision are still counted
             $nextYear = date('Y-m-d', $nextYear);
+            
+            $lead = $this->getData('lead');
             foreach($this->getAuthors() as $a){
+                $isLead = ($lead != null && ($lead->fullname == $a->getNameForForms() || $lead->id == $a->getId())) ? "*" : "";
                 if($a->getId()){
                     $ccid = "";
                     if($showCCID){
@@ -1492,7 +1495,7 @@ class Paper extends BackboneModel{
                     $name = $a->getNameForProduct();
                     if($a->isRoleOn(NI, $date) || $a->isRole(NI) || $a->wasLastRole(NI)){
                         $isMe = ($a->isMe()) ? "text-decoration: underline;" : "";
-                        $name = "<span style='background: #dfdfdf; {$isMe}' class='citation_author faculty_author'>{$a->getNameForProduct()}{$ccid}</span>";
+                        $name = "<span style='background: #dfdfdf; {$isMe}' class='citation_author faculty_author'>{$a->getNameForProduct()}{$ccid}{$isLead}</span>";
                     }
                     else if(($a->isRoleOn(HQP, $date) || $a->isRole(HQP) || $a->wasLastRole(HQP)) &&
                             (($highlightOnlyMyHQP !== false && $me->isRelatedToDuring($a, SUPERVISES_BOTH, "0000-00-00", "2100-00-00")) ||
@@ -1502,27 +1505,27 @@ class Paper extends BackboneModel{
                         $found = false;
                         foreach($unis as $uni){
                             if(in_array(strtolower($uni['position']), Person::$studentPositions['pdf']) !== false){
-                                $name = "<span style='font-style: italic !important;' class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
+                                $name = "<span style='font-style: italic !important;' class='citation_author'>{$a->getNameForProduct()}{$ccid}{$isLead}</span>";
                                 $found = true;
                                 break;
                             }
                             else if(in_array(strtolower($uni['position']), Person::$studentPositions['grad']) !== false){
-                                $name = "<span style='font-weight: bold !important;' class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
+                                $name = "<span style='font-weight: bold !important;' class='citation_author'>{$a->getNameForProduct()}{$ccid}{$isLead}</span>";
                                 $found = true;
                                 break;
                             }
                             else if(in_array(strtolower($uni['position']), Person::$studentPositions['ugrad']) !== false){
-                                $name = "<span style='text-decoration: underline; !important' class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
+                                $name = "<span style='text-decoration: underline; !important' class='citation_author'>{$a->getNameForProduct()}{$ccid}{$isLead}</span>";
                                 $found = true;
                                 break;
                             }
                         }
                         if(!$found){
-                            $name = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
+                            $name = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}{$isLead}</span>";
                         }
                     }
                     else{
-                        $name = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
+                        $name = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}{$isLead}</span>";
                     }
                     if($hyperlink){
                         $authors[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
@@ -1532,7 +1535,7 @@ class Paper extends BackboneModel{
                     }
                 }
                 else{
-                    $authors[] = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
+                    $authors[] = "<span class='citation_author'>{$a->getNameForProduct()}{$isLead}</span>";
                 }
             }
         }

@@ -57,9 +57,14 @@ ProductView = Backbone.View.extend({
     renderAuthors: function(){
         var views = Array();
         var that = this;
+        var lead = this.model.get('data')['lead'];
         _.each(this.model.get('authors'), function(author, index){
+            var text = author.name.replace(/&quot;/g, '');
+            if(lead != null && (lead.fullname == author.fullname || lead.id == author.id)){
+                text += "*";
+            }
             var link = new Link({id: author.id,
-                                 text: author.name.replace(/&quot;/g, ''),
+                                 text: text,
                                  url: author.url,
                                  target: ''});
             views.push(new PersonLinkView({model: link}).render());

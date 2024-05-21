@@ -204,10 +204,24 @@ ProductEditView = Backbone.View.extend({
                 tagLimit: tagLimit,
                 availableTags: availableTags,
                 afterTagAdded: function(event, ui){
+                    var authors = this.model.get('authors');
+                    var index = $("li.tagit-choice", event.target).length-1;
+                    var author = authors[index];
+                    var lead = this.model.get('data')['lead'];
+
+                    // Lead Author
+                    if(lead != null && (lead.fullname == author.fullname || lead.id == author.id)){
+                        $(".tagit-label", ui.tag).after("<span>*</span>");
+                    }
+                    
+                    // UofA Author
                     if(objs[ui.tagLabel] != undefined){
                         ui.tag[0].style.setProperty('background', highlightColor, 'important');
                         ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
                         ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
+                        if(ui.tag.children("span").length > 1){
+                            ui.tag.children("span")[1].style.setProperty("color", "white", 'important');
+                        }
                     }
                 }.bind(this),
                 tagSource: function(search, showChoices) {
@@ -225,8 +239,11 @@ ProductEditView = Backbone.View.extend({
             this.$("#productAuthors").append("<p><i>Drag to re-order each " + this.model.getAuthorsLabel().toLowerCase() + "</i></p>");
         }
         this.$("#productAuthors").append("<p><i>Right-Click " + this.model.getAuthorsLabel().toLowerCase() + " to toggle between non-UofA and UofA member (if they are known)</i></p>");
+        this.$("#productAuthors").append("<p><i>Double-Click " + this.model.getAuthorsLabel().toLowerCase() + " to specify who is the lead author</i></p>");
         this.$("#productAuthors").append("<p><i>Green Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>known</b> to the UofA.<br />" + 
                                          "   <i>White Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>not known</b> to the UofA.</i></p>");
+        
+        // Ordering authors
         this.$("#productAuthors .tagit").sortable({
             stop: function(event,ui) {
                 $('input[name=authors_fullname]').val(
@@ -237,9 +254,11 @@ ProductEditView = Backbone.View.extend({
                 ).change();
             }
         });
+        
+        // Setting UofA/Non-UofA
         this.$el.on('contextmenu', "#productAuthors .tagit-choice", function(e){
             e.preventDefault();
-            var origText = $(".tagit-label",$(this)).text();;
+            var origText = $(".tagit-label",$(this)).text();
             var newText = $(".tagit-label",$(this)).text();
             if($(".tagit-label",$(this)).text().includes('"')){
                 newText = newText.replace(/"/g, '');
@@ -256,6 +275,30 @@ ProductEditView = Backbone.View.extend({
                 $('div[name=authors_fullname] ul.tagit').tagit('createTag', tag);
             });
         });
+        
+        // Setting lead author
+        this.$el.on('dblclick', "#productAuthors .tagit-choice", function(e){
+            var el = $(".tagit-label", e.currentTarget);
+            var index = $("ul[name=authors_fullname] li").index(e.currentTarget);
+            var authors = this.model.get('authors');
+            var author = authors[index];
+            var data = this.model.get('data');
+            var lead = data['lead'];
+            if(lead == null || (lead.fullname != author.fullname && lead.id != author.id)){
+                data['lead'] = author;
+            }
+            else{
+                data['lead'] = null;
+            }
+            this.model.set('data', data);
+            var assignedTags = $('div[name=authors_fullname] ul.tagit').tagit('assignedTags');
+            $('div[name=authors_fullname] ul.tagit').tagit('removeAll');
+            _.each(assignedTags, function(tag){
+                $('div[name=authors_fullname] ul.tagit').tagit('createTag', tag);
+            });
+        }.bind(this));
+        
+        // Mouse over
         this.$el.on('mouseover', 'div[name=authors_fullname] li.tagit-choice', function(){
             $(this).css('cursor', 'move');
         });
