@@ -281,7 +281,6 @@ ProductEditView = Backbone.View.extend({
             var el = $(".tagit-label", e.currentTarget);
             var index = $("ul[name=authors_fullname] li").index(e.currentTarget);
             var authors = this.model.get('authors');
-            console.log(index);
             var author = authors[index];
             var data = this.model.get('data');
             var lead = data['lead'];
