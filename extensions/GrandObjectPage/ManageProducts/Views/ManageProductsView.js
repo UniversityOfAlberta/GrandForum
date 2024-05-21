@@ -554,6 +554,7 @@ ManageProductsView = Backbone.View.extend({
 	            this.editDialog.view.stopListening();
 	            this.editDialog.view.undelegateEvents();
 	            this.editDialog.view.$el.empty();
+	            this.editDialog.view.teardown();
 	            $("html").css("overflow", "auto");
 	        }.bind(this),
 	        buttons: [

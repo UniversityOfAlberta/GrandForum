@@ -281,6 +281,7 @@ ProductEditView = Backbone.View.extend({
             var el = $(".tagit-label", e.currentTarget);
             var index = $("ul[name=authors_fullname] li").index(e.currentTarget);
             var authors = this.model.get('authors');
+            console.log(index);
             var author = authors[index];
             var data = this.model.get('data');
             var lead = data['lead'];
@@ -439,6 +440,12 @@ ProductEditView = Backbone.View.extend({
         }
     },
     
+    teardown: function(){
+        this.$el.off('contextmenu', "#productAuthors .tagit-choice");
+        this.$el.off('dblclick', "#productAuthors .tagit-choice");
+        this.$el.off('mouseover', 'div[name=contributors_fullname] li.tagit-choice');
+    },
+    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
@@ -460,7 +467,6 @@ ProductEditView = Backbone.View.extend({
         this.$("input[name=data_impact_factor]").after(this.$("input[name=data_impact_factor_override]"));
         this.$("input[name=data_category_ranking]").parents("tr").next().remove();
         this.$("input[name=data_impact_factor]").parents("tr").next().remove();
-        
 
         _.defer(function(){
             this.$("[name=acceptance_date]").change();
