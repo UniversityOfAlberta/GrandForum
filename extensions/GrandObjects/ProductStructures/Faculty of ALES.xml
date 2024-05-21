@@ -2,7 +2,7 @@
 <Products>
 
     <!-- Publications -->
-    <Publications category="Publication" citationFormat="{%Authors} {(%Dates).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
+    <Publications category="Publication" citationFormat="{%Authors} {(%Dates).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{ #%Articleno}{, %Pages.} {%Publisher}">
         <Publication type="Bachelors Thesis" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
             <statuses ccv_id="cf36bbd2e16c45cba9768a84ac2d6729" ccv_name="Publishing Status">
@@ -220,6 +220,7 @@
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
                 <field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue" ccvtk="number" bibtex="number" label="Issue" type="String">number</field>
+                <field label="Article Number" type="String">articleno</field>
                 <field label="Pages" type="String">ms_pages</field>
                 <field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range" ccvtk="pages" bibtex="pages" label="Page Range" type="Pages">pages</field>
                 <field ccv_id="4ad593960aba4a21bf154fa8daf37f9f" ccv_name="Publisher" ccvtk="publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>

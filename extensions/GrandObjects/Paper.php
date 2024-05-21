@@ -1365,7 +1365,7 @@ class Paper extends BackboneModel{
         if(@$categories['categories'][$this->getCategory()]['types'][$this->getType()]['citationFormat'] != ""){
             return $categories['categories'][$this->getCategory()]['types'][$this->getType()]['citationFormat'];
         }
-        return "{%Authors} {(%YYYY %Mon).} {%Title.} {<i>%Venue</i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}"; // Default
+        return "{%Authors} {(%YYYY %Mon).} {%Title.} {<i>%Venue</i>}{, %Volume}{(%Issue)}{ #%Articleno}{, %Pages.} {%Publisher}"; // Default
     }
     
     /**
@@ -1550,6 +1550,7 @@ class Paper extends BackboneModel{
         }
         $type = $this->type;
         $status = $this->status;
+        $articleno = $this->getData(array('articleno'));
         $pages = $this->getData(array('ms_pages', 'pages'));
         $publisher = $this->getData(array('publisher'));
         $venue = $this->getVenue();
@@ -1642,7 +1643,8 @@ class Paper extends BackboneModel{
             $match1 = str_ireplace("%amon",      $amon,      $match1);
             $match1 = str_ireplace("%title",     $title,     $match1);
             $match1 = str_ireplace("%type",      $type,      $match1);
-            $match1 = str_ireplace("%status",      $status,      $match1);
+            $match1 = str_ireplace("%status",    $status,    $match1);
+            $match1 = str_ireplace("%articleno", $articleno, $match1);
             $match1 = str_ireplace("%pages",     $pages,     $match1);
             $match1 = str_ireplace("%authors",   $authors,   $match1);
             $match1 = str_ireplace("%publisher", $publisher, $match1);
@@ -1670,7 +1672,8 @@ class Paper extends BackboneModel{
             $match2 = str_ireplace("%amon",      "", $match2);
             $match2 = str_ireplace("%title",     "", $match2);
             $match2 = str_ireplace("%type",      "", $match2);
-            $match2 = str_ireplace("%status",      "", $match2);
+            $match2 = str_ireplace("%status",    "", $match2);
+            $match2 = str_ireplace("%articleno", "", $match2);
             $match2 = str_ireplace("%pages",     "", $match2);
             $match2 = str_ireplace("%authors",   "", $match2);
             $match2 = str_ireplace("%publisher", "", $match2);
