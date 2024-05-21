@@ -210,7 +210,7 @@ ProductEditView = Backbone.View.extend({
                     var lead = this.model.get('data')['lead'];
 
                     // Lead Author
-                    if(lead != null && (lead.fullname == author.fullname || lead.id == author.id)){
+                    if(lead != null && (lead.fullname == author.fullname || (lead.id == author.id && author.id != undefined))){
                         $(".tagit-label", ui.tag).after("<span>*</span>");
                     }
                     
@@ -284,7 +284,7 @@ ProductEditView = Backbone.View.extend({
             var author = authors[index];
             var data = this.model.get('data');
             var lead = data['lead'];
-            if(lead == null || (lead.fullname != author.fullname && lead.id != author.id)){
+            if(lead == null || (lead.fullname != author.fullname && (lead.id != author.id || author.id == undefined))){
                 data['lead'] = author;
             }
             else{

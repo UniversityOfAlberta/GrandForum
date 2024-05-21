@@ -1485,7 +1485,7 @@ class Paper extends BackboneModel{
             
             $lead = $this->getData('lead');
             foreach($this->getAuthors() as $a){
-                $isLead = ($lead != null && ($lead->fullname == $a->getNameForForms() || $lead->id == $a->getId())) ? "*" : "";
+                $isLead = ($lead != null && ($lead->fullname == $a->getNameForForms() || (isset($lead->id) && $lead->id == $a->getId()))) ? "*" : "";
                 if($a->getId()){
                     $ccid = "";
                     if($showCCID){
