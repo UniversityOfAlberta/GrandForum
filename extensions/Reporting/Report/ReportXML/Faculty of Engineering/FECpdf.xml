@@ -125,16 +125,17 @@
                     <![CDATA[
                         <h4 style='padding: 0; margin-top:0; margin-bottom: 0.25em; margin-left:2em; font-size: 1em;'>{$course_subject} {$course_number} - {$course_title}</h4>
                         <div style='margin-left: 4em;'>
+                            <b>{getUserSectionCounts()}</b>
                             <table class='wikitable' frame='box' rules='all' style='width:100%;'>
                                 <tr>
                                     <th>Percentage of course instruction</th>
                                     <th>Calendar Hours</th>
-                                    <th>Actual Number of Students</th>
+                                    <th>Total Number of Students</th>
                                 </tr>
                                 <tr>
                                     <td>{$course_percent}% of instruction</td>
                                     <td align='center'>{$course_calendar}</td>
-                                    <td>{$course_enroll}</td>
+                                    <td>{getCourseAllLectureEnroll()}</td>
                                 </tr>
                             </table><br />
                     ]]>

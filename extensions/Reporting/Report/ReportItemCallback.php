@@ -38,6 +38,7 @@ class ReportItemCallback {
             "course_enroll" => "getCourseEnroll",    
             "course_enroll_percent" => "getCourseEnrollPercent",
             "course_eval" => "getCourseEval",
+            "getCourseAllLectureEnroll" => "getCourseAllLectureEnroll",
             "getUserSectionCounts" => "getUserSectionCounts",
             "getAverageCourseEvalByTerm" => "getAverageCourseEvalByTerm",
             // Student Relation
@@ -385,6 +386,20 @@ class ReportItemCallback {
     function getCourseCalendar(){
         $course = Course::newFromId($this->reportItem->projectId);
         return $course->getCalendarString();
+    }
+    
+    function getCourseAllLectureEnroll(){
+        $course = Course::newFromId($this->reportItem->projectId);
+        $person = Person::newFromId($this->reportItem->personId);
+        $data = DBFunctions::execSQL("SELECT SUM(c.`Tot Enrl`) as total
+                                      FROM  `grand_courses` c, `grand_user_courses` uc
+                                      WHERE c.id = uc.course_id
+                                      AND uc.user_id = '{$person->getId()}'
+                                      AND c.term_string = '{$course->term_string}'
+                                      AND c.subject = '{$course->subject}'
+                                      AND c.catalog = '{$course->catalog}'
+                                      AND c.component = 'LEC'");
+        return @$data[0]['total'];
     }
 
     function getCourseEnroll(){
@@ -1751,18 +1766,16 @@ class ReportItemCallback {
         return $enrolled;
     }
     
-    function getUserSectionCounts($term, $subject, $catalog){
-        $term = DBFunctions::escape(str_replace(" ", "", $term));
-        $subject = DBFunctions::escape($subject);
-        $catalog = DBFunctions::escape($catalog);
+    function getUserSectionCounts(){
+        $course = Course::newFromId($this->reportItem->projectId);
         $person = Person::newFromId($this->reportItem->personId);
         $data = DBFunctions::execSQL("SELECT c.component
                                       FROM  `grand_courses` c, `grand_user_courses` uc
                                       WHERE c.id = uc.course_id
                                       AND uc.user_id = '{$person->getId()}'
-                                      AND c.term_string = '{$term}'
-                                      AND c.subject = '{$subject}'
-                                      AND c.catalog = '{$catalog}'");
+                                      AND c.term_string = '{$course->term_string}'
+                                      AND c.subject = '{$course->subject}'
+                                      AND c.catalog = '{$course->catalog}'");
         $sections = array('LEC' => 0, 'SEM' => 0, 'LAB' => 0);
         foreach($data as $row){
             @$sections[$row['component']]++;
