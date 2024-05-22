@@ -416,7 +416,7 @@ class ReportItemCallback {
     function getCourseEval(){
         $person = Person::newFromId($this->reportItem->personId);
         $course = Course::newFromId($this->reportItem->projectId);
-        $evals = $person->getCourseEval($course->getId());
+        $evals = $person->getCourseEval($course->getId(), true);
         if(!is_array($evals)){
             return "";
         }

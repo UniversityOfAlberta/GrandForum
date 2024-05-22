@@ -3214,16 +3214,41 @@ class Person extends BackboneModel {
         return $status;
     }
 
-    function getCourseEval($course_id){
+    function getCourseEval($course_id, $allSections=false){
         $me = Person::newFromWgUser();
         if($this->isMe() || $me->isRoleAtLeast(ADMIN)){
-            $data = DBFunctions::select(array('grand_user_courses'),
-                                        array('course_evals'),
-                                        array('course_id' => $course_id,
-                                              'user_id' => $this->getId()));
-            if(count($data)>0){
-                return json_decode($data[0]['course_evals'], true);
+            if($allSections){
+                $course = Course::newFromId($course_id);
+                $data = DBFunctions::execSQL("SELECT uc.`course_evals`
+                                              FROM `grand_courses` c, `grand_user_courses` uc
+                                              WHERE c.id = uc.course_id
+                                              AND uc.user_id = '{$this->getId()}'
+                                              AND c.term_string = '{$course->term_string}'
+                                              AND c.subject = '{$course->subject}'
+                                              AND c.catalog = '{$course->catalog}'
+                                              AND c.component = '{$course->component}'
+                                              AND uc.percentage != '0'");
             }
+            else{
+                $data = DBFunctions::select(array('grand_user_courses'),
+                                            array('course_evals'),
+                                            array('course_id' => $course_id,
+                                                  'user_id' => $this->getId()));
+            }
+            $ret = array();
+            $tmp = array();
+            foreach($data as $row){
+                $eval = json_decode($row['course_evals'], true);
+                foreach($eval as $e){
+                    foreach($e['votes'] as $i => $vote){
+                        @$tmp[$e['id']][$i] += $vote;
+                    }
+                }
+            }
+            foreach($tmp as $i => $t){
+                $ret[] = array('id' => $i, 'votes' => $t);
+            }
+            return $ret;
         }
         return array();
     }
