@@ -13,6 +13,7 @@ class Grant extends BackboneModel {
     var $copi = array();
     var $total;
     var $portions = array();
+    var $adjusted_amount;
     var $funds_before;
     var $funds_after;
     var $title;
@@ -97,6 +98,7 @@ class Grant extends BackboneModel {
                 $this->copi = $copi;
                 $this->total = $row['total'];
                 $this->portions = json_decode($row['portions'], true);
+                $this->adjusted_amount = $row['adjusted_amount'];
                 $this->funds_before = $row['funds_before'];
                 $this->funds_after = $row['funds_after'];
                 $this->title = $row['title'];
@@ -196,6 +198,10 @@ class Grant extends BackboneModel {
     function getMyPortion(){
         $me = Person::newFromWgUser();
         return (isset($this->portions[$me->getId()])) ? $this->portions[$me->getId()] : $this->total;
+    }
+    
+    function getAdjustedAmount(){
+        return $this->adjusted_amount;
     }
     
     function getFundsBefore(){
@@ -298,6 +304,7 @@ class Grant extends BackboneModel {
                                   'copi' => serialize($copis),
                                   'total' => str_replace(",", "", $this->total),
                                   'portions' => json_encode($this->portions),
+                                  'adjusted_amount' => $this->adjusted_amount,
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
                                   'title' => $this->title,
@@ -348,6 +355,7 @@ class Grant extends BackboneModel {
                                   'copi' => serialize($copis),
                                   'total' => str_replace(",", "", $this->total),
                                   'portions' => json_encode($this->portions),
+                                  'adjusted_amount' => $this->adjusted_amount,
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
                                   'title' => $this->title,
@@ -433,6 +441,7 @@ class Grant extends BackboneModel {
             'total' => $this->total,
             'portions' => $this->portions,
             'myportion' => $this->getMyPortion(),
+            'adjusted_amount' => $this->getAdjustedAmount(),
             'funds_before' => $this->funds_before,
             'funds_after' => $this->funds_after,
             'title' => $this->title,

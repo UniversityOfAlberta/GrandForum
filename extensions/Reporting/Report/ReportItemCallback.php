@@ -534,7 +534,9 @@ class ReportItemCallback {
     
     function getGrantAverage(){
         $grant = Grant::newFromId($this->reportItem->productId);
-        return number_format($grant->getAverage());
+        $average = $grant->getAverage();
+        $adjusted = $grant->getAdjustedAmount();
+        return ($adjusted > 0) ? $adjusted : $grant->getAverage();
     }
     
     function isGrantPI(){

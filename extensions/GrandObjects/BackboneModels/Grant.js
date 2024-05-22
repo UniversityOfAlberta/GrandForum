@@ -28,6 +28,7 @@ Grant = Backbone.Model.extend({
             total: 0,
             portions: {},
             myportion: 0,
+            adjusted_amount: 0,
             funds_before: 0,
             funds_after: 0,
             title: '',

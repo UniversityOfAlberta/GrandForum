@@ -351,6 +351,7 @@ EditGrantView = Backbone.View.extend({
         this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
         this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
         this.$('select[name=pi_id]').chosen({allow_single_deselect: true}).change(this.changePI.bind(this));
+        this.$('input[name=adjusted_amount]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
         
         _.defer(function(){
             this.$("#start_date").change();

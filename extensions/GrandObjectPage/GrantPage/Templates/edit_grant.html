@@ -54,6 +54,10 @@
         <td class="label">My Portion ($):</td>
         <td colspan="3"><span style="vertical-align: middle;"><%= HTML.TextBox(this, 'myportion') %><!--div id="portions"></div--></td>
     </tr>
+    <tr>
+        <td class="label">Adjusted Amount ($/year):<br /></td>
+        <td colspan="3"><span style="vertical-align: middle;"><%= HTML.TextBox(this, 'adjusted_amount') %><small>If this grant was given an extension, you can specify the original $/year.</small></td>
+    </tr>
 </table>
 <!--h2>Contributions</h2>
 <p>Choose from the following list of contributions.  If you do not see a contribution then you may need to <a href="<%= wgServer %><%= wgScriptPath %>/index.php/Special:AddContributionPage">add it</a>.</p>

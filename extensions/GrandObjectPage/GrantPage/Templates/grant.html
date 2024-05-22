@@ -69,6 +69,12 @@
         <td class="label">My Portion:</td>
         <td>$<%= number_format(myportion, 2) %></td>
     </tr>
+    <% if(adjusted_amount > 0){ %>
+        <tr>
+            <td class="label">Adjusted $/Year:</td>
+            <td><%= number_format(adjusted_amount, 2) %></td>
+        </tr>
+    <% } %>
     <tr>
         <td class="label">Exclude<sup><span class="clicktooltip" style="font-size:1.25em;" title="If a Grant is marked as excluded, it will NOT show up in your profile or Annual Report.">&#9432;</span></sup>:</td>
         <td><%= HTML.CheckBox(this, 'exclude', {value: 1, default: 0, style: 'vertical-align:bottom;'}) %></td>
