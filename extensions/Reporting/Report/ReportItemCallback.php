@@ -398,7 +398,8 @@ class ReportItemCallback {
                                       AND c.term_string = '{$course->term_string}'
                                       AND c.subject = '{$course->subject}'
                                       AND c.catalog = '{$course->catalog}'
-                                      AND c.component = 'LEC'");
+                                      AND c.component = 'LEC'
+                                      AND uc.percentage != '0'");
         return @$data[0]['total'];
     }
 
@@ -1775,7 +1776,8 @@ class ReportItemCallback {
                                       AND uc.user_id = '{$person->getId()}'
                                       AND c.term_string = '{$course->term_string}'
                                       AND c.subject = '{$course->subject}'
-                                      AND c.catalog = '{$course->catalog}'");
+                                      AND c.catalog = '{$course->catalog}'
+                                      AND uc.percentage != '0'");
         $sections = array('LEC' => 0, 'SEM' => 0, 'LAB' => 0);
         foreach($data as $row){
             @$sections[$row['component']]++;
