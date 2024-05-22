@@ -250,6 +250,7 @@
                     <![CDATA[
                         <h4 style='padding: 0; margin-top:0; margin-bottom: 0.25em; margin-left:2em; font-size: 1em;'>{$course_subject} {$course_number} - {$course_title}</h4>
                         <div style='margin-left: 4em;'>
+                            <b>{getUserSectionCounts({$course_term}, {$course_subject}, {$course_number})}</b>
                             <table class='wikitable' frame='box' rules='all' style='width:100%;'>
                                 <tr>
                                     <th>Percentage of course instruction</th>
