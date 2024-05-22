@@ -30,7 +30,7 @@ class PersonProfileTab extends AbstractEditableTab {
                 $this->html .= ($keywords != "") ? "<b>P.Eng Status:</b> {$pengStatus}{$pengStatusOther}<br />" : "";
             
                 $area = FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $this->person->getId());
-                $areaOther = ($area == "Other") ? " (".FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $this->person->getId()).")" : "";
+                $areaOther = (strstr($area, "Other") !== false) ? " (".FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $this->person->getId()).")" : "";
                 $this->html .= ($keywords != "") ? "<b>Research Area:</b> {$area}{$areaOther}<br />" : "";
             }
             $this->html .= ($keywords != "") ? "<b>Keywords:</b> {$keywords}" : "";
@@ -231,7 +231,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $api = new UserEmailAPI();
             $api->doAction(true);
             
-            @FECReflections::saveBlobValue($_POST['research_area'], "RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $this->person->getId());
+            @FECReflections::saveBlobValue(implode(", ", $_POST['research_area']), "RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $this->person->getId());
             @FECReflections::saveBlobValue($_POST['research_area_other'], "RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $this->person->getId());
             
             @FECReflections::saveBlobValue($_POST['peng_status'], "RP_FEC", "PENG_STATUS", "PENG_STATUS", 0, 0, $this->person->getId());
@@ -285,9 +285,9 @@ EOF;
                                                                                                       "Applicant in Process",
                                                                                                       "Have Not Applied"));
             
-            $area = FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $person->getId());
+            $area = explode(", ", FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $person->getId()));
             $areaOther = str_replace("'", "&#39;", FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $person->getId()));
-            $areaField = new VerticalRadioBox("research_area", "Research Area", $area, array("Energy and Environment",
+            $areaField = new VerticalCheckBox("research_area", "Research Area", $area, array("Energy and Environment",
                                                                                              "Nanotechnology",
                                                                                              "ICT",
                                                                                              "Biomedical Engineering",
