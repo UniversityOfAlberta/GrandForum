@@ -3239,9 +3239,11 @@ class Person extends BackboneModel {
             $tmp = array();
             foreach($data as $row){
                 $eval = json_decode($row['course_evals'], true);
-                foreach(@$eval as $e){
-                    foreach($e['votes'] as $i => $vote){
-                        @$tmp[$e['id']][$i] += $vote;
+                if(is_array($eval)){
+                    foreach($eval as $e){
+                        foreach($e['votes'] as $i => $vote){
+                            @$tmp[$e['id']][$i] += $vote;
+                        }
                     }
                 }
             }
