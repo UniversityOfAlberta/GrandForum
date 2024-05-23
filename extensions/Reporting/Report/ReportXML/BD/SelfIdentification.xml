@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Bridging Divides HQP Self-Identification Survey" reportType="RP_SELF_IDENTIFICATION" year="0" ajax="true" encrypt="true">
+<Report name="Bridging Divides Diversity Self-Identification Survey" reportType="RP_SELF_IDENTIFICATION" year="0" ajax="true" encrypt="true">
     <Permissions>
         <Role role="LoggedOut">
             <SectionPermission id="form" permissions="rw" />
@@ -68,7 +68,7 @@
                     </ReportItem>
                     <Static>
                         <![CDATA[
-                            <p>Please complete the following questions with how you self-identify. If you prefer not to answer, you can leave the question blank.</p>
+                            <p>Please read each question carefully and check the response that you feel best applies to you. You have the option to select “Prefer not to answer” for each question. To protect your privacy, you won't be able to edit your responses using the unique link once you have completed the survey. If you need assistance, please contact <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.</p>
                         ]]>
                     </Static>
                     <ReportItem id="age" type="Integer" blobItem="AGE" personId="{$user_id}" min="1900" max="YEAR" width="2.3em" encrypt="true">
@@ -78,34 +78,34 @@
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="gender" type="Radio" blobItem="GENDER" personId="{$user_id}" options="Gender fluid|Non-binary|Two-spirit|Trans man|Trans woman|Man|Woman|I do not identify with any option" encrypt="true">
+                    <ReportItem id="gender" type="Radio" blobItem="GENDER" personId="{$user_id}" options="Gender fluid|Non-binary|Two-spirit|Trans man|Trans woman|Man|Woman|I do not identify with any option|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>2. Gender</h3>
                             <p>What gender best describes your current gender identity?</p>
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="sex" type="Radio" blobItem="SEX" personId="{$user_id}" options="Asexual|Bisexual|Pansexual|Heterosexual|Two-spirit|Gay|Lesbian|Queer|I do not identify with the options provided" encrypt="true">
+                    <ReportItem id="sex" type="Radio" blobItem="SEX" personId="{$user_id}" options="Asexual|Bisexual|Pansexual|Heterosexual|Two-spirit|Gay|Lesbian|Queer|I do not identify with the options provided|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>3. Sexual orientation</h3>
                             <p>What sexual orientation best describes how you currently think of yourself?</p>
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="identity" type="Radio" blobItem="IDENTITY" personId="{$user_id}" options="Yes|No" encrypt="true">
+                    <ReportItem id="identity" type="Radio" blobItem="IDENTITY" personId="{$user_id}" options="Yes|No|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>4. Indigenous identity</h3>
                             <p>Do you self-identify as Indigenous, that is, First Nations (North American Indian), Métis, or Inuk (Inuit)?</p>
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="clan" type="Text" blobItem="CLAN" personId="{$user_id}" options="Yes|No" optional="true" encrypt="true">
+                    <ReportItem id="clan" type="Text" blobItem="CLAN" personId="{$user_id}" options="Yes|No|Prefer not to answer" optional="true" encrypt="true">
                         <![CDATA[
                             <p>If yes, what is your family, clan, band, or nation?</p>
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="minority" type="Radio" blobItem="MINORITY" personId="{$user_id}" options="Yes|No" encrypt="true">
+                    <ReportItem id="minority" type="Radio" blobItem="MINORITY" personId="{$user_id}" options="Yes|No|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>5. Visible minority/Racialized individual</h3>
                             <p><i>The <a href='https://laws-lois.justice.gc.ca/eng/acts/E-5.401/?wbdisable=false' target='_blank'>Employment Equity Act</a> defines visible minorities as "persons, other than Aboriginal peoples, who are non-Caucasian in race or non-white in colour."</i><br /> 
@@ -113,7 +113,7 @@
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="race" type="Radio" blobItem="RACE" personId="{$user_id}" options="Black|East Asian|Indigenous|Latin American|South Asian|Southeast Asian|West Asian|White|Population group not listed/Other" descriptions="African, Afro-Caribbean, African-Canadian, Afro-Latin American|Chinese, Korean, Japanese, Taiwanese|First Nations, Métis, Inuit|Latin American, Hispanic descent|Indian, Pakistani, Sri Lankan, Indo-Caribbean|Filipino, Vietnamese, Cambodian, Thai|Arab, Persian (e.g., Iranian), Afghan|European (English, Scottish, Irish, French, German, Dutch)&lt;br />American, Canadian&lt;br />Oceania (Australian, New Zealander)|" encrypt="true">
+                    <ReportItem id="race" type="Radio" blobItem="RACE" personId="{$user_id}" options="Black|East Asian|Indigenous|Latin American|South Asian|Southeast Asian|West Asian|White|Population group not listed/Other|Prefer not to answer" descriptions="African, Afro-Caribbean, African-Canadian, Afro-Latin American|Chinese, Korean, Japanese, Taiwanese|First Nations, Métis, Inuit|Latin American, Hispanic descent|Indian, Pakistani, Sri Lankan, Indo-Caribbean|Filipino, Vietnamese, Cambodian, Thai|Arab, Persian (e.g., Iranian), Afghan|European (English, Scottish, Irish, French, German, Dutch)&lt;br />American, Canadian&lt;br />Oceania (Australian, New Zealander)||" encrypt="true">
                         <![CDATA[
                             <h3>6. Race or population group</h3>
                             <p>What race or population group do you identify with most?</p>
@@ -123,7 +123,7 @@
                             </script>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="immigrant" type="Radio" blobItem="IMMIGRANT" personId="{$user_id}" options="Yes|No" encrypt="true">
+                    <ReportItem id="immigrant" type="Radio" blobItem="IMMIGRANT" personId="{$user_id}" options="Yes|No|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>7. Citizenship status</h3>
                             <p>Are you an immigrant?</p>
@@ -136,7 +136,7 @@
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="disabilities" type="Radio" blobItem="DISABILITIES" personId="{$user_id}" options="Yes|No" encrypt="true">
+                    <ReportItem id="disabilities" type="Radio" blobItem="DISABILITIES" personId="{$user_id}" options="Yes|No|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>8. Disabilities</h3>
                             <p><i>The <a href='https://laws-lois.justice.gc.ca/eng/acts/A-0.6/' target='_blank'>Accessible Canada Act</a> defines disability as “any impairment, including a physical, mental, intellectual, cognitive, learning, communication or sensory impairment—or a functional limitation—whether permanent, temporary or episodic in nature or evident or not, that, in interaction with a barrier, hinders a person’s full and equal participation in society.”</i><br />
@@ -144,7 +144,7 @@
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="language" type="Radio" blobItem="LANGUAGE" personId="{$user_id}" options="English|French|Another language" labels="English|French|Another language:" encrypt="true">
+                    <ReportItem id="language" type="Radio" blobItem="LANGUAGE" personId="{$user_id}" options="English|French|Another language|Prefer not to answer" labels="English|French|Another language:|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>9. Language</h3>
                             <p>What language(s) did you first learn at home in childhood and still understand?</p>
@@ -158,7 +158,7 @@
                             </div>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="education" type="Radio" blobItem="EDUCATION" personId="{$user_id}" options="Yes|No" encrypt="true">
+                    <ReportItem id="education" type="Radio" blobItem="EDUCATION" personId="{$user_id}" options="Yes|No|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>10. University education</h3>
                             <p>Are you the first person or first generation in your family to attend university and/or attain a university degree?</p>
