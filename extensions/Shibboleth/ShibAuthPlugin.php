@@ -389,14 +389,6 @@ function ShibUserLoadFromSession($user, &$result)
 		ShibAddGroups($user);
 		$wgUser = $user;
 		impersonate();
-
-        $me = Person::newFromWgUser();
-        if($me instanceof FullPerson){
-            $me->getFecPersonalInfo();
-            if($me->faculty != getFaculty() && !$me->isRoleAtLeast(MANAGER)){
-                permissionError("You are on the wrong AIMS instance.  Make sure you clicked on the correct faculty.  Contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a> if you still don't have access.");
-            }
-        }
 		return true;
 	}
 	if(!$config->getValue('shibCreateUser')){

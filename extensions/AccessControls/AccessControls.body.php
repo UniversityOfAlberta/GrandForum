@@ -134,7 +134,18 @@ function onUserCanExecute($special, $subpage){
  * TODO: This should be cached because it gets called a lot in each request and the permissions for a specific
  * action do not change during a single request.
  */
-function onUserCan(&$title, &$user, $action, &$result) {
+function onUserCan(&$title, &$user, $action, &$result){
+    global $wgMessage, $config;
+    $me = Person::newFromUser($user);
+    if($me instanceof FullPerson){
+        $me->getFecPersonalInfo();
+        if($me->faculty != getFaculty() && !$me->isRoleAtLeast(MANAGER)){
+            $wgMessage->clearError();
+            $wgMessage->addError("You are on the wrong AIMS instance.  Make sure you clicked on the correct faculty.  Contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a> if you still don't have access.");
+            $ret = false;
+            return false;
+        }
+    }
     GrandAccess::setupGrandAccess($user, $user->getRights());
     $ret = onUserCan2($title, $user, $action, $result);
     return $ret;
