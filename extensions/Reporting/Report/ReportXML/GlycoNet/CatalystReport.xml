@@ -73,6 +73,60 @@
             ]]>
         </Static>
     </ReportSection>
+    <ReportSection id="criteria" name="Review Criteria" title="Scientific Review Criteria" blobSection="SEC_NONE" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <p>The proposal will be evaluated based on the following criteria and rated as: <i>Very Weak, Weak, Average, Strong, or Very Strong</i>. An overall score will then be assigned to the proposal.</p>
+                
+                <table class='wikitable' width='100%'>
+                    <tr><th style='text-align:left;'>1. Scientific Excellence</th></tr>
+                    <tr><td style='padding-left:18px;'>Overall scientific excellence and soundness of the project</td></tr>
+                    <tr><td style='padding-left:18px;'>Quality and logic of the rationale</td></tr>
+                    <tr><td style='padding-left:18px;'>Existence of strong preliminary data that supports the hypothesis. State of the technology</td></tr>
+                    <tr><td style='padding-left:18px;'>Soundness of the experimental plan</td></tr>
+                    <tr><td style='padding-left:18px;'>Capacity to generate applicable results at the end of the project</td></tr>
+                    
+                    <tr><th style='text-align:left;'>2. Positioning of the Research Project</th></tr>
+                    <tr><td style='padding-left:18px;'>Originality and novelty of the proposed research</td></tr>
+                    <tr><td style='padding-left:18px;'>Added value of product/computational tool/technology compared to existing/in development ones</td></tr>
+                    <tr><td style='padding-left:18px;'>Positioning of the project relative to the most current and powerful approaches or technologies that address the same end goal</td></tr>
+                    <tr><td style='padding-left:18px;'>Competitiveness of the project on an international scale based on what is available or what is in development stage by public or private entities</td></tr>
+                    
+                    <tr><th style='text-align:left;'>3. Impact of the Research Project</th></tr>
+                    <tr><td style='padding-left:18px;'>Potential impact of the project on the development of diagnostics/treatments/technology development</td></tr>
+                    <tr><td style='padding-left:18px;'>Capacity to address important non-resolved specific challenges in the translational process.<br />Example include:
+                        <ul>
+                            <li>Potential to open new therapeutic approaches and research avenues</li>
+                            <li>Contribution of the project to the development of more effective cost-effective diagnostics</li>
+                            <li>Overall impact on the reduction of R&D costs, time to market, and development risks</li>
+                        </ul>
+                    </td></tr>
+                    
+                    <tr><th style='text-align:left;'>4. Feasibility</th></tr>
+                    <tr><td style='padding-left:18px;'>Clear deliverables, milestones, and schedule</td></tr>
+                    <tr><td style='padding-left:18px;'>Feasibility of the project (clear deliverables, timetable, human and financial resources</td></tr>
+                    <tr><td style='padding-left:18px;'>Overall quality of the infrastructure, facilities and equipment available for the proposed project</td></tr>
+                    <tr><td style='padding-left:18px;'>Soundness of the project overall costs</td></tr>
+                    
+                    <tr><th style='text-align:left;'>5. Team</th></tr>
+                    <tr><td style='padding-left:18px;'>If this application is led by an ECR, what is the research potential of this researcher</td></tr>
+                    <tr><td style='padding-left:18px;'>Overall track record of the PI and co-applicants:
+                        <ul>
+                            <li>Relevance of the expertise and productivity of the PI in the achievement of the proposed project</li>
+                            <li>Capacity of the PI to lead and coordinate the research – if the researcher is an ECR then comment on the risk of an ECR undertaking this project</li>
+                            <li>Relevance of the expertise and productivity of the co-applicants in the achievement of the proposed project</li>
+                        </ul>
+                    </td></tr>
+                    
+                    <tr><th style='text-align:left;'>6. Long-Term Plan (~5 years) and Commercialization</th></tr>
+                    <tr><td style='padding-left:18px;'>Is the long-term development plan sound and feasible?</td></tr>
+                    <tr><td style='padding-left:18px;'>The technology will likely create commercial opportunities in the biopharma R&D sector or the clinic and elsewhere such as in one-health applications</td></tr>
+                    <tr><td style='padding-left:18px;'>Is the technology easily transferable for use by partners or is the plan to access the technology well laid out (ex. service option)?</td></tr>
+                    <tr><td style='padding-left:18px;'>The project is well aligned with goals of the research partners</td></tr>
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
     <ReportSection id="description" tooltip="Application" name="Application" blobSection="CAT_DESC" type="EditableReportSection" renderpdf="false">
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_APPLICATION" mimeType="application/pdf" fileSize="10">
             <![CDATA[
