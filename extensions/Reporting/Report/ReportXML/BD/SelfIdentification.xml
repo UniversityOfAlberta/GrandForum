@@ -28,8 +28,7 @@
                     ]]>
                 </If>
                 <!-- Submitted -->
-                <ElseIf if="{and({!=({getText(RP_SELF_IDENTIFICATION,FORM,AGE,0,{$user_id},0)},)},
-                                 {!=({getText(RP_SELF_IDENTIFICATION,FORM,GENDER,0,{$user_id},0)},)},
+                <ElseIf if="{and({!=({getText(RP_SELF_IDENTIFICATION,FORM,GENDER,0,{$user_id},0)},)},
                                  {!=({getText(RP_SELF_IDENTIFICATION,FORM,SEX,0,{$user_id},0)},)},
                                  {!=({getText(RP_SELF_IDENTIFICATION,FORM,IDENTITY,0,{$user_id},0)},)},
                                  {!=({getText(RP_SELF_IDENTIFICATION,FORM,MINORITY,0,{$user_id},0)},)},
@@ -71,7 +70,7 @@
                             <p>Please read each question carefully and check the response that you feel best applies to you. You have the option to select “Prefer not to answer” for each question. To protect your privacy, you won't be able to edit your responses using the unique link once you have completed the survey. If you need assistance, please contact <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.</p>
                         ]]>
                     </Static>
-                    <ReportItem id="age" type="Integer" blobItem="AGE" personId="{$user_id}" min="1900" max="YEAR" width="2.3em" encrypt="true">
+                    <ReportItem id="age" type="Integer" blobItem="AGE" personId="{$user_id}" min="1900" max="YEAR" width="2.3em" optional="true" encrypt="true">
                         <![CDATA[
                             <h3>1. Age</h3>
                             <p>What is your year of birth?</p>
