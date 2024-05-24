@@ -253,6 +253,12 @@ abstract class AbstractReportItem {
         if(isset($_POST[$this->getPostId()])){
             if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
                $_POST[$this->getPostId().'_ignoreConflict'] != "true"){
+                $default = $this->getAttr('default', '');
+                if(isset($_POST['oldData'][$this->getPostId()]) && $default != '' && $_POST['oldData'][$this->getPostId()] == $default){
+                    // Default value, save the changed version
+                    $this->setBlobValue($_POST[$this->getPostId()]);
+                    return array();
+                }
                 if(isset($_POST['oldData'][$this->getPostId()]) && is_array($_POST['oldData'][$this->getPostId()])){
                     // Don't handle arrays, but save anyways
                     $this->setBlobValue($_POST[$this->getPostId()]);
@@ -305,11 +311,13 @@ abstract class AbstractReportItem {
             case BLOB_TEXT:
             case BLOB_WIKI:
             case BLOB_HTML:
-                $blob_data = str_replace("\00", "", $blob_data);
-                $blob_data = str_replace("", "", $blob_data);
-                $blob_data = str_replace("", "", $blob_data);
-                $blob_data = str_replace("", "", $blob_data);
-                $blob_data = str_replace("", "fi", $blob_data);
+                if($blob_data != null){
+                    $blob_data = str_replace("\00", "", $blob_data);
+                    $blob_data = str_replace("", "", $blob_data);
+                    $blob_data = str_replace("", "", $blob_data);
+                    $blob_data = str_replace("", "", $blob_data);
+                    $blob_data = str_replace("", "fi", $blob_data);
+                }
             case BLOB_EXCEL:
             case BLOB_RAW:
                 $value = $blob_data;

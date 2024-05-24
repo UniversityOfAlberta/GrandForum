@@ -67,7 +67,7 @@ class MultiTextReportItem extends AbstractReportItem {
         else{
             $max = max(array_keys($values));
         }
-        $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
+        $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "";
         $item = <<<EOF
         <script type='text/javascript'>
             var max{$this->getPostId()} = {$max}+1;
@@ -247,7 +247,7 @@ EOF;
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
 EOF;
         $item .= "<div class='table_{$this->getPostId()} warning' style='display:none;'></div>";
-        $item .= "<table id='table_{$this->getPostId()}' class='$class'>
+        $item .= "<table id='table_{$this->getPostId()}' class='$class' width='$width'>
                     ";
         if(!$isVertical){
             if(count($labels) > 0 && $labels[0] != ""){

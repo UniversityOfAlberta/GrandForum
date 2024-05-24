@@ -130,19 +130,53 @@
                     <![CDATA[
                         <h4 style='padding: 0; margin-top:0; margin-bottom: 0.25em; margin-left:2em; font-size: 1em;'>{$course_subject} {$course_number} - {$course_title}</h4>
                         <div style='margin-left: 4em;'>
-                            <b>{getUserSectionCounts()}</b>
                             <table class='wikitable' frame='box' rules='all' style='width:100%;'>
                                 <tr>
-                                    <th>Percentage of course instruction</th>
-                                    <th>Calendar Hours</th>
-                                    <th>Total Number of Students</th>
+                                    <th>Section</th>
+                                    <th>Names of all instructors and<br />percentage of course instruction</th>
+                                    <th style='width:1%;'>Calendar<br />Hours</th>
+                                    <th>Your Actual Weekly<br />Average Contact Hours<br />(indicate if a reading course)</th>
+                                    <th>Actual<br />Number of<br />Students</th>
                                 </tr>
-                                <tr>
-                                    <td>{$course_percent}% of instruction</td>
-                                    <td align='center'>{$course_calendar}</td>
-                                    <td>{getCourseAllLectureEnroll()}</td>
-                                </tr>
-                            </table><br />
+                    ]]>
+                </Static>
+                <ReportItemSet type="CourseSections">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                                <td>{$course_comp} - {$course_section}</td>
+                        ]]>
+                    </Static>
+                    <ReportItem id="percent" type="TextareaReportItem" blobItem="FEC_COURSE_PERCENT" blobType="BLOB_TEXT" encrypt="true" height="65px">
+                        <![CDATA[
+                            <td valign='top'>
+                                {$item}<br />
+                                {$user_name}: {$course_percent}% of instruction
+                            </td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="calendar" type="TextReportItem" blobItem="FEC_COURSE_CALENDAR" blobType="BLOB_TEXT" default="{$course_calendar}" width="100px">
+                        <![CDATA[
+                            <td align='center'>{$item}</td>
+                        ]]>
+                    </ReportItem>   
+                    <ReportItem id="contact" type="TextareaReportItem" blobItem="FEC_COURSE_CONTACT" blobType="BLOB_TEXT" encrypt="true" height="65px">
+                        <![CDATA[
+                            <td valign='top'>
+                                {$item}
+                            </td>
+                        ]]>
+                    </ReportItem>
+                    <Static>
+                        <![CDATA[
+                            <td>{$course_enroll}</td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </table>
                     ]]>
                 </Static>
                 <If if="{!=({$course_eval}, )}">

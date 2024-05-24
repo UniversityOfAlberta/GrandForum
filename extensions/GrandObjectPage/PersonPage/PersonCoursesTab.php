@@ -60,6 +60,9 @@ class PersonCoursesTab extends AbstractEditableTab {
     function getHTML($start=null, $end=null, $showPercentages=false, $generatePDF=false, $editing=false){
         $coursesArray = $this->getArray($start, $end);
         $item = "";
+        if($editing){
+            $item .= "<p>You can edit the teaching percentages for each course section below.  To exclude it from your annual report you can enter '0' in the percent field.</p>";
+        }
         if($this->levels == null){
             $item .= "<small><i>Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.";
             if($showPercentages){

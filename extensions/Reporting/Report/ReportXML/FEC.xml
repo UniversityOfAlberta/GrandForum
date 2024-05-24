@@ -239,6 +239,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="courses" tooltip="TEACHING" name="Teaching" title="TEACHING" blobSection="FEC_COURSES" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$user_url}?tab=teaching&edit">Manage Teaching</a>
+            ]]>
+        </Static>
         <ReportItemSet type="String" array="Summer {$last_year}|Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
             <Static>
                 <![CDATA[
