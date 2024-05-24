@@ -99,6 +99,9 @@ class SurveyTab extends AbstractTab {
             }
             $alreadyDone[$row['user_id']] = true;
             $snapshot = json_decode(decrypt($row['data']), true);
+            if($snapshot == null){
+                continue;
+            }
             if($snapshot['skip'] != ''){
                 $skipped++;
                 continue;
