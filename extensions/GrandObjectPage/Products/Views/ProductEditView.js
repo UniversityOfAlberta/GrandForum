@@ -306,6 +306,7 @@ ProductEditView = Backbone.View.extend({
     
     renderContributorsWidget: function(){
         var objs = {};
+        var availableTags = {};
         this.allPeople.each(function(p){
             var fullname = p.get('fullName');
             if(p.get('email') != ""){
@@ -317,9 +318,9 @@ ProductEditView = Backbone.View.extend({
             objs[p.get('fullName')] = {id: p.get('id'),
                                        name: p.get('name'),
                                        fullname: fullname};
+            availableTags[fullname] = fullname;
         });
-
-        var availableTags = _.uniq(_.pluck(objs, 'fullname'));
+        availableTags = _.values(availableTags);
         var delimiter = ';';
         var html = HTML.TagIt(this, 'contributors.fullname', {
             values: _.pluck(this.model.get('contributors'), 'fullname'),

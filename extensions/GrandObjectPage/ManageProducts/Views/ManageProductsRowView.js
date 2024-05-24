@@ -44,6 +44,7 @@ ManageProductsViewRow = Backbone.View.extend({
             this.duplicating = true;
             var product = new Product(this.model.toJSON());
             product.set('id', null);
+            product.set('reported', "");
             product.save(null, {
                 success: function(){
                     clearSuccess();
@@ -154,6 +155,42 @@ ManageProductsViewRow = Backbone.View.extend({
         if(this.parent.table != null){
             this.parent.table.draw();
         }
+        
+        var yearly = this.model.get('data')['yearly'];
+        var start = this.model.get('data')['start_date'];
+        var end = this.model.get('data')['end_date'];
+        var acceptance = this.model.get('acceptance_date');
+        var date = this.model.get('date');
+        var reportedYear = this.model.get('reported');
+        var dateLabel = productStructure.categories[this.model.get('category')].types[this.model.getType()].date_label;
+        var acceptanceDateLabel = productStructure.categories[this.model.get('category')].types[this.model.getType()].acceptance_date_label;
+        
+        this.$el.removeClass('ar');
+        this.$el.removeClass('reported');
+        if(this.model.get('category') != "Award" && 
+           reportedYear != "" && 
+           reportedYear + START_MONTH < START){
+            // Previously Reported
+            this.$el.addClass('reported');
+        }
+        else if(// Handle Products Normally
+            (date >= START && date <= END ||
+            (acceptance >= START && acceptance <= end && acceptanceDateLabel != "")) ||
+            // Handle Products where acceptance date and date behave as start and end dates
+            (acceptanceDateLabel == "Start Date" && dateLabel == "End Date" && 
+             (acceptance >= START && date <= END && date >= START ||
+              acceptance <= START && date >= START ||
+              acceptance <= END && date >= END ||
+              acceptance <= END && date == "0000-00-00")) ||
+            // Handle Yearly Awards
+            (yearly == 1 && (start >= START && end <= END && end >= START ||
+                             start <= START && end >= START ||
+                             start <= END && end >= END ||
+                             start <= END && end == "0000-00-00"))
+            ){
+            this.$el.addClass('ar');
+        }
+
         return this.$el;
     }
 

@@ -359,6 +359,24 @@ ManagePeopleView = Backbone.View.extend({
     
     render: function(){
         this.$el.html(this.template());
+        main.bind('change:title', function(){
+            $("#pageTitle").append("&nbsp;<span class='clicktooltip' title=''>&#9432;</span>");
+            $("#pageTitle .clicktooltip").attr('title', this.$('#instructions').html());
+            $("#pageTitle .clicktooltip").qtip({
+	            position: {
+	                adjust: {
+		                x: -($("#pageTitle .clicktooltip").width()/25),
+		                y: -($("#pageTitle .clicktooltip").height()/2)
+	                }
+	            },
+	            style: {
+	                classes: "instructions-qtip"
+	            },
+	            show: 'click',
+                hide: 'click unfocus'
+	        });
+        }.bind(this));
+        main.trigger('change:title');
         this.updateExistingMember();
         this.addRows();
         this.$("#hqpDuplicatesProgress").progressbar({

@@ -2028,6 +2028,7 @@ class Paper extends BackboneModel{
         if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
             // Only access the cache if the user is logged in
             $json = Cache::fetch($this->getCacheId());
+            $json['reported'] = $this->getReportedForPerson($me->getId());
             $json['exclude'] = $this->exclude;
             $json['canDelete'] = $this->canDelete();
             return $json;

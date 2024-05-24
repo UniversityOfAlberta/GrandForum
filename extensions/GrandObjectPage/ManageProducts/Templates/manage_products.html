@@ -80,15 +80,16 @@
     <p>
         <%= productsTerm.pluralize() %> which are listed as being 'Private' will not show up anywhere else on the <%= siteName %> except for on this page.  To 'release' the <%= productsTerm.toLowerCase() %> to the rest of the <%= siteName %>, uncheck the 'Private' checkbox for a specific <%= productsTerm.toLowerCase() %>, or press the 'Release All Private' button to release all of them.  Once all of your changes are done, make sure to press the 'Save All' button.
     </p>
-    <p>
-        If, in this table, there exists an output that should not be associated with your record, use <b>"Exclude"</b> to disassociate it from your record.  "Delete" will delete it for all the co-authors.
-    </p>
+    <ul>
+        <li>Publications are imported automatically on a regular basis *if* you have specified your ORCID in your <a href="<%= me.get('url') %>">profile</a></li>
+        <li>Rows which have a light green backgrounds fall within the current reporting period (<%= START %> - <%= END %>).  This doesn't necessarily mean they will show up in your annual report since there could be other reasons they may not be eligible for the annual report</b></li>
+        <li>Rows which are semi transparent have already been reported in a previous annual report</li>
+        <li>If, in this table, there exists an output that should not be associated with your record, use <b>"Exclude"</b> to disassociate it from your record.  "Delete" will delete it for all the co-authors</b></li>
+        <li>If you make any changes on this page and have other tabs open, the changes will not be reflected on those other tabs until you refresh the page</b></li>
+    </ul>
 </div>
 <p>
-    <b>Publications are imported automatically on a regular basis *if* you have specified your ORCID in your <a href="<%= me.get('url') %>">profile</a>.</b><br />
-    <b>If, in this table, there exists an output that should not be associated with your record, use <b>"Exclude"</b> to disassociate it from your record.  "Delete" will delete it for all the co-authors.</b><br />
-    <b>If you make any changes on this page and have other tabs open, the changes will not be reflected on those other tabs until you refresh the page.</b><br />
-    
+    <b>NOTE: If you make any changes on this page and have other tabs open, the changes will not be reflected on those other tabs until you refresh the page.</b>
 </p>
 <p>
     <% if(this.category != null){ %>

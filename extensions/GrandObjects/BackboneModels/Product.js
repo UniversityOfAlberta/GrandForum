@@ -209,6 +209,7 @@ Product = Backbone.Model.extend({
             deleted: "",
             access_id: 0,
             created_by: 0,
+            reported: "",
             access: "Forum",
             exclude: false,
             canDelete: true,

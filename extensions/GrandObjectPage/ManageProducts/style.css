@@ -31,3 +31,16 @@ span#infinity:hover {
 }
 
 .instructions-qtip { max-width: 500px !important; }
+
+table#listTable tr.ar.even td {
+    background-color: rgba(0, 100, 50, 0.15);
+}
+
+table#listTable tr.ar.odd td {
+    background-color: rgba(0, 100, 50, 0.17);
+}
+
+table#listTable tr.reported td {
+    opacity: 0.35;
+}
+
