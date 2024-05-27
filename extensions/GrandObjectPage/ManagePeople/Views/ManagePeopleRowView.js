@@ -195,10 +195,10 @@ ManagePeopleRowView = Backbone.View.extend({
             }
             
             if(start == ""){
-                start = this.model.get('start');
+                start = this.model.get('start').substr(0,10);
             }
             if(end == ""){
-                end = this.model.get('end');
+                end = this.model.get('end').substr(0,10);
             }
             
             if(start == '0000-00-00' || start == '0000-00-00 00:00:00' || start == '' || start == undefined){
@@ -206,6 +206,14 @@ ManagePeopleRowView = Backbone.View.extend({
             }
             if(end == '0000-00-00' || end == '0000-00-00 00:00:00' || end == '' || end == undefined){
                 end = 'Current';
+            }
+            
+            this.$el.removeClass('ar');
+            if(start >= START && end <= END && end >= START ||
+               start <= START && end >= START ||
+               start <= END && end >= END ||
+               start <= END && end == "0000-00-00"){
+                this.$el.addClass('ar');
             }
             
             this.$("#relationType").text(_.uniq(relations.pluck('type')).join(", "));
