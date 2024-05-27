@@ -9,7 +9,13 @@ GrantsView = Backbone.View.extend({
     render: function(){
         main.set('title', "Grants");
         this.$el.html(this.template());
-        this.$("#grants").dataTable({iDisplayLength: 100});
+        this.$("#grants").dataTable({
+            iDisplayLength: 100, 
+            order: [
+                [6, 'desc'],
+                [5, 'desc']
+            ]}
+        );
         return this.$el;
     }
 

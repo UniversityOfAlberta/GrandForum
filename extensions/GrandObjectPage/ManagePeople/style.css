@@ -108,3 +108,11 @@ table.wikitable tr.deleted {
     max-width: 65px;
     width: 65px;
 }
+
+table#listTable tr.ar.even td {
+    background-color: rgba(0, 100, 50, 0.15);
+}
+
+table#listTable tr.ar.odd td {
+    background-color: rgba(0, 100, 50, 0.17);
+}

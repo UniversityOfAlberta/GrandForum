@@ -18,7 +18,13 @@
     </thead>
     <tbody>
         <% this.model.each(function(grant){ %>
-            <tr>
+            <% var ar = (grant.get('start_date') >= START && grant.get('end_date') <= END && grant.get('end_date') >= START ||
+                         grant.get('start_date') <= START && grant.get('end_date') >= START ||
+                         grant.get('start_date') <= END && grant.get('end_date') >= END ||
+                         grant.get('start_date') <= END && grant.get('end_date') == "0000-00-00");
+                console.log(grant.get('start_date'), grant.get('end_date'), START, END, ar);
+            %>
+            <tr class="<% if(ar){ %>ar<% } %>">
                 <td>
                     <% if(grant.get('scientific_title').trim() != ''){ %>
                         <a href="<%= grant.get('url') %>"><%= grant.get('scientific_title') %></a>
