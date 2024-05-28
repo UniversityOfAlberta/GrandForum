@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Report" reportType="RP_PROJECT_REPORT_{GET(id)}" pdfType="RP_PROJECT_REPORT_{GET(id)}" pdfFiles="ProjectReportPDF" year="0" personId="0" ajax="true" disabled="false">
+<Report name="Project Report: {$project_name} - {$project_full_name}" reportType="RP_PROJECT_REPORT_{GET(id)}" pdfType="RP_PROJECT_REPORT_{GET(id)}" pdfFiles="ProjectReportPDF" year="0" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role role="Staff+">
             <SectionPermission id="report" permissions="rw" />
@@ -126,16 +126,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones" type="Textarea" blobItem="MILESTONES" rich="true">
-            <![CDATA[
-                <h3>2. Activities and milestones</h3>
-                <p>Explain the research progress made during the past 3 months, mentioning any notable administrative or research outcome.</p>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="edi" type="Textarea" blobItem="EDI" rich="true">
             <![CDATA[
-                <h3>3. Equity, diversity, and inclusion update</h3>
+                <h3>2. Equity, diversity, and inclusion update</h3>
                 <p>Mention any challenges, opportunities or lessons learnt that are relevant to EDI in your research activities or in relation to the project team.</p>
                 <b><a href='#' onClick='$("#surveyStats").slideToggle();'>Toggle Survey Stats</a></b>
                 <div id='surveyStats' style='display:none;'>
@@ -146,22 +139,15 @@
         </ReportItem>
         <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true">
             <![CDATA[
-                <h3>4. Identified or anticipated challenges (if any)</h3>
+                <h3>3. Identified or anticipated challenges (if any)</h3>
                 <p>If relevant, explain any challenges or concerns that have been identified during the past 3 months, including anticipated ones, and possible solutions to address them.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
             <![CDATA[
-                <h3>5. Milestones adjustments</h3>
+                <h3>4. Milestones adjustments</h3>
                 <p>Have you modified your project milestones because of activities/ challenges you’ve encountered in the past 3 months? If so, provide a brief description of the changes and the rationale that supports them.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="nextsteps" type="Textarea" blobItem="NEXTSTEPS" rich="true">
-            <![CDATA[
-                <h3>6. Next steps</h3>
-                <p>Briefly explain next steps including expected outcomes, activities, and objectives for the next 3 months.</p>
                 {$item}
             ]]>
         </ReportItem>

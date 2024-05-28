@@ -184,16 +184,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones" type="Textarea" blobItem="MILESTONES" rich="true">
-            <![CDATA[
-                <h3>2. Summary of theme activities and milestones</h3>
-                <p>Explain the research progress made during the past 3 months, mentioning any notable administrative or research outcome.</p>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="edi" type="Textarea" blobItem="EDI" rich="true">
             <![CDATA[
-                <h3>3. Equity, diversity, and inclusion update</h3>
+                <h3>2. Equity, diversity, and inclusion update</h3>
                 <p>Summarize and highlight relevant challenges, opportunities or lessons learnt that are relevant to EDI in your theme’s research activities or in relation to the project teams. </p>
                 <b><a href='#' onClick='$("#surveyStats").slideToggle();'>Toggle Survey Stats</a></b>
                 <div id='surveyStats' style='display:none;'>
@@ -204,28 +197,15 @@
         </ReportItem>
         <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true">
             <![CDATA[
-                <h3>4. Identified or anticipated challenges (if any)</h3>
+                <h3>3. Identified or anticipated challenges (if any)</h3>
                 <p>If relevant, summarize any challenges or concerns that have been identified during the past 3 months, including anticipated ones, and possible solutions to address them.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
             <![CDATA[
-                <h3>5. Milestones adjustments</h3>
+                <h3>4. Milestones adjustments</h3>
                 <p>Have project milestones been modified because of activities or challenges encountered in the past 3 months? If so, provide a brief overview of the changes and the rationale that supports them.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="nextsteps" type="Textarea" blobItem="NEXTSTEPS" rich="true">
-            <![CDATA[
-                <h3>6. Theme next steps</h3>
-                <p>Briefly explain next steps including expected outcomes, activities, and objectives for the next 3 months.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" rich="true">
-            <![CDATA[
-                <h3>7. Any other theme summary comments not captured above</h3>
                 {$item}
             ]]>
         </ReportItem>

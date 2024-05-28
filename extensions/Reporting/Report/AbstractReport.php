@@ -511,9 +511,10 @@ abstract class AbstractReport extends SpecialPage {
         if($this->project != null){
             $item->setProjectId($this->project->getId());
         }
+        $name = $item->varSubstitute($name);
         if($this->project != null){
             if($this->project instanceof Project){
-                if($this->project->getName() == ""){
+                if($this->project->getName() == "" || strstr($name, $this->project->getName()) !== false){
                     $this->name = $name;
                 }
                 else{
@@ -521,13 +522,17 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
             else if($this->project instanceof Theme){
-                $this->name = $name.": {$this->project->getAcronym()}";
+                if($this->project->getAcronym() == "" || strstr($name, $this->project->getAcronym()) !== false){
+                    $this->name = $name;
+                }
+                else{
+                    $this->name = $name.": {$this->project->getAcronym()}";
+                }
             }
         }
         else{
             $this->name = $name;
         }
-        $this->name = $item->varSubstitute($this->name);
     }
     
     function setHeaderName($name){

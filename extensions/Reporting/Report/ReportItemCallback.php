@@ -112,6 +112,7 @@ class ReportItemCallback {
             "project_leader_ids" => "getProjectLeaderIds",
             "project_past_leader_names" => "getPastProjectLeaderNames",
             "project_nis" => "getProjectNIs",
+            "project_members" => "getProjectMembers",
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
             "project_n_collaborators" => "getNCollaborators",
@@ -575,6 +576,29 @@ class ReportItemCallback {
             $nis[] = "N/A";
         }
         return implode(", ", $nis);
+    }
+    
+    function getProjectMembers(){
+        $members = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            if($project == null){
+                return "";
+            }
+            $year = $this->reportItem->getReport()->year;
+            foreach(array_merge($project->getAllPeople(CI),
+                                $project->getAllPeople(AR),
+                                $project->getAllPeople(HQP),
+                                $project->getAllPeople()) as $person){
+                if(!$person->isRole(PL, $project)){
+                    $members[$person->getId()] = "<a href='{$person->getUrl()}' target='_blank'>{$person->getNameForForms()}</a>";
+                }
+            }
+        }
+        if(count($members) == 0){
+            $members[] = "N/A";
+        }
+        return implode(", ", $members);
     }
     
     function getProjectEvolvedInto(){
