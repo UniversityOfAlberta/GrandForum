@@ -179,8 +179,8 @@
         <!-- Start the Report -->
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
             <![CDATA[
-                <h3>1. Description of theme work</h3>
-                <p>General description of the activities performed in the past 3 months in relation to the overall goals, objectives, and timelines of the theme.</p>
+                <h3>1. Description of work and next steps</h3>
+                <p>Summarize and highlight relevant activities performed in the past 3 months in relation to the overall goals, objectives, and timelines of the theme, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -193,8 +193,8 @@
         </ReportItem>
         <ReportItem id="edi" type="Textarea" blobItem="EDI" rich="true">
             <![CDATA[
-                <h3>3. Theme summary update on equity diversity and inclusion</h3>
-                <p>Explain how EDI considerations have been incorporated in your work, including the design and implementation of your research activities, the composition of theme teams, formation, and training of HQPs, participation in EDI events, etc.</p>
+                <h3>3. Equity, diversity, and inclusion update</h3>
+                <p>Summarize and highlight relevant challenges, opportunities or lessons learnt that are relevant to EDI in your theme’s research activities or in relation to the project teams. </p>
                 <b><a href='#' onClick='$("#surveyStats").slideToggle();'>Toggle Survey Stats</a></b>
                 <div id='surveyStats' style='display:none;'>
                     {$themeSurveyStats}
@@ -204,15 +204,15 @@
         </ReportItem>
         <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true">
             <![CDATA[
-                <h3>4. Identified of anticipated theme challenges</h3>
-                <p>Explain any challenges or concerns that have been identified during the past 3 months, including anticipated ones. If possible, explain how you have or are planning to address them.</p>
+                <h3>4. Identified or anticipated challenges (if any)</h3>
+                <p>If relevant, summarize any challenges or concerns that have been identified during the past 3 months, including anticipated ones, and possible solutions to address them.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
             <![CDATA[
-                <h3>5. Summary of theme milestone adjustments</h3>
-                <p>Have you modified your theme milestones because of activities/ challenges you’ve encountered in the past 3 months? If so, provide a brief description of the changes and the rationale that supports them.</p>
+                <h3>5. Milestones adjustments</h3>
+                <p>Have project milestones been modified because of activities or challenges encountered in the past 3 months? If so, provide a brief overview of the changes and the rationale that supports them.</p>
                 {$item}
             ]]>
         </ReportItem>

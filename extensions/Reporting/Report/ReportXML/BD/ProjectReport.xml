@@ -121,8 +121,8 @@
         <!-- Start the Report -->
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
             <![CDATA[
-                <h3>1. Description of work</h3>
-                <p>General description of the activities performed in the past 3 months in relation to the overall goals, objectives, and timelines of the project.</p>
+                <h3>1. Description of work and next steps</h3>
+                <p>General description of the activities performed in the past 3 months in relation to the overall goals, objectives, and timelines of the project, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -136,7 +136,7 @@
         <ReportItem id="edi" type="Textarea" blobItem="EDI" rich="true">
             <![CDATA[
                 <h3>3. Equity, diversity, and inclusion update</h3>
-                <p>Explain how EDI considerations have been incorporated in your work, including the design and implementation of your research activities, the composition of project teams, formation, and training of HQPs, participation in EDI events, etc.</p>
+                <p>Mention any challenges, opportunities or lessons learnt that are relevant to EDI in your research activities or in relation to the project team.</p>
                 <b><a href='#' onClick='$("#surveyStats").slideToggle();'>Toggle Survey Stats</a></b>
                 <div id='surveyStats' style='display:none;'>
                     {$projectSurveyStats}
@@ -146,8 +146,8 @@
         </ReportItem>
         <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true">
             <![CDATA[
-                <h3>4. Identified or anticipated challenges</h3>
-                <p>Explain any challenges or concerns that have been identified during the past 3 months, including anticipated ones. If possible, explain how you have or are planning to address them.</p>
+                <h3>4. Identified or anticipated challenges (if any)</h3>
+                <p>If relevant, explain any challenges or concerns that have been identified during the past 3 months, including anticipated ones, and possible solutions to address them.</p>
                 {$item}
             ]]>
         </ReportItem>
