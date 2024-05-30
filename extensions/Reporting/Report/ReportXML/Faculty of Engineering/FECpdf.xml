@@ -462,12 +462,6 @@
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
-        
-        <ReportItem id="consent" type="Checkbox" blobItem="CONSENT" blobType="BLOB_ARRAY" options="I do NOT consent to having the information on this form used for information and reporting purposes." onlyShowIfNotEmpty="true">
-            <![CDATA[
-                <p><b>{$item}</b></p>
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="publications" tooltip="SCHOLARLY PUBLICATIONS" name="Scholarly Publications" title="6. SCHOLARLY PUBLICATIONS" blobSection="FEC_PUBLICATIONS" type="EditableReportSection" pagebreak="false" hLevel="2">
         <!-- Journal Papers -->
@@ -837,13 +831,11 @@
     <ReportSection id="additional_information" tooltip="ADDITIONAL INFORMATION" name="Additional Information" title="10. ADDITIONAL INFORMATION" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
         <ReportItem id="additional" type="Textarea" blobItem="ADDITIONAL">
             <![CDATA[
-                <p>{$item}</p><br />
+                <p>{$item}</p>
             ]]>
         </ReportItem>
-        <ReportItem id="consent" type="Checkbox" blobItem="CONSENT" blobType="BLOB_ARRAY" options="I do NOT consent to having the information on this form used for information and reporting purposes." onlyShowIfNotEmpty="true">
-            <![CDATA[
-                <p><b>{$item}</b></p>
-            ]]>
-        </ReportItem>
+        <For from="1" to="3">
+            <ReportItem id="file{getExtra()}" type="UploadPDFReportItem" blobItem="FILE{getExtra()}" blobType="BLOB_RAW" />
+        </For>
     </ReportSection>
 </Report>

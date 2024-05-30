@@ -51,6 +51,7 @@ abstract class AbstractReportItem {
     }
     
     function setId($id){
+        $id = $this->varSubstitute($id);
         $this->id = $id;
     }
     
@@ -160,6 +161,7 @@ abstract class AbstractReportItem {
 
     // Sets the Blob Item of this AbstractReportItem
     function setBlobItem($item){
+        $item = $this->varSubstitute($item);
         $this->blobItem = $item;
     }
     

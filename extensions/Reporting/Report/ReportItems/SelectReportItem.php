@@ -18,10 +18,12 @@ class SelectReportItem extends AbstractReportItem {
 		}
         $width = $this->getAttr("width", "150px");
         $items = array();
+        $found = ($value == "");
 		foreach($options as $key => $option){
 		    $selected = "";
 		    if($value == $option){
 		        $selected = "selected";
+		        $found = true;
 		    }
 		    $option = str_replace("'", "&#39;", $option);
 		    if(isset($labels[$key])){
@@ -30,6 +32,10 @@ class SelectReportItem extends AbstractReportItem {
 		    else {
 		        $items[] = "<option value='{$option}' $selected >{$option}</option>";
 		    }
+		}
+		if(!$found){
+		    $value = htmlentities($value);
+		    $items[] = "<option value='{$value}' selected>{$value}</option>";
 		}
 
         $output = "<select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select>";

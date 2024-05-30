@@ -448,9 +448,9 @@ class ReportItemCallback {
                 <td style='background: white;'>
                     <table padding='0' cellspacing='0' style='width:100%;'>
                         <tr>
-                            <td style='background:#CC0000; width: ".((($r1+$r2)/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#FFD700; width: ".((($r3    )/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#008800; width: ".((($r4+$r5)/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#d55e00; width: ".((($r1+$r2)/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#0072b2; width: ".((($r3    )/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#009e73; width: ".((($r4+$r5)/$count)*100)."%; height:1em; padding:0;'></td>
                         </tr>
                     </table>
                 </td>

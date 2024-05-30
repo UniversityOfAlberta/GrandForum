@@ -13,6 +13,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -29,6 +30,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -45,6 +47,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -61,6 +64,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="-" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -77,6 +81,7 @@
             <SectionPermission id="awards" permissions="-" />
             <SectionPermission id="misc" permissions="-" />
             <SectionPermission id="additional_information" permissions="-" />
+            <SectionPermission id="sabbatical" permissions="-" />
             <SectionPermission id="chair" permissions="rw" />
             <SectionPermission id="review" permissions="-" />
             <SectionPermission id="submit" permissions="-" />
@@ -85,7 +90,9 @@
     <ReportSection id="cover" tooltip="Annual Report" name="Annual Report" title="Annual Report" blobSection="FEC_COVER" type="EditableReportSection">
         <Static>
             <![CDATA[
-                <b>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</b><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a> or <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf' target='_blank'>FSO Agreement</a>. The information submitted will be used in arriving at decisions regarding salaries, tenure, and promotion.</p>
+                <b>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</b>
+                <p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a> or <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf' target='_blank'>FSO Agreement</a>. The information submitted will be used in arriving at decisions regarding salaries, tenure, and promotion.</p>
+                <p style="font-size:0.8em;line-height:1.5em;"><b>Note:</b> All data you manually enter in your Annual Report will only be used to inform the FEC process.  Data imported from institutional and external databases, i.e., course teaching, grants, and publications, may be used for analytics purposes.</p>
                 <div style='display: inline-block; vertical-align: top; margin-right: 1em;'>
                     <table class='wikitable'>
                         <tr><td><b>Name:</b></td><td>{$user_first_name} {$user_last_name}</td></tr>
@@ -230,6 +237,7 @@
                     }
                 </style>
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$user_url}?tab=teaching&edit">Manage Teaching</a>
+                <p>SPOT data for the Spring 2024 term will be imported and included in your Annual Report as soon as it becomes available, potentially as late as the latter half of June. If you are teaching during the Spring 2024 term, you should revisit and update your reflections on teaching after this data has been imported and only "submit and lock" your Annual Report after you have done so.  If you are teaching 13-week Spring/Summer courses, these courses and their associated SPOT data will be reported in your Annual Report next year. If you are not teaching during Spring 2024, you can "submit and lock" your Annual Report as soon as you are done.</p>
             ]]>
         </Static>
         <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
@@ -444,20 +452,6 @@
             <![CDATA[
                 <h3>(c) Development of New Research Initiatives:</h3>
                 {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="consent" type="Checkbox" blobItem="CONSENT" blobType="BLOB_ARRAY" options="I do NOT consent to having the information on this form used for information and reporting purposes.">
-            <![CDATA[
-                <table style='margin-top: 1em; font-weight: bold;'>
-                    <tr>
-                        <td valign='top'>Note:</td>
-                        <td>Research information provided in this section only may be used for information and reporting purposes. If you do NOT wish to have the information in this section used in this manner, please check the box below and sign.</td>
-                    </tr>
-                    <tr>
-                        <td colspan='2'>{$item}</td>
-                    </tr>
-                </table>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -887,19 +881,53 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="consent" type="Checkbox" blobItem="CONSENT" blobType="BLOB_ARRAY" options="I do NOT consent to having the information on this form used for information and reporting purposes.">
+    </ReportSection>
+    <ReportSection id="sabbatical" tooltip="Documents Upload" name="Documents Upload" title="Documents Upload" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
+        <Static>
             <![CDATA[
-                <table style='margin-top: 1em; font-weight: bold;'>
-                    <tr>
-                        <td valign='top'>Note:</td>
-                        <td>Information provided in this section related to the Statement of Pandemic Impacts may only be used for information and reporting purposes.</td>
-                    </tr>
-                    <tr>
-                        <td colspan='2'>{$item}</td>
-                    </tr>
-                </table>
+                <p>Uploaded documents will be appended at the end of the submitted annual report pdf</p>
             ]]>
-        </ReportItem>
+        </Static>
+        <For from="1" to="3">
+            <ReportItem id="file{getExtra()}_label" type="SelectReportItem" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" options="|Conflict of Interest Disclosure Form|Sabbatical Report (for the year ending)|Sabbatical Application (for the next year)" encrypt="true">
+                <![CDATA[
+                    <div class='files' id='file{getExtra()}'>
+                        <h3>Document {getExtra()}</h3>
+                        {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="file{getExtra()}" type="Upload" blobItem="FILE{getExtra()}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <![CDATA[
+                        {$item}
+                        <script type='text/javascript'>
+                            if({getExtra()} == 1 || '{getBlobMD5()}' != ''){
+                                $('#file{getExtra()}').show(); 
+                            } 
+                            else {
+                                $('#file{getExtra()}').hide(); 
+                            }
+                            $('#file{getExtra()} select').combobox(); 
+                            $('#file{getExtra()} input.custom-combobox-input').attr('placeholder', "Label...");
+                        </script>
+                        <hr />
+                    </div>
+                ]]>
+            </ReportItem>
+        </For>
+        <Static>
+            <![CDATA[
+                <button id='addFile' type='button' class='pdfnodisplay' style='margin-top:1em;'>Add another file</button>
+                <script type='text/javascript'>
+                    $('#addFile').click(function(){
+                        $('.files:not(:visible)').first().show();
+                        $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                        if($('.files:not(:visible)').length == 0){
+                            $('#addFile').prop('disabled', true);
+                        }
+                    });
+                </script>
+            ]]>
+        </Static>
     </ReportSection>
     <ReportSection id="chair" tooltip="Signed &amp; Locked" name="Signed &amp; Locked" blobSection="CHAIR_REVIEW" type="ReportSection">
         <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true">

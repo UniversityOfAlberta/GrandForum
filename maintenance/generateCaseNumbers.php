@@ -8,6 +8,13 @@
     $start = (YEAR-1)."-07-01";
     $end = (YEAR)."-07-01";
     
+    $allPeople = Person::filterFaculty(Person::getAllPeople());
+    foreach($allPeople as $person){
+        DBFunctions::delete("grand_case_numbers", 
+                            array('year' => YEAR,
+                                  'user_id' => $person->getId()));
+    }
+    
     $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end),
                              Person::getAllPeopleDuring("ATS", $start, $end));
                              
