@@ -246,7 +246,7 @@
                     <h3>{getExtra()}</h3>
                 ]]>
             </Static>
-            <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" component="LEC" unique="true">
+            <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" component="LEC" unique="true" exclude13Week="true">
                 <Static>
                     <![CDATA[
                         <h4 style='padding: 0; margin-top:0; margin-bottom: 0.25em; margin-left:2em; font-size: 1em;'>{$course_subject} {$course_number} - {$course_title}</h4>

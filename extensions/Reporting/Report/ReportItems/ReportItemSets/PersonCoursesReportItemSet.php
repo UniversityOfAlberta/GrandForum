@@ -9,6 +9,7 @@ class PersonCoursesReportItemSet extends ReportItemSet {
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
         $term = $this->getAttr('term', '');
         $unique = strtolower($this->getAttr('unique', 'false'));
+        $exclude13Week = strtolower($this->getAttr('exclude13Week', 'false'));
         $component = $this->getAttr('component', '');
         $courses = $person->getCoursesDuring($start, $end);
         $alreadyDone = array();
@@ -17,6 +18,9 @@ class PersonCoursesReportItemSet extends ReportItemSet {
                 if(($term == '' || strstr($term, $course->term_string) !== false) &&
                    ($component == '' || $component == $course->component)){
                     if($unique && isset($alreadyDone[$course->subject.$course->catalog])){
+                        continue;
+                    }
+                    if($exclude13Week && strstr($course->term_string, "Spring") !== false && strstr($course->catalog, "A") !== false){
                         continue;
                     }
                     $tuple = self::createTuple();
