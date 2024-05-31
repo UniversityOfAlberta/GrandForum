@@ -834,7 +834,7 @@
                 <p>{$item}</p>
             ]]>
         </ReportItem>
-        <For from="1" to="3">
+        <For from="1" to="4">
             <ReportItem id="file{getExtra()}" type="UploadPDFReportItem" blobItem="FILE{getExtra()}" blobType="BLOB_RAW" />
         </For>
     </ReportSection>

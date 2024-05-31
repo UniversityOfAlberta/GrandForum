@@ -888,7 +888,7 @@
                 <p>Uploaded documents will be appended at the end of the submitted annual report pdf</p>
             ]]>
         </Static>
-        <For from="1" to="3">
+        <For from="1" to="4">
             <ReportItem id="file{getExtra()}_label" type="SelectReportItem" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" options="|Conflict of Interest Disclosure Form|Sabbatical Report (for the year ending)|Sabbatical Application (for the next year)" encrypt="true">
                 <![CDATA[
                     <div class='files' id='file{getExtra()}'>
@@ -907,7 +907,7 @@
                                 $('#file{getExtra()}').hide(); 
                             }
                             $('#file{getExtra()} select').combobox(); 
-                            $('#file{getExtra()} input.custom-combobox-input').attr('placeholder', "Label...");
+                            $('#file{getExtra()} input.custom-combobox-input').attr('placeholder', "Type or select a label...");
                         </script>
                         <hr />
                     </div>
