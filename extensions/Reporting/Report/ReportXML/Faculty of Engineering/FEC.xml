@@ -414,7 +414,7 @@
                 <p><b>(ii) Keywords:</b> {$user_keywords}</p>
                 
                 <h3>(b) Grants:</h3>
-                <p>(Individual, operating, equipment, and share of other grants. For shared grants, indicate if you are the Principal Investigator (The Principal Investigator is the holder and signing authority of the grant account). Indicate if a grant is not being administered through the Faculty of Engineering, and, if not, state where it is being administered. Do not list internal university startup funds, AIF or other graduate scholarships listed in section 3. Also, do not list unsuccessful applications and/or grants applied for but not yet awarded. List start and finish date (e.g., NSERC (Discovery), April 2008 - March 2012).</p>
+                <p>(Individual, operating, equipment, and share of other grants. For shared grants, indicate if you are the Principal Investigator (The Principal Investigator is the holder and signing authority of the grant account). Indicate if a grant is not being administered through the Faculty of Engineering, and, if not, state where it is being administered by adding a footnote. Do not list internal university startup funds, AIF or other graduate scholarships listed in section 3. Also, do not list unsuccessful applications and/or grants applied for but not yet awarded. List start and finish date (e.g., NSERC (Discovery), April 2008 - March 2012).</p>
                 <table class='wikitable'>
                     <tr>
                         <th>Granting Body</th>
