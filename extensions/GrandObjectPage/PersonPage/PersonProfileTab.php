@@ -306,7 +306,7 @@ EOF;
                         <div style='line-height: 2em;'>
                             {$pengStatusField->render()}
                         </div>
-                        <div style='position:absolute; top:calc(1*(2em) - 3px); left: 53px; white-space:nowrap;'>
+                        <div style='position:absolute; top:calc(1*(2em) - 3px); left: 59px; white-space:nowrap;'>
                             (<input type='text' placeholder='specify' name='peng_status_other' value='{$pengStatusOther}' />)
                         </div>
                     </div>
