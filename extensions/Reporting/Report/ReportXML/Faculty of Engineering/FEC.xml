@@ -276,7 +276,7 @@
                             </td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="calendar" type="TextReportItem" blobItem="FEC_COURSE_CALENDAR" blobType="BLOB_TEXT" default="{$course_calendar}" width="100px">
+                    <ReportItem id="calendar" type="TextReportItem" blobItem="FEC_COURSE_CALENDAR" blobType="BLOB_TEXT" width="100px">
                         <![CDATA[
                             <td align='center'>{$item}</td>
                         ]]>
