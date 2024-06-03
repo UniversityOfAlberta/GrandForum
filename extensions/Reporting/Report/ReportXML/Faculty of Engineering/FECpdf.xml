@@ -320,23 +320,44 @@
             ]]>
         </Static>
         <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <Static>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
                 <![CDATA[
                     <tr>
                         <td>{$grant_sponsor}</td>
                         <td>{$grant_start_date}</td>
                         <td>{$grant_end_date}</td>
                         <td align='right'>${$grant_average}</td>
-                        <td>{$grant_title}</td>
+                        <td><sup>{$item}</sup> {$grant_title}</td>
                         <td align='center'>{$grant_is_pi}</td>
                         <td>{$grant_people}</td>
                     </tr>
                 ]]>
-            </Static>
+            </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
                 </table>
+            ]]>
+        </Static>
+        
+        <!-- Grants Footnotes -->
+        <Static>
+            <![CDATA[
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
             ]]>
         </Static>
         

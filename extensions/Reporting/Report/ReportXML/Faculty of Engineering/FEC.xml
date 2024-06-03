@@ -424,11 +424,12 @@
                         <th>Title of Project</th>
                         <th>P.I.<br />(y/n)</th>
                         <th>Joint With</th>
+                        <th>Footnotes</th>
                     </tr>
             ]]>
         </Static>
         <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <Static>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
                 <![CDATA[
                     <tr>
                         <td>{$grant_sponsor}</td>
@@ -438,9 +439,10 @@
                         <td>{$grant_title}</td>
                         <td align='center'>{$grant_is_pi}</td>
                         <td>{$grant_people}</td>
+                        <td align='center' style='white-space:nowrap;'>{$item}</td>
                     </tr>
                 ]]>
-            </Static>
+            </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
