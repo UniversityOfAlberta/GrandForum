@@ -874,7 +874,15 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="additional_information" tooltip="ADDITIONAL INFORMATION" name="Additional Information" title="9. ADDITIONAL INFORMATION" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
+    <ReportSection id="misc" tooltip="MISCELLANEOUS" name="Miscellaneous" title="9. MISCELLANEOUS" blobSection="FEC_MISCELLANEOUS" type="EditableReportSection">
+        <ReportItem id="misc" type="Textarea" blobItem="MISC">
+            <![CDATA[
+                <p>(e.g. reviewing of grants and papers)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="additional_information" tooltip="ADDITIONAL INFORMATION" name="Additional Information" title="10. ADDITIONAL INFORMATION" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
         <ReportItem id="additional" type="Textarea" blobItem="ADDITIONAL">
             <![CDATA[
                 <p>(In addition to anything else that you wish to include on this page, please describe any special initiatives or activities that you wish to bring to the attention of the FEC, or that you believe were not adequately covered in the preceding sections.)</p>

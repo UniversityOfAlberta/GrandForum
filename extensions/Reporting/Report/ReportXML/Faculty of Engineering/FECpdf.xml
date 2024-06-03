@@ -827,6 +827,13 @@
             ]]>
         </Static>
     </ReportSection>
+    <ReportSection id="misc" tooltip="MISCELLANEOUS" name="Miscellaneous" title="9. MISCELLANEOUS" blobSection="FEC_MISCELLANEOUS" type="EditableReportSection" pagebreak="false" hLevel="2">
+        <ReportItem id="misc" type="Textarea" blobItem="MISC">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="additional_information" tooltip="ADDITIONAL INFORMATION" name="Additional Information" title="9. ADDITIONAL INFORMATION" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
         <ReportItem id="additional" type="Textarea" blobItem="ADDITIONAL">
             <![CDATA[
