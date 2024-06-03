@@ -26,8 +26,8 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             if($config->getValue('networkName') == "Faculty of Engineering"){
                 $pengStatus = FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS", 0, 0, $this->person->getId());
-                $pengStatusOther = ($pengStatus == "P.Eng") ? " (".FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $this->person->getId()).")" : "";
-                $this->html .= ($keywords != "") ? "<b>P.Eng Status:</b> {$pengStatus}{$pengStatusOther}<br />" : "";
+                $pengStatusOther = ($pengStatus == "P.Eng.") ? " (".FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $this->person->getId()).")" : "";
+                $this->html .= ($keywords != "") ? "<b>P.Eng. Status:</b> {$pengStatus}{$pengStatusOther}<br />" : "";
             
                 $area = FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $this->person->getId());
                 $areaOther = (strstr($area, "Other") !== false) ? " (".FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $this->person->getId()).")" : "";
@@ -278,12 +278,12 @@ EOF;
         if($config->getValue('networkName') == "Faculty of Engineering"){
             $pengStatus = FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS", 0, 0, $person->getId());
             $pengStatusOther = str_replace("'", "&#39;", FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $person->getId()));
-            $pengStatusField = new VerticalRadioBox("peng_status", "P.Eng Status", $pengStatus, array("P.Eng (APEGA)",
-                                                                                                      "P.Eng",
-                                                                                                      "E.I.T",
-                                                                                                      "Examinee",
-                                                                                                      "Applicant in Process",
-                                                                                                      "Have Not Applied"));
+            $pengStatusField = new VerticalRadioBox("peng_status", "P.Eng. Status", $pengStatus, array("P.Eng. (APEGA)",
+                                                                                                       "P.Eng.",
+                                                                                                       "E.I.T",
+                                                                                                       "Examinee",
+                                                                                                       "Applicant in Process",
+                                                                                                       "Have Not Applied"));
             
             $area = explode(", ", FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $person->getId()));
             $areaOther = str_replace("'", "&#39;", FECReflections::getBlobValue("RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $person->getId()));
@@ -301,7 +301,7 @@ EOF;
                         }
                     </style>
                     
-                    <h3>P.Eng Status:</h3>
+                    <h3>P.Eng. Status:</h3>
                     <div id='peng' style='position:relative;'>
                         <div style='line-height: 2em;'>
                             {$pengStatusField->render()}

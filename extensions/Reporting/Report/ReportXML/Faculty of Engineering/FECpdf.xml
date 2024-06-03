@@ -20,7 +20,7 @@
                         <tr><td><b>Position:</b></td><td>{$user_level}</td></tr>
                         <tr><td><b>Department:</b></td><td>{$user_dept}</td></tr>
                         <tr><td><b>Date of Initial Appointment:&nbsp;&nbsp;&nbsp;</b></td><td>{$user_appointment_year}</td></tr>
-                        <tr><td><b>P.Eng Status:</b></td><td>{getText(RP_FEC,PENG_STATUS,PENG_STATUS,0,{$user_id},0,0)}{if("{getText(RP_FEC,PENG_STATUS,PENG_STATUS,0,{$user_id},0,0,true)}" == "P.Eng", &nbsp;&#40;{getText(RP_FEC,PENG_STATUS,PENG_STATUS_OTHER,0,{$user_id},0,0)}&#41;)}</td></tr>
+                        <tr><td><b>P.Eng. Status:</b></td><td>{getText(RP_FEC,PENG_STATUS,PENG_STATUS,0,{$user_id},0,0)}{if("{getText(RP_FEC,PENG_STATUS,PENG_STATUS,0,{$user_id},0,0,true)}" == "P.Eng.", &nbsp;&#40;{getText(RP_FEC,PENG_STATUS,PENG_STATUS_OTHER,0,{$user_id},0,0)}&#41;)}</td></tr>
                     </table>
                 </div>
                 
