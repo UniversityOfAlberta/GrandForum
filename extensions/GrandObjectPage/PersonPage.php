@@ -17,10 +17,14 @@ class PersonPage {
     function userCanExecute(&$title, &$user, $action, &$result){
         $name = $title->getNSText();
         $me = Person::newFromUser($user);
+        $person = Person::newFromName($title->getText());
         if($name == "HQP"){
             $result = $user->isLoggedIn();
         }
         if($me->isRole(HQP) || $me->isRole(INACTIVE)){
+            $result = false;
+        }
+        if(!$me->isRole(ADMIN) && ($person instanceof FullPerson && $person->faculty != getFaculty())){
             $result = false;
         }
         return true;
