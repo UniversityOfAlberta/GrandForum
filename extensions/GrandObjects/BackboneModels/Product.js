@@ -69,7 +69,10 @@ Product = Backbone.Model.extend({
         if(this.get('category') == ""){
             return new Array();
         }
-        return _.keys(productStructure.categories[this.get('category')].types).sort();
+        
+        return _.pluck(_.filter(productStructure.categories[this.get('category')].types, function(type){
+          	return (type['visible'])
+        }), 'type').sort();
     },
     
     getPossibleMiscTypes: function(){

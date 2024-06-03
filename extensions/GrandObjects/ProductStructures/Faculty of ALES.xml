@@ -889,6 +889,14 @@
             <date label="Date"></date>
         </Product>
         
+        <Product type="ICT Filed" status="" visible="false">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Product>
+        
         <Product type="Patent" status="Filed|Awarded" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {Issue: %Issue.} {Place: %Venue}">
             <data>
                 <field bibtex="number" label="Number" type="String">number</field>

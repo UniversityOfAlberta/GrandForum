@@ -456,6 +456,7 @@ class Paper extends BackboneModel{
                     $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
                     $ccvType = "{$tattrs->ccv_name}";
                     $ccvType = ($ccvType == "") ? $tname : $ccvType;
+                    $visible = @(strtolower("{$tattrs->visible}") != "false");
                     if(trim("{$tattrs->status}") != ""){
                         $tstatus = explode("|", "{$tattrs->status}");
                     }
@@ -473,6 +474,7 @@ class Paper extends BackboneModel{
                                                                                'status' => $tstatus,
                                                                                'type' => $ccvType,
                                                                                'titles' => $titles,
+                                                                               'visible' => $visible,
                                                                                'citationFormat' => $citationFormat,
                                                                                'ccv_status' => array(),
                                                                                'authors_label' => "Author",

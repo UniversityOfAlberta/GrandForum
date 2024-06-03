@@ -883,13 +883,29 @@
     
     <!-- Patents and Spin Offs -->
     <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {Issue: %Issue.} {Place: %Venue}">
-        <Product type="Tool" status="">
+        <Product type="Tool" status="" visible="false">
             <data></data>
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Product>
         
-        <Product type="Patent" status="Filed|Awarded" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {Issue: %Issue.} {Place: %Venue}">
+        <Product type="Report of Invention" status="" visible="true">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Product>
+        
+        <Product type="ICT Filed" status="" visible="true">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Product>
+        
+        <Product type="Patent" status="Provisional patent filed|Non-provisional patent filed|Patent allowed|Patent issued|Patent licenced" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {Issue: %Issue.} {Place: %Venue}" visible="true">
             <data>
                 <field bibtex="number" label="Number" type="String">number</field>
                 <field label="Country" type="String">country</field>
@@ -900,15 +916,7 @@
             <date label="Date Awarded"></date>
         </Product>
         
-        <Product type="Report of Invention" status="">
-            <data>
-                <field label="URL" type="URL">url</field>
-            </data>
-            <authors label="Author"></authors>
-            <date label="Date"></date>
-        </Product>
-        
-        <Product type="Spin-Off" status="">
+        <Product type="Spin-Off" status="" visible="false">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
@@ -916,7 +924,7 @@
             <date label="Date"></date>
         </Product>
 
-        <Product type="Software" status="">
+        <Product type="Software" status="" visible="false">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
@@ -924,7 +932,7 @@
             <date label="Date"></date>
         </Product>
 
-        <Product type="App" status="">
+        <Product type="App" status="" visible="false">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
@@ -932,7 +940,7 @@
             <date label="Date"></date>
         </Product>
         
-        <Product type="Technology" status="">
+        <Product type="Technology" status="" visible="false">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
@@ -940,7 +948,7 @@
             <date label="Date"></date>
         </Product>
         
-        <Product type="Start-Up">
+        <Product type="Start-Up" visible="false">
             <data>
                 <field label="Company Name" type="String">name</field>
             </data>
@@ -948,7 +956,7 @@
             <date label="Date"></date>
         </Product>
         
-        <Product type="Misc" status="">
+        <Product type="Misc" status="" visible="false">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
