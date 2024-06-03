@@ -1377,15 +1377,15 @@ class Paper extends BackboneModel{
      * @param boolean $hyperlink Whether or not to use hyperlinks in the citation
      * @return string The citation text
      */
-    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true, $showReported=false, $highlightOnlyMyHQP=false, $showCCID=false){
+    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true, $showReported=false, $highlightOnlyMyHQP=false, $showCCID=false, $showIF=true){
         global $config;
         $me = Person::newFromWgUser();
         $citationFormat = $this->getCitationFormat();
         $format = $citationFormat;
         $regex = "/\{.*?\}/";
         $that = $this;
-        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP, $showCCID, $that) {
-            return $that->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP, $showCCID);
+        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP, $showCCID, $showIF, $that) {
+            return $that->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP, $showCCID, $showIF);
         }, $format);
         
         $peerDiv = "";
@@ -1423,7 +1423,7 @@ class Paper extends BackboneModel{
                     $reported = "&nbsp;/&nbsp;Reported: $reportedYear";
                 }
             }
-            if($if != "" || $ranking != "" || $snip != ""){
+            if($showIF && ($if != "" || $ranking != "" || $snip != "")){
                 if($config->getValue('elsevierApi') != ""){
                     // Prefer SNIP
                     if($snip != ""){

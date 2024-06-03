@@ -6,6 +6,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
         global $wgOut, $config;
         $product = Product::newFromId($this->productId);
         $showStatus = (strtolower($this->getAttr("showStatus", "false") == "true"));
+        $showIF = (strtolower($this->getAttr("showIF", "true") == "true"));
         
         //Sanity Check: If there is ONLY title and year (no data), set incomplete == true;
         $incomplete = true;
@@ -62,7 +63,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
         else{
             $html .= "<span>";
         }
-        $html .= "<span id='{$this->getPostId()}_span'>{$product->getCitation(true, $showStatus, false, false, $this->personId)}</span>";
+        $html .= "<span id='{$this->getPostId()}_span'>{$product->getCitation(true, $showStatus, false, false, $this->personId, false, $showIF)}</span>";
         if($incomplete || $peerReviewedMissing || $impactFactorMissing || $snipMissing || $acceptanceDateMissing){
             $html .= "<ul style='color: #FF6600;'>";
             if($incomplete){
@@ -71,7 +72,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
             if($peerReviewedMissing){
                 $html .= "<li>This entry is missing a Peer Reviewed status</li>";
             }
-            if($impactFactorMissing){
+            if($showIF && $impactFactorMissing){
                 $html .= "<li>This entry is missing Impact Factor information</li>";
             }
             if($snipMissing){
@@ -233,7 +234,8 @@ class AnnotateProductReportItem extends AbstractReportItem {
         global $wgOut;
         $product = Product::newFromId($this->productId);
         $showStatus = (strtolower($this->getAttr("showStatus", "false") == "true"));
-        $html = $product->getCitation(true, $showStatus, false, false, $this->personId);
+        $showIF = (strtolower($this->getAttr("showIF", "true") == "true"));
+        $html = $product->getCitation(true, $showStatus, false, false, $this->personId, false, $showIF);
         $data = (array)json_decode($this->getBlobValue());
 
         $dom = new SmartDomDocument();

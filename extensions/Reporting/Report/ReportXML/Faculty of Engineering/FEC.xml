@@ -481,7 +481,7 @@
             ]]>
         </Static>
         <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" peerReviewed="Yes" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
                 ]]>
@@ -511,7 +511,7 @@
             ]]>
         </Static>
         <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
                 ]]>
@@ -541,7 +541,7 @@
             ]]>
         </Static>
         <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Book|Book Chapter" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
                 ]]>
@@ -570,7 +570,7 @@
             ]]>
         </Static>
         <ReportItemSet id="products4" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
                 ]]>
@@ -600,7 +600,7 @@
             ]]>
         </Static>
         <ReportItemSet id="products5" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|White Paper|Tech Report|Manual" useProductYear="true" includeHQP="false" peerReviewed="No" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
                 ]]>
@@ -630,7 +630,7 @@
             ]]>
         </Static>
         <ReportItemSet id="products6" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
                 ]]>
@@ -660,7 +660,7 @@
             ]]>
         </Static>
         <ReportItemSet id="products7" type="PersonProductsReportItemSet" category="Publication" productType="Poster|Workshop Paper|Magazine/Newspaper Article|Edited Book|Book Review|Misc" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
                 ]]>

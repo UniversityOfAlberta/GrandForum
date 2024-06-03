@@ -384,7 +384,7 @@
                         {$item} 
                 ]]>
             </ReportItem>
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
                         <b>({$product_type})</b> {$item}
                     </li>
@@ -411,7 +411,7 @@
                         {$item} 
                 ]]>
             </ReportItem>
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
                         <b>({$product_type})</b> {$item}
                     </li>
@@ -438,7 +438,7 @@
                         {$item} 
                 ]]>
             </ReportItem>
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
                         <b>({$product_type})</b> {$item}
                     </li>
@@ -465,7 +465,7 @@
                         {$item} 
                 ]]>
             </ReportItem>
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
                         <b>({$product_type})</b> {$item}
                     </li>
@@ -492,7 +492,7 @@
                         {$item} 
                 ]]>
             </ReportItem>
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
                         <b>({$product_type})</b> {$item}
                     </li>
@@ -519,7 +519,7 @@
                         {$item} 
                 ]]>
             </ReportItem>
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
                         <b>({$product_type})</b> {$item}
                     </li>
@@ -546,7 +546,7 @@
                         {$item} 
                 ]]>
             </ReportItem>
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
                         <b>({$product_type})</b> {$item}
                     </li>
