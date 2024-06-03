@@ -238,8 +238,8 @@ ProductEditView = Backbone.View.extend({
         if(!this.model.isSingleAuthor()){
             this.$("#productAuthors").append("<p><i>Drag to re-order each " + this.model.getAuthorsLabel().toLowerCase() + "</i></p>");
         }
-        this.$("#productAuthors").append("<p><i>Right-Click " + this.model.getAuthorsLabel().toLowerCase() + " to toggle between non-UofA and UofA member (if they are known)</i></p>");
-        this.$("#productAuthors").append("<p><i>Double-Click " + this.model.getAuthorsLabel().toLowerCase() + " to specify who is the lead author</i></p>");
+        this.$("#productAuthors").append("<p><i>Right-Click " + this.model.getAuthorsLabel().toLowerCase() + " to toggle between non-UofA and UofA member (if they are known).</i></p>");
+        this.$("#productAuthors").append("<p><i>If the lead " + this.model.getAuthorsLabel().toLowerCase() + " is defined, you can indicate them by double-clicking on their name.</i></p>");
         this.$("#productAuthors").append("<p><i>Green Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>known</b> to the UofA.<br />" + 
                                          "   <i>White Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>not known</b> to the UofA.</i></p>");
         
