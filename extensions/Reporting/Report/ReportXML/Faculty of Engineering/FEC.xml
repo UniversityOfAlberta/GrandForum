@@ -320,6 +320,7 @@
                 </If>
                 <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="|100|" width="100%" class="wikitable teaching_methods">
                     <![CDATA[
+                            Please reflect on your Initiatives to improve your teaching, including any new teaching methods you may have implemented or any activities toward course/Laboratory development.
                             {$item}
                         </div>
                     ]]>
