@@ -26,6 +26,11 @@ class ProductHistories extends BackbonePage {
     }
     
     function getModels(){
+        global $wgOut;
+        $people = new Collection(Person::filterFaculty(Person::getAllPeople(CI)));
+        $wgOut->addHTML("<script type='text/javascript'>
+            var people = ".$people->toJSON().";
+        </script>");
         return array();
     }
     

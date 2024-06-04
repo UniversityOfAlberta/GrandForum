@@ -2,15 +2,14 @@ ProductHistoriesView = Backbone.View.extend({
 
     initialize: function(){
         Backbone.Subviews.add(this);
-        this.model.bind('sync', this.render, this);
         this.productHistories = new ProductHistories();
         this.template = _.template($("#product_histories_template").html());
-        this.render();
+        _.defer(this.render.bind(this));
     },
     
     subviewCreators: {
         "personSelect": function() {
-            return new PersonSelectView({model: this.model});
+            return new PersonSelectView();
         },
         "productHistories": function() {
             return new HistoriesView({model: this.productHistories});
@@ -37,12 +36,11 @@ ProductHistoriesView = Backbone.View.extend({
 PersonSelectView = Backbone.View.extend({
     initialize: function(){
         this.template = _.template($("#person_select_template").html());
-        this.model.fetch();
         this.render();
     },
     
     render: function(){
-        this.$el.html(this.template(this.model));
+        this.$el.html(this.template());
         this.$('select').chosen();
         return this.$el;
     }

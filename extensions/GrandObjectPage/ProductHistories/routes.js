@@ -27,9 +27,7 @@ var pageRouter = new PageRouter;
 pageRouter.on('route:defaultRoute', function (actions) {
     main.set('title', 'Product Histories');
     this.closeCurrentView();
-    var people = new People();
-    people.roles = [CI];
-    this.currentView = new ProductHistoriesView({el: $("#currentView"), model: people});
+    this.currentView = new ProductHistoriesView({el: $("#currentView")});
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's
