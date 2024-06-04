@@ -66,12 +66,12 @@ class QASummary extends SpecialPage{
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-        if(self::userCanExecute($wgUser)){
+        /*if(self::userCanExecute($wgUser)){
             $selected = ($wgTitle->getNSText() == "Special" && ($wgTitle->getText() == "QASummary")) ? "selected" : "";
             $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("QA Summary", 
                                                                    "$wgServer$wgScriptPath/index.php/Special:QASummary", 
                                                                    "$selected");
-        }
+        }*/
     }
     
 }

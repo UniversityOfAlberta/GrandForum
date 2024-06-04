@@ -464,7 +464,7 @@ class FECReflections extends SpecialPage {
                                     <th style='width:6em;'>Associate</th>
                                     <th style='width:6em;'>Full</th>
                                 </tr>");
-            $courseRows = @$courses["A"][$dept] + @$courses["B"][$dept] + @$courses["C"][$dept];
+            $courseRows = @array_merge($courses["A"][$dept], $courses["B"][$dept], $courses["C"][$dept]);
             @array_multisort(array_keys($courseRows), SORT_NATURAL, $courseRows);
             if(is_array($courseRows)){
                 foreach($courseRows as $key => $row){
@@ -482,7 +482,7 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("</div>");
         
         // Students Taught
-        $studentRows = @$students["A"]["All"] + @$students["B"]["All"] + @$students["C"]["All"];
+        $studentRows = @array_merge($students["A"]["All"], $students["B"]["All"], $students["C"]["All"]);
         @array_multisort(array_keys($studentRows), SORT_NATURAL, $studentRows);
             
         $wgOut->addHTML("<h3>Students Taught</h3>
