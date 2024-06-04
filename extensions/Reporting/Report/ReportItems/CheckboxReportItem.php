@@ -37,6 +37,11 @@ class CheckboxReportItem extends AbstractReportItem {
 	    return $options;
 	}
 	
+	function parseLabels(){
+	    $options = @explode("|", $this->attributes['labels']);
+	    return $options;
+	}
+	
 	function renderForPDF(){
 	    global $wgOut;
 	    $attr = strtolower($this->getAttr("onlyShowIfNotEmpty"));

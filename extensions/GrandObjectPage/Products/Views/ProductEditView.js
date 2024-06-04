@@ -51,7 +51,8 @@ ProductEditView = Backbone.View.extend({
         "change [name=acceptance_date]": "changeStart",
         "change [name=date]": "changeEnd",
         "change [name=data_start_date]": "changeDataStart",
-        "change [name=data_end_date]": "changeDataEnd"
+        "change [name=data_end_date]": "changeDataEnd",
+        "change [name=data_peer_reviewed]": "changePeerReviewed",
     },
     
     updateStatus: function(){
@@ -124,6 +125,16 @@ ProductEditView = Backbone.View.extend({
         }
         else{
             this.$("[name=data_start_date]").datepicker("option", "maxDate", null);
+        }
+    },
+    
+    changePeerReviewed: function(){
+        var value = this.$("[name=data_peer_reviewed]:checked").val();
+        if(value == "Yes"){
+            this.$("#peer_reviewed_ifyes").show();
+        }
+        else{
+            this.$("#peer_reviewed_ifyes").hide();
         }
     },
     
@@ -471,8 +482,10 @@ ProductEditView = Backbone.View.extend({
         _.defer(function(){
             this.$("[name=acceptance_date]").change();
             this.$("[name=date]").change();
+            this.changePeerReviewed();
         }.bind(this));
         //this.updateStatus();
+        
         return this.$el;
     }
 

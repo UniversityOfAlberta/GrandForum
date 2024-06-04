@@ -1411,7 +1411,12 @@ class Paper extends BackboneModel{
             
             if($this->getCategory() == "Publication"){
                 if($this->getData('peer_reviewed') == "Yes"){
-                    $peer_rev = "&nbsp;/&nbsp;Peer Reviewed";
+                    if($this->getData('peer_reviewed_ifyes') != ""){
+                        $peer_rev = "&nbsp;/&nbsp;{$this->getData('peer_reviewed_ifyes')}";
+                    }
+                    else{
+                        $peer_rev = "&nbsp;/&nbsp;Peer Reviewed";
+                    }
                 }
                 else if($this->getData('peer_reviewed') == "No"){
                     $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";

@@ -48,7 +48,7 @@
             ]]>
         </Static>
         
-        <Static>
+        <!--Static>
             <![CDATA[
                 <h2>Supplementary Professional Activities</h2>
             ]]>
@@ -111,7 +111,7 @@
                     {$item}
                 ]]>
             </ReportItem>
-        </If>
+        </If-->
     </ReportSection>
     <ReportSection id="teaching" tooltip="TEACHING" name="Teaching" title="1. TEACHING" blobSection="FEC_TEACHING" type="EditableReportSection" pagebreak="false" hLevel="2">
         <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
@@ -244,59 +244,66 @@
     <ReportSection id="supervision" tooltip="SUPERVISION OF RESEARCH TRAINEES" name="Supervision" title="3. SUPERVISION OF RESEARCH TRAINEES" blobSection="FEC_SUPERVISION" type="EditableReportSection" pagebreak="false" hLevel="2">
         
         <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|tech|other|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Research/Technical Assistants|Other|Student Committee Responsibilities">
+            
             <Static>
                 <![CDATA[
                     <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>
-                    <table class='wikitable' frame='box' rules='all' width='100%'>
-                        <tr>
-                            <th style='width: 20%;'>Student</th>
-                            <th style='width: 1%; white-space:nowrap;'>FT / PT</th>
-                            <th style='width: 10%;'>Year<br />Admitted</th>
-                            <th style='width: 25%;'>Degree<br />Sought</th>
-                            <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
-                            <th style='width: 20%;'>Co-Supervisors</th>
-                        </tr>
                 ]]>
             </Static>
-            <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
+            <If if="{>({getHQPCount({getExtra(value)})}, 0)}">
                 <Static>
                     <![CDATA[
-                        <tr>
-                            <td rowspan='2'>{$user_name}</td>
+                        <table class='wikitable' frame='box' rules='all' width='100%'>
+                            <tr>
+                                <th style='width: 20%;'>Student</th>
+                                <th style='width: 1%; white-space:nowrap;'>FT / PT</th>
+                                <th style='width: 10%;'>Year<br />Admitted</th>
+                                <th style='width: 25%;'>Degree<br />Sought</th>
+                                <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
+                                <th style='width: 20%;'>Co-Supervisors</th>
+                            </tr>
                     ]]>
                 </Static>
-                <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}" options="FT|PT" width="3.5em">
-                    <![CDATA[
-                        <td>{$item}</td>
-                    ]]>
-                </ReportItem>
+                <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                                <td rowspan='2'>{$user_name}</td>
+                        ]]>
+                    </Static>
+                    <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}" options="FT|PT" width="3.5em">
+                        <![CDATA[
+                            <td>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <Static>
+                        <![CDATA[
+                                <td align='center'>{substr({$user_uni_start},-4,4)}</td>
+                                <td>{$user_level}</td>
+                                <td align='center'>{substr({$user_uni_end},-4,4)}</td>
+                                <td>{$user_cosupervisors}</td>
+                        ]]>
+                    </Static>
+                    <Static>
+                        <![CDATA[
+                            </tr>
+                        ]]>
+                    </Static>
+                    <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" height="48px">
+                        <![CDATA[
+                            <tr><td colspan='5'>
+                                Name of Scholarships, if any<br />
+                                {$item}
+                            </td></tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
                 <Static>
                     <![CDATA[
-                            <td align='center'>{substr({$user_uni_start},-4,4)}</td>
-                            <td>{$user_level}</td>
-                            <td align='center'>{substr({$user_uni_end},-4,4)}</td>
-                            <td>{$user_cosupervisors}</td>
+                        </table>
                     ]]>
                 </Static>
-                <Static>
-                    <![CDATA[
-                        </tr>
-                    ]]>
-                </Static>
-                <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" height="48px">
-                    <![CDATA[
-                        <tr><td colspan='5'>
-                            Name of Scholarships, if any<br />
-                            {$item}
-                        </td></tr>
-                    ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <Static>
-                <![CDATA[
-                    </table>
-                ]]>
-            </Static>
+            </If>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="research" tooltip="FUNDING" name="Funding" title="4. FUNDING" blobSection="FEC_RESEARCH" type="EditableReportSection" pagebreak="false" hLevel="2">
@@ -374,190 +381,323 @@
             <![CDATA[
                 <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>
                 <h3>(a) Refereed journals</h3>
-                <ul>
+                {set(products1, 0)}
+                <table id='products1' class='wikitable' frame='box' rules='all' style='width: 100%;'>
+                    <tr>
+                        <th style='width: 99%;'>Publication</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
             ]]>
         </Static>
         <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" peerReviewed="Yes" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item} 
+                    {set(products1, 1)}
+                    <tr style="page-break-inside: avoid;">
+                        <td>
+                            {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
-                        <b>({$product_type})</b> {$item}
-                    </li>
+                            <b>({$product_type})</b> {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                        <td align='center' style='font-size: 1.5em;'>{$item}</td>
+                    </tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </ul>
+                </table>
             ]]>
         </Static>
+        <If if="{==({get(products1)},0)}">
+            <![CDATA[
+                <style>
+                    #products1 { display: none; }
+                </style>
+            ]]>
+        </If>
         
         <!-- Conference Papers -->
         <Static>
             <![CDATA[
                 <h3>(b) Conference proceedings</h3>
-                <ul>
+                {set(products2, 0)}
+                <table id='products2' class='wikitable' frame='box' rules='all' style='width: 100%;'>
+                    <tr>
+                        <th style='width: 99%;'>Publication</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
             ]]>
         </Static>
         <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item} 
+                    {set(products2, 1)}
+                    <tr style="page-break-inside: avoid;">
+                        <td>
+                            {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
-                        <b>({$product_type})</b> {$item}
-                    </li>
+                            <b>({$product_type})</b> {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                        <td align='center' style='font-size: 1.5em;'>{$item}</td>
+                    </tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </ul>
+                </table>
             ]]>
         </Static>
+        <If if="{==({get(products2)},0)}">
+            <![CDATA[
+                <style>
+                    #products2 { display: none; }
+                </style>
+            ]]>
+        </If>
         
         <!-- Books/Chapters -->
         <Static>
             <![CDATA[
                 <h3>(c) Books; chapters in books</h3>
-                <ul>
+                {set(products3, 0)}
+                <table id='products3' class='wikitable' frame='box' rules='all' style='width: 100%;'>
+                    <tr>
+                        <th style='width: 99%;'>Publication</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
             ]]>
         </Static>
         <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Book|Book Chapter" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item} 
+                    {set(products3, 1)}
+                    <tr style="page-break-inside: avoid;">
+                        <td>
+                            {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
-                        <b>({$product_type})</b> {$item}
-                    </li>
+                            <b>({$product_type})</b> {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                        <td align='center' style='font-size: 1.5em;'>{$item}</td>
+                    </tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </ul>
+                </table>
             ]]>
         </Static>
+        <If if="{==({get(products3)},0)}">
+            <![CDATA[
+                <style>
+                    #products3 { display: none; }
+                </style>
+            ]]>
+        </If>
         
         <!-- Patents -->
         <Static>
             <![CDATA[
                 <h3>(d) Reports of invention, patents filed or patents awarded</h3>
-                <ul>
+                {set(products4, 0)}
+                <table id='products4' class='wikitable' frame='box' rules='all' style='width: 100%;'>
+                    <tr>
+                        <th style='width: 99%;'>Publication</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
             ]]>
         </Static>
         <ReportItemSet id="products4" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item} 
+                    {set(products4, 1)}
+                    <tr style="page-break-inside: avoid;">
+                        <td>
+                            {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
-                        <b>({$product_type})</b> {$item}
-                    </li>
+                            <b>({$product_type})</b> {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                        <td align='center' style='font-size: 1.5em;'>{$item}</td>
+                    </tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </ul>
+                </table>
             ]]>
         </Static>
+        <If if="{==({get(products4)},0)}">
+            <![CDATA[
+                <style>
+                    #products4 { display: none; }
+                </style>
+            ]]>
+        </If>
         
         <!-- Unrefereed Papers -->
         <Static>
             <![CDATA[
                 <h3>(e) Unrefereed papers and technical reports published</h3>
-                <ul>
+                {set(products5, 0)}
+                <table id='products5' class='wikitable' frame='box' rules='all' style='width: 100%;'>
+                    <tr>
+                        <th style='width: 99%;'>Publication</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
             ]]>
         </Static>
         <ReportItemSet id="products5" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|White Paper|Tech Report|Manual" useProductYear="true" includeHQP="false" peerReviewed="No" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item} 
+                    {set(products5, 1)}
+                    <tr style="page-break-inside: avoid;">
+                        <td>
+                            {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
-                        <b>({$product_type})</b> {$item}
-                    </li>
+                            <b>({$product_type})</b> {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                        <td align='center' style='font-size: 1.5em;'>{$item}</td>
+                    </tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </ul>
+                </table>
             ]]>
         </Static>
+        <If if="{==({get(products5)},0)}">
+            <![CDATA[
+                <style>
+                    #products5 { display: none; }
+                </style>
+            ]]>
+        </If>
         
         <!-- Presentations -->
         <Static>
             <![CDATA[
                 <h3>(f) Presentations, indicating by an asterisk which author made the presentation</h3>
-                <ul>
+                {set(products6, 0)}
+                <table id='products6' class='wikitable' frame='box' rules='all' style='width: 100%;'>
+                    <tr>
+                        <th style='width: 99%;'>Publication</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
             ]]>
         </Static>
         <ReportItemSet id="products6" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item} 
+                    {set(products6, 1)}
+                    <tr style="page-break-inside: avoid;">
+                        <td>
+                            {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
-                        <b>({$product_type})</b> {$item}
-                    </li>
+                            <b>({$product_type})</b> {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                        <td align='center' style='font-size: 1.5em;'>{$item}</td>
+                    </tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </ul>
+                </table>
             ]]>
         </Static>
+        <If if="{==({get(products6)},0)}">
+            <![CDATA[
+                <style>
+                    #products6 { display: none; }
+                </style>
+            ]]>
+        </If>
         
         <!-- Other -->
         <Static>
             <![CDATA[
                 <h3>(g) Other publications</h3>
-                <ul>
+                {set(products7, 0)}
+                <table id='products7' class='wikitable' frame='box' rules='all' style='width: 100%;'>
+                    <tr>
+                        <th style='width: 99%;'>Publication</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
             ]]>
         </Static>
         <ReportItemSet id="products7" type="PersonProductsReportItemSet" category="Publication" productType="Poster|Workshop Paper|Magazine/Newspaper Article|Edited Book|Book Review|Misc" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item} 
+                    {set(products7, 1)}
+                    <tr style="page-break-inside: avoid;">
+                        <td>
+                            {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                 <![CDATA[
-                        <b>({$product_type})</b> {$item}
-                    </li>
+                            <b>({$product_type})</b> {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                        <td align='center' style='font-size: 1.5em;'>{$item}</td>
+                    </tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </ul>
+                </table>
             ]]>
         </Static>
+        <If if="{==({get(products7)},0)}">
+            <![CDATA[
+                <style>
+                    #products7 { display: none; }
+                </style>
+            ]]>
+        </If>
         
         <!-- Publication Footnotes -->
         <Static>

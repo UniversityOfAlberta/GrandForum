@@ -20,6 +20,7 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
@@ -45,6 +46,7 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="ecd4abd985ec4e9ab590f0ecb86811a7" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
@@ -73,6 +75,7 @@
                 <field label="DOI" type="DOI">doi</field>
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="51bd72e89f85442a9ae199e75fe5e765" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
@@ -103,6 +106,7 @@
                 <field label="DOI" type="DOI">doi</field>
                 <field ccv_id="55de4e145f4f4a10b7cc0eb797e9464b" ccv_name="URL" label="URL" type="URL">url</field>
                 <field ccv_id="96f6d37a0c6041d1a6a8d09f4cb8537b" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="3af9bb3859ad4c8a83094a176627c678" ccv_name="Review Date" label="Review Date"></date>
@@ -133,6 +137,7 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
@@ -157,6 +162,7 @@
                 <field label="DOI" type="DOI">doi</field>
                 <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="b9156e483a5a42a3b49d5ee599c73aee" ccv_name="Year" label="Publication Date"></date>
@@ -192,6 +198,7 @@
                 <field label="ISSN" type="String">issn</field>
                 <field label="DOI" type="DOI">doi</field>
                 <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Year" label="Publication Date"></date>
@@ -230,6 +237,7 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Year" label="Publication Date"></date>
@@ -260,6 +268,7 @@
                 <field label="DOI" type="String">doi</field>
                 <field ccv_id="56b229f58f6749c3902dfcc33854ed36" ccv_name="URL" label="URL" type="String">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="6b626ef9b271446e9338a21390f4d4fd" ccv_name="Year" label="Publication Date"></date>
@@ -285,6 +294,7 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="e921d0d933bd48ed9192283bb16a83f6" ccv_name="URL" bibtex="url"  label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Year" label="Publication Date"></date>
@@ -305,6 +315,7 @@
                 <field label="Number of pages" type="String">ms_pages</field>
                 <field ccv_id="934cc966420041649511eb4232cdd36a" ccv_name="Page Range" label="Page Range" type="Pages">pages</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
@@ -337,6 +348,7 @@
                 <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="06295e65f66b4c6aa286d08bd9fac59b" ccv_name="Invited?" ccvtk="invited" label="Invited?" type="Radio" options="Yes|No">invited</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
@@ -371,6 +383,7 @@
                 <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="06295e65f66b4c6aa286d08bd9fac59b" ccv_name="Invited?" ccvtk="invited" label="Invited?" type="Radio" options="Yes|No">invited</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
@@ -396,6 +409,7 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="e921d0d933bd48ed9192283bb16a83f6" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Year" label="Publication Date"></date>
@@ -429,6 +443,7 @@
                 <field bibtex="url" ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" label="URL" type="URL">url</field>
                 <field ccv_id="06295e65f66b4c6aa286d08bd9fac59b" ccv_name="Invited?" ccvtk="invited" label="Invited?" type="Radio" options="Yes|No">invited</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
@@ -445,6 +460,7 @@
                 <field label="Publisher" type="String">publisher</field>
                 <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Year" label="Publication Date"></date>
@@ -463,6 +479,7 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
@@ -491,9 +508,10 @@
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
-                <field label="Peer Reviewed" type="String">peer_reviewed</field>
                 <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="String">peer_reviewed</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
@@ -522,6 +540,7 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="8ee878c89ccc43089ee35784a143dddd" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="68abef7baf294189a44bab18b9fa8b71" ccv_name="Year" label="Publication Date"></date>

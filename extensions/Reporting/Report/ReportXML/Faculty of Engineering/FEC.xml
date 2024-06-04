@@ -127,7 +127,7 @@
         </Static>
         
         <!-- Supplementary Professional Activities -->
-        <ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA" encrypt="true">
+        <!--ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA" encrypt="true">
             <![CDATA[
                 <script type="text/javascript">
                     $(document).ready(function(){
@@ -226,7 +226,7 @@
                 {$item}
                 </div>
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="teaching" tooltip="TEACHING" name="Teaching" title="1. TEACHING" blobSection="FEC_TEACHING" type="EditableReportSection">
         <Static>
@@ -474,9 +474,10 @@
             <![CDATA[
                 <h3>(a) Refereed journals</h3>
                 (For those accepted, give acceptance date and number of manuscript pages)
-                <table class='wikitable'>
+                <table class='wikitable' style='width: 100%;'>
                     <tr>
-                        <th>Title</th>
+                        <th style='width: 100%;'>Publicaton</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
                         <th>Footnote</th>
                     </tr>
             ]]>
@@ -485,6 +486,11 @@
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
@@ -504,9 +510,10 @@
             <![CDATA[
                 <h3>(b) Conference proceedings</h3>
                 (specify number of ms)
-                <table class='wikitable'>
+                <table class='wikitable' style='width: 100%;'>
                     <tr>
-                        <th>Title</th>
+                        <th style='width: 100%;'>Publicaton</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
                         <th>Footnote</th>
                     </tr>
             ]]>
@@ -515,6 +522,11 @@
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
@@ -534,9 +546,10 @@
             <![CDATA[
                 <h3>(c) Books; chapters in books</h3>
                 (specify number of pages)
-                <table class='wikitable'>
+                <table class='wikitable' style='width: 100%;'>
                     <tr>
-                        <th>Title</th>
+                        <th style='width: 100%;'>Publicaton</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
                         <th>Footnote</th>
                     </tr>
             ]]>
@@ -545,6 +558,11 @@
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
@@ -563,9 +581,10 @@
         <Static>
             <![CDATA[
                 <h3>(d) Reports of invention, patents filed or patents awarded</h3>
-                <table class='wikitable'>
+                <table class='wikitable' style='width: 100%;'>
                     <tr>
-                        <th>Title</th>
+                        <th style='width: 100%;'>Publicaton</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
                         <th>Footnote</th>
                     </tr>
             ]]>
@@ -574,6 +593,11 @@
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
@@ -593,9 +617,10 @@
             <![CDATA[
                 <h3>(e) Unrefereed papers and technical reports published</h3>
                 (specify number of pages)
-                <table class='wikitable'>
+                <table class='wikitable' style='width: 100%;'>
                     <tr>
-                        <th>Title</th>
+                        <th style='width: 100%;'>Publicaton</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
                         <th>Footnote</th>
                     </tr>
             ]]>
@@ -604,6 +629,11 @@
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
@@ -623,9 +653,10 @@
             <![CDATA[
                 <h3>(f) Presentations, indicating by an asterisk which author made the presentation</h3>
                 (do not include presentations of papers listed in section 5(b) or elsewhere)
-                <table class='wikitable'>
+                <table class='wikitable' style='width: 100%;'>
                     <tr>
-                        <th>Title</th>
+                        <th style='width: 100%;'>Publicaton</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
                         <th>Footnote</th>
                     </tr>
             ]]>
@@ -634,6 +665,11 @@
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
@@ -653,9 +689,10 @@
             <![CDATA[
                 <h3>(g) Other publications</h3>
                 (specify number of pages)
-                <table class='wikitable'>
+                <table class='wikitable' style='width: 100%;'>
                     <tr>
-                        <th>Title</th>
+                        <th style='width: 100%;'>Publicaton</th>
+                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
                         <th>Footnote</th>
                     </tr>
             ]]>
@@ -664,6 +701,11 @@
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
@@ -900,7 +942,7 @@
             ]]>
         </Static>
         <For from="1" to="4">
-            <ReportItem id="file{getExtra()}_label" type="SelectReportItem" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" options="|Conflict of Interest Disclosure Form|Sabbatical Report (for the year ending)|Sabbatical Application (for the next year)" encrypt="true">
+            <ReportItem id="file{getExtra()}_label" type="SelectReportItem" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" options="|Supplementary Professional Activity|Sabbatical Report (for the year ending)|Sabbatical Application (for the next year)" encrypt="true">
                 <![CDATA[
                     <div class='files' id='file{getExtra()}'>
                         <h3>Document {getExtra()}</h3>
