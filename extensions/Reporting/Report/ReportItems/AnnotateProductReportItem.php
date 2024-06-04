@@ -57,7 +57,7 @@ class AnnotateProductReportItem extends AbstractReportItem {
             $acceptanceDateMissing = true;
         }
         $html = "";
-        if($incomplete || $peerReviewedMissing || $impactFactorMissing || $snipMissing){
+        if($incomplete || $peerReviewedMissing || ($showIF && $impactFactorMissing) || $snipMissing){
             $html .= "<span style='background:orange;'>";
         }
         else{
