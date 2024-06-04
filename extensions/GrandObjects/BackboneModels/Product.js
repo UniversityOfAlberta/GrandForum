@@ -72,7 +72,7 @@ Product = Backbone.Model.extend({
         
         return _.pluck(_.filter(productStructure.categories[this.get('category')].types, function(type){
           	return (type['visible'])
-        }), 'type').sort();
+        }), 'tname').sort();
     },
     
     getPossibleMiscTypes: function(){

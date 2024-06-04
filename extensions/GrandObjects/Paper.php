@@ -473,6 +473,7 @@ class Paper extends BackboneModel{
                     $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
                                                                                'status' => $tstatus,
                                                                                'type' => $ccvType,
+                                                                               'tname' => $tname,
                                                                                'titles' => $titles,
                                                                                'visible' => $visible,
                                                                                'citationFormat' => $citationFormat,
