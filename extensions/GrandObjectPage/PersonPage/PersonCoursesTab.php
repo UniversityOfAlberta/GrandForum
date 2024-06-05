@@ -90,6 +90,7 @@ class PersonCoursesTab extends AbstractEditableTab {
                     $sects = $courses->pluck('sect');
                     $totEnrls = $courses->pluck('totEnrl');
                     
+                    
                     $inner = array();
                     $counts = array();
                     $percents = array();
@@ -119,12 +120,13 @@ class PersonCoursesTab extends AbstractEditableTab {
                                 $inputs = array();
                                 foreach($percents[$component] as $key => $percent){
                                     $percent = str_replace("%", "", $percent);
-                                    $inputs[] = "<input type='text' style='height:10px; width: 25px; vertical-align: middle;' name='percentages[$key]' value='{$percent}' />%";
+                                    $sect = $sects[array_search($key, $ids)];
+                                    $inputs[] = "{$sect}:<input type='text' style='height:10px; width: 25px;' name='percentages[$key]' value='{$percent}' />%";
                                 }
-                                $percentages .= @implode(",", $inputs);
+                                $percentages .= @implode(", ", $inputs);
                             }
                             else{
-                                $percentages .= @implode(",", $percents[$component]);
+                                $percentages .= @implode(", ", $percents[$component]);
                             }
                             $percentages .= "]";
                         }
