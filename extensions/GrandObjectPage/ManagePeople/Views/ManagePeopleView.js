@@ -330,9 +330,9 @@ ManagePeopleView = Backbone.View.extend({
                     }
                     var results = data.results;
                     var people = new Array("<option></option>");
-                    _.each(this.allPeople.sortBy('reversedName'), function(p){
+                    _.each(this.allPeople.sortBy('realName'), function(p){
                         if(_.contains(results, parseInt(p.get('id')))){
-                            var fullname = p.get('reversedName');
+                            var fullname = p.get('realName');
                             if(p.get('email') != ""){
                                 fullname += " (" + p.get('email').split('@')[0] + ")";
                             }

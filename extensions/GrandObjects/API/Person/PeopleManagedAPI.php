@@ -9,7 +9,6 @@ class PeopleManagedAPI extends RESTAPI {
             if($me->isRoleAtLeast(ADMIN)){
                 $people[$me->getReversedName()] = $me;
             }
-            
             foreach($me->getRelations('all', true) as $type){
                 foreach($type as $rel){
                     // Get the list of Related Users

@@ -83,8 +83,11 @@ class PeopleAPI extends RESTAPI {
                     $people[strtolower($row['user_name'])] = $person;
                 }
                 ksort($people);
-                $people = new Collection($people);
-                return $people->toSimpleJSON();
+                $json = array();
+                foreach($people as $person){
+                    $json[] = $person->toSimpleArray();
+                }
+                return json_encode($json);
             }
             else{
                 $people = new Collection(Person::getAllPeople('all'));

@@ -90,7 +90,6 @@ class PersonCoursesTab extends AbstractEditableTab {
                     $sects = $courses->pluck('sect');
                     $totEnrls = $courses->pluck('totEnrl');
                     
-                    
                     $inner = array();
                     $counts = array();
                     $percents = array();
