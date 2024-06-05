@@ -1031,7 +1031,6 @@ class Person extends BackboneModel {
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'email' => $this->getEmail(),
-                      'realName' => $this->getRealName(),
                       'fullName' => $this->getNameForForms());
         return $json;
     }
