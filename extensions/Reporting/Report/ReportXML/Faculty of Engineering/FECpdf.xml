@@ -21,7 +21,7 @@
                         <tr><td><b>Department:</b></td><td>{$user_dept}</td></tr>
                         <!--tr><td><b>Date of Initial Appointment:&nbsp;&nbsp;&nbsp;</b></td><td>{$user_appointment_year}</td></tr-->
                         <tr><td><b>P.Eng. Status:</b></td><td>{getText(RP_FEC,PENG_STATUS,PENG_STATUS,0,{$user_id},0,0)}{if("{getText(RP_FEC,PENG_STATUS,PENG_STATUS,0,{$user_id},0,0,true)}" == "P.Eng.", &nbsp;&#40;{getText(RP_FEC,PENG_STATUS,PENG_STATUS_OTHER,0,{$user_id},0,0)}&#41;)}</td></tr>
-                    </table>
+                    </table><br />
                 </div>
                 
                 <div style='display: inline-block; vertical-align: top;'>
@@ -43,7 +43,7 @@
                         {if("{getFecPersonalInfo(dateOfRetirement)}" != "", <tr><td><b>Date of Retirement:&nbsp;&nbsp;&nbsp;</b></td><td>{getFecPersonalInfo(dateOfRetirement)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateOfLastDegree)}" != "", <tr><td><b>Date of Last Degree:&nbsp;&nbsp;&nbsp;</b></td><td>{getFecPersonalInfo(dateOfLastDegree)}</td></tr>)}
                         {if("{getFecPersonalInfo(lastDegree)}" != "", <tr><td><b>Last Degree:&nbsp;&nbsp;&nbsp;</b></td><td>{getFecPersonalInfo(lastDegree)}</td></tr>)}
-                    </table>
+                    </table><br />
                 </div>
             ]]>
         </Static>
@@ -174,24 +174,7 @@
                         </table><br />
                     ]]>
                 </Static>
-                <If if="{!=({$course_eval}, )}">
-                    <![CDATA[
-                        <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                            <tr>
-                                <th style='width: 1%;'>Q#</th>
-                                <th style='width: 1%;'>QText</th>
-                                <th style='width: 1%;'>R1</th>
-                                <th style='width: 1%;'>R2</th>
-                                <th style='width: 1%;'>R3</th>
-                                <th style='width: 1%;'>R4</th>
-                                <th style='width: 1%;'>R5</th>
-                                <th>Chart</th>
-                            </tr>
-                            {$course_eval}
-                        </table><br />
-                    ]]>
-                </If>
-                <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="45%|10%|45%" class="wikitable">
+                <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="45.4%|10%|44.6%" class="wikitable">
                     <![CDATA[
                             {$item}
                         </div>
@@ -995,14 +978,61 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="additional_information" tooltip="ADDITIONAL INFORMATION" name="Additional Information" title="10. ADDITIONAL INFORMATION" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
+    <ReportSection id="additional_information" tooltip="ADDITIONAL INFORMATION" name="Additional Information" title="10. ADDITIONAL INFORMATION" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="true" hLevel="2">
         <ReportItem id="additional" type="Textarea" blobItem="ADDITIONAL">
             <![CDATA[
                 <p>{$item}</p>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="sabbatical" tooltip="Documents" name="Documents" title="Documents Upload" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
+    <ReportSection id="spots" type="EditableReportSection" name="SPOTs" title="APPENDIX A: SPOTs" pagebreak="true" hLevel="2">
+        <Static>
+            <![CDATA[
+                <div id="spots">
+            ]]>
+        </Static>
+        <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
+            <Static>
+                <![CDATA[
+                    {set(term, {getExtra()})}
+                ]]>
+            </Static>
+            <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" component="LEC" unique="true" exclude13Week="true">
+                <ReportItemSet type="CourseSections">
+                    <If if="{!=({course_eval(false)}, )}">
+                        <![CDATA[
+                            <h3>{get(term)} / {$course_subject} {$course_number} / {$course_comp} - {$course_section}</h3>
+                            <table class='wikitable' frame='box' rules='all' style='width:100%;'>
+                                <tr>
+                                    <th style='width: 1%;'>Q#</th>
+                                    <th style='width: 1%;'>QText</th>
+                                    <th style='width: 1%;'>R1</th>
+                                    <th style='width: 1%;'>R2</th>
+                                    <th style='width: 1%;'>R3</th>
+                                    <th style='width: 1%;'>R4</th>
+                                    <th style='width: 1%;'>R5</th>
+                                    <th>Chart</th>
+                                </tr>
+                                {course_eval(false)}
+                            </table>
+                            <div class='pagebreak'></div>
+                        ]]>
+                    </If>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </div>
+                <style>
+                    #spots div.pagebreak:last-child {
+                        display: none;
+                    }
+                </style>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="sabbatical" tooltip="Documents" name="Documents" title="APPENDIX B: Attachments" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
         <Static>
             <![CDATA[
                 <ul>

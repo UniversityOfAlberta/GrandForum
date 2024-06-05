@@ -13,6 +13,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
+            <SectionPermission id="spots" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
@@ -30,6 +31,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
+            <SectionPermission id="spots" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
@@ -47,6 +49,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
+            <SectionPermission id="spots" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
@@ -64,6 +67,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
+            <SectionPermission id="spots" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="-" />
             <SectionPermission id="review" permissions="rw" />
@@ -81,6 +85,7 @@
             <SectionPermission id="awards" permissions="-" />
             <SectionPermission id="misc" permissions="-" />
             <SectionPermission id="additional_information" permissions="-" />
+            <SectionPermission id="spots" permissions="-" />
             <SectionPermission id="sabbatical" permissions="-" />
             <SectionPermission id="chair" permissions="rw" />
             <SectionPermission id="review" permissions="-" />
@@ -237,7 +242,6 @@
                     }
                 </style>
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$user_url}?tab=teaching&edit">Manage Teaching</a>
-                <p>SPOT data for the Spring 2024 term will be imported and included in your Annual Report as soon as it becomes available, potentially as late as the latter half of June. If you are teaching during the Spring 2024 term, you should revisit and update your reflections on teaching after this data has been imported and only "submit and lock" your Annual Report after you have done so.  If you are teaching 13-week Spring/Summer courses, these courses and their associated SPOT data will be reported in your Annual Report next year. If you are not teaching during Spring 2024, you can "submit and lock" your Annual Report as soon as you are done.</p>
             ]]>
         </Static>
         <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
@@ -300,27 +304,9 @@
                         </table>
                     ]]>
                 </Static>
-                
-                <If if="{!=({$course_eval}, )}">
-                    <![CDATA[
-                        <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                            <tr>
-                                <th style='width: 1%;'>Q#</th>
-                                <th style='width: 1%;'>QText</th>
-                                <th style='width: 1%;'>R1</th>
-                                <th style='width: 1%;'>R2</th>
-                                <th style='width: 1%;'>R3</th>
-                                <th style='width: 1%;'>R4</th>
-                                <th style='width: 1%;'>R5</th>
-                                <th>Chart</th>
-                            </tr>
-                            {$course_eval}
-                        </table>
-                    ]]>
-                </If>
                 <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="|100|" width="100%" class="wikitable teaching_methods">
                     <![CDATA[
-                            Please reflect on your Initiatives to improve your teaching, including any new teaching methods you may have implemented or any activities toward course/Laboratory development.
+                            Please reflect on your Initiatives to improve your teaching, including any new teaching methods you may have implemented or any activities toward course/laboratory development.
                             {$item}
                         </div>
                     ]]>
@@ -935,7 +921,55 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="sabbatical" tooltip="Documents Upload" name="Documents Upload" title="Documents Upload" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
+    <ReportSection id="spots" type="EditableReportSection" name="SPOTs" title="APPENDIX A: SPOTs" pagebreak="false" hLevel="2">
+        <Static>
+            <![CDATA[
+                <p>SPOT data for the Spring 2024 term will be imported and included in your Annual Report as soon as it becomes available, potentially as late as the latter half of June. If you are teaching during the Spring 2024 term, you should revisit and update your reflections on teaching after this data has been imported and only "submit and lock" your Annual Report after you have done so.  If you are teaching 13-week Spring/Summer courses, these courses and their associated SPOT data will be reported in your Annual Report next year. If you are not teaching during Spring 2024, you can "submit and lock" your Annual Report as soon as you are done.</p>
+                <div id="spots">
+            ]]>
+        </Static>
+        <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
+            <Static>
+                <![CDATA[
+                    {set(term, {getExtra()})}
+                ]]>
+            </Static>
+            <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" component="LEC" unique="true" exclude13Week="true">
+                <ReportItemSet type="CourseSections">
+                    <If if="{!=({course_eval(false)}, )}">
+                        <![CDATA[
+                            <h3>{get(term)} / {$course_subject} {$course_number} / {$course_comp} - {$course_section}</h3>
+                            <table class='wikitable' frame='box' rules='all' style='width:100%;'>
+                                <tr>
+                                    <th style='width: 1%;'>Q#</th>
+                                    <th style='width: 1%;'>QText</th>
+                                    <th style='width: 1%;'>R1</th>
+                                    <th style='width: 1%;'>R2</th>
+                                    <th style='width: 1%;'>R3</th>
+                                    <th style='width: 1%;'>R4</th>
+                                    <th style='width: 1%;'>R5</th>
+                                    <th>Chart</th>
+                                </tr>
+                                {course_eval(false)}
+                            </table>
+                            <div class='pagebreak'></div>
+                        ]]>
+                    </If>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </div>
+                <style>
+                    #spots div.pagebreak:last-child {
+                        display: none;
+                    }
+                </style>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="sabbatical" tooltip="Documents Upload" name="Attachments" title="APPENDIX B: Attachments" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <p>Uploaded documents will be appended at the end of the submitted annual report pdf</p>

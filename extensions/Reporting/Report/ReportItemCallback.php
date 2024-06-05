@@ -413,10 +413,10 @@ class ReportItemCallback {
         return ($course->totEnrl/max(1,$course->capEnrl))*100;
     }
     
-    function getCourseEval(){
+    function getCourseEval($allSections=true){
         $person = Person::newFromId($this->reportItem->personId);
         $course = Course::newFromId($this->reportItem->projectId);
-        $evals = $person->getCourseEval($course->getId(), true);
+        $evals = $person->getCourseEval($course->getId(), $allSections);
         if(!is_array($evals)){
             return "";
         }
@@ -1407,6 +1407,9 @@ class ReportItemCallback {
                                       AND rp_item = '{$blobId}' 
                                       AND rp_subitem = '{$subId}'");
 		$md5 = (@$data[0]['encrypted']) ? encrypt(@$data[0]['md5']) : @$data[0]['md5'];
+		if(!isset($_GET['preview']) && isset($_GET['generatePDF'])){
+		    return urlencode(urlencode($md5));
+		}
         return urlencode($md5);
     }
     
