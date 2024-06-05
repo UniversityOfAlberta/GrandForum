@@ -176,7 +176,7 @@
                 </Static>
                 <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="45.4%|10%|44.6%" class="wikitable">
                     <![CDATA[
-                            <b>Reflections</b>
+                            <b>Reflection</b>
                             {$item}
                         </div>
                     ]]>
