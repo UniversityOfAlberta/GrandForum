@@ -448,26 +448,11 @@ class Course extends BackboneModel{
     }
     
     function getCalendarString(){
-        $data = DBFunctions::select(array('grand_courses'),
-                                    array('*'),
-                                    array('term_string' => EQ($this->term_string),
-                                          'subject' => EQ($this->subject),
+        $data = DBFunctions::select(array('grand_course_calendar'),
+                                    array('hours'),
+                                    array('subject' => EQ($this->subject),
                                           'catalog' => EQ($this->catalog)));
-        $string = array('LEC' => 0,
-                        'SEM' => 0,
-                        'LAB' => 0);
-        foreach($data as $row){
-            if($row['Component'] == "LEC"){
-                $string['LEC'] = 3;
-            }
-            if($row['Component'] == "SEM"){
-                $string['SEM'] = "1s";
-            }
-            if($row['Component'] == "LAB"){
-                $string['LAB'] = 3;
-            }
-        }
-        return implode("-", $string);
+        return @$data[0]['hours'];
     }
 
     function getTermUsingStartMonth($month){
