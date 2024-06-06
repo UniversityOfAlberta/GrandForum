@@ -151,11 +151,7 @@ class PersonNotesTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(STAFF)){
-            return true;
-        }
-        return false;
+        return $this->userCanView();
     }
     
 }
