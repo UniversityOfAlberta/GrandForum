@@ -115,47 +115,6 @@ class PersonFECTab extends AbstractEditableTab {
             return "";
         }
         $this->person->getFecPersonalInfo();
-        /*
-        $eFECLastYear = $this->person->getProductHistoryLastYear();
-        if($eFECLastYear != ""){
-            $eFECLastYear++;
-            $report = new DummyReport("FEC", $this->person, null, $eFECLastYear);
-            $reportSection = new ReportSection();
-            $reportItem = new StaticReportItem();
-            $reportItem->parent = $reportSection;
-            $reportSection->parent = $report;
-            $reportItem->personId = $this->person->getId();
-            $callback = new ReportItemCallback($reportItem);
-            $products = $this->person->getPapersAuthored("Publication", ($eFECLastYear)."-07-01", "2100-01-01", false);
-            $count = 0;
-            $peerCount = 0;
-            foreach($products as $product){
-                if($product->getData('peer_reviewed') == "Yes"){
-                    $peerCount++;
-                }
-                $count++;
-            }
-            $this->html .= "<div style='float:right; display: inline-block;'>The lifetime total count of publications reported by the eFEC system by June 30, {$eFECLastYear} was {$callback->getUserLifetimePublicationCount('Publication')}. An additional {$count} publications (of which {$peerCount} refereed) have been imported to the Forum.</div>";
-        }
-        else{
-            $products = $this->person->getPapersAuthored("Publication", "1900-07-01", "2100-01-01", false);
-            $count = 0;
-            $peerCount = 0;
-            foreach($products as $product){
-                if($product->getData('peer_reviewed') == "Yes"){
-                    $peerCount++;
-                }
-                $count++;
-            }
-            $this->html .= "<div style='float: right; display: inline-block;'>{$count} publications (of which {$peerCount} refereed) have been imported to the Forum.</div>";
-        }*/
-        
-        // HR Note
-        $blb = new ReportBlob(BLOB_RAW, 0, $this->person->getId(), 0);
-        $addr = ReportBlob::create_address('FEC_HISTORY', 'FEC_HISTORY', 'HR_NOTE', 0);
-        $result = $blb->load($addr, true);
-        $hrNoteMD5 = $blb->getMD5();
-        $hrNoteLink = ($hrNoteMD5 != "") ? "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$hrNoteMD5}'>Download</a>" : "";
         
         $departments = array_keys($this->person->departments);
         $percents = array_values($this->person->departments);
@@ -190,7 +149,6 @@ class PersonFECTab extends AbstractEditableTab {
         $this->html .= ($this->person->dateOfRetirement != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of Retirement:</b></td><td>".substr($this->person->dateOfRetirement, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->dateOfLastDegree != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of Last Degree:</b></td><td>".substr($this->person->dateOfLastDegree, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->lastDegree != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Last Degree:</b></td><td>".$this->person->lastDegree."</td></tr>" : "";
-        $this->html .= ($hrNoteLink != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>HR Note:</b></td><td>{$hrNoteLink}</td></tr>" : "";
         $this->html .= "</table>";
     }
     
@@ -243,7 +201,6 @@ class PersonFECTab extends AbstractEditableTab {
             $this->html .= "<tr><td align='right'><b>Date of Last Degree:</b></td><td><input type='text' name='dateOfLastDegree' class='calendar' style='display:none;' value='".substr($this->person->dateOfLastDegree, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>Last Degree:</b></td><td><input type='text' name='lastDegree' value='".$this->person->lastDegree."' /></td></tr>";
         }
-        $this->html .= "<tr><td align='right'><b>HR Note:</b></td><td><input type='file' name='hr_note' accept='application/pdf' /></td></tr>";
         $this->html .= "</table>";
         
         $this->html .= "<script type='text/javascript'>
@@ -291,7 +248,11 @@ class PersonFECTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        return $this->userCanView();
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(STAFF)){
+            return true;
+        }
+        return false;
     }
     
 }

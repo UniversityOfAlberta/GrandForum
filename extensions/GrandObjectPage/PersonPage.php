@@ -114,6 +114,7 @@ class PersonPage {
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 if($person instanceof FullPerson){
                     $tabbedPage->addTab(new PersonFECTab($person, $visibility));
+                    $tabbedPage->addTab(new PersonNotesTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
                     $tabbedPage->addTab(new HQPExitTab($person, $visibility));
