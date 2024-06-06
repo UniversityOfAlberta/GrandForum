@@ -242,6 +242,13 @@
                     }
                 </style>
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$user_url}?tab=teaching&edit">Manage Teaching</a>
+                Core course data has been imported, including course title and number, calendar hours, and actual number of students.<br />
+                In addition, please provide
+                <ol type="i">
+                    <li>the names of all instructors involved and their corresponding  percentage of course instruction; and</li>
+                    <li>your actual weekly average hours of contact (indicate if a reading course).</li>
+                </ol>
+                For multi-section courses, please indicate the course coordinator with an asterisk (*).
             ]]>
         </Static>
         <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
@@ -315,7 +322,8 @@
         </ReportItemSet>
         <ReportItem id="projectCourses" type="MultiTextReportItem" blobItem="FEC_PROJECT_COURSES" blobType="BLOB_ARRAY" labels="Class Prefix|Number|Title|Description|Type|Term|Enrolment" types="Text|Text|Text|Textarea|Select(LEC,SEM,LAB)|Checkbox(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" sizes="100|50|200|200|||50" multiple="true" addText="Add New" optional="true" encrypt="true">
             <![CDATA[
-                <h3>Project Courses <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='This section should be used for project courses, not individually recorded in Beartracks.<br />If you have taught such a course, and it does not appear above, please enter it below. <br />Click &#39;Add New&#39; to add a line for each such course.'>&#9432;</span></h3>
+                <h3>Project Courses</h3>
+                Please describe your involvement in any research or design courses, where you were the primary supervisor of students or student groups.
                 {$item}
             ]]>
         </ReportItem>
