@@ -345,6 +345,8 @@ class Descriptors extends SpecialPage {
         $frailty = array(array(),array(),array(),array());
         $frailty6 = array(array(),array(),array(),array());
         $frailty12 = array(array(),array(),array(),array());
+        $means6 = array(array(),array(),array(),array());
+        $means12 = array(array(),array(),array(),array());
         $frailtyByAge = array("All" => array(),
                               "<60-64" => array(),
                               "65-74" => array(),
@@ -393,6 +395,9 @@ class Descriptors extends SpecialPage {
         $deltas = array();
         
         foreach($people as $person){
+            $total = null;
+            $total6 = null;
+            $total12 = null;
             if(!$person->isRoleAtMost(CI)){
                 continue;
             }
@@ -410,6 +415,7 @@ class Descriptors extends SpecialPage {
                 $living = self::getBlobData("AVOID_Questions_tab0", "living_avoid", $person, YEAR);
                 $education = self::getBlobData("AVOID_Questions_tab0", "education_avoid", $person, YEAR);
                 $total = $fScores["Total"]/36;
+                $total0 = $total;
                 
                 if($total >= 0 && $total <= 0.1){
                     $frailty[0][] = $total;
@@ -633,18 +639,24 @@ class Descriptors extends SpecialPage {
                 $scores = $fScores["Health"];
                 $selfHealth = self::getBlobData("HEALTH_QUESTIONS", "healthstatus_avoid6", $person, YEAR, "RP_AVOID_SIXMO");
                 $total = $fScores["Total"]/36;
+                $total6 = $total;
                 
+                $diff = $total6 - $total0;
                 if($total >= 0 && $total <= 0.1){
                     $frailty6[0][] = $total;
+                    if($total0 != null){ $means6[0][] = $diff; }
                 }
                 else if($total >= 0.1 && $total <= 0.21){
                     $frailty6[1][] = $total;
+                    if($total0 != null){ $means6[1][] = $diff; }
                 }
                 else if($total >= 0.21 && $total < 0.45){
                     $frailty6[2][] = $total;
+                    if($total0 != null){ $means6[2][] = $diff; }
                 }
                 else {
                     $frailty6[3][] = $total;
+                    if($total0 != null){ $means6[3][] = $diff; }
                 }
                 
                 @$cfs6[$fScores["CFS"]]++;
@@ -674,18 +686,24 @@ class Descriptors extends SpecialPage {
                 $scores = $fScores["Health"];
                 $selfHealth = self::getBlobData("HEALTH_QUESTIONS", "healthstatus_avoid6", $person, YEAR, "RP_AVOID_SIXMO");
                 $total = $fScores["Total"]/36;
+                $total12 = $total;
                 
+                $diff = $total12 - $total6;
                 if($total >= 0 && $total <= 0.1){
                     $frailty12[0][] = $total;
+                    if($total6 != null){ $means12[0][] = $diff; }
                 }
                 else if($total >= 0.1 && $total <= 0.21){
                     $frailty12[1][] = $total;
+                    if($total6 != null){ $means12[1][] = $diff; }
                 }
                 else if($total >= 0.21 && $total < 0.45){
                     $frailty12[2][] = $total;
+                    if($total6 != null){ $means12[2][] = $diff; }
                 }
                 else {
                     $frailty12[3][] = $total;
+                    if($total6 != null){ $means12[3][] = $diff; }
                 }
                 
                 @$cfs12[$fScores["CFS"]]++;
@@ -924,8 +942,8 @@ class Descriptors extends SpecialPage {
                         <th rowspan='2'>Frailty Index/36</th>
                         <th rowspan='2'>Frailty Status (%Deficits)</th>
                         <th colspan='4'>Baseline</th>
-                        <th colspan='4'>6 Month</th>
-                        <th colspan='4'>12 Month</th>
+                        <th colspan='6'>6 Month</th>
+                        <th colspan='6'>12 Month</th>
                     </tr>
                     <tr>
                         <th>n (%)</th>
@@ -936,10 +954,14 @@ class Descriptors extends SpecialPage {
                         <th>Mean</th>
                         <th>Median</th>
                         <th>Stdev</th>
+                        <th style='white-space:nowrap;'>&#916;Mean</th>
+                        <th>Variance</th>
                         <th>n (%)</th>
                         <th>Mean</th>
                         <th>Median</th>
                         <th>Stdev</th>
+                        <th style='white-space:nowrap;'>&#916;Mean</th>
+                        <th>Variance</th>
                     </tr>
                 </thead>
                 <tbody>");
@@ -955,10 +977,14 @@ class Descriptors extends SpecialPage {
 	                            <td>".number_format(avg($frailty6[$i]), 2)."</td>
 	                            <td>".number_format(median($frailty6[$i]), 2)."</td>
 	                            <td>".number_format(stdev($frailty6[$i]), 2)."</td>
+	                            <td>".number_format(avg($means6[$i]), 2)."</td>
+	                            <td></td>
 	                            <td style='white-space:nowrap;'>".count($frailty12[$i])." (".number_format(count($frailty12[$i])/max(1, $n12Month)*100, 1).")</td>
 	                            <td>".number_format(avg($frailty12[$i]), 2)."</td>
 	                            <td>".number_format(median($frailty12[$i]), 2)."</td>
 	                            <td>".number_format(stdev($frailty12[$i]), 2)."</td>
+	                            <td>".number_format(avg($means12[$i]), 2)."</td>
+	                            <td></td>
 	                        </tr>");
         }
         @$wgOut->addHTML("
