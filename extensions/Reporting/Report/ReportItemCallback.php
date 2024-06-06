@@ -853,7 +853,14 @@ class ReportItemCallback {
     }
     
     function getUserCoSupervisors(){
-        return $this->getUserSupervisors(true);
+        $me = $this->reportItem->getReport()->person;
+        $person = Person::newFromId($this->reportItem->personId);
+        if($me->isRelatedToDuring($person, CO_SUPERVISES, $this->reportItem->getReport()->startYear.CYCLE_START_MONTH, 
+                                                          $this->reportItem->getReport()->year.CYCLE_END_MONTH)){
+            // Only show if the person is a co-supervisor
+            return $this->getUserSupervisors(true);
+        }
+        return "";
     }
 
     function getUserPublicationCount($start_date,$end_date,$case='Publication'){
