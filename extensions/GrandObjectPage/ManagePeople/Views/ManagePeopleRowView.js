@@ -19,6 +19,7 @@ ManagePeopleRowView = Backbone.View.extend({
     subRolesDialog: null,
     projectLeadersDialog: null,
     themeLeadersDialog: null,
+    deleteDialog: null,
     template: _.template($('#manage_people_row_template').html()),
     
     initialize: function(options){
@@ -320,6 +321,49 @@ ManagePeopleRowView = Backbone.View.extend({
                                                                       el: this.themeLeadersDialog});
     },
     
+    openDeleteDialog: function(){
+        if(this.deleteDialog == null){
+            this.deleteDialog = this.$("#deleteDialog").dialog({
+	            autoOpen: false,
+	            modal: true,
+	            show: 'fade',
+	            resizable: false,
+	            draggable: false,
+	            open: function(){
+	                $("html").css("overflow", "hidden");
+	            },
+	            beforeClose: function(){
+	                $("html").css("overflow", "auto");
+	            },
+	            buttons: {
+	                "Delete": function(){
+	                    var model = this.model;
+                        $("div.throbber", this.deleteDialog).show();
+                        model.destroy({
+                            success: function(model, response) {
+                                this.deleteDialog.dialog('close');
+                                $("div.throbber", this.deleteDialog).hide();
+                                clearSuccess();
+                                clearError();
+                                addSuccess('The user was deleted sucessfully');
+                            }.bind(this),
+                            error: function(model, response) {
+                                this.deleteDialog.dialog('close');
+                                clearSuccess();
+                                clearError();
+                                addError('The user was not deleted sucessfully');
+                            }.bind(this)
+                        });
+	                }.bind(this),
+	                "Cancel": function(){
+	                    this.deleteDialog.dialog('close');
+	                }.bind(this)
+	            }
+	        });
+	    }
+        this.deleteDialog.dialog('open');
+    },
+    
     save: function(){
         _.defer(function(){
             this.$(".throbber").show();
@@ -341,7 +385,8 @@ ManagePeopleRowView = Backbone.View.extend({
         "click #editUniversities": "openUniversitiesDialog",
         "click #editAlumni": "openAlumniDialog",
         "click #editSubRoles": "openSubRolesDialog",
-        "click #editThemeLeadership": "openThemeLeadersDialog"
+        "click #editThemeLeadership": "openThemeLeadersDialog",
+        "click .delete-icon": "openDeleteDialog"
     },
     
     render: function(){

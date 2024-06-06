@@ -1194,7 +1194,7 @@ class Person extends BackboneModel {
     
     function delete(){
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(MANAGER)){
+        if($me->isRoleAtLeast(STAFF)){
             Cache::delete("nameCache_{$this->getId()}");
             Cache::delete("idsCache_{$this->getId()}");
             return DBFunctions::update('mw_user',

@@ -16,6 +16,10 @@
 <div id="themeLeadershipDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Theme Leadership">
     
 </div>
+<div id="deleteDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Delete User">
+    <p>Are you sure you want to delete the user <b><%= fullName %></b>?</p>
+    <div class="throbber" style="float:right;display:none;"></div>
+</div>
 <td align="center">
     <% if(!frozen){ %>
         <span id="editRoles" class="edit-icon" title="Edit Roles"></span>
@@ -51,5 +55,9 @@
     </td>
 <% } %>
 <td style="border-left: 2px solid #CCCCCC;" align="left">
-    <a href="<%= url %>"><%= fullName %></a>
+    <span style='display:none;'><%= fullName %></span>
+    <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
+        <span class="delete-icon" style="margin-right:7px; vertical-align:middle;"></span>
+    <% } %>
+    <a style="vertical-align:middle;" href="<%= url %>"><%= fullName %></a>
 </td>
