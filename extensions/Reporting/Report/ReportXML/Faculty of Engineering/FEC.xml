@@ -467,256 +467,76 @@
             ]]>
         </Static>
         
-        <!-- Journal Papers -->
-        <Static>
-            <![CDATA[
-                <h3>(a) Refereed journals</h3>
-                (For those accepted, give acceptance date and number of manuscript pages)
-                <table class='wikitable' style='width: 100%;'>
-                    <tr>
-                        <th style='width: 100%;'>Publicaton</th>
-                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
-                        <th>Footnote</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" peerReviewed="Yes" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
+        <ReportItemSet type="String" array="Publication|
+                                            Publication|
+                                            Publication|
+                                            Patent/Spin-Off|
+                                            Publication|
+                                            Presentation|
+                                            Publication" 
+                                     array2="Journal Paper|
+                                             Conference Paper\|Proceedings Paper|
+                                             Book\|Book Chapter|
+                                             |
+                                             Journal Paper\|Journal Abstract\|White Paper\|Tech Report\|Manual|
+                                             |
+                                             Poster\|Workshop Paper\|Magazine/Newspaper Article\|Edited Book\|Book Review\|Misc"
+                                     array3="Refereed journals|
+                                             Conference proceedings|
+                                             Books; chapters in books|
+                                             Reports of invention, patents filed or patents awarded|
+                                             Unrefereed papers and technical reports published|
+                                             Presentations, indicating by an asterisk which author made the presentation|
+                                             Other publications"
+                                     array4="(For those accepted, give acceptance date and number of manuscript pages)|
+                                             (specify number of ms)|
+                                             (specify number of pages)|
+                                             |
+                                             (specify number of pages)|
+                                             (do not include presentations of papers listed in section 5(b) or elsewhere)|
+                                             (specify number of pages)"
+                                     array5="Yes|
+                                             |
+                                             |
+                                             |
+                                             No|
+                                             |
+                                             ">
+            <Static>
                 <![CDATA[
-                    <tr><td>{$item}</td>
+                    <h3>({alpha({$index})}) {getExtra(value3)}</h3>
+                    {getExtra(value4)}
+                    <table class='wikitable' style='width: 100%;'>
+                        <tr>
+                            <th style='width: 100%;'>Publicaton</th>
+                            <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
+                            <th>Footnote</th>
+                        </tr>
                 ]]>
-            </ReportItem>
-            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+            </Static>
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
+                    <![CDATA[
+                        <tr><td>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
+                    <![CDATA[
+                        <td align='center'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                    <![CDATA[
+                        <td width="30px" align="center">{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
                 <![CDATA[
-                    <td align='center'>{$item}</td>
+                    </table>
                 ]]>
-            </ReportItem>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <td width="30px" align="center">{$item}</td></tr>
-                ]]>
-            </ReportItem>
+            </Static>
         </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Conference Papers -->
-        <Static>
-            <![CDATA[
-                <h3>(b) Conference proceedings</h3>
-                (specify number of ms)
-                <table class='wikitable' style='width: 100%;'>
-                    <tr>
-                        <th style='width: 100%;'>Publicaton</th>
-                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
-                        <th>Footnote</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
-                <![CDATA[
-                    <tr><td>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
-                <![CDATA[
-                    <td align='center'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <td width="30px" align="center">{$item}</td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Books/Chapters -->
-        <Static>
-            <![CDATA[
-                <h3>(c) Books; chapters in books</h3>
-                (specify number of pages)
-                <table class='wikitable' style='width: 100%;'>
-                    <tr>
-                        <th style='width: 100%;'>Publicaton</th>
-                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
-                        <th>Footnote</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Book|Book Chapter" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
-                <![CDATA[
-                    <tr><td>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
-                <![CDATA[
-                    <td align='center'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <td width="30px" align="center">{$item}</td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Patents -->
-        <Static>
-            <![CDATA[
-                <h3>(d) Reports of invention, patents filed or patents awarded</h3>
-                <table class='wikitable' style='width: 100%;'>
-                    <tr>
-                        <th style='width: 100%;'>Publicaton</th>
-                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
-                        <th>Footnote</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="products4" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
-                <![CDATA[
-                    <tr><td>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
-                <![CDATA[
-                    <td align='center'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <td width="30px" align="center">{$item}</td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Unrefereed Papers -->
-        <Static>
-            <![CDATA[
-                <h3>(e) Unrefereed papers and technical reports published</h3>
-                (specify number of pages)
-                <table class='wikitable' style='width: 100%;'>
-                    <tr>
-                        <th style='width: 100%;'>Publicaton</th>
-                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
-                        <th>Footnote</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="products5" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|White Paper|Tech Report|Manual" useProductYear="true" includeHQP="false" peerReviewed="No" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
-                <![CDATA[
-                    <tr><td>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
-                <![CDATA[
-                    <td align='center'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <td width="30px" align="center">{$item}</td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Presentations -->
-        <Static>
-            <![CDATA[
-                <h3>(f) Presentations, indicating by an asterisk which author made the presentation</h3>
-                (do not include presentations of papers listed in section 5(b) or elsewhere)
-                <table class='wikitable' style='width: 100%;'>
-                    <tr>
-                        <th style='width: 100%;'>Publicaton</th>
-                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
-                        <th>Footnote</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="products6" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
-                <![CDATA[
-                    <tr><td>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
-                <![CDATA[
-                    <td align='center'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <td width="30px" align="center">{$item}</td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Other -->
-        <Static>
-            <![CDATA[
-                <h3>(g) Other publications</h3>
-                (specify number of pages)
-                <table class='wikitable' style='width: 100%;'>
-                    <tr>
-                        <th style='width: 100%;'>Publicaton</th>
-                        <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
-                        <th>Footnote</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="products7" type="PersonProductsReportItemSet" category="Publication" productType="Poster|Workshop Paper|Magazine/Newspaper Article|Edited Book|Book Review|Misc" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
-                <![CDATA[
-                    <tr><td>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
-                <![CDATA[
-                    <td align='center'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <td width="30px" align="center">{$item}</td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
     </ReportSection>
     <ReportSection id="university_activities" tooltip="UNIVERSITY AND RELATED LEADERSHIP ACTIVITIES" name="University Activities" title="6. UNIVERSITY AND RELATED LEADERSHIP ACTIVITIES" blobSection="FEC_UNIVERSITY_ACTIVITIES" type="EditableReportSection">
         <ReportItem id="committees" type="MultiText" blobItem="COMMITTEES" blobType="BLOB_ARRAY" labels="Committee|Number of Members|Were You Chair?|Total Hours/Year" types="ComboBox(GFC Academic Planning Committee,GFC Committee on the Learning Environment,GFC Executive Committee,GFC Executive Subcommittee on Governance and Procedural Oversight,GFC Facilities Development Committee,GFC Nominating Committee,GFC Programs Committee,GFC Course &amp; Program Changes,GFC Student Conduct Policy Committee,GFC University Teaching Awards Committee,GFC Committee on the Documentation of Indigeneity,Council on Student Affairs,Senate EXECUTIVE COMMITTEE,Senate HONORARY DEGREE SELECTION COMMITTEE,Senate INDIGENOUS INITIATIVES &amp; EQUITY#COMMA DIVERSITY#COMMA AND INCLUSION COMMITTEE,Senate NOMINATING AND REVIEW COMMITTEE,Senate COMMUNICATIONS COMMITTEE,Senate STUDENT EXPERIENCE COMMITTEE,Senate U SCHOOL ADVISORY AND OUTREACH COMMITTEE,Board Audit and Risk Committee,Board Finance and Property Committee,Board Governance Committee,Board Human Resources and Compensation Committee,Board Investment Committee,Board Learning#COMMA Research and Student Experience Committee,Board Reputation and Public Affairs Committee,R. U. Lemieux Lectures on Biotechnology Speaker Selection Committee,University Research Administration Committee &#40;URAC&#41;,University Research and Innovation Advisory Committee &#40;URIAC&#41;,University Animal Policy and Welfare Committee &#40;UAPWC&#41;)|Integer|Select(Yes,No)|Number" sizes="400|75|50|75" multiple="true">

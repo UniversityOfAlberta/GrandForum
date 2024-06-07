@@ -202,6 +202,7 @@ class ReportItemCallback {
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
             "substr" => "substr",
+            "alpha" => "alpha",
             "nl2br" => "nl2br",
             "strip_html" => "strip_html",
             "occurrences" => "occurrences",
@@ -536,7 +537,7 @@ class ReportItemCallback {
         $grant = Grant::newFromId($this->reportItem->productId);
         $average = $grant->getAverage();
         $adjusted = $grant->getAdjustedAmount();
-        return ($adjusted > 0) ? $adjusted : $grant->getAverage();
+        return ($adjusted > 0) ? $adjusted : number_format($grant->getAverage(), 2);
     }
     
     function isGrantPI(){
@@ -1499,6 +1500,11 @@ class ReportItemCallback {
     
     function substr($string, $offset, $length=null){
         return @substr($string, $offset, $length);
+    }
+    
+    function alpha($str){
+        // Converts number to letter (1 => a, 2 => b)
+        return chr($str + 96);
     }
     
     function nl2br($str){
