@@ -984,7 +984,7 @@
             ]]>
         </Static>
         <For from="1" to="4">
-            <ReportItem id="file{getExtra()}_label" type="SelectReportItem" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" options="|Supplementary Professional Activity|Sabbatical Report (for the year ending)|Sabbatical Application (for the next year)" encrypt="true">
+            <ReportItem id="file{getExtra()}_label" type="SelectReportItem" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" options="|Sabbatical Report (for the year ending)|Sabbatical Application (for the next year)" encrypt="true">
                 <![CDATA[
                     <div class='files' id='file{getExtra()}'>
                         <h3>Document {getExtra()}</h3>
