@@ -694,16 +694,6 @@
             ]]>
         </ReportItem>
         
-        <!--ReportItem id="covid" type="Textarea" blobItem="COVID" blobSection="FEC_ADDITIONAL_INFO" optional="true">
-            <![CDATA[
-                <h2>Pandemic Impact Statement</h2>
-                {$item}
-                {getArray(RP_FEC,FEC_ADDITIONAL_INFO,COVID_CONFIRM,0,{$user_id},0,covid_confirm)}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="covid_upload" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="COVID_UPLOAD" blobSection="FEC_ADDITIONAL_INFO" /-->
-        
         <ReportItem id="sabbatical" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SABBATICAL" blobSection="FEC_ADDITIONAL_INFO" />
         
         <!-- HQP Publications -->

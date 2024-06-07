@@ -894,57 +894,6 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <!--ReportSection id="pandemic" tooltip="Pandemic Impact Statement" name="Pandemic Impact" title="Pandemic Impact Statement &lt;span class='clicktooltip' title='Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).&lt;br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
-        <Instructions>
-            <![CDATA[
-                <p>Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).<br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.</p>
-            ]]>
-        </Instructions>
-        <ReportItem id="covid" type="Textarea" blobItem="COVID" optional="true" encrypt="true">
-            <![CDATA[
-                <p>You can either enter your pandemic impact statement below</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="covid_upload" type="Upload" blobType="BLOB_RAW" blobItem="COVID_UPLOAD" mimeType=".pdf" fileSize="5" optional="true" encrypt="true">
-            <![CDATA[
-                <p>or upload a pdf of the statement</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="covid_confirm" type="Checkbox" blobType="BLOB_ARRAY" blobItem="COVID_CONFIRM" options="I do not wish to provide an impact statement" encrypt="true">
-            <![CDATA[
-                <div id='covid_container' style='display:none;'>
-                    <p><b>Please confirm that you do not wish to provide an impact statement</b></p>
-                    {$item}
-                </div>
-                
-                <script type='text/javascript'>
-                    $('#PandemicImpact_covid').on("change keyup", function(){
-                        if($('#PandemicImpact_covid').val() == "" && 
-                           $('#fileFramePandemicImpact_covid_upload').contents().find("a").text().indexOf("Download") === -1){
-                            $('#covid_container').slideDown();
-                        }
-                        else{
-                            $('#covid_container').slideUp();
-                            $('#covid_container input').prop('checked', false);
-                        }
-                    });
-                    
-                    $('#PandemicImpact_covid').change();
-                    
-                    if(typeof covidInterval != "undefined"){
-                        clearInterval(covidInterval);
-                    }
-                    
-                    covidInterval = setInterval(function(){
-                        $('#PandemicImpact_covid').change();
-                    }, 100);
-                    
-                </script>
-            ]]>
-        </ReportItem>
-    </ReportSection-->
     <ReportSection id="sabbatical" tooltip="Sabbatical Report" name="Sabbatical Report" title="Sabbatical Report" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="sabbatical" type="Upload" blobType="BLOB_RAW" blobItem="SABBATICAL" mimeType=".pdf" fileSize="5" optional="true" encrypt="true">
             <![CDATA[
