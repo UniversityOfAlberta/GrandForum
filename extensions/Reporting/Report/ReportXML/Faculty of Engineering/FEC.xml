@@ -408,6 +408,7 @@
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
                 <h3>(a) Research Area:</h3>
+                This information, i.e., research area, keywords and P.Eng status, can be edited on <a href='{$user_url}' target='_blank'>your profile</a> tab.
                 <p><b>(i) Major Area:</b> {getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA,0,{$user_id},0,0)}{if({contains({getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA,0,{$user_id},0,0,true)}, Other)}, : {getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA_OTHER,0,{$user_id},0,0)})}</p>
                 <p><b>(ii) Keywords:</b> {$user_keywords}</p>
                 
