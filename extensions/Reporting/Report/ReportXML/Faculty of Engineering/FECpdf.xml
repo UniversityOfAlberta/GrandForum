@@ -780,4 +780,10 @@
             ]]>
         </Static>
     </ReportSection>
+    <ReportSection id="submit" type="EditableReportSection" pagebreak="false">
+        <!-- Only Used to Mark Products as Submitted -->
+        <ReportItemSet id="submit1" type="PersonProductsReportItemSet" category="Publication" submitProductYear="true" useProductYear="true" includeHQP="true" start="CYCLE_START" end="CYCLE_END" />
+        <ReportItemSet id="submit2" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="true" start="CYCLE_START" end="CYCLE_END" />
+        <ReportItemSet id="submit3" type="PersonProductsReportItemSet" category="Award" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" />
+    </ReportSection>
 </Report>

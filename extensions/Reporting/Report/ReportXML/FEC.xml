@@ -766,94 +766,20 @@
             ]]>
         </Static>
         
-        <!-- Departmental -->
-        <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
-            <![CDATA[
-                <h3>Departmental</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <Static>
+        <ReportItemSet type="String" array="Departmental|Faculty|University|Scientific|Outreach and Community Engagement|Other">
+            <ReportItem id="bookmark" type="SubBookmarkReportItem" title="Departmental">
                 <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
+                    <h3>{getExtra()}</h3>
                 ]]>
-            </Static>
-        </ReportItemSet>
-            
-        <!-- Faculty -->
-        <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
-            <![CDATA[
-                <h3>Faculty</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <Static>
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
-                ]]>
-            </Static>
-        </ReportItemSet>
-            
-        <!-- University -->
-        <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
-            <![CDATA[
-                <h3>University</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University"  includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <Static>
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        
-        <!-- Scientific -->
-        <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
-            <![CDATA[
-                <h3>Scientific</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <Static>
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {getProductData(organization)} (<b>{$product_scope}</b>)</p>
-                    <p style='margin-left:4em;'>{$product_title}<br />{$product_description}</p>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        
-        <!-- Outreach and Community Engagement -->
-        <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach and Community Engagement">
-            <![CDATA[
-                <h3>Outreach and Community Engagement</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <Static>
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        
-        <!-- Other -->
-        <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
-            <![CDATA[
-                <h3>Other</h3>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <Static>
-                <![CDATA[
-                    <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
-                    <p style='margin-left:4em;'>{$product_description}</p>
-                ]]>
-            </Static>
+            </ReportItem>
+            <ReportItemSet id="committee" type="PersonProductsReportItemSet" category="Activity" productType="{getExtra()}" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <Static>
+                    <![CDATA[
+                        <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                        <p style='margin-left:4em;'>{$product_description}</p>
+                    ]]>
+                </Static>
+            </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="supplementary" tooltip="Supplementary Professional Activities" name="SPA" title="Supplementary Professional Activities &lt;span class='clicktooltip' title='Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf&quot;>Faculty Agreement&lt;/a> or to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf&quot;>FSO Agreement&lt;/a> and to the &lt;a target=&quot;_blank&quot; href=&quot;https://drive.google.com/file/d/0ByVePqUFqXRESEpMZXUxeGJWWGc/view&quot;>SPA Guidelines&lt;/a>.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
