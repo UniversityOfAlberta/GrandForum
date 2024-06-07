@@ -347,6 +347,7 @@
         <Static>
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople">Manage HQP</a>
+                If you wish to provide additional information on this trainee, such as %supervision for example, please add a footnote.
             ]]>
         </Static>
         <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|tech|other|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Research/Technical Assistants|Other|Student Committee Responsibilities">
@@ -356,10 +357,11 @@
                     <table class='wikitable' width='100%'>
                         <tr>
                             <th style='width: 25%;'>Student</th>
-                            <th style='width: 10%;'>Year<br />Admitted</th>
+                            <th style='width: 5%;'>Year<br />Admitted</th>
                             <th style='width: 25%;'>Degree<br />Sought</th>
                             <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
                             <th style='width: 20%;'>Co-Supervisors</th>
+                            <th style='width: 5%;'>Footnote</th>
                         </tr>
                 ]]>
             </Static>
@@ -371,14 +373,15 @@
                     ]]>
                 </Static>
                 
-                <Static>
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}">
                     <![CDATA[
                             <td align='center'>{substr({$user_uni_start},-4,4)}</td>
                             <td>{$user_level}</td>
                             <td align='center'>{substr({$user_uni_end},-4,4)}</td>
                             <td>{$user_cosupervisors}</td>
+                            <td align="center" rowspan='2'>{$item}</td>
                     ]]>
-                </Static>
+                </ReportItem>
                 <Static>
                     <![CDATA[
                         </tr>

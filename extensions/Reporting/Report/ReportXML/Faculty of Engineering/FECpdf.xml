@@ -249,12 +249,12 @@
                     ]]>
                 </Static>
                 <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
-                    <Static>
+                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}">
                         <![CDATA[
                             <tr>
-                                <td rowspan='2'>{$user_name}</td>
+                                <td rowspan='2'>{$item}{$user_name}</td>
                         ]]>
-                    </Static>
+                    </ReportItem>
                     <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}" options="FT|PT" width="3.5em">
                         <![CDATA[
                             <td>{$item}</td>
@@ -285,6 +285,26 @@
                 <Static>
                     <![CDATA[
                         </table>
+                    ]]>
+                </Static>
+                <!-- HQP Footnotes -->
+                <Static>
+                    <![CDATA[
+                        <ul>
+                    ]]>
+                </Static>
+                <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
+                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}" isTopAnchor="false">
+                        <![CDATA[
+                            <li style="page-break-inside: avoid;">
+                                {$item}
+                            </li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul>
                     ]]>
                 </Static>
             </If>
@@ -397,6 +417,21 @@
         <Static>
             <![CDATA[
                 </table>
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" peerReviewed="Yes" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
             ]]>
         </Static>
         <If if="{==({get(products1)},0)}">
@@ -443,6 +478,21 @@
         <Static>
             <![CDATA[
                 </table>
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
             ]]>
         </Static>
         <If if="{==({get(products2)},0)}">
@@ -489,6 +539,21 @@
         <Static>
             <![CDATA[
                 </table>
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Book|Book Chapter" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
             ]]>
         </Static>
         <If if="{==({get(products3)},0)}">
@@ -535,6 +600,21 @@
         <Static>
             <![CDATA[
                 </table>
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="products4" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
             ]]>
         </Static>
         <If if="{==({get(products4)},0)}">
@@ -581,6 +661,21 @@
         <Static>
             <![CDATA[
                 </table>
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="products5" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|White Paper|Tech Report|Manual" useProductYear="true" includeHQP="false" peerReviewed="No" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
             ]]>
         </Static>
         <If if="{==({get(products5)},0)}">
@@ -627,6 +722,21 @@
         <Static>
             <![CDATA[
                 </table>
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="products6" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
             ]]>
         </Static>
         <If if="{==({get(products6)},0)}">
@@ -673,76 +783,9 @@
         <Static>
             <![CDATA[
                 </table>
-            ]]>
-        </Static>
-        <If if="{==({get(products7)},0)}">
-            <![CDATA[
-                <style>
-                    #products7 { display: none; }
-                </style>
-            ]]>
-        </If>
-        
-        <!-- Publication Footnotes -->
-        <Static>
-            <![CDATA[
                 <ul>
             ]]>
         </Static>
-        <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" peerReviewed="Yes" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
-                <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
-                <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Book|Book Chapter" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
-                <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="products4" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
-                <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="products5" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|White Paper|Tech Report|Manual" useProductYear="true" includeHQP="false" peerReviewed="No" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
-                <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="products6" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
-                <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
         <ReportItemSet id="products7" type="PersonProductsReportItemSet" category="Publication" productType="Poster|Workshop Paper|Magazine/Newspaper Article|Edited Book|Book Review|Misc" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
                 <![CDATA[
@@ -757,6 +800,13 @@
                 </ul>
             ]]>
         </Static>
+        <If if="{==({get(products7)},0)}">
+            <![CDATA[
+                <style>
+                    #products7 { display: none; }
+                </style>
+            ]]>
+        </If>
     </ReportSection>
     <ReportSection id="university_activities" tooltip="UNIVERSITY AND RELATED LEADERSHIP ACTIVITIES" name="University Activities" title="6. UNIVERSITY AND RELATED LEADERSHIP ACTIVITIES" blobSection="FEC_UNIVERSITY_ACTIVITIES" type="EditableReportSection" pagebreak="false" hLevel="2">
         <ReportItem id="committees" type="MultiText" blobItem="COMMITTEES" blobType="BLOB_ARRAY" labels="Committee|Number of Members|Were You Chair?|Total Hours/Year" types="Text|Text|Select(Yes,No)|Text" multiple="true" class="wikitable">
