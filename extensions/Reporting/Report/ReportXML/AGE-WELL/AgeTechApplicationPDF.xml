@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="2024 AGE-WELL AgeTech Advance: Healthy Aging Research Program" reportType="RP_AGETECH" pdfType="RPTP_AGETECH" year="2024" allowIdProjects="true" pdfFiles="AgeTechApplicationPDF" ajax="true" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>2024 AGE-WELL AgeTech Advance: Healthy Aging Research Program</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="information" tooltip="A. ADMINISTRATIVE INFORMATION" title="A. ADMINISTRATIVE INFORMATION" name="Administrative Information" blobSection="APPLICATION_FORM" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <b>Project Title:</b> {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="investigators" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="INVESTIGATORS" multiple="true" types="Select(,Nominated Principal Investigator,Co-Principal Investigator)|Text" labels="Role|Name|Institution" sizes="28%|30%|42%" class="wikitable">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <h3>Lay Summary</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="keywords" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" orientation="list" max="6">
+            <![CDATA[
+                <h3>Keywords</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="funds" type="Text" blobItem="FUNDS" width="4em">
+            <![CDATA[
+                <h3>Total amount of funds requested</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="challenges" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGES" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment">
+            <![CDATA[
+                <h3>The proposed project is best aligned with the following AGE-WELL Challenge Area</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="other_challenges" type="Text" blobType="BLOB_TEXT" blobItem="OTHER_CHALLENGES">
+            <![CDATA[
+                If your project does not align with one of AGE-WELL's specific Challenge Areas, please identify a different challenge area here: <i>{$item}</i><br /><br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="research" tooltip="B. RESEARCH PLAN" title="B. RESEARCH PLAN" name="Research Plan" blobSection="APPLICATION_FORM" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="maturity" type="Textarea" blobItem="MATURITY" rich="true" limit="250">
+            <![CDATA[
+                <h3>1. Project Maturity</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="500">
+            <![CDATA[
+                <h3>2. Background and Rationale</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="1500">
+            <![CDATA[
+                <h3>3. Objectives, Methods and Deliverables</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="partnerships" type="Textarea" blobItem="PARTNERSHIPS" rich="true" limit="250">
+            <![CDATA[
+                <h3>4. Project Team and Partnerships</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="team" type="MultiTextReportItem" class="wikitable" blobType="BLOB_ARRAY" blobItem="TEAM" multiple="true" types="Select(,Project Lead,Co-Investigator,Collaborator,Highly Qualified Personnel,Knowledge User,Partner)|Text|Text|Text" labels="Project Role|Name|Title|Institution">
+            <![CDATA[
+                <h3>Project Personnel Table</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="expertise" type="Textarea" blobItem="EXPERTISE" rich="true" limit="500">
+            <![CDATA[
+                <h4>Expertise</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="budget" tooltip="C. Budget and Budget Justification" title="C. Budget and Budget Justification" name="Budget and Budget Justification" blobSection="APPLICATION_FORM" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx,.xlx" fileSize="5">
+            <![CDATA[
+                <h4>Budget</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="budget_justification" type="Textarea" blobItem="BUDGET_JUSTIFICATION" rich="true" limit="250">
+            <![CDATA[
+                <h4>Budget Justification</h4>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="documents" tooltip="D. UPLOAD DOCUMENTS" title="D. UPLOAD DOCUMENTS" name="Upload Documents" blobSection="APPLICATION_FORM" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="bios" type="Upload" blobItem="BIOS" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h4>Bios for Nominated Principal Investigators and Co-Principal Investigators</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" type="Upload" blobItem="ETHICS" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h4>Research Ethics Approval (REB) Documentation</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="references" type="Upload" blobItem="REFERENCES" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h4>References</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="risk" type="Upload" blobItem="RISK" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h4>Research Partnership Risk Assessment (RPRA) Forum (if applicable)</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letters" type="Upload" blobItem="LETTERS" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h4>Letters of Support</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
