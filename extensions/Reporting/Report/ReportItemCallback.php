@@ -403,7 +403,7 @@ class ReportItemCallback {
         return $project_stat;
     }
     
-    function getProjectDescription(){
+    function getProjectDescription($key=""){
         $project_desc = "";
         if($this->reportItem->projectId != 0 ){
             $project = Project::newFromHistoricId($this->reportItem->projectId);
@@ -411,6 +411,9 @@ class ReportItemCallback {
                 return "";
             }
             $project_desc = $project->getDescription();
+        }
+        if($key != "" && isset($project_desc[$key])){
+            return $project_desc[$key];
         }
         return $project_desc;
     }

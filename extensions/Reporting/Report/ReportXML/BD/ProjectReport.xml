@@ -121,6 +121,8 @@
         <!-- Start the Report -->
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
             <![CDATA[
+                <h3>Project Summary <small style='font-weight: normal; font-size: 0.695em'>(From <a href='{$project_url}' target='_blank'>Project Profile</a>)</small></h3>
+                {project_description(summary)}
                 <h3>1. Description of work and next steps</h3>
                 <p>General description of the activities performed in the past 3 months in relation to the overall goals, objectives, and timelines of the project, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
                 {$item}

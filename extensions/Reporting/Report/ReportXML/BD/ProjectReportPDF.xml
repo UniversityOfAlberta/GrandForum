@@ -6,10 +6,9 @@
             <![CDATA[
                 <p style='margin-top:0.5em;'><b>Leader(s):</b> {$project_leaders}</p>
                 <p><b>Team Members:</b> {$project_members}</p>
-                <!--<br />
+                <br />
                 <b>Project Summary</b>
-                {$project_description}
-                -->
+                {project_description(summary)}
             ]]>
         </Static>
         <!-- Start the Report -->
