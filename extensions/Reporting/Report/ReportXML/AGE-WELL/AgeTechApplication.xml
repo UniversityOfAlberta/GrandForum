@@ -51,6 +51,51 @@
             ]]>
         </ReportItem>
         
+        <ReportItem id="funds1" type="Integer" blobItem="FUNDS1" width="4em">
+            <![CDATA[
+                <table class='wikitable'>
+                    <tr>
+                        <td></td><td><b>Confirmed</b></td><td><b>Requested</b></td>
+                    </tr>
+                    <tr>
+                        <td align='right'><b>Total Matching Amount</b></td>
+                        <td>$ {$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds2" type="Integer" blobItem="FUNDS2" width="4em">
+            <![CDATA[
+                        <td>$ {$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds3" type="Integer" blobItem="FUNDS3" width="4em">
+            <![CDATA[
+                    <tr>
+                        <td align='right'><b>Cash</b></td>
+                        <td>$ {$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds4" type="Integer" blobItem="FUNDS4" width="4em">
+            <![CDATA[
+                        <td>$ {$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds5" type="Integer" blobItem="FUNDS5" width="4em">
+            <![CDATA[
+                    <tr>
+                        <td align='right'><b>In-Kind</b></td>
+                        <td>$ {$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds6" type="Integer" blobItem="FUNDS6" width="4em">
+            <![CDATA[
+                        <td>$ {$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        
         <ReportItem id="challenges" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGES" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" limit="1">
             <![CDATA[
                 <h3>The proposed project is best aligned with the following AGE-WELL Challenge Area (check <u>ONE PRIMARY</u> Challenge Area).</h3>
@@ -155,13 +200,7 @@ Projects must consider equity, diversity, inclusion and indigeneity in terms of 
             ]]>
         </ReportItem>
         <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="500">
-            <![CDATA[
-                <p>The research plan should provide a framework for the operation of the project. Details of project alignment to special funding streams identified in Section A, if applicable, should be included in this section.</p>
-                
-                <p>Projects must consider equity, diversity, inclusion and indigeneity in terms of research design, team composition and impact of proposed solution.</p>
-                
-                <p>Applicants are encouraged to review the following resources when considering how to integrate EDI in their research: <a href='https://cihr-irsc.gc.ca/e/52553.html' target='_blank'>CIHR Equity, diversity and inclusion resources</a>.</p>
-                
+            <![CDATA[                
                 <h3>2. Background and Rationale [Maximum of 500 words, approx. 1 page (excluding reference list)]</h3>
                 <p>Outline the planned activities and provide an overview of the latest advancements in the field, highlighting existing goals, potential solutions and the specific needs that will be addressed by your research. <b>Please append references to your application in a separate uploaded document (Section D).</b></p>
                 
@@ -174,24 +213,25 @@ Projects must consider equity, diversity, inclusion and indigeneity in terms of 
                 <h3>3. Objectives, Methods and Deliverables (Maximum of 1,500 words, approx. 3 pages)</h3>
                 
                 <p><b>3.1. Objectives</b></p>
-                <p>Provide an overview of research plans, including the scope of the one-year project, as well as a brief statement of longer-term objectives (multi-year) that situate the present project within a larger project plan.</p>
-                <p>Describe how the priority area identified in Section A will be addressed by this project.</p>
-                <p>Identify and describe your research questions and objectives for the proposed one-year project.</p>
+                <p>Provide an overview of research plans, including the scope of the 18-month project, as well as <u>a brief statement</u> of longer-term objectives (multi-year) that positions the present project within a larger project plan. Identify and describe your research questions and objectives for the proposed 18-month project.</p>
+                <p>Describe how the Challenge Area identified in Section A will be addressed by this project.</p>
 
                 <p><b>3.2. Approach and methods</b></p>
                 <p>Describe the approaches and methodologies that will be used in the project to achieve its objectives.</p>
-                <p>This section must describe how objectives identified in section 2.1 will be met by the proposed one-year program of research.</p>
-                <p>Describe how older adults and/or care partners will be involved in the research, including co-creation methods.</p>
-                <p>Describe how sex and gender will be considered in the research, methods, analysis and interpretation.</p>
-                <p>Applicants should refer to notes in the preamble to this section on addressing equity, diversity and inclusion.</p>
+                <p>This section must describe how objectives identified in section 3.1 will be met by the proposed 18-month program of research.</p>
+                <p>Describe how older adults and/or caregivers will be involved in the research, including co-creation methods.</p>
+                <p>Describe how sex and gender will be considered in the research, methods, analysis and interpretation or explain why sex and/or gender are not applicable to the research proposal.</p>
 
                 <p><b>3.3. Innovation and impact</b></p> 
-                <p>Describe the novelty and originality of the proposed program of research.</p>
-                <p>Describe the anticipated scientific outputs of this research. This may include the relationship of the research project to similar work conducted elsewhere in Canada and internationally.</p>
+                <p>Describe the novelty and originality of the proposed research.</p> 
+                <p>Describe in detail the anticipated scientific outcomes and potential impact, including how your project will ‘push the scientific envelope’ in the research field. This should include the relationship of the research program to similar work conducted elsewhere in Canada and internationally.</p>
+                <p>Outline your knowledge mobilization or commercialization strategy, if relevant.  Specifically, describe the mechanisms you intend to utilize to engage stakeholders and disseminate your key findings to ensure their integration into relevant communities or to move your technology towards its intended market.</p>
+                <p>How will you aim to support the broader impact and practical application of the research outcomes?<br />
+                How your project will encourage collaboration between the user sectors, providing concrete examples, such as the application of research to technology, market development, health systems, or public policy innovations.</p>
 
                 <p><b>3.4. Timelines and deliverables/milestones</b></p>
-                <p>Describe major milestones and deliverables for this one-year project.</p>
-                
+                <p><i>Outline major milestones and deliverables for the 18-month project. Note that graphics cannot be pasted into the online module.</i></p>
+                <b>Note:</b> The word limit is for all of Section 3.
                 {$item}
             ]]>
         </ReportItem>
@@ -284,8 +324,7 @@ Projects must consider equity, diversity, inclusion and indigeneity in terms of 
                 {$item}
             ]]>
         </ReportItem>
-        
-        <ReportItem id="budget_justification" type="Textarea" blobItem="BUDGET_JUSTIFICATION" rich="true" limit="250">
+        <ReportItem id="justification" type="Upload" blobItem="JUSTIFICATION" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
             <![CDATA[
                 <h3>Budget Justification</h3>
                 {$item}

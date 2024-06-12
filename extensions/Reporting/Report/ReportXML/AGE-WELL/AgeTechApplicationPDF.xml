@@ -50,7 +50,52 @@
         <ReportItem id="funds" type="Text" blobItem="FUNDS" width="4em">
             <![CDATA[
                 <h3>Total amount of funds requested</h3>
-                {$item}<br />
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="funds1" type="Integer" blobItem="FUNDS1" width="4em">
+            <![CDATA[
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <td></td><td><b>Confirmed</b></td><td><b>Requested</b></td>
+                    </tr>
+                    <tr>
+                        <td align='right'><b>Total Matching Amount</b></td>
+                        <td>${$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds2" type="Integer" blobItem="FUNDS2" width="4em">
+            <![CDATA[
+                        <td>${$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds3" type="Integer" blobItem="FUNDS3" width="4em">
+            <![CDATA[
+                    <tr>
+                        <td align='right'><b>Cash</b></td>
+                        <td>${$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds4" type="Integer" blobItem="FUNDS4" width="4em">
+            <![CDATA[
+                        <td>${$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds5" type="Integer" blobItem="FUNDS5" width="4em">
+            <![CDATA[
+                    <tr>
+                        <td align='right'><b>In-Kind</b></td>
+                        <td>${$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds6" type="Integer" blobItem="FUNDS6" width="4em">
+            <![CDATA[
+                        <td>${$item}</td>
+                    </tr>
+                </table>
             ]]>
         </ReportItem>
         
@@ -118,11 +163,10 @@
                 {$item}
             ]]>
         </ReportItem>
-        
-        <ReportItem id="budget_justification" type="Textarea" blobItem="BUDGET_JUSTIFICATION" rich="true" limit="250">
+        <ReportItem id="justification" type="Upload" blobItem="JUSTIFICATION" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
             <![CDATA[
                 <h4>Budget Justification</h4>
-                {$item}<br /><br />
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
