@@ -363,15 +363,14 @@ class Course extends BackboneModel{
 
     function getUserCourses($id){
         if(!isset(self::$userCoursesCache[$id])){
-            $sql = "SELECT DISTINCT uc.course_id
-                    FROM `grand_user_courses` uc, `grand_courses` c
-                    WHERE (user_id = '$id')
-                    AND c.id = uc.course_id
-                    ORDER BY FIELD(c.component, 'LEC','LAB','SEM')";
+            $sql = "SELECT DISTINCT course_id
+                    FROM `grand_user_courses`
+                    WHERE (user_id = '$id')";
             $data = DBFunctions::execSQL($sql);
             $courses = array();
             foreach($data as $row){
                 $course = Course::newFromId($row['course_id']);
+                $sect = str_replace("SEM", "C", str_replace("LAB", "B", str_replace("LEC", "A", $course->sect)));
                 $courses["{$course->subject} {$course->catalog} {$course->startDate} {$course->component} {$course->sect}"] = $course;
             }
             ksort($courses);
