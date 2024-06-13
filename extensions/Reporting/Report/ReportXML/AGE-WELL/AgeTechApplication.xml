@@ -363,7 +363,53 @@ Projects must consider equity, diversity, inclusion and indigeneity in terms of 
             ]]>
         </ReportItem>
     </ReportSection>
-    
+    <ReportSection id="checklist" tooltip="Application Checklist" title="Application Checklist" name="Application Checklist" blobSection="APPLICATION_FORM" type="EditableReportSection">
+        <ReportItem id="1" type="Checkbox" blobItem="CHECK_1" blobType="BLOB_ARRAY" options="ECR as (Co) Principal Investigator or Nominated Principal Investigator">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="2" type="Checkbox" blobItem="CHECK_2" blobType="BLOB_ARRAY" options="Identification of primary Challenge Area">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="3" type="Checkbox" blobItem="CHECK_3" blobType="BLOB_ARRAY" options="EDI considerations integrated into team and research plans">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="4" type="Checkbox" blobItem="CHECK_4" blobType="BLOB_ARRAY" options="Trainee/HQP plan described">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="5" type="Checkbox" blobItem="CHECK_5" blobType="BLOB_ARRAY" options="Older Adult/Caregiver engagement described">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="6" type="Checkbox" blobItem="CHECK_6" blobType="BLOB_ARRAY" options="Matching funding detailed in Budget Template and Budget Justification">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a" type="Checkbox" blobItem="CHECK_6a" blobType="BLOB_ARRAY" options="In the case of in-kind contributions, the method for calculating the value is described and         adheres to ISED guidelines outlined in Appendix B of the Application Guide">
+            <![CDATA[
+                <div style='margin-left: 1.5em;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7" type="Checkbox" blobItem="CHECK_7" blobType="BLOB_ARRAY" options="All required documents appended to application in a separate uploaded document">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a" type="Checkbox" blobItem="CHECK_7a" blobType="BLOB_ARRAY" options="References|REB Approval|Biosketches (Nominated PI and Co-PIs)|RPRA Forum (if applicable)|Budget Template|Budget Justification|Letter(s) of Support">
+            <![CDATA[
+                <div style='margin-left: 1.5em;'>{$item}</div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
