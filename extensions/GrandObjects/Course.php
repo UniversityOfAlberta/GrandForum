@@ -371,7 +371,7 @@ class Course extends BackboneModel{
             foreach($data as $row){
                 $course = Course::newFromId($row['course_id']);
                 $sect = str_replace("SEM", "C", str_replace("LAB", "B", str_replace("LEC", "A", $course->sect)));
-                $courses["{$course->subject} {$course->catalog} {$course->startDate} {$course->component} {$course->sect}"] = $course;
+                $courses["{$course->subject} {$course->catalog} {$course->startDate} {$course->component} {$sect}"] = $course;
             }
             ksort($courses);
             self::$userCoursesCache[$id] = $courses;
