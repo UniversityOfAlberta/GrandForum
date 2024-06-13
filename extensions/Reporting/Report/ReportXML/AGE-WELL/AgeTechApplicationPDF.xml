@@ -27,9 +27,10 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="investigators" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="INVESTIGATORS" multiple="true" types="Select(,Nominated Principal Investigator,Co-Principal Investigator)|Text" labels="Role|Name|Institution" sizes="28%|30%|42%" class="wikitable">
+        <ReportItem id="investigators" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="INVESTIGATORS" multiple="true" types="Checkbox|Select(,Nominated Principal Investigator,Co-Principal Investigator)|Text" labels="Check if ECR*|Role|Name|Institution" sizes="10%|18%|30%|42%" class="wikitable">
             <![CDATA[
                 {$item}
+                * Early Career Researcher (ECR)
             ]]>
         </ReportItem>
         

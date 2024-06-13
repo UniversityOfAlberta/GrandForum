@@ -160,12 +160,12 @@ abstract class PDFGenerator {
 "/(&clubs;)/",
 "/(&hearts;)/",
 "/(&#9210;)/",
-"/(&#10003;)/",
 "/(&#10004;)/",
 "/(&diams;)/",
 "/(&#9679;)/",
 "/(&#9651;)/");
         $str = preg_replace($specials, "<span style='font-family: dejavu sans !important; line-height:50%;'>$1</span>", $str);
+        $str = str_replace("&#10003;", "<span style='font-family: dejavu sans !important;'>&#10003;</span>", $str);
         $str = str_replace("&#8209;", "-", $str);
         $str = str_replace("&#61485;", "~", $str);
         $str = str_replace("&#8208;", "-", $str);
