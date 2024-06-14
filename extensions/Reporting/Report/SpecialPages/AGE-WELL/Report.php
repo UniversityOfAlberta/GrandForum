@@ -50,7 +50,7 @@ class Report extends AbstractReport {
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') ||
            $person->isRole(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "AgeTechApplication") ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("AgeTech", "{$url}AgeTechApplication", $selected);
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("2024 HARP", "{$url}AgeTechApplication", $selected);
             
             /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "HACApplication") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Catalyst - HAC", "{$url}HACApplication", $selected);*/

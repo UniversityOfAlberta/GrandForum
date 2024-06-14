@@ -413,6 +413,6 @@ Projects must consider equity, diversity, inclusion and indigeneity in terms of 
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
     </ReportSection>
 </Report>

@@ -93,6 +93,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=air'>AIR</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ecr'>ECR</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=agetech'>AgeTech</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=wp'>WP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cc'>CC</a>";
@@ -140,6 +141,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "catalyst" && $me->isRoleAtLeast(SD)){
             $this->generateCatalyst();
+        }
+        else if($program == "agetech" && $me->isRoleAtLeast(SD)){
+            $this->generateAgeTech();
         }
         else if($program == "award" && $me->isRoleAtLeast(SD)){
             $this->generateAward();
@@ -405,6 +409,13 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2017, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2016, "2017"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2015, "2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateAgeTech(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_AGETECH', null, 2024, "2024"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
