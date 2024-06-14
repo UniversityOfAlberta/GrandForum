@@ -34,8 +34,8 @@ class RawData extends SpecialPage {
         $html = "";
         $html .= "<tr data-id='{$person->getId()}'>
                     <td>{$person->getId()}</td>
-                    <td>".number_format($baseScores["Total"]/36, 3)."</td>
-                    <td>".$baseScores["CFS"]."</td>";
+                    <td>".number_format($scores["Total"]/36, 3)."</td>
+                    <td>".$scores["CFS"]."</td>";
         if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")){
             $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
             $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>
