@@ -15,9 +15,6 @@ require_once("EQ5D5L.php");
 
 class RawData extends SpecialPage {
     
-    static $reportName = "IntakeSurvey";
-    static $rpType = "RP_AVOID";
-    
     function __construct() {
         global $config;
         SpecialPage::__construct("RawData", null, true, 'runRawData');
@@ -28,25 +25,35 @@ class RawData extends SpecialPage {
         return $person->isRoleAtLeast(STAFF);
     }
     
-    static function getRow($person, $report, $type=false, $simple=false){
+    static function getRow($person){
         global $wgServer, $wgScriptPath, $config, $EQ5D5L;
         $me = Person::newFromWgUser();
 
         $api = new UserFrailtyIndexAPI();
-        $baseScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
-        $sixScores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
-        $twelveScores = $api->getFrailtyScore($person->getId(), "RP_AVOID_TWELVEMO");
+        $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
         $html = "";
         $html .= "<tr data-id='{$person->getId()}'>
                     <td>{$person->getId()}</td>
                     <td>".number_format($baseScores["Total"]/36, 3)."</td>
-                    <td>".$baseScores["CFS"]."</td>
-                    <td>".number_format($sixScores["Total"]/36, 3)."</td>
-                    <td>".$sixScores["CFS"]."</td>
-                    <td>".number_format($twelveScores["Total"]/36, 3)."</td>
-                    <td>".$twelveScores["CFS"]."</td>
-                 </tr>";
-        
+                    <td>".$baseScores["CFS"]."</td>";
+        if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")){
+            $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
+            $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>
+                      <td>".$scores["CFS"]."</td>";
+        }
+        else{
+            $html .= "<td>N/A</td><td>N/A</td>";
+        }
+        if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")){
+            $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID_TWELVEMO");
+            $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>
+                      <td>".$scores["CFS"]."</td>";
+        }
+        else{
+            $html .= "<td>N/A</td><td>N/A</td>";
+        }
+        $html .= "</tr>";
+
         return $html;
     }
 
@@ -55,7 +62,6 @@ class RawData extends SpecialPage {
         $me = Person::newFromWgUser();
         $people = Person::getAllPeople(CI);
         
-        $report = new DummyReport(static::$reportName, $me, null, YEAR);
         $wgOut->addHTML("<table id='summary' class='wikitable'>
                             <thead>
                                 <tr>
@@ -79,9 +85,8 @@ class RawData extends SpecialPage {
             if(!$person->isRoleAtMost(CI)){
                 continue;
             }
-            if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && IntakeSummary::getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
-                $report->person = $person;
-                $wgOut->addHTML(self::getRow($person, $report));
+            if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID") && IntakeSummary::getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
+                $wgOut->addHTML(self::getRow($person));
             }
         }
         $wgOut->addHTML("</tbody>
