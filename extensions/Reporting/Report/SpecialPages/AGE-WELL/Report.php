@@ -49,6 +49,9 @@ class Report extends AbstractReport {
         if($person->isRole(NI) || $person->isRole(NI.'-Candidate') ||
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') ||
            $person->isRole(STAFF)){
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "AgeTechApplication") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("AgeTech", "{$url}AgeTechApplication", $selected);
+            
             /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "HACApplication") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Catalyst - HAC", "{$url}HACApplication", $selected);*/
             
