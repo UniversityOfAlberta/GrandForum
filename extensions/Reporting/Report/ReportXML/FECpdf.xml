@@ -251,7 +251,7 @@
                 <Static>
                     <![CDATA[
                         <tr>
-                            <td rowspan='3'>{$user_name}</td>
+                            <td rowspan='2'>{$user_name}</td>
                     ]]>
                 </Static>
                 
@@ -268,14 +268,6 @@
                         </tr>
                     ]]>
                 </Static>
-                <ReportItem id="times" type="Textarea" blobItem="TIMES" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS" height="48px">
-                    <![CDATA[
-                        <tr><td colspan='4'>
-                            How many times have you met with the student and the supervisory committee?<br />
-                            {$item}
-                        </td></tr>
-                    ]]>
-                </ReportItem>
                 <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS" height="48px">
                     <![CDATA[
                         <tr><td colspan='4'>
