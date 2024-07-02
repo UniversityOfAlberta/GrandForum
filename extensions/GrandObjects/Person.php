@@ -2696,12 +2696,14 @@ class Person extends BackboneModel {
             }
 
             $end_date = ($endDate1 == '0000-00-00') ? "Current" : $endDate1;
+            $finish = ($end_date == "Current") ? "" : $end_date;
             
             $data[$end_date.$startDate1.$position.$r->getId()] = 
                 array('hqp' => $r->user2,
                       'position' => $position,
                       'start_date' => $startDate1,
                       'end_date' => $end_date,
+                      'finish' => $finish,
                       'status' => $status,
                       'role' => $role);
         }

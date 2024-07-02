@@ -257,9 +257,9 @@
                 
                 <Static>
                     <![CDATA[
-                            <td align='center'>{substr({$user_uni_start},-4,4)}</td>
-                            <td>{$user_level}</td>
-                            <td align='center'>{substr({$user_uni_end},-4,4)}</td>
+                            <td align='center'>{substr({getExtra(start_date)},0,4)}</td>
+                            <td>{getExtra(position)}</td>
+                            <td align='center'>{substr({getExtra(finish)},0,4)}</td>
                             <td>{$user_cosupervisors}</td>
                     ]]>
                 </Static>

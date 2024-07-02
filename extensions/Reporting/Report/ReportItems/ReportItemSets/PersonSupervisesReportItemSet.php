@@ -19,6 +19,7 @@ class PersonSupervisesReportItemSet extends ReportItemSet {
         foreach($hqps as $row){
             $tuple = self::createTuple();
             $tuple['person_id'] = $row['hqp'];
+            $tuple['extra'] = $row;
             $data[$row['hqp']] = $tuple;
         }
 
