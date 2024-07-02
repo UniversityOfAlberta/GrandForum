@@ -351,7 +351,7 @@
                 If you wish to provide additional information on a trainee, such as %supervision for example, please add a footnote.
             ]]>
         </Static>
-        <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|tech|other|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Research/Technical Assistants|Other|Student Committee Responsibilities">
+        <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|visiting|tech|other|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Visiting Students|Research/Technical Assistants|Other|Student Committee Responsibilities">
             <Static>
                 <![CDATA[
                     <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>

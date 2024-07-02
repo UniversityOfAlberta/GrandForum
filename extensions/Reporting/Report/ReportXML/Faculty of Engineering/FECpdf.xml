@@ -227,7 +227,7 @@
     </ReportSection>
     <ReportSection id="supervision" tooltip="SUPERVISION OF RESEARCH TRAINEES" name="Supervision" title="3. SUPERVISION OF RESEARCH TRAINEES" blobSection="FEC_SUPERVISION" type="EditableReportSection" pagebreak="false" hLevel="2">
         
-        <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|tech|other|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Research/Technical Assistants|Other|Student Committee Responsibilities">
+        <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|visiting|tech|other|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Visiting Students|Research/Technical Assistants|Other|Student Committee Responsibilities">
             
             <Static>
                 <![CDATA[
