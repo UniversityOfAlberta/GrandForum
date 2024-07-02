@@ -74,7 +74,7 @@ class MyMailingLists extends SpecialPage{
         global $config, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($wgUser->isLoggedIn() && !$me->isCandidate()){
-            if($config->getValue('networkName') == "BD" && !$me->isRoleAtLeast(MANAGER)){
+            if($config->getValue('networkName') == "BD" && !$me->isRoleAtLeast(STAFF)){
                 return true;
             }
             $selected = "";
