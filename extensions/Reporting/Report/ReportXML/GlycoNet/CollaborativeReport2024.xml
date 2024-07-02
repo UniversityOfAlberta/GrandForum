@@ -205,7 +205,7 @@
     <ReportSection id="letters" name="Partner Letters" title="Partner Letters of Support" blobSection="CAT_SUPPORT" tooltip="Partner Letters of Support" type="EditableReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <p>You can upload up to 5 Partner Support Letters</p>
+                <p>You can upload up to 10 Partner Support Letters</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -230,6 +230,26 @@
             ]]>
         </ReportItem>
         <ReportItem id="upload6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload7" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD7" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload8" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD8" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload9" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD9" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload10" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD10" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
