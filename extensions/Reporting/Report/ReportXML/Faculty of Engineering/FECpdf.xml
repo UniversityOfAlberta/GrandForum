@@ -704,6 +704,117 @@
                 <p>{$item}</p>
             ]]>
         </ReportItem>
+        <!-- HQP Publications -->
+        <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="HQP Publications">
+            <![CDATA[
+                <h3>HQP Publications</h3>
+                <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>
+                <ul>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_SUPERVISION">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item} 
+                ]]>
+            </ReportItem>
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_SUPERVISION" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                <![CDATA[
+                        <b>({$product_type})</b> {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
+            ]]>
+        </Static>
+        
+        <!-- HQP Publications Footnotes -->
+        <Static>
+            <![CDATA[
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_SUPERVISION">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
+            ]]>
+        </Static>
+        
+        <!-- HQP Presentations -->
+        <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="HQP Presentations">
+            <![CDATA[
+                <h3>HQP Presentations</h3>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>HQP</th>
+                            <th>Invited</th>
+                            <th>Event Title</th>
+                            <th>Organization</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th>Length (minutes)</th>
+                        </tr>
+                    </thead>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_SUPERVISION">
+                <![CDATA[
+                    <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
+                        <td align='center'>{$presentation_type}</td>
+                        <td align='center'>{$product_authors}</td>
+                        <td align='center'>{$presentation_invited}</td>
+                        <td>{getProductData(event_title)}</td>
+                        <td>{$presentation_organization}</td>
+                        <td align='center'>{$presentation_country}</td>
+                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table><br />
+            ]]>
+        </Static>
+        
+        <!-- HQP Presentations Footnotes -->
+        <Static>
+            <![CDATA[
+                <ul>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_SUPERVISION">
+                <![CDATA[
+                    <li style="page-break-inside: avoid;">
+                        {$item}
+                    </li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul>
+            ]]>
+        </Static>
     </ReportSection>
     <ReportSection id="spots" type="EditableReportSection" name="SPOTs" title="APPENDIX A: SPOTs" pagebreak="true" hLevel="2">
         <Static>
