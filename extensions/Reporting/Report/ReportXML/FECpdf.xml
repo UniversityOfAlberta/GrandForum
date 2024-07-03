@@ -581,8 +581,8 @@
                 <h2>Service Activities</h2>
             ]]>
         </ReportItem>
-        <ReportItemSet type="String" array="Departmental|Faculty|University|Scientific|Outreach and Community Engagement|Other">
-            <ReportItem id="bookmark" type="SubBookmarkReportItem" title="Departmental">
+        <ReportItemSet type="String" array="Departmental|Faculty|University|Scientific|Community Outreach|Other">
+            <ReportItem id="bookmark" type="SubBookmarkReportItem" title="{getExtra()}">
                 <![CDATA[
                     <h3>{getExtra()}</h3>
                 ]]>
