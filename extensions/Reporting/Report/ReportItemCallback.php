@@ -56,6 +56,7 @@ class ReportItemCallback {
             "grant_title" => "getGrantTitle",
             "grant_scientific_title" => "getGrantScientificTitle",
             "grant_description" => "getGrantDescription",
+            "grant_title_both" => "getGrantTitleBoth",
             "grant_sponsor" => "getGrantSponsor",
             "grant_project_id" => "getGrantProjectId",
             "grant_start_date" => "getGrantStartDate",
@@ -506,6 +507,16 @@ class ReportItemCallback {
             $description = $grant->getTitle();
         }
         return $description;
+    }
+    
+    function getGrantTitleBoth(){
+        $grant = Grant::newFromId($this->reportItem->productId);
+        $description = $grant->getDescription();
+        $title = ($grant->getScientificTitle() != "") ? $grant->getScientificTitle() : $grant->getTitle();
+        if(trim($description) != ""){
+            return $title."<br />".$description;
+        }
+        return $title;
     }
     
     function getGrantProjectId(){

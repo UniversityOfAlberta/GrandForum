@@ -514,7 +514,7 @@
                         <td>{$grant_start_date}</td>
                         <td>{$grant_end_date}</td>
                         <td align='right'>${$grant_average}</td>
-                        <td>{$grant_title}</td>
+                        <td>{$grant_title_both}</td>
                         <td align='center'>{$grant_is_pi}</td>
                         <td>{$grant_people}</td>
                         <td align='center' style='white-space:nowrap;'>{$item}</td>
