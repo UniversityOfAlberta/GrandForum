@@ -4,6 +4,8 @@ class FootnotesReportItem extends AbstractReportItem {
     
     static $top_anchor = 1;
     static $bottom_anchor = 1;
+    
+    static $alreadyDone = array();
 
     function getHTML(){
         global $wgServer, $wgScriptPath, $config;
@@ -17,31 +19,35 @@ class FootnotesReportItem extends AbstractReportItem {
         $item = "
           <a href='#' onclick='openDialog(\"{$this->getPostId()}\"); return false;' id='openfootnote{$this->getPostId()}'>
             <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}pen_16x16.png' />
-          </a>
-          <div id='topnote{$this->getPostId()}' class='footnote_dialog' title='Add Footnote' style='display:none'>
-            <textarea type='text' name='{$this->getPostId()}' style='width:{$width};height:{$height};'>{$value}</textarea>
-          </div>";
+          </a>";
+        if(!isset(self::$alreadyDone[$this->getPostId()])){
+            self::$alreadyDone[$this->getPostId()] = true;
+            $item .= "
+              <div id='topnote{$this->getPostId()}' class='footnote_dialog' title='Add Footnote' style='display:none'>
+                <textarea type='text' name='{$this->getPostId()}' style='width:{$width};height:{$height};'>{$value}</textarea>
+              </div>";
 
-         $jscript =<<<EOF
-             <script type='text/javascript'>
-                $("body > #topnote{$this->getPostId()}").remove(); // Sometimes dialog remains as a child of body for some reason
-                $('#topnote{$this->getPostId()}').dialog({
-                    autoOpen: false, 
-                    width: 400, 
-                    height: 200,
-                    buttons: {
-                        "Done": function() {
-                            $(this).dialog( "close" );
+             $jscript =<<<EOF
+                 <script type='text/javascript'>
+                    $("body > #topnote{$this->getPostId()}").remove(); // Sometimes dialog remains as a child of body for some reason
+                    $('#topnote{$this->getPostId()}').dialog({
+                        autoOpen: false, 
+                        width: 400, 
+                        height: 200,
+                        buttons: {
+                            "Done": function() {
+                                $(this).dialog( "close" );
+                            }
                         }
+                    });
+                    $('#topnote{$this->getPostId()}').parent().detach().appendTo($('#reportBody'));
+                    function openDialog(num){
+                        $('#topnote'+num).dialog("open");
                     }
-                });
-                $('#topnote{$this->getPostId()}').parent().detach().appendTo($('#reportBody'));
-                function openDialog(num){
-                    $('#topnote'+num).dialog("open");
-                }
-            </script>
+                </script>
 EOF;
-        $item .= $jscript;
+            $item .= $jscript;
+        }
         return $item;
     }
     

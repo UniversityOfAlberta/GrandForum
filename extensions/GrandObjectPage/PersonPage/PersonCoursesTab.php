@@ -23,15 +23,17 @@ class PersonCoursesTab extends AbstractEditableTab {
     }
     
     function handleEdit(){
-        foreach(@$_POST['percentages'] as $key => $percent){
-            if(!is_numeric($percent)){
-                $percent = 100;
+        if(isset($_POST['percentages']) && is_array($_POST['percentages'])){
+            foreach($_POST['percentages'] as $key => $percent){
+                if(!is_numeric($percent)){
+                    $percent = 100;
+                }
+                $percent = max(0, min(100, $percent));
+                DBFunctions::update('grand_user_courses',
+                                    array('percentage' => $percent),
+                                    array('user_id' => $this->person->getId(),
+                                          'course_id' => $key));
             }
-            $percent = max(0, min(100, $percent));
-            DBFunctions::update('grand_user_courses',
-                                array('percentage' => $percent),
-                                array('user_id' => $this->person->getId(),
-                                      'course_id' => $key));
         }
     }
     
