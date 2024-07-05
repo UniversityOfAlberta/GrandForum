@@ -57,6 +57,7 @@ class AnnualReportTable extends SpecialPage{
             $ar = new DummyReport("FEC", $me, null, $y);
             $rec = new DummyReport("ChairTable", $me, null, $y);
             if($me->isRole(CHAIR) || $me->isRole(EA)){
+                $departments = @array_keys($person->departments);
                 $report = new DummyReport("", $me, null, $y);
                 $section = new EditableReportSection();
                 $set = new DepartmentPeopleReportItemSet();
@@ -65,7 +66,7 @@ class AnnualReportTable extends SpecialPage{
                 $set->setAttr('start', ($y-1)."-07-01");
                 $set->setAttr('end', ($y)."-07-01");
                 $set->setAttr('excludeMe', 'true');
-                $set->setAttr('department', $me->getDepartment());
+                $set->setAttr('department', @$departments[0]);
                 $data = $set->getData();
                 $people = array();
                 foreach($data as $row){
