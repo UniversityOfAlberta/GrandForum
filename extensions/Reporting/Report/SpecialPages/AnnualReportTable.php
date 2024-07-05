@@ -57,7 +57,7 @@ class AnnualReportTable extends SpecialPage{
             $ar = new DummyReport("FEC", $me, null, $y);
             $rec = new DummyReport("ChairTable", $me, null, $y);
             if($me->isRole(CHAIR) || $me->isRole(EA)){
-                $departments = @array_keys($person->departments);
+                $departments = @array_keys($me->departments);
                 $report = new DummyReport("", $me, null, $y);
                 $section = new EditableReportSection();
                 $set = new DepartmentPeopleReportItemSet();
