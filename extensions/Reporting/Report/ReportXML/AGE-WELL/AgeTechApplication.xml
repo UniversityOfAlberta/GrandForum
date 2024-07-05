@@ -5,6 +5,17 @@
         <Role role="NI-Candidate" />
         <Role role="External" />
         <Role role="External-Candidate" />
+        <Person id="5362">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="identification" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="checklist" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="--" />
+        </Person>
     </Permissions>
     <ReportSection id="description" tooltip="2024 AGE-WELL AgeTech Advance: Healthy Aging Research Program" name="Program Description" type="ReportSection" title="2024 AGE-WELL AgeTech Advance: Healthy Aging Research Program">
         <Static>
