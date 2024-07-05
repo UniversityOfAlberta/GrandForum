@@ -191,6 +191,13 @@ ManageProductsView = Backbone.View.extend({
         this.productChanged();
         this.$("#listTable").show();
         this.table.draw();
+        
+        if(this.category == "Presentation"){
+            this.$("#presentationMessage").show();
+        }
+        else{
+            this.$("#presentationMessage").hide();
+        }
     },
     
     cacheRows: function(){

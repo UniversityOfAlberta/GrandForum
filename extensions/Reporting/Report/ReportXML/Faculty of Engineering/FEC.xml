@@ -446,7 +446,7 @@
                     <tr>
                         <th>Title</th>
                         <th>Type</th>
-                        <th>HQP</th>
+                        <th>HQP/Contributors</th>
                         <th>Invited</th>
                         <th>Event Title</th>
                         <th>Organization</th>
@@ -464,7 +464,7 @@
                 <![CDATA[
                     <tr><td align='center'>{$presentation_title}</td>
                         <td align='center'>{$presentation_type}</td>
-                        <td>{$product_authors}</td>
+                        <td>{$product_authors}{if("{$product_contributors}" != "", <hr />{$product_contributors})}</td>
                         <td align='center'>{$presentation_invited}</td>
                         <td>{getProductData(event_title)}</td>
                         <td>{$presentation_organization}</td>

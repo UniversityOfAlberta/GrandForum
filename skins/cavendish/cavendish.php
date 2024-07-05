@@ -312,6 +312,10 @@ class CavendishTemplate extends QuickTemplate {
 		    function isExtensionEnabled(ext){
 		        return (extensions.indexOf(ext) != -1);
 		    }
+		    
+		    function getFaculty(){
+		        return "<?php echo getFaculty(); ?>";
+		    }
 		
 		    me = new Person(
 		    <?php

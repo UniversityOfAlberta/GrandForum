@@ -91,6 +91,9 @@
 <p>
     <b>NOTE: If you make any changes on this page and have other tabs open, the changes will not be reflected on those other tabs until you refresh the page.</b>
 </p>
+<% if(getFaculty() == "Engineering"){ %>
+    <p id="presentationMessage">Co-authors of presentations should be included in "Presenters"; the person actually making the presentation should be identified by an asterisk which can be obtained by double clicking the author.</p>
+<% } %>
 <p>
     <% if(this.category != null){ %>
         <button id="addProductButton">Add <%= this.category %></button>

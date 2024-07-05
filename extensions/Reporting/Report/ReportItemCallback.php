@@ -154,6 +154,7 @@ class ReportItemCallback {
             "product_title" => "getProductTitle",
             "product_status" => "getProductStatus",
             "product_authors" => "getProductAuthors",
+            "product_contributors" => "getProductContributors",
             "product_description" => "getProductDescription",
             "product_url" => "getProductUrl",
             "product_citation" => "getProductCitation",
@@ -1082,6 +1083,16 @@ class ReportItemCallback {
     function getProductAuthors(){
         $product = Paper::newFromId($this->reportItem->productId);
         $authors = $product->getAuthors();
+        $array = array();
+        foreach($authors as $author){
+            $array[] = $author->getReversedName();
+        }
+        return implode("; ", $array);
+    }
+    
+    function getProductContributors(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        $authors = $product->getContributors();
         $array = array();
         foreach($authors as $author){
             $array[] = $author->getReversedName();
