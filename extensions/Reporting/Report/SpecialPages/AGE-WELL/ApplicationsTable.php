@@ -800,6 +800,7 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT2', null, 2024, "2024", array("Academic Status" => $stat,
                                                                                         "Institution" => $uni,
                                                                                         "Level" => $lvl,
+                                                                                        "Memberships" => $mem,
                                                                                         "Title" => $title,
                                                                                         "Age" => $age,
                                                                                         "Gender" => $gender,
