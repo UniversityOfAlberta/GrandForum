@@ -879,7 +879,6 @@
     <ReportSection id="spots" type="EditableReportSection" name="SPOTs" title="APPENDIX A: SPOTs" pagebreak="false" hLevel="2">
         <Static>
             <![CDATA[
-                <p>SPOT data for the Spring 2024 term will be imported and included in your Annual Report as soon as it becomes available, potentially as late as the latter half of June. If you are teaching during the Spring 2024 term, you should revisit and update your reflections on teaching after this data has been imported and only "submit and lock" your Annual Report after you have done so.  If you are currently teaching 13-week Spring/Summer courses, these courses and their associated SPOT data will be reported in your Annual Report next year. If you are not teaching during Spring 2024, you can "submit and lock" your Annual Report as soon as you are done.</p>
                 <div id="spots">
             ]]>
         </Static>
