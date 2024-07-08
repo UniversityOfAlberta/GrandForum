@@ -33,7 +33,7 @@ class StringReportItemSet extends ReportItemSet {
                                         'value5' => @trim(str_replace('&vert;', '|', $array5[$key])));
             }
             else{
-                $tuple['extra'] = $el;
+                $tuple['extra'] = trim(str_replace('&vert;', '|', $el));
             }
             $data[$key] = $tuple;
         }
