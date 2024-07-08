@@ -85,7 +85,7 @@ ManagePeopleRowView = Backbone.View.extend({
                 }.bind(this),
                 buttons: {
                     "+": {
-                        text: "Add University",
+                        text: "Add Position",
                         id: "AddUniButton"+this.model.id, 
                         click: function(e){
                             this.editUniversities.addUniversity();
@@ -101,6 +101,7 @@ ManagePeopleRowView = Backbone.View.extend({
                     }.bind(this)
                 }
             });
+            $("button:first-child", this.universitiesDialog.parent()).after("<small style='position:absolute; left: 160px; line-height:43px;'>Click this if the HQP has had more than one position (ie. Master's to PhD)</small>");
         }
     },
     

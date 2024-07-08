@@ -269,23 +269,6 @@
                             </table>
                     ]]>
                 </Static>
-                <If if="{!=({$course_eval}, )}">
-                    <![CDATA[
-                        <table class='wikitable' frame='box' rules='all' style='width:100%;'>
-                            <tr>
-                                <th style='width: 1%;'>Q#</th>
-                                <th style='width: 1%;'>QText</th>
-                                <th style='width: 1%;'>R1</th>
-                                <th style='width: 1%;'>R2</th>
-                                <th style='width: 1%;'>R3</th>
-                                <th style='width: 1%;'>R4</th>
-                                <th style='width: 1%;'>R5</th>
-                                <th>Chart</th>
-                            </tr>
-                            {$course_eval}
-                        </table>
-                    ]]>
-                </If>
                 <ReportItem id="teaching_methods1" type="Textarea" blobItem="TEACHING_METHODS1" height="150px">
                     <![CDATA[
                         <table style='width:100%;'>
@@ -892,6 +875,54 @@
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="spots" type="EditableReportSection" name="SPOTs" title="APPENDIX A: SPOTs" pagebreak="false" hLevel="2">
+        <Static>
+            <![CDATA[
+                <p>SPOT data for the Spring 2024 term will be imported and included in your Annual Report as soon as it becomes available, potentially as late as the latter half of June. If you are teaching during the Spring 2024 term, you should revisit and update your reflections on teaching after this data has been imported and only "submit and lock" your Annual Report after you have done so.  If you are currently teaching 13-week Spring/Summer courses, these courses and their associated SPOT data will be reported in your Annual Report next year. If you are not teaching during Spring 2024, you can "submit and lock" your Annual Report as soon as you are done.</p>
+                <div id="spots">
+            ]]>
+        </Static>
+        <ReportItemSet type="String" array="Summer {$last_year}|Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
+            <Static>
+                <![CDATA[
+                    {set(term, {getExtra()})}
+                ]]>
+            </Static>
+            <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" unique="true" exclude13Week="true">
+                <ReportItemSet type="CourseSections">
+                    <If if="{!=({course_eval(false)}, )}">
+                        <![CDATA[
+                            <h3>{get(term)} / {$course_subject} {$course_number} / {$course_comp} - {$course_section}</h3>
+                            <table class='wikitable' frame='box' rules='all' style='width:100%;'>
+                                <tr>
+                                    <th style='width: 1%;'>Q#</th>
+                                    <th style='width: 1%;'>QText</th>
+                                    <th style='width: 1%;'>R1</th>
+                                    <th style='width: 1%;'>R2</th>
+                                    <th style='width: 1%;'>R3</th>
+                                    <th style='width: 1%;'>R4</th>
+                                    <th style='width: 1%;'>R5</th>
+                                    <th>Chart</th>
+                                </tr>
+                                {course_eval(false)}
+                            </table>
+                            <div class='pagebreak'></div>
+                        ]]>
+                    </If>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </div>
+                <style>
+                    #spots div.pagebreak:last-child {
+                        display: none;
+                    }
+                </style>
+            ]]>
+        </Static>
     </ReportSection>
     <ReportSection id="chair" tooltip="Signed &amp; Locked" name="Signed &amp; Locked" blobSection="CHAIR_REVIEW" type="ReportSection">
         <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true">
