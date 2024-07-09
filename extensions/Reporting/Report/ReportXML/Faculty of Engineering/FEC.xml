@@ -369,7 +369,7 @@
             <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
                 <Static>
                     <![CDATA[
-                        <tr>
+                        <tr data-id='{$user_id}'>
                             <td rowspan='2'>{$user_name}</td>
                     ]]>
                 </Static>
@@ -390,7 +390,7 @@
                 </Static>
                 <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" height="48px">
                     <![CDATA[
-                        <tr><td colspan='4'>
+                        <tr data-id='{$user_id}'><td colspan='4'>
                             Name of Scholarships, if any<br />
                             {$item}
                         </td></tr>
@@ -403,6 +403,17 @@
                 ]]>
             </Static>
         </ReportItemSet>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('table textarea').on("keyup paste", function(){
+                        var id = $(this).closest('tr').attr('data-id');
+                        console.log($("tr[data-id=" + id + "]").not(this));
+                        $("tr[data-id=" + id + "] textarea").not(this).val($(this).val());
+                    });
+                </script>
+            ]]>
+        </Static>
         
         <!-- HQP Publications -->
         <Static>
