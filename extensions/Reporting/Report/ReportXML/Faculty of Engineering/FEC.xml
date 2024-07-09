@@ -953,7 +953,8 @@
     <ReportSection id="submit" tooltip="PDF generation and submission to the FEC" name="Sign &amp; Lock" blobSection="FEC_SUBMIT" type="EditableReportSection" autosave="false" renderpdf="false" disabled="true">
         <ReportItem id="lock" type="Checkbox" blobItem="LOCK" blobType="BLOB_ARRAY" orientation="vertical" options="Lock" encrypt="true">
             <![CDATA[
-                <p>Once you are satisfied with the generated PDF, you can lock your annual report.<br />
+                <p>Once you are satisfied with the generated PDF, you can lock your annual report.<br /><br />
+                <b style="color: red;">NOTE: If you have recently made changes to your report, you will need to generate a new pdf on the <a href='#' onClick='$("#Review").click();'>Review</a> section</b><br />
                 <b style="color: red;">NOTE: You will be unable to make further changes after locking your annual report.</b>
                 <div id='lockContainer' style='display:none;'>{$item}</div>
                 <button id='lock' type="button" value="Save" name="submit" disabled>Sign & Lock</button><br /><br />
@@ -981,7 +982,7 @@
                 </script>
             ]]>
         </ReportItem>
-        <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true" height="600px" disabled="true">
+        <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true" height="600px">
             <![CDATA[
                 {$item}
             ]]>
