@@ -985,7 +985,7 @@
         
     </Products>  
 
-    <Awards category="Award" citationFormat="{%Authors} {(%DATA_SYYYY - %DATA_EYYYY).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
+    <Awards category="Award" citationFormat="{%Title.}&lt;br />{%Authors}">
          <Award type="Teaching" titles="Faculty of Science Award for Excellent Teaching|
                                      Faculty of Science Graduate Mentoring Award|
                                      Faculty of Science Innovation in Teaching Award|

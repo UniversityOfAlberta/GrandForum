@@ -612,7 +612,7 @@
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
-                            <th>Title</th>
+                            <th>Award</th>
                             <th>Award Category</th>
                             <th>Scope</th>
                             <th>Year</th>
@@ -625,7 +625,7 @@
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$product_title}</td>
+                    <tr><td>{$product_citation}</td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
