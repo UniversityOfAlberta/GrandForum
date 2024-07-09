@@ -280,6 +280,7 @@ EOF;
             $pengStatusOther = str_replace("'", "&#39;", FECReflections::getBlobValue("RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $person->getId()));
             $pengStatusField = new VerticalRadioBox("peng_status", "P.Eng. Status", $pengStatus, array("P.Eng. (APEGA)",
                                                                                                        "P.Eng.",
+                                                                                                       "P.L. (Eng)",
                                                                                                        "E.I.T",
                                                                                                        "Examinee",
                                                                                                        "Applicant in Process",
