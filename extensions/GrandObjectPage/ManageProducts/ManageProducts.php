@@ -54,8 +54,10 @@ class ManageProducts extends BackbonePage {
 	    if(ManageProducts::userCanExecute($wgUser)){
 	        $toolbox['Tools']['links'][] = TabUtils::createToolboxLink("Manage ".Inflect::pluralize($config->getValue("productsTerm")), 
 	                                                                   "$wgServer$wgScriptPath/index.php/Special:ManageProducts");
-	        $toolbox['Tools']['links'][] = TabUtils::createToolboxLink("Manage Activities", 
-	                                                                   "$wgServer$wgScriptPath/index.php/Special:ManageProducts#/Activity");
+	        if(getFaculty() != "Engineering"){
+	            $toolbox['Tools']['links'][] = TabUtils::createToolboxLink("Manage Activities", 
+	                                                                       "$wgServer$wgScriptPath/index.php/Special:ManageProducts#/Activity");
+	        }
 	    }
 	    return true;
 	}
