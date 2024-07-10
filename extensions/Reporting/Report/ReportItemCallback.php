@@ -442,7 +442,7 @@ class ReportItemCallback {
             $avg = number_format(($r1*1+$r2*2+$r3*3+$r4*4+$r5*5)/$count, 2);
             $ret .= "
                 <td align='right'>$qid</td>
-                <td style='white-space: nowrap;'>$qText</td>
+                <td style='width:50%;'>$qText</td>
                 <td align='right'>$r1</td>
                 <td align='right'>$r2</td>
                 <td align='right'>$r3</td>
