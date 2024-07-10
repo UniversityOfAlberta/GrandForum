@@ -50,6 +50,7 @@ class AnnualReportTable extends SpecialPage{
                         <th>Name</th>
                         <th class='deptCol'>Department</th>
                         <th>Report</th>
+                        <th>Locked</th>
                         <th>Recommendation</th>
                         {$decisionHeader}
                     </thead>
@@ -91,11 +92,17 @@ class AnnualReportTable extends SpecialPage{
                         $decisionRow = "<td align='middle'>{$decisionButton}</td>";
                     }
                     
+                    $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
+                    $blob_address = ReportBlob::create_address("RP_FEC", "FEC_SUBMIT", "LOCK", $person->getId());
+                    $blob->load($blob_address);
+                    $locked = $blob->getData();;
+                    
                     $wgOut->addHTML("<tr>
                         <td>{$case}</td>
                         <td><a href='{$person->getUrl()}'>{$person->getReversedName()}</a></td>
                         <td class='deptCol'>{$person->getDepartment()}</td>
                         <td align='middle'>{$pdfButton}</td>
+                        <td align='middle'>{$locked}</td>
                         <td align='middle'>{$recButton}</td>
                         {$decisionRow}
                     </tr>");
