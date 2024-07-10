@@ -13,6 +13,7 @@
             <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="spots" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
@@ -30,6 +31,7 @@
             <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="spots" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
@@ -47,6 +49,7 @@
             <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="spots" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
@@ -64,6 +67,7 @@
             <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="spots" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="-" />
             <SectionPermission id="review" permissions="rw" />
@@ -81,6 +85,7 @@
             <SectionPermission id="edi" permissions="-" />
             <SectionPermission id="additionalInfo" permissions="-" />
             <SectionPermission id="pandemic" permissions="-" />
+            <SectionPermission id="spots" permissions="-" />
             <SectionPermission id="sabbatical" permissions="-" />
             <SectionPermission id="chair" permissions="rw" />
             <SectionPermission id="review" permissions="-" />
