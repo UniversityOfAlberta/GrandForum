@@ -808,6 +808,18 @@ class Person extends BackboneModel {
         }
         return $people;
     }
+    
+    static function getAllFullPeople(){
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id'),
+                                    array('full' => 1,
+                                          'deleted' => 0));
+        foreach($data as $row){
+            $person = Person::newFromId($row['user_id']);
+            $people[strtolower($person->getName())] = $person;
+        }
+        return $people;
+    }
 
     /**
      * Returns an array of People of the type $filter
@@ -2721,6 +2733,23 @@ class Person extends BackboneModel {
         $people = array();
         foreach($data as $row){
             $people[] = Person::newFromId($row['user_id']);   
+        }
+
+        if($this->isRole(EA)){
+            $this->getFecPersonalInfo();
+            $mydepts = array_keys($this->departments);
+            foreach(Person::getAllFullPeople() as $person){
+                $person->getFecPersonalInfo();
+                $depts = array_keys($person->departments);
+                if(!$person->isRole(CHAIR) && 
+                   !$person->isRole(EA) && 
+                   !$person->isRole(DEAN) && 
+                   !$person->isRole(VDEAN) && 
+                   !$person->isRoleAtLeast(STAFF) && 
+                   @$mydepts[0] == @$depts[0]){
+                    $people[] = $person;
+                }
+            }
         }
         return $people;
     }
