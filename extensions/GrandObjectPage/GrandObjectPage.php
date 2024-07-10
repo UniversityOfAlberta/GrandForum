@@ -37,7 +37,7 @@
         require_once("Projections.php");
     }
     if($config->getValue("productsEnabled")){
-        require_once("Bibliography/Bibliography.php");
+        //require_once("Bibliography/Bibliography.php");
     }
     if(isExtensionEnabled("Postings")){
         require_once("NewsPosting/NewsPostingPage.php");
