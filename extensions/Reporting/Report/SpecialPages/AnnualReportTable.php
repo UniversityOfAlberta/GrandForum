@@ -92,10 +92,10 @@ class AnnualReportTable extends SpecialPage{
                         $decisionRow = "<td align='middle'>{$decisionButton}</td>";
                     }
                     
-                    $blob = new ReportBlob(BLOB_TEXT, $y, 1, 0);
-                    $blob_address = ReportBlob::create_address("RP_FEC", "FEC_SUBMIT", "LOCK", $person->getId());
+                    $blob = new ReportBlob(BLOB_TEXT, $y, $person->getId(), 0);
+                    $blob_address = ReportBlob::create_address("RP_FEC", "FEC_SUBMIT", "LOCK", 0);
                     $blob->load($blob_address);
-                    $locked = $blob->getData();;
+                    $locked = $blob->getData();
                     
                     $wgOut->addHTML("<tr>
                         <td>{$case}</td>
