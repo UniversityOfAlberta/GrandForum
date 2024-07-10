@@ -948,7 +948,7 @@
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Static>
             <![CDATA[
-                <p>The <b>Sign & Lock</b> section is not enabled right now, it will be enabled at a later date.</p>
+                <!--p>The <b>Sign & Lock</b> section is not enabled right now, it will be enabled at a later date.</p-->
             ]]>
         </Static>
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
