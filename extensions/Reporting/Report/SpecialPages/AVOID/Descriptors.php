@@ -978,13 +978,13 @@ class Descriptors extends SpecialPage {
 	                            <td>".number_format(median($frailty6[$i]), 2)."</td>
 	                            <td>".number_format(stdev($frailty6[$i]), 2)."</td>
 	                            <td>".number_format(avg($means6[$i]), 4)."</td>
-	                            <td>".number_format(pow(avg($means6[$i]), 2), 4)."</td>
+	                            <td>".number_format(pow(avg($means6[$i]), 2), 5)."</td>
 	                            <td style='white-space:nowrap;'>".count($frailty12[$i])." (".number_format(count($frailty12[$i])/max(1, $n12Month)*100, 1).")</td>
 	                            <td>".number_format(avg($frailty12[$i]), 2)."</td>
 	                            <td>".number_format(median($frailty12[$i]), 2)."</td>
 	                            <td>".number_format(stdev($frailty12[$i]), 2)."</td>
 	                            <td>".number_format(avg($means12[$i]), 4)."</td>
-	                            <td>".number_format(pow(avg($means12[$i]), 2), 4)."</td>
+	                            <td>".number_format(pow(avg($means12[$i]), 2), 5)."</td>
 	                        </tr>");
         }
         @$wgOut->addHTML("
