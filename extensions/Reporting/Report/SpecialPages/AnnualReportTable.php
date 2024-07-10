@@ -95,7 +95,8 @@ class AnnualReportTable extends SpecialPage{
                     $blob = new ReportBlob(BLOB_ARRAY, $y, $person->getId(), 0);
                     $blob_address = ReportBlob::create_address("RP_FEC", "FEC_SUBMIT", "LOCK", 0);
                     $blob->load($blob_address);
-                    $locked = count($blob->getData() > 0) ? "Locked" : "";
+                    $locked = $blob->getData();
+                    $locked = (isset($locked['lock']) && implode($locked['lock']) == "Lock") ? "Locked" : "";
                     
                     $wgOut->addHTML("<tr>
                         <td>{$case}</td>
