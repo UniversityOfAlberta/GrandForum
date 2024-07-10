@@ -3217,6 +3217,7 @@ class Person extends BackboneModel {
     function getCourseEval($course_id, $allSections=false){
         $me = Person::newFromWgUser();
         if($this->isMe() || $me->isRoleAtLeast(ADMIN)){
+            $qTexts = array();
             if($allSections){
                 $course = Course::newFromId($course_id);
                 $data = DBFunctions::execSQL("SELECT uc.`course_evals`
@@ -3241,6 +3242,7 @@ class Person extends BackboneModel {
                 $eval = json_decode($row['course_evals'], true);
                 if(is_array($eval)){
                     foreach($eval as $e){
+                        $qTexts[$e['id']] = (isset($e['question'])) ? $e['question'] : Course::$evalMap[$e['id']];
                         foreach($e['votes'] as $i => $vote){
                             @$tmp[$e['id']][$i] += $vote;
                         }
@@ -3248,7 +3250,7 @@ class Person extends BackboneModel {
                 }
             }
             foreach($tmp as $i => $t){
-                $ret[] = array('id' => $i, 'votes' => $t);
+                $ret[] = array('id' => $i, 'question' => $qTexts[$i], 'votes' => $t);
             }
             return $ret;
         }
