@@ -22,7 +22,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                 if($theme->getAcronym() == "Not Specified" || $theme->getAcronym() == ""){
                     $otherThemes[] = $project;
                 } else {
-                    $themes["{$theme->getName()} ({$theme->getAcronym()})"][] = $project;
+                    $themes["{$theme->getAcronym()} - {$theme->getName()}"][] = $project;
                 }
             }
         }
