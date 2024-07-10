@@ -3250,7 +3250,11 @@ class Person extends BackboneModel {
                 }
             }
             foreach($tmp as $i => $t){
-                $ret[] = array('id' => $i, 'question' => str_replace(",", "&#44;", $qTexts[$i]), 'votes' => $t);
+                $ret[] = array('id' => $i, 
+                               'question' => str_replace("(", "&#40;", 
+                                             str_replace(")", "&#41;", 
+                                             str_replace(",", "&#44;", $qTexts[$i]))), 
+                               'votes' => $t);
             }
             return $ret;
         }
