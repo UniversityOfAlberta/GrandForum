@@ -262,6 +262,8 @@ Projects must consider equity, diversity, inclusion and indigeneity in terms of 
         
         <ReportItem id="expertise" type="Textarea" blobItem="EXPERTISE" rich="true" limit="500">
             <![CDATA[
+                <p>Briefly describe the expertise, role and contributions of all project personnel listed in the Project Personnel Table.</p>
+                
                 <p>Applicants are encouraged to consider their processes of identifying, recruiting and selecting research team personnel based on equity, diversity and inclusion best practices as one means to enhance excellence in research, training and outreach.</p>
 
                 <p>A detailed plan of how HQP including trainees will be involved in the research and benefit from being part of the project should be included.</p>
