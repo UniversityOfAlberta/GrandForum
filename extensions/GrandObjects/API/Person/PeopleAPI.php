@@ -37,14 +37,14 @@ class PeopleAPI extends RESTAPI {
                         continue;
                     }
                     if($university == "" && $department == ""){
-                        $finalPeople[$person->getReversedName()] = $person;
+                        $finalPeople[$person->getReversedName().$person->getEmail()] = $person;
                     }
                     else {
                         $unis = $person->getCurrentUniversities();
                         foreach($unis as $uni){
                             if($uni['university'] == $university){
                                 if($department == "" || $department == $uni['department']){
-                                    $finalPeople[$person->getReversedName()] = $person;
+                                    $finalPeople[$person->getReversedName().$person->getEmail()] = $person;
                                 }
                             }
                         }
