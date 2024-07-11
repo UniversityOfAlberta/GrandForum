@@ -438,7 +438,7 @@ class ReportItemCallback {
             $r4 = $eval['votes'][3];
             $r5 = $eval['votes'][4];
             $qText = $eval['question'];
-            $count = $r1 + $r2 + $r3 + $r4 + $r5;
+            $count = max(1, $r1 + $r2 + $r3 + $r4 + $r5);
             $avg = number_format(($r1*1+$r2*2+$r3*3+$r4*4+$r5*5)/$count, 2);
             $ret .= "
                 <td align='right'>$qid</td>
