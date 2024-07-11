@@ -49,53 +49,55 @@
         </Static>
         
         <!-- Responsibilities Variation -->
-        <Static>
-            <![CDATA[
-                <h2>Responsibilities Variation</h2>
-            ]]>
-        </Static>
-        <If if="{==({getText(RP_LETTER5, TABLE, TEMPLATE, {$user_id}, 1, 0, {$last_year})},Variance)}">
-            <If if="{==({getText(RP_LETTER5, TABLE, REPLACE_ROLE, {$user_id}, 1, 0, {$last_year})},Yes)}">
+        <If if="{and({!contains({$my_roles},Chair)},{!contains({$my_roles},ViceDean)})}">
+            <Static>
                 <![CDATA[
-                    <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}, {getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})}.</p>
+                    <h2>Responsibilities Variation</h2>
                 ]]>
+            </Static>
+            <If if="{==({getText(RP_LETTER5, TABLE, TEMPLATE, {$user_id}, 1, 0, {$last_year})},Variance)}">
+                <If if="{==({getText(RP_LETTER5, TABLE, REPLACE_ROLE, {$user_id}, 1, 0, {$last_year})},Yes)}">
+                    <![CDATA[
+                        <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}, {getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})}.</p>
+                    ]]>
+                </If>
+                <ElseIf if="{!=({getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})},)}">
+                    <![CDATA[
+                        <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}, during which period you will be holding the role of {getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})}.</p>
+                    ]]>
+                </ElseIf>
+                <Else>
+                    <![CDATA[
+                        <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}.</p>
+                    ]]>
+                </Else>
+                <Static>
+                    <![CDATA[
+                        <table>
+                            <tr><td align='right'><b>Teaching:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, TEACHING, {$user_id}, 1, 0, {$last_year})}%</td></tr>
+                            <tr><td align='right'><b>Research:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, RESEARCH, {$user_id}, 1, 0, {$last_year})}%</td></tr>
+                            <tr><td align='right'><b>Service:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, SERVICE, {$user_id}, 1, 0, {$last_year})}%</td></tr>
+                            <tr><td align='right'><b>Admin:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, ADMIN, {$user_id}, 1, 0, {$last_year})}%</td></tr>
+                        </table>
+                    ]]>
+                </Static>
             </If>
-            <ElseIf if="{!=({getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})},)}">
-                <![CDATA[
-                    <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}, during which period you will be holding the role of {getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})}.</p>
-                ]]>
-            </ElseIf>
             <Else>
                 <![CDATA[
-                    <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}.</p>
+                    <table>
+                        <tr><td align='right'><b>Teaching:</b></td><td align='right' style='width:3em;'>40%</td></tr>
+                        <tr><td align='right'><b>Research:</b></td><td align='right' style='width:3em;'>40%</td></tr>
+                        <tr><td align='right'><b>Service:</b></td><td align='right' style='width:3em;'>20%</td></tr>
+                        <tr><td align='right'><b>Admin:</b></td><td align='right' style='width:3em;'>0%</td></tr>
+                    </table>
                 ]]>
             </Else>
             <Static>
                 <![CDATA[
-                    <table>
-                        <tr><td align='right'><b>Teaching:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, TEACHING, {$user_id}, 1, 0, {$last_year})}%</td></tr>
-                        <tr><td align='right'><b>Research:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, RESEARCH, {$user_id}, 1, 0, {$last_year})}%</td></tr>
-                        <tr><td align='right'><b>Service:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, SERVICE, {$user_id}, 1, 0, {$last_year})}%</td></tr>
-                        <tr><td align='right'><b>Admin:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, ADMIN, {$user_id}, 1, 0, {$last_year})}%</td></tr>
-                    </table>
+                    <p>If this is not correct, please discuss the issue with your chair and work together to develop an appropriate “Variances of Responsibility” memo</p>
                 ]]>
             </Static>
         </If>
-        <Else>
-            <![CDATA[
-                <table>
-                    <tr><td align='right'><b>Teaching:</b></td><td align='right' style='width:3em;'>40%</td></tr>
-                    <tr><td align='right'><b>Research:</b></td><td align='right' style='width:3em;'>40%</td></tr>
-                    <tr><td align='right'><b>Service:</b></td><td align='right' style='width:3em;'>20%</td></tr>
-                    <tr><td align='right'><b>Admin:</b></td><td align='right' style='width:3em;'>0%</td></tr>
-                </table>
-            ]]>
-        </Else>
-        <Static>
-            <![CDATA[
-                <p>If this is not correct, please discuss the issue with your chair and work together to develop an appropriate “Variances of Responsibility” memo</p>
-            ]]>
-        </Static>
         
         <!-- Leaves -->
         <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Category Description(if other)|Start Date|End Date" types="Text|Date(yy/mm)|Date(yy/mm)" multiple="true" optional="true" class="wikitable">
