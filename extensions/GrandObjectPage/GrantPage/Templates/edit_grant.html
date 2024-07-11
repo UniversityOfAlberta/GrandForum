@@ -13,7 +13,7 @@
     <tr><td colspan="2"><hr /></td></tr>
     <tr>
         <td class="label">UofA PI:</td>
-        <td colspan="3"><%= HTML.Select(this, 'pi.id', {options: [{option: "", value: 0}].concat(this.allPeople.map(function(o){ return {option: o.get('fullName'), value: o.get('id')}; }))}) %></td>
+        <td colspan="3"><%= HTML.Select(this, 'pi.id', {options: [{option: "", value: 0}].concat(this.allPeople.map(function(o){ return {option: o.get('fullName') + " (" + o.get('email').split("@")[0] + ")", value: o.get('id')}; }))}) %></td>
     </tr>
     <tr>
         <td class="label">External PI:</td>

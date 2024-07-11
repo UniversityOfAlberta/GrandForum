@@ -234,12 +234,22 @@ EditGrantView = Backbone.View.extend({
     },
     
     renderCoapplicantsWidget: function(){
-        var objs = [];
+        var objs = {};
+        var availableTags = {};
         this.allPeople.each(function(p){
+            var fullname = p.get('fullName');
+            if(p.get('email') != ""){
+                fullname += " (" + p.get('email').split('@')[0] + ")";
+            }
+            objs[fullname] = {id: p.get('id'),
+                              name: p.get('name'),
+                              fullname: fullname};
             objs[p.get('fullName')] = {id: p.get('id'),
                                        name: p.get('name'),
-                                       fullname: p.get('fullName')};
+                                       fullname: fullname};
+            availableTags[fullname] = fullname;
         });
+        availableTags = _.values(availableTags);
 
         var delimiter = ';';
         var tagLimit = 1000;
@@ -257,18 +267,16 @@ EditGrantView = Backbone.View.extend({
                 singleFieldDelimiter: delimiter,
                 splitOn: delimiter,
                 tagLimit: tagLimit,
-                availableTags: this.allPeople.pluck('fullName'),
-                beforeTagAdded: function(event, ui) {
-                    if(that.allPeople.pluck('fullName').indexOf(ui.tagLabel) == -1){
-                        return false;
-                    }
-                    if(ui.tagLabel == "not found"){
-                        return false;
-                    }
-                    if(that.allPeople.pluck('fullName').indexOf(ui.tagLabel) >= 0){
+                availableTags: availableTags,
+                afterTagAdded: function(event, ui){
+                    // UofA Author
+                    if(objs[ui.tagLabel] != undefined){
                         ui.tag[0].style.setProperty('background', highlightColor, 'important');
                         ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
                         ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
+                        if(ui.tag.children("span").length > 1){
+                            ui.tag.children("span")[1].style.setProperty("color", "white", 'important');
+                        }
                     }
                 },
                 tagSource: function(search, showChoices) {
