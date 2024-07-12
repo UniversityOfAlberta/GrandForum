@@ -193,6 +193,7 @@ class ReportItemCallback {
             "comma" => "comma",
             "set" => "set",
             "get" => "get",
+            "if" => "ifCond",
             "and" => "andCond",
             "or" => "orCond",
             "contains" => "contains",
@@ -2034,6 +2035,15 @@ class ReportItemCallback {
     
     function get($key){
         return $this->reportItem->getVariable($key);
+    }
+    
+    function ifCond($condition, $result){
+        $value = false;
+        @eval("\$value = ($condition);");
+        if($value){
+            return $result;
+        }
+        return "";
     }
     
     function andCond(){

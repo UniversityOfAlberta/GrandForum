@@ -152,9 +152,9 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABClinicalReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Clinical Review", "{$url}SABClinicalReview", $selected);
         }
-        if(count($person->getEvaluates("SAB-Collaborative2022", 2022)) > 0){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABCollaborative2022Review")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Collab Review", "{$url}SABCollaborative2022Review", $selected);
+        if(count($person->getEvaluates("SAB-Collaborative2024", 2024)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABCollaborative2024Review")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Collab Review", "{$url}SABCollaborative2024Review", $selected);
         }
         if(count($person->getEvaluates("SAB-Strat", 2022)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABStrategicReview")) ? "selected" : false;
@@ -172,11 +172,7 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABAlbertaReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Alberta Review", "{$url}SABAlbertaReview", $selected);
         }
-        /*if(count($person->getEvaluates("SAB-Collaborative", 2022)) > 0){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABCollaborativeReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Collab LOI Review", "{$url}SABCollaborativeReview", $selected);
-        }*/
-        if(count($person->getEvaluates("SAB-Catalyst", 2017)) > 0){
+        if(count($person->getEvaluates("SAB-Catalyst", 2024)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABCatalystReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Catalyst Review", "{$url}SABCatalystReview", $selected);
         }
@@ -205,8 +201,8 @@ class Report extends AbstractReport{
                 $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Alberta Report", "{$url}SABAlbertaReport", $selected);
             }
             
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABCollaborative2022Report")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Collab Report", "{$url}SABCollaborative2022Report", $selected);
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABCollaborative2024Report")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Collab Report", "{$url}SABCollaborative2024Report", $selected);
             
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABClinicalReport")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Clinical Report", "{$url}SABClinicalReport", $selected);
