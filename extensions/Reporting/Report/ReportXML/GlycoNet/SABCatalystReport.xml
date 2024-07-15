@@ -22,7 +22,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="MATERIALS" type="ReportSection" renderpdf="false">
         <Static>
             <![CDATA[
             <table align="left" class='wikitable'>
