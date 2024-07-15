@@ -51,7 +51,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Catalyst">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_COLLAB_2024_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_CAT_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                 <ReportItem id="review" type="Upload" blobType="BLOB_RAW" blobItem="SAB_REVIEW" blobSubItem="{$user_id}" fileSize="5">
                     <![CDATA[
                         <p><b>Please complete your review using the provided template, ensuring all requested details are included, and upload it to the Forum in the WORD document format.</b></p>
