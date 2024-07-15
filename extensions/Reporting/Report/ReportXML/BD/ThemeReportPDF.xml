@@ -61,39 +61,21 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones" type="Textarea" blobItem="MILESTONES" rich="true">
-            <![CDATA[
-                <h3>2. Summary of theme activities and milestones</h3>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="edi" type="Textarea" blobItem="EDI" rich="true">
             <![CDATA[
-                <h3>3. Equity, diversity, and inclusion update</h3>
+                <h3>2. Equity, diversity, and inclusion update</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true">
             <![CDATA[
-                <h3>4. Identified or anticipated challenges (if any)</h3>
+                <h3>3. Identified or anticipated challenges (if any)</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
             <![CDATA[
-                <h3>5. Milestones adjustments</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="nextsteps" type="Textarea" blobItem="NEXTSTEPS" rich="true">
-            <![CDATA[
-                <h3>6. Theme next steps</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" rich="true">
-            <![CDATA[
-                <h3>7. Any other theme summary comments not captured above</h3>
+                <h3>4. Milestones adjustments</h3>
                 {$item}
             ]]>
         </ReportItem>
