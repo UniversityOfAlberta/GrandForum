@@ -528,28 +528,28 @@
         <ReportItem id="committee1_1" type="Integer" blobItem="COMMITTEE1_1" width="100px">
             <![CDATA[
                     <td valign='top' align='right'>
-                        {$item}<br />
+                        {$item}&nbsp;<br />
             ]]>
         </ReportItem>
         <ReportItem id="committee2_1" type="Integer" blobItem="COMMITTEE2_1" width="100px">
             <![CDATA[
                         &nbsp;<br />
-                        {$item}<br >
+                        {$item}&nbsp;<br >
             ]]>
         </ReportItem>
         <ReportItem id="committee3_1" type="Integer" blobItem="COMMITTEE3_1" width="100px">
             <![CDATA[
-                        {$item}<br >
+                        {$item}&nbsp;<br >
             ]]>
         </ReportItem>
         <ReportItem id="committee4_1" type="Integer" blobItem="COMMITTEE4_1" width="100px">
             <![CDATA[
-                        {$item}<br >
+                        {$item}&nbsp;<br >
             ]]>
         </ReportItem>
         <ReportItem id="committee5_1" type="Integer" blobItem="COMMITTEE5_1" width="100px">
             <![CDATA[
-                        {$item}<br >
+                        {$item}&nbsp;<br >
                     </td>
             ]]>
         </ReportItem>
@@ -557,28 +557,28 @@
         <ReportItem id="committee1_2" type="Integer" blobItem="COMMITTEE1_2" width="100px">
             <![CDATA[
                     <td valign='top' align='right'>
-                        {$item}<br />
+                        {$item}&nbsp;<br />
             ]]>
         </ReportItem>
         <ReportItem id="committee2_2" type="Integer" blobItem="COMMITTEE2_2" width="100px">
             <![CDATA[
                         &nbsp;<br />
-                        {$item}<br >
+                        {$item}&nbsp;<br >
             ]]>
         </ReportItem>
         <ReportItem id="committee3_2" type="Integer" blobItem="COMMITTEE3_2" width="100px">
             <![CDATA[
-                        {$item}<br >
+                        {$item}&nbsp;<br >
             ]]>
         </ReportItem>
         <ReportItem id="committee4_2" type="Integer" blobItem="COMMITTEE4_2" width="100px">
             <![CDATA[
-                        {$item}<br >
+                        {$item}&nbsp;<br >
             ]]>
         </ReportItem>
         <ReportItem id="committee5_2" type="Integer" blobItem="COMMITTEE5_2" width="100px">
             <![CDATA[
-                        {$item}<br >
+                        {$item}&nbsp;<br >
                     </td>
             ]]>
         </ReportItem>
@@ -586,28 +586,28 @@
         <ReportItem id="committee1_3" type="Integer" blobItem="COMMITTEE1_3" width="100px">
             <![CDATA[
                     <td valign='top' align='right'>
-                        {$item}<br />
+                        {$item}&nbsp;<br />
             ]]>
         </ReportItem>
         <ReportItem id="committee2_3" type="Integer" blobItem="COMMITTEE2_3" width="100px">
             <![CDATA[
                         &nbsp;<br />
-                        {$item}<br >
+                        {$item}&nbsp;<br >
             ]]>
         </ReportItem>
         <ReportItem id="committee3_3" type="Integer" blobItem="COMMITTEE3_3" width="100px">
             <![CDATA[
-                        {$item}<br >
+                        {$item}&nbsp;<br >
             ]]>
         </ReportItem>
         <ReportItem id="committee4_3" type="Integer" blobItem="COMMITTEE4_3" width="100px">
             <![CDATA[
-                        {$item}<br >
+                        {$item}&nbsp;<br >
             ]]>
         </ReportItem>
         <ReportItem id="committee5_3" type="Integer" blobItem="COMMITTEE5_3" width="100px">
             <![CDATA[
-                        {$item}<br >
+                        {$item}&nbsp;<br >
                     </td>
             ]]>
         </ReportItem>
