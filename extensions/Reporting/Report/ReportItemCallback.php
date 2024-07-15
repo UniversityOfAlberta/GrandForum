@@ -38,6 +38,7 @@ class ReportItemCallback {
             "course_enroll" => "getCourseEnroll",    
             "course_enroll_percent" => "getCourseEnrollPercent",
             "course_eval" => "getCourseEval",
+            "course_eval_n" => "getCourseEvalN",
             "getCourseAllLectureEnroll" => "getCourseAllLectureEnroll",
             "getUserSectionCounts" => "getUserSectionCounts",
             "getAverageCourseEvalByTerm" => "getAverageCourseEvalByTerm",
@@ -451,15 +452,41 @@ class ReportItemCallback {
                 <td style='background: white;'>
                     <table padding='0' cellspacing='0' style='width:100%;'>
                         <tr>
-                            <td style='background:#d55e00; width: ".((($r1+$r2)/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#0072b2; width: ".((($r3    )/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#009e73; width: ".((($r4+$r5)/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#b33100; width: ".(($r1/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#d55e00; width: ".(($r2/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#0072b2; width: ".(($r3/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#009e73; width: ".(($r4/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#00662b; width: ".(($r5/$count)*100)."%; height:1em; padding:0;'></td>
                         </tr>
                     </table>
                 </td>
             </tr>";
         }
         return str_replace("\n", "", $ret);
+    }
+    
+    function getCourseEvalN(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $course = Course::newFromId($this->reportItem->projectId);
+        $evals = $person->getCourseEval($course->getId(), false);
+        if(!is_array($evals)){
+            return "";
+        }
+        
+        usort($evals, function($a, $b){
+            return ($a['id'] >= $b['id']);
+        });
+        
+        $ret = "";
+        foreach($evals as $key => $eval){
+            $r1 = $eval['votes'][0];
+            $r2 = $eval['votes'][1];
+            $r3 = $eval['votes'][2];
+            $r4 = $eval['votes'][3];
+            $r5 = $eval['votes'][4];
+            return $r1 + $r2 + $r3 + $r4 + $r5;
+        }
+        return 1;
     }
     
     function getAverageCourseEvalByTerm($term, $q){
