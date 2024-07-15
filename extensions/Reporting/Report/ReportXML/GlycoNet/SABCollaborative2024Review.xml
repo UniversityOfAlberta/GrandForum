@@ -24,14 +24,14 @@
                 <tr>
                     <th style="min-width:110px;">Project Code</th>
                     <th style="min-width:110px;">PI Name</th>
-                    <th style="min-width:110px;">Project Name</th>
+                    <!--th style="min-width:110px;">Project Name</th-->
                     <th style="min-width:125px;">Project Proposal PDF</th>
                 </tr>
             ]]>
         </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative2024">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport2024" project="false">
-                <![CDATA[<tr><td>{getText(RP_SAB_COLLAB_2024_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+                <![CDATA[<tr><td>{getText(RP_SAB_COLLAB_2024_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><td!-->{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td--><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
