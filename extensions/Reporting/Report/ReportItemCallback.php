@@ -861,7 +861,8 @@ class ReportItemCallback {
         $supervisors = array();
         $person = Person::newFromId($this->reportItem->personId);
         $university = $person->getUniversity();
-        $supervisors = $person->getSupervisorsDuring($university['start'], $university['start']);
+        $supervisors = $person->getSupervisorsDuring($this->reportItem->getReport()->startYear.CYCLE_START_MONTH, 
+                                                     $this->reportItem->getReport()->year.CYCLE_END_MONTH);
         $sups = array();
         foreach($supervisors as $supervisor){
             if($excludeMe && $supervisor->getNameForForms() == $this->reportItem->getReport()->person->getNameForForms()){
