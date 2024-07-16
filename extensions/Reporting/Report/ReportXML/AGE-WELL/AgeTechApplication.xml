@@ -374,7 +374,7 @@ Projects must consider equity, diversity, inclusion and indigeneity in terms of 
         </ReportItem>
         <ReportItem id="appendix" type="Upload" blobItem="APPENDIX" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
             <![CDATA[
-                <h3>Additional Appendix</h3>
+                <h3>Additional Appendix (optional)</h3>
                 {$item}
             ]]>
         </ReportItem>

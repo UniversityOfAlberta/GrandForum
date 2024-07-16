@@ -210,7 +210,7 @@
         </ReportItem>
         <ReportItem id="appendix" type="Upload" blobItem="APPENDIX" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
             <![CDATA[
-                <h4>Additional Appendix</h4>
+                <h4>Additional Appendix (optional)</h4>
                 {$item}
             ]]>
         </ReportItem>
