@@ -901,7 +901,7 @@
     </Presentations>
     
     <!-- Patents and Spin Offs -->
-    <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {Issue: %Issue.} {Place: %Venue}">
+    <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
         <Product type="Tool" status="" visible="true">
             <data></data>
             <authors label="Author"></authors>
@@ -924,7 +924,7 @@
             <date label="Date"></date>
         </Product>
         
-        <Product type="Patent" status="Provisional patent filed|Non-provisional patent filed|Patent allowed|Patent issued|Patent licenced" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {Issue: %Issue.} {Place: %Venue}" visible="true">
+        <Product type="Patent" status="Provisional patent filed|Non-provisional patent filed|Patent allowed|Patent issued|Patent licenced" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}" visible="true">
             <data>
                 <field bibtex="number" label="Number" type="String">number</field>
                 <field label="Country" type="String">country</field>

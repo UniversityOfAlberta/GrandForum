@@ -882,7 +882,7 @@
     </Presentations>
     
     <!-- Patents and Spin Offs -->
-    <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {Issue: %Issue.} {Place: %Venue}">
+    <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
         <Product type="Tool" status="">
             <data></data>
             <authors label="Author"></authors>
@@ -897,7 +897,7 @@
             <date label="Date"></date>
         </Product>
         
-        <Product type="Patent" status="Filed|Awarded" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {Issue: %Issue.} {Place: %Venue}">
+        <Product type="Patent" status="Filed|Awarded" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
             <data>
                 <field bibtex="number" label="Number" type="String">number</field>
                 <field label="Country" type="String">country</field>

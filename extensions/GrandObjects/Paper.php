@@ -1559,6 +1559,7 @@ class Paper extends BackboneModel{
         else{
             $title = $this->title;
         }
+        $category = $this->category;
         $type = $this->type;
         $status = $this->status;
         $articleno = $this->getData(array('articleno'));
@@ -1624,7 +1625,7 @@ class Paper extends BackboneModel{
         }
         
         if($yyyy == "0000"){
-            $yyyy = "Accepted: $ayyyy";
+            $yyyy = ($category == "Patent/Spin-Off") ? "Filed: $ayyyy" : "Accepted: $ayyyy";
             $yy = $ayy;
             $mm = $amm;
             $dd = $add;
