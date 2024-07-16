@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Emerging Entrepreneur Award (2023)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2023" ajax="true" disabled="true">
+<Report name="AGE-WELL Emerging Entrepreneur Award (2024)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2024" ajax="true">
     <Permissions>
         <Role role="STAFF">
             <SectionPermission id="description" permissions="rw" />
@@ -23,7 +23,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="Background Information" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2023)">
+    <ReportSection id="description" tooltip="Background Information" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2024)">
         <Static>
             <![CDATA[
                 <h3>About AGE-WELL</h3>
