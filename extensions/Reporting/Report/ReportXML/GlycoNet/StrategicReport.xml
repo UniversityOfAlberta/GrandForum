@@ -254,6 +254,31 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="upload6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload7" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD7" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload8" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD8" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload9" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD9" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload10" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD10" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="ccv" name="NI CCVs" blobSection="CAT_CCV" tooltip="Common CV" type="ReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD1" mimeType="application/pdf">
@@ -309,6 +334,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},vsharko@glyconet.ca" />
     </ReportSection>
 </Report>

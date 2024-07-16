@@ -59,6 +59,16 @@
         </ReportItem>
         <ReportItem id="upload5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
         </ReportItem>
+        <ReportItem id="upload6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload7" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD7" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload8" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD8" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload9" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD9" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload10" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD10" mimeType="application/pdf">
+        </ReportItem>
     </ReportSection>
     <ReportSection id="ccv" name="NI CCVs" blobSection="CAT_CCV" tooltip="Common CV" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD1" mimeType="application/pdf">
