@@ -355,29 +355,31 @@
                     <table class='wikitable' width='100%'>
                         <tr>
                             <th style='width: 25%;'>Student</th>
-                            <th style='width: 10%;'>Year<br />Admitted</th>
+                            <th style='width: 5%;'>Year<br />Admitted</th>
                             <th style='width: 25%;'>Degree<br />Sought</th>
                             <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
                             <th style='width: 20%;'>Co-Supervisors</th>
+                            <th style='width: 5%;'>Footnote</th>
                         </tr>
                 ]]>
             </Static>
             <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
                 <Static>
                     <![CDATA[
-                        <tr>
+                        <tr data-id='{$user_id}'>
                             <td rowspan='2'>{$user_name}</td>
                     ]]>
                 </Static>
                 
-                <Static>
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}">
                     <![CDATA[
                             <td align='center'>{substr({getExtra(start_date)},0,4)}</td>
                             <td>{getExtra(position)}</td>
                             <td align='center'>{substr({getExtra(finish)},0,4)}</td>
                             <td>{$user_cosupervisors}</td>
+                            <td align="center" rowspan='2'>{$item}</td>
                     ]]>
-                </Static>
+                </ReportItem>
                 <Static>
                     <![CDATA[
                         </tr>
@@ -385,7 +387,7 @@
                 </Static>
                 <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" height="48px">
                     <![CDATA[
-                        <tr><td colspan='4'>
+                        <tr data-id='{$user_id}'><td colspan='4'>
                             Name of Scholarships, if any<br />
                             {$item}
                         </td></tr>

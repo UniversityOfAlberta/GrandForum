@@ -222,51 +222,82 @@
             <Static>
                 <![CDATA[
                     <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>
-                    <table class='wikitable' frame='box' rules='all' width='100%'>
-                        <tr>
-                            <th style='width: 25%;'>Student</th>
-                            <th style='width: 10%;'>Year<br />Admitted</th>
-                            <th style='width: 25%;'>Degree<br />Sought</th>
-                            <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
-                            <th style='width: 20%;'>Co-Supervisors</th>
-                        </tr>
                 ]]>
             </Static>
-            <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
+            <If if="{>({getHQPCount({getExtra(value)})}, 0)}">
                 <Static>
                     <![CDATA[
-                        <tr>
-                            <td rowspan='2'>{$user_name}</td>
+                        <table class='wikitable' frame='box' rules='all' width='100%'>
+                            <tr>
+                                <th style='width: 20%;'>Student</th>
+                                <th style='width: 1%; white-space:nowrap;'>FT / PT</th>
+                                <th style='width: 10%;'>Year<br />Admitted</th>
+                                <th style='width: 25%;'>Degree<br />Sought</th>
+                                <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
+                                <th style='width: 20%;'>Co-Supervisors</th>
+                            </tr>
                     ]]>
                 </Static>
-                
+                <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
+                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS">
+                        <![CDATA[
+                            <tr>
+                                <td rowspan='2'>{$item}{$user_name}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}" options="FT|PT" width="3.5em">
+                        <![CDATA[
+                            <td>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <Static>
+                        <![CDATA[
+                                <td align='center'>{substr({getExtra(start_date)},0,4)}</td>
+                                <td>{getExtra(position)}</td>
+                                <td align='center'>{substr({getExtra(finish)},0,4)}</td>
+                                <td>{$user_cosupervisors}</td>
+                        ]]>
+                    </Static>
+                    <Static>
+                        <![CDATA[
+                            </tr>
+                        ]]>
+                    </Static>
+                    <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS" height="48px">
+                        <![CDATA[
+                            <tr><td colspan='5'>
+                                Name of Scholarships, if any<br />
+                                {$item}
+                            </td></tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
                 <Static>
                     <![CDATA[
-                            <td align='center'>{substr({getExtra(start_date)},0,4)}</td>
-                            <td>{getExtra(position)}</td>
-                            <td align='center'>{substr({getExtra(finish)},0,4)}</td>
-                            <td>{$user_cosupervisors}</td>
+                        </table>
                     ]]>
                 </Static>
+                <!-- HQP Footnotes -->
                 <Static>
                     <![CDATA[
-                        </tr>
+                        <ul>
                     ]]>
                 </Static>
-                <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS" height="48px">
+                <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
+                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}" isTopAnchor="false" blobSection="FEC_STUDENTS">
+                        <![CDATA[
+                            <li style="page-break-inside: avoid;">
+                                {$item}
+                            </li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <Static>
                     <![CDATA[
-                        <tr><td colspan='4'>
-                            Name of Scholarships, if any<br />
-                            {$item}
-                        </td></tr>
+                        </ul>
                     ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <Static>
-                <![CDATA[
-                    </table>
-                ]]>
-            </Static>
+                </Static>
+            </If>
         </ReportItemSet>
         
         <!-- Publications -->
