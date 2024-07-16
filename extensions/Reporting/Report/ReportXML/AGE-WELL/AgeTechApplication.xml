@@ -372,6 +372,12 @@ Projects must consider equity, diversity, inclusion and indigeneity in terms of 
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="appendix" type="Upload" blobItem="APPENDIX" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>Additional Appendix</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="checklist" tooltip="Application Checklist" title="Application Checklist" name="Application Checklist" blobSection="APPLICATION_FORM" type="EditableReportSection">
         <ReportItem id="1" type="Checkbox" blobItem="CHECK_1" blobType="BLOB_ARRAY" options="ECR as (Co) Principal Investigator or Nominated Principal Investigator">
