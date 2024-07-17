@@ -37,7 +37,7 @@
     foreach($data as $row){
         // Ordered by PhD Date
         $person = Person::newFromId($row['user_id']);
-        if($person == null || $person->getId() == 0 || (!$person->isRoleDuring(NI, $start, $end) && !$person->isRoleDuring("ATS", $start, $end))){
+        if($person == null || $person->getId() == 0 || $person->isSubRole("NoAR") || (!$person->isRoleDuring(NI, $start, $end) && !$person->isRoleDuring("ATS", $start, $end))){
             // Check to make sure the person exists, and is an Faculty
             continue;
         }
