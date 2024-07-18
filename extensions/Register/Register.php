@@ -42,7 +42,7 @@ class Register extends SpecialPage{
                 else if($config->getValue('networkName') == "AVOID"){
                     // Do Nothing
                 }
-                else if($config->getValue('networkName') == "IDeaS"){
+                else if($config->getValue('networkName') == "IDeaS" || $config->getValue('networkName') == "Voyant"){
                     $parseroutput->mText .= "<h2>Forum Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
                 else{
@@ -431,7 +431,7 @@ class Register extends SpecialPage{
                                  <br /><br />");
             }
         }
-        else if($config->getValue('networkName') == 'IDeaS'){
+        else if($config->getValue('networkName') == 'IDeaS' || $config->getValue('networkName') == "Voyant"){
             $wgOut->setPageTitle("Forum Registration");
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of Member.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         }
@@ -566,7 +566,7 @@ class Register extends SpecialPage{
                 }
                 $_POST['candidate'] = "0";
             }
-            else if($config->getValue('networkName') == "IDeaS"){
+            else if($config->getValue('networkName') == "IDeaS" || $config->getValue('networkName') == "Voyant"){
                 $_POST['wpUserType'] = CI;
                 $_POST['candidate'] = "0";
             }
