@@ -1571,6 +1571,7 @@ class Paper extends BackboneModel{
         $editor = $this->getData(array('editors'));
         $ranking = $this->getData(array('category_ranking'));
         $if = $this->getData(array('impact_factor'));
+        $doi = $this->getData(array('doi'));
         
         if($ranking == ""){
             $ranking = "Unavailable for venue";
@@ -1666,6 +1667,7 @@ class Paper extends BackboneModel{
             $match1 = str_ireplace("%volume",    $volume,    $match1);
             $match1 = str_ireplace("%ranking",   $ranking,   $match1);
             $match1 = str_ireplace("%if",        $if,        $match1);
+            $match1 = str_ireplace("%doi",       $doi,       $match1);
             $match1 = str_ireplace("%data_syyyy",$data_syyyy,$match1);
             $match1 = str_ireplace("%data_eyyyy",$data_eyyyy,$match1);
 
@@ -1695,6 +1697,7 @@ class Paper extends BackboneModel{
             $match2 = str_ireplace("%volume",    "", $match2);
             $match2 = str_ireplace("%ranking",   "", $match2);
             $match2 = str_ireplace("%if",        "", $match2);
+            $match2 = str_ireplace("%doi",       "", $match2);
             $match2 = str_ireplace("%data_syyyy","", $match2);
             $match2 = str_ireplace("%data_eyyyy","", $match2);
             

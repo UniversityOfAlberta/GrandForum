@@ -2,7 +2,7 @@
 <Products>
 
     <!-- Publications -->
-    <Publications category="Publication" citationFormat="{%Authors} {(%Dates).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{ #%Articleno}{, %Pages.} {%Publisher}">
+    <Publications category="Publication" citationFormat="{%Authors} {(%Dates).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{ #%Articleno}{, %Pages.} {%Publisher}&lt;br />{DOI: %doi}">
         <Publication type="Bachelors Thesis" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
             <statuses ccv_id="cf36bbd2e16c45cba9768a84ac2d6729" ccv_name="Publishing Status">
