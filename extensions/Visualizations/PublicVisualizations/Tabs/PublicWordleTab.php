@@ -72,7 +72,9 @@ class PublicWordleTab extends AbstractTab {
 	        $projects = Project::getAllProjects();
 	        $description = array();
 	        foreach($projects as $project){
-	            $description[] = strip_tags($project->getDescription());
+	            $pdesc = $project->getDescription();
+	            $pdesc = (is_array($pdesc)) ? implode(" ", $pdesc) : $pdesc;
+	            $description[] = strip_tags($pdesc);
 	            $description[] = strip_tags($project->getFullName());
             }
             $data = array();
