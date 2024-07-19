@@ -13,6 +13,7 @@ class SelectReportItem extends AbstractReportItem {
         }
         $value = $this->getBlobValue();
         $default = $this->getAttr('default', '');
+        $placeholder = $this->getAttr('placeholder', '');
 		if($value === "" && $default != ''){
 		    $value = $default;
 		}
@@ -21,16 +22,23 @@ class SelectReportItem extends AbstractReportItem {
         $found = ($value == "");
 		foreach($options as $key => $option){
 		    $selected = "";
+		    $disabled = "";
 		    if($value == $option){
 		        $selected = "selected";
 		        $found = true;
 		    }
-		    $option = str_replace("'", "&#39;", $option);
+		    if($found && $placeholder != "" && $option == ""){
+		        $labels[$key] = $placeholder;
+		        $disabled = "disabled";
+		    }
+		    else{
+		        $option = str_replace("'", "&#39;", $option);
+		    }
 		    if(isset($labels[$key])){
-		        $items[] = "<option value='{$option}' $selected >{$labels[$key]}</option>";
+		        $items[] = "<option value='{$option}' $selected $disabled>{$labels[$key]}</option>";
 		    }
 		    else {
-		        $items[] = "<option value='{$option}' $selected >{$option}</option>";
+		        $items[] = "<option value='{$option}' $selected $disabled>{$option}</option>";
 		    }
 		}
 		if(!$found){

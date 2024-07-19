@@ -1,4 +1,674 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="../ChairTable">
-    
+    <ReportSection id="recommendations">
+        <ReportItemSet id="header">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
+                <Static>
+                    <![CDATA[
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <script type='text/javascript'>
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_name}</div>");
+                        </script>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        <h1 style="margin-top:0;padding-top:0;">Recommendation for {$user_name}</h1>
+                        <script type="text/javascript">
+                            $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
+                        </script>
+                    ]]>
+                </Static>
+                <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
+                        <![CDATA[
+                            Instructions:
+                            <ul>
+                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                            </ul>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                
+                <!-- Teaching -->
+                <ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Teaching Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Research -->
+                <ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Research Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Service -->
+                <ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Service Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="service" type="Textarea" blobType="BLOB_TEXT" blobItem="SERVICE" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Noteworthy Contributions in the Last Evaluation Year -->
+                <ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        <h2>Noteworthy Contributions in the Last Evaluation Year</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Noteworthy Contributions in the Last Evaluation Year -->
+                <ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        <h2>Scholarship and Long-Term Contributions</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <If if="{!contains({$user_case_number}, T)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                        <![CDATA[
+                            <h3>Recommendations</h3>
+                            <table id="chairTable" class="wikitable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Increment</th>
+                                    <th>Tenure</th>
+                                    <th>Promotion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </If>
+                <Else>
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                        <![CDATA[
+                            <h3>Recommendations</h3>
+                            <table id="chairTable" class="wikitable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Increment</th>
+                                    <th>Promotion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </Else>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <hr class="pdfnodisplay" />
+                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else id="else">
+                <![CDATA[
+                    <p>You are not allowed to view the recommendations for this user.</p>
+                ]]>
+            </Else>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="deans_advice">
+        <ReportItemSet id="header">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
+                <Static>
+                    <![CDATA[
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <script type='text/javascript'>
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_name}</div>");
+                        </script>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        <h1 style="margin-top:0;padding-top:0;">Dean's Advice for {$user_name}</h1>
+                        <script type="text/javascript">
+                            $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
+                        </script>
+                    ]]>
+                </Static>
+                <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf">
+                        <![CDATA[
+                            Instructions:
+                            <ul>
+                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                            </ul>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                
+                <!-- Teaching -->
+                <ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Teaching Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Research -->
+                <ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Research Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Service -->
+                <ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Service Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="service" type="Textarea" blobType="BLOB_TEXT" blobItem="SERVICE" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Noteworthy Contributions in the Last Evaluation Year -->
+                <ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        <h2>Noteworthy Contributions in the Last Evaluation Year</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Noteworthy Contributions in the Last Evaluation Year -->
+                <ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        <h2>Scholarship and Long-Term Contributions</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                        <h3>Recommendations</h3>
+                        <table id="chairTable" class="wikitable" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Increment</th>
+                                <th>Tenure</th>
+                                <th>Promotion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <hr class="pdfnodisplay" />
+                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Advice" userId="{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else id="else">
+                <![CDATA[
+                    <p>You are not allowed to view the recommendations for this user.</p>
+                ]]>
+            </Else>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="deans_decision">
+        <ReportItemSet id="header">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
+                <Static>
+                    <![CDATA[
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <script type='text/javascript'>
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_name}</div>");
+                        </script>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        <h1 style="margin-top:0;padding-top:0;">Dean's Decision for {$user_name}</h1>
+                        <script type="text/javascript">
+                            $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
+                        </script>
+                    ]]>
+                </Static>
+                <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
+                        <![CDATA[
+                            Instructions:
+                            <ul>
+                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                            </ul>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                
+                <!-- Teaching -->
+                <ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Teaching Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Research -->
+                <ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Research Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Service -->
+                <ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Service Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="service" type="Textarea" blobType="BLOB_TEXT" blobItem="SERVICE" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Noteworthy Contributions in the Last Evaluation Year -->
+                <ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        <h2>Noteworthy Contributions in the Last Evaluation Year</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Noteworthy Contributions in the Last Evaluation Year -->
+                <ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        <h2>Scholarship and Long-Term Contributions</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                        <h3>Recommendations</h3>
+                        <table id="chairTable" class="wikitable" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Increment</th>
+                                <th>Tenure</th>
+                                <th>Promotion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <hr class="pdfnodisplay" />
+                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Decision" userId="{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else id="else">
+                <![CDATA[
+                    <p>You are not allowed to view the recommendations for this user.</p>
+                ]]>
+            </Else>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="chairs_advice">
+        <ReportItemSet id="header">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
+                <Static>
+                    <![CDATA[
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <script type='text/javascript'>
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_name}</div>");
+                        </script>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        <h1 style="margin-top:0;padding-top:0;">Chair's Advice for {$user_name}</h1>
+                        <script type="text/javascript">
+                            $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
+                        </script>
+                    ]]>
+                </Static>
+                <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
+                        <![CDATA[
+                            Instructions:
+                            <ul>
+                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                            </ul>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                
+                <!-- Teaching -->
+                <ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Teaching Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Research -->
+                <ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Research Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Service -->
+                <ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Service Performance</h2>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="service" type="Textarea" blobType="BLOB_TEXT" blobItem="SERVICE" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Noteworthy Contributions in the Last Evaluation Year -->
+                <ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        <h2>Noteworthy Contributions in the Last Evaluation Year</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <!-- Noteworthy Contributions in the Last Evaluation Year -->
+                <ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        <h2>Scholarship and Long-Term Contributions</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                        <h3>Recommendations</h3>
+                        <table id="chairTable" class="wikitable" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Increment</th>
+                                <th>Tenure</th>
+                                <th>Promotion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                            <td align='center' class='tenure'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <hr class="pdfnodisplay" />
+                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="Chair Advice" userId="{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else id="else">
+                <![CDATA[
+                    <p>You are not allowed to view the recommendations for this user.</p>
+                ]]>
+            </Else>
+        </ReportItemSet>
+    </ReportSection>
 </Report>

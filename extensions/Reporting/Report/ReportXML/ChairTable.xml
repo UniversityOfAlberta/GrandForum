@@ -1136,9 +1136,9 @@
             <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
                 <Static>
                     <![CDATA[
-                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_name}<br /><i>Generated: {$timestamp}</i></div>
                         <script type='text/javascript'>
-                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_name}</div>");
                         </script>
                     ]]>
                 </Static>
@@ -1317,9 +1317,9 @@
             <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
                 <Static>
                     <![CDATA[
-                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_name}<br /><i>Generated: {$timestamp}</i></div>
                         <script type='text/javascript'>
-                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_name}</div>");
                         </script>
                     ]]>
                 </Static>
@@ -1479,9 +1479,9 @@
             <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
                 <Static>
                     <![CDATA[
-                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_name}<br /><i>Generated: {$timestamp}</i></div>
                         <script type='text/javascript'>
-                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_name}</div>");
                         </script>
                     ]]>
                 </Static>
@@ -1641,9 +1641,9 @@
             <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
                 <Static>
                     <![CDATA[
-                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_name}<br /><i>Generated: {$timestamp}</i></div>
                         <script type='text/javascript'>
-                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_case_number} / {$user_name}</div>");
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_name}</div>");
                         </script>
                     ]]>
                 </Static>
