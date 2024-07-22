@@ -414,8 +414,84 @@ class ApplicationsTable extends SpecialPage{
     
     function generateAgeTech(){
         global $wgOut;
+        
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem('TITLE');
+        $title->setBlobSection('APPLICATION_FORM');
+        
+        $lay = new TextareaReportItem();
+        $lay->setBlobType(BLOB_TEXT);
+        $lay->setBlobItem('SUMMARY');
+        $lay->setBlobSection('APPLICATION_FORM');
+        $lay->setAttr('rich', "true");
+        
+        $keywords = new MultiTextReportItem();
+        $keywords->setBlobType(BLOB_ARRAY);
+        $keywords->setBlobItem('KEYWORDS');
+        $keywords->setBlobSection('APPLICATION_FORM');
+        $keywords->setAttr('orientation', "list");
+        $keywords->setId("keywords");
+        
+        $challenges = new CheckboxReportItem();
+        $challenges->setBlobType(BLOB_ARRAY);
+        $challenges->setBlobItem('CHALLENGES');
+        $challenges->setBlobSection('APPLICATION_FORM');
+        $challenges->setId("challenges");
+        
+        $age = new CheckboxReportItem();
+        $age->setBlobType(BLOB_ARRAY);
+        $age->setBlobItem('AGE');
+        $age->setBlobSection('APPLICATION_FORM');
+        $age->setId("age");
+        
+        $gender = new CheckboxReportItem();
+        $gender->setBlobType(BLOB_ARRAY);
+        $gender->setBlobItem('GENDER');
+        $gender->setBlobSection('APPLICATION_FORM');
+        $gender->setId("gender");
+        
+        $gender_other = new TextReportItem();
+        $gender_other->setBlobType(BLOB_TEXT);
+        $gender_other->setBlobItem('GENDER_OTHER');
+        $gender_other->setBlobSection('APPLICATION_FORM');
+        
+        $indigenous = new CheckboxReportItem();
+        $indigenous->setBlobType(BLOB_ARRAY);
+        $indigenous->setBlobItem('INDIGENOUS');
+        $indigenous->setBlobSection('APPLICATION_FORM');
+        $indigenous->setId("indigenous");
+        
+        $ethnicities = new CheckboxReportItem();
+        $ethnicities->setBlobType(BLOB_ARRAY);
+        $ethnicities->setBlobItem('ETHNICITIES');
+        $ethnicities->setBlobSection('APPLICATION_FORM');
+        $ethnicities->setId("ethnicities");
+        
+        $ethnicities_other = new TextReportItem();
+        $ethnicities_other->setBlobType(BLOB_TEXT);
+        $ethnicities_other->setBlobItem('ETHNICITIES_OTHER');
+        $ethnicities_other->setBlobSection('APPLICATION_FORM');
+        
+        $disability = new CheckboxReportItem();
+        $disability->setBlobType(BLOB_ARRAY);
+        $disability->setBlobItem('DISABILITY');
+        $disability->setBlobSection('APPLICATION_FORM');
+        $disability->setId("disability");
+        
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_AGETECH', null, 2024, "2024"));
+        $tabbedPage->addTab(new ApplicationTab('RP_AGETECH', null, 2024, "2024", array("Title" => $title,
+                                                                                       "Lay Summary" => $lay,
+                                                                                       "Keywords" => $keywords,
+                                                                                       "Challenge Areas" => $challenges,
+                                                                                       "Age" => $age,
+                                                                                       "Gender" => $gender,
+                                                                                       "Gender (Other)" => $gender_other,
+                                                                                       "Indigenous" => $indigenous,
+                                                                                       "Ethnicities" => $ethnicities,
+                                                                                       "Ethnicities (Other)" => $ethnicities_other,
+                                                                                       "Disability" => $disability
+                                                                                       )));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
