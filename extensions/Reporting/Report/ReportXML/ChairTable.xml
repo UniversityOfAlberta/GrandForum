@@ -1153,12 +1153,64 @@
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
                     <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
                         <![CDATA[
-                            Instructions:
-                            <ul>
-                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
-                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
-                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
-                            </ul>
+                            <div style='width:100%; display:flex; gap: 10px;'>
+                                <div style='width:50%;'>
+                                    <h3 style='margin-top:0;'>Instructions</h3>
+                                    <ul>
+                                        <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                        <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                        <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                                    </ul>
+                                </div>
+                                <div style='width:50%;'>
+                                    <h3 style='margin-top:0;'>Historical Data</h3>
+                                    <small>Note: These numbers are not reviewed by the Faculty members, so they may not be 100% accurate.</small>
+                                    <table class='wikitable'>
+                                        <tr>
+                                            <th></th>
+                                            <th style='width:75px;'>Refereed</th>
+                                            <th style='width:75px;'>Books</th>
+                                            <th style='width:75px;'>Patents</th>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Lifetime</b></td>
+                                            <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
+                                            <td align='center'>{user_lifetime_pubs_count(Book)}</td>
+                                            <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -1334,12 +1386,64 @@
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
                     <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf">
                         <![CDATA[
-                            Instructions:
-                            <ul>
-                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
-                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
-                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
-                            </ul>
+                            <div style='width:100%; display:flex; gap: 10px;'>
+                                <div style='width:50%;'>
+                                    <h3 style='margin-top:0;'>Instructions</h3>
+                                    <ul>
+                                        <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                        <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                        <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                                    </ul>
+                                </div>
+                                <div style='width:50%;'>
+                                    <h3 style='margin-top:0;'>Historical Data</h3>
+                                    <small>Note: These numbers are not reviewed by the Faculty members, so they may not be 100% accurate.</small>
+                                    <table class='wikitable'>
+                                        <tr>
+                                            <th></th>
+                                            <th style='width:75px;'>Refereed</th>
+                                            <th style='width:75px;'>Books</th>
+                                            <th style='width:75px;'>Patents</th>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Lifetime</b></td>
+                                            <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
+                                            <td align='center'>{user_lifetime_pubs_count(Book)}</td>
+                                            <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -1496,12 +1600,64 @@
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
                     <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
                         <![CDATA[
-                            Instructions:
-                            <ul>
-                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
-                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
-                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
-                            </ul>
+                            <div style='width:100%; display:flex; gap: 10px;'>
+                                <div style='width:50%;'>
+                                    <h3 style='margin-top:0;'>Instructions</h3>
+                                    <ul>
+                                        <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                        <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                        <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                                    </ul>
+                                </div>
+                                <div style='width:50%;'>
+                                    <h3 style='margin-top:0;'>Historical Data</h3>
+                                    <small>Note: These numbers are not reviewed by the Faculty members, so they may not be 100% accurate.</small>
+                                    <table class='wikitable'>
+                                        <tr>
+                                            <th></th>
+                                            <th style='width:75px;'>Refereed</th>
+                                            <th style='width:75px;'>Books</th>
+                                            <th style='width:75px;'>Patents</th>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Lifetime</b></td>
+                                            <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
+                                            <td align='center'>{user_lifetime_pubs_count(Book)}</td>
+                                            <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -1658,12 +1814,64 @@
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
                     <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
                         <![CDATA[
-                            Instructions:
-                            <ul>
-                                <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
-                                <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
-                                <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
-                            </ul>
+                            <div style='width:100%; display:flex; gap: 10px;'>
+                                <div style='width:50%;'>
+                                    <h3 style='margin-top:0;'>Instructions</h3>
+                                    <ul>
+                                        <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                        <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                        <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                                    </ul>
+                                </div>
+                                <div style='width:50%;'>
+                                    <h3 style='margin-top:0;'>Historical Data</h3>
+                                    <small>Note: These numbers are not reviewed by the Faculty members, so they may not be 100% accurate.</small>
+                                    <table class='wikitable'>
+                                        <tr>
+                                            <th></th>
+                                            <th style='width:75px;'>Refereed</th>
+                                            <th style='width:75px;'>Books</th>
+                                            <th style='width:75px;'>Patents</th>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Lifetime</b></td>
+                                            <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
+                                            <td align='center'>{user_lifetime_pubs_count(Book)}</td>
+                                            <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                             {$item}
                         ]]>
                     </ReportItem>
