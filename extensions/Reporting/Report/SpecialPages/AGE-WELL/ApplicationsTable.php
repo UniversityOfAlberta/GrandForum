@@ -453,43 +453,36 @@ class ApplicationsTable extends SpecialPage{
         $funds->setBlobType(BLOB_ARRAY);
         $funds->setBlobItem('FUNDS');
         $funds->setBlobSection('APPLICATION_FORM');
-        $funds->setId("funds");
         
         $funds1 = new IntegerReportItem();
         $funds1->setBlobType(BLOB_ARRAY);
         $funds1->setBlobItem('FUNDS1');
         $funds1->setBlobSection('APPLICATION_FORM');
-        $funds1->setId("funds1");
         
         $funds2 = new IntegerReportItem();
         $funds2->setBlobType(BLOB_ARRAY);
         $funds2->setBlobItem('FUNDS2');
         $funds2->setBlobSection('APPLICATION_FORM');
-        $funds2->setId("funds2");
         
         $funds3 = new IntegerReportItem();
         $funds3->setBlobType(BLOB_ARRAY);
         $funds3->setBlobItem('FUNDS3');
         $funds3->setBlobSection('APPLICATION_FORM');
-        $funds3->setId("funds3");
         
         $funds4 = new IntegerReportItem();
         $funds4->setBlobType(BLOB_ARRAY);
         $funds4->setBlobItem('FUNDS4');
         $funds4->setBlobSection('APPLICATION_FORM');
-        $funds4->setId("funds4");
         
         $funds5 = new IntegerReportItem();
         $funds5->setBlobType(BLOB_ARRAY);
         $funds5->setBlobItem('FUNDS5');
         $funds5->setBlobSection('APPLICATION_FORM');
-        $funds5->setId("funds5");
         
         $funds6 = new IntegerReportItem();
         $funds6->setBlobType(BLOB_ARRAY);
         $funds6->setBlobItem('FUNDS6');
         $funds6->setBlobSection('APPLICATION_FORM');
-        $funds6->setId("funds6");
         
         $age = new CheckboxReportItem();
         $age->setBlobType(BLOB_ARRAY);
