@@ -433,6 +433,13 @@ class ApplicationsTable extends SpecialPage{
         $keywords->setAttr('orientation', "list");
         $keywords->setId("keywords");
         
+        $investigators = new MultiTextReportItem();
+        $investigators->setBlobType(BLOB_ARRAY);
+        $investigators->setBlobItem('INVESTIGATORS');
+        $investigators->setBlobSection('APPLICATION_FORM');
+        $investigators->setAttr('orientation', "list");
+        $investigators->setId("investigators");
+        
         $challenges = new CheckboxReportItem();
         $challenges->setBlobType(BLOB_ARRAY);
         $challenges->setBlobItem('CHALLENGES');
@@ -483,6 +490,7 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab('RP_AGETECH', null, 2024, "2024", array("Title" => $title,
                                                                                        "Lay Summary" => $lay,
                                                                                        "Keywords" => $keywords,
+                                                                                       "Investigators" => $investigators,
                                                                                        "Challenge Areas" => $challenges,
                                                                                        "Age" => $age,
                                                                                        "Gender" => $gender,
