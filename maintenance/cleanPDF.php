@@ -21,7 +21,7 @@
         else{
             $total += $row['len_pdf'];
             echo "DELETE {$id}_{$row['report_id']} (".number_format($row['len_pdf']/1024/1024, 3)." MB)\n";
-            DBFunctions::execSQL("DELETE FROM grand_pdf_report WHERE report_id = '{$row['report_id']}'", false);
+            DBFunctions::execSQL("DELETE FROM grand_pdf_report WHERE report_id = '{$row['report_id']}'", true);
         }
     }
     
