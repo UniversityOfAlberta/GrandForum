@@ -437,7 +437,10 @@ class ApplicationsTable extends SpecialPage{
         $investigators->setBlobType(BLOB_ARRAY);
         $investigators->setBlobItem('INVESTIGATORS');
         $investigators->setBlobSection('APPLICATION_FORM');
-        $investigators->setAttr('orientation', "list");
+        $investigators->setAttr("labels", "Check if ECR*|Role|Name|Institution");
+        $investigators->setAttr("orientation", "list");
+        $investigators->setAttr("showHeader", "false");
+        $investigators->setAttr("multiple", "true");
         $investigators->setId("investigators");
         
         $challenges = new CheckboxReportItem();
