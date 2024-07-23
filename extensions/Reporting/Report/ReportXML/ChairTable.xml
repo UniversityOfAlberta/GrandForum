@@ -28,7 +28,7 @@
             <SectionPermission id="deans_advice" permissions="rw" />
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
-            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
         </Role>
         <Role role="DEANEA">
