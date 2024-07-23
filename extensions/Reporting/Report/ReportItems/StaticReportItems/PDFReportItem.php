@@ -30,6 +30,7 @@ class PDFReportItem extends StaticReportItem {
         if($pdfReport != ""){
             $report->pdfType = $pdfReport;
         }
+        
         $report->person = $person;
         $tok = false;
         $check = $report->getPDF(false, $section);

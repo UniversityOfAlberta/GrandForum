@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report pdfFiles="Letters/Variance" extends="Letters/Base">
+<Report pdfFiles="Letters/Variance" pdfType="RP_LETTER5" extends="Letters/Base">
     <ReportSection id="letter" title="Confirmation of University Responsibilities – Article A2.01.2">
         <ReportItem id="from">
             <![CDATA[

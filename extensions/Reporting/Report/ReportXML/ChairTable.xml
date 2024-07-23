@@ -126,6 +126,7 @@
                             <th width="1%">{$last_year} Report</th>
                             <th width="1%">Annual Report</th>
                             <th width="1%">Locked</th>
+                            <th style='white-space:nowrap;'>T/R/S/A<br />Variance</th>
                             <th>Evaluation</th>
                             <th width="1%">Merit Increment</th>
                             <th width="1%">Tenure</th>
@@ -192,6 +193,24 @@
                     <td align='center'>Not Locked</td>
                 ]]>
             </If>
+            <If if="{==({getText(RP_LETTER5, TABLE, TEMPLATE, {$user_id}, 1, 0, {$last_year})},Variance)}">
+                <ReportItem id="variance_letter" type="PDFReportItem" reportType="Letters/Variance" year="{$last_year}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                    <![CDATA[
+                        <td align='center'>
+                            {getText(RP_LETTER5, TABLE, TEACHING, {$user_id}, 1, 0, {$last_year})}
+                            {getText(RP_LETTER5, TABLE, RESEARCH, {$user_id}, 1, 0, {$last_year})}
+                            {getText(RP_LETTER5, TABLE, SERVICE, {$user_id}, 1, 0, {$last_year})}
+                            {getText(RP_LETTER5, TABLE, ADMIN, {$user_id}, 1, 0, {$last_year})}
+                            {$item}
+                        </td>
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else>
+                <![CDATA[
+                    <td></td>
+                ]]>
+            </Else>
             <If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
                 <ReportItem id="recommendation" type="PDFReportItem" class="recommendationPDF downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
@@ -751,6 +770,7 @@
                             <th>Special Case</th>
                             <th width="1%">Annual Report</th>
                             <th width="1%">Locked</th>
+                            <th style='white-space:nowrap;'>T/R/S/A<br />Variance</th>
                             <th>Evaluation</th>
                             <th width="1%">Merit Increment</th>
                             <th width="1%">Tenure</th>
@@ -802,6 +822,24 @@
                     <td align='center'>Not Locked</td>
                 ]]>
             </If>
+            <If if="{==({getText(RP_LETTER5, TABLE, TEMPLATE, {$user_id}, 1, 0, {$last_year})},Variance)}">
+                <ReportItem id="variance_letter" type="PDFReportItem" reportType="Letters/Variance" year="{$last_year}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                    <![CDATA[
+                        <td align='center'>
+                            {getText(RP_LETTER5, TABLE, TEACHING, {$user_id}, 1, 0, {$last_year})}
+                            {getText(RP_LETTER5, TABLE, RESEARCH, {$user_id}, 1, 0, {$last_year})}
+                            {getText(RP_LETTER5, TABLE, SERVICE, {$user_id}, 1, 0, {$last_year})}
+                            {getText(RP_LETTER5, TABLE, ADMIN, {$user_id}, 1, 0, {$last_year})}
+                            {$item}
+                        </td>
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else>
+                <![CDATA[
+                    <td></td>
+                ]]>
+            </Else>
             <Static>
                 <![CDATA[
                         <td align='center'>
