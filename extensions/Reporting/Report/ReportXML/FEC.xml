@@ -355,9 +355,10 @@
                     <table class='wikitable' width='100%'>
                         <tr>
                             <th style='width: 25%;'>Student</th>
-                            <th style='width: 5%;'>Year<br />Admitted</th>
+                            <th style='width: 5%;'>Date<br />Admitted</th>
+                            <th style='width: 5%;'>Date<br />Interaction<br />Started</th>
                             <th style='width: 25%;'>Degree<br />Sought</th>
-                            <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
+                            <th style='width: 10%;'>Date Degree<br />Expected or<br />Completed</th>
                             <th style='width: 20%;'>Co-Supervisors</th>
                             <th style='width: 5%;'>Footnote</th>
                         </tr>
@@ -373,9 +374,10 @@
                 
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}">
                     <![CDATA[
-                            <td align='center'>{substr({getExtra(start_date)},0,4)}</td>
+                            <td align='center'>{time2date({getExtra(start)}, M Y)}</td>
+                            <td align='center'>{time2date({getExtra(start_date)}, M Y)}</td>
                             <td>{getExtra(position)}</td>
-                            <td align='center'>{substr({getExtra(finish)},0,4)}</td>
+                            <td align='center'>{time2date({getExtra(finish)}, M Y)}</td>
                             <td>{$user_cosupervisors}</td>
                             <td align="center" rowspan='2'>{$item}</td>
                     ]]>
@@ -387,7 +389,7 @@
                 </Static>
                 <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" height="48px">
                     <![CDATA[
-                        <tr data-id='{$user_id}'><td colspan='4'>
+                        <tr data-id='{$user_id}'><td colspan='5'>
                             Name of Scholarships, if any<br />
                             {$item}
                         </td></tr>

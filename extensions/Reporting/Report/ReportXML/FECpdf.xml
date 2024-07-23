@@ -231,10 +231,11 @@
                             <tr>
                                 <th style='width: 20%;'>Student</th>
                                 <th style='width: 1%; white-space:nowrap;'>FT / PT</th>
-                                <th style='width: 10%;'>Year<br />Admitted</th>
-                                <th style='width: 25%;'>Degree<br />Sought</th>
-                                <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
-                                <th style='width: 20%;'>Co-Supervisors</th>
+                                <th style='width: 8%; white-space:nowrap;'>Date<br />Admitted</th>
+                                <th style='width: 8%; white-space:nowrap;'>Date<br />Interaction<br />Started</th>
+                                <th style='width: 30%;'>Degree<br />Sought</th>
+                                <th style='width: 8%; white-space:nowrap;'>Date Degree<br />Expected or<br />Completed</th>
+                                <th style='width: 25%;'>Co-Supervisors</th>
                             </tr>
                     ]]>
                 </Static>
@@ -247,14 +248,15 @@
                     </ReportItem>
                     <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}" options="FT|PT" width="3.5em">
                         <![CDATA[
-                            <td>{$item}</td>
+                            <td align='center'>{$item}</td>
                         ]]>
                     </ReportItem>
                     <Static>
                         <![CDATA[
-                                <td align='center'>{substr({getExtra(start_date)},0,4)}</td>
+                                <td align='center'>{time2date({getExtra(start)}, M Y)}</td>
+                                <td align='center'>{time2date({getExtra(start_date)}, M Y)}</td>
                                 <td>{getExtra(position)}</td>
-                                <td align='center'>{substr({getExtra(finish)},0,4)}</td>
+                                <td align='center'>{time2date({getExtra(finish)}, M Y)}</td>
                                 <td>{$user_cosupervisors}</td>
                         ]]>
                     </Static>
@@ -265,7 +267,7 @@
                     </Static>
                     <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS" height="48px">
                         <![CDATA[
-                            <tr><td colspan='5'>
+                            <tr><td colspan='6'>
                                 Name of Scholarships, if any<br />
                                 {$item}
                             </td></tr>

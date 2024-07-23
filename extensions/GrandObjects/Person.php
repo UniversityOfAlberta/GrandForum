@@ -2708,6 +2708,7 @@ class Person extends BackboneModel {
             }
 
             $end_date = ($endDate1 == '0000-00-00') ? "Current" : $endDate1;
+            $start = $university['start'];
             $finish = ($university['end'] == '0000-00-00') ? "" : $university['end'];
             
             $data[$end_date.$startDate1.$position.$r->getId()] = 
@@ -2715,6 +2716,7 @@ class Person extends BackboneModel {
                       'position' => $position,
                       'start_date' => $startDate1,
                       'end_date' => $end_date,
+                      'start' => $start,
                       'finish' => $finish,
                       'status' => $status,
                       'role' => $role);
