@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Intake Form" reportType="RP_AVOID" pdfType="RPTP_AVOID" pdfFiles="IntakeFormPDF" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+">
+            <SectionPermission id="socio_info" permissions="rw" />
+            <SectionPermission id="behaviouralassess" permissions="rw" />
+            <SectionPermission id="healthquestions" permissions="rw" />
+            <SectionPermission id="healthquestions2" permissions="rw" />
+            <SectionPermission id="healthquestions3" permissions="rw" />
+            <SectionPermission id="healthquestions4" permissions="rw" />
+            <SectionPermission id="healthquestions5" permissions="rw" />
+            <SectionPermission id="healthquestions6" permissions="rw" />
+            <SectionPermission id="healthquestions7" permissions="rw" />
+            <SectionPermission id="clinicalfrailty" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <style>
+                .requiredField {
+                    padding: 5px;
+                    margin-left: -5px;
+                }
+                
+                .requiredFieldIncomplete {
+                    background: #fdeeb2;
+                }
+            </style>
+            <script type="text/javascript">
+                
+                setInterval(function(){
+                    $("input, textarea, select", $(".requiredField")).each(function(i, el){
+                        var requiredField = $(el).closest(".requiredField");
+                        var name = $(el).attr('name');
+                        var type = $(el).attr('type');
+                        var tag = $(el).prop("tagName").toLowerCase();
+                        if(type == "text" || type == "range" || tag == "textarea"){
+                            if($(el).val() == ""){
+                                requiredField.addClass("requiredFieldIncomplete");
+                            }
+                            else{
+                                requiredField.removeClass("requiredFieldIncomplete");
+                            }
+                        }
+                        else if(type == "radio" || type == "checkbox"){
+                            if($("input[name='" + name + "']:checked").length == 0){
+                                requiredField.addClass("requiredFieldIncomplete");
+                            }
+                            else{
+                                requiredField.removeClass("requiredFieldIncomplete");
+                            }
+                        }
+                        else if(tag == "select"){
+                            if($("option:selected", el).val() == ""){
+                                requiredField.addClass("requiredFieldIncomplete");
+                            }
+                            else{
+                                requiredField.removeClass("requiredFieldIncomplete");
+                            }
+                        }
+                    });
+                    if($("#reportWarning").length == 0){
+                        $("#reportFooter").prepend("<div id='reportWarning' style='display:none;margin:0;' class='warning'>" +
+                                                        "<en>You have not yet completed all of the questions.</en>" + 
+                                                        "<fr>Vous n'avez pas encore terminé toutes les questions.</fr>" + 
+                                                   "</div>");
+                    }
+                }, 250);
+            </script>
+        ]]>
+    </Script>
+    
+    <ReportSection id="socio_info" blobSection="AVOID_Questions_tab0" type="NextPrevReportSection" pagebreak="false"
+                   postId="GettingtoKnowYou" 
+                   tooltip="{showLanguage(Getting to Know You, Pour mieux vous connaître)}" 
+                   name="{showLanguage(Getting to Know You, Pour mieux vous connaître)}" 
+                   title="{showLanguage(Getting to Know You, Pour mieux vous connaître)}">
+        <ReportItem id="transportation_avoid" type="SelectReportItem" blobItem="transportation_avoid" 
+                    options="Passenger in a motor vehicle|Drive a motor vehicle|Taxi or similar paid services|Public transportation such as bus, rapid transit, subway or train|Accessible transit|Cycling|Walking|Wheelchair or motorized cart"
+                    labels="{showLanguage(Passenger in a motor vehicle|
+                                          Drive a motor vehicle|
+                                          Taxi or similar paid services|
+                                          Public transportation such as bus&amp;#44; rapid transit&amp;#44; subway or train|
+                                          Accessible transit|
+                                          Cycling|
+                                          Walking|
+                                          Wheelchair or motorized cart, 
+                                          
+                                          Passager d’un véhicule automobile|
+                                          Conducteur d’un véhicule automobile|
+                                          Taxi ou services payants similaires|
+                                          Transports en commun&amp;#44; comme le bus&amp;#44; le transport rapide&amp;#44; le métro ou le train|
+                                          Transport adapté|
+                                          Vélo|
+                                          Marche|
+                                          Fauteuil roulant ou fauteuil roulant motorisé)}">
+            <![CDATA[
+                <h3>
+                    <en>In general, which is your most common form of transportation?</en>
+                    <fr>En général, quel est le moyen de transport que vous utilisez le plus couramment?</fr>
+                </h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="income_avoid" type="SelectReportItem" blobItem="income_avoid" 
+                    options="Under $10,000|$10,000 to $24,999|$25,000 to $49,999|$50,000 to $74,999|$75,000 to $99,999|$100,000 or more|Prefer not to say"
+                    labels="{showLanguage(Under $10&amp;#44;000|
+                                          $10&amp;#44;000 to $24&amp;#44;999|
+                                          $25&amp;#44;000 to $49&amp;#44;999|
+                                          $50&amp;#44;000 to $74&amp;#44;999|
+                                          $75&amp;#44;000 to $99&amp;#44;999|
+                                          $100&amp;#44;000 or more|
+                                          Prefer not to say,
+                                          
+                                          Moins de 10 000 $|
+                                          de 10 000 $ à 24 999 $|
+                                          de 25 000 $ à 49 999 $|
+                                          de 50 000 $ à 74 999 $|
+                                          de 75 000 $ à 99 999 $|
+                                          100 000 $ ou plus|
+                                          Je préfère ne pas répondre)}">
+            <![CDATA[
+                <h3>
+                    <en>What is your total household annual income? (include all sources of income before taxes and deductions):</en>
+                    <fr>À combien estimez-vous le revenu annuel total de votre foyer? Veuillez inclure toutes les sources de revenus avant impôts et déductions</fr>
+                </h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br />
+                <p>
+                    <i>
+                        <en>An assistive device is any device or tool designed or adapted to help a person perform a particular task or activity.</en>
+                        <fr>Un appareil fonctionnel est un dispositif ou un outil conçu ou adapté pour aider une personne à accomplir une tâche ou une activité particulière.</fr>
+                    </i>
+                </p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="behaviouralassess" blobSection="behaviouralassess" type="NextPrevReportSection" pagebreak="false"
+                   postId="Self-Assessment"
+                   tooltip="{showLanguage(Behavioural Self-Assessment, Auto-évaluer vos habitudes)}" 
+                   name="{showLanguage(Self-Assessment, Auto-évaluer vos habitudes)}" 
+                   title="{showLanguage(Behavioural Self-Assessment, Auto-évaluer vos habitudes)}">
+        <Static>
+            <![CDATA[
+                    <i>
+                        <en>The following section will ask you about your health-related behaviours and lifestyle. The answers will be used to personalize your
+                    program experience based on the specific supports that you need and the challenges that you face. Please answer these questions to the best of your ability and recollection.</en>
+                        <fr>La section suivante comporte des questions sur vos habitudes de vie. Vos réponses permettront de personnaliser le programme Proactif pour éviter la fragilisation pour répondre mieux à vos besoins. Veuillez répondre aux questions suivantes au mieux de vos connaissances et de vos souvenirs.</fr>
+                    </i>
+                ]]>
+        </Static>
+        <ReportItem id="behave1_avoid" blobItem="behave1_avoid" type="RadioReportItem" orientation="horizontal"
+                    options="Some of the day|Most of the day|All day"
+                    labels="{showLanguage(Some of the day|
+                                          Most of the day|
+                                          All day,
+                                          
+                                          Une partie de la journée|
+                                          La plupart de la journée|
+                                          Toute la journée)}">
+            <![CDATA[
+                    <div id="reportHeader" class="headers-behaviour"><b><en>ACTIVITY</en><fr>ACTIVITÉ PHYSIQUE</fr></b></div><hr>
+                    <h3>
+                        <en>During the last 7 days, how much time did you spend sitting during the day?</en>
+                        <fr>Au cours des 7 derniers jours, combien de temps avez-vous passé en position assise pendant la journée?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="behave0_avoid" blobItem="behave0_avoid" type="RadioReportItem" orientation="horizontal" 
+                    options="Most days (5-7 days)|Some days(2-4 days)|Rarely or not at all"
+                    labels="{showLanguage(Most days &amp;#40;5-7 days&amp;#41;|
+                                          Some days &amp;#40;2-4 days&amp;#41;|
+                                          Rarely or not at all,
+                                          
+                                          La plupart des jours &amp;#40;5 à 7 jours&amp;#41;|
+                                          Quelques jours &amp;#40;2 à 4 jours&amp;#41;|
+                                          Rarement ou pas du tout)}">
+            <![CDATA[
+                    <h3>
+                        <en>During the last 7 days, on how many days did you walk for at least 10 minutes at a time?</en>
+                        <fr>Au cours des 7 derniers jours, combien de jours avez-vous marché pendant au moins 10 minutes?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="behave2_avoid" blobItem="behave2_avoid" type="RadioReportItem" orientation="horizontal" 
+                    options="Most days (5-7 days)|Some days(2-4 days)|Rarely or not at all"
+                    labels="{showLanguage(Most days &amp;#40;5-7 days&amp;#41;|
+                                          Some days &amp;#40;2-4 days&amp;#41;|
+                                          Rarely or not at all,
+                                          
+                                          La plupart des jours &amp;#40;5 à 7 jours&amp;#41;|
+                                          Quelques jours &amp;#40;2 à 4 jours&amp;#41;|
+                                          Rarement ou pas du tout)}">
+            <![CDATA[
+                    <h3>
+                        <en>During the last 7 days, on how many days did you do moderate physical activities like gardening, cleaning, bicycling at a regular pace, swimming, or other fitness activities?</en>
+                        <fr>Au cours des 7 derniers jours, combien de jours avez-vous pratiqué des activités physiques modérées comme le jardinage, le ménage, le vélo à un rythme régulier, la natation ou d’autres activités physiques?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br/>
+                <div id="reportHeader" class="headers-behaviour"><b><en>VACCINATE</en><fr>VACCINATION</fr></b></div><hr>
+            ]]>
+        </Static>
+        <ReportItem id="vaccinate2_avoid" blobItem="vaccinate2_avoid" type="RadioReportItem" orientation="horizontal" optional="true" 
+                    options="Yes|No"
+                    labels="{showLanguage(Yes|No, Oui|Non)}">
+            <![CDATA[
+                <span class="vaccinateyes">
+                    <h3>
+                        <en>Have you had the most recent annual flu vaccine?</en>
+                        <fr>Avez-vous reçu votre vaccin annuel contre la grippe cette année?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vaccinate3_avoid" blobItem="vaccinate3_avoid"  type="RadioReportItem" orientation="horizontal" optional="true"
+                    options="Yes|No"
+                    labels="{showLanguage(Yes|No, Oui|Non)}">
+            <![CDATA[
+                <span id="vaccinate3_avoid">
+                    <h3>
+                        <en>Have you had a shingles vaccine? (once after age 50)</en>
+                        <fr>Avez-vous été vacciné(e) contre le zona?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+                </span>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vaccinate4_avoid" blobItem="vaccinate4_avoid" type="RadioReportItem" orientation="horizontal" optional="true" 
+                    options="Yes|No"
+                    labels="{showLanguage(Yes|No, Oui|Non)}">
+            <![CDATA[
+                <span id="vaccinate4_avoid">
+                    <h3>
+                        <en>Have you had a pneumonia vaccine? (once at age 65)</en>
+                        <fr>Avez-vous été vacciné(e) contre la pneumonie? (une fois à l’âge de 65 ans)</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+                </span>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vaccinate5_avoid" blobItem="vaccinate5_avoid" type="RadioReportItem" orientation="horizontal" optional="true" 
+                    options="Yes|No"
+                    labels="{showLanguage(Yes|No, Oui|Non)}">
+            <![CDATA[
+                    <h3>
+                        <en>Are your booster vaccines up to date? (Tetanus & Diphtheria – every 10 years)</en>
+                        <fr>Vos vaccins de rappel sont-ils à jour? (Vaccin contre le tétanos et la diphtérie – dose de rappel tous les 10 ans)</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vaccinate6_avoid" blobItem="vaccinate6_avoid" type="RadioReportItem" orientation="horizontal" optional="true" 
+                    options="Yes|No"
+                    labels="{showLanguage(Yes|No, Oui|Non)}">
+            <![CDATA[
+                    <h3>
+                        <en>Have you had the most recent annual COVID vaccine?</en>
+                        <fr>Avez-vous reçu deux doses du vaccin contre la COVID-19?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br/>
+                <div id="reportHeader" class="headers-behaviour"><b><en>OPTIMIZE MEDICATION</en><fr>OPTIMISATION DES MÉDICAMENTS</fr></b></div><hr>
+            ]]>
+        </Static>
+        <ReportItem id="meds1_avoid" blobItem="meds1_avoid" type="RadioReportItem" orientation="horizontal" 
+                    options="0-4|5 or more"
+                    labels="{showLanguage(0-4|
+                                          5 or more,
+                                          
+                                          0 à 4|
+                                          Au moins 5)}">
+            <![CDATA[
+                    <h3>
+                        <en>How many prescription medications do you take?</en>
+                        <fr>Combien de médicaments sur ordonnance prenez-vous?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="meds3_avoid" blobItem="meds3_avoid" type="RadioReportItem" orientation="horizontal" 
+                    options="Yes|No|N/A"
+                    labels="{showLanguage(Yes|
+                                          No|
+                                          N/A,
+                                          
+                                          Oui|
+                                          Non|
+                                          Ne s’applique pas)}">
+            <![CDATA[
+                    <h3>
+                        <en>Have you had your medications (including prescriptions, over the counter, and supplements) reviewed by a pharmacist or healthcare provider in the last year?</en>
+                        <fr>Avez-vous fait vérifier vos médicaments (y compris les médicaments sur ordonnance, les médicaments en vente libre et les suppléments) par un pharmacien ou un fournisseur de soins de santé au cours de la dernière année?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+            <br/>
+            <div id="reportHeader" class="headers-behaviour"><b><en>INTERACT</en><fr>VIE SOCIALE</fr></b></div><hr>
+        ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <p><i>
+                    <en>Family: Considering the people to whom you are related by birth, marriage, adoption, etc.</en>
+                    <fr>Combien de personnes considérez-vous comme faisant partie de votre famille?</fr>
+                </i></p>
+            ]]>
+        </Static>
+        <ReportItem id="interact1_avoid" blobItem="interact1_avoid" type="RadioReportItem" orientation="horizontal" 
+                    options="None|1|2|3-4|5-8|9+"
+                    labels="{showLanguage(None|
+                                          1|
+                                          2|
+                                          3-4|
+                                          5-8|
+                                          9+,
+                                          
+                                          Aucune|
+                                          1|
+                                          2|
+                                          3 à 4|
+                                          5 à 8|
+                                          9 et plus)}">
+            <![CDATA[
+                    <h3>
+                        <en>How many relatives do you see or hear from at least once a month?</en>
+                        <fr>Combien de membres de votre famille voyez-vous ou vous donnent des nouvelles au moins une fois par mois?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact2_avoid" blobItem="interact2_avoid" type="RadioReportItem" orientation="horizontal"
+                    options="None|1|2|3-4|5-8|9+"
+                    labels="{showLanguage(None|
+                                          1|
+                                          2|
+                                          3-4|
+                                          5-8|
+                                          9+,
+                                          
+                                          Aucune|
+                                          1|
+                                          2|
+                                          3 à 4|
+                                          5 à 8|
+                                          9 et plus)}">
+            <![CDATA[
+                    <h3>
+                        <en>How many relatives do you feel at ease with that you can talk about private matters?</en>
+                        <fr>Avec combien de membres de votre famille vous sentez-vous à l’aise de parler de sujets personnels?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact3_avoid" blobItem="interact3_avoid" type="RadioReportItem" orientation="horizontal"
+                    options="None|1|2|3-4|5-8|9+"
+                    labels="{showLanguage(None|
+                                          1|
+                                          2|
+                                          3-4|
+                                          5-8|
+                                          9+,
+                                          
+                                          Aucune|
+                                          1|
+                                          2|
+                                          3 à 4|
+                                          5 à 8|
+                                          9 et plus)}">
+            <![CDATA[
+                    <h3>
+                        <en>How many relatives do you feel close to such that you could call on them for help?</en>
+                        <fr>Avec combien de membres de votre famille vous sentez-vous assez proche pour les appeler si vous avez besoin d’aide?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <p><i>
+                    <en>Friendships: Considering all of your friends including those who live in your neighborhood</en>
+                    <fr>Combien de personnes considérez-vous comme des ami(e)s?</fr>
+                </i></p>
+            ]]>
+        </Static>
+        <ReportItem id="interact4_avoid" blobItem="interact4_avoid" type="RadioReportItem" orientation="horizontal" 
+                    options="None|1|2|3-4|5-8|9+"
+                    labels="{showLanguage(None|
+                                          1|
+                                          2|
+                                          3-4|
+                                          5-8|
+                                          9+,
+                                          
+                                          Aucune|
+                                          1|
+                                          2|
+                                          3 à 4|
+                                          5 à 8|
+                                          9 et plus)}">
+            <![CDATA[
+                    <h3>
+                        <en>How many of your friends do you see or hear from at least once a month?</en>
+                        <fr>Combien d’ami(e)s voyez-vous ou vous donnent des nouvelles au moins une fois par mois?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact5_avoid" blobItem="interact5_avoid" type="RadioReportItem" orientation="horizontal"
+                    options="None|1|2|3-4|5-8|9+"
+                    labels="{showLanguage(None|
+                                          1|
+                                          2|
+                                          3-4|
+                                          5-8|
+                                          9+,
+                                          
+                                          Aucune|
+                                          1|
+                                          2|
+                                          3 à 4|
+                                          5 à 8|
+                                          9 et plus)}">
+            <![CDATA[
+                    <h3>
+                        <en>How many friends do you feel at ease with that you can talk about private matters?</en>
+                        <fr>Avec combien d’ami(e)s vous sentez-vous à l’aise de parler de sujets personnels?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact6_avoid" blobItem="interact6_avoid" type="RadioReportItem" orientation="horizontal"
+                    options="None|1|2|3-4|5-8|9+"
+                    labels="{showLanguage(None|
+                                          1|
+                                          2|
+                                          3-4|
+                                          5-8|
+                                          9+,
+                                          
+                                          Aucune|
+                                          1|
+                                          2|
+                                          3 à 4|
+                                          5 à 8|
+                                          9 et plus)}">
+            <![CDATA[
+                    <h3>
+                        <en>How many friends do you feel close to such that you could call on them for help?</en>
+                        <fr>Avec combien d’ami(e)s vous sentez-vous assez proches pour les appeler si vous avez besoin d’aide?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact7_avoid" blobItem="interact7_avoid" type="RadioReportItem" orientation="horizontal" 
+                    options="Hardly ever|Some of the time|Often"
+                    labels="{showLanguage(Hardly ever|
+                                          Some of the time|
+                                          Often,
+                                          
+                                          Presque jamais|
+                                          De temps en temps|
+                                          Souvent)}">
+            <![CDATA[
+                    <h3>
+                        <en>How often do you feel that you lack companionship (partner, friends, etc)?</en>
+                        <fr>À quelle fréquence vous sentez-vous seul(e)?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact8_avoid" blobItem="interact8_avoid" type="RadioReportItem" orientation="horizontal"
+                    options="Hardly ever|Some of the time|Often"
+                    labels="{showLanguage(Hardly ever|
+                                          Some of the time|
+                                          Often,
+                                          
+                                          Presque jamais|
+                                          De temps en temps|
+                                          Souvent)}">
+            <![CDATA[
+                    <h3>
+                        <en>How often do you feel left out?</en>
+                        <fr>Est-ce que vous vous sentez souvent exclu(e)?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact9_avoid" blobItem="interact9_avoid" type="RadioReportItem" orientation="horizontal"
+                    options="Hardly ever|Some of the time|Often"
+                    labels="{showLanguage(Hardly ever|
+                                          Some of the time|
+                                          Often,
+                                          
+                                          Presque jamais|
+                                          De temps en temps|
+                                          Souvent)}">
+            <![CDATA[
+                    <h3>
+                        <en>How often do you feel isolated from others?</en>
+                        <fr>Vous sentez-vous souvent isolé des autres?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+            <br/><br/>
+            <div id="reportHeader" class="headers-behaviour"><b><en>DIET AND NUTRITION</en><fr>ALIMENTATION</fr></b></div><hr>
+        ]]>
+        </Static>
+        <ReportItem id="diet1_avoid" blobItem="diet1_avoid" type="RadioReportItem" orientation="horizontal" 
+                    options="Yes|No"
+                    labels="{showLanguage(Yes|No, Oui|Non)}">
+            <![CDATA[
+                    <h3>
+                        <en>Do you eat foods high in protein (e.g., meat, poultry, fish, eggs, and dairy foods) with every meal?</en>
+                        <fr>Mangez-vous des aliments riches en protéines (p. ex. viande, volaille, poisson, œufs et produits laitiers) à chaque repas?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="diet2_avoid" blobItem="diet2_avoid" type="RadioReportItem" orientation="horizontal"
+                    options="Yes|No"
+                    labels="{showLanguage(Yes|No, Oui|Non)}">
+            <![CDATA[
+                    <h3>
+                        <en>At meal times, is half your plate usually filled with fruits and vegetables?</en>
+                        <fr>À l’heure des repas, la moitié de votre assiette est-elle généralement remplie de fruits et de légumes?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="diet3_avoid" blobItem="diet3_avoid" type="RadioReportItem" orientation="horizontal"
+                    options="Yes|No"
+                    labels="{showLanguage(Yes|No, Oui|Non)}">
+            <![CDATA[
+                    <h3>
+                        <en>Do you eat foods high in calcium every day?</en>
+                        <fr>Mangez-vous des aliments riches en calcium chaque jour?</fr>
+                    </h3>
+                    <i>
+                        <en>Recommended Dietary Allowance: 1000-1200mg daily *1 cup cow’s milk = 200mg, 3/4 cup yogurt = 250mg, 1 oz. cheese = 200mg</en>
+                        <fr>(Apports nutritionnels recommandés : 1 000 à 1 200 mg par jour *1 tasse de lait de vache = 200 mg, 3/4 de tasse de yogourt = 250 mg, 1 oz de fromage = 200 mg)</fr>
+                    </i>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="diet4_avoid" blobItem="diet4_avoid" type="RadioReportItem" orientation="horizontal"
+                    options="Yes|No"
+                    labels="{showLanguage(Yes|No, Oui|Non)}">
+            <![CDATA[
+                    <h3><en>Do you take a vitamin D supplement?</en><fr>Prenez-vous un supplément de vitamine D?</fr></h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="healthquestions7" tooltip="Health Related QoL7" name="Health Related QoL" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" >
+        <ReportItem id="healthstatus6_avoid" type="RangeSliderReportItem" step="5" default="50" orientation="vertical" blobItem="healthstatus_avoid6">
+            <![CDATA[
+                <div style='display:flex;flex-wrap: wrap;min-height: 425px;'>
+                    <div>
+                        <h3 style='max-width: 620px; margin-top:0;'>
+                            <en>We would like to know how good or bad your health is TODAY.</en>
+                            <fr>Nous aimerions savoir dans quelle mesure votre santé est bonne ou mauvaise AUJOURD’HUI.</fr>
+                        </h3>
+                        <lu>
+                            <li>
+                                <en>This scale is numbered from 0 to 100.</en>
+                                <fr>Cette échelle est numérotée de 0 à 100.</fr>
+                            </li>
+                            <li>
+                                <en><b>100</b> means the <u>best</u> health you can imagine.</en>
+                                <fr><b>100</b> correspond à la <u>meilleure</u> santé que vous puissiez imaginer.</fr>
+                            </li>
+                            <li>
+                                <en><b>0</b> means the <u>worst</u> health you can imagine.</en>
+                                <fr><b>0</b> correspond à la <u>pire</u> santé que vous puissiez imaginer.</fr>
+                            </li>
+                            <li>
+                                <en>Please tap on the scale to indicate how your health is TODAY.</en>
+                                <fr>Veuillez faire un X sur l’échelle afin d’indiquer votre état de santé AUJOURD’HUI.</fr>
+                            </li>
+                        </lu>
+                    </div>
+                    <div class='flex-slider'>
+                        {$item}
+                    </div>
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="clinicalfrailty" blobSection="clinicalfrailty" type="NextPrevReportSection" pagebreak="false"
+                   postId="HealthStatus"
+                   tooltip="{showLanguage(Health Status,État de santé et de fragilité)}" 
+                   name="{showLanguage(Health Status,État de santé et de fragilité)}">
+        <ReportItem id="symptoms_avoid1" blobItem="symptoms_avoid1" type="RadioReportItem" orientation="vertical" 
+                    options="Rarely|Occasional amount|Most of the time"
+                    labels="{showLanguage(Rarely|
+                                          Occasional amount|
+                                          Most of the time,
+                                          
+                                          Rarement|
+                                          À l’occasion|
+                                          La plupart du temps)}">
+            <![CDATA[
+                <i>
+                    <en>This final section will ask questions about your specific health and frailty status before you start the program. We hope to stop or slow down the progression of frailty by providing you with the support that you need in your community. We will ask you these questions again in 6 months to see if anything has changed.</en>
+                    <fr>Cette section contient des questions sur votre état de santé avant que vous ne commenciez le programme. Nous espérons contribuer à améliorer votre santé en vous apportant le soutien dont vous avez besoin. Nous vous poserons à nouveau ces questions dans 6 mois pour voir s’il y a eu des changements.</fr>
+                </i>
+                <h3>
+                    <en>During the past week, how often have you felt that everything was an <b>effort</b> or you <b>could not get going</b>?</en>
+                    <fr>Au cours de la semaine écoulée, combien de fois avez-vous eu l’impression que tout nécessitait un <b>effort</b> ou que vous <b>n’arriviez pas à vous activer</b>?</fr>
+                </h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid2" blobItem="symptoms_avoid2" type="RadioReportItem" orientation="vertical" 
+                    options="Rarely|Occasional amount|Most of the time"
+                    labels="{showLanguage(Rarely|
+                                          Occasional amount|
+                                          Most of the time,
+                                          
+                                          Rarement|
+                                          À l’occasion|
+                                          La plupart du temps)}">
+            <![CDATA[
+                    <h3>
+                        <en>During your waking time, how often do you feel <b>tired or fatigued?</b></en>
+                        <fr>Pendant votre période d’éveil, à quelle fréquence vous sentez-vous <b>fatigué(e)</b>?</fr>    
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid3" blobItem="symptoms_avoid3" type="RadioReportItem" orientation="vertical" 
+                    options="Not at all|Several days|More days than not"
+                    labels="{showLanguage(Not at all|
+                                          Several days|
+                                          More days than not,
+                    
+                                          Pas du tout|
+                                          Plusieurs jours|
+                                          La plupart du temps)}">
+            <![CDATA[
+                    <h3>
+                        <en>Over the past two weeks have you been bothered by not being able to stop or control <b>worrying</b>?</en>
+                        <fr>Au cours des deux dernières semaines, avez-vous été gêné(e) par votre incapacité de stopper ou de contrôler vos <b>inquiétudes</b>?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid4" blobItem="symptoms_avoid4" type="RadioReportItem" orientation="vertical" 
+                    options="Not at all|Several days|More days than not"
+                    labels="{showLanguage(Not at all|
+                                          Several days|
+                                          More days than not,
+                    
+                                          Pas du tout|
+                                          Plusieurs jours|
+                                          La plupart du temps)}">
+            <![CDATA[
+                    <h3>
+                        <en>Over the past two weeks have you been bothered by <b>little interest or pleasure in doing things</b>?</en>
+                        <fr>Au cours des deux dernières semaines, avez-vous été gêné(e) par un <b>manque d’intérêt ou de plaisir à faire des choses</b>?</fr>    
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid5" blobItem="symptoms_avoid5" type="RadioReportItem" orientation="vertical" 
+                    options="Good|Fair|Poor"
+                    labels="{showLanguage(Good|
+                                          Fair|
+                                          Poor,
+                    
+                                          Bonne|
+                                          Moyenne|
+                                          Mauvaise)}">
+            <![CDATA[
+                    <h3>
+                        <en>How would you rate your memory overall?</en>
+                        <fr>Comment évaluez-vous votre mémoire en général?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid21" blobItem="symptoms_avoid21" type="RadioReportItem" orientation="vertical" 
+                    options="No|Yes"
+                    labels="{showLanguage(No|Yes, Non|Oui)}">
+            <![CDATA[
+                    <h3>
+                        <en>Do you have any problems keeping your balance?</en>
+                        <fr>Avez-vous de la difficulté à garder votre équilibre?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid6" blobItem="symptoms_avoid6" type="RadioReportItem" orientation="vertical" 
+                    options="No falls|1 fall|2 or more falls"
+                    labels="{showLanguage(No falls|
+                                          1 fall|
+                                          2 or more falls,
+                    
+                                          Aucune chute|
+                                          1 chute Étiquette : équilibre|
+                                          2 chutes ou plus Étiquette : Chutes)}">
+            <![CDATA[
+                    <h3>
+                        <en>How many falls (including slips, trips, and falls to the ground) did you have in the last year?</en>
+                        <fr>Combien de chutes (y compris perdre pied, trébucher et tomber au sol) avez-vous faites l’année dernière?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid7" blobItem="symptoms_avoid7" type="RadioReportItem" orientation="vertical" 
+                    options="Normal or brisk|Stroll at an easy pace|Very slow/unable to walk"
+                    labels="{showLanguage(Normal or brisk|
+                                          Stroll at an easy pace|
+                                          Very slow/unable to walk,
+                                          
+                                          Normale ou rapide|
+                                          Promenade à un rythme facile|
+                                          Très lente/incapable de marcher)}">
+            <![CDATA[
+                    <h3>
+                        <en>Which of the following best describes your walking speed?</en>
+                        <fr>Lequel des énoncés suivants décrit le mieux votre vitesse de marche?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid9" blobItem="symptoms_avoid9" type="RadioReportItem" orientation="vertical" 
+                    options="Good|Bad"
+                    labels="{showLanguage(Good|Bad, Bonne|Mauvaise)}">
+            <![CDATA[
+                    <h3>
+                        <en>During the past month how would you rate your sleep quality overall?</en>
+                        <fr>Comment évaluez-vous la qualité de votre sommeil en général au cours du mois dernier?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid10" blobItem="symptoms_avoid10" type="RadioReportItem" orientation="vertical" 
+                    options="No|Yes"
+                    labels="{showLanguage(No|Yes, Non|Oui)}">
+            <![CDATA[
+                    <h3>
+                        <en>Has your food intake decreased over the last 3 months due to loss of appetite, digestive problems, chewing or swallowing difficulties?</en>
+                        <fr>Votre consommation d’aliments a-t-elle diminué au cours des 3 derniers mois en raison d’une perte d’appétit, de problèmes digestifs, de difficultés à mâcher ou à avaler? </fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid11" blobItem="symptoms_avoid11" type="RadioReportItem" orientation="vertical" 
+                    options="No|Yes|Don't know"
+                    labels="{showLanguage(No|
+                                          Yes|
+                                          Don't know,
+                                          
+                                          Non|
+                                          Oui|
+                                          Je ne sais pas)}">
+            <![CDATA[
+                    <h3>
+                        <en>Have you lost more than 3kg in weight over the last 3 months?</en>
+                        <fr>Avez-vous perdu plus de 3 kg au cours des 3 derniers mois?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid12" blobItem="symptoms_avoid12" type="RadioReportItem" orientation="vertical" 
+                    options="No|Yes"
+                    labels="{showLanguage(No|Yes, Non|Oui)}">
+            <![CDATA[
+                    <h3>
+                        <en>Have you had any pain in your mouth while chewing?</en>
+                        <fr>Avez-vous eu des douleurs dans la bouche en mâchant?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid13" blobItem="symptoms_avoid13" type="RadioReportItem" orientation="vertical" 
+                    options="No|Yes"
+                    labels="{showLanguage(No|Yes, Non|Oui)}">
+            <![CDATA[
+                    <h3>
+                        <en>Have you had to interrupt meals because of problems with poorly fitting dentures, not enough teeth, or a dry mouth?</en>
+                        <fr>Avez-vous dû interrompre des repas en raison de problèmes liés à des prothèses dentaires mal ajustées, à un manque de dents ou à une sécheresse buccale?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid14" blobItem="symptoms_avoid14" type="RadioReportItem" orientation="vertical" 
+                    options="None or mild|Moderate|Severe"
+                    labels="{showLanguage(None or mild|
+                                          Moderate|
+                                          Severe,
+                                          
+                                          Aucune ou légère|
+                                          Modérée|
+                                          Grave)}">
+            <![CDATA[
+                    <h3>
+                        <en>How much bodily pain have you had during the past four weeks?</en>
+                        <fr>Quel a été votre niveau de douleur corporelle au cours des quatre dernières semaines?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid15" blobItem="symptoms_avoid15" type="RadioReportItem" orientation="vertical" 
+                    options="Rarely|Occasional amount|Most of the time"
+                    labels="{showLanguage(Rarely|
+                                          Occasional amount|
+                                          Most of the time,
+                    
+                                          Rarement|
+                                          À l’occasion|
+                                          La plupart du temps)}">
+            <![CDATA[
+                    <h3>
+                        <en>Do you have pain in your feet?</en>
+                        <fr>Avez-vous des douleurs dans les pieds?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid16" blobItem="symptoms_avoid16" type="RadioReportItem" orientation="vertical" 
+                    options="No|Sometimes|Yes"
+                    labels="{showLanguage(No|
+                                          Sometimes|
+                                          Yes,
+                                          
+                                          Non|
+                                          Parfois|
+                                          Oui)}">
+            <![CDATA[
+                    <h3>
+                        <en>Do you experience problems in your daily life due to weakness in your hands?</en>
+                        <fr>Rencontrez-vous des problèmes dans votre quotidien en raison de la faiblesse de vos mains?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid17" blobItem="symptoms_avoid17" type="RadioReportItem" orientation="vertical" 
+                    options="No|Sometimes|Yes"
+                    labels="{showLanguage(No|
+                                          Sometimes|
+                                          Yes,
+                                          
+                                          Non|
+                                          Parfois|
+                                          Oui)}">
+            <![CDATA[
+                    <h3>
+                        <en>Do you experience problems in your daily life due to weakness in your legs or feet?</en>
+                        <fr>Rencontrez-vous des problèmes dans votre quotidien en raison de la faiblesse de jambes ou de vos pieds?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid18" blobItem="symptoms_avoid18" type="RadioReportItem" orientation="vertical" 
+                    options="No|Yes"
+                    labels="{showLanguage(No|Yes, Non|Oui)}">
+            <![CDATA[
+                    <h3>
+                        <en>During the last 3 months, have you leaked urine (even a small amount)?</en>
+                        <fr>Au cours des 3 derniers mois, avez-vous eu des fuites urinaires (même en petite quantité)?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="symptoms_avoid" orientation="vertical" 
+                    options="Heart trouble|Stroke|Diabetes|Digestive problems (such as ulcer, colitis, or gallbladder disease)|Asthma, emphysema, or chronic bronchitis|Arthritis or rheumatism|Liver problems (such as cirrhosis)|Kidney disease|Cancer diagnosed in the past 3 years|Other (please specify)|None"
+                    labels="{showLanguage(Heart trouble|
+                                          Stroke|
+                                          Diabetes|
+                                          Digestive problems &amp;#40;such as ulcer&amp;#44; colitis&amp;#44; or gallbladder disease&amp;#41;|
+                                          Asthma&amp;#44; emphysema&amp;#44; or chronic bronchitis|
+                                          Arthritis or rheumatism|
+                                          Liver problems &amp;#40;such as cirrhosis&amp;#41;|
+                                          Kidney disease|
+                                          Cancer diagnosed in the past 3 years|
+                                          Other|
+                                          None,
+                                          
+                                          Problèmes cardiaques|
+                                          AVC|
+                                          Diabète|
+                                          Problèmes digestifs &amp;#40;p. ex. ulcère&amp;#44; colite ou maladie de la vésicule biliaire&amp;#41;|
+                                          Asthme&amp;#44; emphysème ou bronchite chronique|
+                                          Arthrite ou rhumatisme|
+                                          Problèmes de foie &amp;#40;p. ex. cirrhose&amp;#41;|
+                                          Insuffisance rénale|
+                                          Cancer diagnostiqué au cours des 3 dernières années|
+                                          Autre|
+                                          Aucune)}">
+            <![CDATA[
+                <h3>
+                    <en>Do you have any of the following health conditions? Select all that apply:</en>
+                    <fr>Avez-vous l’une des affections de santé suivantes (cliquez tout ce qui s’applique) :</fr>
+                </h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid19" blobItem="symptoms_avoid19" type="RadioReportItem" orientation="vertical" 
+                    options="Not at all|A little|A fair amount"
+                    labels="{showLanguage(Not at all|
+                                          A little|
+                                          A fair amount,
+                                          
+                                          Pas du tout|
+                                          Un peu|
+                                          Une bonne partie)}">
+            <![CDATA[
+                    <h3>
+                        <en>In the past month, how much has your eyesight interfered with your life in general?</en>
+                        <fr>Au cours du dernier mois, dans quelle mesure votre vue a-t-elle perturbé votre vie en général?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid20" blobItem="symptoms_avoid20" type="RadioReportItem" orientation="vertical"
+                    options="Not at all|A little|A fair amount"
+                    labels="{showLanguage(Not at all|
+                                          A little|
+                                          A fair amount,
+                                          
+                                          Pas du tout|
+                                          Un peu|
+                                          Une bonne partie)}">
+            <![CDATA[
+                    <h3>
+                        <en>In the past month, how much has your hearing interfered with your life in general?</en>
+                        <fr>Au cours du dernier mois, dans quelle mesure votre ouïe a-t-elle perturbé votre vie en général?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" 
+                   postId="Submit"
+                   name="{showLanguage(Submit, Soumettre)}">
+        <If if="{and({==({getProgress(eula)},100)},
+                     {==({getProgress(socio_info)},100)},
+                     {==({getProgress(behaviouralassess)},100)},
+                     {==({getProgress(healthquestions)},100)},
+                     {==({getProgress(healthquestions2)},100)},
+                     {==({getProgress(healthquestions3)},100)},
+                     {==({getProgress(healthquestions4)},100)},
+                     {==({getProgress(healthquestions5)},100)},
+                     {==({getProgress(healthquestions6)},100)},
+                     {==({getProgress(healthquestions7)},100)},
+                     {==({getProgress(clinicalfrailty)},100)},
+                     {==({getProgress(OnSiteEvaluation)},100)}
+                )}">
+            <ReportItem id="submitted" type="TextReportItem" blobItem="SUBMITTED">
+                <![CDATA[
+                    <div id='submitDiv' style='display:none;'>{$item}</div>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    <div>
+                        <en>Submitting will mark your survey as 'complete' and will prevent you from editing in the future.</en>
+                        <fr>La soumission marquera votre enquête comme « complète » et vous empêchera de modifier à l'avenir.</fr>
+                    </div><br />
+                    <a class='button' id='submit_review'><en>Submit</en><fr>Soumettre</fr></a>
+                    <script type='text/javascript'>
+                        $('#reportFooter').prev().hide();
+                        $('#reportFooter').hide();
+                        $('#submit_review').click(function(){
+                            $('#submitDiv input[type=text]').val('Submitted');
+                            saveAll(function(){
+                                window.location.href = wgServer + wgScriptPath + "/index.php/Special:AVOIDDashboard";
+                            });
+                        });
+                    </script>
+                ]]>
+            </Static>
+        </If>
+        <Else>
+            <![CDATA[
+                <en>You must complete all of the questions in the survey.</en>
+                <fr>Vous devez répondre à toutes les questions de l'enquête.</fr>
+            ]]>
+        </Else>
+    </ReportSection>
+</Report>
