@@ -249,7 +249,7 @@ ManagePeopleRowView = Backbone.View.extend({
         
         // Sanity Check 2: Department different than Faculty Member
         if (me.get('department') != null && this.model.get('department') != null &&
-            me.get('department').trim().toLowerCase() != this.model.get('department').trim().toLowerCase()){
+            me.get('department').trim().toLowerCase().replace(" and ", " & ") != this.model.get('department').trim().toLowerCase().replace(" and ", " & ")){
             this.$(".hqpError ul").append("<li>This HQP may not be your student</li>");
         }
                 
