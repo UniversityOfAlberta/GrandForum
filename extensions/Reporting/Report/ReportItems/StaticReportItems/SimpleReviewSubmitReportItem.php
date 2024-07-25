@@ -92,13 +92,14 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		if($wgImpersonating && !checkSupervisesImpersonee()){
 		    $disabled = "disabled='true'";
 		}
+		$buttonText = $this->getAttr("buttonText", "Generate PDF");
 		if(!$onlyGenerate){
 		    $wgOut->addHTML("<h3>1. Generate a new PDF</h3>");
-		    $wgOut->addHTML("<p>Generate a PDF with the data submitted</p><button id='generateButton{$this->getPostId()}' class='generateButton' type='button' $disabled>Generate PDF</button><img id='generate_throbber{$this->getPostId()}' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
+		    $wgOut->addHTML("<p>Generate a PDF with the data submitted</p><button id='generateButton{$this->getPostId()}' class='generateButton' type='button' $disabled>{$buttonText}</button><img id='generate_throbber{$this->getPostId()}' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
 		                     <div style='display:none;' class='error' id='generate_error{$this->getPostId()}'></div><div style='display:none;' class='success' id='generate_success{$this->getPostId()}'></div></p>");
         }
         else{
-            $wgOut->addHTML("<button id='generateButton{$this->getPostId()}' class='generateButton' type='button' $disabled>Generate PDF</button><img id='generate_throbber{$this->getPostId()}' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />");
+            $wgOut->addHTML("<button id='generateButton{$this->getPostId()}' class='generateButton' type='button' $disabled>{$buttonText}</button><img id='generate_throbber{$this->getPostId()}' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />");
             return;
         }
         

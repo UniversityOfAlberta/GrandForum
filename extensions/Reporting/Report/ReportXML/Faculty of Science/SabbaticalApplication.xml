@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name=" " title=" " headerName=" " reportType="RP_SABBATICAL" pdfType="RP_SABBATICAL" pdfFiles="SabbaticalApplication" ajax="true">
+    <Permissions>
+        <Role role="Faculty">
+            <SectionPermission id="sabbatical" permissions="rw" />
+        </Role>
+        <Role role="ATS">
+            <SectionPermission id="sabbatical" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="sabbatical" tooltip="Sabbatical Application" name="Sabbatical Application" title="Sabbatical Application" blobSection="SABBATICAL" type="EditableReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <table style='white-space:nowrap;'>
+                    <tr>
+                        <td><b>Email:&nbsp;</b></td>
+                        <td>{$user_email}</td>
+                    </tr>
+                    <tr>
+                        <td><b>First name:&nbsp;</b></td>
+                        <td>{$user_first_name}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Last name:&nbsp;</b></td>
+                        <td>{$user_last_name}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Rank:&nbsp;</b></td>
+                        <td>{$user_level}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Department:&nbsp;</b></td>
+                        <td>{$user_depts}</td>
+                    </tr>
+                </table>
+            ]]>
+        </Static>
+        <ReportItem id="length" type="Select" options="6 months|12 months" blobItem="LENGTH">
+            <![CDATA[
+                <div id='length'>
+                    <h3>Length of Requested Sabbatical</h3>
+                    {$item}<br />
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="start6" type="Select" options="July 1, {$this_year}|January 1, {$next_year}" blobItem="START6" optional="true">
+            <![CDATA[
+                <div id='start6' class='{if("{getText(RP_SABBATICAL, SABBATICAL, LENGTH, 0, {$user_id}, 0)}" == "12 months", pdfnodisplay)}'>
+                    <h3>Start Date</h3>
+                    {$item}<br />
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="start12" type="Calendar" blobItem="START12" optional="true" width="83px">
+            <![CDATA[
+                <div id='start12' class='{if("{getText(RP_SABBATICAL, SABBATICAL, LENGTH, 0, {$user_id}, 0)}" == "6 months", pdfnodisplay)}'>
+                    <h3>Start Date</h3>
+                    {$item}<br />
+                </div>
+                <script type='text/javascript'>
+                    $('#length select').change(function(){
+                        if($('#length select option:selected').val() == "6 months"){
+                            $('#start6').show();
+                            $('#start12').hide();
+                        }
+                        else{
+                            $('#start6').hide();
+                            $('#start12').show();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="eligibility1" type="Radio" options="Yes|No" blobItem="ELIGIBILITY1">
+            <![CDATA[
+                <br />
+                <h2>Eligibility</h2>
+                <div id='eligibility1'>
+                    <h3>Is this your first career sabbatical?</h3>
+                    {$item}<br />
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="eligibility2" type="Text" blobItem="ELIGIBILITY2" optional="true">
+            <![CDATA[
+                <div id='eligibility2' class='{if("{getText(RP_SABBATICAL, SABBATICAL, ELIGIBILITY1, 0, {$user_id}, 0)}" == "Yes", pdfnodisplay)}'>
+                    <h3>How many years of eligibility have you accumulated since your last sabbatical?</h3>
+                    {$item}<br />
+                
+                
+            ]]>
+        </ReportItem>
+        <ReportItem id="eligibility2_start" type="Calendar" blobItem="ELIGIBILITY2_START" optional="true" width="83px">
+            <![CDATA[
+                    <h3>When was your last sabbatical?</h3>
+                    {$item} - 
+            ]]>
+        </ReportItem>
+        <ReportItem id="eligibility2_end" type="Calendar" blobItem="ELIGIBILITY2_END" optional="true" width="83px">
+            <![CDATA[
+                    {$item}
+                </div>
+                <script type='text/javascript'>
+                    $('#eligibility1 input[type=radio]').change(function(){
+                        if($('#eligibility1 input[type=radio]:checked').val() == "No"){
+                            $('#eligibility2').show();
+                        }
+                        else{
+                            $('#eligibility2').hide();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="plan1" type="Textarea" blobItem="PLAN1" rich="true" limit="500">
+            <![CDATA[
+                <br />
+                <h2>Sabbatical Plan Details</h2>
+                <div class='pdfnodisplay'>
+                    <p>To facilitate the evaluation of your sabbatical application, please provide a response to the following questions, ensuring your submission <b>does not exceed 500 words.</b></p>
+
+                    <ol style='font-weight: bold; font-style: italic;'>
+                        <li>What will you do and why will this be significant for your career and/or discipline?</li>
+                        <li>How will this advance your program of research?</li>
+                        <li>What are the expected outcomes of your proposed Sabbatical program?</li>
+                        <li>What is the general timeline of your proposed Sabbatical program?</li>
+                        <li>Have any special circumstances delayed or interrupted your career or your record of research/creative achievements since your last sabbatical leave?</li>
+                    </ol>
+                </div>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan2" type="Radio" options="Yes|No" blobItem="PLAN2">
+            <![CDATA[
+                <h3>Are you currently supervising graduate students?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan3" type="Textarea" blobItem="PLAN3">
+            <![CDATA[
+                <h3>What measures have been put in place to ensure effective supervision of graduate students during the sabbatical leave period?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan4" type="Textarea" blobItem="PLAN4">
+            <![CDATA[
+                <h3>During your sabbatical leave, (if needed) to whom will you delegate your projects and any HCM/Peoplesoft approvals?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan5" type="Textarea" blobItem="PLAN5">
+            <![CDATA[
+                <h3>If you have encountered any exceptional circumstances pertaining to your sabbatical application, such as deferrals, scheduling concerns, or eligibility issues, kindly provide an explanation and upload any pertinent supporting documentation below.</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan6" type="Checkbox" options="I have downloaded and completed the form as requested" blobType="BLOB_ARRAY" blobItem="PLAN6">
+            <![CDATA[
+                <h3><a href='https://docs.google.com/document/d/1LFWE5f17Hud-PnKWFTAWoXK14NoBQUfV/edit?usp=sharing&ouid=115917600404000312422&rtpof=true&sd=true' target='_blank'>Template Sabbatical Agreement (Academic)</a></h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan7" type="Upload" blobType="BLOB_RAW" blobItem="PLAN7" mimeType=".pdf" fileSize="10" optional="true">
+            <![CDATA[
+                <h3>Please consolidate all supporting documentation, including the above mentioned <a href='https://docs.google.com/document/d/1LFWE5f17Hud-PnKWFTAWoXK14NoBQUfV/edit?usp=sharing&ouid=115917600404000312422&rtpof=true&sd=true' target='_blank'>Sabbatical Agreement</a> into ONE SINGLE PDF file. Ensure that the file name includes your first and last name for clarity.</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="Review of on-line report content" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="submit" type="SimpleReviewSubmitReportItem" buttonText="Submit" />
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[
+                <h2>Preview</h2>
+                <p>The following is just a preview of what the PDF will look like, the generated PDF may appear differently so make sure to look it over after generating it.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
