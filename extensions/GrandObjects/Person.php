@@ -55,8 +55,7 @@ class Person extends BackboneModel {
                                                       "research/technical assistant", 
                                                       "research internship",
                                                       "professional end user",
-                                                      "staff",
-                                                      "high school student"),
+                                                      "staff"),
                                      'ugrad' => array("bsc",
                                                       "b.sc.",
                                                       "bsc student",
@@ -78,7 +77,8 @@ class Person extends BackboneModel {
                                                       "diplomaed engineer (dipl.ing.)",
                                                       "diplomaed engineer"),
                                      'visiting' => array("visiting student"),
-                                     'other' => array("other"),
+                                     'other' => array("other",
+                                                      "high school student"),
                                      'committee' => array("committee")
                                     );
 
