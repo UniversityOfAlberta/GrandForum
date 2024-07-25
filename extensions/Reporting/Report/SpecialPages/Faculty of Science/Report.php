@@ -26,7 +26,7 @@ class Report extends TemplateReport{
             $person->getFecPersonalInfo();
             if($person->faculty == getFaculty()){
                 $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-                if($person->isRole(NI) || $person->isRole("ATS")){
+                if($person->isRole(NI)){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SabbaticalApplication")) ? "selected" : false;
                     $tabs["Sabbatical"]['subtabs'][] = TabUtils::createSubTab("Sabbatical Application", "{$url}SabbaticalApplication", $selected);
                 }
