@@ -260,6 +260,10 @@ class Report extends AbstractReport {
                 }
             }
         }*/
+        if(count($person->getEvaluates("AGETECH", 2024)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AgeTechReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HARP", "{$url}AgeTechReview", $selected);
+        }
         if(count($person->getEvaluates("HAC", 2023)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HACReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HAC", "{$url}HACReview", $selected);
