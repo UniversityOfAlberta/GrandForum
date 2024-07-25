@@ -87,14 +87,12 @@
                 <div id='eligibility2' class='{if("{getText(RP_SABBATICAL, SABBATICAL, ELIGIBILITY1, 0, {$user_id}, 0)}" == "Yes", pdfnodisplay)}'>
                     <h3>How many years of eligibility have you accumulated since your last sabbatical?</h3>
                     {$item}<br />
-                
-                
             ]]>
         </ReportItem>
         <ReportItem id="eligibility2_start" type="Calendar" blobItem="ELIGIBILITY2_START" optional="true" width="83px">
             <![CDATA[
                     <h3>When was your last sabbatical?</h3>
-                    {$item} - 
+                    {$item}&nbsp;-&nbsp; 
             ]]>
         </ReportItem>
         <ReportItem id="eligibility2_end" type="Calendar" blobItem="ELIGIBILITY2_END" optional="true" width="83px">
