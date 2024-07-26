@@ -43,7 +43,7 @@
                 </div>
             ]]>
         </ReportItem>
-        <ReportItem id="start6" type="Select" options="July 1, {$this_year}|January 1, {$next_year}" blobItem="START6" optional="true">
+        <ReportItem id="start6" type="Select" options="July 1, {$next_year}|January 1, {add({$next_year},1)}" blobItem="START6" optional="true">
             <![CDATA[
                 <div id='start6' class='{if("{getText(RP_SABBATICAL, SABBATICAL, LENGTH, 0, {$user_id}, 0)}" == "12 months", pdfnodisplay)}'>
                     <h3>Start Date</h3>
