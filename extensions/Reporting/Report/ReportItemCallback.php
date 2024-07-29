@@ -588,7 +588,7 @@ class ReportItemCallback {
                 $marginTop = ((($vote/$max)*$height) <= 1) ? "-1.25em" : 0;
                 $ret .= "<td valign='bottom' style='height: {$height}em; width: 2.5%;'>
                             <div style='position: relative; display: inline-block; background: $color; width: 100%; height: ".(($vote/$max)*$height)."em;'>
-                                <div style='position: absolute; top: {$top}px; margin-top: {$marginTop}; width: 100%; font-size: 0.75em; color: black; text-align: center;'>{$vote}</div>
+                                <div style='position: absolute; top: {$top}px; margin-top: {$marginTop}; width: 100%; line-height: 1em; font-size: 0.75em; color: black; text-align: center;'>{$vote}</div>
                             </div>
                          </td>";
             }
