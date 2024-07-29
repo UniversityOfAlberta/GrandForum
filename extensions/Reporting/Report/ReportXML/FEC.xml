@@ -920,15 +920,16 @@
                                 <tr>
                                     <th style='width: 1%;'>Q#</th>
                                     <th style='width: 1%;'>QText</th>
-                                    <th style='width: 1%;'>R1</th>
-                                    <th style='width: 1%;'>R2</th>
-                                    <th style='width: 1%;'>R3</th>
-                                    <th style='width: 1%;'>R4</th>
-                                    <th style='width: 1%;'>R5</th>
+                                    <th style='width: 1%;'>SD</th>
+                                    <th style='width: 1%;'>D</th>
+                                    <th style='width: 1%;'>N</th>
+                                    <th style='width: 1%;'>A</th>
+                                    <th style='width: 1%;'>SA</th>
                                     <th>Chart</th>
                                 </tr>
                                 {course_eval(false)}
-                            </table>
+                            </table><br /><br />
+                            {course_eval_summary(false)}
                             <div class='pagebreak'></div>
                         ]]>
                     </If>
