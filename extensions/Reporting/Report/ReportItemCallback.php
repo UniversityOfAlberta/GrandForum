@@ -502,6 +502,7 @@ class ReportItemCallback {
         
         $count = 0;
         foreach($evals as $key => $eval){
+            $index = null;
             if($key+1 <= 3){
                 $index = 'Design';
             }
@@ -520,14 +521,15 @@ class ReportItemCallback {
             else if($key+1 <= 18){
                 $index = 'Class Climate';
             }
-            
-            $groups[$index][0] += $eval['votes'][0];
-            $groups[$index][1] += $eval['votes'][1];
-            $groups[$index][2] += $eval['votes'][2];
-            $groups[$index][3] += $eval['votes'][3];
-            $groups[$index][4] += $eval['votes'][4];
-            if($key == 0){
-                $count = array_sum($eval['votes']);
+            if($index != null){
+                $groups[$index][0] += $eval['votes'][0];
+                $groups[$index][1] += $eval['votes'][1];
+                $groups[$index][2] += $eval['votes'][2];
+                $groups[$index][3] += $eval['votes'][3];
+                $groups[$index][4] += $eval['votes'][4];
+                if($key == 0){
+                    $count = array_sum($eval['votes']);
+                }
             }
         }
         
