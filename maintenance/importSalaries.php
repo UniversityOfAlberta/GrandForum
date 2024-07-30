@@ -6,19 +6,17 @@
 
     $file = file_get_contents("salaries.csv");
     $lines = explode("\n", $file);
+    $year = YEAR;
     DBFunctions::delete('grand_user_salaries',
-                        array('year' => 2019));
-    DBFunctions::delete('grand_user_salaries',
-                        array('year' => 2020));
+                        array('year' => $year));
     foreach($lines as $line){
         $csv = str_getcsv($line);
         if(count($csv) <= 1){ continue; }
-        $empId = $csv[3];
-        $name = $csv[4];
-        $salary2019 = $csv[11];
-        $salary2020 = $csv[15];
-        $inc = $csv[9];
-        $reas = $csv[10];
+        $empId = sprintf("%07d", $csv[5]);
+        $name = $csv[6];
+        $salary = $csv[13];
+        $inc = $csv[23];
+        $reas = $csv[24];
         
         $inc = @number_format($inc, 2);
         if(($inc == "0" || $inc == "0.00") && 
@@ -33,16 +31,19 @@
         }
         
         $person = Person::newFromEmployeeId($empId);
+        if($person->getId() == 0){
+            echo "NOT FOUND: {$name}\n";
+            continue;
+        }
+        DBFunctions::update('grand_user_salaries',
+                            array('increment' => $inc),
+                            array('user_id' => $person->getId(),
+                                  'year' => $year-1));
         DBFunctions::insert('grand_user_salaries',
                             array('user_id' => $person->getId(),
-                                  'year' => 2019,
-                                  'salary' => $salary2019,
-                                  'increment' => $inc));
-        DBFunctions::insert('grand_user_salaries',
-                            array('user_id' => $person->getId(),
-                                  'year' => 2020,
-                                  'salary' => $salary2020));
-        echo "{$name} ({$empId}): {$salary2019} --({$inc})--> {$salary2020}\n";
+                                  'year' => $year,
+                                  'salary' => $salary));
+        echo "{$name} ({$empId}): {$salary} : {$inc}\n";
     }
     
 ?>
