@@ -10,6 +10,7 @@
             <SectionPermission id="chairs_advice" permissions="rw" />
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
         </Role>
         <Role role="EA">
             <SectionPermission id="evaluations" permissions="rw" />
@@ -20,6 +21,7 @@
             <SectionPermission id="chairs_advice" permissions="r" />
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
         </Role>
         <Role role="DEAN">
             <SectionPermission id="evaluations" permissions="" />
@@ -30,6 +32,7 @@
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
+            <SectionPermission id="sabbatical" permissions="" />
         </Role>
         <Role role="DEANEA">
             <SectionPermission id="evaluations" permissions="" />
@@ -40,47 +43,8 @@
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="" />
+            <SectionPermission id="sabbatical" permissions="" />
         </Role>
-        <!--Role role="CHAIR">
-            <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="rw" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="r" />
-            <SectionPermission id="atsec" permissions="rw" />
-            <SectionPermission id="dept_hqp" permissions="r" />
-        </Role>
-        <Role role="EA">
-            <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="rw" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="r" />
-            <SectionPermission id="atsec" permissions="rw" />
-            <SectionPermission id="dept_hqp" permissions="r" />
-        </Role>
-        <Role role="DEAN">
-            <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="rw" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="" />
-            <SectionPermission id="atsec" permissions="" />
-            <SectionPermission id="dept_hqp" permissions="" />
-        </Role>
-        <Role role="DEANEA">
-            <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="r" />
-            <SectionPermission id="recommendations" permissions="" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="" />
-            <SectionPermission id="atsec" permissions="" />
-            <SectionPermission id="dept_hqp" permissions="" />
-        </Role-->
     </Permissions>
     <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$my_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
         <Static>
@@ -2061,5 +2025,73 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="sabbatical" type="EditableReportSection" name="Sabbatical Applications" title="Sabbatical Applications" blobSection="FEC_SABBATICAL">
+        <Static>
+            <![CDATA[
+                <style>
+                    table#chairTable * {
+                        font-size:11px !important;
+                    }
+                </style>
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Case#</th>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th width="1%">Application</th>
+                            <th width="1%">Decision</th>
+                            <th>Comments</th>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta" excludeMe="true">
+            <ReportItem type="PDFReportItem" reportType="SabbaticalApplication" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                    {set(pdf, {$value})}
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    <tr data-fecid="{getExtra()}" {if("{get(pdf)}" == "", class='remove')}>
+                        <td>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                ]]>
+            </Static>
+            <ReportItem id="download" type="PDFReportItem" reportType="SabbaticalApplication" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="decision" type="Select" blobItem="DECISION" blobSubItem="{$user_id}" blobSection="FEC_SABBATICAL" options="|Yes|No|Conditionally" encrypt="true">
+                <![CDATA[
+                        <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}" blobSection="FEC_SABBATICAL" width="100%" height="90px" encrypt="true">
+                <![CDATA[
+                        <td align='center'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('tr.remove').remove();
+                    $('#chairTable').dataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1
+                    });
+                </script>
+            ]]>
+        </Static>
     </ReportSection>
 </Report>

@@ -18,6 +18,7 @@ require_once("SpecialPages/AnnualReportTable.php");
 require_once("SpecialPages/ServiceRoles.php");
 require_once("SpecialPages/GraduateStudents.php");
 require_once("SpecialPages/FECReflections.php");
+require_once("SpecialPages/SPOTGenerator.php");
 require_once("SpecialPages/{$config->getValue('networkName')}/DummyReport.php");
 if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php")){
     require_once("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php");

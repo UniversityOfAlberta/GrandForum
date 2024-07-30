@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="SPOTs" reportType="RP_SPOT" pdfType="RPTP_SPOT" pdfFiles="SPOTs" headerName="{$user_name}" ajax="true" encrypt="true">
+    <ReportSection id="spots" type="EditableReportSection" name="SPOTs" title="APPENDIX A: SPOTs" pagebreak="false" hLevel="2">
+        <Static>
+            <![CDATA[
+                <div id="spots">
+            ]]>
+        </Static>
+        <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
+            <Static>
+                <![CDATA[
+                    {set(term, {getExtra()})}
+                ]]>
+            </Static>
+            <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" unique="true" exclude13Week="true">
+                <ReportItemSet type="CourseSections">
+                    <If if="{!=({course_eval(false)}, )}">
+                        <![CDATA[
+                            <h3>{get(term)} / {$course_subject} {$course_number} / {$course_comp} - {$course_section}</h3>
+                            <b>{$course_eval_responses}</b> respondents out of <b>{$course_eval_enrolled}</b> enrolled (<b>{round({multiply({divide({$course_eval_responses},{$course_eval_enrolled})},100)},1)}%</b>)
+                            <table class='wikitable' frame='box' rules='all' style='width:100%;'>
+                                <tr>
+                                    <th style='width: 1%;'>Q#</th>
+                                    <th style='width: 1%;'>QText</th>
+                                    <th style='width: 1%;'>SD</th>
+                                    <th style='width: 1%;'>D</th>
+                                    <th style='width: 1%;'>N</th>
+                                    <th style='width: 1%;'>A</th>
+                                    <th style='width: 1%;'>SA</th>
+                                    <th>Chart</th>
+                                </tr>
+                                {course_eval(false)}
+                            </table><br /><br />
+                            {course_eval_summary(false)}
+                            <div class='pagebreak'></div>
+                        ]]>
+                    </If>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </div>
+                <style>
+                    #spots div.pagebreak:last-child {
+                        display: none;
+                    }
+                </style>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

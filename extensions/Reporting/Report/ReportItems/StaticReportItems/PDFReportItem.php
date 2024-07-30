@@ -60,6 +60,31 @@ class PDFReportItem extends StaticReportItem {
             }
         }
     }
+    
+    function getBlobValue(){
+        global $wgServer, $wgScriptPath, $wgOut;
+        $me = $this->getReport()->person;
+        $reportType = $this->getAttr("reportType", 'HQPReport');
+        $year = $this->getAttr("year", $this->getReport()->year);
+        $blobReport = $this->getAttr("blobReport", "");
+        $pdfReport = $this->getAttr("pdfReport", "");
+        $section = $this->getAttr("section", "");
+        $project = null;
+        $person = Person::newFromId($this->personId);
+        $report = new DummyReport($reportType, $person, $project, $year, true);
+        if($blobReport != ""){
+            $report->reportType = $blobReport;
+        }
+        if($pdfReport != ""){
+            $report->pdfType = $pdfReport;
+        }
+        $report->person = $person;
+        $check = $report->getPDF(false, $section);
+        if (count($check) > 0) {
+            return $check[0]['token'];
+        }
+        return "";
+    }
 
     function renderForPDF(){
         global $wgOut;
