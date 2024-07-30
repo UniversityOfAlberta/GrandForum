@@ -38,7 +38,10 @@ class ReportItemCallback {
             "course_enroll" => "getCourseEnroll",    
             "course_enroll_percent" => "getCourseEnrollPercent",
             "course_eval" => "getCourseEval",
+            "course_eval_summary" => "getCourseEvalSummary",
             "course_eval_n" => "getCourseEvalN",
+            "course_eval_enrolled" => "getCourseEvalEnrolled",
+            "course_eval_responses" => "getCourseEvalResponses",
             "getCourseAllLectureEnroll" => "getCourseAllLectureEnroll",
             "getUserSectionCounts" => "getUserSectionCounts",
             "getAverageCourseEvalByTerm" => "getAverageCourseEvalByTerm",
@@ -404,6 +407,17 @@ class ReportItemCallback {
                                       AND c.catalog = '{$course->catalog}'
                                       AND c.component = 'LEC'
                                       AND uc.percentage != '0'");
+        if(@$data[0]['total'] == 0){
+            $data = DBFunctions::execSQL("SELECT SUM(c.`Tot Enrl`) as total
+                                          FROM  `grand_courses` c, `grand_user_courses` uc
+                                          WHERE c.id = uc.course_id
+                                          AND uc.user_id = '{$person->getId()}'
+                                          AND c.term_string = '{$course->term_string}'
+                                          AND c.subject = '{$course->subject}'
+                                          AND c.catalog = '{$course->catalog}'
+                                          AND c.component = 'LAB'
+                                          AND uc.percentage != '0'");
+        }
         return @$data[0]['total'];
     }
 
@@ -465,6 +479,180 @@ class ReportItemCallback {
         return str_replace("\n", "", $ret);
     }
     
+    function getCourseEvalSummary($allSections=true){
+        global $wgServer, $wgScriptPath, $DPI_CONSTANT;
+        $dpi = (isset($_GET['generatePDF'])) ? $DPI_CONSTANT : 1;
+        $person = Person::newFromId($this->reportItem->personId);
+        $course = Course::newFromId($this->reportItem->projectId);
+        $evals = $person->getCourseEval($course->getId(), $allSections);
+        if(!is_array($evals) || count($evals) < 18){
+            return "";
+        }
+        
+        usort($evals, function($a, $b){
+            return ($a['id'] >= $b['id']);
+        });
+        
+        $groups = array('Design' => array(),
+                        'Utility of Course<br />Resources' => array(),
+                        'Graded Work' => array(),
+                        'Course Delivery' => array(),
+                        'Instructional Approach' => array(),
+                        'Class Climate' => array());
+        
+        $count = 0;
+        foreach($evals as $key => $eval){
+            if($key+1 <= 3){
+                $index = 'Design';
+            }
+            else if($key+1 <= 6){
+                $index = 'Utility of Course<br />Resources';
+            }
+            else if($key+1 <= 9){
+                $index = 'Graded Work';
+            }
+            else if($key+1 <= 12){
+                $index = 'Course Delivery';
+            }
+            else if($key+1 <= 15){
+                $index = 'Instructional Approach';
+            }
+            else if($key+1 <= 18){
+                $index = 'Class Climate';
+            }
+            
+            $groups[$index][0] += $eval['votes'][0];
+            $groups[$index][1] += $eval['votes'][1];
+            $groups[$index][2] += $eval['votes'][2];
+            $groups[$index][3] += $eval['votes'][3];
+            $groups[$index][4] += $eval['votes'][4];
+            if($key == 0){
+                $count = array_sum($eval['votes']);
+            }
+        }
+        
+        $ret = "<table class='wikitable' style='width: 100%;' frame='box' rules='all'>
+                    <tr>
+                        <th style='width:20%;' colspan='4'>SPOT Domain / Q#</th>
+                        <th style='width:16%;'>Strongly Disagree (SD)</th>
+                        <th style='width:16%;'>Disagree (D)</th>
+                        <th style='width:16%;'>Neither Agree Nor Disagree (N)</th>
+                        <th style='width:16%;'>Agree (A)</th>
+                        <th style='width:16%;'>Strongly Agree (SA)</th>
+                    </tr>";
+        $max = 0;
+        $key = 0;
+        foreach($groups as $index => $votes){
+            $max = max($max, $votes[0], $votes[1], $votes[2], $votes[3], $votes[4]);
+            $ret .= "<tr>
+                        <td align='center' style='width:17%; white-space:nowrap;'>".str_replace("<br />", " ", $index)."</td>
+                        <td align='center' style='width: 1%;'>".($key*3+1)."</td>
+                        <td align='center' style='width: 1%;'>".($key*3+2)."</td>
+                        <td align='center' style='width: 1%;'>".($key*3+3)."</td>
+                        <td align='center'>{$votes[0]}</td>
+                        <td align='center'>{$votes[1]}</td>
+                        <td align='center'>{$votes[2]}</td>
+                        <td align='center'>{$votes[3]}</td>
+                        <td align='center'>{$votes[4]}</td>
+                    </tr>";
+            $key++;
+        }
+        
+        while($max % 4 != 0){
+            $max++;
+        }
+        
+        $ret .= "</table><br /><br />";
+        
+        $data = file_get_contents("skins/chartbg.png");
+        $base64 = 'data:image/png;base64,' . base64_encode($data);
+        
+        $border = 1*$dpi;
+        $height = 10;
+        $calcHeight = (!isset($_GET['generatePDF'])) ? "height: calc(10em + 4px);" : "";
+        
+        $enrolled = $this->getCourseEvalEnrolled();
+        $responses = $this->getCourseEvalResponses();
+        
+        $ret .= "<style>
+                    table.chart td {
+                        background-color: transparent !important;
+                    }
+                    
+                    table.chart {
+                        color: #333333;
+                    }
+                 </style>
+                 <div style='width: 100%; text-align: center; font-weight: bold; color: #333333; margin-bottom: 0.25em;'>
+                    SPOT Frequency Distribution<br />
+                    Responses: {$responses} of {$enrolled} (".number_format($responses/max(1, $enrolled)*100, 1)."%)
+                 </div>
+                 <img src='$base64' style='width: 97.5%; margin-left: 2.5%; height: {$height}em; border-width: {$border}px {$border}px 0 {$border}px; border-style: solid; border-color: #e0e0e0;' />
+                 <table class='chart' cellspacing='0' cellpadding='0' style='margin-top: -{$height}em; width: 100%; height: {$height}em; border-spacing: 0; border-collapse: separate;'>
+                    <tr>
+                        <td valign='top' style='width:5%; {$calcHeight}'></td>";
+        foreach($groups as $index => $votes){
+            foreach($votes as $i => $vote){
+                $color = "";
+                switch($i){
+                    case 0: $color = "#e84236"; break;
+                    case 1: $color = "#fe6d00"; break;
+                    case 2: $color = "#f9c001"; break;
+                    case 3: $color = "#01c0bb"; break;
+                    case 4: $color = "#2fa954"; break;
+                }
+                $top = 1*$dpi;
+                $marginTop = ((($vote/$max)*$height) <= 1) ? "-1.25em" : 0;
+                $ret .= "<td valign='bottom' style='height: {$height}em; width: 2.5%;'>
+                            <div style='position: relative; display: inline-block; background: $color; width: 100%; height: ".(($vote/$max)*$height)."em;'>
+                                <div style='position: absolute; top: {$top}px; margin-top: {$marginTop}; width: 100%; line-height: 1em; font-size: 0.75em; color: black; text-align: center;'>{$vote}</div>
+                            </div>
+                         </td>";
+            }
+            $ret .= "<td style='width: 2.5%;'></td>";
+        }
+        $ret .= "   </tr>
+                    <tr style='font-size: 0.75em;'>
+                        <td></td>";
+        foreach($groups as $index => $votes){
+            $ret .= "<td align='center'>SD</td>
+                     <td align='center'>D</td>
+                     <td align='center'>N</td>
+                     <td align='center'>A</td>
+                     <td align='center'>SA</td>
+                     <td align='center'></td>";
+        }
+        $ret .= "   </tr>
+                    <tr style='font-size: 0.75em; font-weight: bold;'>
+                        <td></td>";
+        foreach($groups as $index => $votes){
+            $ret .= "<td colspan='5' valign='top' align='center'>{$index}</td>
+                     <td></td>";
+        }
+        $top = 18;
+        if(isset($_GET['generatePDF']) && isset($_GET['preview'])){
+            $top = 17.6;
+        }
+        else if(!isset($_GET['generatePDF'])){
+            $top = 20.9;
+        }
+        $ret .= "   </tr>
+                    <tr>
+                        <td valign='top'>
+                            <div style='width: 35%; text-align: right; margin-top: -{$top}em; height: 10em; position:relative; font-size: 0.75em; font-weight: bold;'>
+                                 <div style='position: absolute; top: 0; right:0;'>$max</div>
+                                 <div style='position: absolute; top: 3.3em; right:0;'>".($max*0.75)."</div>
+                                 <div style='position: absolute; top: 6.6em; right:0;'>".($max*0.5)."</div>
+                                 <div style='position: absolute; top: 9.9em; right:0;'>".($max*0.25)."</div>
+                                 <div style='position: absolute; top: 13.3em; right:0;'>0</div>
+                             </div>
+                         </td>
+                    </tr>
+                 </table>
+                 ";
+        return $ret;
+    }
+    
     function getCourseEvalN(){
         $person = Person::newFromId($this->reportItem->personId);
         $course = Course::newFromId($this->reportItem->projectId);
@@ -487,6 +675,36 @@ class ReportItemCallback {
             return $r1 + $r2 + $r3 + $r4 + $r5;
         }
         return 1;
+    }
+    
+    function getCourseEvalEnrolled(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $course = Course::newFromId($this->reportItem->projectId);
+        $evals = $person->getCourseEval($course->getId(), false);
+        if(!is_array($evals)){
+            return "";
+        }
+                    
+        $ret = 0;
+        foreach($evals as $key => $eval){
+            $ret = max($ret, $eval['enrolled']);
+        }
+        return $ret;
+    }
+    
+    function getCourseEvalResponses(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $course = Course::newFromId($this->reportItem->projectId);
+        $evals = $person->getCourseEval($course->getId(), false);
+        if(!is_array($evals)){
+            return "";
+        }
+                    
+        $ret = 0;
+        foreach($evals as $key => $eval){
+            $ret = max($ret, $eval['responses']);
+        }
+        return $ret;
     }
     
     function getAverageCourseEvalByTerm($term, $q){

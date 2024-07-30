@@ -218,7 +218,7 @@
                 <h2>HQP Supervision</h2>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|visiting|tech|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Visiting Students|Research/Technical Assistants|Student Committee Responsibilities">
+        <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|visiting|tech|other|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Visiting Students|Research/Technical Assistants|Other|Student Committee Responsibilities">
             <Static>
                 <![CDATA[
                     <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>
@@ -840,20 +840,21 @@
                     <If if="{!=({course_eval(false)}, )}">
                         <![CDATA[
                             <h3>{get(term)} / {$course_subject} {$course_number} / {$course_comp} - {$course_section}</h3>
-                            <b>{$course_eval_n}</b> respondents out of <b>{$course_enroll}</b> enrolled (<b>{round({multiply({divide({$course_eval_n},{$course_enroll})},100)},1)}%</b>)
+                            <b>{$course_eval_responses}</b> respondents out of <b>{$course_eval_enrolled}</b> enrolled (<b>{round({multiply({divide({$course_eval_responses},{$course_eval_enrolled})},100)},1)}%</b>)
                             <table class='wikitable' frame='box' rules='all' style='width:100%;'>
                                 <tr>
                                     <th style='width: 1%;'>Q#</th>
                                     <th style='width: 1%;'>QText</th>
-                                    <th style='width: 1%;'>R1</th>
-                                    <th style='width: 1%;'>R2</th>
-                                    <th style='width: 1%;'>R3</th>
-                                    <th style='width: 1%;'>R4</th>
-                                    <th style='width: 1%;'>R5</th>
+                                    <th style='width: 1%;'>SD</th>
+                                    <th style='width: 1%;'>D</th>
+                                    <th style='width: 1%;'>N</th>
+                                    <th style='width: 1%;'>A</th>
+                                    <th style='width: 1%;'>SA</th>
                                     <th>Chart</th>
                                 </tr>
                                 {course_eval(false)}
-                            </table>
+                            </table><br /><br />
+                            {course_eval_summary(false)}
                             <div class='pagebreak'></div>
                         ]]>
                     </If>
