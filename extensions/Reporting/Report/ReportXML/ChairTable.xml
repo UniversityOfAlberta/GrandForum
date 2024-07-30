@@ -125,13 +125,13 @@
                         </td>
                 ]]>
             </ReportItem>
-            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /> &lt;span>AR&lt;/span>">
                 <![CDATA[
-                        <td align='center' class='currentAR'>
+                        <td align='left' class='currentAR'>
                             {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;span>SPOTs&lt;/span>">
+            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /> &lt;span>SPOTs&lt;/span>">
                 <![CDATA[
                             <span {if("{$value}" == "", class='remove')}><br />{$item}</span>
                         </td>
@@ -596,12 +596,13 @@
                         <td>{$user_sub_roles}</td>
                 ]]>
             </Static>
-            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /> &lt;span>AR&lt;/span>">
                 <![CDATA[
-                        <td align='center'>{$item}
+                        <td align='left' class='currentAR'>
+                            {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;span>SPOTs&lt;/span>">
+            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /> &lt;span>SPOTs&lt;/span>">
                 <![CDATA[
                             <span {if("{$value}" == "", class='remove')}><br />{$item}</span>
                         </td>
@@ -1054,13 +1055,13 @@
                         </td>
                 ]]>
             </ReportItem>
-            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /> &lt;span>AR&lt;/span>">
                 <![CDATA[
-                        <td align='center'>
+                        <td align='left' class='currentAR'>
                             {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;span>SPOTs&lt;/span>">
+            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /> &lt;span>SPOTs&lt;/span>">
                 <![CDATA[
                             <span {if("{$value}" == "", class='remove')}><br />{$item}</span>
                         </td>
