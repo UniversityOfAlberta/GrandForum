@@ -140,7 +140,16 @@ class ReportArchive extends SpecialPage {
             $check = $ar->getPDF();
             if(count($check) > 0){
                 $pdf = PDF::newFromToken($check[0]['token']);
-                $arUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Annual Report</a>";
+                $arUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Annual Report</a><br />";
+            }
+            
+            // SPOT Report
+            $spotUrl = "";
+            $spot = new DummyReport("SPOTs", $person, 0, $y, true);
+            $check = $spot->getPDF();
+            if(count($check) > 0){
+                $pdf = PDF::newFromToken($check[0]['token']);
+                $spotUrl = "<a href='{$pdf->getUrl()}' target='_blank'>SPOTs</a><br />";
             }
             
             // Recommendations
@@ -241,7 +250,7 @@ class ReportArchive extends SpecialPage {
                 $varianceUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Variance of Responsibilities</a><br />";
             }
             
-            $wgOut->addHTML("<td align='center' style='padding-left:1em; padding-right:1em;'>{$varianceUrl}{$arUrl}</td>
+            $wgOut->addHTML("<td align='center' style='padding-left:1em; padding-right:1em;'>{$varianceUrl}{$arUrl}{$spotUrl}</td>
                              <td align='center' style='padding-left:1em; padding-right:1em;'>{$reccUrl}</td>
                              <td align='center' style='padding-left:1em; padding-right:1em;'>{$ddUrl}{$letter1Url}{$letter2Url}{$letter3Url}{$letter4Url}</td>");
             $wgOut->addHTML("</tr>");

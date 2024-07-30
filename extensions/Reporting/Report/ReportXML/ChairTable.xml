@@ -53,6 +53,9 @@
                     table#chairTable * {
                         font-size:11px !important;
                     }
+                    .remove {
+                        display: none;
+                    }
                 </style>
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
                 <div style='float:right; margin-top: -45px;display:flex;'>
@@ -126,6 +129,11 @@
                 <![CDATA[
                         <td align='center' class='currentAR'>
                             {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;span>SPOTs&lt;/span>">
+                <![CDATA[
+                            <span {if("{$value}" == "", class='remove')}><br />{$item}</span>
                         </td>
                 ]]>
             </ReportItem>
@@ -590,7 +598,13 @@
             </Static>
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
-                        <td align='center'>{$item}</td>
+                        <td align='center'>{$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;span>SPOTs&lt;/span>">
+                <![CDATA[
+                            <span {if("{$value}" == "", class='remove')}><br />{$item}</span>
+                        </td>
                 ]]>
             </ReportItem>
             <If id="if_lock" if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
@@ -975,6 +989,9 @@
                     table#chairTable * {
                         font-size:11px !important;
                     }
+                    .remove {
+                        display: none;
+                    }
                 </style>
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
                 <div style='float:right; margin-top: -45px;display:flex;'>
@@ -1041,6 +1058,11 @@
                 <![CDATA[
                         <td align='center'>
                             {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;span>SPOTs&lt;/span>">
+                <![CDATA[
+                            <span {if("{$value}" == "", class='remove')}><br />{$item}</span>
                         </td>
                 ]]>
             </ReportItem>
@@ -2032,6 +2054,9 @@
                 <style>
                     table#chairTable * {
                         font-size:11px !important;
+                    }
+                    .remove {
+                        display: none;
                     }
                 </style>
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
