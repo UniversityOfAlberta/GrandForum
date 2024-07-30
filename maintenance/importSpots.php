@@ -27,16 +27,18 @@
     $uniqueQs = array();
     
     foreach($spots as $spot){
-        $emplid = $spot[0];
+        $emplid = $spot[9];
         $termId = DBFunctions::escape($spot[3]);
-        $classNum = DBFunctions::escape($spot[4]);
-        $qId = $spot[8];
-        $qText = $spot[9];
-        $rsp1 = (int)$spot[10];
-        $rsp2 = (int)$spot[11];
-        $rsp3 = (int)$spot[12];
-        $rsp4 = (int)$spot[13];
-        $rsp5 = (int)$spot[14];
+        $classNum = DBFunctions::escape($spot[5]);
+        $enrolled = $spot[11];
+        $responses = $spot[12];
+        $qId = $spot[13];
+        $qText = $spot[14];
+        $rsp1 = (int)$spot[15];
+        $rsp2 = (int)$spot[16];
+        $rsp3 = (int)$spot[17];
+        $rsp4 = (int)$spot[18];
+        $rsp5 = (int)$spot[19];
         
         $uniqueQs[$qId] = $qText;
         
@@ -46,9 +48,14 @@
                                                  FROM grand_user_courses uc, grand_courses c
                                                  WHERE c.`Term` = '{$termId}'
                                                  AND c.`Class Nbr` = '{$classNum}'
+                                                 AND uc.user_id = '{$person->getId()}'
                                                  AND c.id = uc.course_id");
             if(count($user_course) > 0){
-                $toUpdate[$user_course[0]['id']][] = array("id" => $qId, "votes" => array($rsp1, $rsp2, $rsp3, $rsp4, $rsp5));
+                $toUpdate[$user_course[0]['id']][] = array("id" => $qId, 
+                                                           "enrolled" => $enrolled, 
+                                                           "responses" => $responses, 
+                                                           "question" => $qText, 
+                                                           "votes" => array($rsp1, $rsp2, $rsp3, $rsp4, $rsp5));
             }
         }
     }
