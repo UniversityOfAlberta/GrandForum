@@ -405,6 +405,17 @@ class ReportItemCallback {
                                       AND c.catalog = '{$course->catalog}'
                                       AND c.component = 'LEC'
                                       AND uc.percentage != '0'");
+        if(@$data[0]['total'] == 0){
+            $data = DBFunctions::execSQL("SELECT SUM(c.`Tot Enrl`) as total
+                                          FROM  `grand_courses` c, `grand_user_courses` uc
+                                          WHERE c.id = uc.course_id
+                                          AND uc.user_id = '{$person->getId()}'
+                                          AND c.term_string = '{$course->term_string}'
+                                          AND c.subject = '{$course->subject}'
+                                          AND c.catalog = '{$course->catalog}'
+                                          AND c.component = 'LAB'
+                                          AND uc.percentage != '0'");
+        }
         return @$data[0]['total'];
     }
 
