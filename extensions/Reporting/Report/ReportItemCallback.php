@@ -40,6 +40,8 @@ class ReportItemCallback {
             "course_eval" => "getCourseEval",
             "course_eval_summary" => "getCourseEvalSummary",
             "course_eval_n" => "getCourseEvalN",
+            "course_eval_enrolled" => "getCourseEvalEnrolled",
+            "course_eval_responses" => "getCourseEvalResponses",
             "getCourseAllLectureEnroll" => "getCourseAllLectureEnroll",
             "getUserSectionCounts" => "getUserSectionCounts",
             "getAverageCourseEvalByTerm" => "getAverageCourseEvalByTerm",
@@ -568,6 +570,10 @@ class ReportItemCallback {
         $border = 1*$dpi;
         $height = 10;
         $calcHeight = (!isset($_GET['generatePDF'])) ? "height: calc(10em + 4px);" : "";
+        
+        $enrolled = $this->getCourseEvalEnrolled();
+        $responses = $this->getCourseEvalResponses();
+        
         $ret .= "<style>
                     table.chart td {
                         background-color: transparent !important;
@@ -579,7 +585,7 @@ class ReportItemCallback {
                  </style>
                  <div style='width: 100%; text-align: center; font-weight: bold; color: #333333; margin-bottom: 0.25em;'>
                     SPOT Frequency Distribution<br />
-                    Responses: {$count} of {$course->totEnrl} (".number_format($count/max(1, $course->totEnrl)*100, 1)."%)
+                    Responses: {$responses} of {$enrolled} (".number_format($responses/max(1, $enrolled)*100, 1)."%)
                  </div>
                  <img src='$base64' style='width: 97.5%; margin-left: 2.5%; height: {$height}em; border-width: {$border}px {$border}px 0 {$border}px; border-style: solid; border-color: #e0e0e0;' />
                  <table class='chart' cellspacing='0' cellpadding='0' style='margin-top: -{$height}em; width: 100%; height: {$height}em; border-spacing: 0; border-collapse: separate;'>
@@ -669,6 +675,36 @@ class ReportItemCallback {
             return $r1 + $r2 + $r3 + $r4 + $r5;
         }
         return 1;
+    }
+    
+    function getCourseEvalEnrolled(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $course = Course::newFromId($this->reportItem->projectId);
+        $evals = $person->getCourseEval($course->getId(), false);
+        if(!is_array($evals)){
+            return "";
+        }
+                    
+        $ret = 0;
+        foreach($evals as $key => $eval){
+            $ret = max($ret, $eval['enrolled']);
+        }
+        return $ret;
+    }
+    
+    function getCourseEvalResponses(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $course = Course::newFromId($this->reportItem->projectId);
+        $evals = $person->getCourseEval($course->getId(), false);
+        if(!is_array($evals)){
+            return "";
+        }
+                    
+        $ret = 0;
+        foreach($evals as $key => $eval){
+            $ret = max($ret, $eval['responses']);
+        }
+        return $ret;
     }
     
     function getAverageCourseEvalByTerm($term, $q){

@@ -915,7 +915,7 @@
                     <If if="{!=({course_eval(false)}, )}">
                         <![CDATA[
                             <h3>{get(term)} / {$course_subject} {$course_number} / {$course_comp} - {$course_section}</h3>
-                            <b>{$course_eval_n}</b> respondents out of <b>{$course_enroll}</b> enrolled (<b>{round({multiply({divide({$course_eval_n},{$course_enroll})},100)},1)}%</b>)
+                            <b>{$course_eval_responses}</b> respondents out of <b>{$course_eval_enrolled}</b> enrolled (<b>{round({multiply({divide({$course_eval_responses},{$course_eval_enrolled})},100)},1)}%</b>)
                             <table class='wikitable' frame='box' rules='all' style='width:100%;'>
                                 <tr>
                                     <th style='width: 1%;'>Q#</th>
