@@ -4,6 +4,14 @@
         <Static>
             <![CDATA[
                 <div id="spots">
+                <p><i>Student surveys are an important part of providing feedback about their perspectives of teaching, but cannot be taken in isolation as a complete evaluation of a course or instructor. Factors outside of an instructor’s control may influence the results. These factors include, but are not limited to:</i></p>
+                <ol type="a">
+                    <li><i>completion rate of the survey;</i></li>
+                    <li><i>class size, class level, the Faculty and program in which the course is developed, timing of the class, delivery mode, required versus optional course, accredited program requirements, practicum or clinical contexts, grade expectations, student GPA, age of both students and instructors; and,</i></li>
+                    <li><i>perceived race, gender, age, religion, ability, sexual orientation, and/or ethnicity of the instructor.</i></li>
+                </ol>
+                <p><i>Small differences in results should not be considered meaningful. Results will be interpreted using the defined scale: Strongly Disagree (SD); Disagree (D); Neither Agree nor Disagree (N); Agree (A); and, Strongly Agree (SA).</i></p>
+                <div class='pagebreak'></div>
             ]]>
         </Static>
         <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
