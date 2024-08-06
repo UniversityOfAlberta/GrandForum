@@ -579,12 +579,13 @@ class UserFrailtyIndexAPI extends API{
         if($hasSubmitted){
             foreach(self::$checkanswers as $category => $categories){
                 $score = 0;
-                foreach($categories as $answer){
+                foreach($categories as $bId => $answer){
                     $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, $answer["ReportSection"], $answer["blobItem"], $user_id);
                     $check_answers_list = $answer["answer_scores"];
                     foreach($check_answers_list as $key=>$value){
                         if($key == $ans){
                             $score = $score + $value;
+                            $scores[$category."#".$bId] = $value;
                         }
                     }
                 }
@@ -595,7 +596,7 @@ class UserFrailtyIndexAPI extends API{
         $scores["Self-Perceived Health"] = ($hasSubmitted) ? $this->getSelfPerceivedHealth($user_id, $reportType) : 0;
         $scores["Total"] = 0;
         foreach($scores as $key => $score){
-            if($key != "Total"){
+            if($key != "Total" && strstr($key, "#") == false){
                 $scores["Total"] += $score;
             }
         }

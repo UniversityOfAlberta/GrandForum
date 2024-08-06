@@ -33,23 +33,13 @@ class IndexComponents extends SpecialPage {
         $scores2 = $api2->getFrailtyScore($person->getId());
         $html = "";
         $html .= "<tr data-id='{$person->getId()}'>
-                    <td>{$person->getId()}</td>
-                    <td>{$scores1['Physical Activity']}</td>
-                    <td>{$scores1['Multiple Medications']}</td>
-                    <td>{$scores1['Fatigue']}</td>
-                    <td>{$scores1['Mental Health']}</td>
-                    <td>{$scores1['Memory']}</td>
-                    <td>{$scores1['Falls and Balance']}</td>
-                    <td>{$scores1['Walking Speed']}</td>
-                    <td>{$scores1['Nutritional Status']}</td>
-                    <td>{$scores1['Oral Health']}</td>
-                    <td>{$scores1['Pain']}</td>
-                    <td>{$scores1['Strength']}</td>
-                    <td>{$scores1['Urinary Continence']}</td>
-                    <td>{$scores1['Sensory: Hearing and Vision']}</td>
-                    <td>{$scores1['Self-Perceived Health']}</td>
-                    <td>{$scores1['Health Conditions']}</td>
-                 
+                    <td>{$person->getId()}</td>";
+        foreach(UserFrailtyIndexAPI::$checkanswers as $key => $questions){
+            foreach($questions as $bId => $question){
+                $html .= "<td>{$scores1["$key#$bId"]}</td>";
+            }
+        }
+              $html .= "   
                     <td>{$scores2['Vision']}</td>
                     <td>{$scores2['Hearing']}</td>
                     <td>{$scores2['Communication']}</td>
@@ -81,31 +71,53 @@ class IndexComponents extends SpecialPage {
         $me = Person::newFromWgUser();
         $people = Person::getAllPeople(CI);
         
+        $fiColspan = 0;
+        foreach(UserFrailtyIndexAPI::$checkanswers as $key => $questions){
+            foreach($questions as $bId => $question){
+                $fiColspan++;
+            }
+        }  
+        
         $wgOut->addHTML("<table id='summary' class='wikitable'>
                             <thead>
                                 <tr>
-                                    <th rowspan='2'>User Id</th>
-                                    <th colspan='15'>Frailty Index</th>
+                                    <th rowspan='3'>User Id</th>
+                                    <th colspan='{$fiColspan}'>Frailty Index</th>
                                     <th colspan='21'>In Person</th>
                                 </tr>
-                                <tr>
-                                    <th>Physical Activity</th>
-                                    <th>Multiple Medications</th>
+                                <tr>");
+        foreach(UserFrailtyIndexAPI::$checkanswers as $key => $questions){
+            $wgOut->addHTML("       <th colspan='".count($questions)."'>$key</th>");
+        }
+        $wgOut->addHTML("           <th>Vision</th>
+                                    <th>Hearing</th>
+                                    <th>Communication</th>
+                                    <th>Cognition</th>
+                                    <th>Dementia</th>
+                                    <th>Depression</th>
+                                    <th>Balance/Falls/Mobility</th>
+                                    <th>ADL</th>
+                                    <th>IADL</th>
+                                    <th>Caregiver</th>
+                                    <th>Urinary</th>
+                                    <th>Bowel</th>
+                                    <th>Medications</th>
                                     <th>Fatigue</th>
-                                    <th>Mental Health</th>
-                                    <th>Memory</th>
-                                    <th>Falls and Balance</th>
-                                    <th>Walking Speed</th>
-                                    <th>Nutritional Status</th>
-                                    <th>Oral Health</th>
-                                    <th>Pain</th>
                                     <th>Strength</th>
-                                    <th>Urinary Continence</th>
-                                    <th>Sensory: Hearing and Vision</th>
-                                    <th>VAS</th>
-                                    <th>Health Conditions</th>
-                                    
-                                    <th>Vision</th>
+                                    <th>Nutrition</th>
+                                    <th>Osteoporosis</th>
+                                    <th>Pain</th>
+                                    <th>Dental</th>
+                                    <th>Lifestyle</th>
+                                    <th>Chronic</th>
+                                </tr>
+                                <tr>");
+        foreach(UserFrailtyIndexAPI::$checkanswers as $key => $questions){
+            foreach($questions as $bId => $question){
+                $wgOut->addHTML("   <th>".IntakeSummary::$map[$bId]."</th>");
+            }
+        }           
+        $wgOut->addHTML("           <th>Vision</th>
                                     <th>Hearing</th>
                                     <th>Communication</th>
                                     <th>Cognition</th>
