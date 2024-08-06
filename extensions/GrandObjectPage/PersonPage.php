@@ -24,6 +24,10 @@ class PersonPage {
         if($me->isRole(HQP) || $me->isRole(INACTIVE)){
             $result = false;
         }
+        if($me->isRole(HR) && ($person instanceof FullPerson && $person->faculty == getFaculty())){
+            $result = true;
+            return true;
+        }
         if(!$me->isRole(ADMIN) && ($person instanceof FullPerson && $person->faculty != getFaculty())){
             $result = false;
         }
