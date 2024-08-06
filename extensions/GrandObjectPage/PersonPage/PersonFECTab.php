@@ -106,7 +106,7 @@ class PersonFECTab extends AbstractEditableTab {
     
     function userCanView(){
         $me = Person::newFromWgUser();
-        return ($me->getId() == $this->person->getId() || $me->isRoleAtLeast(STAFF) || $this->isChair() || $this->isCommittee());
+        return ($me->getId() == $this->person->getId() || $me->isRoleAtLeast(STAFF) || $this->isRole(HR) || $this->isChair() || $this->isCommittee());
     }
 
     function generateBody(){

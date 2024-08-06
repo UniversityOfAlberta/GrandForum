@@ -25,10 +25,6 @@ class PersonPage {
             $result = false;
         }
         $person->getFecPersonalInfo();
-        /*if($me->isRole(HR) && ($person instanceof FullPerson && $person->faculty == getFaculty())){
-            $result = true;
-            return true;
-        }*/
         if(!$me->isRole(ADMIN) && ($person instanceof FullPerson && $person->faculty != getFaculty())){
             $result = false;
         }
