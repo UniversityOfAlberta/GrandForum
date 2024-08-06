@@ -326,7 +326,7 @@ class IntakeSummary extends SpecialPage {
             $initialScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
             $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
             if(count($person->getRelations('Assesses', true, true)) >= 1){
-                $inPersonScore = number_format($api2->getFrailtyScore($person->getId()), 3);
+                $inPersonScore = number_format($api2->getFrailtyScore($person->getId())['Score'], 3);
             }
             else{
                 $inPersonScore = "N/A";
