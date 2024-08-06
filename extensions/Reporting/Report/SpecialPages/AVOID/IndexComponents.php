@@ -36,7 +36,7 @@ class IndexComponents extends SpecialPage {
                     <td>{$person->getId()}</td>";
         foreach(UserFrailtyIndexAPI::$checkanswers as $key => $questions){
             foreach($questions as $bId => $question){
-                $html .= "<td>{$scores1["$key#$bId"]}</td>";
+                $html .= @"<td>{$scores1["$key#$bId"]}</td>";
             }
         }
               $html .= "   
