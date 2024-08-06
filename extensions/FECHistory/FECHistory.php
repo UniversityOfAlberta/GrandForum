@@ -105,7 +105,8 @@ class FECHistory extends SpecialPage{
         return ($me->isRole(DEAN) || 
                 $me->isRole(DEANEA) || 
                 $me->isRole(VDEAN) || 
-                $me->isRoleAtLeast(STAFF));
+                $me->isRoleAtLeast(STAFF) ||
+                $me->isRole(HR));
     }
     
     static function createSubTabs(&$tabs){
