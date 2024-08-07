@@ -31,6 +31,9 @@ class IndexComponents extends SpecialPage {
         $api2 = new UserInPersonFrailtyIndexAPI();
         $scores1 = $api1->getFrailtyScore($person->getId(), "RP_AVOID");
         $scores2 = $api2->getFrailtyScore($person->getId());
+        if($scores1['Total'] == 0 || $scores2 == 0){
+            return "";
+        }
         $html = "";
         $html .= "<tr data-id='{$person->getId()}'>
                     <td>{$person->getId()}</td>";
