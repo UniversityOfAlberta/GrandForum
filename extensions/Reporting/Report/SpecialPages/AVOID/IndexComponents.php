@@ -27,13 +27,16 @@ class IndexComponents extends SpecialPage {
         global $wgServer, $wgScriptPath, $config, $EQ5D5L;
         $me = Person::newFromWgUser();
 
+        if(!AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID") ||
+           !AVOIDDashboard::isPersonAssessmentDone($person->getId())){
+            return "";
+        }
+
         $api1 = new UserFrailtyIndexAPI();
         $api2 = new UserInPersonFrailtyIndexAPI();
         $scores1 = $api1->getFrailtyScore($person->getId(), "RP_AVOID");
         $scores2 = $api2->getFrailtyScore($person->getId());
-        if($scores1['Total'] == 0 || $scores2['Total'] == 0){
-            return "";
-        }
+        
         $html = "";
         $html .= "<tr data-id='{$person->getId()}'>
                     <td>{$person->getId()}</td>";
