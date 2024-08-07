@@ -1256,7 +1256,7 @@
         <ReportItem id="avoid_fatigue2" blobItem="avoid_fatigue2" type="IntegerReportItem" max="100">
             <![CDATA[
                 <span id="avoid_fatigue2">
-                <br />If yes, How many days in a week does this occur during  normal activities?
+                <br />If yes, How many days in a week does this occur during normal activities?
                 <br />{$item} / Week
                 <br />
                 </span>

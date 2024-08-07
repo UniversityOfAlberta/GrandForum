@@ -36,32 +36,14 @@ class IndexComponents extends SpecialPage {
                     <td>{$person->getId()}</td>";
         foreach(UserFrailtyIndexAPI::$checkanswers as $key => $questions){
             foreach($questions as $bId => $question){
-                $html .= @"<td>{$scores1["$key#$bId"]}</td>";
+                $html .= "<td>".((isset($scores1["$key#$bId"])) ? $scores1["$key#$bId"] : 0)."</td>";
             }
         }
-              $html .= "   
-                    <td>{$scores2['Vision']}</td>
-                    <td>{$scores2['Hearing']}</td>
-                    <td>{$scores2['Communication']}</td>
-                    <td>{$scores2['Cognition']}</td>
-                    <td>{$scores2['Dementia']}</td>
-                    <td>{$scores2['Depression']}</td>
-                    <td>{$scores2['Balance']}</td>
-                    <td>{$scores2['ADL']}</td>
-                    <td>{$scores2['IADL']}</td>
-                    <td>{$scores2['Caregiver']}</td>
-                    <td>{$scores2['Urinary']}</td>
-                    <td>{$scores2['Bowel']}</td>
-                    <td>{$scores2['Medications']}</td>
-                    <td>{$scores2['Fatigue']}</td>
-                    <td>{$scores2['Strength']}</td>
-                    <td>{$scores2['Nutrition']}</td>
-                    <td>{$scores2['Osteoporosis']}</td>
-                    <td>{$scores2['Pain']}</td>
-                    <td>{$scores2['Dental']}</td>
-                    <td>{$scores2['Lifestyle']}</td>
-                    <td>{$scores2['Chronic']}</td>
-                 </tr>";
+        foreach(UserInPersonFrailtyIndexAPI::$checkanswers as $key => $questions){
+            foreach($questions as $bId => $question){
+                $html .= "<td>".((isset($scores2["$key#$bId"])) ? $scores2["$key#$bId"] : 0)."</td>";
+            }
+        }
 
         return $html;
     }
@@ -76,69 +58,43 @@ class IndexComponents extends SpecialPage {
             foreach($questions as $bId => $question){
                 $fiColspan++;
             }
-        }  
+        }
+        
+        $ipColspan = 0;
+        foreach(UserInPersonFrailtyIndexAPI::$checkanswers as $key => $questions){
+            foreach($questions as $bId => $question){
+                $ipColspan++;
+            }
+        }
         
         $wgOut->addHTML("<table id='summary' class='wikitable'>
                             <thead>
                                 <tr>
                                     <th rowspan='3'>User Id</th>
                                     <th colspan='{$fiColspan}'>Frailty Index</th>
-                                    <th colspan='21'>In Person</th>
+                                    <th colspan='{$ipColspan}'>In Person</th>
                                 </tr>
                                 <tr>");
         foreach(UserFrailtyIndexAPI::$checkanswers as $key => $questions){
             $wgOut->addHTML("       <th colspan='".count($questions)."'>$key</th>");
         }
-        $wgOut->addHTML("           <th>Vision</th>
-                                    <th>Hearing</th>
-                                    <th>Communication</th>
-                                    <th>Cognition</th>
-                                    <th>Dementia</th>
-                                    <th>Depression</th>
-                                    <th>Balance/Falls/Mobility</th>
-                                    <th>ADL</th>
-                                    <th>IADL</th>
-                                    <th>Caregiver</th>
-                                    <th>Urinary</th>
-                                    <th>Bowel</th>
-                                    <th>Medications</th>
-                                    <th>Fatigue</th>
-                                    <th>Strength</th>
-                                    <th>Nutrition</th>
-                                    <th>Osteoporosis</th>
-                                    <th>Pain</th>
-                                    <th>Dental</th>
-                                    <th>Lifestyle</th>
-                                    <th>Chronic</th>
+        foreach(UserInPersonFrailtyIndexAPI::$checkanswers as $key => $questions){
+            $wgOut->addHTML("       <th colspan='".count($questions)."'>$key</th>");
+        }
+        $wgOut->addHTML("
                                 </tr>
                                 <tr>");
         foreach(UserFrailtyIndexAPI::$checkanswers as $key => $questions){
             foreach($questions as $bId => $question){
                 $wgOut->addHTML("   <th>".IntakeSummary::$map[$bId]."</th>");
             }
-        }           
-        $wgOut->addHTML("           <th>Vision</th>
-                                    <th>Hearing</th>
-                                    <th>Communication</th>
-                                    <th>Cognition</th>
-                                    <th>Dementia</th>
-                                    <th>Depression</th>
-                                    <th>Balance/Falls/Mobility</th>
-                                    <th>ADL</th>
-                                    <th>IADL</th>
-                                    <th>Caregiver</th>
-                                    <th>Urinary</th>
-                                    <th>Bowel</th>
-                                    <th>Medications</th>
-                                    <th>Fatigue</th>
-                                    <th>Strength</th>
-                                    <th>Nutrition</th>
-                                    <th>Osteoporosis</th>
-                                    <th>Pain</th>
-                                    <th>Dental</th>
-                                    <th>Lifestyle</th>
-                                    <th>Chronic</th>
-                                </tr>
+        }
+        foreach(UserInPersonFrailtyIndexAPI::$checkanswers as $key => $questions){
+            foreach($questions as $bId => $question){
+                $wgOut->addHTML("   <th>".IntakeSummary::$map[$bId]."</th>");
+            }
+        }
+        $wgOut->addHTML("       </tr>
                             </thead>");
         $wgOut->addHTML("<tbody>");
         
@@ -159,16 +115,25 @@ class IndexComponents extends SpecialPage {
             }
         </style>                
         <script type='text/javascript'>
+            var tableHTML = '<table>' + 
+                                $('#summary thead')[0].innerHTML.replaceAll('\\n', '').replaceAll('#', '') + 
+                                $('#summary tbody')[0].innerHTML.replaceAll('\\n', '').replaceAll('#', '') +
+                            '</table>';
+        
             $('#summary').DataTable({
                 'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
                 'scrollX': true,
                 'iDisplayLength': -1,
                 'dom': 'Blfrtip',
-                'buttons': [
-                    'excel'
-                ],
+                'buttons': [ ],
                 scrollX: true,
                 scrollY: $('#bodyContent').height() - 400
+            });
+            
+            $('.dt-buttons').append(\"<button id='downloadExcel' class='downloadExcel'>Excel</button>\");
+            
+            $('.dt-buttons').click(function(){
+                window.open('data:application/vnd.ms-excel,' + tableHTML);
             });
         </script>");
     }

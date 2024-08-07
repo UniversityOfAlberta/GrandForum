@@ -2,6 +2,104 @@
   
 class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
     
+    static $checkanswers = array(
+        "Vision" => array(
+            "avoid_vision" => array()
+        ),
+        "Hearing" => array(
+            "avoid_hearing" => array(),
+            "avoid_hearing_whisper1" => array()
+        ),
+        "Communication" => array(
+            "avoid_communication" => array(),
+            "avoid_communication2" => array(),
+            "avoid_communication3" => array()
+        ),
+        "Cognition" => array(
+            "avoid_cognition3" => array(),
+            "avoid_cognition2_3" => array(),
+            "avoid_cognition3_3" => array(),
+            "avoid_cognition4_3" => array()
+        ),
+        "Dementia" => array(
+            "avoid_dementia" => array(),
+            "avoid_dementia2" => array(),
+            "avoid_dementia3" => array()
+        ),
+        "Depression" => array(
+            "avoid_depression" => array(),
+            "avoid_depression2" => array(),
+            "avoid_depression3" => array(),
+            "avoid_depression4" => array(),
+            "avoid_depression5" => array()
+        ),
+        "Balance" => array(
+            "avoid_balance3" => array(),
+            "avoid_balance4" => array(),
+            "avoid_balance5" => array(),
+            "avoid_balance6" => array(),
+            "avoid_balance2" => array(),
+            "avoid_balance12" => array(),
+            "avoid_balance9" => array()
+        ),
+        "ADL" => array(
+            "avoid_adl" => array()
+        ),
+        "IADL" => array(
+            "avoid_iadl" => array()
+        ),
+        "Caregiver" => array(
+            "avoid_caregiver" => array(),
+            "avoid_caregivere_fup" => array()
+        ),
+        "Urinary" => array(
+            "avoid_urinary" => array()
+        ),
+        "Bowel" => array(
+            "avoid_bowel" => array(),
+            "avoid_bowel3" => array(),
+            "avoid_bowel4" => array()
+        ),
+        "Medications" => array(
+            "avoid_meds" => array(),
+            "avoid_meds3" => array()
+        ),
+        "Fatigue" => array(
+            "avoid_fatigue" => array(),
+            "avoid_fatigue2" => array()
+        ),
+        "Strength" => array(
+            "avoid_strength2" => array(),
+            "avoid_strength5" => array()
+        ),
+        "Nutrition" => array(
+            "avoid_nutrition1_2_2" => array(),
+            "avoid_nutrition1_3" => array(),
+            "avoid_nutrition4" => array()
+        ),
+        "Osteoporosis" => array(
+            "avoid_osteo" => array(),
+            "avoid_osteo2" => array()
+        ),
+        "Pain" => array(
+            "avoid_pain" => array(),
+            "avoid_pain2" => array()
+        ),
+        "Dental" => array(
+            "avoid_dental" => array(),
+            "avoid_dental2" => array(),
+            "avoid_dental3" => array()
+        ),
+        "Lifestyle" => array(
+            "avoid_lifestyle2" => array(),
+            "avoid_lifestyle3" => array(),
+            "avoid_lifestyle_ex" => array()
+        ),
+        "Chronic" => array(
+            "avoid_chronic" => array()
+        )
+    );
+    
     function getFrailtyScore($user_id, $reportType = 'RP_AVOID_INPERSON'){
         $scores = array();
         $age = $this->getBlobValue(BLOB_TEXT, YEAR, 'RP_AVOID', "AVOID_Questions_tab0", "avoid_age", $user_id);
@@ -12,6 +110,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Vision'] = 0;
         if($vision1 <= 6){
             $scores['Vision'] += 1;
+            $scores['Vision#avoid_vision'] = 1;
         }
         
         
@@ -21,9 +120,10 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Hearing'] = 0;
         if($hearing1 == "Yes"){
             $scores['Hearing'] += 1;
+            $scores['Hearing#avoid_hearing'] = 1;
         }
         if($hearing2 == "Fail"){
-            $scores['Hearing'] += 1;
+            $scores['Hearing#avoid_hearing_whisper1'] = 1;
         }
         
         // 3. Communication
@@ -33,12 +133,15 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Communication'] = 0;
         if($communication1 == "Yes"){
             $scores['Communication'] += 1;
+            $scores['Communication#avoid_communication'] = 1;
         }
         if($communication2 == "Yes"){
             $scores['Communication'] += 1;
+            $scores['Communication#avoid_communication2'] = 1;
         }
         if($communication3 == "Yes"){
             $scores['Communication'] += 1;
+            $scores['Communication#avoid_communication3'] = 1;
         }
         
         // 4. Cognition
@@ -49,15 +152,19 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Cognition'] = 0;
         if($cognition1 == "Below Average"){
             $scores['Cognition'] += 1;
+            $scores['Cognition#avoid_cognition3'] = 1;
         }
         if($cognition2 == "Below Average"){
             $scores['Cognition'] += 1;
+            $scores['Cognition#avoid_cognition2_3'] = 1;
         }
         if($cognition3 == "Below Average"){
             $scores['Cognition'] += 1;
+            $scores['Cognition#avoid_cognition3_3'] = 1;
         }
         if($cognition4 == "Below Average"){
             $scores['Cognition'] += 1;
+            $scores['Cognition#avoid_cognition3_3'] = 1;
         }
         
         // 5. Dementia
@@ -67,15 +174,19 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Dementia'] = 0;
         if($dementia1 <= 1){
             $scores['Dementia'] += 1;
+            $scores['Dementia#avoid_dementia'] = 1;
         }
         if($dementia2 < 15){
             $scores['Dementia'] += 1;
+            $scores['Dementia#avoid_dementia2'] = 1;
         }
         if($dementia3 == "Mildly Abnormal"){
             $scores['Dementia'] += 0.5;
+            $scores['Dementia#avoid_dementia3'] = 0.5;
         }
         else if($dementia3 == "Abnormal"){
             $scores['Dementia'] += 1;
+            $scores['Dementia#avoid_dementia3'] = 1;
         }
         
         // 6. Depression
@@ -88,18 +199,23 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $subscore = 0;
         if($depression1 == "No"){
             $subscore += 1;
+            $scores['Depression#avoid_depression'] = 1;
         }
         if($depression2 == "Yes"){
             $subscore += 1;
+            $scores['Depression#avoid_depression2'] = 1;
         }
         if($depression3 == "Yes"){
             $subscore += 1;
+            $scores['Depression#avoid_depression3'] = 1;
         }
         if($depression4 == "Yes"){
             $subscore += 1;
+            $scores['Depression#avoid_depression4'] = 1;
         }
         if($depression5 == "Yes"){
             $subscore += 1;
+            $scores['Depression#avoid_depression5'] = 1;
         }
         
         if($subscore >= 2){
@@ -117,33 +233,42 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Balance'] = 0;
         if($balance1 == "Yes"){
             $scores['Balance'] += 1;
+            $scores['Balance#avoid_balance3'] = 1;
         }
         if($balance2 == "Yes"){
             $scores['Balance'] += 1;
+            $scores['Balance#avoid_balance4'] = 1;
         }
         if($balance3 == "Yes"){
             $scores['Balance'] += 1;
+            $scores['Balance#avoid_balance5'] = 1;
         }
         if($balance4 >= 14){
             $scores['Balance'] += 1;
+            $scores['Balance#avoid_balance6'] = 1;
         }
         if($balance5 == "Yes"){
             $scores['Balance'] += 1;
+            $scores['Balance#avoid_balance2'] = 1;
         }
         if($balance6 == "Yes"){
             $scores['Balance'] += 1;
+            $scores['Balance#avoid_balance12'] = 1;
         }
         if($balance7 >= 6){
             $scores['Balance'] += 1;
+            $scores['Balance#avoid_balance9'] = 1;
         }
         
         // 8. ADL
         $adl1 = $this->getBlobValue(BLOB_ARRAY, YEAR, $reportType, "InPersonAssessment", "avoid_adl", $user_id);
         $scores['ADL'] = @count($adl1['avoid_adl']);
+        $scores['ADL#avoid_adl'] = @count($adl1['avoid_adl']);
         
         // 9. IADL
         $iadl1 = $this->getBlobValue(BLOB_ARRAY, YEAR, $reportType, "InPersonAssessment", "avoid_iadl", $user_id);
         $scores['IADL'] = @count($iadl1['avoid_iadl']);
+        $scores['IADL#avoid_iadl'] = @count($iadl1['avoid_iadl']);
         
         // 10. Caregiver
         $caregiver1 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "InPersonAssessment", "avoid_caregiver", $user_id);
@@ -151,9 +276,11 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Caregiver'] = 0;
         if($caregiver1 == "Yes"){
             $scores['Caregiver'] += 1;
+            $scores['Caregiver#avoid_caregiver'] = 1;
         }
         if($caregiver2 == "Yes"){
             $scores['Caregiver'] += 1;
+            $scores['Caregiver#avoid_caregivere_fup'] = 1;
         }
         
         // 11. Urinary
@@ -161,6 +288,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Urinary'] = 0;
         if($urinary1 == "Yes"){
             $scores['Urinary'] += 1;
+            $scores['Urinary#avoid_urinary'] = 1;
         }
         
         // 12. Bowel
@@ -170,12 +298,15 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Bowel'] = 0;
         if($bowel1 == "Yes"){
             $scores['Bowel'] += 1;
+            $scores['Bowel#avoid_bowel'] = 1;
         }
         if($bowel2 == "Yes"){
             $scores['Bowel'] += 1;
+            $scores['Bowel#avoid_bowel3'] = 1;
         }
         if($bowel3 == "Yes"){
             $scores['Bowel'] += 1;
+            $scores['Bowel#avoid_bowel4'] = 1;
         }
         
         // 13. Medications
@@ -184,9 +315,11 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Medications'] = 0;
         if($medications1 >= 5){
             $scores['Medications'] += 1;
+            $scores['Medications#avoid_meds'] = 1;
         }
         if($medications2 == "Yes"){
             $scores['Medications'] += 1;
+            $scores['Medications#avoid_meds3'] = 1;
         }
         
         // 14. Fatigue
@@ -195,9 +328,11 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Fatigue'] = 0;
         if($fatigue1 == "Yes"){
             $scores['Fatigue'] += 1;
+            $scores['Fatigue#avoid_fatigue'] = 1;
         }
         if($fatigue2 >= 3){
             $scores['Fatigue'] += 1;
+            $scores['Fatigue#avoid_fatigue2'] = 1;
         }
         
         // 15. Strength
@@ -206,9 +341,11 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Strength'] = 0;
         if($gender == "Man" && $age >= 70 && $strength1 < 21){
             $scores['Strength'] += 1;
+            $scores['Strength#avoid_strength2'] = 1;
         }
         else if($gender == "Woman" && $age >= 70 && $strength1 < 14){
             $scores['Strength'] += 1;
+            $scores['Strength#avoid_strength2'] = 1;
         }
         
         if($gender == "Man"){
@@ -220,6 +357,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
                ($age < 90 && $strength2 < 8) ||
                ($age < 95 && $strength2 < 7)){
                 $scores['Strength'] += 1;
+                $scores['Strength#avoid_strength5'] = 1;
             }
         }
         else if($gender == "Woman"){
@@ -231,6 +369,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
                ($age < 90 && $strength2 < 8) ||
                ($age < 95 && $strength2 < 4)){
                 $scores['Strength'] += 1;
+                $scores['Strength#avoid_strength5'] = 1;
             }
         }
         
@@ -242,13 +381,16 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Nutrition'] = 0;
         if($nutrition1 == "Yes"){
             $scores['Nutrition'] += 1;
+            $scores['Nutrition#avoid_nutrition1_2_2'] = 1;
         }
         if(($nutrition2 >= 10 && $nutrition2b == "lbs") || 
            ($nutrition2 >= 4.535924 && $nutrition2b == "kg")){
             $scores['Nutrition'] += 1;
+            $scores['Nutrition#avoid_nutrition1_3'] = 1;
         }
         if($nutrition3 == "No"){
             $scores['Nutrition'] += 1;
+            $scores['Nutrition#avoid_nutrition4'] = 1;
         }
         
         // 17. Osteoporosis
@@ -257,9 +399,11 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Osteoporosis'] = 0;
         if($osteoporosis1 < 800){
             $scores['Osteoporosis'] += 1;
+            $scores['Osteoporosis#avoid_osteo'] = 1;
         }
         if($osteoporosis2 < 3){
             $scores['Osteoporosis'] += 1;
+            $scores['Osteoporosis#avoid_osteo2'] = 1;
         }
        
         // 18. Pain
@@ -268,9 +412,11 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Pain'] = 0;
         if($pain1 == "Yes"){
             $scores['Pain'] += 1;
+            $scores['Pain#avoid_pain'] = 1;
         }
         if($pain2 >= 5){
             $scores['Pain'] += 1;
+            $scores['Pain#avoid_pain2'] = 1;
         }
         
         // 19. Immunization
@@ -282,12 +428,15 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Dental'] = 0;
         if($dental1 == "No"){
             $scores['Dental'] += 1;
+            $scores['Dental#avoid_dental'] = 1;
         }
         if($dental2 == "No"){
             $scores['Dental'] += 1;
+            $scores['Dental#avoid_dental2'] = 1;
         }
         if($dental3 == "Yes"){
             $scores['Dental'] += 1;
+            $scores['Dental#avoid_dental3'] = 1;
         }
         
         // 21. Lifestyle
@@ -297,12 +446,15 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Lifestyle'] = 0;
         if($lifestyle1 > 2){
             $scores['Lifestyle'] += 1;
+            $scores['Lifestyle#avoid_lifestyle2'] = 1;
         }
         if($lifestyle2 == "Yes"){
             $scores['Lifestyle'] += 1;
+            $scores['Lifestyle#avoid_lifestyle3'] = 1;
         }
         if($lifestyle3 == "No"){
             $scores['Lifestyle'] += 1;
+            $scores['Lifestyle#avoid_lifestyle_ex'] = 1;
         }
         
         // 22. Chronic
@@ -310,12 +462,19 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores['Chronic'] = 0;
         if(@count($chronic1['avoid_chronic']) >= 1 && @count($chronic1['avoid_chronic']) <= 2){
             $scores['Chronic'] += 0.5;
+            $scores['Chronic#avoid_chronic'] = 0.5;
         }
         else if(@count($chronic1['avoid_chronic']) >= 3){
             $scores['Chronic'] += 1;
+            $scores['Chronic#avoid_chronic'] = 1;
         }
         
-        $scores['Total'] = array_sum($scores);
+        $scores["Total"] = 0;
+        foreach($scores as $key => $score){
+            if($key != "Total" && strstr($key, "#") == false){
+                $scores["Total"] += $score;
+            }
+        }
         $scores['Score'] = $scores['Total']/62;
         return $scores;
     }
