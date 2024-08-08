@@ -76,6 +76,8 @@ class PeopleTableTab extends AbstractTab {
         }
         else if($this->past === "6 months"){
             $html .= "<p>Shows all people who have been active on a project for more than 6 months</p>";
+            $start = "0000-00-00";
+            $end = date('Y-m-d');
             $data = array();
             $datatmp = Person::getAllPeopleDuring($this->table, "0000-00-00", date('Y-m-d'));
             $now = new DateTime(date("Y-m-d", time()));
