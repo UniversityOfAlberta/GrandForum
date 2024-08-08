@@ -196,7 +196,7 @@ class IntakeSummary extends SpecialPage {
         'avoid_meds3' => 'Concerns',
         'avoid_fatigue' => 'Normal Activities',
         'avoid_fatigue2' => 'Days in a week',
-        'avoid_strength2' => 'Trial 1',
+        'avoid_strength2' => 'Grip',
         'avoid_strength5' => '30 second Chair Stand',
         'avoid_nutrition1_2_2' => 'Unplanned weight loss',
         'avoid_nutrition1_3' => 'Estimate amount',
