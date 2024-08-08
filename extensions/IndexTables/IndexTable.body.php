@@ -510,6 +510,7 @@ class IndexTable {
         $visibility = true;
         header("HTTP/1.0: 200");
         $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
+        $tabbedPage->addTab(new PeopleTableTab($table, $visibility, "6 months"));
         if($table != "Candidate"){
             $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
             if($me->isRoleAtLeast(STAFF)){

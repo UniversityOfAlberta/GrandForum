@@ -18,6 +18,9 @@ class PeopleTableTab extends AbstractTab {
         $wgOut->setPageTitle($tabTitle);
         if(!$past){
             parent::__construct($tabTitle);
+        }
+        else if($past === "6 months"){
+            parent::__construct("6 months");
         } 
         else if(is_numeric($past)){
             parent::__construct("$past-".($past+1));
@@ -70,6 +73,33 @@ class PeopleTableTab extends AbstractTab {
             $data = Person::getAllPeople($this->table);
             $start = "0000-00-00";
             $end = date('Y-m-d');
+        }
+        else if($this->past === "6 months"){
+            $html .= "<p>Shows all people who have been active on a project for more than 6 months</p>";
+            $data = array();
+            $datatmp = Person::getAllPeopleDuring($this->table, "0000-00-00", date('Y-m-d'));
+            $now = new DateTime(date("Y-m-d", time()));
+            foreach($datatmp as $person){
+                foreach($person->getPersonProjects() as $project){
+                    $p = Project::newFromId($project['projectId']);
+                    $startDate = new DateTime($project['startDate']);
+                    if(substr($p->getEndDate(),0,10) != "0000-00-00" && ($p->getEndDate() <= $project['endDate'] || substr($project['endDate'],0,10) == "0000-00-00")){
+                        $endDate = new DateTime($p->getEndDate());
+                    } 
+                    else{
+                        $endDate = new DateTime($project['endDate']);
+                    }
+                    
+                    $interval1 = $startDate->diff($now);
+                    $interval2 = $startDate->diff($endDate);
+                    $diff1 = abs($interval1->format('%m'));
+                    $diff2 = abs($interval2->format('%m'));
+                    if(($diff1 >= 6 && $diff2 >= 6) || ($diff1 >= 6 && substr($project['endDate'],0,10) == "0000-00-00")){
+                        $data[] = $person;
+                        break;
+                    }
+                }
+            }
         }
         else if(is_numeric($this->past)){
             $data = Person::getAllPeopleDuring($this->table, $this->past."-04-01", ($this->past+1)."-03-31");
