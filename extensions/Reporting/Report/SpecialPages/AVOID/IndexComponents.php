@@ -45,6 +45,9 @@ class IndexComponents extends SpecialPage {
                 $html .= "<td>".((isset($scores1["$key#$bId"])) ? $scores1["$key#$bId"] : 0)."</td>";
             }
         }
+        
+        $html .= " <td>{$scores1['Self-Perceived Health']}</td>
+                   <td>{$scores1['Health Conditions']}</td>";
         foreach(UserInPersonFrailtyIndexAPI::$checkanswers as $key => $questions){
             foreach($questions as $bId => $question){
                 $html .= "<td>".((isset($scores2["$key#$bId"])) ? $scores2["$key#$bId"] : 0)."</td>";
@@ -59,7 +62,7 @@ class IndexComponents extends SpecialPage {
         $me = Person::newFromWgUser();
         $people = Person::getAllPeople(CI);
         
-        $fiColspan = 0;
+        $fiColspan = 2;
         foreach(UserFrailtyIndexAPI::$checkanswers as $key => $questions){
             foreach($questions as $bId => $question){
                 $fiColspan++;
@@ -84,6 +87,8 @@ class IndexComponents extends SpecialPage {
         foreach(UserFrailtyIndexAPI::$checkanswers as $key => $questions){
             $wgOut->addHTML("       <th colspan='".count($questions)."'>$key</th>");
         }
+        $wgOut->addHTML("       <th>VAS</th>
+                                <th>Health Conditions</th>");
         foreach(UserInPersonFrailtyIndexAPI::$checkanswers as $key => $questions){
             $wgOut->addHTML("       <th colspan='".count($questions)."'>$key</th>");
         }
@@ -95,6 +100,8 @@ class IndexComponents extends SpecialPage {
                 $wgOut->addHTML("   <th>".IntakeSummary::$map[$bId]."</th>");
             }
         }
+        $wgOut->addHTML("       <th>VAS</th>
+                                <th>Health Conditions</th>");
         foreach(UserInPersonFrailtyIndexAPI::$checkanswers as $key => $questions){
             foreach($questions as $bId => $question){
                 $wgOut->addHTML("   <th>".IntakeSummary::$map[$bId]."</th>");

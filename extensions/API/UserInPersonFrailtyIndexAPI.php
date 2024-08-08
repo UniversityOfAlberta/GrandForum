@@ -27,11 +27,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
             "avoid_dementia3" => array()
         ),
         "Depression" => array(
-            "avoid_depression" => array(),
-            "avoid_depression2" => array(),
-            "avoid_depression3" => array(),
-            "avoid_depression4" => array(),
-            "avoid_depression5" => array()
+            "avoid_depression" => array()
         ),
         "Balance" => array(
             "avoid_balance3" => array(),
@@ -123,6 +119,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
             $scores['Hearing#avoid_hearing'] = 1;
         }
         if($hearing2 == "Fail"){
+            $scores['Hearing'] += 1;
             $scores['Hearing#avoid_hearing_whisper1'] = 1;
         }
         
@@ -164,7 +161,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         }
         if($cognition4 == "Below Average"){
             $scores['Cognition'] += 1;
-            $scores['Cognition#avoid_cognition3_3'] = 1;
+            $scores['Cognition#avoid_cognition4_3'] = 1;
         }
         
         // 5. Dementia
@@ -199,27 +196,23 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $subscore = 0;
         if($depression1 == "No"){
             $subscore += 1;
-            $scores['Depression#avoid_depression'] = 1;
         }
         if($depression2 == "Yes"){
             $subscore += 1;
-            $scores['Depression#avoid_depression2'] = 1;
         }
         if($depression3 == "Yes"){
             $subscore += 1;
-            $scores['Depression#avoid_depression3'] = 1;
         }
         if($depression4 == "Yes"){
             $subscore += 1;
-            $scores['Depression#avoid_depression4'] = 1;
         }
         if($depression5 == "Yes"){
             $subscore += 1;
-            $scores['Depression#avoid_depression5'] = 1;
         }
         
         if($subscore >= 2){
             $scores['Depression'] += 1;
+            $scores['Depression#avoid_depression'] = 1;
         }
         
         // 7. Balance
@@ -339,11 +332,11 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $strength1 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "InPersonAssessment", "avoid_strength2", $user_id);
         $strength2 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "InPersonAssessment", "avoid_strength5", $user_id);
         $scores['Strength'] = 0;
-        if($gender == "Man" && $age >= 70 && $strength1 < 21){
+        if($gender == "Man" && $strength1 < 21){
             $scores['Strength'] += 1;
             $scores['Strength#avoid_strength2'] = 1;
         }
-        else if($gender == "Woman" && $age >= 70 && $strength1 < 14){
+        else if($gender == "Woman" && $strength1 < 14){
             $scores['Strength'] += 1;
             $scores['Strength#avoid_strength2'] = 1;
         }
@@ -475,7 +468,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
                 $scores["Total"] += $score;
             }
         }
-        $scores['Score'] = $scores['Total']/62;
+        $scores['Score'] = $scores['Total']/63;
         return $scores;
     }
     
