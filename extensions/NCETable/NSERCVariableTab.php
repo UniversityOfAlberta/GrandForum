@@ -247,15 +247,15 @@ EOF;
                 $inkind += $inki;
                 
                 if($inki > 0){
-                    $a += $part['contribution']->getKindFor($part['partner'], "equi");
-                    $b += $part['contribution']->getKindFor($part['partner'], "mate");
-                    $c += $part['contribution']->getKindFor($part['partner'], "logi");
-                    $d += $part['contribution']->getKindFor($part['partner'], "srvc");
-                    $e += $part['contribution']->getKindFor($part['partner'], "faci");
-                    $f += $part['contribution']->getKindFor($part['partner'], "sifi");
-                    $g += $part['contribution']->getKindFor($part['partner'], "mngr");
-                    $h += $part['contribution']->getKindFor($part['partner'], "trvl");
-                    $i += $part['contribution']->getKindFor($part['partner'], "othe");
+                    $a += @$part['contribution']->getKindFor($part['partner'], "equi");
+                    $b += @$part['contribution']->getKindFor($part['partner'], "mate");
+                    $c += @$part['contribution']->getKindFor($part['partner'], "logi");
+                    $d += @$part['contribution']->getKindFor($part['partner'], "srvc");
+                    $e += @$part['contribution']->getKindFor($part['partner'], "faci");
+                    $f += @$part['contribution']->getKindFor($part['partner'], "sifi");
+                    $g += @$part['contribution']->getKindFor($part['partner'], "mngr");
+                    $h += @$part['contribution']->getKindFor($part['partner'], "trvl");
+                    $i += @$part['contribution']->getKindFor($part['partner'], "othe");
                     $other[] = $part['contribution']->getKindFor($part['partner'], "inkind_other");
                 }
             }
@@ -554,7 +554,9 @@ EOF;
                             "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
 
-        $nations = array("Canadian"=>array(array(),array()), "Foreign"=>array(array(),array()), "Unknown"=>array(array(),array()));
+        $nations = array("Canadian"=>array(array(),array()), 
+                         "Foreign"=>array(array(),array()), 
+                         "Unknown"=>array(array(),array()));
 
         $hqp_table = array();
         foreach($positions as $key=>$val){
@@ -612,6 +614,7 @@ EOF;
                 $inner_tbl .= "<tr><td>{$gender}</td><td></td><td></td></tr>";
                 $total_nat = array(array(), array());
                 foreach($nations as $label => $counts){
+                    if($label != "Canadian" && $label != "Foreign" && $label != "Unknown"){ continue; }
                     
                     $lnk_id = "lnk_" .$pos. "_" .$gender. "_". $label;
                     $div_id = "div_" .$pos. "_" .$gender. "_". $label;
@@ -685,6 +688,7 @@ EOF;
 
                 $lnk_id = "lnk_thes_" .$pos. "_" .$gender. "_total";
                 $div_id = "div_thes_" .$pos. "_" .$gender. "_total";
+
                 $num_total_nat_thes = count($total_nat[1]);
                 $total_nat_thes_details = Dashboard::paperDetails($total_nat[1]);
 
