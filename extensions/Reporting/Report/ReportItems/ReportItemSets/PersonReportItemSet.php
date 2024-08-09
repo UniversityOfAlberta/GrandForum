@@ -10,7 +10,7 @@ class PersonReportItemSet extends ReportItemSet {
         $userId   = $this->getAttr('userId'  , '');
         
         if($userName != '' && $userId == ''){
-            $person = Person::newFromNameLIke($userName);
+            $person = Person::newFromNameLike($userName);
         }
         else if($userId != '' && $userName == ''){
             $person = Person::newFromId($userId);

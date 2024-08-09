@@ -143,6 +143,15 @@ class ReportArchive extends SpecialPage {
                 $arUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Annual Report</a><br />";
             }
             
+            // Sabbatical Application
+            $sabUrl = "";
+            $sab = new DummyReport("SabbaticalApplication", $person, 0, $y, true);
+            $check = $sab->getPDF();
+            if(count($check) > 0){
+                $pdf = PDF::newFromToken($check[0]['token']);
+                $sabUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Sabbatical Application</a><br />";
+            }
+            
             // SPOT Report
             $spotUrl = "";
             $spot = new DummyReport("SPOTs", $person, 0, $y, true);
@@ -179,6 +188,14 @@ class ReportArchive extends SpecialPage {
                     $pdf = PDF::newFromToken($dd[0]['token']);
                     $ddUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Dean's Decision</a><br />";
                 }
+            }
+            
+            // Sabbatical Decision
+            $sab2Url = "";
+            $sab2 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_SABBATICAL_CHAIR", $y);
+            if(count($sab2) > 0){
+                $pdf = PDF::newFromToken($sab2[0]['token']);
+                $sab2Url = "<a href='{$pdf->getUrl()}' target='_blank'>Sabbatical Decision</a><br />";
             }
             
             // Letters
@@ -250,8 +267,8 @@ class ReportArchive extends SpecialPage {
                 $varianceUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Variance of Responsibilities</a><br />";
             }
             
-            $wgOut->addHTML("<td align='center' style='padding-left:1em; padding-right:1em;'>{$varianceUrl}{$arUrl}{$spotUrl}</td>
-                             <td align='center' style='padding-left:1em; padding-right:1em;'>{$reccUrl}</td>
+            $wgOut->addHTML("<td align='center' style='padding-left:1em; padding-right:1em;'>{$varianceUrl}{$arUrl}{$spotUrl}{$sabUrl}</td>
+                             <td align='center' style='padding-left:1em; padding-right:1em;'>{$reccUrl}{$sab2Url}</td>
                              <td align='center' style='padding-left:1em; padding-right:1em;'>{$ddUrl}{$letter1Url}{$letter2Url}{$letter3Url}{$letter4Url}</td>");
             $wgOut->addHTML("</tr>");
         }

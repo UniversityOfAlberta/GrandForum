@@ -2069,6 +2069,7 @@
                             <th width="1%">Application</th>
                             <th width="1%">Decision</th>
                             <th>Comments</th>
+                            <th>Decision PDF</th>
                     </thead>
                     <tbody>
             ]]>
@@ -2102,6 +2103,13 @@
             <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}" blobSection="FEC_SABBATICAL" width="100%" height="90px" encrypt="true">
                 <![CDATA[
                         <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="pdf" type="PDFReportItem" class="recommendationPDF downloadButton{$user_id}" reportType="ChairSabbaticalApplication" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                        {$item}<br />
+                        <input class='generatePDF' data-id='{$user_id}' type='button' value='Generate PDF' />
                     </tr>
                 ]]>
             </ReportItem>
@@ -2115,6 +2123,16 @@
                     $('#chairTable').dataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "iDisplayLength": -1
+                    });
+                    
+                    $('.generatePDF').click(function(){
+                        $(this).prop('disabled', true);
+                        var userId = $(this).attr('data-id');
+                        $.get(wgServer + wgScriptPath + '/index.php/Special:Report?report=ChairSabbaticalApplication&generatePDF&userId=' + userId, function(response){
+                            $('.downloadButton' + userId).attr('href', wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=' + response.ChairSabbaticalApplication.tok);
+                            $('.downloadButton' + userId).show();
+                            $(this).prop('disabled', false);
+                        }.bind(this));
                     });
                 </script>
             ]]>
