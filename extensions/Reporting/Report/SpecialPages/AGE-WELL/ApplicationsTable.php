@@ -94,6 +94,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=air'>AIR</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ecr'>ECR</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=agetech'>AgeTech</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=wp'>WP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cc'>CC</a>";
@@ -141,6 +142,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "catalyst" && $me->isRoleAtLeast(SD)){
             $this->generateCatalyst();
+        }
+        else if($program == "agetech" && $me->isRoleAtLeast(SD)){
+            $this->generateAgeTech();
         }
         else if($program == "award" && $me->isRoleAtLeast(SD)){
             $this->generateAward();
@@ -406,6 +410,142 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2017, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2016, "2017"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2015, "2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateAgeTech(){
+        global $wgOut;
+        
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem('TITLE');
+        $title->setBlobSection('APPLICATION_FORM');
+        
+        $lay = new TextareaReportItem();
+        $lay->setBlobType(BLOB_TEXT);
+        $lay->setBlobItem('SUMMARY');
+        $lay->setBlobSection('APPLICATION_FORM');
+        $lay->setAttr('rich', "true");
+        
+        $keywords = new MultiTextReportItem();
+        $keywords->setBlobType(BLOB_ARRAY);
+        $keywords->setBlobItem('KEYWORDS');
+        $keywords->setBlobSection('APPLICATION_FORM');
+        $keywords->setAttr('orientation', "list");
+        $keywords->setId("keywords");
+        
+        $investigators = new MultiTextReportItem();
+        $investigators->setBlobType(BLOB_ARRAY);
+        $investigators->setBlobItem('INVESTIGATORS');
+        $investigators->setBlobSection('APPLICATION_FORM');
+        $investigators->setAttr("labels", "Check if ECR*|Role|Name|Institution");
+        $investigators->setAttr("orientation", "list");
+        $investigators->setAttr("showHeader", "false");
+        $investigators->setAttr("multiple", "true");
+        $investigators->setId("investigators");
+        
+        $challenges = new CheckboxReportItem();
+        $challenges->setBlobType(BLOB_ARRAY);
+        $challenges->setBlobItem('CHALLENGES');
+        $challenges->setBlobSection('APPLICATION_FORM');
+        $challenges->setId("challenges");
+        
+        $funds = new IntegerReportItem();
+        $funds->setBlobType(BLOB_ARRAY);
+        $funds->setBlobItem('FUNDS');
+        $funds->setBlobSection('APPLICATION_FORM');
+        
+        $funds1 = new IntegerReportItem();
+        $funds1->setBlobType(BLOB_ARRAY);
+        $funds1->setBlobItem('FUNDS1');
+        $funds1->setBlobSection('APPLICATION_FORM');
+        
+        $funds2 = new IntegerReportItem();
+        $funds2->setBlobType(BLOB_ARRAY);
+        $funds2->setBlobItem('FUNDS2');
+        $funds2->setBlobSection('APPLICATION_FORM');
+        
+        $funds3 = new IntegerReportItem();
+        $funds3->setBlobType(BLOB_ARRAY);
+        $funds3->setBlobItem('FUNDS3');
+        $funds3->setBlobSection('APPLICATION_FORM');
+        
+        $funds4 = new IntegerReportItem();
+        $funds4->setBlobType(BLOB_ARRAY);
+        $funds4->setBlobItem('FUNDS4');
+        $funds4->setBlobSection('APPLICATION_FORM');
+        
+        $funds5 = new IntegerReportItem();
+        $funds5->setBlobType(BLOB_ARRAY);
+        $funds5->setBlobItem('FUNDS5');
+        $funds5->setBlobSection('APPLICATION_FORM');
+        
+        $funds6 = new IntegerReportItem();
+        $funds6->setBlobType(BLOB_ARRAY);
+        $funds6->setBlobItem('FUNDS6');
+        $funds6->setBlobSection('APPLICATION_FORM');
+        
+        $age = new CheckboxReportItem();
+        $age->setBlobType(BLOB_ARRAY);
+        $age->setBlobItem('AGE');
+        $age->setBlobSection('APPLICATION_FORM');
+        $age->setId("age");
+        
+        $gender = new CheckboxReportItem();
+        $gender->setBlobType(BLOB_ARRAY);
+        $gender->setBlobItem('GENDER');
+        $gender->setBlobSection('APPLICATION_FORM');
+        $gender->setId("gender");
+        
+        $gender_other = new TextReportItem();
+        $gender_other->setBlobType(BLOB_TEXT);
+        $gender_other->setBlobItem('GENDER_OTHER');
+        $gender_other->setBlobSection('APPLICATION_FORM');
+        
+        $indigenous = new CheckboxReportItem();
+        $indigenous->setBlobType(BLOB_ARRAY);
+        $indigenous->setBlobItem('INDIGENOUS');
+        $indigenous->setBlobSection('APPLICATION_FORM');
+        $indigenous->setId("indigenous");
+        
+        $ethnicities = new CheckboxReportItem();
+        $ethnicities->setBlobType(BLOB_ARRAY);
+        $ethnicities->setBlobItem('ETHNICITIES');
+        $ethnicities->setBlobSection('APPLICATION_FORM');
+        $ethnicities->setId("ethnicities");
+        
+        $ethnicities_other = new TextReportItem();
+        $ethnicities_other->setBlobType(BLOB_TEXT);
+        $ethnicities_other->setBlobItem('ETHNICITIES_OTHER');
+        $ethnicities_other->setBlobSection('APPLICATION_FORM');
+        
+        $disability = new CheckboxReportItem();
+        $disability->setBlobType(BLOB_ARRAY);
+        $disability->setBlobItem('DISABILITY');
+        $disability->setBlobSection('APPLICATION_FORM');
+        $disability->setId("disability");
+        
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_AGETECH', null, 2024, "2024", array("Title" => $title,
+                                                                                       "Lay Summary" => $lay,
+                                                                                       "Keywords" => $keywords,
+                                                                                       "Investigators" => $investigators,
+                                                                                       "Challenge Areas" => $challenges,
+                                                                                       "Total Funds" => $funds,
+                                                                                       "Confirmed Matching Amount" => $funds1,
+                                                                                       "Requested Matching Amount" => $funds2,
+                                                                                       "Confirmed Cash" => $funds3,
+                                                                                       "Requested Cash" => $funds4,
+                                                                                       "Confirmed In-Kind" => $funds5,
+                                                                                       "Requested In-Kind" => $funds6,
+                                                                                       "Age" => $age,
+                                                                                       "Gender" => $gender,
+                                                                                       "Gender (Other)" => $gender_other,
+                                                                                       "Indigenous" => $indigenous,
+                                                                                       "Ethnicities" => $ethnicities,
+                                                                                       "Ethnicities (Other)" => $ethnicities_other,
+                                                                                       "Disability" => $disability
+                                                                                       )));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -790,6 +930,7 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT2', null, 2024, "2024", array("Academic Status" => $stat,
                                                                                         "Institution" => $uni,
                                                                                         "Level" => $lvl,
+                                                                                        "Memberships" => $mem,
                                                                                         "Title" => $title,
                                                                                         "Age" => $age,
                                                                                         "Gender" => $gender,
@@ -850,6 +991,7 @@ class ApplicationsTable extends SpecialPage{
     function generateEEA(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2024, "2024"));
         $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2023, "2023"));
         $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2021, "2021"));

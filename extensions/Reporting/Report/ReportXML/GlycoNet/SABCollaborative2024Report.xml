@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Catalyst Report" reportType="RP_SAB_CAT_REPORT" pdfType="RPTP_SAB_CAT_REPORT" pdfFiles="SABCatalystReportPDF" personId="0" ajax="true" disabled="false" year="2024">
+<Report name="SAB Collaborative Report" reportType="RP_SAB_COLLAB_2024_REPORT" pdfType="RPTP_SAB_COLLAB_REPORT" pdfFiles="SABCollaborativeReportPDF" personId="0" ajax="true" disabled="false" year="2024">
     <Permissions>
         <Role role="SD">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="STAFF+">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -11,16 +16,16 @@
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="" />
         </Role>
-        <Role role="STAFF+">
-            <SectionPermission id="materials" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
         <Role role="MANAGER">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Person id="2513">
+            <SectionPermission id="materials" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="" />
+        </Person>
     </Permissions>
     <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="MATERIALS" type="EditableReportSection" renderpdf="false">
         <Static>
@@ -34,14 +39,14 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Catalyst">
+        <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Collaborative2024">
             <ReportItem id="code" type="Text" width="100px" blobItem="CODE" blobSubItem="{$user_id}_{$project_id}">
                 <![CDATA[
                     <tr><td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CatalystReport" project="false">
-                <![CDATA[<td>{$user_name}</td><td>{getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td></tr>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport2024" project="false">
+                <![CDATA[<td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -51,17 +56,17 @@
         </Static>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Catalyst">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Collaborative2024">
             <If id="if" if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_CAT_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
-                    <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Catalyst" includeSelf="true">
+                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_COLLAB_2024_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+                    <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Collaborative2024" includeSelf="true">
                         <Static>
                             <![CDATA[
                                 <h2>Reviewer {$index}</h2>
                                 <div style='margin-left:15px;'>
-                                    {if("{getBlobMD5(RP_SAB_CAT_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_CAT_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}'>Download CDA</a></p>)}
+                                    {if("{getBlobMD5(RP_SAB_COLLAB_2024_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_CAT_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}'>Download CDA</a></p>)}
 
-                                    {if("{getBlobMD5(RP_SAB_CAT_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_CAT_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}'>Download Review</a></p>)}
+                                    {if("{getBlobMD5(RP_SAB_COLLAB_2024_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_CAT_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}'>Download Review</a></p>)}
                                 </div>
                             ]]>
                         </Static>

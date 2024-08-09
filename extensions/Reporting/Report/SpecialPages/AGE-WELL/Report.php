@@ -49,6 +49,9 @@ class Report extends AbstractReport {
         if($person->isRole(NI) || $person->isRole(NI.'-Candidate') ||
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') ||
            $person->isRole(STAFF)){
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "AgeTechApplication") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("2024 HARP", "{$url}AgeTechApplication", $selected);
+            
             /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "HACApplication") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Catalyst - HAC", "{$url}HACApplication", $selected);*/
             
@@ -66,10 +69,10 @@ class Report extends AbstractReport {
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CIP Application", "{$url}CIPApplication", $selected);*/
         }
         
-        /*if(($person->isRoleAtLeast(INACTIVE) || $person->isRoleAtLeast(INACTIVE.'-Candidate'))){
+        if(($person->isRoleAtLeast(INACTIVE) || $person->isRoleAtLeast(INACTIVE.'-Candidate'))){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEA")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Emerging Entrepreneur", "{$url}EEA", $selected);
-        }*/
+        }
         /*if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Edge")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Edge", "{$url}Edge", $selected);
@@ -110,6 +113,11 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FellowshipApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Policy Challenge Application", "{$url}FellowshipApplication", $selected);
         }*/
+        
+        if($person->isRoleAtLeast(STAFF)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AgeTechReviewReport")) ? "selected" : false;
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("HARP Review Table", "{$url}AgeTechReviewReport", $selected);
+        }
         
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HACReviewReport")) ? "selected" : false;
@@ -257,6 +265,10 @@ class Report extends AbstractReport {
                 }
             }
         }*/
+        if(count($person->getEvaluates("AGETECH", 2024)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AgeTechReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HARP", "{$url}AgeTechReview", $selected);
+        }
         if(count($person->getEvaluates("HAC", 2023)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HACReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HAC", "{$url}HACReview", $selected);

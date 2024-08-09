@@ -283,6 +283,7 @@ class ReportItemCallback {
             "decrypt" => "decrypt",
             "set" => "set",
             "get" => "get",
+            "if" => "ifCond",
             "and" => "andCond",
             "or" => "orCond",
             "matches" => "matches",
@@ -2284,6 +2285,15 @@ class ReportItemCallback {
     
     function get($key){
         return $this->reportItem->getVariable($key);
+    }
+    
+    function ifCond($condition, $result){
+        $value = false;
+        @eval("\$value = ($condition);");
+        if($value){
+            return $result;
+        }
+        return "";
     }
     
     function andCond(){

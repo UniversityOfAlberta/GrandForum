@@ -94,6 +94,7 @@ class PersonAPI extends RESTAPI {
         if(!$status){
             $this->throwError("The user <i>{$person->getName()}</i> could not be deleted");
         }
+        return $person->toJSON();
     }
 }
 

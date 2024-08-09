@@ -18,11 +18,7 @@ class Register extends SpecialPage{
                 if($config->getValue('networkName') == "AGE-WELL"){
                     $parseroutput->mText .= "<h2>HQP Affiliates Registration</h2><p>If you would like to apply to become an HQP (trainee) in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>
 
-                    <h2>External Registration</h2><p>If you would like to apply for a Catalyst or SIP application and do not yet have an account, you can register as an 'External-Candidate' by using this <a href='$wgServer$wgScriptPath/index.php/Special:Register?role=External'>registration form</a>.</p>
-
-                    <h2>AGE-WELL Conference Abstracts</h2><p>Abstract submissions for <i>AGEWELL2023</i> are encouraged from all stakeholders who work or have an interest in technology and aging or ‘AgeTech”. Submitters do not need to be current members of AGE-WELL (e.g. funded or affiliate researcher, HQP, startup affiliate, etc.).</p>
-                    <p>Applicants must have a Forum Research Portal account to submit a conference abstract. Applicants <u>without</u> existing Forum accounts must first register as an 'External-Candidate' to access the conference abstract module by using this <a href='$wgServer$wgScriptPath/index.php/Special:Register?role=External'>registration form</a>.</p>
-                    <p>Please see the <a href='https://agewell-nce.ca/wp-content/uploads/2023/07/Revised_2023-AGE-WELL-Conference-Abstract-Submissions.pdf' target='_blank'>Call for Abstracts</a> for additional information.</p>";
+                    <h2>External Registration</h2><p>If you would like to apply for a Catalyst or SIP submit an application for funding and do not yet have an account, you can register as an 'External-Candidate' by using this <a href='$wgServer$wgScriptPath/index.php/Special:Register?role=External'>registration form</a>.</p>";
                 }
                 else if($config->getValue('networkName') == "ADA"){
                     $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Emerging Entrepreneur Award (2023)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2023" ajax="true" disabled="true">
+<Report name="AGE-WELL Emerging Entrepreneur Award (2024)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2024" ajax="true">
     <Permissions>
         <Role role="STAFF">
             <SectionPermission id="description" permissions="rw" />
@@ -23,7 +23,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="Background Information" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2023)">
+    <ReportSection id="description" tooltip="Background Information" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2024)">
         <Static>
             <![CDATA[
                 <h3>About AGE-WELL</h3>
@@ -53,9 +53,10 @@
                 <h3>Program Requirements</h3>
                 <ul>
                     <li>Award recipients are expected to participate actively in the network, including cooperation in the publicizing of any success stories arising from this award.</li>
+                    <li>Recipients of the 2024 Emerging Entrepreneur Award will be expected to attend and participate in the <a href='https://agewell-nce.ca/conference' target='_blank'>AGE-WELL Conference</a> (October 23-24) in Edmonton, Alberta. Recipients will have the opportunity to demo their solution at the “Drinks and Demos” event on October 23.</li>
                     <li>Recipients are required to participate in and complete AGE-WELL’s Early Entrepreneur Training Program within the Award Term.</li>
                     <li>Award recipients are expected to hold, at minimum, quarterly meetings with their assigned mentors to ensure ongoing progress towards project goals.</li>
-                    <li>Recipients are required to complete a final report on outcomes and impact in November 2024.</li>
+                    <li>Recipients are required to complete a final report on outcomes and impact in November 2025.</li>
                     <li>Recipients will acknowledge the AGE-WELL Emerging Entrepreneur Award program in their presentations, publications, and other knowledge translation activities related to research conducted during their funding period.  Recipients are required to use the AGE-WELL logo on their posters and other materials related to research conducted during their funding period and cooperate in the publicising of any success stories arising from this award.</li>
                 </ul>
                 
@@ -79,9 +80,9 @@
                 
                 <h3>Important Dates</h3>
                 
-                Applications Open:  1 September, 2023<br />
-                Completed Applications Due:  30 September, 2023<br />
-                Funding Commences:  November 2023
+                Applications Open: 29 July, 2024<br />
+                Completed Applications Due: 30 August, 2024<br />
+                Funding Commences: November 2024
             ]]>
         </Static>
     </ReportSection>

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Catalyst Review" reportType="RP_SAB_CAT_REVIEW" ajax="true" disabled="false" year="2024">
+<Report name="SAB Collaborative Review" reportType="RP_SAB_COLLAB_2024_REVIEW" ajax="true" disabled="false" year="2024">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SAB">
+        <Role role="SAB">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
+        <Role role="RMC">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Evaluator">
+        <Role role="Evaluator">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -29,9 +29,9 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Catalyst">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CatalystReport" project="false">
-                <![CDATA[<tr><td>{getText(RP_SAB_CAT_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><!--td>{getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td--><td align='center'>{$item}</td>]]>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative2024">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport2024" project="false">
+                <![CDATA[<tr><td>{getText(RP_SAB_COLLAB_2024_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><td!-->{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td--><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -50,8 +50,8 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Catalyst">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_CAT_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative2024">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_COLLAB_2024_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                 <ReportItem id="review" type="Upload" blobType="BLOB_RAW" blobItem="SAB_REVIEW" blobSubItem="{$user_id}" fileSize="5">
                     <![CDATA[
                         <p><b>Please complete your review using the provided template, ensuring all requested details are included, and upload it to the Forum in the WORD document format.</b></p>
@@ -70,7 +70,7 @@
                 <div style='display:none;'>{$item}</div>
             ]]>
         </ReportItem>
-        <If if="{==({getText(RP_SAB_CAT_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
+        <If if="{==({getText(RP_SAB_COLLAB_2024_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
             <![CDATA[
                 <div class="success">Your review(s) have been submitted.</div>
             ]]>

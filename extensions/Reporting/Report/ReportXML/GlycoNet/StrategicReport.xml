@@ -21,7 +21,7 @@
                     <li>Be accompanied by a commercialization plan provided by the Technology Transfer Office of the project leader’s institution or the project’s industrial partner</li>
                     <li>Must address partner’s research needs or challenges</li>
                     <li>Have an identified partner that could take over the outcomes of the research</li>
-                    <li>Partner matching of 1:1.5 is required, greater matching will be viewed more favorably by the committee.  50% of matching must be cash (for a $100,000 request, matching should be $150,000 with at least $75,000 cash and $75,000 in-kind – please see <a href='https://drive.google.com/file/d/1htIEuiU1weYrAB5g1DX4JTOKD3oM9KPX/view' target='_blank'><b>Appendix A</b></a>). Partner funding must be SSF eligible; in particular, other Canadian Federal funding is <b>ineligible</b> for matching. Industry partner is preferred.</li>
+                    <li>Partner matching of 1:1.5 is required, greater matching will be viewed more favorably by the committee.  50% of matching must be cash (for a $100,000 request, matching should be $150,000 with at least $75,000 cash and $75,000 in-kind – please see <a href='https://drive.google.com/file/d/17qTip8z0mogjsER4Kn9y2zFaSFeOShEF/view' target='_blank'><b>Appendix A</b></a>). Partner funding must be SSF eligible; in particular, other Canadian Federal funding is <b>ineligible</b> for matching. Industry partner is preferred.</li>
                 </ul>
                 
                 <h3>Funding Available</h3>
@@ -41,7 +41,7 @@
                 <h3>General Instructions and Deadline</h3>
                 <p>All applications will be completed in the GlycoNet Forum, https://forum.glyconet.ca. Please read the following instructions carefully. A complete application consists of:</p>
                 <ol>
-                    <li>Application/Proposal (single PDF file, use Application Template)
+                    <li><b>Application/Proposal</b> (single PDF file, use Application Template)
                         <ul>
                             <li>Project Title</li>
                             <li>Project Leader / Lead Investigator</li>
@@ -69,6 +69,60 @@
                 </ol>
                 
                 <p><b><i>Deadline: Rolling Call</i></b>. Competitions will be offered on a quarterly basis.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="criteria" name="Review Criteria" title="Scientific Review Criteria" blobSection="SEC_NONE" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <p>The proposal will be evaluated based on the following criteria and rated as: <i>Very Weak, Weak, Average, Strong, or Very Strong</i>. An overall score will then be assigned to the proposal.</p>
+                
+                <table class='wikitable' width='100%'>
+                    <tr><th style='text-align:left;'>1. Scientific Excellence</th></tr>
+                    <tr><td style='padding-left:18px;'>Overall scientific excellence and soundness of the project</td></tr>
+                    <tr><td style='padding-left:18px;'>Quality and logic of the rationale</td></tr>
+                    <tr><td style='padding-left:18px;'>Existence of strong preliminary data that supports the hypothesis. State of the technology</td></tr>
+                    <tr><td style='padding-left:18px;'>Soundness of the experimental plan</td></tr>
+                    <tr><td style='padding-left:18px;'>Capacity to generate applicable results at the end of the project</td></tr>
+                    
+                    <tr><th style='text-align:left;'>2. Positioning of the Research Project</th></tr>
+                    <tr><td style='padding-left:18px;'>Originality and novelty of the proposed research</td></tr>
+                    <tr><td style='padding-left:18px;'>Added value of product/computational tool/technology compared to existing/in development ones</td></tr>
+                    <tr><td style='padding-left:18px;'>Positioning of the project relative to the most current and powerful approaches or technologies that address the same end goal</td></tr>
+                    <tr><td style='padding-left:18px;'>Competitiveness of the project on an international scale based on what is available or what is in development stage by public or private entities</td></tr>
+                    
+                    <tr><th style='text-align:left;'>3. Impact of the Research Project</th></tr>
+                    <tr><td style='padding-left:18px;'>Potential impact of the project on the development of diagnostics/treatments/technology development</td></tr>
+                    <tr><td style='padding-left:18px;'>Capacity to address important non-resolved specific challenges in the translational process.<br />Example include:
+                        <ul>
+                            <li>Potential to open new therapeutic approaches and research avenues</li>
+                            <li>Contribution of the project to the development of more effective cost-effective diagnostics</li>
+                            <li>Overall impact on the reduction of R&D costs, time to market, and development risks</li>
+                        </ul>
+                    </td></tr>
+                    
+                    <tr><th style='text-align:left;'>4. Feasibility</th></tr>
+                    <tr><td style='padding-left:18px;'>Clear deliverables, milestones, and schedule</td></tr>
+                    <tr><td style='padding-left:18px;'>Feasibility of the project (clear deliverables, timetable, human and financial resources</td></tr>
+                    <tr><td style='padding-left:18px;'>Overall quality of the infrastructure, facilities and equipment available for the proposed project</td></tr>
+                    <tr><td style='padding-left:18px;'>Soundness of the project overall costs</td></tr>
+                    
+                    <tr><th style='text-align:left;'>5. Team</th></tr>
+                    <tr><td style='padding-left:18px;'>If this application is led by an ECR, what is the research potential of this researcher</td></tr>
+                    <tr><td style='padding-left:18px;'>Overall track record of the PI and co-applicants:
+                        <ul>
+                            <li>Relevance of the expertise and productivity of the PI in the achievement of the proposed project</li>
+                            <li>Capacity of the PI to lead and coordinate the research – if the researcher is an ECR then comment on the risk of an ECR undertaking this project</li>
+                            <li>Relevance of the expertise and productivity of the co-applicants in the achievement of the proposed project</li>
+                        </ul>
+                    </td></tr>
+                    
+                    <tr><th style='text-align:left;'>6. Long-Term Plan (~5 years) and Commercialization</th></tr>
+                    <tr><td style='padding-left:18px;'>Is the long-term development plan sound and feasible?</td></tr>
+                    <tr><td style='padding-left:18px;'>The technology will likely create commercial opportunities in the biopharma R&D sector or the clinic and elsewhere such as in one-health applications</td></tr>
+                    <tr><td style='padding-left:18px;'>Is the technology easily transferable for use by partners or is the plan to access the technology well laid out (ex. service option)?</td></tr>
+                    <tr><td style='padding-left:18px;'>The project is well aligned with goals of the research partners</td></tr>
+                </table>
             ]]>
         </Static>
     </ReportSection>
@@ -108,7 +162,7 @@
                     <li>Equipment is capped at $2,000/project.</li>
                     <li>Travel
                         <ul>
-                            <li>Conference travel is capped at $2,000/year/NI/project. Note: Travel to the Annual General Meeting/Symposium is compulsory and will NOT be fully funded centrally through GlycoNet, as such, some travel funds should be kept for this purpose.</li>
+                            <li>Conference travel is capped at $3,000/year/NI/project. Note: Travel to the Annual General Meeting/Symposium is compulsory and will NOT be fully funded centrally through GlycoNet, as such, some travel funds should be kept for this purpose.</li>
                             <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li>
                         </ul>
                     </li>
@@ -200,6 +254,31 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="upload6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload7" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD7" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload8" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD8" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload9" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD9" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload10" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD10" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="ccv" name="NI CCVs" blobSection="CAT_CCV" tooltip="Common CV" type="ReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD1" mimeType="application/pdf">
@@ -255,6 +334,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},vsharko@glyconet.ca" />
     </ReportSection>
 </Report>

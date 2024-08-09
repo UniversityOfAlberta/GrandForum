@@ -1206,9 +1206,10 @@ class Person extends BackboneModel {
     
     function delete(){
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(MANAGER)){
+        if($me->isRoleAtLeast(STAFF)){
             Cache::delete("nameCache_{$this->getId()}");
             Cache::delete("idsCache_{$this->getId()}");
+            Notification::addNotification($me, Person::newFromId(0), "User Deleted", "<b>{$this->getNameForForms()}</b> has been deleted", "{$this->getUrl()}");
             return DBFunctions::update('mw_user',
                                  array('deleted' => 1),
                                  array('user_id' => EQ($this->getId())));

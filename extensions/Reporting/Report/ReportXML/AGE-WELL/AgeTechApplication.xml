@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="2024 AGE-WELL AgeTech Advance: Healthy Aging Research Program" reportType="RP_AGETECH" pdfType="RPTP_AGETECH" year="2024" allowIdProjects="true" pdfFiles="AgeTechApplicationPDF" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="NI" />
+        <Role role="NI-Candidate" />
+        <Role role="External" />
+        <Role role="External-Candidate" />
+        <Person id="5362">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="identification" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="checklist" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="--" />
+        </Person>
+    </Permissions>
+    <ReportSection id="description" tooltip="2024 AGE-WELL AgeTech Advance: Healthy Aging Research Program" name="Program Description" type="ReportSection" title="2024 AGE-WELL AgeTech Advance: Healthy Aging Research Program">
+        <Static>
+            <![CDATA[
+                <p>Please review carefully the information and updates in the complete call for proposals: <a href='https://agewell-nce.ca/2024-agetech-advance-healthy-aging-research-program' target='_blank'>2024 AgeTech Advance: Healthy Aging Research Program</a></p>
+
+                <p><b>PROGRAM REQUIREMENTS</b> – please refer to the <a href='https://agewell-nce.ca/wp-content/uploads/2024/05/Application-Guide_May2024_FINAL.pdf' target='_blank'>Application Guide</a> for full program requirements.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+    <ReportSection id="information" tooltip="A. ADMINISTRATIVE INFORMATION" title="A. ADMINISTRATIVE INFORMATION" name="Administrative Information" blobSection="APPLICATION_FORM" type="EditableReportSection">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <b>Project Title:</b> {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="investigators" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="INVESTIGATORS" multiple="true" types="Checkbox|Select(,Nominated Principal Investigator,Co-Principal Investigator)|Text" labels="Check if ECR*|Role|Name|Institution" sizes="50|235|250|300">
+            <![CDATA[
+                {$item}
+                * Early Career Researcher (ECR)
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <h3>Lay Summary</h3>
+                <p>Provide a <u>lay summary</u> that includes a problem statement, objectives, activities and anticipated impact(s) of the project. The intent of this summary is to communicate the purpose and core elements of the project to audiences who may not have scientific training. This summary may be used for future communications if the proposal is successful.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="keywords" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" max="6" sizes="180">
+            <![CDATA[
+                <h3>Keywords (maximum 6)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="funds" type="Text" blobItem="FUNDS" width="4em">
+            <![CDATA[
+                <h3>Total amount of funds requested (up to $175,000)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="funds1" type="Integer" blobItem="FUNDS1" width="4em">
+            <![CDATA[
+                <table class='wikitable'>
+                    <tr>
+                        <td></td><td><b>Confirmed</b></td><td><b>Requested</b></td>
+                    </tr>
+                    <tr>
+                        <td align='right'><b>Total Matching Amount</b></td>
+                        <td>$ {$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds2" type="Integer" blobItem="FUNDS2" width="4em">
+            <![CDATA[
+                        <td>$ {$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds3" type="Integer" blobItem="FUNDS3" width="4em">
+            <![CDATA[
+                    <tr>
+                        <td align='right'><b>Cash</b></td>
+                        <td>$ {$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds4" type="Integer" blobItem="FUNDS4" width="4em">
+            <![CDATA[
+                        <td>$ {$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds5" type="Integer" blobItem="FUNDS5" width="4em">
+            <![CDATA[
+                    <tr>
+                        <td align='right'><b>In-Kind</b></td>
+                        <td>$ {$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds6" type="Integer" blobItem="FUNDS6" width="4em">
+            <![CDATA[
+                        <td>$ {$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="challenges" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGES" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" limit="1">
+            <![CDATA[
+                <h3>The proposed project is best aligned with the following AGE-WELL Challenge Area (check <u>ONE PRIMARY</u> Challenge Area).</h3>
+                
+                <p>(AGE-WELL Challenge Areas descriptions are available here: <a href='https://agewell-nce.ca/challenge-areas' target='_blank'>AGE-WELL | Challenge Areas (agewell-nce.ca)</a></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="other_challenges" type="Text" blobType="BLOB_TEXT" blobItem="OTHER_CHALLENGES" width="250px">
+            <![CDATA[
+                <p>While these Challenge Areas cover a broad spectrum of needs, we recognize that there may be emerging challenges not explicitly listed here that are increasingly important. Applicants with innovative solutions addressing other challenge areas are encouraged to apply and must demonstrate how their proposed research contributes to advancing technology-enabled improvements to the well-being and independence of older adults.</p>
+                
+                If your project does not align with one of AGE-WELL's specific Challenge Areas, please identify a different challenge area here: {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="identification" tooltip="Self-Identification Form" name="Self-Identification Form" blobSection="APPLICATION_FORM" type="EditableReportSection">
+        <ReportItem id="age" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="AGE" orientation="vertical" options="18-24 years old|25-34 years old|35-44 years old|45-54 years old|55-64 years old|65-74 years old|75+ years old|I prefer not to answer" optional="true">
+            <![CDATA[
+                <table>
+                <tr>
+                    <td colspan='2'>
+                        <p>In line with federal funding agencies, AGE-WELL is asking Nominated Principal Investigators submitting an application for funding competitions to self-identify with information on age, gender, Indigenous identity, visible minority and population group or disability. The online module for this funding opportunity includes a self-identification form consisting of several questions. If you would prefer not to self-identify and/or provide the requested information, you may select “I prefer not to answer" for any or all of the questions.</p>
+
+                        <p>Please note that the information provided here will not be shared. It will not be used to adjudicate applications and will not affect your ranking. This information is solely collected so the platform can monitor the equity performance of programs and design new measures that achieve greater equity, diversity and inclusion in the research enterprise.</p>
+                        
+                        <p>The collection of this information is an essential part of efforts to improve EDI in science and research. For further information, please see the Tri-Agency's policy on Self-Identification Data Collection in Support of EDI and Canada's 50-30 Challenge: <a href='https://science.gc.ca/eic/site/063.nsf/eng/h_97615.html' target="_blank">https://science.gc.ca/eic/site/063.nsf/eng/h_97615.html</a></p>
+                    </td>
+                </tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Age:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="gender" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="GENDER" orientation="vertical" options="Woman|Man|Gender fluid, nonbinary and/or Two Spirit|LGBTQ2IA+|My gender identity and/or sexual orientation is not listed above.|I prefer not to answer" optional="true">
+            <![CDATA[
+                <tr>
+                    <td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Self-Identified Gender Identity and Sexual Orientation:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="gender_other" type="Text" width="300px" blobType="BLOB_TEXT" blobItem="GENDER_OTHER" optional="true">
+            <![CDATA[
+                    If your gender identity or sexual orientation were not listed, and you would like to specify, please do so here:<br />
+                    {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="INDIGENOUS" orientation="vertical" options="First Nations (Includes status, treaty or registered Indians, as well as non-status and non-registered Indians)|Métis|Inuit/Inuk|I prefer not to answer|Not applicable" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Do you identify as a member of any of the following Indigenous populations:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="ethnicities" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ETHNICITIES" orientation="vertical" options="Black|Persons of mixed origin (with one parent in one of the Visible Minority communities listed)|Japanese|Filipino|Non-white West Asian, North African/Arab (includes Egyptian; Libyan; Lebanese; Iranian; etc.)|Non-white Latin American (includes Indigenous peoples from Central and South America, etc.)|Chinese|Korean|South Asian/East Indian (includes Indian from India; Bangladeshi; Pakistani; East Indian from Guyana, Trinidad, East Africa; etc.)|Southeast Asian (includes Burmese, Cambodian, Laotian; Thai; Vietnamese; etc.)|White|My ethnicity is not listed here|I prefer not to answer|Not applicable" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Do you identify with any of the following ethnicities:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="ethnicities_other" type="Text" width="300px" blobType="BLOB_TEXT" blobItem="ETHNICITIES_OTHER" optional="true">
+            <![CDATA[
+                    If your ethnicity was not listed above, and you would like to specify, please do so here:<br />
+                    {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="disability" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="DISABILITY" orientation="vertical" options="Yes|No|I prefer not to answer" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Are you a person living with a disability?</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="research" tooltip="B. RESEARCH PLAN" title="B. RESEARCH PLAN" name="Research Plan" blobSection="APPLICATION_FORM" type="EditableReportSection">
+        <ReportItem id="maturity" type="Textarea" blobItem="MATURITY" rich="true" limit="250">
+            <![CDATA[
+                <p>The research plan should provide a framework for the operation of the project. 
+Projects must consider equity, diversity, inclusion and indigeneity in terms of research design, team composition and impact of proposed solution.</p>
+
+                <p>Applicants are encouraged to review the following resources when considering how to integrate EDI in their research: <a href='https://www.sshrc-crsh.gc.ca/funding-financement/nfrf-fnfr/edi-eng.aspx' target='_blank'>Best practices in equity, diversity and inclusion in research practice and design</a></p>
+                
+                <h3>1. Project Maturity (Maximum of 250 words, approx. ½ page)</h3>
+                <p>This program seeks to fund mature projects with established protocols that are able to meet their objectives and deliverables within 18 months. This funding program will prioritize projects with a demonstrated track record of progress rather than supporting early-stage or pilot projects. Evidence of previous outcomes and outputs (e.g., pilot data, publications, prototypes, patents) will be important.</p>
+
+                <p>Clearly outline the current stage of development and key accomplishments of the existing project. How will the proposed project build upon this foundation to enhance and achieve its goals?</p>
+
+                <p><b>For projects developing novel technology</b>: Projects focused on developing novel technologies must be at Technology Readiness Level (TRL) stages 3 to 6. Provide evidence of the current technology readiness level (TRL) stage and provide a roadmap to achieve higher TRLs within the project timeframe. Please refer to the definition of <b>Technology Readiness Levels (TRL)</b> in Appendix A the <a href='https://agewell-nce.ca/wp-content/uploads/2024/05/Application-Guide_May2024_FINAL.pdf' target='_blank'>Application Guide</a></p>
+ 
+                <b>Ethics Approval:</b> This funding opportunity requires proof of prior ethics approval and a timeline to process necessary amendments for the proposed research. <b>Please append a copy of REB approval to your application in a separate uploaded document (Section D)</b>.
+                <ul>
+                    <li>If your proposed project for AGE-WELL funding is part of an ongoing program of research that has already received ethics approval, you must verify that the proposed activities fall within the scope of the existing approval.</li>
+                    <li>If your proposed project for AGE-WELL funding introduces new activities or elements, you must confirm that they extend the scope of an existing ethics approval (rather than require an entirely new research ethic’s protocol) and provide an estimate of the time required to secure an amendment.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="500">
+            <![CDATA[                
+                <h3>2. Background and Rationale [Maximum of 500 words, approx. 1 page (excluding reference list)]</h3>
+                <p>Outline the planned activities and provide an overview of the latest advancements in the field, highlighting existing goals, potential solutions and the specific needs that will be addressed by your research. <b>Please append references to your application in a separate uploaded document (Section D).</b></p>
+                
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="1500">
+            <![CDATA[
+                <h3>3. Objectives, Methods and Deliverables (Maximum of 1,500 words, approx. 3 pages)</h3>
+                
+                <p><b>3.1. Objectives</b></p>
+                <p>Provide an overview of research plans, including the scope of the 18-month project, as well as <u>a brief statement</u> of longer-term objectives (multi-year) that positions the present project within a larger project plan. Identify and describe your research questions and objectives for the proposed 18-month project.</p>
+                <p>Describe how the Challenge Area identified in Section A will be addressed by this project.</p>
+
+                <p><b>3.2. Approach and methods</b></p>
+                <p>Describe the approaches and methodologies that will be used in the project to achieve its objectives.<br />This section must describe how objectives identified in section 3.1 will be met by the proposed 18-month program of research.</p>
+                <p>Describe how older adults and/or caregivers will be involved in the research, including co-creation methods.</p>
+                <p>Describe how sex and gender will be considered in the research, methods, analysis and interpretation or explain why sex and/or gender are not applicable to the research proposal.</p>
+
+                <p><b>3.3. Innovation and impact</b></p> 
+                <p>Describe the novelty and originality of the proposed research.</p> 
+                <p>Describe in detail the anticipated scientific outcomes and potential impact, including how your project will ‘push the scientific envelope’ in the research field. This should include the relationship of the research program to similar work conducted elsewhere in Canada and internationally.</p>
+                <p>Outline your knowledge mobilization or commercialization strategy, if relevant.  Specifically, describe the mechanisms you intend to utilize to engage stakeholders and disseminate your key findings to ensure their integration into relevant communities or to move your technology towards its intended market.</p>
+                <p>How will you aim to support the broader impact and practical application of the research outcomes?<br />
+                How your project will encourage collaboration between the user sectors, providing concrete examples, such as the application of research to technology, market development, health systems, or public policy innovations.</p>
+
+                <p><b>3.4. Timelines and deliverables/milestones</b></p>
+                <p><i>Outline major milestones and deliverables for the 18-month project. Note that graphics can be pasted into the online module or appended in a separate uploaded document (Section D).</i></p>
+                <b>Note:</b> The word limit is for all of Section 3.
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" multiple="true" types="Select(,Project Lead,Co-Investigator,Collaborator,Highly Qualified Personnel,Knowledge User,Partner)|Text|Text|Text" labels="Project Role|Name|Title|Institution" sizes="200|200|150|200">
+            <![CDATA[
+                <h3>4. Project Team and Partnerships</h3>
+                
+                <p>Project teams must involve an Early Career Researcher (ECR) as a Principal Investigator (PI) or Co-Principal Investigator (Co-PI) and are highly encouraged to serve as the Nominated PI.</p>
+                
+                <p>Applicants are encouraged to include team members from more than one discipline.  Applicants must identify a Knowledge User with relevant lived experience and expertise. Applicants must consider the development of trainees or Highly Qualified Personnel (HQP) through their inclusion as team members.</p>
+                <p>List all identified project team members, including Nominated PI, Co-PIs, Co-Applicants, Collaborators, Highly Qualified Personnel (HQP), Knowledge User(s) and Partners.</p>
+                <p><b>A brief bio (free form, maximum 1,500 words is required for the Nominated PI and Co-PIs and must be appended to your application in a separate uploaded document (Section D).</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="expertise" type="Textarea" blobItem="EXPERTISE" rich="true" limit="500">
+            <![CDATA[
+                <p>Briefly describe the expertise, role and contributions of all project personnel listed in the Project Personnel Table.</p>
+                
+                <p>Applicants are encouraged to consider their processes of identifying, recruiting and selecting research team personnel based on equity, diversity and inclusion best practices as one means to enhance excellence in research, training and outreach.</p>
+
+                <p>A detailed plan of how HQP including trainees will be involved in the research and benefit from being part of the project should be included.</p>
+
+                <p>If partner organizations are included in proposed research project plans, including as part of any knowledge mobilization or commercialization plans, these organizations and their activities should be described in this section. Partners contributing matching funding should also be described.</p>
+                {$item}
+                
+                <p><b>Letters of Support:</b> Letters of support are required if partners are providing contributions to be used to meet the matching funding requirement (See Sections C and D). Letters of Support from key partners not providing matching funding are encouraged but not required.</p>
+                
+                <p><b>Research Partnership Risk Assessment:</b> In the case where an application involves one or more partner organization(s) from the private sector, including when they participate alongside other partner organizations from the public and/or not-for-profit sectors, the Nominated Principal Investigator must complete the <a href='https://science.gc.ca/site/science/en/safeguarding-your-research/guidelines-and-tools-implement-research-security/national-security-guidelines-research-partnerships/national-security-guidelines-research-partnerships-risk-assessment-form' target='_blank'>National Security Guidelines for Research Partnerships’ risk assessment form</a> and submit it as part of the application. Please refer to The <a href='https://science.gc.ca/site/science/en/safeguarding-your-research/guidelines-and-tools-implement-research-security/national-security-guidelines-research-partnerships' target='_blank'>National Security Guidelines for Research Partnerships</a> for more information.</p>
+                
+                <p><b>Biosketches: A brief bio (free form, maximum 1,500 words) for all identified PIs and Co-PIs must be appended to the application (Section D) and should include:</b></p>
+                <ol>
+                    <li>Name: Full name and contact information</li>
+                    <li>Academic Affiliation: The institution or organization where you currently hold a position.</li>
+                    <li>Academic Title: Your current academic title or position, such as Professor, Assistant Professor, Researcher, etc.</li>
+                    <li>Education: Briefly list your highest academic degrees, including the institution, degree earned, and field of study.</li>
+                    <li>Research Interests: Summarize your primary areas of research interest or expertise.</li>
+                    <li>Professional Experience: Highlight any relevant professional experiences, including previous academic appointments, research positions, or relevant industry experience.</li>
+                    <li>Publications: Optionally, you may include a selection of your most significant publications, particularly if they are relevant to your current research interests.</li>
+                    <li>Awards and Honors: Mention any notable awards, honors, or recognitions you have received in your academic career.</li>
+                </ol>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budget" tooltip="C. Budget and Budget Justification" title="C. Budget and Budget Justification" name="Budget" blobSection="APPLICATION_FORM" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <p>Complete and append to your application an overall 18-month project budget using the <a href='{$wgServer}{$wgScriptPath}/data/BUDGET TEMPLATE_AGE-WELL-HARP2024_FINAL.xlsx' target='_blank'>template spreadsheet</a> provided, as well as a free form budget justification detailing proposed project expenditures / eligible project costs, including all  cash and in-kind to be used for matching funds (see below for more detail).</p>
+                
+                <p>This must include how AGE-WELL funding differs from and is unique from other sources of funding already in place for this project.</p>
+                
+                <p>Note that AGE-WELL funding cannot be sub-granted by a Principal Investigator. All project team members to receive funds must be identified in the application and meet eligibility requirements to hold AGE-WELL funds specified in this call for proposals.</p>
+                
+                <b>Eligible project costs include:</b>
+                <ul>
+                    <li>Incremental research and knowledge mobilization costs, including salaries to highly qualified personnel (HQP), including students, postdoctoral fellows, and research associates</li>
+                    <li>Professional and technical services or contracts</li>
+                    <li>Equipment</li> 
+                    <li>Materials and supplies</li> 
+                    <li>Research-related travel</li>
+                </ul>
+                
+                Ineligible project costs include:
+                <ul>
+                    <li>Costs associated with the construction of, or major renovation to building and structures;</li>
+                    <li>Flat-rate charges for overhead costs (indirect costs);</li> 
+                    <li>Alcoholic refreshments</li>
+                </ul>
+                
+                <p><b>Matching Funding Requirement:</b> A minimum of 50% of <u>total eligible project costs</u> must be provided by the applicant or its partners as cash or in-kind contributions (e.g. to receive the maximum funding amount for this award, total eligible project costs would be at least $262,500). Matching cash or in-kind funds must be from non-federal sources, including industry, academic, provincial, or community-based sources. International partners are encouraged, however AGE-WELL funds must remain in Canada.</p>
+                
+                <p>Please refer to the definition of matching funds in Appendix A the <a href='https://agewell-nce.ca/wp-content/uploads/2024/05/Application-Guide_May2024_FINAL.pdf' target='_blank'>Application Guide</a></p>
+                
+                <p>Partner contributions may be a source of cash or in-kind contributions to the project. Where partner contributions are to be counted towards the required matched funding for this call, both cash and in-kind amounts must be included in the <a href='{$wgServer}{$wgScriptPath}/data/BUDGET TEMPLATE_AGE-WELL-HARP2024_FINAL.xlsx' target='_blank'>budget template </a> outlining eligible project costs and fully described in the budget justification.</p>
+                
+                <p>Matching funds must be identified as confirmed or requested. If matching funds are requested at the time of application, funds must be confirmed prior to final confirmation of award value from AGE-WELL.</p>
+                
+                <p><b>Letters of Support for Matching Funding</b><br /> 
+                For matching cash or in-kind contributions, a letter of support is required from the matching funding source outlining the specific value of the funding used for the match. In the case of in-kind contributions, the method for calculating the value must be described and follow ISED guidelines. </p>
+
+                <p>Please refer Guidelines for Calculating In-Kind Contributions in Appendix B in the <a href='https://agewell-nce.ca/wp-content/uploads/2024/05/Application-Guide_May2024_FINAL.pdf' target='_blank'>Application Guide</a></p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="documents" tooltip="D. UPLOAD DOCUMENTS" title="D. UPLOAD DOCUMENTS" name="Upload Documents" blobSection="APPLICATION_FORM" type="EditableReportSection">
+        <ReportItem id="references" type="Upload" blobItem="REFERENCES" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>References</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" type="Upload" blobItem="ETHICS" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>Research Ethics Approval (REB) Documentation</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="bios" type="Upload" blobItem="BIOS" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>Bios for Nominated Principal Investigators and Co-Principal Investigators</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="risk" type="Upload" blobItem="RISK" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>Research Partnership Risk Assessment (RPRA) Forum (if applicable)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx,.xlx" fileSize="5">
+            <![CDATA[
+                <h3>Budget Template</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Upload" blobItem="JUSTIFICATION" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letters" type="Upload" blobItem="LETTERS" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>Letters of Support</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="appendix" type="Upload" blobItem="APPENDIX" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>Additional Appendix (optional)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="checklist" tooltip="Application Checklist" title="Application Checklist" name="Application Checklist" blobSection="APPLICATION_FORM" type="EditableReportSection">
+        <ReportItem id="1" type="Checkbox" blobItem="CHECK_1" blobType="BLOB_ARRAY" options="ECR as (Co) Principal Investigator or Nominated Principal Investigator">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="2" type="Checkbox" blobItem="CHECK_2" blobType="BLOB_ARRAY" options="Identification of primary Challenge Area">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="3" type="Checkbox" blobItem="CHECK_3" blobType="BLOB_ARRAY" options="EDI considerations integrated into team and research plans">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="4" type="Checkbox" blobItem="CHECK_4" blobType="BLOB_ARRAY" options="Trainee/HQP plan described">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="5" type="Checkbox" blobItem="CHECK_5" blobType="BLOB_ARRAY" options="Older Adult/Caregiver engagement described">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="6" type="Checkbox" blobItem="CHECK_6" blobType="BLOB_ARRAY" options="Matching funding detailed in Budget Template and Budget Justification">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a" type="Checkbox" blobItem="CHECK_6a" blobType="BLOB_ARRAY" options="In the case of in-kind contributions, the method for calculating the value is described and         adheres to ISED guidelines outlined in Appendix B of the Application Guide">
+            <![CDATA[
+                <div style='margin-left: 1.5em;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7" type="Checkbox" blobItem="CHECK_7" blobType="BLOB_ARRAY" options="All required documents appended to application in a separate uploaded document">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a" type="Checkbox" blobItem="CHECK_7a" blobType="BLOB_ARRAY" options="References|REB Approval|Biosketches (Nominated PI and Co-PIs)|RPRA Forum (if applicable)|Budget Template|Budget Justification|Letter(s) of Support">
+            <![CDATA[
+                <div style='margin-left: 1.5em;'>{$item}</div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+    </ReportSection>
+</Report>
