@@ -247,16 +247,16 @@ EOF;
                 $inkind += $inki;
                 
                 if($inki > 0){
-                    $a += @$part['contribution']->getKindFor($part['partner'], "equi");
-                    $b += @$part['contribution']->getKindFor($part['partner'], "mate");
-                    $c += @$part['contribution']->getKindFor($part['partner'], "logi");
-                    $d += @$part['contribution']->getKindFor($part['partner'], "srvc");
-                    $e += @$part['contribution']->getKindFor($part['partner'], "faci");
-                    $f += @$part['contribution']->getKindFor($part['partner'], "sifi");
-                    $g += @$part['contribution']->getKindFor($part['partner'], "mngr");
-                    $h += @$part['contribution']->getKindFor($part['partner'], "trvl");
-                    $i += @$part['contribution']->getKindFor($part['partner'], "othe");
-                    $other[] = $part['contribution']->getKindFor($part['partner'], "inkind_other");
+                    @$a += $part['contribution']->getKindFor($part['partner'], "equi");
+                    @$b += $part['contribution']->getKindFor($part['partner'], "mate");
+                    @$c += $part['contribution']->getKindFor($part['partner'], "logi");
+                    @$d += $part['contribution']->getKindFor($part['partner'], "srvc");
+                    @$e += $part['contribution']->getKindFor($part['partner'], "faci");
+                    @$f += $part['contribution']->getKindFor($part['partner'], "sifi");
+                    @$g += $part['contribution']->getKindFor($part['partner'], "mngr");
+                    @$h += $part['contribution']->getKindFor($part['partner'], "trvl");
+                    @$i += $part['contribution']->getKindFor($part['partner'], "othe");
+                    @$other[] = $part['contribution']->getKindFor($part['partner'], "inkind_other");
                 }
             }
             $totalInkind += $inkind;
