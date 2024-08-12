@@ -49,7 +49,11 @@
         </Static>
         
         <!-- Responsibilities Variation -->
-        <If if="{and({!contains({$my_roles},Chair)},{!contains({$my_roles},ViceDean)})}">
+        <If if="{and({!contains({$my_roles},Chair)},
+                     {!contains({$my_roles},ViceDean)},
+                     {!contains({$user_case_number}, D)},
+                     {!contains({$user_case_number}, E)},
+                     {!contains({$user_case_number}, F)})}">
             <Static>
                 <![CDATA[
                     <h2>Responsibilities Variation</h2>
