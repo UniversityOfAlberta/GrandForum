@@ -64,9 +64,9 @@
                             <![CDATA[
                                 <h2>Reviewer {$index}</h2>
                                 <div style='margin-left:15px;'>
-                                    {if("{getBlobMD5(RP_SAB_COLLAB_2024_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_CAT_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}'>Download CDA</a></p>)}
+                                    {if("{getBlobMD5(RP_SAB_COLLAB_2024_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_COLLAB_2024_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}'>Download CDA</a></p>)}
 
-                                    {if("{getBlobMD5(RP_SAB_COLLAB_2024_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_CAT_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}'>Download Review</a></p>)}
+                                    {if("{getBlobMD5(RP_SAB_COLLAB_2024_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_COLLAB_2024_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}'>Download Review</a></p>)}
                                 </div>
                             ]]>
                         </Static>
