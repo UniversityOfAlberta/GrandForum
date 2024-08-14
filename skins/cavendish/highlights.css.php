@@ -303,6 +303,10 @@ a:active {
     color: $hlc;
 }
 
+.clicktooltip:hover {
+    color: $hl;
+}
+
 /* Carousel */
 
 .carouselPrev, .carouselNext {

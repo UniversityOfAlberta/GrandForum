@@ -100,6 +100,7 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
                                                      collapsible: true});
                 });
             </script>");
+        $this->html .= "<p>Fill out information for the tab corresponding to the reporting fiscal year (ended on March 31 this year) and <b>not for the ongoing fiscal year</b> (started on April 1 this year).</p>";
         $this->html .= "<div id='projectionsAccordion'>";
         $year = date('Y', strtotime($this->project->getCreated()) - (3 * 30 * 24 * 60 * 60));
         $today = date('Y');//, time() - (6 * 30 * 24 * 60 * 60));

@@ -62,6 +62,10 @@ body {
     display: table-cell;
 }
 
+.clicktooltip {
+    cursor: pointer;
+}
+
 #bodyContent, #side {
 	background: #fff;
 	line-height: 1.5em; /* value other than 'normal' needed for WinIE */
@@ -1722,6 +1726,11 @@ select span.noshow {
     text-decoration: none;
     display: block;
     padding: 2px 0 2px 0;
+}
+
+.qtip {
+    font-size: 1em;
+    line-height: 1em;
 }
 
 /* Baqckbone popup */

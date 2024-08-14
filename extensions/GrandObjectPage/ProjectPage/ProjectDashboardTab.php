@@ -262,7 +262,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
         $response3 .= "</select>";
         $this->html .= "<br /><br />
                         <h2>Technology Evaluation/Adoption</h2>
-                        <b>Have your research group developed any new technology that has been assessed and/or adopted by a third party organization?</b><br />
+                        <b>Has your research group developed any new technology that has been assessed and/or adopted by a third-party organization?</b><br />
                         {$response1}<br />
                         <br />
                         <div id='tech_yes' style='display:none;'>
@@ -333,7 +333,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
         $select .= "</select>";
         $this->html .= "<h2>Contributions to Government Policy or Regulation</h2>
                         <p><small>The CFREF definition of a contribution to policy or regulation is as follows: &quot;A contribution is defined as a direct, structured engagement with policy makers at a municipal, provincial, or federal level, and in Aboriginal governments, for the purposes of informing policy or regulatory development, such as testimony before a parliamentary committee, service on a government appointed panel, partnership in a research activity, or adoption of a policy or regulation that explicitly draws upon a research outcome. It does not include lobbying, publication in policy journals (regardless of stated impacts of those journals), or op-eds.&quot;</small></p>
-                        <b>Have you made contributions at any level to government policy or regulation?</b><br />
+                        <b>Have you contributed at any level to government policy or regulation?</b><br />
                         {$select}<br />
                         <br />
                         <div id='policy_yes' style='display:none;'>
@@ -438,7 +438,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
         $this->html .= "<br /><br />
                         <h2>Technology Evaluation/Adoption</h2>
                         <div>
-                            <b>Have your research group developed any new technology that has been assessed and/or adopted by a third party organization?</b><br />
+                            <b>Has your research group developed any new technology that has been assessed and/or adopted by a third-party organization?</b><br />
                             {$technology['response1']}
                         </div><br />";
         if($technology['response1'] != "" && $technology['response1'] != "No"){
@@ -482,7 +482,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
         $this->html .= "<br /><br />
                         <h2>Contributions to Government Policy or Regulation</h2>
                         <div>
-                            <b>Have you made contributions at any level to government policy or regulation?</b><br />
+                            <b>Have you contributed at any level to government policy or regulation?</b><br />
                             {$policy['policy']}
                         </div><br />";
         if($policy['policy'] == "Yes"){

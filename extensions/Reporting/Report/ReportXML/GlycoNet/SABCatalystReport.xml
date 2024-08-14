@@ -52,6 +52,8 @@
                 </table>
                 <script type='text/javascript'>
                     $('#materialsTable').dataTable({
+                        aLengthMenu: [[100,-1], [100,'All']], 
+                        iDisplayLength: -1, 
                         columnDefs: [
                            {type: 'natural', targets: 0}
                         ]

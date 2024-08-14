@@ -15,6 +15,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
         global $wgUser;
         $me = Person::newFromWgUser();       
         if($me->isAllowedToEditDemographics($this->person)){
+            $this->html .= "Your self-reported EDI information will be kept confidential, and only aggregate data is utilized for central reporting purposes. \"I prefer not to answer\" options are available for each prompt.";
             $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;>";
             $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
             $this->html .= "<table>";
@@ -88,6 +89,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
     }
     
     function generateEditBody(){
+        $this->html .= "Your self-reported EDI information will be kept confidential, and only aggregate data is utilized for central reporting purposes. \"I prefer not to answer\" options are available for each prompt.";
         $this->html .= "<table>";
         $this->html .= "<td style='padding-right:25px;' valign='top'>";
         $this->showEditDemographics($this->person, $this->visibility);
