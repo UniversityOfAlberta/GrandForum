@@ -66,7 +66,7 @@
                             ]]>
                         </Static>
                     </ReportItemSet>
-                    <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REPORT_SUMMARY">
+                    <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REPORT_SUMMARY" blobSubItem="{$parent_id}">
                         <![CDATA[
                             <h2>Summary Statement</h2>
                             {$item}
