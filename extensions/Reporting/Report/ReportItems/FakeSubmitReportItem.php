@@ -29,9 +29,9 @@ class FakeSubmitReportItem extends TextReportItem {
     }
     
     function setBlobValue($value){
-        global $wgAdditionalMailParams, $config;
+        global $wgAdditionalMailParams, $config, $wgScriptPath;
         $emails = $this->getAttr("emails", "");
-        if($value == "Submitted" && $this->getBlobValue() == ""){
+        if($value == "Submitted" && $this->getBlobValue() == "" && $emails != "" && $wgScriptPath == ""){
             $me = Person::newFromWgUser();
             $headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                        "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
