@@ -52,7 +52,9 @@
                 </table>
                 <script type='text/javascript'>
                     $('#materialsTable').dataTable({
-                    
+                        columnDefs: [
+                           {type: 'natural', targets: 0}
+                        ]
                     });
                 </script>
             ]]>

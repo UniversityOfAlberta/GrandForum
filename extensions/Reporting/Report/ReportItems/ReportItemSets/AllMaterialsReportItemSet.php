@@ -61,7 +61,7 @@ class AllMaterialsReportItemSet extends ReportItemSet {
                 $bItem->setPersonId($b['person_id']);
                 $bItem->setParent($that->getSection());
                 
-                return $aItem->varSubstitute($sortBy) > $bItem->varSubstitute($sortBy);
+                return strnatcmp($aItem->varSubstitute($sortBy), $bItem->varSubstitute($sortBy));
             });
         }
         return $data;
