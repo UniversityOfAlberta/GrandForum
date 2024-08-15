@@ -422,7 +422,7 @@ class ProjectMainTab extends AbstractEditableTab {
             if(isset($_GET['generatePDF'])){ $this->html .= "\n<div style='font-size: smaller;display:table;width:100%;'>"; }
             else { $this->html .= "\n<div style='display:flex;flex-wrap:wrap;width:100%;'>"; }
             $this->showRole(PL);
-            $this->showRole(PA, PA, false, false, "+1");
+            $this->showRole(PA, null, false, false, "+1");
             if($config->getValue('networkName') == "GlycoNet" && $this->project->getType() == "Administrative"){
                 $this->showRole("GIS Leader");
                 $this->showRole("GIS Manager");
@@ -435,7 +435,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->showRole(CI);
                 $this->showRole(AR);
                 $this->showRole(CHAMP);
-                $this->showRole(HQP, HQP, false, false, "+1");
+                $this->showRole(HQP, null, false, false, "+1");
                 $this->showRole(PARTNER);
                 $this->showRole(AG);
                 $this->showRole(HQP, "Alumni ".HQP, true, false, "+1");
