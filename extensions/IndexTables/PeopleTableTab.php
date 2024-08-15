@@ -352,7 +352,7 @@ class PeopleTableTab extends AbstractTab {
                 $html .= "<td align='center'><span style='font-size:2em;'>{$doc3}</span></td>";
             }
             if($contactHeader != ''){
-                $html .= "<td align='left'>{$person->getPhoneNumber()}</td>";
+                $html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td><td align='left'>{$person->getPhoneNumber()}</td>";
             }
             if($emailHeader != ''){
                 $html .= ($person->getEmail() != "") ? "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>" : "<td></td>";
