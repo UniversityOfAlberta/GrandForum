@@ -440,6 +440,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->showRole(AG);
                 $this->showRole(HQP, "Alumni ".HQP, true);
                 $this->showRole(EXTERNAL);
+                $this->showRole(PA, "Alumni ".PA, true);
             }
             $this->showRole("CRMContact", "Contact");
             $this->finishRoleRow();
