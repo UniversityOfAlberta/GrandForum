@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report extends="FEC" name="ATS" pdfFiles="ATSpdf" year="{$user_ats_year}" startMonth="{substr({$user_ats_start_date},5,5)}" endMonth="{substr({$user_ats_end_date},5,5)}">
+
+</Report>
+

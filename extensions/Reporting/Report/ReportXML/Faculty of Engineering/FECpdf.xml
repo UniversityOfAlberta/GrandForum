@@ -13,7 +13,7 @@
                     ANNUAL REPORT of FACULTY MEMBER to<br />
                     the FACULTY EVALUATION COMMITTEE
                 </h1>
-                <h3 style='margin-top: -0.5em;'>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</h3>
+                <h3 style='margin-top: -0.5em;'>Period: {time2date({$start_date}, F Y)} to {time2date({$end_date}, F Y)}</h3>
                 <div style='display: inline-block; vertical-align: top; width: 50%;'>
                     <table class='wikitable'>
                         <tr><td><b>Name:</b></td><td>{$user_first_name} {$user_last_name}</td></tr>
@@ -248,7 +248,7 @@
                             </tr>
                     ]]>
                 </Static>
-                <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
+                <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}" start="{$start_date}" end="{$end_date}">
                     <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}">
                         <![CDATA[
                             <tr>
@@ -330,7 +330,7 @@
                     </tr>
             ]]>
         </Static>
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
                 <![CDATA[
                     <tr>
@@ -357,7 +357,7 @@
                 <ul>
             ]]>
         </Static>
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" isTopAnchor="false">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -426,7 +426,7 @@
                             <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
                 ]]>
             </Static>
-            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="CYCLE_START" end="CYCLE_END">
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}">
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                     <![CDATA[
                         {set(products, 1)}
@@ -454,7 +454,7 @@
                     <ul>
                 ]]>
             </Static>
-            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="CYCLE_START" end="CYCLE_END">
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}">
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
                     <![CDATA[
                         <li style="page-break-inside: avoid;">
@@ -653,7 +653,7 @@
                     </thead>
             ]]>
         </Static>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr><td>{$item}{$product_citation}</td>
@@ -676,7 +676,7 @@
                 <ul>
             ]]>
         </Static>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -712,7 +712,7 @@
                 <ul>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_SUPERVISION">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -738,7 +738,7 @@
                 <ul>
             ]]>
         </Static>
-        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_SUPERVISION">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -773,7 +773,7 @@
                     </thead>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_SUPERVISION">
                 <![CDATA[
                     <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
@@ -801,7 +801,7 @@
                 <ul>
             ]]>
         </Static>
-        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_SUPERVISION">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -894,8 +894,8 @@
     </ReportSection>
     <ReportSection id="submit" type="EditableReportSection" pagebreak="false">
         <!-- Only Used to Mark Products as Submitted -->
-        <ReportItemSet id="submit1" type="PersonProductsReportItemSet" category="Publication" submitProductYear="true" useProductYear="true" includeHQP="true" start="CYCLE_START" end="CYCLE_END" />
-        <ReportItemSet id="submit2" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="true" start="CYCLE_START" end="CYCLE_END" />
-        <ReportItemSet id="submit3" type="PersonProductsReportItemSet" category="Award" submitProductYear="true" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" />
+        <ReportItemSet id="submit1" type="PersonProductsReportItemSet" category="Publication" submitProductYear="true" useProductYear="true" includeHQP="true" start="{$start_date}" end="{$end_date}" />
+        <ReportItemSet id="submit2" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="true" start="{$start_date}" end="{$end_date}" />
+        <ReportItemSet id="submit3" type="PersonProductsReportItemSet" category="Award" submitProductYear="true" useProductYear="true" includeHQP="false" start="{$start_date}" end="{$end_date}" />
     </ReportSection>
 </Report>

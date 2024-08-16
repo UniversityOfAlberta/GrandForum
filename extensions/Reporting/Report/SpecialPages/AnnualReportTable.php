@@ -38,7 +38,8 @@ class AnnualReportTable extends SpecialPage{
             $wgOut->addHTML("<li><a href='#tabs-$y'>$y</a></li>");
         }
         $wgOut->addHTML("</ul>");
-        $people = Person::getAllPeople();
+        $people = Person::getAllFullPeople();
+        $people = Person::filterFaculty($people);
         
         $decisionHeader = ($me->isRole(DEAN)) ? "<th>Dean's Decision</th>" : "";
         
@@ -74,7 +75,6 @@ class AnnualReportTable extends SpecialPage{
                     $people[] = Person::newFromId($row['person_id']);
                 }
             }
-            $people = Person::filterFaculty($people);
             foreach($people as $person){
                 $case = $person->getCaseNumber($y);
                 if($case != ""){
@@ -98,13 +98,18 @@ class AnnualReportTable extends SpecialPage{
                     $locked = $blob->getData();
                     $locked = (isset($locked['lock']) && implode($locked['lock']) == "Lock") ? "Locked" : "";
                     
+                    $blob = new ReportBlob(BLOB_TEXT, $y, 0, 0);
+                    $blob_address = ReportBlob::create_address("RP_CHAIR", "FEC_REVIEW", "SUBMITTED", $person->getId());
+                    $blob->load($blob_address);
+                    $submitted = $blob->getData();
+                    
                     $wgOut->addHTML("<tr>
                         <td>{$case}</td>
                         <td><a href='{$person->getUrl()}'>{$person->getReversedName()}</a></td>
                         <td class='deptCol'>{$person->getDepartment()}</td>
                         <td align='middle'>{$pdfButton}</td>
                         <td align='middle'>{$locked}</td>
-                        <td align='middle'>{$recButton}</td>
+                        <td align='middle'>{$recButton}{$submitted}</td>
                         {$decisionRow}
                     </tr>");
                 }

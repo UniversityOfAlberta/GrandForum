@@ -38,6 +38,8 @@ abstract class AbstractReport extends SpecialPage {
     var $name;
     var $year;
     var $startYear;
+    var $startMonth;
+    var $endMonth;
     var $xmlName;
     var $extends;
     var $reportType;
@@ -93,6 +95,8 @@ abstract class AbstractReport extends SpecialPage {
         $this->extends = "";
         $this->year = $year; // Default, can be overriden
         $this->startYear = $year - 1; // Default, can be overriden
+        $this->startMonth = substr(CYCLE_START_MONTH, 1); // Default, can be overriden
+        $this->endMonth = substr(CYCLE_END_MONTH, 1); // Default, can be overriden
         $this->reportType = '';
         $this->disabled = false;
         $this->ajax = false;

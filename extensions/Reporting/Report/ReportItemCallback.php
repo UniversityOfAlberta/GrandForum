@@ -24,6 +24,8 @@ class ReportItemCallback {
             "this_year" => "getThisYear",
             "next_year" => "getNextYear",
             "endYear" => "getThisYear",
+            "start_date" => "getStartDate",
+            "end_date" => "getEndDate",
             // Courses
             "course_term" => "getCourseTerm",
             "course_start" => "getCourseStart",
@@ -132,6 +134,7 @@ class ReportItemCallback {
             "user_other_count" => "getUserOtherCount",
             "user_committee_count" => "getUserCommitteeCount",
             "getHQPCount" => "getHQPCount",
+            "getTermsArray" => "getTermsArray",
             "getUserCoursesEnrolledByTerm" => "getUserCoursesEnrolledByTerm",
             "user_courses_count" => "getUserCoursesCount",
             "user_student_count" => "getUserStudentCount",
@@ -145,6 +148,9 @@ class ReportItemCallback {
             "user_phd_uni" => "getUserPhDUni",
             "user_appointment_year" => "getUserAppointmentYear",
             "user_appointment_date" => "getUserAppointmentDate",
+            "user_ats_year" => "getATSYear",
+            "user_ats_start_date" => "getATSStartDate",
+            "user_ats_end_date" => "getATSEndDate",
             "getFecPersonalInfo" => "getFecPersonalInfo",
             "getUserPublicationCount" => "getUserPublicationCount",
             "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
@@ -264,6 +270,13 @@ class ReportItemCallback {
     
     function getNextYear2(){
         return $this->reportItem->getReport()->year+2;
+    }
+    
+    function getStartDate(){
+        return "{$this->getLastYear()}-{$this->reportItem->getReport()->startMonth}";
+    }
+    function getEndDate(){
+        return "{$this->getThisYear()}-{$this->reportItem->getReport()->endMonth}";
     }
     
     function getHqpName(){
@@ -2156,6 +2169,9 @@ class ReportItemCallback {
 
     function getUserPhdYear(){
         $person = Person::newFromId($this->reportItem->personId);
+        if($person->getId() == null){
+            $person = $this->reportItem->getReport()->person;
+        }
         $fecInfo = $person->getFecPersonalInfo();
         $phd_year_array = explode("-", $fecInfo->dateOfPhd);
         return $phd_year_array[0];
@@ -2163,6 +2179,9 @@ class ReportItemCallback {
 
     function getUserAppointmentYear(){
         $person = Person::newFromId($this->reportItem->personId);
+        if($person->getId() == null){
+            $person = $this->reportItem->getReport()->person;
+        }
         $fecInfo = $person->getFecPersonalInfo();
         $phd_year_array = explode("-", $fecInfo->dateOfAppointment);
         return $phd_year_array[0];
@@ -2170,14 +2189,48 @@ class ReportItemCallback {
     
     function getUserPhdDate(){
         $person = Person::newFromId($this->reportItem->personId);
+        if($person->getId() == null){
+            $person = $this->reportItem->getReport()->person;
+        }
         $fecInfo = $person->getFecPersonalInfo();
         return substr($fecInfo->dateOfPhd, 0, 10);
     }
 
     function getUserAppointmentDate(){
         $person = Person::newFromId($this->reportItem->personId);
+        if($person->getId() == null){
+            $person = $this->reportItem->getReport()->person;
+        }
         $fecInfo = $person->getFecPersonalInfo();
         return substr($fecInfo->dateOfAppointment, 0, 10);
+    }
+    
+    function getATSYear(){
+        $today = date('Y-m-d');
+        $date = $this->getUserAppointmentDate();
+        $year  = substr($date, 0, 4);
+        $month = substr($date, 5, 5);
+        if(!is_numeric($year)){
+            return YEAR;
+        }
+        while("$year-$month" <= $today){
+            $year++;
+        }
+        return $year - 1;
+    }
+    
+    function getATSStartDate(){
+        $year = $this->getATSYear() - 1;
+        $date = $this->getUserAppointmentDate();
+        $month = substr($date, 5, 5);
+        return "$year-$month";
+    }
+    
+    function getATSEndDate(){
+        $year = $this->getATSYear();
+        $date = $this->getUserAppointmentDate();
+        $month = substr($date, 5, 5);
+        return date('Y-m-d', strtotime("$year-$month -1 day"));
     }
     
     function getFecPersonalInfo($field, $formatAsDate=true){

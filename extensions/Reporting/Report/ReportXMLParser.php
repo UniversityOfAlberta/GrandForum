@@ -272,6 +272,14 @@ class ReportXMLParser {
                     $this->report->startYear = "{$startYear}";
                 }
             }
+            if(isset($attributes->startMonth)){
+                $startMonth = $this->report->varSubstitute("{$attributes->startMonth}");
+                $this->report->startMonth = "{$startMonth}";
+            }
+            if(isset($attributes->endMonth)){
+                $endMonth = $this->report->varSubstitute("{$attributes->endMonth}");
+                $this->report->endMonth = "{$endMonth}";
+            }
             if(isset($attributes->name)){
                 $this->report->setName("{$attributes->name}");
             }

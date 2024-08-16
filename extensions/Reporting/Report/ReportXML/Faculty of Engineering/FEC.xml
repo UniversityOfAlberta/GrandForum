@@ -95,7 +95,7 @@
     <ReportSection id="cover" tooltip="Annual Report" name="Annual Report" title="Annual Report" blobSection="FEC_COVER" type="EditableReportSection">
         <Static>
             <![CDATA[
-                <b>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</b>
+                <b>Period: {time2date({$start_date}, F Y)} to {time2date({$end_date}, F Y)}</b>
                 <p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a> or <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf' target='_blank'>FSO Agreement</a>. The information submitted will be used in arriving at decisions regarding salaries, tenure, and promotion.</p>
                 <p style="font-size:0.8em;line-height:1.5em;"><b>Note:</b> All data you manually enter in your Annual Report will only be used to inform the FEC process.  Data imported from institutional and external databases, i.e., course teaching, grants, and publications, may be used for analytics purposes.</p>
                 <div style='display: inline-block; vertical-align: top; margin-right: 1em;'>
@@ -366,7 +366,7 @@
                         </tr>
                 ]]>
             </Static>
-            <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
+            <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}" start="{$start_date}" end="{$end_date}">
                 <Static>
                     <![CDATA[
                         <tr data-id='{$user_id}'>
@@ -431,7 +431,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="{$start_date}" end="{$end_date}">
             <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                 <![CDATA[
                     <tr><td>{$product_type}</td><td>{$item}</td>
@@ -470,7 +470,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr><td align='center'>{$presentation_title}</td>
@@ -517,7 +517,7 @@
                     </tr>
             ]]>
         </Static>
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
                 <![CDATA[
                     <tr>
@@ -604,7 +604,7 @@
                         </tr>
                 ]]>
             </Static>
-            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="CYCLE_START" end="CYCLE_END">
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}">
                 <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                     <![CDATA[
                         <tr><td>{$item}</td>
@@ -809,7 +809,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
                     <tr><td>{$product_citation}</td>

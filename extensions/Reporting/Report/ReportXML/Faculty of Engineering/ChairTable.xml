@@ -1,5 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="../ChairTable">
+    <ReportSection id="evaluations">
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('.generateButton').remove();
+                    $('#generateAll').remove();
+
+                    $('#chairTable tr td:nth-child(12), #chairTable tr th:nth-child(12)').remove();
+                    $('#chairTable tr td:nth-child(11), #chairTable tr th:nth-child(11)').remove();
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="dean_evaluations">
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('.generateButton').remove();
+                    $('#generateAll').remove();
+
+                    $('#chairTable tr td:nth-child(12), #chairTable tr th:nth-child(12)').remove();
+                    $('#chairTable tr td:nth-child(11), #chairTable tr th:nth-child(11)').remove();
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="atsec">
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('.generateButton').remove();
+                    $('#generateAll').remove();
+
+                    $('#chairTable tr td:nth-child(11), #chairTable tr th:nth-child(11)').remove();
+                    $('#chairTable tr td:nth-child(10), #chairTable tr th:nth-child(10)').remove();
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
     <ReportSection id="recommendations">
         <ReportItemSet id="header">
             <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
@@ -34,7 +73,7 @@
                 </ReportItemSet>
                 
                 <!-- Teaching -->
-                <ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Teaching Performance</h2>
                         {$item}<br /><br />
@@ -44,10 +83,10 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Research -->
-                <ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Research Performance</h2>
                         {$item}<br /><br />
@@ -57,10 +96,10 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Service -->
-                <ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Service Performance</h2>
                         {$item}<br /><br />
@@ -70,34 +109,34 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Noteworthy Contributions in the Last Evaluation Year -->
-                <ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                <!--ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Noteworthy Contributions in the Last Evaluation Year</h2>
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Noteworthy Contributions in the Last Evaluation Year -->
-                <ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                <!--ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Scholarship and Long-Term Contributions</h2>
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <If if="{!contains({$user_case_number}, T)}">
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
                         <![CDATA[
                             <h3>Recommendations</h3>
-                            <table id="chairTable" class="wikitable" width="100%">
+                            <table id="chairTable" class="wikitable">
                             <thead>
                                 <tr>
                                     <th>Increment</th>
-                                    <th>Tenure</th>
-                                    <th>Promotion</th>
+                                    <!--th>Tenure</th>
+                                    <th>Promotion</th-->
                                 </tr>
                             </thead>
                             <tbody>
@@ -107,7 +146,7 @@
                     </ReportItem>
                     <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
                         <![CDATA[
-                                <td align='center' class='tenure'>{$item}</td>
+                                <!--td align='center' class='tenure'>{$item}</td-->
                         ]]>
                     </ReportItem>
                 </If>
@@ -115,11 +154,11 @@
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
                         <![CDATA[
                             <h3>Recommendations</h3>
-                            <table id="chairTable" class="wikitable" width="100%">
+                            <table id="chairTable" class="wikitable">
                             <thead>
                                 <tr>
                                     <th>Increment</th>
-                                    <th>Promotion</th>
+                                    <!--th>Promotion</th-->
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,7 +169,7 @@
                 </Else>
                 <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
-                            <td align='center' class='promotion'>{$item}</td>
+                            <!--td align='center' class='promotion'>{$item}</td-->
                         </tr>
                         </tbody>
                         </table>
@@ -138,8 +177,22 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" encrypt="true">
                     <![CDATA[
+                        <h2>Comments to FEC</h2>
+                        <small>No more than 25 lines</small>
+                        {$item}
+                        <hr />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="submitted" type="FakeSubmitReportItem" blobItem="SUBMITTED" blobSubItem="{$user_id}" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <!--ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <h2>Files</h2>
                         <div class='files' id='file1'>{$item}</div>
                     ]]>
                 </ReportItem>
@@ -168,12 +221,12 @@
                             });
                         </script>
                     ]]>
-                </Static>
-                <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}">
+                </Static-->
+                <!--ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}">
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
             </If>
             <Else id="else">
                 <![CDATA[
@@ -216,7 +269,7 @@
                 </ReportItemSet>
                 
                 <!-- Teaching -->
-                <ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Teaching Performance</h2>
                         {$item}<br /><br />
@@ -226,10 +279,10 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Research -->
-                <ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Research Performance</h2>
                         {$item}<br /><br />
@@ -239,10 +292,10 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Service -->
-                <ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Service Performance</h2>
                         {$item}<br /><br />
@@ -252,33 +305,33 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Noteworthy Contributions in the Last Evaluation Year -->
-                <ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                <!--ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Noteworthy Contributions in the Last Evaluation Year</h2>
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Noteworthy Contributions in the Last Evaluation Year -->
-                <ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                <!--ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Scholarship and Long-Term Contributions</h2>
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                         <h3>Recommendations</h3>
-                        <table id="chairTable" class="wikitable" width="100%">
+                        <table id="chairTable" class="wikitable">
                         <thead>
                             <tr>
                                 <th>Increment</th>
-                                <th>Tenure</th>
-                                <th>Promotion</th>
+                                <!--th>Tenure</th>
+                                <th>Promotion</th-->
                             </tr>
                         </thead>
                         <tbody>
@@ -288,12 +341,12 @@
                 </ReportItem>
                 <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
-                            <td align='center' class='tenure'>{$item}</td>
+                            <!--td align='center' class='tenure'>{$item}</td-->
                     ]]>
                 </ReportItem>
                 <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
-                            <td align='center' class='promotion'>{$item}</td>
+                            <!--td align='center' class='promotion'>{$item}</td-->
                         </tr>
                         </tbody>
                         </table>
@@ -301,8 +354,22 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" encrypt="true">
                     <![CDATA[
+                        <h2>Comments to FEC</h2>
+                        <small>No more than 25 lines</small>
+                        {$item}
+                        <hr />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="submitted" type="FakeSubmitReportItem" blobItem="SUBMITTED" blobSubItem="{$user_id}" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <!--ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <h2>Files</h2>
                         <div class='files' id='file1'>{$item}</div>
                     ]]>
                 </ReportItem>
@@ -331,12 +398,12 @@
                             });
                         </script>
                     ]]>
-                </Static>
-                <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Advice" userId="{$user_id}">
+                </Static-->
+                <!--ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Advice" userId="{$user_id}">
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
             </If>
             <Else id="else">
                 <![CDATA[
@@ -379,7 +446,7 @@
                 </ReportItemSet>
                 
                 <!-- Teaching -->
-                <ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Teaching Performance</h2>
                         {$item}<br /><br />
@@ -389,10 +456,10 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Research -->
-                <ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Research Performance</h2>
                         {$item}<br /><br />
@@ -402,10 +469,10 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Service -->
-                <ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Service Performance</h2>
                         {$item}<br /><br />
@@ -415,33 +482,33 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Noteworthy Contributions in the Last Evaluation Year -->
-                <ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                <!--ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Noteworthy Contributions in the Last Evaluation Year</h2>
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Noteworthy Contributions in the Last Evaluation Year -->
-                <ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                <!--ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Scholarship and Long-Term Contributions</h2>
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                         <h3>Recommendations</h3>
-                        <table id="chairTable" class="wikitable" width="100%">
+                        <table id="chairTable" class="wikitable">
                         <thead>
                             <tr>
                                 <th>Increment</th>
-                                <th>Tenure</th>
-                                <th>Promotion</th>
+                                <!--th>Tenure</th>
+                                <th>Promotion</th-->
                             </tr>
                         </thead>
                         <tbody>
@@ -451,12 +518,12 @@
                 </ReportItem>
                 <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
-                            <td align='center' class='tenure'>{$item}</td>
+                            <!--td align='center' class='tenure'>{$item}</td-->
                     ]]>
                 </ReportItem>
                 <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
-                            <td align='center' class='promotion'>{$item}</td>
+                            <!--td align='center' class='promotion'>{$item}</td-->
                         </tr>
                         </tbody>
                         </table>
@@ -464,8 +531,22 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" encrypt="true">
                     <![CDATA[
+                        <h2>Comments to FEC</h2>
+                        <small>No more than 25 lines</small>
+                        {$item}
+                        <hr />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="submitted" type="FakeSubmitReportItem" blobItem="SUBMITTED" blobSubItem="{$user_id}" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <!--ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <h2>Files</h2>
                         <div class='files' id='file1'>{$item}</div>
                     ]]>
                 </ReportItem>
@@ -494,12 +575,12 @@
                             });
                         </script>
                     ]]>
-                </Static>
-                <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Decision" userId="{$user_id}">
+                </Static-->
+                <!--ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Decision" userId="{$user_id}">
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
             </If>
             <Else id="else">
                 <![CDATA[
@@ -542,7 +623,7 @@
                 </ReportItemSet>
                 
                 <!-- Teaching -->
-                <ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="teaching_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="TEACHING_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Teaching Performance</h2>
                         {$item}<br /><br />
@@ -552,10 +633,10 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Research -->
-                <ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="research_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="RESEARCH_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Research Performance</h2>
                         {$item}<br /><br />
@@ -565,10 +646,10 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Service -->
-                <ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
+                <!--ReportItem id="service_rank" type="Select" options="|Above Expectations|Meets Expectations|Below Expectations" placeholder="Choose an option..." blobType="BLOB_TEXT" blobItem="SERVICE_RANK" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Service Performance</h2>
                         {$item}<br /><br />
@@ -578,33 +659,33 @@
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Noteworthy Contributions in the Last Evaluation Year -->
-                <ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                <!--ReportItem id="contributions" type="Textarea" blobType="BLOB_TEXT" blobItem="CONTRIBUTIONS" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Noteworthy Contributions in the Last Evaluation Year</h2>
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <!-- Noteworthy Contributions in the Last Evaluation Year -->
-                <ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                <!--ReportItem id="scholarships" type="Textarea" blobType="BLOB_TEXT" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Scholarship and Long-Term Contributions</h2>
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
                 
                 <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
                         <h3>Recommendations</h3>
-                        <table id="chairTable" class="wikitable" width="100%">
+                        <table id="chairTable" class="wikitable">
                         <thead>
                             <tr>
                                 <th>Increment</th>
-                                <th>Tenure</th>
-                                <th>Promotion</th>
+                                <!--th>Tenure</th>
+                                <th>Promotion</th-->
                             </tr>
                         </thead>
                         <tbody>
@@ -614,12 +695,12 @@
                 </ReportItem>
                 <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
-                            <td align='center' class='tenure'>{$item}</td>
+                            <!--td align='center' class='tenure'>{$item}</td-->
                     ]]>
                 </ReportItem>
                 <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
                     <![CDATA[
-                            <td align='center' class='promotion'>{$item}</td>
+                            <!--td align='center' class='promotion'>{$item}</td-->
                         </tr>
                         </tbody>
                         </table>
@@ -627,8 +708,22 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" encrypt="true">
                     <![CDATA[
+                        <h2>Comments to FEC</h2>
+                        <small>No more than 25 lines</small>
+                        {$item}
+                        <hr />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="submitted" type="FakeSubmitReportItem" blobItem="SUBMITTED" blobSubItem="{$user_id}" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <!--ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                    <![CDATA[
+                        <h2>Files</h2>
                         <div class='files' id='file1'>{$item}</div>
                     ]]>
                 </ReportItem>
@@ -657,12 +752,12 @@
                             });
                         </script>
                     ]]>
-                </Static>
-                <ReportItem id="submit" type="SimpleReviewSubmit" section="Chair Advice" userId="{$user_id}">
+                </Static-->
+                <!--ReportItem id="submit" type="SimpleReviewSubmit" section="Chair Advice" userId="{$user_id}">
                     <![CDATA[
                         {$item}
                     ]]>
-                </ReportItem>
+                </ReportItem-->
             </If>
             <Else id="else">
                 <![CDATA[
