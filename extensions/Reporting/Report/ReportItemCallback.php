@@ -2261,6 +2261,7 @@ class ReportItemCallback {
     function getATSStartDate(){
         $year = $this->getATSYear() - 1;
         $date = $this->getUserAppointmentDate();
+        $date = ($date != "") ? $date : CYCLE_START;
         $month = substr($date, 5, 5);
         return "$year-$month";
     }
@@ -2268,6 +2269,7 @@ class ReportItemCallback {
     function getATSEndDate(){
         $year = $this->getATSYear();
         $date = $this->getUserAppointmentDate();
+        $date = ($date != "") ? $date : CYCLE_START;
         $month = substr($date, 5, 5);
         return date('Y-m-d', strtotime("$year-$month -1 day"));
     }
