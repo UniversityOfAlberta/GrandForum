@@ -20,6 +20,7 @@ class FESPeopleTable extends SpecialPage {
 
     function execute($par){
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
+		$me = Person::newFromWgUser();
 		$people = Person::getAllPeople();
     
         $wgOut->addHTML("<table id='peopleTable' class='wikitable'>
@@ -41,8 +42,10 @@ class FESPeopleTable extends SpecialPage {
                     <th>Alumni Sector</th>
                     <th>Institution</th>
                     <th>Faculty</th>
-                    <th>Department</th>
-                    <th>Gender</th>");
+                    <th>Department</th>");
+        if($config->getValue("genderEnabled") && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly
+            $wgOut->addHTML("<th>Gender</th>");
+        }
         if($config->getValue('crcEnabled')){
             $wgOut->addHTML("<th>CRC</th>");
         }
@@ -52,12 +55,15 @@ class FESPeopleTable extends SpecialPage {
         if($config->getValue('mitacsEnabled')){
             $wgOut->addHTML("<th>MITACS</th>");
         }
-        $wgOut->addHTML("
+        if($me->isRoleAtLeast(MANAGER) && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly
+            $wgOut->addHTML("
                     <th style='display:none;'>Pronouns</th>
                     <th style='display:none;'>Indigenous</th>
                     <th style='display:none;'>Disability</th>
                     <th style='display:none;'>Minority</th>
-                    <th style='display:none;'>Group</th>
+                    <th style='display:none;'>Group</th>");
+        }
+        $wgOut->addHTML("
                     <th>Nationality</th>
                     <th>Status</th>
                     <th>Relationships?</th>
@@ -126,8 +132,10 @@ class FESPeopleTable extends SpecialPage {
                              <td>{$alumni->alumni_sector}</td>
                              <td>{$person->getUni()}</td>
                              <td>{$person->getFaculty()}</td>
-                             <td>{$person->getDepartment()}</td>
-                             <td>{$person->getGender()}</td>");
+                             <td>{$person->getDepartment()}</td>");
+            if($config->getValue("genderEnabled") && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly
+                $wgOut->addHTML("<td>{$person->getGender()}</td>");
+            }
             if($config->getValue('crcEnabled')){
                 $crcObj = $person->getCanadaResearchChair();
                 if($crcObj != null){
@@ -158,12 +166,14 @@ class FESPeopleTable extends SpecialPage {
             }
             $inverse = $person->getRelations('all', true, true);
             $relationships = (count($supervises) + count($mentors) + count($worksWith) + count($inverse) > 0) ? "Yes" : "No";
-            $wgOut->addHTML("<td style='display:none;'>{$person->getPronouns()}</td>
-                             <td style='display:none;'>{$person->getIndigenousStatus()}</td>
-                             <td style='display:none;'>{$person->getDisabilityStatus()}</td>
-                             <td style='display:none;'>{$person->getMinorityStatus()}</td>
-                             <td style='display:none;'>{$person->getEthnicity()}</td>
-                             <td>{$person->getNationality()}</td>
+            if($me->isRoleAtLeast(MANAGER) && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly
+                $wgOut->addHTML("<td style='display:none;'>{$person->getPronouns()}</td>
+                                 <td style='display:none;'>{$person->getIndigenousStatus()}</td>
+                                 <td style='display:none;'>{$person->getDisabilityStatus()}</td>
+                                 <td style='display:none;'>{$person->getMinorityStatus()}</td>
+                                 <td style='display:none;'>{$person->getEthnicity()}</td>");
+            }
+            $wgOut->addHTML("<td>{$person->getNationality()}</td>
                              <td>{$status}</td>
                              <td>{$relationships}</td>
                              <td>".implode(", ", $supervises)."</td>
