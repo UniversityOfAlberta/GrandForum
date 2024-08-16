@@ -55,6 +55,24 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="DeanEA">
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="teaching" permissions="rw" />
+            <SectionPermission id="initiatives" permissions="rw" />
+            <SectionPermission id="supervision" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="university_activities" permissions="rw" />
+            <SectionPermission id="professional_activities" permissions="rw" />
+            <SectionPermission id="awards" permissions="rw" />
+            <SectionPermission id="misc" permissions="rw" />
+            <SectionPermission id="additional_information" permissions="rw" />
+            <SectionPermission id="spots" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="chair" permissions="" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <If if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="teaching" permissions="rw" />
@@ -252,7 +270,7 @@
                 For multi-section courses, please indicate the course coordinator with an asterisk (*).
             ]]>
         </Static>
-        <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
+        <ReportItemSet type="String" array="{getTermsArray({$start_date},{$end_date})}">
             <Static>
                 <![CDATA[
                     <h3>{getExtra()}</h3>
@@ -850,7 +868,7 @@
                 <div id="spots">
             ]]>
         </Static>
-        <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
+        <ReportItemSet type="String" array="{getTermsArray({$start_date},{$end_date})}">
             <Static>
                 <![CDATA[
                     {set(term, {getExtra()})}

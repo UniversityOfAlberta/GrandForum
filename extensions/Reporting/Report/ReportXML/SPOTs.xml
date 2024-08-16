@@ -14,7 +14,7 @@
                 <div class='pagebreak'></div>
             ]]>
         </Static>
-        <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
+        <ReportItemSet type="String" array="{getTermsArray({$start_date},{$end_date})}">
             <Static>
                 <![CDATA[
                     {set(term, {getExtra()})}

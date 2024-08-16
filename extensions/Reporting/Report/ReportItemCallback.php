@@ -2063,6 +2063,45 @@ class ReportItemCallback {
         return count($hqps);
     }
     
+    function getTermsArray($start, $end, $delim="|"){
+        $startYear = substr($start, 0, 4);
+        $startMonth = substr($start, 5, 5);
+        $endYear = substr($end, 0, 4);
+        $endMonth = substr($end, 5, 5);
+        
+        $terms = array();
+        
+        //  Last year
+        if($startMonth <= "04-31"){ // April
+            $terms[] = "Winter {$startYear}";
+        }
+        if($startMonth <= "06-31"){ // June
+            $terms[] = "Spring {$startYear}";
+        }
+        if($startMonth <= "08-31"){ // August
+            $terms[] = "Summer {$startYear}";
+        }
+        if($startMonth <= "12-31"){ // December
+            $terms[] = "Fall {$startYear}";
+        }
+        
+        // This year
+        if($endMonth >=  "01-01"){ // December
+            $terms[] = "Winter {$endYear}";
+        }
+        if($endMonth >= "05-01"){ // May
+            $terms[] = "Spring {$endYear}";
+        }
+        if($endMonth >= "07-01"){ // July
+            $terms[] = "Summer {$endYear}";
+        }
+        if($endMonth >= "09-01"){ // Sept
+            $terms[] = "Fall {$endYear}";
+        }
+        
+        return implode($delim, $terms);
+    }
+    
     function getUserCoursesEnrolledByTerm($term){
         $person = Person::newFromId($this->reportItem->personId);
         $courses = $person->getCoursesDuring("0000-00-00", "2100-01-01");

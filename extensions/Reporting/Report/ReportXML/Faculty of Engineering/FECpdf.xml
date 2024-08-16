@@ -114,7 +114,7 @@
         </If-->
     </ReportSection>
     <ReportSection id="teaching" tooltip="TEACHING" name="Teaching" title="1. TEACHING" blobSection="FEC_TEACHING" type="EditableReportSection" pagebreak="false" hLevel="2">
-        <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
+        <ReportItemSet type="String" array="{getTermsArray({$start_date},{$end_date})}">
             <Static>
                 <![CDATA[
                     <h3>{getExtra()}</h3>
@@ -822,7 +822,7 @@
                 <div id="spots">
             ]]>
         </Static>
-        <ReportItemSet type="String" array="Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
+        <ReportItemSet type="String" array="{getTermsArray({$start_date},{$end_date})}">
             <Static>
                 <![CDATA[
                     {set(term, {getExtra()})}
