@@ -36,15 +36,21 @@ class TemplateReport extends AbstractReport{
     }
     
     static function createSubTabs(&$tabs){
-        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $config;
         $person = Person::newFromWgUser();
         if($person->isLoggedIn() && $person instanceof FullPerson){
             $person->getFecPersonalInfo();
             if($person->faculty == getFaculty()){
                 $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
                 if($person->isRole(NI) || $person->isRole("ATS")){
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FEC")) ? "selected" : false;
-                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Annual Report", "{$url}FEC", $selected);
+                    if(getFaculty() == 'Engineering' && $person->isRole("ATS")){
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ATS")) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Annual Report", "{$url}ATS", $selected);
+                    }
+                    else{
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FEC")) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Annual Report", "{$url}FEC", $selected);
+                    }
                     
                     //$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "QACV")) ? "selected" : false;
                     //$tabs["CV"]['subtabs'][] = TabUtils::createSubTab("QA CV", "{$url}QACV", $selected);
