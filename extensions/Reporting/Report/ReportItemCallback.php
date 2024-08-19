@@ -1117,12 +1117,12 @@ class ReportItemCallback {
         return $person->getKeywords(", ");
     }
     
-    function getUserSupervisors($excludeMe=false, $startDate="", $endDate=""){
+    function getUserSupervisors($excludeMe=false){
         $supervisors = array();
         $person = Person::newFromId($this->reportItem->personId);
-        $startDate = ($startDate = "") ? $this->reportItem->getReport()->startYear.CYCLE_START_MONTH : $startDate;
-        $endDate = ($endDate = "") ? $this->reportItem->getReport()->year.CYCLE_END_MONTH : $endDate;
-        $supervisors = $person->getSupervisorsDuring($startDate, $endDate);
+        $university = $person->getUniversity();
+        $supervisors = $person->getSupervisorsDuring($this->reportItem->getReport()->startYear.CYCLE_START_MONTH, 
+                                                     $this->reportItem->getReport()->year.CYCLE_END_MONTH);
         $sups = array();
         foreach($supervisors as $supervisor){
             if($excludeMe && $supervisor->getNameForForms() == $this->reportItem->getReport()->person->getNameForForms()){
@@ -1136,12 +1136,8 @@ class ReportItemCallback {
     function getUserCoSupervisors(){
         $me = $this->reportItem->getReport()->person;
         $person = Person::newFromId($this->reportItem->personId);
-        $startDate = $this->reportItem->getReport()->startYear.CYCLE_START_MONTH;
-        $endDate = $this->reportItem->getReport()->year.CYCLE_END_MONTH;
-        
-        $startDate = ($this->getExtra('start_date') != "" && $this->getExtra('start_date') != "0000-00-00") ? max($this->getExtra('start_date'), $startDate) : $startDate;
-        $endDate = ($this->getExtra('end_date')     != "" && $this->getExtra('end_date')   != "0000-00-00") ? min($this->getExtra('end_date'),   $endDate)   : $endDate;
-        if($me->isRelatedToDuring($person, CO_SUPERVISES, $startDate, $endDate)){
+        if($me->isRelatedToDuring($person, CO_SUPERVISES, $this->reportItem->getReport()->startYear.CYCLE_START_MONTH, 
+                                                          $this->reportItem->getReport()->year.CYCLE_END_MONTH)){
             // Only show if the person is a co-supervisor
             return $this->getUserSupervisors(true);
         }
