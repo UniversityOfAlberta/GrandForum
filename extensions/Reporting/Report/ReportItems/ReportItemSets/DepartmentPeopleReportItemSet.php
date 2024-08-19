@@ -40,19 +40,11 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                           $person->isSubRole("DR"));
             }
             // SPECIAL CASES FOR PEOPLE FROM OTHER DEPARTMENTS BELOW
-            if(($me->getName() == "Linda.Christensen" || $me->getName() == "Alison.Murray") && $person->getName() == "Deanna.Singhal"){
-                // This is also a special case, but needs to be put here
-                goto create;
-            }
             $person->getFecPersonalInfo();
             $depts = array_keys($person->departments);
             if(($dept == "") || 
                (@$depts[0] == $dept) ||
                ($found)){
-                if(($me->getName() == "PSYCH.ExecutiveAssistant" || $me->getName() == "Jannie.Boulter") && $person->getName() == "Anthony.Singhal"){
-                    // This is also a special case, but needs to be put here
-                    goto create;
-                }
                 if($excludeMe && $person->isMe()){
                     // Should not see themselves in recommendations
                     continue;
@@ -76,13 +68,6 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 // SPECIAL CASES BELOW
                 if(($me->getName() == "Linda.Christensen" || $me->getName() == "Tracy.Raivio") && ($person->getName() == "Mark.Lewis")){
                     // Not reviewed by BioSci, only Math
-                    continue;
-                }
-                if(($me->getName() == ".Psychair") && $person->getName() == "Anthony.Singhal"){
-                    continue;
-                }
-                if(($me->getName() == "Anthony.Singhal" || $me->getName() == ".Psychair" || 
-                    $me->getName() == "PSYCH.ExecutiveAssistant" || $me->getName() == "Llyn.Madsen") && $person->getName() == "Deanna.Singhal"){
                     continue;
                 }
                 create:
