@@ -1141,7 +1141,6 @@ class ReportItemCallback {
         
         $startDate = ($this->getExtra('start_date') != "" && $this->getExtra('start_date') != "0000-00-00") ? max($this->getExtra('start_date'), $startDate) : $startDate;
         $endDate = ($this->getExtra('end_date')     != "" && $this->getExtra('end_date')   != "0000-00-00") ? min($this->getExtra('end_date'),   $endDate)   : $endDate;
-        var_dump($startDate);
         if($me->isRelatedToDuring($person, CO_SUPERVISES, $startDate, $endDate)){
             // Only show if the person is a co-supervisor
             return $this->getUserSupervisors(true);
