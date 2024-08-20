@@ -45,11 +45,6 @@ class ResultWrapper implements IResultWrapper {
 			throw new InvalidArgumentException( "Null result resource provided" );
 		}
 	}
-	
-	// NOTE: Added for DBFunctions
-	public function getResult(){
-	    return $this->result;
-	}
 
 	/**
 	 * Get the underlying RDBMS driver-specific result resource

@@ -64,7 +64,10 @@
 			"McDutchie",
 			"Spenĉjo",
 			"Saturnow",
-			"נדב ס"
+			"נדב ס",
+			"Lepticed",
+			"Voltinus",
+			"Ziko"
 		]
 	},
 	"tog-underline": "Substrekado de ligiloj:",
@@ -1039,7 +1042,7 @@
 	"showingresultsinrange": "Malsupre montriĝas {{PLURAL:$1|<strong>1</strong> rezulto|<strong>$1</strong> rezultoj}} en la intervalo #<strong>$2</strong> ĝis #<strong>$3</strong>.",
 	"search-showingresults": "{{PLURAL:$4|Rezulto <strong>$1</strong> el <strong>$3</strong>|Rezultoj <strong>$1 - $2</strong> el <strong>$3</strong>}}",
 	"search-nonefound": "La serĉomendo rezultis kun neniuj trafoj.",
-	"search-nonefound-thiswiki": "Ne estis rezultoj kongruantaj al la demando en $3 .",
+	"search-nonefound-thiswiki": "En ĉi tiu retejo ne troviĝis rezultoj kiuj kongruas al la demando.",
 	"powersearch-legend": "Progresa serĉo",
 	"powersearch-ns": "Serĉi en nomspacoj:",
 	"powersearch-togglelabel": "Elekti:",
@@ -3906,7 +3909,7 @@
 	"authprovider-confirmlink-failed": "Ligado de konto ne plene sukcesis: $1",
 	"authprovider-confirmlink-ok-help": "Kontinui post montrado de mesaĝoj pri malsukceso de ligado.",
 	"authprovider-resetpass-skip-label": "Preterpasi",
-	"authprovider-resetpass-skip-help": "Preterpasi  pasvortan reensignadon.",
+	"authprovider-resetpass-skip-help": "Preterpasi pasvortan reensignadon.",
 	"authform-nosession-login": "La aŭtentikagdo sukcesis, sed via retumilo ne povas \"memori\" ensalutitadon.\n\n$1",
 	"authform-nosession-signup": "La konto estis kreita, sed via retumilo ne povas \"memori\" ensalutitadon.\n\n$1",
 	"authform-newtoken": "Mankanta ĵetono. $1",
