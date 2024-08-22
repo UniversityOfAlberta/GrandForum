@@ -1017,6 +1017,7 @@ class Person extends BackboneModel {
         Person::$cache = array();
         Person::$aliasCache = array();
         Person::$employeeIdCache = array();
+        Person::$fecInfoCache = array();
         Cache::delete("allPeopleCache");
         Cache::delete("mw_user_{$personToKeep->getId()}");
         Cache::delete("mw_user_{$personToDelete->getId()}");
@@ -1098,6 +1099,7 @@ class Person extends BackboneModel {
             Person::$cache = array();
             Person::$aliasCache = array();
             Person::$userRows = array();
+            Person::$fecInfoCache = array();
             Cache::delete("rolesCache");
             Cache::delete("allPeopleCache");
             Cache::delete("mw_user_{$this->getId()}");
@@ -1123,6 +1125,7 @@ class Person extends BackboneModel {
             Person::$cache = array();
             Person::$aliasCache = array();
             Person::$userRows = array();
+            Person::$fecInfoCache = array();
             Cache::delete("rolesCache");
             Cache::delete("allPeopleCache");
             Cache::delete("mw_user_{$this->getId()}");
@@ -4419,6 +4422,7 @@ class FullPerson extends Person {
             Person::$cache = array();
             Person::$aliasCache = array();
             Person::$userRows = array();
+            Person::$fecInfoCache = array();
             Cache::delete("rolesCache");
             Cache::delete("allPeopleCache");
             Cache::delete("mw_user_{$this->getId()}");
@@ -4450,9 +4454,12 @@ class FullPerson extends Person {
             Person::$cache = array();
             Person::$aliasCache = array();
             Person::$userRows = array();
+            Person::$fecInfoCache = array();
             Cache::delete("rolesCache");
             Cache::delete("allPeopleCache");
             Cache::delete("mw_user_{$this->getId()}");
+            $newPerson = Person::newFromId($this->getId());
+            $newPerson->getFecPersonalInfo();
             return $status;
         }
         return false;
