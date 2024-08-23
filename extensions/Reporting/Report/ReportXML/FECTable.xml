@@ -280,6 +280,10 @@
                         postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip', 'downloadFrame');
                     });
                 </script>
+            ]]>
+        </Static>
+        <Static id="header">
+            <![CDATA[
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
                     <thead>
                         <tr>
@@ -486,7 +490,7 @@
                 ]]>
             </Static>
         </ReportItemSet>
-        <Static>
+        <Static id="footer">
             <![CDATA[
                     </tbody>
                 </table>
@@ -573,7 +577,7 @@
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "iDisplayLength": -1
                     });
-                    $('#chairTable select, #chairTable textarea').change(function(){
+                    $('#chairTable select, #chairTable textarea, #chairTable input').change(function(){
                         saveAll();
                     });
                     $('#summary input').change(function(){

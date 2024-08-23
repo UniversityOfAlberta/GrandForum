@@ -1,4 +1,217 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="../FECTable">
-    
+    <ReportSection id="fec">
+        <ReportItem id="header">
+            <![CDATA[
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th width="1%">Case#</th>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th>Department</th>
+                            <th width="1%">Annual Report</th>
+                            <th>Evaluation</th>
+                            <th>Recommended Increment</th>
+                            <th>Revised Increment</th>
+                            <th>Increment Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
+                            <!--th>Tenure Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
+                            <th>Promotion Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th-->
+                            <th>Comments <span class='tooltip' title='Comments will be visible to the FEC Chair'>&#9432;</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="faculty" start="{$last_year}-07-01" end="{$this_year}-07-01" excludeMe="true">
+            <Static>
+                <![CDATA[
+                    <tr data-id="{$user_id}">
+                        <td class="casenumber" style='white-space:nowrap;'>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                        <td>{$user_depts}</td>
+                ]]>
+            </Static>
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="downloadPDF" buttonName=" AR ">
+                <![CDATA[
+                        <td align='center' style="white-space:nowrap;">{$item}<br />
+                ]]>
+            </ReportItem>
+            <For from="1" to="3">
+                <Static>
+                    {set(fileCR, {getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)})}
+                </Static>
+                <If if="{!=({get(fileCR)},)}">
+                    <![CDATA[
+                       <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileCR)}">File</a><br />
+                    ]]>
+                </If>
+            </For>
+            <Static>
+                <![CDATA[
+                    </td>
+                    <td align='center' style="white-space:nowrap;">
+                ]]>
+            </Static>
+            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="downloadPDF" buttonName="Recommendation">
+                <![CDATA[
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+            <If if="{or({contains({$my_roles},ADMIN)},
+                        {contains({$my_roles},DEAN)},
+                        {contains({$my_roles},VDEAN)},
+                        {contains({$my_roles},HR)}">
+                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Advice">
+                    <![CDATA[
+                            {$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Decision">
+                    <![CDATA[
+                            {$item}<br />
+                    ]]>
+                </ReportItem>
+            </If>
+            <Static>
+                <![CDATA[
+                    </td>
+                ]]>
+            </Static>
+            <If if="{or({contains({user_sub_roles(;)},Dean's Decision)})}">
+                <![CDATA[
+                    <td>
+                        <span class="increment dd">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span>
+                    </td>
+                ]]>
+            </If>
+            <Else>
+                <![CDATA[
+                    <td>
+                        <span class="increment">{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</span>
+                    </td>
+                ]]>
+            </Else>
+            <Static>
+                <![CDATA[
+                    <td>
+                        <span class="revised_increment">{getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}</span>
+                    </td>
+                ]]>
+            </Static>
+            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_roles},FEC)})}">
+                <!-- Increment Vote -->
+                <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
+                    <![CDATA[
+                        <td class="vote">
+                            <div class='text' style='display:none;'>
+                                
+                            </div>
+                            <div class='field' style='display:none;'>
+                                <span id='vote_{$user_id}'>{$item}</span>
+                            </div>
+                        </td>
+                    ]]>
+                </ReportItem>
+                <!-- Tenure Vote -->
+                <!--ReportItem id="t_vote" type="Select" blobType="BLOB_TEXT" blobItem="T_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
+                    <![CDATA[
+                        <td class="t_vote">
+                            <div class='text' style='display:none;'>
+                                
+                            </div>
+                            <div class='field' style='display:none;'>
+                                <span id='t_vote_{$user_id}'>{$item}</span>
+                            </div>
+                        </td>
+                    ]]>
+                </ReportItem-->
+                <!-- Promotion Vote -->
+                <!--ReportItem id="p_vote" type="Select" blobType="BLOB_TEXT" blobItem="P_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
+                    <![CDATA[
+                        <td class="p_vote">
+                            <div class='text' style='display:none;'>
+                                
+                            </div>
+                            <div class='field' style='display:none;'>
+                                <span id='p_vote_{$user_id}'>{$item}</span>
+                            </div>
+                        </td>
+                    ]]>
+                </ReportItem-->
+                
+                <!-- Comments -->
+                <If if="{contains({$my_roles},ViceDean)}">
+                    <Static>
+                        <![CDATA[
+                            <td>
+                        ]]>
+                    </Static>
+                    <ReportItemSet id="fec_comments" type="FECReportItemSet">
+                        <Static>
+                            <![CDATA[
+                                {set(discuss, {getText(RP_FEC_TABLE, TABLE, COMMENTS_DISCUSS, {$parent_id}, {$user_id}, 0)})}
+                                {set(comment, {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)})}
+                            ]]>
+                        </Static>
+                        <If id="comment_if" if="{!=({get(discuss)},)}">
+                            <![CDATA[
+                                <b>{$user_name}:</b> &#x2714; {get(comment)}
+                                <hr />
+                            ]]>
+                        </If>
+                    </ReportItemSet>
+                    <Static>
+                        <![CDATA[
+                            </td>
+                        ]]>
+                    </Static>
+                </If>
+                <Else>
+                    <ReportItem id="comments_discuss" type="SingleCheckbox" blobType="BLOB_TEXT" blobItem="COMMENTS_DISCUSS" blobSubItem="{$user_id}" options="Discuss" height="75px" encrypt="true">
+                        <![CDATA[
+                            <td></td>
+                            <td>
+                                <div id='comments_discuss_{$user_id}'>{$item}</div>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" height="75px" width="170px" encrypt="true">
+                        <![CDATA[
+                                <div id='comments_{$user_id}'>{$item}</div>
+                                <script type='text/javascript'>
+                                    $('#comments_discuss_{$user_id} input').change(function(){
+                                        console.log($('#comments_discuss_{$user_id} input').is(":checked"));
+                                        if($('#comments_discuss_{$user_id} input').is(":checked")){
+                                            $('#comments_{$user_id}').show();
+                                        }
+                                        else{
+                                            $('#comments_{$user_id}').hide();
+                                        }
+                                    }).change();
+                                </script>
+                            </td>
+                        ]]>
+                    </ReportItem>
+                </Else>
+            </If>
+            <Else>
+                <![CDATA[
+                    <td></td>
+                    <td></td>
+                ]]>
+            </Else>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <ReportItem id="footer">
+            <![CDATA[
+                    </tbody>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
 </Report>
