@@ -824,7 +824,7 @@ if ( isset($pdf) ) {
         $dompdf->load_html($finalHTML);
         $dompdf->render();
         //$pdfStr = $dompdf->output();
-        $pdfStr = PDFGenerator::processChapters($dompdf, $name);
+        $pdfStr = PDFGenerator::processChapters($dompdf, $name, $report);
         unset($dompdf);
         Dompdf\Image\Cache::clear();
         $GLOBALS['footnotes'] = array();
@@ -841,7 +841,7 @@ if ( isset($pdf) ) {
      * @param string $name The name of the PDF document
      * @returns string Returns the pdf string
      */
-    function processChapters($dompdf, $name){
+    function processChapters($dompdf, $name, $report){
         global $IP;
         $str = "";
         $attached = array();
@@ -893,7 +893,7 @@ if ( isset($pdf) ) {
         }
         file_put_contents("/tmp/{$name}{$rand}pdfmarks", $str);
         file_put_contents("/tmp/{$name}{$rand}pdf", $dompdf->output());
-        exec("pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
+        exec("pdftk \"/tmp/{$name}{$rand}pdf\" cat output \"/tmp/{$name}{$rand}nomarks\"");
 
         exec("$IP/extensions/Reporting/PDFGenerator/gs \\
                 -q \\
@@ -902,12 +902,20 @@ if ( isset($pdf) ) {
                 -sDEVICE=pdfwrite \\
                 -dPDFSETTINGS=/prepress \\
                 -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}nomarks\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
+                
+        if($report instanceof AbstractReport && $report->prepend){
+            exec("pdftk {$attached} \"/tmp/{$name}{$rand}withmarks\" cat output \"/tmp/{$name}{$rand}withmarks2\"");
+        }
+        else{
+            exec("pdftk \"/tmp/{$name}{$rand}withmarks\" {$attached} cat output \"/tmp/{$name}{$rand}withmarks2\"");
+        }
         
-        $pdfStr = file_get_contents("/tmp/{$name}{$rand}withmarks");
+        $pdfStr = file_get_contents("/tmp/{$name}{$rand}withmarks2");
         unlink("/tmp/{$name}{$rand}pdfmarks");
         unlink("/tmp/{$name}{$rand}nomarks");
         unlink("/tmp/{$name}{$rand}pdf");
         unlink("/tmp/{$name}{$rand}withmarks");
+        unlink("/tmp/{$name}{$rand}withmarks2");
         foreach($GLOBALS['attachedPDFs'] as $pdf){
             $md5 = md5($pdf);
             if(file_exists("/tmp/{$md5}")){
