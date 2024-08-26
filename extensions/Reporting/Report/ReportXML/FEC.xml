@@ -372,7 +372,7 @@
                 <Static>
                     <![CDATA[
                         <tr data-id='{$user_id}'>
-                            <td rowspan='2'>{$user_name}</td>
+                            <td rowspan='2'>{$user_name}<br /><i>{getExtra(role)}</i></td>
                     ]]>
                 </Static>
                 
