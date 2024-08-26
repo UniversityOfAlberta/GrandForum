@@ -151,6 +151,9 @@
     // Whether or not the gender field is enabled
     $config->setValue("genderEnabled", true);
     
+    // Whether to show the candidate option on AddMember
+    $config->setValue("candidateEnabled", true);
+    
     // Whether or not the Nationality field is enabled
     $config->setValue("nationalityEnabled", true);
     

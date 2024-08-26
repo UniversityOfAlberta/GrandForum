@@ -422,7 +422,7 @@ class ProjectMainTab extends AbstractEditableTab {
             if(isset($_GET['generatePDF'])){ $this->html .= "\n<div style='font-size: smaller;display:table;width:100%;'>"; }
             else { $this->html .= "\n<div style='display:flex;flex-wrap:wrap;width:100%;'>"; }
             $this->showRole(PL);
-            $this->showRole(PA);
+            $this->showRole(PA, null, false, false, "+1");
             if($config->getValue('networkName') == "GlycoNet" && $this->project->getType() == "Administrative"){
                 $this->showRole("GIS Leader");
                 $this->showRole("GIS Manager");
@@ -435,11 +435,12 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->showRole(CI);
                 $this->showRole(AR);
                 $this->showRole(CHAMP);
-                $this->showRole(HQP);
+                $this->showRole(HQP, null, false, false, "+1");
                 $this->showRole(PARTNER);
                 $this->showRole(AG);
-                $this->showRole(HQP, "Alumni ".HQP, true);
+                $this->showRole(HQP, "Alumni ".HQP, true, false, "+1");
                 $this->showRole(EXTERNAL);
+                $this->showRole(PA, "Alumni ".PA, true, false, "+1");
             }
             $this->showRole("CRMContact", "Contact");
             $this->finishRoleRow();
@@ -447,7 +448,7 @@ class ProjectMainTab extends AbstractEditableTab {
         }
     }
     
-    function showRole($role, $text=null, $past=false, $returnOnly=false){
+    function showRole($role, $text=null, $past=false, $returnOnly=false, $offset="0"){
         global $config;
         $me = Person::newFromWgUser();
         if(!$past){
@@ -465,7 +466,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $people = $project->getAllPeople($role);
             }
             else{
-                $people = $project->getAllPeopleOn($role, $project->getEndDate());
+                $people = $project->getAllPeopleOn($role, date('Y-m-d', strtotime($project->getEndDate()." {$offset} days")));
             }
             // Filter for Alumni people
             if($past){

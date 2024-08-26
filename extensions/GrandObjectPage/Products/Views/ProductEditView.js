@@ -2,6 +2,7 @@ ProductEditView = Backbone.View.extend({
 
     isDialog: false,
     projectWarning: null,
+    doiWarning: null,
 
     initialize: function(options){
         this.parent = this;
@@ -9,6 +10,7 @@ ProductEditView = Backbone.View.extend({
         this.listenTo(this.model, "change:category", this.render);
         this.listenTo(this.model, "change:type", this.render);
         this.listenTo(this.model, "change:projects", this.updateProjectWarning);
+        this.listenTo(this.model, "change:data", this.updateDOIWarning);
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
@@ -150,6 +152,23 @@ ProductEditView = Backbone.View.extend({
         }
     },
     
+    updateDOIWarning: function(){
+        if(networkName != "FES"){
+            return;
+        }
+        if((this.model.get('category') == "Publication" || 
+            this.model.get('category') == "IP Management") &&
+           (_.isEmpty(this.model.get('data')['doi']) && 
+            _.isEmpty(this.model.get('data')['url']) &&
+            _.isEmpty(this.model.get('data')['citations_url']))){
+            this.doiWarning.show();
+            $(".ui-dialog-buttonset button", this.$el.parent()).prop('disabled', true);
+        } else {
+            this.doiWarning.hide();
+            $(".ui-dialog-buttonset button", this.$el.parent()).prop('disabled', false);
+        }
+    },
+    
     renderJournalsAutocomplete: function(){
         if(this.$("input[name=data_published_in]").length > 0){
             var autoComplete = {
@@ -195,6 +214,7 @@ ProductEditView = Backbone.View.extend({
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.projectsWarning = this.$("#projectsWarning");
+        this.doiWarning = this.$("#doiWarning");
         if(this.isDialog){
             $(".ui-dialog-buttonset #projectsWarning", this.$el.parent()).remove();
             this.projectsWarning.css('display', 'inline-block')
@@ -203,9 +223,24 @@ ProductEditView = Backbone.View.extend({
                                 .css('margin-bottom', '5px')
                                 .css('font-size', '1em')
                                 .css('float', 'left')
+                                .css('clear', 'both')
                                 .css('padding-right', '15px');
             this.projectsWarning.detach();
             $(".ui-dialog-buttonset", this.$el.parent()).prepend(this.projectsWarning);
+            this.projectsWarning.hide();
+            
+            $(".ui-dialog-buttonset #doiWarning", this.$el.parent()).remove();
+            this.doiWarning.css('display', 'inline-block')
+                                .css('margin', 0)
+                                .css('margin-top', '0')
+                                .css('margin-bottom', '5px')
+                                .css('font-size', '1em')
+                                .css('float', 'left')
+                                .css('clear', 'both')
+                                .css('padding-right', '15px');
+            this.doiWarning.detach();
+            $(".ui-dialog-buttonset", this.$el.parent()).prepend(this.doiWarning);
+            this.doiWarning.hide();
         }
         this.renderAuthors();
         this.renderJournalsAutocomplete();
@@ -222,6 +257,7 @@ ProductEditView = Backbone.View.extend({
         
         this.renderTagsWidget();
         this.updateProjectWarning();
+        this.updateDOIWarning();
         this.$(".integer").forceNumeric({min: 0, max: 99999999999});
         return this.$el;
     }
