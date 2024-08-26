@@ -84,6 +84,9 @@ class ApplicationsTable extends SpecialPage{
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=proposals'>Proj Proposals</a>";
         $wgOut->addHTML("<h1>Other</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
         
+        
+        $wgOut->addHTML("<br /><br />");
+        
         if(!isset($_GET['program'])){
             return;
         }
