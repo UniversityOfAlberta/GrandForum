@@ -20,7 +20,7 @@ class PersonSupervisesReportItemSet extends ReportItemSet {
             $tuple = self::createTuple();
             $tuple['person_id'] = $row['hqp'];
             $tuple['extra'] = $row;
-            $data[$row['hqp']] = $tuple;
+            $data[$row['hqp'].$row['position']] = $tuple;
         }
 
         return array_values($data);

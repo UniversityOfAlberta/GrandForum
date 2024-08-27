@@ -2061,7 +2061,7 @@ class ReportItemCallback {
         foreach($data as $row){
             if($status == "all" || ($row['end_date'] == "Current" && $status == "current") || 
                                    ($row['end_date'] != "Current" && $status == "completed")){
-                $hqps[$row['hqp']] = $row;
+                $hqps[$row['hqp'].$row['position']] = $row;
             }
         }
         return count($hqps);
