@@ -247,7 +247,7 @@
                     <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS">
                         <![CDATA[
                             <tr>
-                                <td rowspan='2'>{$user_name}<br /><i>{getExtra(role)}</i></td>
+                                <td rowspan='2'>{$item}{$user_name}<br /><i>{getExtra(role)}</i></td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}" options="FT|PT" width="3.5em">
