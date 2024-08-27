@@ -1,4 +1,5 @@
 .htaccess
+.DS_Store
 Classes/dompdf/lib/fonts/log.htm
 Classes/securimage/database/securimage.sq3
 behat/behat.yml
