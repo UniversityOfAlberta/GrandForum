@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"Joao Xavier",
+			"JSantos"
+		]
+	},
+	"googlelogin-manage-yes": "yes",
+	"googlelogin-manage-no": "no",
+	"googlelogin-manage-dismiss": "Celez",
+	"googlelogin-username": "Uzero-nomo",
+	"googlelogin-alloweddomain-terminatebutton": "Efacar"
+}

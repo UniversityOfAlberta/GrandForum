@@ -154,10 +154,10 @@ class UploadReportItem extends AbstractReportItem {
                         }";
                         
                         if($wgLang->getCode() == "en"){
-		                    echo ".fr { display: none !important; }";
+		                    echo "fr, .fr { display: none !important; }";
 		                }
 		                else if($wgLang->getCode() == "fr"){
-		                    echo ".en { display: none !important; }";
+		                    echo "en, .en { display: none !important; }";
 		                }
                         
                         echo "

@@ -7,7 +7,7 @@ if(file_exists("../../test.tmp")){
 else{
     define("TESTING", false);
 }
-require_once("../../config/Config.php");
+require_once("../../config/ForumConfig.php");
 
 $ti = $config->getValue("topInverted");
 $si = $config->getValue("sideInverted");

@@ -492,4 +492,8 @@
     $config->setValue("reCaptchaSiteKey", "");
     
     $config->setValue("reCaptchaSecretKey", "");
+    
+    $config->setValue("googleLoginAppId", "");
+    
+    $config->setValue("googleLoginSecret", "");
 ?>

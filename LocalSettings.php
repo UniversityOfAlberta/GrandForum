@@ -54,7 +54,7 @@ set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_includ
 
 require_once("Classes/countries.php");
 require_once( "$IP/includes/DefaultSettings.php" );
-require_once( "$IP/config/Config.php" );
+require_once( "$IP/config/ForumConfig.php" );
 
 ## Path settings
 $wgSitename         = $config->getValue("siteName");

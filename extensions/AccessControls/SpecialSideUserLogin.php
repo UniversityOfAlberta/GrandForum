@@ -18,8 +18,10 @@ class SpecialSideUserLogin extends SpecialUserLogin {
     protected function postProcessFormDescriptor( &$formDescriptor, $requests ) {
         parent::postProcessFormDescriptor($formDescriptor, $requests);
         unset($formDescriptor['linkcontainer']);
-        $formDescriptor['username']['autofocus'] = false;
-        $formDescriptor['password']['autofocus'] = false;
+        if(isset($formDescriptor['username']) && isset($formDescriptor['password'])){
+            $formDescriptor['username']['autofocus'] = false;
+            $formDescriptor['password']['autofocus'] = false;
+        }
         unset($formDescriptor['username']['label-raw']);
         unset($formDescriptor['password']['label-message']);
         //TODO: Might need to fix!!! $formDescriptor['passwordReset']['cssclass'] = " underlined highlights-text";

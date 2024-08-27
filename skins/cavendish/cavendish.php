@@ -1264,6 +1264,15 @@ class CavendishTemplate extends QuickTemplate {
 		    echo "<span class='highlights-text pBodyLogin en'>Login</span><span class='highlights-text pBodyLogin fr'>Connexion</span>";
 		    $userLogin = new SpecialSideUserLogin();
 		    $userLogin->render();
+		    if(isExtensionEnabled("GoogleLogin")){
+		        echo "
+                <script type='text/javascript'>
+                    $('.pBodyLogin').parent().hide();
+                    $('.pBodyLogin').parent().css('width', '100%');
+                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='googleLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;' href='{$wgServer}{$wgScriptPath}/index.php/Special:UserLogin'>Google Login</a></div>\");
+                </script>
+                ";
+		    }
 		    if(isExtensionEnabled("Shibboleth")){
                 echo "
                 <script type='text/javascript'>

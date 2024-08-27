@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../config/Config.php');
+require_once('../../config/ForumConfig.php');
 
 function question($question, $hidden=false){
     echo "\n$question: ";

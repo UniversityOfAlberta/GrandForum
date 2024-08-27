@@ -2,7 +2,7 @@
 
 define('TESTING', true);
 
-require_once("../config/Config.php");
+require_once("../config/ForumConfig.php");
 
 $wgDBuser           = $config->getValue("dbUser");
 $wgDBpassword       = $config->getValue("dbPassword");

@@ -1,5 +1,5 @@
 <?php
-require_once('../config/Config.php');
+require_once('../config/ForumConfig.php');
 
 return array(
     "paths" => array(
