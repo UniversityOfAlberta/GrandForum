@@ -22,7 +22,7 @@ $wgAuthManagerConfig = [
 ];
 $wgInvalidUsernameCharacters = ':~';
 $wgUserrightsInterwikiDelimiter = '~';
-//$wgGLAuthoritativeMode = true;
+$wgGLAuthoritativeMode = true;
 
 wfLoadExtension('GoogleLogin');
 

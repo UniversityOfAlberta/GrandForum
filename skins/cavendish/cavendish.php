@@ -1187,7 +1187,7 @@ class CavendishTemplate extends QuickTemplate {
         
 		if($wgUser->isLoggedIn()){
 		    $me = Person::newFromWgUser();
-		    if(!$me->isAuthenticated() && !($wgImpersonating || $wgDelegating)){
+		    if(!$me->isAuthenticated() && !($wgImpersonating || $wgDelegating) && !isExtensionEnabled("GoogleLogin")){
 		        $wgUser->logout();
 		        $wgMessage->addError("You have not yet verified this account by email");
 		        redirect("$wgServer$wgScriptPath");
