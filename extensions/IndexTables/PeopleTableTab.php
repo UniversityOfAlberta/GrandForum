@@ -94,8 +94,8 @@ class PeopleTableTab extends AbstractTab {
                     
                     $interval1 = $startDate->diff($now);
                     $interval2 = $startDate->diff($endDate);
-                    $diff1 = abs($interval1->format('%m'));
-                    $diff2 = abs($interval2->format('%m'));
+                    $diff1 = abs((($interval1->y) * 12) + ($interval1->m));
+                    $diff2 = abs((($interval2->y) * 12) + ($interval2->m));
                     if(($diff1 >= 6 && $diff2 >= 6) || ($diff1 >= 6 && substr($project['endDate'],0,10) == "0000-00-00")){
                         $data[] = $person;
                         break;

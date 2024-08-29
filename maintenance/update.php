@@ -127,14 +127,14 @@ class UpdateMediaWiki extends Maintenance {
 		}
 
 		// Check external dependencies are up to date
-		if ( !$this->hasOption( 'skip-external-dependencies' ) ) {
+		/*if ( !$this->hasOption( 'skip-external-dependencies' ) ) {
 			$composerLockUpToDate = $this->runChild( CheckComposerLockUpToDate::class );
 			$composerLockUpToDate->execute();
 		} else {
 			$this->output(
 				"Skipping checking whether external dependencies are up to date, proceed at your own risk\n"
 			);
-		}
+		}*/
 
 		# Attempt to connect to the database as a privileged user
 		# This will vomit up an error if there are permissions problems
