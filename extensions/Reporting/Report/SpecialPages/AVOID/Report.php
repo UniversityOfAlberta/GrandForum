@@ -85,14 +85,14 @@ class Report extends AbstractReport{
             }
             
             .program-button, .program-button:visited {
-                background: #F2CD00 !important;
+                background: #0070c7 !important;
                 color: black !important;
                 text-shadow: none;
                 font-weight: 500 !important;
           }
 
           .program-button:hover{
-            background: #F4D526 !important;
+            background: #005699 !important;
             color: black !important;
           }
         </style>");
