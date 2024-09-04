@@ -265,6 +265,10 @@ class Report extends AbstractReport {
                 }
             }
         }*/
+        if(count($person->getEvaluates("EEA-2024", 2024)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEAReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EEA", "{$url}EEAReview", $selected);
+        }
         if(count($person->getEvaluates("AGETECH", 2024)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AgeTechReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HARP", "{$url}AgeTechReview", $selected);
@@ -272,10 +276,6 @@ class Report extends AbstractReport {
         if(count($person->getEvaluates("HAC", 2023)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HACReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HAC", "{$url}HACReview", $selected);
-        }
-        if(count($person->getEvaluates("EEA-2023", 2023)) > 0){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEAReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EEA", "{$url}EEAReview", $selected);
         }
         /*
         if(count($person->getEvaluates("SIP-2019", 2019)) > 0){
