@@ -2248,9 +2248,18 @@ class ReportItemCallback {
         return substr($fecInfo->dateOfAppointment, 0, 10);
     }
     
+    function getUserATSAnniversaryDate(){
+        $person = Person::newFromId($this->reportItem->personId);
+        if($person->getId() == null){
+            $person = $this->reportItem->getReport()->person;
+        }
+        $fecInfo = $person->getFecPersonalInfo();
+        return substr($fecInfo->dateAtsAnniversary, 0, 10);
+    }
+    
     function getATSYear(){
         $today = date('Y-m-d');
-        $date = $this->getUserAppointmentDate();
+        $date = $this->getUserATSAnniversaryDate();
         $year  = substr($date, 0, 4);
         $month = substr($date, 5, 5);
         if(!is_numeric($year)){
@@ -2264,7 +2273,7 @@ class ReportItemCallback {
     
     function getATSStartDate(){
         $year = $this->getATSYear() - 1;
-        $date = $this->getUserAppointmentDate();
+        $date = $this->getUserATSAnniversaryDate();
         $date = ($date != "") ? $date : CYCLE_START;
         $month = substr($date, 5, 5);
         return "$year-$month";
@@ -2272,7 +2281,7 @@ class ReportItemCallback {
     
     function getATSEndDate(){
         $year = $this->getATSYear();
-        $date = $this->getUserAppointmentDate();
+        $date = $this->getUserATSAnniversaryDate();
         $date = ($date != "") ? $date : CYCLE_START;
         $month = substr($date, 5, 5);
         return date('Y-m-d', strtotime("$year-$month -1 day"));

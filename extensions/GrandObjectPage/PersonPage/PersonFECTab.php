@@ -48,6 +48,7 @@ class PersonFECTab extends AbstractEditableTab {
             $this->person->dateAtsec1 = @$_POST['dateAtsec1'];
             $this->person->dateAtsec2 = @$_POST['dateAtsec2'];
             $this->person->dateAtsec3 = @$_POST['dateAtsec3'];
+            $this->person->dateAtsAnniversary = @$_POST['dateAtsAnniversary'];
             $this->person->lastDegree = @str_replace("'", "&#39;", $_POST['lastDegree']);
             $this->person->updateFecInfo();
         }
@@ -135,6 +136,7 @@ class PersonFECTab extends AbstractEditableTab {
         $this->html .= ($this->person->dateAtsec1 != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of ATS I:</b></td><td>".substr($this->person->dateAtsec1, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->dateAtsec2 != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of ATS II:</b></td><td>".substr($this->person->dateAtsec2, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->dateAtsec3 != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of ATS III:</b></td><td>".substr($this->person->dateAtsec3, 0, 10)."</td></tr>" : "";
+        $this->html .= ($this->person->dateAtsAnniversary != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of ATS Anniversary:</b></td><td>".substr($this->person->dateAtsAnniversary, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->dateOfProbation1 != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>End of Probation 1:</b></td><td>".substr($this->person->dateOfProbation1, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->dateOfProbation2 != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>End of Probation 2:</b></td><td>".substr($this->person->dateOfProbation2, 0, 10)."</td></tr>" : "";
         $this->html .= ($this->person->dateOfTenure != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of Tenure:</b></td><td>".substr($this->person->dateOfTenure, 0, 10)."</td></tr>" : "";
@@ -193,6 +195,7 @@ class PersonFECTab extends AbstractEditableTab {
             $this->html .= "<tr><td align='right'><b>Date of ATS I:</b></td><td><input type='text' name='dateAtsec1' class='calendar' style='display:none;' value='".substr($this->person->dateAtsec1, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of ATS II:</b></td><td><input type='text' name='dateAtsec2' class='calendar' style='display:none;' value='".substr($this->person->dateAtsec2, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of ATS III:</b></td><td><input type='text' name='dateAtsec3' class='calendar' style='display:none;' value='".substr($this->person->dateAtsec3, 0, 10)."' /></td></tr>";
+            $this->html .= "<tr><td align='right'><b>Date of ATS Anniversary:</b></td><td><input type='text' name='dateAtsAnniversary' class='calendar' style='display:none;' value='".substr($this->person->dateAtsAnniversary, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>End of Probation1:</b></td><td><input type='text' name='dateOfProbation1' class='calendar' style='display:none;' value='".substr($this->person->dateOfProbation1, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>End of Probation2:</b></td><td><input type='text' name='dateOfProbation2' class='calendar' style='display:none;' value='".substr($this->person->dateOfProbation2, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of Tenure:</b></td><td><input type='text' name='dateOfTenure' class='calendar' style='display:none;' value='".substr($this->person->dateOfTenure, 0, 10)."' /></td></tr>";

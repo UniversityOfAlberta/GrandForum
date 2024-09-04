@@ -3472,6 +3472,7 @@ class FullPerson extends Person {
     var $dateAtsec1;
     var $dateAtsec2;
     var $dateAtsec3;
+    var $dateAtsAnniversary;
     
     function FullPerson($data){
         self::Person($data);
@@ -3995,7 +3996,8 @@ class FullPerson extends Person {
                                               'date_fso4',
                                               'date_atsec1',
                                               'date_atsec2',
-                                              'date_atsec3'),
+                                              'date_atsec3',
+                                              'date_ats_anniversary'),
                                         array('user_id' => EQ($this->getId())));
             self::$fecInfoCache[$this->getId()] = $data;
             if(count($data) >0){
@@ -4033,6 +4035,7 @@ class FullPerson extends Person {
                 $this->dateAtsec1 = $row['date_atsec1'];
                 $this->dateAtsec2 = $row['date_atsec2'];
                 $this->dateAtsec3 = $row['date_atsec3'];
+                $this->dateAtsAnniversary = $row['date_ats_anniversary'];
             }
         }
         return $this;
@@ -4071,7 +4074,8 @@ class FullPerson extends Person {
                                               'date_fso4' => $this->dateFso4,
                                               'date_atsec1' => $this->dateAtsec1,
                                               'date_atsec2' => $this->dateAtsec2,
-                                              'date_atsec3' => $this->dateAtsec3),
+                                              'date_atsec3' => $this->dateAtsec3,
+                                              'date_ats_anniversary' => $this->dateAtsAnniversary),
                                         array('user_id' => EQ($this->getId())));
                 if($status){
                     DBFunctions::commit();
@@ -4103,7 +4107,8 @@ class FullPerson extends Person {
                                           'date_fso4' => $this->dateFso4,
                                           'date_atsec1' => $this->dateAtsec1,
                                           'date_atsec2' => $this->dateAtsec2,
-                                          'date_atsec3' => $this->dateAtsec3),
+                                          'date_atsec3' => $this->dateAtsec3,
+                                          'date_ats_anniversary' => $this->dateAtsAnniversary),
                                            true);
                if($status){
                     DBFunctions::commit();
