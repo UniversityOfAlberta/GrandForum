@@ -1160,6 +1160,9 @@ class Paper extends BackboneModel{
         $ranking = explode("/", $this->getData('category_ranking'));
         $numerator = @$ranking[0];
         $denominator = @$ranking[1];
+        if($issn == "N/A" || $issn == ""){
+            $issn = "-";
+        }
         $data = DBFunctions::execSQL("SELECT * FROM `grand_journals` 
                                       WHERE (`issn` = '{$issn}' OR `eissn` = '{$issn}' OR `title` = '{$journal_title}')
                                       AND `ranking_numerator` = '{$numerator}'
