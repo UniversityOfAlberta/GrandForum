@@ -247,6 +247,12 @@
                             <th>Q2D</th>
                             <th>Q2E</th>
                             <th>Budget</th>
+                            <th style='display:none;'>Q2A Comments</th>
+                            <th style='display:none;'>Q2B Comments</th>
+                            <th style='display:none;'>Q2C Comments</th>
+                            <th style='display:none;'>Q2D Comments</th>
+                            <th style='display:none;'>Q2E Comments</th>
+                            <th style='display:none;'>Budget Comments</th>
                             <th>Total</th>
                             <th>Q2A</th>
                             <th>Q2B</th>
@@ -254,6 +260,12 @@
                             <th>Q2D</th>
                             <th>Q2E</th>
                             <th>Budget</th>
+                            <th style='display:none;'>Q2A Comments</th>
+                            <th style='display:none;'>Q2B Comments</th>
+                            <th style='display:none;'>Q2C Comments</th>
+                            <th style='display:none;'>Q2D Comments</th>
+                            <th style='display:none;'>Q2E Comments</th>
+                            <th style='display:none;'>Budget Comments</th>
                             <th>Total</th>
                             <th>Q2A</th>
                             <th>Q2B</th>
@@ -261,6 +273,12 @@
                             <th>Q2D</th>
                             <th>Q2E</th>
                             <th>Budget</th>
+                            <th style='display:none;'>Q2A Comments</th>
+                            <th style='display:none;'>Q2B Comments</th>
+                            <th style='display:none;'>Q2C Comments</th>
+                            <th style='display:none;'>Q2D Comments</th>
+                            <th style='display:none;'>Q2E Comments</th>
+                            <th style='display:none;'>Budget Comments</th>
                             <th>Total</th>
                             <th>Avg. Total</th>
                         </tr>
@@ -323,15 +341,21 @@
                         <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2C_COMMENTS,{$parent_id},{$user_id},0)})}'>
                             {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2C,{$parent_id},{$user_id},0)}
                         </td>
-                        <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2E_COMMENTS,{$parent_id},{$user_id},0)})}'>
-                            {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2E,{$parent_id},{$user_id},0)}
-                        </td>
                         <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2D_COMMENTS,{$parent_id},{$user_id},0)})}'>
                             {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2D,{$parent_id},{$user_id},0)}
+                        </td>
+                        <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2E_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                            {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2E,{$parent_id},{$user_id},0)}
                         </td>
                         <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_BUDGET_COMMENTS,{$parent_id},{$user_id},0)})}'>
                             {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_BUDGET,{$parent_id},{$user_id},0)}
                         </td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2A_COMMENTS,{$parent_id},{$user_id},0)}</td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2B_COMMENTS,{$parent_id},{$user_id},0)}</td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2C_COMMENTS,{$parent_id},{$user_id},0)}</td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2D_COMMENTS,{$parent_id},{$user_id},0)}</td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2E_COMMENTS,{$parent_id},{$user_id},0)}</td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_BUDGET_COMMENTS,{$parent_id},{$user_id},0)}</td>
                         <td align='right'>
                             {divide({add({multiply({getNumber(RP_AGETECH_REVIEW,REVIEW,REVIEW_2A,{$parent_id},{$user_id},0)},0.5)},
                                          {multiply({getNumber(RP_AGETECH_REVIEW,REVIEW,REVIEW_2B,{$parent_id},{$user_id},0)},1.5)},
@@ -352,6 +376,12 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
                     <td></td>
                 ]]>
             </If>
@@ -363,6 +393,12 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
                     <td></td>
                 ]]>
             </If>
@@ -374,6 +410,12 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
                     <td></td>
                 ]]>
             </If>
