@@ -2258,7 +2258,7 @@ class ReportItemCallback {
     }
     
     function getATSYear(){
-        $today = date('Y-m-d');
+        $today = date('Y-m-d', time() + 86400*7*6); // 6 weeks into the future
         $date = $this->getUserATSAnniversaryDate();
         $year  = substr($date, 0, 4);
         $month = substr($date, 5, 5);
