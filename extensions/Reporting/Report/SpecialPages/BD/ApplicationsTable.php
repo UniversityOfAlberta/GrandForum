@@ -94,10 +94,11 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage = new InnerTabbedPage("reports");
         $max = Report::dateToProjectQuarter(date('Y-m-d'));
         for($y=date('Y');$y>=substr($config->getValue('projectPhaseDates')[1],0,4);$y--){
-            for($q=4;$q>=1;$q--){
+            $nQ = ($y >= 2024) ? 3 : 4;
+            for($q=$nQ;$q>=1;$q--){
                 $quarter = "{$y}_Q{$q}";
                 if($quarter <= $max){
-                    $tabbedPage->addTab(new ApplicationTab("ProjectReport", $this->projects, 0, "{$y}: Q{$q}", array(), false, null, array('id' => $quarter)));
+                    $tabbedPage->addTab(new ApplicationTab("ProjectReport", $this->projects, 0, "{$y}: R{$q}", array(), false, null, array('id' => $quarter)));
                 }
             }
         }
@@ -109,10 +110,11 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage = new InnerTabbedPage("reports");
         $max = Report::dateToThemeQuarter(date('Y-m-d'));
         for($y=date('Y');$y>=substr($config->getValue('projectPhaseDates')[1],0,4);$y--){
-            for($q=4;$q>=1;$q--){
+            $nQ = ($y >= 2024) ? 3 : 4;
+            for($q=$nQ;$q>=1;$q--){
                 $quarter = "{$y}_Q{$q}";
                 if($quarter <= $max){
-                    $tabbedPage->addTab(new ApplicationTab("ThemeReport", $this->themes, 0, "{$y}: Q{$q}", array(), false, null, array('id' => $quarter)));
+                    $tabbedPage->addTab(new ApplicationTab("ThemeReport", $this->themes, 0, "{$y}: R{$q}", array(), false, null, array('id' => $quarter)));
                 }
             }
         }

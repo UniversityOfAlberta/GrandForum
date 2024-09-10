@@ -82,7 +82,9 @@ class SurveyTab extends AbstractTab {
             $people = new Collection(Person::getAllPeople());
         }
         $peopleIds = $people->pluck('id');
-        
+        if(count($peopleIds) == 0){
+            return "";
+        }
         $rows = DBFunctions::execSQL("SELECT *
                                       FROM grand_report_blobs
                                       WHERE rp_type = 'RP_SELF_IDENTIFICATION'

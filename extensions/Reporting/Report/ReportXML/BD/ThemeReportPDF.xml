@@ -9,25 +9,19 @@
         </Static>
         
         <!-- Month -->
-        <If if="{contains({GET(id)},Q1)}">
+        <If if="{contains({GET(id)},R1)}">
             <![CDATA[
-                {set(month, April)}
+                {set(month, March)}
             ]]>
         </If>
-        <ElseIf if="{contains({GET(id)},Q2)}">
+        <ElseIf if="{contains({GET(id)},R2)}">
             <![CDATA[
                 {set(month, July)}
             ]]>
         </ElseIf>
-        <ElseIf if="{contains({GET(id)},Q3)}">
+        <ElseIf if="{contains({GET(id)},R3)}">
             <![CDATA[
-                {set(month, October)}
-            ]]>
-        </ElseIf>
-        <ElseIf if="{contains({GET(id)},Q4)}">
-            <![CDATA[
-                {set(month, January)}
-                {set(year, {add({get(year)}, 1)})}
+                {set(month, November)}
             ]]>
         </ElseIf>
         <Static>
@@ -53,7 +47,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="report" type="NextPrevReportSection" name="Theme Report" title="{$theme_name} {replace(_,:,{GET(id)})} Report" pagebreak="false">
+    <ReportSection id="report" type="NextPrevReportSection" name="Theme Report" title="{$theme_name} {replace(Q,R,{replace(_,:,{GET(id)})})} Report" pagebreak="false">
         <!-- Start the Report -->
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
             <![CDATA[
