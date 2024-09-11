@@ -128,7 +128,7 @@
         <ReportItem id="theme" type="Radio" blobItem="THEME" orientation="vertical" options="Infectious Diseases|Immunology|Precision Medicine|Animal Health and Sustainable Agri-Food Systems">
             <![CDATA[
                 <tr>
-                    <td valign='top' align='right'><b>Research Area:</b></td>
+                    <td valign='top' align='right'><b>Research Area:</b><br /><small>(Select the most relevant)</small></td>
                     <td>{$item}</td>
                 </tr>
                 <tr>
@@ -186,6 +186,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,iamir@glyconet.ca,vsharko@glyconet.ca" />
+        <If if="{==({getText(RP_HQP_SUMMER_REPORT, REPORT, SKILLS, 0, {$user_id}, 0)},)}">
+            <![CDATA[
+                The "Skills" field cannot be empty.
+            ]]>
+        </If>
+        <Else>
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,iamir@glyconet.ca,vsharko@glyconet.ca" />
+        </Else>
     </ReportSection>
 </Report>
