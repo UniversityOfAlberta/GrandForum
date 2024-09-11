@@ -69,18 +69,18 @@
             <![CDATA[
                 <h1><center>Project Information</center></h1>
                 <table class='wikitable'>
-                    <tr>
+                    <!--tr>
                         <td valign='top' align='right'><b>Project Identifier:</b><br />
                         </td>
                         <td valign='top'>{getText(RP_HQP_SUMMER_REPORT, REPORT, ACRONYM, 0, {$user_id}, 0)}</td>
-                    </tr>
+                    </tr-->
                     <tr>
                         <td valign='top' align='right'><b>Project Title:</b>
                         </td>
                         <td valign='top'>{getText(RP_HQP_SUMMER_REPORT, REPORT, TITLE, 0, {$user_id}, 0)}</td>
                     </tr>
                     <tr>
-                        <td valign='top' align='right'><b>Theme:</b>
+                        <td valign='top' align='right'><b>Research Area:</b>
                         </td>
                         <td valign='top'>{getText(RP_HQP_SUMMER_REPORT, REPORT, THEME, 0, {$user_id}, 0)}</td>
                     </tr>
@@ -100,6 +100,12 @@
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="500" rich="true" recommended="true" height="400px">
             <![CDATA[
                 <h2>Exchange Summary</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="skills" type="Textarea" blobItem="SKILLS" rich="true">
+            <![CDATA[
+                <h2>Skills</h2>
                 {$item}
                 <div class="pagebreak"></div>
             ]]>
