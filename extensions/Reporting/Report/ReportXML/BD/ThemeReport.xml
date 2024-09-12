@@ -230,7 +230,7 @@
             <![CDATA[
                 <h3>2. Equity, diversity, and inclusion update</h3>
                 <p>Summarize and highlight relevant challenges, opportunities or lessons learnt that are relevant to EDI in your theme’s research activities or in relation to the project teams. </p>
-                <!--b><a href='#' onClick='$("#surveyStats").slideToggle();'>Toggle Survey Stats</a></b-->
+                <b><a href='#' onClick='$("#surveyStats").slideToggle();'>Toggle Survey Stats</a></b>
                 <div id='surveyStats' style='display:none;'>
                     {$themeSurveyStats}
                 </div>
