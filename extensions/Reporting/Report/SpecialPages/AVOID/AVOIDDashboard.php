@@ -19,6 +19,18 @@ class AVOIDDashboard extends SpecialPage {
         SpecialPage::__construct("AVOIDDashboard", null, true, 'runDashboard');
     }
     
+    static function permissionError(){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        if(!$wgUser->isLoggedIn()){
+            $wgOut->setPageTitle("Please Login");
+            $wgOut->addHTML("<div class='program-body'>In order to view this page you must login.  Return to the <a href='$wgServer$wgScriptPath/index.php/Main_Page'>front page</a> to login.</div>");
+            $wgOut->output();
+            $wgOut->disable();
+            exit;
+        }
+        permissionError();
+    }
+    
     function userCanExecute($wgUser){
         $person = Person::newFromUser($wgUser);
         return $person->isLoggedIn();

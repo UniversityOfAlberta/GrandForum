@@ -16,7 +16,10 @@ class EducationResources extends SpecialPage {
 	}
 	
 	function userCanExecute($user){
-	    return ($user->isLoggedIn());
+	    if(!$user->isLoggedIn()){
+	        AVOIDDashboard::permissionError();
+	    }
+        return true;
 	}
 	
 	static function JSON(){
