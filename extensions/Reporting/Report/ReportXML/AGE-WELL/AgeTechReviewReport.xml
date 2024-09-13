@@ -233,20 +233,30 @@
                     <thead>
                         <tr>
                             <th colspan='2'></th>
-                            <th colspan='7'>Reviewer 1</th>
-                            <th colspan='7'>Reviewer 2</th>
-                            <th colspan='7'>Reviewer 3</th>
+                            <th colspan='12'>Reviewer 1</th>
+                            <th colspan='12'>Reviewer 2</th>
+                            <th colspan='12'>Reviewer 3</th>
                             <th>Overall Average</th>
                         </tr>
                         <tr>
                             <th>Applicant</th>
                             <th>Title</th>
+                            <th>Q0A</th>
+                            <th>Q0B</th>
+                            <th>Q1A</th>
+                            <th>Q1B</th>
+                            <th>Q1C</th>
                             <th>Q2A</th>
                             <th>Q2B</th>
                             <th>Q2C</th>
                             <th>Q2D</th>
                             <th>Q2E</th>
                             <th>Budget</th>
+                            <th style='display:none;'>Q0A Comments</th>
+                            <th style='display:none;'>Q0B Comments</th>
+                            <th style='display:none;'>Q1A Comments</th>
+                            <th style='display:none;'>Q1B Comments</th>
+                            <th style='display:none;'>Q1C Comments</th>
                             <th style='display:none;'>Q2A Comments</th>
                             <th style='display:none;'>Q2B Comments</th>
                             <th style='display:none;'>Q2C Comments</th>
@@ -254,12 +264,22 @@
                             <th style='display:none;'>Q2E Comments</th>
                             <th style='display:none;'>Budget Comments</th>
                             <th>Total</th>
+                            <th>Q0A</th>
+                            <th>Q0B</th>
+                            <th>Q1A</th>
+                            <th>Q1B</th>
+                            <th>Q1C</th>
                             <th>Q2A</th>
                             <th>Q2B</th>
                             <th>Q2C</th>
                             <th>Q2D</th>
                             <th>Q2E</th>
                             <th>Budget</th>
+                            <th style='display:none;'>Q0A Comments</th>
+                            <th style='display:none;'>Q0B Comments</th>
+                            <th style='display:none;'>Q1A Comments</th>
+                            <th style='display:none;'>Q1B Comments</th>
+                            <th style='display:none;'>Q1C Comments</th>
                             <th style='display:none;'>Q2A Comments</th>
                             <th style='display:none;'>Q2B Comments</th>
                             <th style='display:none;'>Q2C Comments</th>
@@ -267,12 +287,22 @@
                             <th style='display:none;'>Q2E Comments</th>
                             <th style='display:none;'>Budget Comments</th>
                             <th>Total</th>
+                            <th>Q0A</th>
+                            <th>Q0B</th>
+                            <th>Q1A</th>
+                            <th>Q1B</th>
+                            <th>Q1C</th>
                             <th>Q2A</th>
                             <th>Q2B</th>
                             <th>Q2C</th>
                             <th>Q2D</th>
                             <th>Q2E</th>
                             <th>Budget</th>
+                            <th style='display:none;'>Q0A Comments</th>
+                            <th style='display:none;'>Q0B Comments</th>
+                            <th style='display:none;'>Q1A Comments</th>
+                            <th style='display:none;'>Q1B Comments</th>
+                            <th style='display:none;'>Q1C Comments</th>
                             <th style='display:none;'>Q2A Comments</th>
                             <th style='display:none;'>Q2B Comments</th>
                             <th style='display:none;'>Q2C Comments</th>
@@ -332,6 +362,21 @@
             <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="AGETECH" includeSelf="true">
                 <Static>
                     <![CDATA[
+                        <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_0A_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                            {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_0A,{$parent_id},{$user_id},0)}
+                        </td>
+                        <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_0B_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                            {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_0B,{$parent_id},{$user_id},0)}
+                        </td>
+                        <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_1A_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                            {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_1A,{$parent_id},{$user_id},0)}
+                        </td>
+                        <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_1B_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                            {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_1B,{$parent_id},{$user_id},0)}
+                        </td>
+                        <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_1C_COMMENTS,{$parent_id},{$user_id},0)})}'>
+                            {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_1C,{$parent_id},{$user_id},0)}
+                        </td>
                         <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2A_COMMENTS,{$parent_id},{$user_id},0)})}'>
                             {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2A,{$parent_id},{$user_id},0)}
                         </td>
@@ -350,6 +395,11 @@
                         <td align='right' title='{replace(',&#39;,{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_BUDGET_COMMENTS,{$parent_id},{$user_id},0)})}'>
                             {getText(RP_AGETECH_REVIEW,REVIEW,REVIEW_BUDGET,{$parent_id},{$user_id},0)}
                         </td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_0A_COMMENTS,{$parent_id},{$user_id},0)}</td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_0B_COMMENTS,{$parent_id},{$user_id},0)}</td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_1A_COMMENTS,{$parent_id},{$user_id},0)}</td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_1B_COMMENTS,{$parent_id},{$user_id},0)}</td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_1C_COMMENTS,{$parent_id},{$user_id},0)}</td>
                         <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2A_COMMENTS,{$parent_id},{$user_id},0)}</td>
                         <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2B_COMMENTS,{$parent_id},{$user_id},0)}</td>
                         <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2C_COMMENTS,{$parent_id},{$user_id},0)}</td>
@@ -376,6 +426,16 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
@@ -393,6 +453,16 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
@@ -410,6 +480,16 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
+                    <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
