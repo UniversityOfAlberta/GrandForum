@@ -31,10 +31,12 @@ class AVOIDDashboard extends SpecialPage {
         permissionError();
     }
     
-    function userCanExecute($wgUser){
-        $person = Person::newFromUser($wgUser);
-        return $person->isLoggedIn();
-    }
+    function userCanExecute($user){
+	    if(!$user->isLoggedIn()){
+	        AVOIDDashboard::permissionError();
+	    }
+        return true;
+	}
     
     function compareTags($tags1, $tags2){
         $found = 0;
