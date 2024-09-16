@@ -13,7 +13,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field bibtex="school" label="University" type="String">university</field>
                 <field label="Department" type="String">department</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -38,7 +38,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <!--field>address</field--> <!-- In some entried in DB, but not in UI -->
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -63,7 +63,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="b864a9512e89482487f83ed22c454e9d" ccv_name="Book Title" ccvtk="booktitle" label="Book Title" type="String">book_title</field>
                 <field ccv_id="45b9d02a4bb04ec782357741b53dc135" ccv_name="Page Range" ccvtk="pages" label="Page Range" type="String">pages</field>
                 <field ccv_id="51a088349c1442238d5d0331d95f3205" ccv_name="Publisher" ccvtk="publisher" label="Publisher" type="String">publisher</field>
@@ -90,7 +90,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="3340c13c1bc64e7dae2ef3374cf5af3d" ccv_name="Book Reviewed Title" label="Book Title" type="String">book_title</field>
                 <field ccv_id="5f11ba80ed404696b501fbc43fba56a4" ccv_name="Published In" label="Published In" type="String">published_in</field>
                 <field ccv_id="bbb8c897c038404c9e81611eee66f371" ccv_name="Volume" label="Volume" type="String">volume</field>
@@ -119,7 +119,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="b864a9512e89482487f83ed22c454e9d" ccv_name="Book Title" bibtex="booktitle" label="Book Title" type="String">book_title</field>
                 <field ccv_id="dcb27492e1554fc9838992ba7c70f416" ccv_name="Editors" label="Editors" type="String">editors</field>
                 <field ccv_id="45b9d02a4bb04ec782357741b53dc135" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
@@ -147,7 +147,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
                 <field label="ISBN" type="String">isbn</field>
                 <field label="ISSN" type="String">issn</field>
@@ -171,7 +171,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String">published_in</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" label="Volume" type="String">volume</field>
@@ -199,7 +199,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="Program Funding Source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
@@ -229,7 +229,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="Program Funding Source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="86860b08d0c74c079c73a31d91e15da1" ccv_name="Magazine Name" label="Magazine Name" type="String">published_in</field>
                 <field ccv_id="c54799b5e36a415da615b4b637eb3ec8" ccv_name="Volume" label="Volume" type="String">volume</field>
                 <field ccv_id="5e0185b2646f49e18de6c00592774940" ccv_name="Issue" label="Issue" type="String">number</field>
@@ -257,7 +257,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="Program Funding Source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="02b98ee969d34f129c164881b006259c" ccv_name="Volume" bibtex="volume" label="Volume" type="String">volume</field>
                 <field ccv_id="01cc51025d634ed5a72090ae92f51632" ccv_name="Edition" bibtex="volume" label="Edition" type="String">edition</field>
                 <field bibtex="series" label="Series" type="String">series</field>
@@ -285,7 +285,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="Program Funding Source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
                 <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" bibtex="publisher" label="Department" type="String">department</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -302,7 +302,7 @@
         <Publication type="Masters Dissertation" supervised="false" ccv_id="0f31c9249f054c06adbbf99058fed943" ccv_name="Dissertations" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="50a081d7f12640d2b6c18a42eb6badf6" ccv_name="Dissertation Title"></title>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="40e0f1108da54bcb891a6597a03d6c4c" ccv_name="Other Organization" label="University" type="String">university</field>
                 <field label="University" type="String">department</field>
                 <field label="ISBN" type="String">isbn</field>
@@ -343,7 +343,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="Program Funding Source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" ccvtk="conf_name" bibtex="journal" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" ccvtk="city" label="City" bibtex="address" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" ccvtk="pages" label="Page Range" type="String">pages</field>
@@ -374,7 +374,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="Program Funding Source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" ccvtk="conf_name" bibtex="journal" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" ccvtk="city" label="City" bibtex="address" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" ccvtk="pages" label="Page Range" type="String">pages</field>
@@ -402,7 +402,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="Program Funding Source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
                 <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" label="Department" type="String">department</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -419,7 +419,7 @@
         <Publication type="PHD Dissertation" supervised="false" ccv_id="0f31c9249f054c06adbbf99058fed943" ccv_name="Dissertations"  status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="50a081d7f12640d2b6c18a42eb6badf6" ccv_name="Dissertation Title"></title>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="Program Funding Source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="40e0f1108da54bcb891a6597a03d6c4c" ccv_name="Other Organization" label="University" type="String">university</field>
                 <field label="Department" type="String">department</field>
                 <field label="ISBN" type="String">isbn</field>
@@ -447,7 +447,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
@@ -478,7 +478,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
@@ -505,7 +505,7 @@
                 <status>Rejected</status>
             </statuses>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="5f11ba80ed404696b501fbc43fba56a4" ccv_name="Published In" label="Published In" type="String">published_in</field>
                 <field ccv_id="bbb8c897c038404c9e81611eee66f371" ccv_name="Volume" label="Volume" type="String">volume</field>
                 <field ccv_id="ac8545aa13254e05b04610c934c2e2b4" ccv_name="Issue" label="Issue" type="String">number</field>
@@ -536,7 +536,7 @@
         <Publication type="White Paper" ccv_id="7e57525337d5498a9506fdadee098b10" ccv_name="Reports" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="dd692787647b495fbadb038b6937950d" ccv_name="Report Title"></title>
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
                 <field label="Pages" type="String">pages</field>
                 <field ccv_id="e3264fc9e17442e492bc8d5dca60e165" ccv_name="Editors" label="Editor" type="String">editor</field>
@@ -554,7 +554,7 @@
     <Activities category="Activity">
         <Activity type="Event Organization" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Conference" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -564,7 +564,7 @@
         
         <Activity type="Workshop" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
@@ -573,7 +573,7 @@
         
         <Activity type="Seminar" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
@@ -582,7 +582,7 @@
         
         <Activity type="Panel" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Conference" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -592,7 +592,7 @@
         
         <Activity type="Conference Attendance" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Conference" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -602,7 +602,7 @@
         
         <Activity type="Student Volunteering" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
@@ -611,7 +611,7 @@
         
         <Activity type="Reviewing" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
@@ -620,7 +620,7 @@
         
         <Activity type="Ethics Application">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Ethics Office" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
@@ -629,7 +629,7 @@
         
         <Activity type="Work on Committee" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
@@ -638,7 +638,7 @@
         
         <Activity type="Meeting">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizer" type="String">organizer</field>
                 <field label="Status" type="String">status</field>
@@ -647,7 +647,7 @@
         
         <Activity type="Courses">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizer" type="String">organizer</field>
                 <field label="Status" type="String">status</field>
@@ -656,7 +656,7 @@
         
         <Activity type="Training sessions">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizer" type="String">organizer</field>
                 <field label="Status" type="String">status</field>
@@ -665,7 +665,7 @@
         
         <Activity type="Misc" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
@@ -690,46 +690,46 @@
     <Artifacts category="Artifact">
         <Artifact type="Aesthetic Object" status="Peer Reviewed|Not Peer Reviewed">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
             </data>
         </Artifact>
 
         <Artifact type="Device/Machine" status="Peer Reviewed|Not Peer Reviewed">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
             </data>
         </Artifact>
 
         <Artifact type="Misc" status="Peer Reviewed|Not Peer Reviewed">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
             </data>
         </Artifact>
 
         <Artifact type="Open Software" status="Peer Reviewed|Not Peer Reviewed">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Artifact>
 
         <Artifact type="Patent" status="Peer Reviewed|Not Peer Reviewed">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field bibtex="number" label="Number" type="String">number</field>
             </data>
         </Artifact>
         
         <Artifact type="Startup Company">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Company Name" type="String">name</field>
             </data>
         </Artifact>
         
         <Artifact type="Spin-Off Company">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Parent Company" type="String">parent_name</field>
                 <field label="Spin-Off Company" type="String">name</field>
             </data>
@@ -737,14 +737,14 @@
 
         <Artifact type="Repository" status="Peer Reviewed|Not Peer Reviewed">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Artifact>
         
         <Artifact type="Misc" status="Peer Reviewed|Not Peer Reviewed">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Artifact>
@@ -754,14 +754,14 @@
     <Awards category="Award">
         <Award type="Award">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Award>
         
         <Award type="Misc">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Award>
@@ -771,7 +771,7 @@
     <Grants category="Grants">
         <Grant type="Research Grant">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="End Date" type="Date">end_date</field>
                 <field label="Amount" type="String">amount</field>
             </data>
@@ -779,7 +779,7 @@
         
         <Grant type="Technology Development Grant">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="End Date" type="Date">end_date</field>
                 <field label="Amount" type="String">amount</field>
             </data>
@@ -787,7 +787,7 @@
         
         <Grant type="Misc">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="End Date" type="Date">end_date</field>
                 <field label="Amount" type="String">amount</field>
             </data>
@@ -799,7 +799,7 @@
 
         <Presentation type="Conference Presentation" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
@@ -810,7 +810,7 @@
         
         <Presentation type="Poster Presentation" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
@@ -821,7 +821,7 @@
 
         <Presentation type="Departmental Lecture" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
@@ -832,7 +832,7 @@
 
         <Presentation type="Departmental Seminar" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
@@ -843,7 +843,7 @@
 
         <Presentation type="Distinguished Lecture" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
@@ -854,7 +854,7 @@
 
         <Presentation type="Group Seminar" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
@@ -866,7 +866,7 @@
         
         <Presentation type="{$networkName} Seminar" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Host Institution" type="String">host_institution</field>
@@ -877,7 +877,7 @@
 
         <Presentation type="Keynote" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -887,7 +887,7 @@
 
         <Presentation type="Misc" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -897,7 +897,7 @@
 
         <Presentation type="Panel" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -907,7 +907,7 @@
 
         <Presentation type="Paper Session" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -917,7 +917,7 @@
 
         <Presentation type="Tutorial" status="Invited|Not Invited">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -930,31 +930,31 @@
     <Presses category="Press">
         <Press type="International News" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Press>
         <Press type="Misc" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Press>
         <Press type="National News" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Press>
         <Press type="Provincial News" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Press>
         <Press type="University Press" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Press>
@@ -964,35 +964,35 @@
     <SOPs category="SOP">
         <SOP type="SOP - AGM and Symposium" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>
         </SOP>
         <SOP type="SOP - BoD and Committee Meetings" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>
         </SOP>
         <SOP type="SOP - Communications" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>
         </SOP>
         <SOP type="SOP - Corporate AGM" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>
         </SOP>
         <SOP type="SOP - Financial Procedures" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Sub-Type" type="Select" options="Accounts Payable|Accounts Receivable|Accounts Receivable|NCE Report|Notice of Award|Payroll &amp; HR|HR &amp; Payroll Process">sub_type</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
@@ -1000,7 +1000,7 @@
         </SOP>
         <SOP type="SOP - GlycoNet General Processes" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Sub-Type" type="Select" options="GlycoNet General Processes|Business Cards">sub_type</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
@@ -1008,7 +1008,7 @@
         </SOP>
         <SOP type="SOP - Governance Documents" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Sub-Type" type="Select" options="Governance Documents|Logo|Policy|Terms of Reference">sub_type</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
@@ -1016,35 +1016,35 @@
         </SOP>
         <SOP type="SOP - NCE Report" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>
         </SOP>
         <SOP type="SOP - Project Management" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>
         </SOP>
         <SOP type="SOP - Training" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>
         </SOP>
         <SOP type="FORM - BoD and Committee Meetings" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>
         </SOP>
         <SOP type="FORM - Financial Procedures" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Sub-Type" type="Select" options="Financial|Payroll &amp; HR">sub_type</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
@@ -1052,21 +1052,21 @@
         </SOP>
         <SOP type="FORM - GlycoNet General Processes" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>
         </SOP>
         <SOP type="FORM - Governance" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>
         </SOP>
         <SOP type="FORM - Project Management" status="">
             <data>
-                <field label="Program Funding Source" type="Select" options="NCE|CFI-MSI|SSF">source</field>
+                <field label="program funding source" type="MultiSelect" options="NCE|CFI-MSI|SSF">source</field>
                 <field label="Version" type="String">version</field>
                 <field label="File" type="PDF">file</field>
             </data>

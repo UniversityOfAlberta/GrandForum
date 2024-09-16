@@ -96,6 +96,8 @@
                         <%= HTML.CheckBox(this, 'data.' + index, {size: 30, value: "Yes"}) %>
                     <% } else if(val.type == "Select"){ %>
                         <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
+                    <% } else if(val.type == "MultiSelect"){ %>
+                        <%= HTML.Select(this, 'data.' + index, {options: val.options, multiple: true, class: "multiselect"}) %>
                     <% } else if(val.type == "File"){ %>
                         <%= HTML.File(this, 'data.' + index, {size: 30}) %>
                     <% } else if(val.type == "PDF"){ %>

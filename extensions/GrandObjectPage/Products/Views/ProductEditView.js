@@ -254,6 +254,8 @@ ProductEditView = Backbone.View.extend({
         this.$("input[name=data_impact_factor]").after(this.$("input[name=data_impact_factor_override]"));
         this.$("input[name=data_category_ranking]").parents("tr").next().remove();
         this.$("input[name=data_impact_factor]").parents("tr").next().remove();
+        this.$(".multiselect").css("width", "100%");
+        this.$(".multiselect").chosen();
         
         this.renderTagsWidget();
         this.updateProjectWarning();

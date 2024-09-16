@@ -449,10 +449,18 @@ HTML.Select = function(view, attr, options){
             if(val == null){
                 val = "";
             }
-            if(val.split(":")[0] == opt || val == opt || 
-               (typeof opt == 'object' && val.split(":")[0] == opt.value) || (typeof opt == 'object' && val == opt.value)){
-                selected = "selected='selected'";
-                foundSelected = true;
+            if(_.isArray(val)){
+                if(val.indexOf(opt) != -1){
+                    selected = "selected='selected'";
+                    foundSelected = true;
+                }
+            }
+            else{
+                if(val.split(":")[0] == opt || val == opt || 
+                   (typeof opt == 'object' && val.split(":")[0] == opt.value) || (typeof opt == 'object' && val == opt.value)){
+                    selected = "selected='selected'";
+                    foundSelected = true;
+                }
             }
             if(typeof opt == 'object'){
                 $(el).append("<option " + selected + " value='" + opt.value + "'>" + opt.option + "</option>");
@@ -463,7 +471,7 @@ HTML.Select = function(view, attr, options){
         }
     });
 
-    if(!foundSelected){
+    if(!foundSelected && !_.isArray(val)){
         $(el).append("<option selected>" + val.split(":")[0] + "</option>");
     }
 
