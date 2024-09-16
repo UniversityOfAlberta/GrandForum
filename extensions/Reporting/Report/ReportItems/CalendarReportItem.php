@@ -12,7 +12,8 @@ class CalendarReportItem extends AbstractReportItem {
 		    $('input[name={$this->getPostId()}]').datepicker(
 		        {dateFormat: 'yy-mm-dd',
 		         changeMonth: true,
-                 changeYear: true
+                 changeYear: true,
+                 yearRange: 'c-25:c+5'
 		        });
             $('input[name={$this->getPostId()}]').keydown(function(){
                 return false;
