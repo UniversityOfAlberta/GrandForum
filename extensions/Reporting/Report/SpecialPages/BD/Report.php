@@ -89,6 +89,9 @@ class Report extends AbstractReport{
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
+        if(!$person->isLoggedIn()){
+            return true;
+        }
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         $projects = $person->leadership();
         $themes = $person->getLeadThemes();
