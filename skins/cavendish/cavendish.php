@@ -906,8 +906,11 @@ class CavendishTemplate extends QuickTemplate {
 		        echo "<a id='status_profile' class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
 		        echo "<a id='status_profile_photo' class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' alt='Profile' /></a>";
 		        if(!$wgImpersonating && !$wgDelegating){
-		            $logoutUrl = urlencode("{$wgServer}{$_SERVER['REQUEST_URI']}");
-	                echo "<a id='status_logout' name='arrow_right_32x32' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$wgServer}{$wgScriptPath}/index.php?action=logout'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_32x32.png' alt='Logout' style='height: 16px;' /></a>";
+		            $logoutUrl = "{$wgServer}{$wgScriptPath}/index.php?action=logout";
+		            if(isExtensionEnabled("OpenIDConnect")){
+		                $logoutUrl = "{$config->getValue('oidcUrl')}/oidc/logout?post_logout_redirect_uri=".urlencode($logoutUrl)."&client_id={$config->getValue('oidcClientId')}";
+		            }
+	                echo "<a id='status_logout' name='arrow_right_32x32' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$logoutUrl}'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_32x32.png' alt='Logout' style='height: 16px;' /></a>";
 	            }
 	        }
 	        echo "</div>";
@@ -1187,7 +1190,7 @@ class CavendishTemplate extends QuickTemplate {
         
 		if($wgUser->isLoggedIn()){
 		    $me = Person::newFromWgUser();
-		    if(!$me->isAuthenticated() && !($wgImpersonating || $wgDelegating) && !isExtensionEnabled("GoogleLogin")){
+		    if(!$me->isAuthenticated() && !($wgImpersonating || $wgDelegating) && !isExtensionEnabled("GoogleLogin") && !isExtensionEnabled("OpenIDConnect")){
 		        $wgUser->logout();
 		        $wgMessage->addError("You have not yet verified this account by email");
 		        redirect("$wgServer$wgScriptPath");
@@ -1270,6 +1273,15 @@ class CavendishTemplate extends QuickTemplate {
                     $('.pBodyLogin').parent().hide();
                     $('.pBodyLogin').parent().css('width', '100%');
                     $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='googleLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;' href='{$wgServer}{$wgScriptPath}/index.php/Special:UserLogin'>Google Login</a></div>\");
+                </script>
+                ";
+		    }
+		    if(isExtensionEnabled("OpenIDConnect")){
+		        echo "
+                <script type='text/javascript'>
+                    $('.pBodyLogin').parent().hide();
+                    $('.pBodyLogin').parent().css('width', '100%');
+                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='googleLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;' href='{$wgServer}{$wgScriptPath}/index.php/Special:UserLogin'>Login</a></div>\");
                 </script>
                 ";
 		    }

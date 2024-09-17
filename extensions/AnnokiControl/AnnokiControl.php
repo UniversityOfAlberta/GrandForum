@@ -48,6 +48,9 @@ $egAnnokiExtensions['Shibboleth'] = array('name' => 'Shibboleth',
                                              
 $egAnnokiExtensions['GoogleLogin'] = array('name' => 'GoogleLogin',
                                              'path' => "$IP/extensions/GoogleLogin/GoogleLogin.body.php");
+                                             
+$egAnnokiExtensions['OpenIDConnect'] = array('name' => 'OpenIDConnect',
+                                             'path' => "$IP/extensions/OpenIDConnect/OpenIDConnect.php");
 
 $egAnnokiExtensions['AccessControl'] = array('name' => 'Annoki Access Controls',
                                              'path' => "$IP/extensions/AccessControls/AccessControls.php");
