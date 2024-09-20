@@ -139,6 +139,7 @@ class APIRequest{
 		$this->addAction('Projects', 'evolveProject', 'EvolveProjectAPI');
 		$this->addAction('Projects', 'deleteProject', 'DeleteProjectAPI');
 		
+		$this->addAction("Hidden", "fitbit", "AvoidFitbitAPI");
 		$this->addAction("User Accounts", "callAvoidResourcesApi", "AvoidResourcesAPI");
 		$this->addAction("User Accounts", "DownloadWordHtmlApi", "DownloadWordHtmlAPI");
 	}

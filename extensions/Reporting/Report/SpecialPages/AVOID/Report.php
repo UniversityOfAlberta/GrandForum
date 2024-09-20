@@ -20,6 +20,7 @@ if($config->getValue('reportingExtras', 'Assessor')){
 }
 require_once("AdminDataCollection.php");
 require_once("AdminUsageStats.php");
+require_once("ConnectFitbit.php");
 require_once("FitbitStats.php");
 require_once("Descriptors.php");
 require_once("RawData.php");
