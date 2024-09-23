@@ -2128,10 +2128,12 @@
                     $('.generatePDF').click(function(){
                         $(this).prop('disabled', true);
                         var userId = $(this).attr('data-id');
-                        $.get(wgServer + wgScriptPath + '/index.php/Special:Report?report=ChairSabbaticalApplication&generatePDF&userId=' + userId, function(response){
-                            $('.downloadButton' + userId).attr('href', wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=' + response.ChairSabbaticalApplication.tok);
-                            $('.downloadButton' + userId).show();
-                            $(this).prop('disabled', false);
+                        saveAll(function(){
+                            $.get(wgServer + wgScriptPath + '/index.php/Special:Report?report=ChairSabbaticalApplication&generatePDF&userId=' + userId, function(response){
+                                $('.downloadButton' + userId).attr('href', wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=' + response.ChairSabbaticalApplication.tok);
+                                $('.downloadButton' + userId).show();
+                                $(this).prop('disabled', false);
+                            }.bind(this));
                         }.bind(this));
                     });
                 </script>
