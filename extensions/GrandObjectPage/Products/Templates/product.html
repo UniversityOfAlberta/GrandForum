@@ -23,7 +23,11 @@
                     <% if(val.type == "String" || val.type == "Radio" || val.type == "Check" || val.type == "Integer"){ %>
                         <%= data[index] %>
                     <% } else if(val.type == "MultiSelect"){ %>
-                        <%= data[index].join(", ") %>
+                        <% if(_.isString(data[index])){ %>
+                            <%= data[index] %>
+                        <% } else { %>
+                            <%= data[index].join(", ") %>
+                        <% } %>
                     <% } else if(val.type == "URL"){ %>
                         <a href="<%= data[index] %>" target="_blank"><%= data[index] %></a>
                     <% } else if(val.type == "File" || val.type == "PPT" || val.type == "PDF"){
