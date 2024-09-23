@@ -10,9 +10,10 @@ class Diversity extends BackboneModel {
     var $decline = "";
     var $reason = "";
     var $gender = array(
-        'values' => array(),
-        'other' => "",
-        'decline' => ""
+        'value' => "",
+        'woman' => "",
+        'man' => "",
+        'other' => ""
     );
     var $orientation = array(
         'values' => array(),
@@ -28,11 +29,22 @@ class Diversity extends BackboneModel {
     );
     var $minority = "";
     var $race = array(
+        'value' => "",
+        'values' => array(),
+        'other' => "",
+        'decline' => "",
+        'decline2' => ""
+    );
+    var $languageMinority = array(
+        'value' => '',
+        'yes' => "",
+        'decline' => ""
+    );
+    var $immigration = array(
         'values' => array(),
         'other' => "",
         'decline' => ""
     );
-    var $immigration = "";
     var $affiliation = "";
     var $age = "";
     var $indigenousApply = array(
@@ -90,7 +102,8 @@ class Diversity extends BackboneModel {
             $this->disabilityVisibility = unserialize($data[0]['disability_visibility']);
             $this->minority = $data[0]['minority'];
             $this->race = unserialize($data[0]['race']);
-            $this->immigration = $data[0]['immigration'];
+            $this->languageMinority = unserialize($data[0]['language_minority']);
+            $this->immigration = unserialize($data[0]['immigration']);
             $this->affiliation = $data[0]['affiliation'];
             $this->age = $data[0]['age'];
             $this->indigenousApply = unserialize($data[0]['indigenous_apply']);
@@ -268,7 +281,8 @@ class Diversity extends BackboneModel {
                                   'disability_visibility' => serialize($this->disabilityVisibility),
                                   'minority' => $this->minority,
                                   'race' => serialize($this->race),
-                                  'immigration' => $this->immigration,
+                                  'language_minority' => serialize($this->languageMinority),
+                                  'immigration' => serialize($this->immigration),
                                   'affiliation' => $this->affiliation,
                                   'age' => $this->age,
                                   'indigenous_apply' => serialize($this->indigenousApply),
@@ -304,7 +318,8 @@ class Diversity extends BackboneModel {
                                   'disability_visibility' => serialize($this->disabilityVisibility),
                                   'minority' => $this->minority,
                                   'race' => serialize($this->race),
-                                  'immigration' => $this->immigration,
+                                  'language_minority' => serialize($this->languageMinority),
+                                  'immigration' => serialize($this->immigration),
                                   'affiliation' => $this->affiliation,
                                   'age' => $this->age,
                                   'indigenous_apply' => serialize($this->indigenousApply),
@@ -354,6 +369,7 @@ class Diversity extends BackboneModel {
                       'disabilityVisibility' => $this->disabilityVisibility,
                       'minority' => $this->minority,
                       'race' => $this->race,
+                      'languageMinority' => $this->languageMinority,
                       'immigration' => $this->immigration,
                       'affiliation' => $this->affiliation,
                       'age' => $this->age,

@@ -1,9 +1,9 @@
 <div><b style="vertical-align:middle;">Language:</b> <%= HTML.Select(this, 'language', {style: "vertical-align:middle;", options: [{option: "English", value: "en"}, {option: "Français", value: "fr"}]}) %></div>
-<p>GlycoNet is committed to the principles of Equity, Diversity, and Inclusion (EDI). This survey will help to facilitate strategies and priorities for a diverse and inclusive working and learning environment to continuously drive towards excellence in research and training. GlycoNet has partnered with an external consultant to conduct this survey. Your participation is completely voluntary but highly recommended. A good response rate provides a more accurate picture of our research environment to identify where we are at in terms of representation, inclusion, and to inform next steps.</p>
+<p>GlycoNet is committed to the principles of Equity, Diversity, and Inclusion (EDI). This survey will help to facilitate strategies and priorities for a diverse and inclusive working and learning environment to continuously support excellence in research and training.</p>
 
-<p>The survey is divided into three sections: demographic information, experiences of inclusion, and methods to enhance EDI growth and development in GlycoNet and should take approximately 5 to 10 minutes to complete. All questions include a “I prefer not to answer” option except for one anchor question about your primary role in GlycoNet.</p>
+<p>As part of Canada’s effort to promote equity and diversity in the workplace, Innovation, Science and Economic Development Canada (ISED) has requested that GlycoNet provide an aggregated picture of the network's composition.</p>
 
-<p>Stringent controls are in place to ensure confidentiality is maintained and results will be used only on an aggregated basis. No one from GlycoNet’s Management, Board of Directors or Committees has access to the survey’s responses and only aggregated data will be provided to these groups and individuals. If there are fewer than five people who identify as a particular demographic, GlycoNet will not receive absolute numbers as to protect the identities of these individuals. The personal information requested on this form is collected under the authority of Section 33 (c) of the Alberta Freedom of Information and Protection of Privacy Act and will be protected under Part 2 of that Act.</p>
+<p>Your participation in this survey is important to identify where we are at in terms of representation and to inform next steps. Stringent controls are in place to ensure confidentiality is maintained and results will be used only on an aggregated basis. No one from GlycoNet’s Management, Board of Directors or committees has access to the survey’s responses, and only aggregated data are provided to these groups and individuals. If there are fewer than five people who identify as a particular demographic, GlycoNet will not receive absolute numbers as to protect the identities of these individuals. The personal information requested on this form is collected under the authority of Section 33 (c) of the Alberta Freedom of Information and Protection of Privacy Act and will be protected under Part 2 of that Act.</p>
 
 <!-- Decline? -->
 <h3>If for any reason(s) you do not wish to complete this census survey, please check this box.</h3>
@@ -17,154 +17,151 @@
 
 <!-- Start Survey? -->
 <div id="survey">
+
+    <!-- Demographics -->
     <h2>Demographics</h2>
     <h3><span class="number">1.</span> What is your primary affiliation with GlycoNet? <span style="color: red;">(required)</span></h3>
     <div class="answer">
         <%= HTML.Radio(this, 'affiliation', {options: ["Network Investigator", "Highly Qualified Personnel", "Board and/or Committee Member", "Employee", {value: "Other", option: "Other, please specify:"}]}) %>
         <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'affiliation') %></div>
+        <%= HTML.Radio(this, 'affiliation', {options: ["I prefer not to answer"]}) %>
     </div>
+    
+    <!-- Age -->
     <h3><span class="number">2.</span> Indicate which age range applies to you.</h3>
     <div class="answer">
-        <%= HTML.Radio(this, 'age', {options: ["Between 18-34", "Between 35-54", "Between 55-64", "65+", "I prefer not to answer"]}) %>
+        <%= HTML.Radio(this, 'age', {options: ["Between 15-34", "Between 35-54", "Between 55-64", "65+", "I prefer not to answer"]}) %>
     </div>
+    
+    <!-- Gender -->
     <h3><span class="number">3.</span> Gender:</h3>
     <div class="answer">
-        <p>The options listed below are based on the Alberta Human Rights Commission descriptions of gender identity and other terms frequently used to represent gender.<br />
-        <b>Do you identify as (choose all that apply):</b></p>
-        <%= HTML.MultiCheckBox(this, 'gender.values', {options: ["Female", "Gender-Fluid and/or Non-Binary", "Male", "Transgender", "Two-Spirit", {value: "Another gender", option: "Another gender identity (Please specify):"}]}) %>
-        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'gender.other') %></div>
+        <b>Do you identify as (Select the option thats best describes your current gender identity)</b><br />
+        <%= HTML.Radio(this, 'gender.value', {options: ["Gender-fluid", "Woman"]}) %>
+        <div id="woman" class="answer">
+            <%= HTML.Radio(this, 'gender.woman', {options: ["Cisgender Woman", "Transgender Woman", "Woman - Other", "Woman - Prefer not to say"]}) %>
+        </div>
+        <%= HTML.Radio(this, 'gender.value', {options: ["Man"]}) %>
+        <div id="man" class="answer">
+            <%= HTML.Radio(this, 'gender.man', {options: ["Cisgender Man", "Transgender Man", "Man - Other", "Man - Prefer not to say"]}) %>
+        </div>
+        <%= HTML.Radio(this, 'gender.value', {options: ["Non-Binary", "Two-Spirit", {value: "Other", option: "I don't identify with any option provided. I identify as - specify"}]}) %>
+        <div id="genderOther" style="margin-left: 17px;"><%= HTML.TextBox(this, 'gender.other') %></div>
         <%= HTML.CheckBox(this, 'gender.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
+    
+    <!-- Orientation -->
     <h3><span class="number">4.</span> Sexual Orientation:</h3>
     <div class="answer">
-        <p>The options listed below are based on the Alberta Human Rights Commission’s definition of sexual orientation.<br />
-        <b>Do you identify as (choose all that apply):</b></p>
-        <%= HTML.MultiCheckBox(this, 'orientation.values', {options: ["Gay", "Lesbian", "Heterosexual", "Bisexual", "Queer", "Two-Spirit", "Asexual", {value: "Another orientation", option: "Another orientation (please specify):"}]}) %>
-        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'orientation.other') %></div>
+        <b>Do you identify as (Select the sexual orientation that best describes how you currently think of yourself):</b></p>
+        <%= HTML.Radio(this, 'orientation.value', {options: ["Two-Spirit People", "Lesbian", "Gay", "Heterosexual", "Bisexual", "Transgender", "Pansexual", "Queer", "Intersex",  "Asexual", {value: "Other", option: "I don't identify with any option provided. I identify as - specify"}]}) %>
+        <div id="orientationOther" style="margin-left: 17px;"><%= HTML.TextBox(this, 'orientation.other') %></div>
         <%= HTML.CheckBox(this, 'orientation.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
+    
+    <!-- Indigenous -->
     <h3><span class="number">5.</span> Indigenous/Aboriginal Person:</h3>
     <div class="answer">
-        <p>In accordance with Statistics Canada and the Canadian Employment Equity Act, Aboriginal People are defined by the Government of Canada as First Nations (Status, non-Status, Treaty), Inuit, or Métis. Aboriginal People is an umbrella term for diverse Indigenous Peoples in Canada; however, this may not be how you identify. Instead, you may identify as Cree, Blackfoot, Mi'kmaq, Dene, Nakota Sioux, etc. All of these identities are part of the umbrella term of Indigenous People.</p>
+        <p>In accordance with Statistics Canada and the Employment Equity Act, Aboriginal People are defined as First Nations (status, non-status, Treaty), Inuit, or Métis. Aboriginal People is designated by the federal government as an umbrella term for diverse Indigenous Peoples in Canada. However, this may not be how you identify. Instead, you may identify as Cree, Blackfoot, Mi'kmaq, Dene, or Nakota Sioux, etc. All of these identities are part of the umbrella term of Indigenous People.</p>
         <b>Do you identify as an Indigenous/Aboriginal Person?</b><br />
         <%= HTML.Radio(this, 'indigenous', {options: ["Yes", "No"]}) %>
         <%= HTML.CheckBox(this, 'indigenous', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
         <div id="indigenousApply">
             <br />
-            <b>Please indicate which apply to you (select all that apply):</b><br />
-            <%= HTML.MultiCheckBox(this, 'indigenousApply.values', {options: ["First Nations", "Inuk (Inuit)", "Métis", {value: "Another", option: "Another (please specify):"}]}) %>
+            <b>Select the group(s) that you identify with:</b><br />
+            <%= HTML.MultiCheckBox(this, 'indigenousApply.values', {options: ["First Nations", "Métis", "Inuk (Inuit)", "Other"]}) %>
             <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'indigenousApply.other') %></div>
-            <%= HTML.CheckBox(this, 'indigenousApply.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
+            <%= HTML.CheckBox(this, 'indigenousApply.decline', {value: "Prefer not to say", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">Prefer not to say</span>
         </div>
     </div>
-    <h3><span class="number">6.</span> Person with a disability:</h3>
+    
+    <!-- Race -->
+    <h3><span class="number">6.</span> Visible Minorities:</h3>
     <div class="answer">
-        <p style="margin-bottom:0;">In accordance with the Canada Employment Equity Act, a person with a disability is an individual who has a long-term or recurring physical, mental, sensory, psychiatric or learning impairment and:</p>
-        <ul>
-            <li>Who considers themselves to be disadvantaged in employment by reason of that impairment; or</li>
-            <li>Who believes that an employer or potential employer is likely to consider them to be disadvantaged in employment by reason of that impairment; and</li>
-            <li>Includes persons whose functional limitations owing to their impairment may have been accommodated in their current job or workplace</li>
-        </ul>
+        <p>By the Canada Employment Equity Act and Statistics Canada, the term “visible minority” is defined as individuals who are non-Caucasian in race or non-White in colour. It does not typically include Indigenous Peoples unless they are of mixed origin, with one parent a member of a visible minority group. We recognize that there may be a preference to instead identify as a “person of colour” or by an individual’s race or ethnicity. The options below are based on Canada Census categories and the Employment Equity Act.</p>
+        <b>Do you identify as a member of a visible minority/person of colour?</b><br />
+        
+        <%= HTML.Radio(this, 'race.value', {options: ["Yes", "No"]}) %>
+        <%= HTML.CheckBox(this, 'race.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
+    </div>
+    
+    <!-- Population Group -->
+    <h3><span class="number">7.</span> Population Group:</h3>
+    <div class="answer">
+        <b>Select the population group(s) you identify with (choose all that apply):</b><br />
+        <i>Note: if you answered “Yes” to question 5 (i.e., you are an Indigenous person), select “Population group not listed above” for this question. You can also select from the list any other population group that applies to you.</i><br />
+        
+        <%= HTML.MultiCheckBox(this, 'race.values', 
+            {options: [
+                {option: "South Asian (South Asian descent, e.g. East Indian, Pakistani, Bangladeshi, Sri Lankan, Indo-Caribbean, etc.)", value: "South Asian"},
+                {option: "East/Southeast Asian (Chinese, Korean, Japanese, Taiwanese descent; Filipino, Vietnamese, Cambodian, Thai, Indonesian, other Southeast Asian descent)", value: "East/Southeast Asian"},
+                "Black",
+                "White",
+                {option: "Latino (Latin American, Hispanic descent)", value: "Latino"},
+                {option: "Middle Eastern (Arab, Persian, West Asian descent, e.g. Afghan, Egyptian, Iranian, Lebanese, Turkish, Kurdish, etc.)", value: "Middle Eastern"},
+                {option: "Population group not listed above, I identify as – specify", value: "Other"}
+            ]}) %>
+            <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'race.other') %></div>
+            <%= HTML.CheckBox(this, 'race.decline2', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
+    </div>
+    
+    <!-- Disability -->
+    <h3><span class="number">8.</span> Disabilities:</h3>
+    <div class="answer">
+        <p style="margin-bottom:0;">The Accessible Canada Act defines disability as “any impairment, including a physical, mental, intellectual, cognitive, learning, communication or sensory impairment—or a functional limitation—whether permanent, temporary or episodic in nature, or evident or not, that, in interaction with a barrier, hinders a person’s full and equal participation in society.”</p>
         <b>Do you identify as a person with a disability?</b><br />
         <%= HTML.Radio(this, 'disability', {options: ["Yes", "No"]}) %>
         <%= HTML.CheckBox(this, 'disability', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
         <div id="disabilityVisibility">
             <br />
             <b>Please indicate which apply to you (select all that apply):</b><br />
-            <%= HTML.MultiCheckBox(this, 'disabilityVisibility.values', {options: [{value: "Invisible", option: "Invisible (such as learning disabilities, mental health, chronic health condition)"}, {value: "Visible/physical", option: "Visible/physical (such as mobility, coordination, or dexterity impairment)"}, {value: "Sensory", option: "Sensory (such as blindness/vision loss, deafness/hearing loss)"}, {value: "Another", option: "Another (please specify):"}]}) %>
-            <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'disabilityVisibility.other') %></div>
+            <%= HTML.MultiCheckBox(this, 'disabilityVisibility.values', {options: [
+                "Communications",
+                "Developmental",
+                "Dexterity",
+                "Flexibility",
+                "Hearing",
+                "Learning",
+                "Memory",
+                "Mental health-related",
+                "Mobility",
+                "Pain-related",
+                "Seeing",
+                "Disability not listed above"
+            ]}) %>
             <%= HTML.CheckBox(this, 'disabilityVisibility.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
         </div>
     </div>
-    <h3><span class="number">7.</span> Member of a Visible/Racialized Minority:</h3>
+    
+    <!-- Immigration -->
+    <h3><span class="number">9.</span> What is your immigration or resident status?</h3>
     <div class="answer">
-        <p>In accordance with the Canada Employment Equity Act and Statistics Canada, the term “visible minority” is defined as individuals who are non-Caucasian in race or non-White in colour, regardless of birthplace or citizenship. We recognize that there may be a preference to instead identify as a person of colour, racialized person, or by ethnicity. The options below are based on Statistics Canada categories and the Canada Employment Equity Act.</p>
-        <b>Do you identify as:</b><br />
-        
-        <%= HTML.MultiCheckBox(this, 'race.values', {options: ["Indigenous/Aboriginal", "White", "Visible Minority"]}) %>
-        <div id="minorities" class="answer">
-            <%= HTML.MultiCheckBox(this, 'race.values', {options: ["Arab", "Black", "Chinese", "Filipino", "Japanese", "Korean", "Latin American", {option: "South Asian (e.g., Indian, Pakistani, Sri Lankan, etc.)", value: "South Asian"}, {option: "Southeast Asian (e.g., Vietnamese, Cambodian, Malaysian, Laotian, Thai, etc.)", value: "Southeast Asian"}, {option: "West Asian (e.g., Iranian, Afghan, etc.)", value: "West Asian"}, {value: "Another", option: "Another (please specify):"}]}) %>
-            <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'race.other') %></div>
+        <b>Do you identify as (Select the sexual orientation that best describes how you currently think of yourself):</b></p>
+        <%= HTML.Radio(this, 'immigration.value', {options: [
+            "Canadian citizen by birth", 
+            {value: "Immigrant", option: "Immigrant (persons who are, or who have ever been, landed immigrants or permanent residents. Such persons have been granted the right to live in Canada permanently by immigration authorities. Immigrants who have obtained Canadian citizenship by naturalization are included in this category.)"},
+            {value: "Non-permanent resident", option: "Non-permanent resident (persons from another country with a usual place of residence in Canada and who have a work or study permit or who have claimed refugee status (asylum claimants))"},
+            {value: "Other", option: "Immigrant - Other, please specify"}
+        ]}) %>
+        <div id="immigrationOther" style="margin-left: 17px;"><%= HTML.TextBox(this, 'immigration.other') %></div>
+        <%= HTML.CheckBox(this, 'immigration.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
+    </div>
+    
+    <!-- Language -->
+    <h3><span class="number">10.</span> Are you a member of an official language minority community? (English, French):</h3>
+    <div class="answer">
+        <%= HTML.Radio(this, 'languageMinority.value', {options: ["Yes"]}) %>
+        <div id="languageMinorityYes" class="answer">
+            <%= HTML.Radio(this, 'languageMinority.yes', {options: ["Anglophones in Quebec", "Francophones outside of Quebec"]}) %>
         </div>
-        <%= HTML.CheckBox(this, 'race.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
+        <%= HTML.Radio(this, 'languageMinority.value', {options: ["No"]}) %>
+        <%= HTML.CheckBox(this, 'languageMinority.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
-    <h2>Experiences of Inclusion</h2>
-    <h3><span class="number">8.</span> Do you feel that you can be your true self at work, without fear of negative consequences such as exclusion, differential treatment, or harassment?</h3>
+    
+    <!-- Additional Comments -->
+    <h3><span class="number">11.</span> Additional comments</h3>
     <div class="answer">
-        <%= HTML.Radio(this, 'trueSelf', {options: ["Always", "Mostly", "Rarely", "Never","I do not understand this question", "I prefer not to answer"]}) %>
-    </div>
-    <h3><span class="number">9.</span> Do you feel like a valued member of your team?</h3>
-    <div class="answer">
-        <%= HTML.Radio(this, 'valued', {options: ["Always", "Mostly", "Rarely", "Never", "I prefer not to answer"]}) %>
-    </div>
-    <h3><span class="number">10.</span> Do you feel like there is space for you to offer an opinion and that your opinions are heard?</h3>
-    <div class="answer">
-        <%= HTML.Radio(this, 'space', {options: ["Always", "Mostly", "Rarely", "Never", "I prefer not to answer"]}) %>
-    </div>
-    <h3><span class="number">11.</span> Who do you feel most respected by, generally speaking? Select all that apply.</h3>
-    <div class="answer">
-        <%= HTML.MultiCheckBox(this, 'respected.values', {options: ["Your institution", "Your bosses", "Your colleagues", "Those who work for you"]}) %>
-        <%= HTML.CheckBox(this, 'respected.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
-    </div>
-    <h3><span class="number">12.</span> Who do you feel least respected by, generally speaking? Select all that apply.</h3>
-    <div class="answer">
-        <%= HTML.MultiCheckBox(this, 'leastRespected.values', {options: ["Your institution", "Your bosses", "Your colleagues", "Those who work for you"]}) %>
-        <%= HTML.CheckBox(this, 'leastRespected.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
-    </div>
-    <h2>EDI Principles, Practices, and Training</h2>
-    <h3><span class="number">13.</span> How often do you incorporate EDI principles and practices into your professional activities?</h3>
-    <div class="answer">
-        <%= HTML.Radio(this, 'principles', {options: ["Most days", "Once or twice per week", "Once or twice per month", "Once or twice per year", "Never"]}) %>
-        <br />
-        <b>Please describe what principles and practices you incorporate:</b><br />
-        For example:
-        <ul>
-            <li>I treat people with dignity and respect.</li>
-            <li>I value diverse perspectives and encourage people to share them with me.</li>
-            <li>I make sure my speaker selections represent a range of diversity.</li>
-            <li>I speak up when someone is doing more than their fair share of lab duties.</li>
-            <li>I make sure people who have not had an opportunity to contribute to a discussion are given the opportunity to.</li>
-            <li>I provide a variety of ways for people to share their ideas.</li>
-            <li>I reflect on my participation in discussions to ensure I am not dominating conversations and the voices and contributions of others are heard.</li>
-            <li>I let people know I’m available to listen non-judgmentally if they are experiencing difficulties.</li>
-        </ul>
-        <%= HTML.TextArea(this, 'principlesDescribe', {style: 'height:100px'}) %>
-    </div>
-    <h3><span class="number">14.</span> Are you confident with writing an EDI Statement?</h3>
-    <div class="answer">
-        <%= HTML.Radio(this, 'statement', {options: ["Confident", "Somewhat confident", "Not at all confident", "Not sure"]}) %>
-    </div>
-    <h3><span class="number">15.</span> To increase your confidence in writing an EDI statement, would you do any of the following? Select all that apply.</h3>
-    <div class="answer">
-        <%= HTML.MultiCheckBox(this, 'improve.values', {options: ["Take a workshop to learn how to write an EDI statement", "Discuss with an expert on how to improve your EDI statement", "None of the above", {value: "Other", option: "Other (please specify):"}]}) %>
-        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'improve.other') %></div>
-    </div>
-    <h3><span class="number">16.</span> When was the last time you took any kind of EDI training?</h3>
-    <div class="answer">
-        <%= HTML.Radio(this, 'training', {options: ["Within the past year", "1-3 years ago", "4-7 years ago", "8 years or more", "I’ve never taken any EDI training"]}) %>
-        <div id="preventsTraining">
-            <br />
-            <b>What prevents you from taking training?</b><br />
-            <%= HTML.MultiCheckBox(this, 'preventsTraining.values', {options: ["I have no time", "I am not interested", "My current knowledge is sufficient", {value: "Other", option: "Other (please specify):"}]}) %>
-            <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'preventsTraining.other') %></div>
-        </div>
-    </div>
-    <h3><span class="number">17.</span> What EDI training have you taken? Select all that apply.</h3>
-    <div class="answer">
-        <%= HTML.MultiCheckBox(this, 'trainingTaken.values', {options: ["NSERC Module on Unconscious Bias", "CCDI Diversity and Inclusion Bootcamp, hosted by GlycoNet", "University-specific EDI Training", {value: "Other", option: "Other (please specify):"}]}) %>
-        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'trainingTaken.other') %></div>
-    </div>
-    <h3><span class="number">18.</span> What EDI initiatives and/or training would you like to see implemented by GlycoNet?</h3>
-    <div class="answer">
-        <%= HTML.TextArea(this, 'implemented', {style: 'height:100px'}) %>
-    </div>
-    <h3><span class="number">19.</span> Is there anything else you’d like GlycoNet to know about your experiences that could help us tailor our initiatives to make STEM (science, technology, engineering, and medicine) a better place for everyone?</h3>
-    <div class="answer">
-        <%= HTML.TextArea(this, 'stem', {style: 'height:100px'}) %>
-    </div>
-    <h3><span class="number">20.</span> Additional comments</h3>
-    <div class="answer">
-        <p>GlycoNet truly wants to work towards changing the culture of STEM to make it more equitable, diverse, and inclusive. We welcome any confidential comments you may have about this survey or about GlycoNet’s commitment to EDI. If you would like more information or have ideas or would just like to talk, please feel welcome to reach out to the EDI Committee by emailing <a href="mailto:edi@glyconet.ca">edi@glyconet.ca</a>.</p>
+        <p>We welcome any confidential comments or suggestions about the self-identification questionnaire</p>
         <%= HTML.TextArea(this, 'comments', {style: 'height:100px'}) %>
     </div>
 </div><br />

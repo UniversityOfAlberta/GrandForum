@@ -28,6 +28,7 @@ class DiversityAPI extends RESTAPI {
         $diversity->disabilityVisibility = $this->POST('disabilityVisibility');
         $diversity->minority = $this->POST('minority');
         $diversity->race = $this->POST('race');
+        $diversity->languageMinority = $this->POST('languageMinority');
         $diversity->immigration = $this->POST('immigration');
         $diversity->affiliation = $this->POST('affiliation');
         $diversity->age = $this->POST('age');
@@ -70,6 +71,7 @@ class DiversityAPI extends RESTAPI {
         $diversity->disabilityVisibility = $this->POST('disabilityVisibility');
         $diversity->minority = $this->POST('minority');
         $diversity->race = $this->POST('race');
+        $diversity->languageMinority = $this->POST('languageMinority');
         $diversity->immigration = $this->POST('immigration');
         $diversity->affiliation = $this->POST('affiliation');
         $diversity->age = $this->POST('age');

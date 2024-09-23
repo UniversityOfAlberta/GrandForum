@@ -17,12 +17,14 @@ Diversity = Backbone.Model.extend({
             reason: '',
             affiliation: '',
             gender: {
-                values: [],
-                other: "",
-                decline: ""
+                value: '',
+                woman: '',
+                man: '',
+                other: '',
+                decline: ''
             },
             orientation: {
-                values: [],
+                value: '',
                 other: "",
                 decline: ""
             },
@@ -41,8 +43,15 @@ Diversity = Backbone.Model.extend({
             },
             minority: '',
             race: {
+                value: "",
                 values: [],
                 other: "",
+                decline: "",
+                decline2: ""
+            },
+            languageMinority: {
+                value: "",
+                yes: "",
                 decline: ""
             },
             trueSelf: '',
@@ -80,7 +89,11 @@ Diversity = Backbone.Model.extend({
             implemented: "",
             stem: "",
             racialized: '',
-            immigration: '',
+            immigration: {
+                values: [],
+                other: "",
+                decline: ""
+            },
             comments: ''
         };
     },
