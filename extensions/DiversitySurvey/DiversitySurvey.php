@@ -47,7 +47,7 @@ class DiversitySurvey extends BackbonePage {
 
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-        if($wgUser->isLoggedIn()){
+        /*if($wgUser->isLoggedIn()){
             $selected = @($wgTitle->getText() == "EDITraining") ? "selected" : false;
             $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("Training", "$wgServer$wgScriptPath/index.php/EDITraining", $selected);
         }
@@ -57,7 +57,7 @@ class DiversitySurvey extends BackbonePage {
             
             $selected = @($wgTitle->getText() == "DiversitySurvey" && @$_GET['page'] == "faq") ? "selected" : false;
             $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("FAQ", "$wgServer$wgScriptPath/index.php/Special:DiversitySurvey?page=faq#/faq", $selected);
-        }
+        }*/
         return true;
     }
 
