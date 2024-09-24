@@ -289,8 +289,7 @@ DiversitySurveyView = Backbone.View.extend({
         if(this.model.get('languageMinority').decline == "I prefer not to answer"){
             this.$("input[name=languageMinority_value][type=radio]").prop("checked", false).prop("disabled", true);
             this.$("input[name=languageMinority_yes][type=radio]").prop("checked", false).prop("disabled", true);
-            this.hide("#woman", initial);
-            this.hide("#man", initial);
+            this.hide("#languageMinorityYes", initial);
             this.model.get('languageMinority').value = "";
             this.model.get('languageMinority').yes = "";
         }

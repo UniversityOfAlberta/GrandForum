@@ -1,4 +1,4 @@
-<div><b style="vertical-align:middle;">Language:</b> <%= HTML.Select(this, 'language', {style: "vertical-align:middle;", options: [{option: "English", value: "en"}, {option: "Français", value: "fr"}]}) %></div>
+<!--div><b style="vertical-align:middle;">Language:</b> <%= HTML.Select(this, 'language', {style: "vertical-align:middle;", options: [{option: "English", value: "en"}, {option: "Français", value: "fr"}]}) %></div-->
 <p>GlycoNet is committed to the principles of Equity, Diversity, and Inclusion (EDI). This survey will help to facilitate strategies and priorities for a diverse and inclusive working and learning environment to continuously support excellence in research and training.</p>
 
 <p>As part of Canada’s effort to promote equity and diversity in the workplace, Innovation, Science and Economic Development Canada (ISED) has requested that GlycoNet provide an aggregated picture of the network's composition.</p>
@@ -39,11 +39,21 @@
         <b>Do you identify as (Select the option thats best describes your current gender identity)</b><br />
         <%= HTML.Radio(this, 'gender.value', {options: ["Gender-fluid", "Woman"]}) %>
         <div id="woman" class="answer">
-            <%= HTML.Radio(this, 'gender.woman', {options: ["Cisgender Woman", "Transgender Woman", "Woman - Other", "Woman - Prefer not to say"]}) %>
+            <%= HTML.Radio(this, 'gender.woman', {options: [
+                {value: "Cisgender Woman", option: "Cisgender Woman (the gender you identify with matches the sex assigned to you at birth)"}, 
+                "Transgender Woman", 
+                "Woman - Other", 
+                "Woman - Prefer not to say"
+            ]}) %>
         </div>
         <%= HTML.Radio(this, 'gender.value', {options: ["Man"]}) %>
         <div id="man" class="answer">
-            <%= HTML.Radio(this, 'gender.man', {options: ["Cisgender Man", "Transgender Man", "Man - Other", "Man - Prefer not to say"]}) %>
+            <%= HTML.Radio(this, 'gender.man', {options: [
+                {value: "Cisgender Man", option: "Cisgender Man (the gender you identify with matches the sex assigned to you at birth)"}, 
+                "Transgender Man", 
+                "Man - Other", 
+                "Man - Prefer not to say"
+            ]}) %>
         </div>
         <%= HTML.Radio(this, 'gender.value', {options: ["Non-Binary", "Two-Spirit", {value: "Other", option: "I don't identify with any option provided. I identify as - specify"}]}) %>
         <div id="genderOther" style="margin-left: 17px;"><%= HTML.TextBox(this, 'gender.other') %></div>
