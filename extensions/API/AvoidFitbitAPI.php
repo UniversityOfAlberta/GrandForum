@@ -4,6 +4,9 @@
 
         function doGET(){
             $me = Person::newFromWgUser();
+            if($me->isRoleAtLeast(ADMIN) && isset($_GET['user'])){
+                $me = Person::newFromEmail($_GET['user']);
+            }
             $fitbitEnabled = ($me->getExtra('fitbit') != "" && time() < $me->getExtra('fitbit_expires'));
             if($fitbitEnabled){
                 $data = DBFunctions::select(array('grand_fitbit_data'),
