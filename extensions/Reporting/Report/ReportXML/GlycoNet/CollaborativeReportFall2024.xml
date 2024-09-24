@@ -8,7 +8,7 @@
         
         </Role>
     </Permissions>
-    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Collaborative Team" blobSection="SEC_NONE" type="ReportSection">
+    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Collaborative Team" title="Fall 2024 Collaborative Team Application" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
                 <p>In this Request for Proposals, we are seeking to fund Collaborative Team projects that involve two or more research groups, preferably in different institutions. The successful completion of this project would provide preliminary data to support other funding applications either to GlycoNet, or other funding sources.</p>
