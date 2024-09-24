@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Fall 2024 Collaborative Team Application" reportType="RP_FALL_COLLAB" pdfType="RPTP_FALL_COLLAB" pdfFiles="CollaborativeReportFall2024PDF" ajax="true" allowIdProjects="true" disabled="false" year="2024">
-     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <Static>
-            <![CDATA[
-                    <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
-                    <h4 style='font-size: 2em; margin-top: 1.5em; margin-bottom:2em;'>Fall 2024 Collaborative Team Application</h4>
-            ]]>
-        </Static>
-    </ReportSection>
+<Report name="Fall 2024 Collaborative Team Application" reportType="RP_FALL_COLLAB" pdfType="RPTP_FALL_COLLAB" pdfFiles="CollaborativeReportFall2024PDF" ajax="true" allowIdProjects="true" disabled="false" year="2024" prepend="true">
     <ReportSection id="description" tooltip="Application" name="Application" blobSection="CAT_DESC" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="upload" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_APPLICATION">
             <![CDATA[
