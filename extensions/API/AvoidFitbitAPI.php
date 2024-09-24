@@ -6,6 +6,9 @@
             $me = Person::newFromWgUser();
             if($me->isRoleAtLeast(ADMIN) && isset($_GET['user'])){
                 $me = Person::newFromEmail($_GET['user']);
+                if($me == null){
+                    $this->throwError("User does not exist", 500);
+                }
             }
             $fitbitEnabled = ($me->getExtra('fitbit') != "" && time() < $me->getExtra('fitbit_expires'));
             if($fitbitEnabled){
