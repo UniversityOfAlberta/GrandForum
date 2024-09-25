@@ -2,7 +2,7 @@
 /**
  * @package GrandObjects
  */
-class Diversity extends BackboneModel {
+class Diversity2022 extends BackboneModel {
 
     var $id = null;
     var $userId = "";
@@ -10,10 +10,9 @@ class Diversity extends BackboneModel {
     var $decline = "";
     var $reason = "";
     var $gender = array(
-        'value' => "",
-        'woman' => "",
-        'man' => "",
-        'other' => ""
+        'values' => array(),
+        'other' => "",
+        'decline' => ""
     );
     var $orientation = array(
         'values' => array(),
@@ -29,22 +28,11 @@ class Diversity extends BackboneModel {
     );
     var $minority = "";
     var $race = array(
-        'value' => "",
-        'values' => array(),
-        'other' => "",
-        'decline' => "",
-        'decline2' => ""
-    );
-    var $languageMinority = array(
-        'value' => '',
-        'yes' => "",
-        'decline' => ""
-    );
-    var $immigration = array(
         'values' => array(),
         'other' => "",
         'decline' => ""
     );
+    var $immigration = "";
     var $affiliation = "";
     var $age = "";
     var $indigenousApply = array(
@@ -88,7 +76,7 @@ class Diversity extends BackboneModel {
     var $stem = "";
     var $comments = "";
 
-    function Diversity($data){
+    function Diversity2022($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->language = $data[0]['language'];
@@ -102,8 +90,7 @@ class Diversity extends BackboneModel {
             $this->disabilityVisibility = unserialize($data[0]['disability_visibility']);
             $this->minority = $data[0]['minority'];
             $this->race = unserialize($data[0]['race']);
-            $this->languageMinority = unserialize($data[0]['language_minority']);
-            $this->immigration = unserialize($data[0]['immigration']);
+            $this->immigration = $data[0]['immigration'];
             $this->affiliation = $data[0]['affiliation'];
             $this->age = $data[0]['age'];
             $this->indigenousApply = unserialize($data[0]['indigenous_apply']);
@@ -131,10 +118,10 @@ class Diversity extends BackboneModel {
      * @return Diversity The Diversity with the given id
      */
     static function newFromId($id){
-        $data = DBFunctions::select(array('grand_diversity'),
+        $data = DBFunctions::select(array('grand_diversity_2022'),
                                     array('*'),
                                     array('id' => $id));
-        $diversity = new Diversity($data);
+        $diversity = new Diversity2022($data);
         return $diversity;
     }
     
@@ -144,10 +131,10 @@ class Diversity extends BackboneModel {
      * @return Diversity The Diversity with the given id
      */
     static function newFromUserId($userId){
-        $data = DBFunctions::select(array('grand_diversity'),
+        $data = DBFunctions::select(array('grand_diversity_2022'),
                                     array('*'),
                                     array('user_id' => $userId));
-        $diversity = new Diversity($data);
+        $diversity = new Diversity2022($data);
         return $diversity;
     }
 
@@ -159,7 +146,7 @@ class Diversity extends BackboneModel {
         global $wgRoleValues;
         $diversities = array();
 
-        $data = DBFunctions::select(array('grand_diversity'),
+        $data = DBFunctions::select(array('grand_diversity_2022'),
                                     array('id'));
         if(count($data) > 0){
             foreach($data as $diversityId){
@@ -180,35 +167,16 @@ class Diversity extends BackboneModel {
     
     function getRaces(){
         $array = (!is_array($this->race)) ? @get_object_vars($this->race) :  $this->race;
-        $values = array($array['value']);
-        $values[] = @$array['decline'];
-        $values = array_filter($values);
-        return $values;
-    }
-    
-    function getPopulation(){
-        $array = (!is_array($this->race)) ? @get_object_vars($this->race) :  $this->race;
         $values = $array['values'];
         $values[] = @$array['other'];
-        $values[] = @$array['decline2'];
-        $values = array_filter($values);
-        return $values;
-    }
-    
-    function getImmigration(){
-        $array = (!is_array($this->immigration)) ? @get_object_vars($this->immigration) :  $this->immigration;
-        $values = array($array['value']);
         $values[] = @$array['decline'];
-        $values[] = @$array['other'];
         $values = array_filter($values);
         return $values;
     }
     
     function getGenders(){
         $array = (!is_array($this->gender)) ? @get_object_vars($this->gender) :  $this->gender;
-        $values = array($array['value']);
-        if($array['man'] != ""){ $values[] = $array['man']; };
-        if($array['woman'] != ""){ $values[] = $array['woman']; };
+        $values = $array['values'];
         $values[] = @$array['other'];
         $values[] = @$array['decline'];
         $values = array_filter($values);
@@ -236,16 +204,6 @@ class Diversity extends BackboneModel {
     function getDisabilityVisibility(){
         $array = (!is_array($this->disabilityVisibility)) ? @get_object_vars($this->disabilityVisibility) : $this->disabilityVisibility;
         $values = $array['values'];
-        $values[] = @$array['other'];
-        $values[] = @$array['decline'];
-        $values = array_filter($values);
-        return $values;
-    }
-    
-    function getLanguage(){
-        $array = (!is_array($this->languageMinority)) ? @get_object_vars($this->languageMinority) :  $this->languageMinority;
-        $values = array($array['value']);
-        if($array['yes'] != ""){ $values[] = $array['yes']; };
         $values[] = @$array['other'];
         $values[] = @$array['decline'];
         $values = array_filter($values);
@@ -298,7 +256,7 @@ class Diversity extends BackboneModel {
     }
     
     function create(){
-        DBFunctions::insert('grand_diversity',
+        DBFunctions::insert('grand_diversity_2022',
                             array('user_id' => $this->userId,
                                   'language' => $this->language,
                                   'decline' => $this->decline,
@@ -310,8 +268,7 @@ class Diversity extends BackboneModel {
                                   'disability_visibility' => serialize($this->disabilityVisibility),
                                   'minority' => $this->minority,
                                   'race' => serialize($this->race),
-                                  'language_minority' => serialize($this->languageMinority),
-                                  'immigration' => serialize($this->immigration),
+                                  'immigration' => $this->immigration,
                                   'affiliation' => $this->affiliation,
                                   'age' => $this->age,
                                   'indigenous_apply' => serialize($this->indigenousApply),
@@ -335,7 +292,7 @@ class Diversity extends BackboneModel {
     }
 
     function update(){
-        DBFunctions::update('grand_diversity',
+        DBFunctions::update('grand_diversity_2022',
                             array('user_id' => $this->userId,
                                   'language' => $this->language,
                                   'decline' => $this->decline,
@@ -347,8 +304,7 @@ class Diversity extends BackboneModel {
                                   'disability_visibility' => serialize($this->disabilityVisibility),
                                   'minority' => $this->minority,
                                   'race' => serialize($this->race),
-                                  'language_minority' => serialize($this->languageMinority),
-                                  'immigration' => serialize($this->immigration),
+                                  'immigration' => $this->immigration,
                                   'affiliation' => $this->affiliation,
                                   'age' => $this->age,
                                   'indigenous_apply' => serialize($this->indigenousApply),
@@ -398,7 +354,6 @@ class Diversity extends BackboneModel {
                       'disabilityVisibility' => $this->disabilityVisibility,
                       'minority' => $this->minority,
                       'race' => $this->race,
-                      'languageMinority' => $this->languageMinority,
                       'immigration' => $this->immigration,
                       'affiliation' => $this->affiliation,
                       'age' => $this->age,

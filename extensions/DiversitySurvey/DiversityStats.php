@@ -27,6 +27,7 @@ class DiversityStats extends SpecialPage{
         $tabbedPage = new TabbedPage("person");
         
         $tabbedPage->addTab(new CompletionTab());
+        $tabbedPage->addTab(new Completion2022Tab());
         $tabbedPage->addTab(new Completion2018Tab());
         
         $tabbedPage->showPage();
