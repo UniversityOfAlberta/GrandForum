@@ -17,7 +17,8 @@ DiversitySurveyView = Backbone.View.extend({
     },
     
     events: {
-        "click #save": "save"
+        "click #save": "save",
+        "click #submit": "submit"
     },
     
     save: _.debounce(function(){
@@ -61,6 +62,14 @@ DiversitySurveyView = Backbone.View.extend({
             }.bind(this)
         });
     }, 1000),
+    
+    submit: function(){
+        this.save();
+        _.defer(function(){
+            alert("Thank you for filling out the survey!");
+            document.location = wgServer + wgScriptPath;
+        });
+    },
     
     show: function(selector, initial){
         if(initial === true){
