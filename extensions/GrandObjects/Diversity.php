@@ -16,7 +16,7 @@ class Diversity extends BackboneModel {
         'other' => ""
     );
     var $orientation = array(
-        'values' => array(),
+        'value' => array(),
         'other' => "",
         'decline' => ""
     );
@@ -217,7 +217,7 @@ class Diversity extends BackboneModel {
     
     function getOrientations(){
         $array = (!is_array($this->orientation)) ? @get_object_vars($this->orientation) :  $this->orientation;
-        $values = $array['values'];
+        $values = array($array['value']);
         $values[] = @$array['other'];
         $values[] = @$array['decline'];
         $values = array_filter($values);
