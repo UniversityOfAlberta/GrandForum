@@ -20,7 +20,6 @@
                     <li>Be of an <b><i>applied nature with well-defined translational strategy</i></b></li>
                     <li>Involve the <b><i>training of Highly Qualified Personnel</i></b>.</li>
                     <li>Projects must involve two or more research groups, <b><i>preferably at different institutions</i></b>.</li>
-                    <li>
                 </ul>
                 
                 Projects should not:
@@ -37,7 +36,7 @@
                 <p>Questions about project suitability can be directed to the GlycoNet Administrative Centre (<a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> cc: <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>).</p>
                 
                 <h3>General Instructions and Deadline</h3>
-                <p>All applications will be completed in the GlycoNet Forum, https://forum.glyconet.ca. Please read the following in-structions carefully. A complete application consists of:</p>
+                <p>All applications will be completed in the GlycoNet Forum, https://forum.glyconet.ca. Please read the following instructions carefully. A complete application consists of:</p>
                 <ol>
                     <li><b>Application/Proposal</b> (single PDF file, use Application Template)
                         <ul>
@@ -201,7 +200,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template (for Collaborative).xlsx"><b>Milestone Template</b></a> and upload it below.
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template (Fall 2024 Collaborative Team).xlsx"><b>Milestone Template</b></a> and upload it below.
                 </p>
                 <h3>Milestones Upload</h3>
                 {$item}
