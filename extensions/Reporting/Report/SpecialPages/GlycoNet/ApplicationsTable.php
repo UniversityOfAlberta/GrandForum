@@ -247,6 +247,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_FALL_COLLAB', null, 2024, "Fall 2024", array(), true));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', null, 2024, "2024", array(), true));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', null, 2022, "2022", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', null, 2020, "2020", array($reviewers)));
