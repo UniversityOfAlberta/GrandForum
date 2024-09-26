@@ -663,7 +663,7 @@ abstract class QueryableTable {
                             }
                             $span = 1;
                             for($i=$colN+1; $i < $this->nCols(); $i++){
-                                $c = $this->structure[$rowN][$i];
+                                $c = isset($this->structure[$rowN][$i]) ? $this->structure[$rowN][$i] : NA;
                                 if($c == NA){
                                     $span++;
                                 }
