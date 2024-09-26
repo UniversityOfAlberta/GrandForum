@@ -20,6 +20,7 @@ if($config->getValue('reportingExtras', 'Assessor')){
 }
 require_once("AdminDataCollection.php");
 require_once("AdminUsageStats.php");
+require_once("ConnectFitbit.php");
 require_once("FitbitStats.php");
 require_once("Descriptors.php");
 require_once("RawData.php");
@@ -64,7 +65,8 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgTitle, $config;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-        if($person->isLoggedIn() && $config->getValue('networkFullName') != "AVOID Australia"){
+        if($person->isLoggedIn() && $config->getValue('networkFullName') != "AVOID Australia" && 
+                                    $config->getValue('networkFullName') != "AVOID AB"){
             if(!AVOIDDashboard::hasSubmittedSurvey()){
                 $section = AVOIDDashboard::getNextIncompleteSection();
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey")) ? "selected" : false;

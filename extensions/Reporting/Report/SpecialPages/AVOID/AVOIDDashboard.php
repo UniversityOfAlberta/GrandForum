@@ -953,6 +953,9 @@ class AVOIDDashboard extends SpecialPage {
     static function checkAllSubmissions($userId){
         global $config;
         $me = Person::newFromId($userId);
+        if(!$me->isLoggedIn()){
+            return false;
+        }
         
         $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID");
         $threeMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID_THREEMO");
@@ -967,7 +970,8 @@ class AVOIDDashboard extends SpecialPage {
             Gamification::log('3MonthFollowup');
         }
         
-        if($me->isRole(ADMIN) || $me->isRole(STAFF) || $config->getValue('networkFullName') == "AVOID Australia"){
+        if($me->isRole(ADMIN) || $me->isRole(STAFF) || $config->getValue('networkFullName') == "AVOID Australia" || 
+                                                       $config->getValue('networkFullName') == "AVOID AB"){
             return true;
         }
         
@@ -1012,7 +1016,8 @@ class AVOIDDashboard extends SpecialPage {
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config, $wgMessage;
         $me = Person::newFromId($wgUser->getId());
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
-        if($me->isRole(ADMIN) || $me->isRole(STAFF) || $config->getValue('networkFullName') == "AVOID Australia"){
+        if($me->isRole(ADMIN) || $me->isRole(STAFF) || $config->getValue('networkFullName') == "AVOID Australia" || 
+                                                       $config->getValue('networkFullName') == "AVOID AB"){
             return true;
         }
         $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID");

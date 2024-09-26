@@ -274,6 +274,8 @@
     // Which extensions to enable
     $config->setValue("extensions", array(
         //'Shibboleth',
+        //'GoogleLogin',
+        //'OpenIDConnect',
         'AccessControl',
         'Cache',
         'Messages',

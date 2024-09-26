@@ -6,7 +6,7 @@ $wgUser = User::newFromId(1);
 
 $people = Person::getAllPeople();
 
-$date = date('Y-m-d', time() - 3600*24*7*2);
+$date = date('Y-m-d');
 
 function executeFitBitAPI($url, $person){
     $ch = curl_init();
@@ -79,6 +79,9 @@ foreach($people as $person){
         $fibre = floatval($data['summary']['fiber']);
         $protein = floatval($data['summary']['protein']);
         
+        DBFunctions::delete('grand_fitbit_data',
+                            array('user_id' => $person->getId(),
+                                  'date' => $date));
         DBFunctions::insert('grand_fitbit_data',
                             array('user_id' => $person->getId(),
                                   'date' => $date,
