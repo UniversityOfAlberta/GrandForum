@@ -119,6 +119,8 @@ class Inflect
         'staff',
         'cycle i',
         'cycle ii',
+        'nce cycle i',
+        'nce cycle ii',
         'advisory group',
         'project staff'
     );
