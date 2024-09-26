@@ -378,6 +378,12 @@ class ProjectMainTab extends AbstractEditableTab {
     function showChallenge(){
         global $wgServer, $wgScriptPath, $config;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
+        if(!$edit){
+            $this->html .= "<tr>
+                                <td><b>Phase:</b></td>
+                                <td>{$this->project->getPhase(true)}</td>
+                            </tr>";
+        }
         $this->html .= ($edit) ? "<tr><td class='label'>{$config->getValue("projectThemes")}:</td><td class='value'>"
                                : "<tr><td><b>{$config->getValue("projectThemes")}:</b></td><td>";
         $challenges = $this->project->getChallenges();
