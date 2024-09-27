@@ -212,7 +212,7 @@ class AVOIDDashboard extends SpecialPage {
             if(isset($_GET['disable']) || isset($_GET['token'])){
                 $extra = $me->getExtra();
                 $extra['fitbit'] = @"{$_GET['token']}";
-                $extra['fitbit_expires'] = time() + intval($_GET['expires_in']);
+                $extra['fitbit_expires'] = time() + intval(@$_GET['expires_in']);
                 $me->extra = $extra;
                 $me->update();
             }
