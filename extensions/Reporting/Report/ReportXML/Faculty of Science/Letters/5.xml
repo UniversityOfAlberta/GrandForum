@@ -27,8 +27,7 @@
                 <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
                 <br />
                 Declan Ali<br />
-                Dean of Science<br />
-                DA/pw
+                Dean of Science
                 </div>
             ]]>
         </ReportItem>

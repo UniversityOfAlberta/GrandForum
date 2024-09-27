@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/2" extends="Letters/Base">
+    <ReportSection id="letter" title="Childbirth/Parental Leaves">
+        <ReportItem id="from">
+            <![CDATA[
+                Declan Ali<br />
+                Dean of Science
+            ]]>
+        </ReportItem>
+        <ReportItem id="body">
+            <![CDATA[
+                <p>I am writing to advise you of a new University-wide standard practice for Annual Evaluations of Staff who take Childbirth/Parental Leaves:</p>
+                
+                Standard Practice per Office of the Provost and Vice-President (Academic):
+                <div style='margin-left:2em;'>
+                    <ol>
+                        <li>Depending upon the length and timing of a childbirth/parental leave (and any related medical leave), the leave may have an effect on one, two or even three reporting years.</li>
+                        <li>For each occurrence of a childbirth/parental leave (and any related medical leave), for an aggregate period exceeding 6 months in any period of review, a staff member may choose to receive a non-adjudicated adjustment to base salary, equivalent to the average increment received in the past 3 years (or on all applicable years in the 3 year period if the staff member has less than 3 years of service), as long as the staff member is otherwise eligible to receive merit increments.
+                            <ol style='margin-left:2em;' type="a">
+                                <li>The average increment will be rounded up to 1.0 where applicable; or</li>
+                                <li>The value of a special 1.2 Incrementation award, if the Academic Faculty member’s performance has not been assessed in any of the last three review periods.</li>
+                            </ol>
+                        </li>
+                        <li>A staff member shall submit an annual report by the Faculty’s stated deadline (unless unable to due to medical leave) and shall indicate whether they opt to:
+                            <ol style='margin-left:2em;' type="a">
+                                <li>Receive a non-adjudicated adjustment to base, for a leave for an aggregate period exceeding 6 months in the review period; or</li>
+                                <li>Request an FEC review in accordance with Article A6.05(a) or Article A6.05(c) of Schedule A.</li>
+                            </ol>
+                            If the staff member does not submit a report and is not on an approved medical leave, it is incumbent upon the FEC contact to enquire whether the staff member is aware of the availability of the non-adjudicated increment.<br />
+                            <br />
+                            In accordance with Section 14.09 of the <i>Reference Manual</i> for FECs, if the staff member is on an approved medical leave, the staff member may be reassured that there could be an adjustment made when the staff member becomes well enough to submit an annual report.
+                        </li>
+                    </ol>
+                </div>
+                
+                <p>Schedule A includes general policies with respect to evaluation options related to leaves:<br />
+Evaluation Options under the Collective Agreement related to Leaves:</p>
+                    
+                <div style='font-style: italic; height:2em;'>
+                    <div style='width: 7%; display: inline-block; vertical-align: top;'>
+                        A6.05
+                    </div>
+                    <div style='width: 93%; display: inline-block; vertical-align: top;'>
+                        An Academic Faculty member who is on leave during the period of review will be assessed by FEC as follows:
+                    </div>
+                </div>
+                <ol type="a" style='margin-left: 5em; margin-top:0;'>
+                    <li>Discontinuance of academic responsibilities during periods of Maternity Leave, Parental Leave, Compassionate Leave, and Medical Leave (when the total of such periods of full-time leave is 6 months or less or part-time leave of 50% or less over the 12 months of an academic year) shall require the extrapolation of the performance for work done in the year to a full year. Incrementation will be awarded in accordance with Article A6.09;</li>
+                    <li>
+                        Performance shall be cited in accordance with Article A6.10(c), where the Academic Faculty member has been on leave (or combination of leaves) as defined in Articles 8 and 9, and the Employment Standards Code, during the period of review exceeding 6 months in the aggregate;
+                    </li>
+                    <li>
+                        Notwithstanding Article A6.05(b), an Academic Faculty member may request the Department Chair and FEC to take into account academic activities while on leave. The onus shall be on the Academic Faculty member in material appended to the Annual Report to demonstrate to the Department Chair why such activity should be recognized.
+                    </li>
+                </ol>
+                
+                <p>The details of your eligibility for a non-adjudicated adjustment to base salary are as follows:</p>
+                
+                <p style='margin-left: 2em;'>
+                    Dates of Leave: {getText({$report_type}, TABLE, SABB_START, {$user_id}, 1, 0)} to {getText({$report_type}, TABLE, SABB_END, {$user_id}, 1, 0)}<br />
+                    Average Increment Received over the Past 3 years: {getText({$report_type}, TABLE, AVG_INCREMENT, {$user_id}, 1, 0)}
+                </p>
+                
+                <p>When you submit your annual report, please indicate whether you are opting for a non-adjudicated increment <u>OR</u> whether you are opting for an FEC review (either under Article A6.05(a) or Article A6.05(c) above).</p>
+                
+                <p>Your Chair will then complete the ‘Summary Assessment’ and confirm the value of the non-adjudicated adjustment or will make their recommendation as per standard process.</p>
+                
+                <p>Please let me know if you have any questions.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer">
+            <![CDATA[
+                Sincerely,<br />
+                <br />
+                <div class='previewnodisplay'><img src='skins/Signature.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <br />
+                Declan Ali<br />
+                Dean of Science
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
