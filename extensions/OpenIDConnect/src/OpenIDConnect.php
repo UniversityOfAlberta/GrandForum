@@ -135,6 +135,9 @@ class OpenIDConnect extends PluggableAuth {
 			$clientsecret = $config['clientsecret'];
 
 			$oidc = new OpenIDConnectClient( $iss, $clientID, $clientsecret );
+			if (isset($config['providerConfig'])){
+			    $oidc->providerConfigParam($config['providerConfig']);
+			}
 			if ( isset( $_REQUEST['forcelogin'] ) ) {
 				$oidc->addAuthParam( [ 'prompt' => 'login' ] );
 			}
