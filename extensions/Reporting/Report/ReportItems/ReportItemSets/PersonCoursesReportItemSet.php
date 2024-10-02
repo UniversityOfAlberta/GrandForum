@@ -11,7 +11,12 @@ class PersonCoursesReportItemSet extends ReportItemSet {
         $unique = strtolower($this->getAttr('unique', 'false'));
         $exclude13Week = strtolower($this->getAttr('exclude13Week', 'false'));
         $component = $this->getAttr('component', '');
-        $courses = $person->getCoursesDuring($start, $end);
+        if($term == ''){
+            $courses = $person->getCourses($start, $end);
+        }
+        else{
+            $courses = $person->getCourses();
+        }
         $alreadyDone = array();
         if(is_array($courses)){
             foreach($courses as $course){
