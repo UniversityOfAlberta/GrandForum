@@ -273,6 +273,9 @@ class ReportItemCallback {
     }
     
     function getStartDate(){
+        if($this->reportItem->getReport()->startMonth == "01-01"){
+            return "{$this->getThisYear()}-{$this->reportItem->getReport()->startMonth}";
+        }
         return "{$this->getLastYear()}-{$this->reportItem->getReport()->startMonth}";
     }
     function getEndDate(){
@@ -2075,18 +2078,20 @@ class ReportItemCallback {
         
         $terms = array();
         
-        //  Last year
-        if($startMonth <= "04-31"){ // April
-            $terms[] = "Winter {$startYear}";
-        }
-        if($startMonth <= "06-31"){ // June
-            $terms[] = "Spring {$startYear}";
-        }
-        if($startMonth <= "08-31"){ // August
-            $terms[] = "Summer {$startYear}";
-        }
-        if($startMonth <= "12-31"){ // December
-            $terms[] = "Fall {$startYear}";
+        if($startMonth != "01-01"){
+            //  Last year
+            if($startMonth <= "04-31"){ // April
+                $terms[] = "Winter {$startYear}";
+            }
+            if($startMonth <= "06-31"){ // June
+                $terms[] = "Spring {$startYear}";
+            }
+            if($startMonth <= "08-31"){ // August
+                $terms[] = "Summer {$startYear}";
+            }
+            if($startMonth <= "12-31"){ // December
+                $terms[] = "Fall {$startYear}";
+            }
         }
         
         // This year
