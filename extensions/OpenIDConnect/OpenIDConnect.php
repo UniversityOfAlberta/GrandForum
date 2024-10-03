@@ -18,7 +18,7 @@ $wgOpenIDConnect_Config[$config->getValue('oidcUrl')] = [
     'clientID' => $config->getValue('oidcClientId'),
     'clientsecret' => $config->getValue('oidcSecret'),
     'name' => "Auth0",
-    'scope' => [ 'openid', 'profile', 'email' ]
+    'scope' => [ 'openid', 'profile', 'email', 'email_verified']
 ];
 
 

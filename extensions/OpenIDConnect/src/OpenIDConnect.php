@@ -47,6 +47,7 @@ class OpenIDConnect extends PluggableAuth {
 	 */
 	public function authenticate( &$id, &$username, &$realname, &$email,
 		&$errorMessage ) {
+		    global $wgMessage, $wgServer, $wgScriptPath;
 		if ( !array_key_exists( 'SERVER_PORT', $_SERVER ) ) {
 			wfDebugLog( 'OpenID Connect', 'in authenticate, server port not set' .
 				PHP_EOL );
@@ -169,7 +170,11 @@ class OpenIDConnect extends PluggableAuth {
 			$oidc->setRedirectURL( $redirectURL );
 			wfDebugLog( 'OpenID Connect', 'Redirect URL: ' . $redirectURL );
 			if ( $oidc->authenticate() ) {
-
+                if(!$oidc->requestUserInfo('email_verified')){
+                    $wgMessage->addError("You have not yet verified this account by email");
+		            redirect("$wgServer$wgScriptPath");
+                    return false;
+                }
 				$realname = $oidc->requestUserInfo( 'name' );
 				$email = $oidc->requestUserInfo( 'email' );
 				$this->subject = $oidc->requestUserInfo( 'sub' );
