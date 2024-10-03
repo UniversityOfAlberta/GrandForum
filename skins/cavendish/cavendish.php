@@ -1265,8 +1265,10 @@ class CavendishTemplate extends QuickTemplate {
 		    global $wgSiteName, $wgOut, $wgLang;
 		    setcookie('sideToggled', 'out', time()-3600);
 		    echo "<span class='highlights-text pBodyLogin en'>Login</span><span class='highlights-text pBodyLogin fr'>Connexion</span>";
-		    $userLogin = new SpecialSideUserLogin();
-		    $userLogin->render();
+		    if(!isExtensionEnabled("OpenIDConnect")){
+		        $userLogin = new SpecialSideUserLogin();
+		        $userLogin->render();
+		    }
 		    if(isExtensionEnabled("GoogleLogin")){
 		        echo "
                 <script type='text/javascript'>

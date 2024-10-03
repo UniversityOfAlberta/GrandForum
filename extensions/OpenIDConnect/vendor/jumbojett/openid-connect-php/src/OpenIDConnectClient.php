@@ -456,8 +456,14 @@ class OpenIDConnectClient
         // If the configuration value is not available, attempt to fetch it from a well known config endpoint
         // This is also known as auto "discovery"
         if(!$this->wellKnown) {
-            $well_known_config_url = rtrim($this->getProviderURL(),"/") . "/.well-known/openid-configuration";
-            $this->wellKnown = json_decode($this->fetchURL($well_known_config_url));
+            if(\Cache::exists("wellKnown")){
+                $this->wellKnown = \Cache::fetch("wellKnown");
+            }
+            else{
+                $well_known_config_url = rtrim($this->getProviderURL(),"/") . "/.well-known/openid-configuration";
+                $this->wellKnown = json_decode($this->fetchURL($well_known_config_url));
+                \Cache::store("wellKnown", $this->wellKnown);
+            }
         }
 
         $value = false;
@@ -809,7 +815,13 @@ class OpenIDConnectClient
         $signature = base64url_decode(array_pop($parts));
         $header = json_decode(base64url_decode($parts[0]));
         $payload = implode(".", $parts);
-        $jwks = json_decode($this->fetchURL($this->getProviderConfigValue('jwks_uri')));
+        if(\Cache::exists("jwks")){
+            $jwks = \Cache::fetch("jwks");
+        }
+        else{
+            $jwks = json_decode($this->fetchURL($this->getProviderConfigValue('jwks_uri')));
+            \Cache::store("jwks", $jwks);
+        }
         if ($jwks === NULL) {
             throw new OpenIDConnectClientException('Error decoding JSON from jwks_uri');
         }
