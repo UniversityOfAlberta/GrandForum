@@ -922,7 +922,9 @@ class OpenIDConnectClient
      *
      */
     public function requestUserInfo($attribute = null) {
-
+        if($attribute != null && property_exists($this->userInfo, $attribute)){
+            return $this->userInfo->$attribute;
+        }
         $user_info_endpoint = $this->getProviderConfigValue("userinfo_endpoint");
         $schema = 'openid';
 
