@@ -174,7 +174,7 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
-    // Whether to prevent access to certain pages when a guess
+    // Whether to prevent access to certain pages when a guest
     // This is mostly a facade since it doesn't actually prevent access from the data, it just hides the links to the pages.
     $config->setValue("guestLockdown", false);
     
