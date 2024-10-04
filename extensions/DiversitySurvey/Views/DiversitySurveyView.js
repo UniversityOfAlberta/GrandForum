@@ -316,6 +316,13 @@ DiversitySurveyView = Backbone.View.extend({
             this.model.get('languageMinority').yes = "";
             this.hide("#languageMinorityYes", initial);
         }
+        
+        if(this.model.get('affiliation') == ""){
+            this.$("#submit").prop('disabled', true);
+        }
+        else{
+            this.$("#submit").prop('disabled', false);
+        }
     },
     
     render: function(){
