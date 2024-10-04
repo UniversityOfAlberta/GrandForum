@@ -246,6 +246,9 @@ class ReportXMLParser {
                     }
                 }
             }
+            if(isset($attributes->prepend) && strtolower($attributes->prepend) == 'true'){
+                $this->report->prepend = true;
+            }
             if(isset($attributes->year)){
                 $this->report->year = "{$attributes->year}";
             }

@@ -576,7 +576,12 @@ class Project extends BackboneModel {
     }
     
     // Returns the phase of this Project
-    function getPhase(){
+    function getPhase($name=false){
+        global $config;
+        if($name){
+            $phases = $config->getValue('projectPhaseNames');
+            return $phases[$this->phase];
+        }
         return $this->phase;
     }
     

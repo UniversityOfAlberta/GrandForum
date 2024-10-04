@@ -356,10 +356,30 @@ HTML.Radio = function(view, attr, options){
     });
     view.events['change input[name=' + HTML.Name(attr) + '][type=radio]'] = function(e){
         if(attr.indexOf('.') != -1){
-            var index = attr.indexOf('.');
-            var data = view.model.get(attr.substr(0, index));
-            data[attr.substr(index+1)] = $(e.target).val();
-            view.model.set(attr.substr(0, index), _.clone(data));
+            var elems = attr.split(".");
+            var recurse = function(data, depth) {
+                if (depth < elems.length) {
+                    if((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                        data = {};
+                        data[elems[depth]] = {};
+                    }
+                    data[elems[depth]] = recurse(data[elems[depth]], depth+1);
+                    return data;
+                } else {
+                    if($(e.currentTarget).is(":checked")){
+                        return $(e.target).val();
+                    }
+                    else{
+                        return options.default;
+                    }
+                }
+            }
+            
+            var data = view.model.get(elems[0]);
+            data = recurse(data, 1);
+            view.model.set(elems[0], _.clone(data));
+            view.model.trigger('change', view.model);
+            view.model.trigger('change:' + elems[0], view.model);
         }
         else{
             view.model.set(attr, $(e.target).val());
@@ -485,10 +505,18 @@ HTML.Select = function(view, attr, options){
             if(val == null){
                 val = "";
             }
-            if(val.split(":")[0] == opt || val == opt || 
-               (typeof opt == 'object' && val.split(":")[0] == opt.value) || (typeof opt == 'object' && val == opt.value)){
-                selected = "selected='selected'";
-                foundSelected = true;
+            if(_.isArray(val)){
+                if(val.indexOf(opt) != -1){
+                    selected = "selected='selected'";
+                    foundSelected = true;
+                }
+            }
+            else{
+                if(val.split(":")[0] == opt || val == opt || 
+                   (typeof opt == 'object' && val.split(":")[0] == opt.value) || (typeof opt == 'object' && val == opt.value)){
+                    selected = "selected='selected'";
+                    foundSelected = true;
+                }
             }
             if(typeof opt == 'object'){
                 $(el).append("<option " + selected + " value='" + opt.value + "'>" + opt.option + "</option>");
@@ -499,7 +527,7 @@ HTML.Select = function(view, attr, options){
         }
     });
 
-    if(!foundSelected){
+    if(!foundSelected && !_.isArray(val)){
         $(el).append("<option selected>" + val.split(":")[0] + "</option>");
     }
 

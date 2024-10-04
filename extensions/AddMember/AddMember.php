@@ -345,7 +345,7 @@ class AddMember extends SpecialPage{
         $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
         $candRow = new FormTableRow("cand_row");
         $candRow->append($candLabel)->append($candField);
-        if(!$me->isRoleAtLeast(STAFF)){
+        if(!$config->getValue('candidateEnabled') || !$me->isRoleAtLeast(STAFF)){
             $candRow->attr('style', 'display:none;');
         }
                

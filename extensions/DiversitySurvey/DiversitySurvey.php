@@ -13,8 +13,7 @@ class DiversitySurvey extends BackbonePage {
     }
     
     static function isEligible($person){
-        return ($person->isRole(HQP) ||
-                $person->isRoleAtLeast(NI));
+        return ($person->isSubRole("EDI Survey"));
     }
     
     function userCanExecute($user){
@@ -47,16 +46,21 @@ class DiversitySurvey extends BackbonePage {
 
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+        $me = Person::newFromWgUser();
         if($wgUser->isLoggedIn()){
             $selected = @($wgTitle->getText() == "EDITraining") ? "selected" : false;
             $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("Training", "$wgServer$wgScriptPath/index.php/EDITraining", $selected);
         }
-        if((new self)->userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser) && !Diversity::newFromUserId($me->getId())->getSubmitted()){
             $selected = @($wgTitle->getText() == "DiversitySurvey" && @$_GET['page'] == "survey") ? "selected" : false;
             $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("Survey", "$wgServer$wgScriptPath/index.php/Special:DiversitySurvey?page=survey", $selected);
             
             $selected = @($wgTitle->getText() == "DiversitySurvey" && @$_GET['page'] == "faq") ? "selected" : false;
             $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("FAQ", "$wgServer$wgScriptPath/index.php/Special:DiversitySurvey?page=faq#/faq", $selected);
+            
+            if($wgTitle->getText() != "DiversitySurvey" && $wgTitle->getText() != "EDITraining"){
+                redirect("$wgServer$wgScriptPath/index.php/Special:DiversitySurvey?page=survey");
+            }
         }
         return true;
     }

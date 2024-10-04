@@ -43,7 +43,7 @@ class DeleteProjectAPI extends API{
 	        $stat = DBFunctions::execSQL($sql, true, true);
 	        
 	        // Change end date of roles which only belong to this project
-            $roles = DBFunctions::execSQL("SELECT r.id, COUNT(*)
+            $roles = DBFunctions::execSQL("SELECT r.id, r.user_id, COUNT(*)
                                            FROM grand_roles r, grand_role_projects rp, grand_role_projects rp1 
                                            WHERE r.id = rp.role_id AND r.id = rp1.role_id 
                                            AND rp.project_id = '{$nsId}'
@@ -51,9 +51,18 @@ class DeleteProjectAPI extends API{
                                            GROUP by r.id 
                                            HAVING COUNT(*) = 1");
             foreach($roles as $role){
+                $person = Person::newFromId($role['user_id']);
+                MailingList::unsubscribeAll($person);
                 DBFunctions::update('grand_roles',
                                    array('end_date' => $effective_date),
                                    array('id' => $role['id']));
+                Person::$cache = array();
+                Person::$namesCache = array();
+                Person::$aliasCache = array();
+                Person::$idsCache = array();
+                Cache::delete("nameCache_{$person->getId()}");
+                Cache::delete("idsCache_{$person->getId()}");
+                MailingList::subscribeAll($person);
             }
 	    }
 	    if($stat){

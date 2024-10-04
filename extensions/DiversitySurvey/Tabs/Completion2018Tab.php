@@ -11,12 +11,6 @@ class Completion2018Tab extends AbstractTab {
         $this->html  = "<table id='peopleTable2018' class='wikitable' frame='box' rules='all' style='width:100%'>";
         $this->html .= "<thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Roles</th>
-                                <th>Institution</th>
-                                <th>Department</th>
-                                <th>Position</th>
                                 <th>Completed?</th>
                                 <th>Decline?</th>
                                 <th>Q1</th>
@@ -56,12 +50,6 @@ class Completion2018Tab extends AbstractTab {
                 $decline = ($diversity->decline == 0) ? "No" : "Yes";
                 
                 $this->html .= "<tr>
-                                    <td>{$person->getNameForForms()}</td>
-                                    <td>{$person->getEmail()}</td>
-                                    <td>".implode(", ", $roles)."</td>
-                                    <td>{$person->getUni()}</td>
-                                    <td>{$person->getDepartment()}</td>
-                                    <td>{$person->getPosition()}</td>
                                     <td>{$complete}</td>
                                     <td>
                                         <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>

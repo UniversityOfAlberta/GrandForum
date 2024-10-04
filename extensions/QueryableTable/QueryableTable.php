@@ -567,7 +567,7 @@ abstract class QueryableTable {
         if(is_array($this->xls)){
             foreach($this->xls as $rowN => $row){
 		        foreach($row as $colN => $cell){
-		            if($cell->error != ""){
+		            if(isset($cell->error) && $cell->error != ""){
 			            $isError = true;
 			            break;
 			        }
@@ -585,7 +585,7 @@ abstract class QueryableTable {
         if(is_array($this->xls)){
             foreach($this->xls as $rowN => $row){
 		        foreach($row as $colN => $cell){
-		            if($cell->error != ""){
+		            if(isset($cell->error) && $cell->error != ""){
 			            $ret .= "{$cell->error}<br />\n";
 			        }
 			    }
@@ -648,39 +648,43 @@ abstract class QueryableTable {
                         $errorMsgEnd = "";
                         $style = "";
                         $Cell = $cell;
-                        if($Cell->error != ""){
-                            $class .= " budgetError";
-                            $errorMsg = "<span title='{$colN},{$rowN}: {$Cell->error}' class='tooltip'>";
-                            $errorMsgEnd = "</span>";
-                        }
-                        
-                        $cell = nl2br($Cell->render());
-                        $style = $Cell->style;
-                        $span = 1;
-                        if(!isset($row[$colN + 1])){
-                            $span = max(1, $this->nCols() - $colN);
-                        }
-                        $span = 1;
-                        for($i=$colN+1; $i < $this->nCols(); $i++){
-                            $c = $this->structure[$rowN][$i];
-                            if($c == NA){
-                                $span++;
+                        if(isset($Cell->error)){
+                            if($Cell->error != ""){
+                                $class .= " budgetError";
+                                $errorMsg = "<span title='{$colN},{$rowN}: {$Cell->error}' class='tooltip'>";
+                                $errorMsgEnd = "</span>";
+                            }
+                            
+                            $cell = nl2br($Cell->render());
+                            $style = $Cell->style;
+                            $span = 1;
+                            if(!isset($row[$colN + 1])){
+                                $span = max(1, $this->nCols() - $colN);
+                            }
+                            $span = 1;
+                            for($i=$colN+1; $i < $this->nCols(); $i++){
+                                $c = isset($this->structure[$rowN][$i]) ? $this->structure[$rowN][$i] : NA;
+                                if($c == NA){
+                                    $span++;
+                                }
+                                else{
+                                    break;
+                                }
+                            }
+                            if($Cell->span != null){
+                                $span = $Cell->span;
+                                $class .= " explicitSpan";
+                            }
+                            if($Cell->wrap){
+                                $ret[] = "<td style='width:3em;$style' class='$class smaller' colspan='$span'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
                             }
                             else{
-                                break;
+                                $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class smaller' colspan='$span'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
                             }
                         }
-                        if($Cell->span != null){
-                            $span = $Cell->span;
-                            $class .= " explicitSpan";
-                        }
-                        if($Cell->wrap){
-                            $ret[] = "<td style='width:3em;$style' class='$class smaller' colspan='$span'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
-                        }
                         else{
-                            $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class smaller' colspan='$span'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                            $ret[] = "<td></td>";
                         }
-                        
                         ++$i;
                     }
                     $ret[] = "</tr>\n";

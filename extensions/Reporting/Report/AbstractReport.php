@@ -62,6 +62,7 @@ abstract class AbstractReport extends SpecialPage {
     var $pdfType;
     var $pdfFiles;
     var $pdfAllProjects;
+    var $prepend = false;
     var $showInstructions = true;
     var $allowIdProjects = false;
     var $encrypt = false;

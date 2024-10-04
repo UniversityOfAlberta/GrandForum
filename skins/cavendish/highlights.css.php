@@ -380,6 +380,10 @@ a:active {
     color: $th !important;
 }
 
+.clicktooltip:hover {
+    color: $hl;
+}
+
 /* Carousel */
 
 .carouselPrev, .carouselNext {

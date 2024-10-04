@@ -40,7 +40,9 @@ class NITableTab extends PeopleTableTab {
         }
         $statusHeader = "";
         if($me->isRoleAtLeast(STAFF)){
-            $statusHeader .= "<th>Gender</th>";
+            if($config->getValue("genderEnabled") && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly
+                $statusHeader .= "<th>Gender</th>";
+            }
             if($config->getValue('crcEnabled')){
                 $statusHeader .= "<th>CRC</th>";
             }
@@ -53,7 +55,7 @@ class NITableTab extends PeopleTableTab {
             if($config->getValue('mitacsEnabled')){
                 $statusHeader .= "<th>MITACS</th>";
             }
-            if($me->isRoleAtLeast(MANAGER)){
+            if($me->isRoleAtLeast(MANAGER) && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly
                 $statusHeader .= "<th style='display:none;'>Indigenous</th>
                                   <th style='display:none;'>Disability</th>
                                   <th style='display:none;'>Minority</th>";
@@ -161,7 +163,9 @@ class NITableTab extends PeopleTableTab {
                 else{
                     $status = "Inactive";                
                 }
-                $this->html .= "<td align='left'>{$person->getGender()}</td>";
+                if($config->getValue("genderEnabled") && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly){
+                    $html .= "<td align='left'>{$person->getGender()}</td>";
+                }
                 if($config->getValue('crcEnabled')){
                     $crcObj = $person->getCanadaResearchChair();
                     if($crcObj != null){
@@ -178,7 +182,7 @@ class NITableTab extends PeopleTableTab {
                 if($config->getValue('mitacsEnabled')){
                     $this->html .= "<td align='left'>{$person->getMitacs()}</td>";
                 }
-                if($me->isRoleAtLeast(MANAGER)){
+                if($me->isRoleAtLeast(MANAGER) && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly){
                     $this->html .= "<td align='left' style='display:none;'>{$person->getIndigenousStatus()}</td>";
                     $this->html .= "<td align='left' style='display:none;'>{$person->getDisabilityStatus()}</td>";
                     $this->html .= "<td align='left' style='display:none;'>{$person->getMinorityStatus()}</td>";

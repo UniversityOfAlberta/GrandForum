@@ -176,7 +176,8 @@ class Budget extends QueryableTable{
             fclose($tmpf);
         }
         
-        // 2. Instantiate the file as a Spreadsheet IO object.
+        // 2. Instantiate the file as a PHPExcel IO object.
+        $colVisibility = array();
         try {
             if(!($data instanceof PhpOffice\PhpSpreadsheet\Spreadsheet)){
                 $objReader = PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($tmpn);
@@ -186,6 +187,20 @@ class Budget extends QueryableTable{
                    $class != "PhpOffice\PhpSpreadsheet\Reader\Xls"){
                     return;
                 }
+                
+                // First load with styling (only when structure is not specified)
+                if($this->structure == null){
+                    $worksheets = $objReader->listWorksheetNames($tmpn);
+                    $objReader->setLoadSheetsOnly($worksheets[0]);
+                    $obj = $objReader->load($tmpn);
+                    $obj->setActiveSheetIndex(min($sheet, count($obj->getAllSheets())-1));
+                    for($i=ord("A"); $i <= ord($obj->getActiveSheet()->getHighestColumn()); $i++){
+                        $colVisibility[chr($i)] = $obj->getActiveSheet()->getColumnDimension(chr($i))->getVisible();
+                    }
+                }
+                
+                // Then read without styling (always)
+                $objReader->setLoadAllSheets();
                 $objReader->setReadDataOnly(true);
                 $obj = $objReader->load($tmpn);
                 
@@ -222,6 +237,13 @@ class Budget extends QueryableTable{
                     if(ord($maxCol) < $colN + 1){
                         break;
                     }
+                    
+                    if(isset($colVisibility[chr(ord("A") + $colN)]) && !$colVisibility[chr(ord("A") + $colN)]){
+                        // Hide hidden columns
+                        $this->structure[$rowN][$colN] = NA;
+                        $cell = NA;
+                    }
+
                     $origCellValue = @$cells[$rowN][$colN];
                     $splitCell = explode("(", $cell);
                     $params = array();
@@ -241,6 +263,7 @@ class Budget extends QueryableTable{
                 }
                 ++$rowN;
             }
+
             if(!($data instanceof PhpOffice\PhpSpreadsheet\Spreadsheet)){
                 $obj->disconnectWorksheets();
                 PhpOffice\PhpSpreadsheet\Calculation\Calculation::getInstance()->clearCalculationCache();

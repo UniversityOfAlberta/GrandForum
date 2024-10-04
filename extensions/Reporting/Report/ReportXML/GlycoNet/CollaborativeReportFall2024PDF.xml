@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" ajax="true" year="2024" allowIdProjects="true" prepend="true" disabled="false">
-    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <Static>
-            <![CDATA[
-                    <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
-                    <h4 style='font-size: 2em; margin-top: 1.5em; margin-bottom:2em;'>Strategic Grant Application</h4>
-            ]]>
-        </Static>
-    </ReportSection>
+<Report name="Fall 2024 Collaborative Team Application" reportType="RP_FALL_COLLAB" pdfType="RPTP_FALL_COLLAB" pdfFiles="CollaborativeReportFall2024PDF" ajax="true" allowIdProjects="true" disabled="false" year="2024" prepend="true">
     <ReportSection id="description" tooltip="Application" name="Application" blobSection="CAT_DESC" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="upload" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_APPLICATION">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <If if="{!=({getBlobMD5(RP_STRAT,CAT_DESC,CAT_ENV_IMPACT,0,{$user_id},{$project_id})},)}">
+        <If if="{!=({getBlobMD5(RP_FALL_COLLAB,CAT_DESC,CAT_ENV_IMPACT,0,{$user_id},{$project_id})},)}">
             <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_ENV_IMPACT" mimeType="application/pdf" fileSize="10">
                 <![CDATA[
                     <center><h1>Environmental Impact Form</h1></center>
@@ -41,10 +33,6 @@
             <![CDATA[
                 {$item}
             ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="commercial" name="Commercialization Plan" blobSection="CAT_COMM" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
-        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
         </ReportItem>
     </ReportSection>
     <ReportSection id="letters" name="Partner Letters" title="Partner Letters of Support" blobSection="CAT_SUPPORT" tooltip="Partner Letters of Support" type="HeaderReportSection" pagebreak="false">

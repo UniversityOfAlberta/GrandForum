@@ -546,6 +546,16 @@ class CavendishTemplate extends QuickTemplate {
 		                delay: 500
 		            }
 		        });
+		        $('.clicktooltip').qtip({
+		            position: {
+		                adjust: {
+			                x: -($('.clicktooltip').width()/25),
+			                y: -($('.clicktooltip').height()/2)
+		                }
+		            },
+                    show: 'click',
+                    hide: 'click unfocus'
+		        });
 		        $('.menuTooltip').qtip({
 		            position: {
                         my: 'top center',  // Position my top left...

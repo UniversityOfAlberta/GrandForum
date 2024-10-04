@@ -71,9 +71,9 @@ class ProjectFESDescriptionTab extends AbstractEditableTab {
                             <h2>Project External Partners Collaborators and Their Roles</h2>
                             <h3>1. How the project partners, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits.</h3>
                             <div class='tinymce'>{$this->getBlobValue('COMMENTS1')}</div>
-                            <h3>2. Level of confidence that the project cash resources will be realize</h3>
+                            <h3>2. Level of confidence that the project cash resources will be realized</h3>
                             <div class='tinymce'>{$this->getBlobValue('COMMENTS2')}</div>
-                            <h3>3. Potential / existing in-kind resources from partners that are need for project</h3>
+                            <h3>3. Potential / existing in-kind resources from partners that are needed for the project</h3>
                             <div class='tinymce'>{$this->getBlobValue('COMMENTS3')}</div>
                             <h2>Project Key Decision Point</h2>
                             <h3>1. Project Key Decision Point</h3>
@@ -93,11 +93,11 @@ class ProjectFESDescriptionTab extends AbstractEditableTab {
                             <h2>Project External Partners Collaborators and Their Roles</h2>
                             <h3>1. How the project partners, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits.</h3>
                             <textarea class='long_description' name='COMMENTS1' style='height:200px;'>{$this->getBlobValue('COMMENTS1')}</textarea>
-                            <h3>2. Level of confidence that the project cash resources will be realize</h3>
+                            <h3>2. Level of confidence that the project cash resources will be realized <span class='clicktooltip' title='Describe your team&#39;s confidence level in securing all necessary funding to support the project until its completion from both federal and non-federal sources.'>&#9432;</span></h3>
                             <textarea class='long_description' name='COMMENTS2' style='height:200px;'>{$this->getBlobValue('COMMENTS2')}</textarea>
-                            <h3>3. Potential / existing in-kind resources from partners that are need for project</h3>
+                            <h3>3. Potential / existing in-kind resources from partners that are needed for the project</h3>
                             <textarea class='long_description' name='COMMENTS3' style='height:200px;'>{$this->getBlobValue('COMMENTS3')}</textarea>
-                            <h2>Project Key Decision Point</h2>
+                            <h2>Project Key Decision Point <span class='clicktooltip' title='The \"Project Key Decision Point\" is a critical milestone in the project&#39;s lifecycle that determines whether the project should proceed or be discontinued, in accordance with the original plan.'>&#9432;</span></h2>
                             <h3>1. Project Key Decision Point</h3>
                             <textarea class='long_description' name='DECISION' style='height:200px;'>{$this->getBlobValue('DECISION')}</textarea>";
             $this->html .= "<script type='text/javascript'>

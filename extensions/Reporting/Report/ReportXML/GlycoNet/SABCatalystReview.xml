@@ -65,31 +65,10 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" name="Submit">
-        <ReportItem id="submitted" type="TextReportItem" blobItem="SUBMITTED">
+        <ReportItem id="submitted" type="FakeSubmitReportItem" blobItem="SUBMITTED" emails="vsharko@glyconet.ca">
             <![CDATA[
-                <div style='display:none;'>{$item}</div>
+                {$item}
             ]]>
         </ReportItem>
-        <If if="{==({getText(RP_SAB_CAT_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
-            <![CDATA[
-                <div class="success">Your review(s) have been submitted.</div>
-            ]]>
-        </If>
-        <Static>
-            <![CDATA[
-                <div>
-                    Submitting your review will mark your reviews as 'submitted', however you may continue to edit your reviews after submitting if needed.
-                </div><br />
-                <a class='button' id='submit_review'>Submit Review</a>
-                <script type='text/javascript'>
-                    $('#reportFooter').prev().hide();
-                    $('#reportFooter').hide();
-                    $('#submit_review').click(function(){
-                        $('input[name=Submit_submitted]').val('Submitted');
-                        $('#Submit').click();
-                    });
-                </script>
-            ]]>
-        </Static>
     </ReportSection>
 </Report>

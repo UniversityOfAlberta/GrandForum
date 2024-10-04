@@ -47,6 +47,23 @@ class AllMaterialsReportItemSet extends ReportItemSet {
                 $data[] = $tuple;
             }
         }
+        $sortBy = $this->getAttr('sortBy', '', false);
+        if($sortBy != ""){
+            $that = $this;
+            usort($data, function($a, $b) use ($that, $sortBy) {
+                $aItem = new StaticReportItem();
+                $aItem->setProjectId($a['project_id']);
+                $aItem->setPersonId($a['person_id']);
+                $aItem->setParent($that->getSection());
+                
+                $bItem = new StaticReportItem();
+                $bItem->setProjectId($b['project_id']);
+                $bItem->setPersonId($b['person_id']);
+                $bItem->setParent($that->getSection());
+                
+                return strnatcmp($aItem->varSubstitute($sortBy), $bItem->varSubstitute($sortBy));
+            });
+        }
         return $data;
     }
 

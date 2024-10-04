@@ -151,7 +151,7 @@ class PeopleTableTab extends AbstractTab {
                               <th>ORCID</th>
                               <th>Scopus</th>
                               <th>Researcher Id</th>";
-            if($config->getValue("genderEnabled")){
+            if($config->getValue("genderEnabled") && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly
                 $statusHeader .= "<th>Gender</th>";
             }
             if($config->getValue('crcEnabled')){
@@ -166,7 +166,7 @@ class PeopleTableTab extends AbstractTab {
             if($config->getValue('mitacsEnabled')){
                 $statusHeader .= "<th>MITACS</th>";
             }
-            if($me->isRoleAtLeast(MANAGER)){
+            if($me->isRoleAtLeast(MANAGER) && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly
                 $statusHeader .= "<th style='display:none;'>Indigenous</th>
                                   <th style='display:none;'>Disability</th>
                                   <th style='display:none;'>Minority</th>";
@@ -343,7 +343,7 @@ class PeopleTableTab extends AbstractTab {
                           <td>{$person->getOrcid()}</td>
                           <td>{$person->getScopus()}</td>
                           <td>{$person->getResearcherId()}</td>";
-                if($config->getValue("genderEnabled")){
+                if($config->getValue("genderEnabled") && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly){
                     $html .= "<td align='left'>{$person->getGender()}</td>";
                 }
                 if($config->getValue('crcEnabled')){
@@ -362,7 +362,7 @@ class PeopleTableTab extends AbstractTab {
                 if($config->getValue('mitacsEnabled')){
                     $html .= "<td align='left'>{$person->getMitacs()}</td>";
                 }
-                if($me->isRoleAtLeast(MANAGER)){
+                if($me->isRoleAtLeast(MANAGER) && (!$config->getValue('networkName') == "FES" || $me->getName() == "Samuel.Ferraz")){ // TODO: This is ugly){
                     $html .= "<td align='left' style='display:none;'>{$person->getIndigenousStatus()}</td>";
                     $html .= "<td align='left' style='display:none;'>{$person->getDisabilityStatus()}</td>";
                     $html .= "<td align='left' style='display:none;'>{$person->getMinorityStatus()}</td>";
@@ -384,7 +384,7 @@ class PeopleTableTab extends AbstractTab {
                 $html .= "<td align='center'><span style='font-size:2em;'>{$doc3}</span></td>";
             }
             if($contactHeader != ''){
-                $html .= "<td align='left'>{$person->getPhoneNumber()}</td>";
+                $html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td><td align='left'>{$person->getPhoneNumber()}</td>";
             }
             if($emailHeader != ''){
                 $html .= ($person->getEmail() != "") ? "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>" : "<td></td>";

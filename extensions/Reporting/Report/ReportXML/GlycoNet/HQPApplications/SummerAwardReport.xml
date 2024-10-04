@@ -109,12 +109,12 @@
             <![CDATA[
                 <h2>Project Information</h2>
                 <table class='wikitable'>
-                <tr>
+                <!--tr>
                     <td valign='top' align='right'><b>Project Identifier:</b><br />
                         <small>(if project is funded by GlycoNet)</small>
                     </td>
                     <td valign='top'>{$item}</td>
-                </tr>
+                </tr-->
             ]]>
         </ReportItem>
         <ReportItem id="title" type="Text" blobItem="TITLE">
@@ -125,10 +125,10 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="theme" type="Radio" blobItem="THEME" orientation="vertical" options="Cancer|Chronic Diseases|Infectious Diseases|Neurodegenerative Diseases">
+        <ReportItem id="theme" type="Radio" blobItem="THEME" orientation="vertical" options="Infectious Diseases|Immunology|Precision Medicine|Animal Health and Sustainable Agri-Food Systems">
             <![CDATA[
                 <tr>
-                    <td valign='top' align='right'><b>Theme:</b></td>
+                    <td valign='top' align='right'><b>Research Area:</b><br /><small>(Select the most relevant)</small></td>
                     <td>{$item}</td>
                 </tr>
                 <tr>
@@ -158,6 +158,13 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="skills" type="Textarea" blobItem="SKILLS" rich="true">
+            <![CDATA[
+                <h2>Skills</h2>
+                <p>Which new skills, knowledge and/or experience have you developed during the project? Please provide details, examples and how this will help you in your future path/career.</p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h2>Products</h2>
@@ -179,6 +186,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,iamir@glyconet.ca,vsharko@glyconet.ca" />
+        <If if="{==({getText(RP_HQP_SUMMER_REPORT, REPORT, SKILLS, 0, {$user_id}, 0)},)}">
+            <![CDATA[
+                The "Skills" field cannot be empty.
+            ]]>
+        </If>
+        <Else>
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,iamir@glyconet.ca,vsharko@glyconet.ca" />
+        </Else>
     </ReportSection>
 </Report>
