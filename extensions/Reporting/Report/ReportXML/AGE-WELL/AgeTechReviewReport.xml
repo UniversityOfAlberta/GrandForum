@@ -263,6 +263,7 @@
                             <th style='display:none;'>Q2D Comments</th>
                             <th style='display:none;'>Q2E Comments</th>
                             <th style='display:none;'>Budget Comments</th>
+                            <th style='display:none;'>Comments</th>
                             <th>Total</th>
                             <th>Q0A</th>
                             <th>Q0B</th>
@@ -286,6 +287,7 @@
                             <th style='display:none;'>Q2D Comments</th>
                             <th style='display:none;'>Q2E Comments</th>
                             <th style='display:none;'>Budget Comments</th>
+                            <th style='display:none;'>Comments</th>
                             <th>Total</th>
                             <th>Q0A</th>
                             <th>Q0B</th>
