@@ -15,8 +15,8 @@ function sendMail($subject, $message, $to){
 
 $year = date('Y');
 $today = date('Y-m-d');
-$future = date('m-d', time() + 86400*7);
-$futureDate = date('F j, Y', time() + 86400*7);
+$future = date('m-d', time() + 86400*14);
+$futureDate = date('F j, Y', time() + 86400*14);
 
 $projectQ = Report::dateToProjectQuarter($today);
 $themeQ = Report::dateToThemeQuarter($today);
