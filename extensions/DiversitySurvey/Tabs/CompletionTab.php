@@ -11,7 +11,6 @@ class CompletionTab extends AbstractTab {
         $this->html  = "<table id='peopleTable2024' class='wikitable' frame='box' rules='all' style='width:100%'>";
         $this->html .= "<thead>
                             <tr>
-                                <th>Name</th>
                                 <th>Decline?</th>
                                 <th>Q1</th>
                                 <th>Q2</th>
@@ -43,7 +42,6 @@ class CompletionTab extends AbstractTab {
                     $language = implode(", ", $diversity->getLanguage());
 
                     $this->html .= "<tr>
-                                        <td>{$person->getNameForForms()}</td>
                                         <td>
                                             <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
                                                 {$decline}<br />
