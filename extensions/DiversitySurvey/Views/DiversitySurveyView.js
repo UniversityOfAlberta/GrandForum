@@ -64,6 +64,7 @@ DiversitySurveyView = Backbone.View.extend({
     }, 1000),
     
     submit: function(){
+        this.$("input[name=submitted]").prop("checked", true).trigger("change");
         this.save();
         _.defer(function(){
             alert("Thank you for filling out the survey!");
@@ -335,6 +336,10 @@ DiversitySurveyView = Backbone.View.extend({
                 this.save();
             }.bind(this));
         }.bind(this));
+        this.$("#welcome").dialog({
+            modal: true,
+            width: 500
+        });
         return this.$el;
     }
 

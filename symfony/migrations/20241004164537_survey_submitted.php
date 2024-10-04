@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class PersonCrdc extends AbstractMigration
+class SurveySubmitted extends AbstractMigration
 {
     /**
      * Change Method.
@@ -22,12 +22,9 @@ class PersonCrdc extends AbstractMigration
      */
     public function up()
     {
-        $table = $this->table('grand_person_crdc', array('id' => 'id'));
-        $table->addColumn('user_id', 'integer')
-              ->addColumn('code', 'string', array('limit' => 64))
-              ->addIndex('user_id')
-              ->addIndex('code')
-              ->create();
+        $table = $this->table('grand_diversity');
+        $table->addColumn('submitted', 'boolean', array('after' => 'language'))
+              ->update();
     }
 
     /**

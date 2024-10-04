@@ -18,8 +18,9 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
+        $crdc = $this->person->getCRDC(", ");
         $keywords = $this->person->getKeywords(", ");
-        if($this->person->getProfile() != "" || $keywords != ""){
+        if($this->person->getProfile() != "" || $crdc != "" || $keywords != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>
                             <table>";
             if($me->isRoleAtLeast(STAFF)){
@@ -29,6 +30,7 @@ class PersonProfileTab extends AbstractEditableTab {
                 $this->html .= ($this->person->getEmployeeId() != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Employee Id:</b></td><td>{$this->person->getEmployeeId()}</td></tr>" : "";
             }
             $this->html .= ($keywords != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Keywords:</b></td><td>{$keywords}</td></tr>" : "";
+            $this->html .= ($crdc != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>CRDC Codes:</b></td><td>{$crdc}</td></tr>" : "";
             $this->html .= "</table>";
             $this->showProfile($this->person, $this->visibility);
         }
@@ -105,6 +107,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->person->publicProfile = @$_POST['public_profile'];
         $this->person->privateProfile = @$_POST['private_profile'];
         $this->person->update();
+        $this->person->setCRDC($_POST['crdc']);
         $this->person->setKeywords(explode(",", $_POST['keywords']));
         $this->person->setAliases(explode(";", $_POST['aliases']));
         
@@ -318,6 +321,18 @@ EOF;
     
     function showEditProfile($person, $visibility){
         global $config;
+        
+        if(count($config->getValue('crdcCodes')) > 0){
+            $crdcField = new MultiSelectBox("crdc", "CRDC", $person->getCRDC(), $config->getValue('crdcCodes'));
+            $this->html .= "
+                <h3>CRDC Codes:</h3>
+                {$crdcField->render()}
+                <script type='text/javascript'>
+                    $(document).ready(function(){
+                        $(\"select[name='crdc[]'\").chosen();
+                    });
+                </script>";
+        }
         $this->html .= "
                 <h3>Keywords:</h3>
                 <input class='keywords' type='text' name='keywords' value='' />";

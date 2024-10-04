@@ -187,6 +187,9 @@
     // Whether or not Profiles should be enabled
     $config->setValue("profilesEnabled", true);
     
+    // The List of CRDC Codes (code => full text) 
+    $config->setValue("crdcCodes", array());
+    
     // A list of api keys
     $config->setValue("apiKeys", array());
     

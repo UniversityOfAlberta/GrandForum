@@ -12,12 +12,12 @@ class MultiSelectBox extends UIElement {
     
     function render(){
         $html = "<select name='{$this->id}[]' {$this->renderAttr()} multiple='multiple'>";
-        foreach($this->options as $option){
+        foreach($this->options as $key => $option){
             $selected = "";
-            if($this->value == $option){
+            if(in_array($option, $this->value) || in_array($key, $this->value)){
                 $selected = " selected";
             }
-            $html .= "<option $selected>{$option}</option>";
+            $html .= "<option $selected value='{$key}'>{$key} - {$option}</option>";
         }
         return $html."</select>";
     }

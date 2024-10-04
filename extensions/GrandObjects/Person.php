@@ -1010,6 +1010,7 @@ class Person extends BackboneModel {
                       'position' => $this->getPosition(),
                       'roles' => $roles,
                       'keywords' => $this->getKeywords(),
+                      'crdc' => $this->getCRDC(),
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
                       'url' => $this->getUrl(),
@@ -2507,6 +2508,56 @@ class Person extends BackboneModel {
                                       'keyword' => $keyword));
         }
         Cache::delete($cacheId);
+    }
+    
+    /**
+     * Returns all the crdc codes for this Person
+     * @param string $delim An optional delimiter
+     * @return array All the crdc codes for this Person as an array, or a string if a delimiter is specified
+     */
+    function getCRDC($delim=null){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEdit($this)){
+            $cacheId = "crdc_{$this->getId()}";
+            if(Cache::exists($cacheId)){
+                $keywords = Cache::fetch($cacheId);
+            }
+            else{
+                $data = DBFunctions::select(array('grand_person_crdc'),
+                                            array('code'),
+                                            array('user_id' => $this->getId()));
+                $keywords = array();
+                foreach($data as $row){
+                    $keywords[] = $row['code'];
+                }
+                Cache::store($cacheId, $keywords);
+            }
+            if($delim != null){
+                return implode($delim, $keywords);
+            }
+            return $keywords;
+        }
+        return "";
+    }
+    
+    /**
+     * Updates the keywords for this Person
+     * @param array $keywords The array of keywords
+     */
+    function setCRDC($keywords){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEdit($this)){
+            $cacheId = "crdc_{$this->getId()}";
+            DBFunctions::delete('grand_person_crdc',
+                                array('user_id' => $this->getId()));
+            
+            foreach($keywords as $keyword){
+                DBFunctions::insert('grand_person_crdc',
+                                    array('user_id' => $this->getId(),
+                                          'code' => $keyword));
+            }
+            Cache::delete($cacheId);
+        }
     }
     
     /**

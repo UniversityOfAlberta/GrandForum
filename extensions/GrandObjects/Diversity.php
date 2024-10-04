@@ -7,6 +7,7 @@ class Diversity extends BackboneModel {
     var $id = null;
     var $userId = "";
     var $language = "en";
+    var $submitted = false;
     var $decline = "";
     var $reason = "";
     var $gender = array(
@@ -93,6 +94,7 @@ class Diversity extends BackboneModel {
             $this->id = $data[0]['id'];
             $this->language = $data[0]['language'];
             $this->userId = $data[0]['user_id'];
+            $this->submitted = $data[0]['submitted'];
             $this->decline = $data[0]['decline'];
             $this->reason = $data[0]['reason'];
             $this->gender = unserialize($data[0]['gender']);
@@ -176,6 +178,10 @@ class Diversity extends BackboneModel {
     
     function getPerson(){
         return Person::newFromId($this->userId);
+    }
+    
+    function getSubmitted(){
+        return $this->submitted;
     }
     
     function getRaces(){
@@ -301,6 +307,7 @@ class Diversity extends BackboneModel {
         DBFunctions::insert('grand_diversity',
                             array('user_id' => $this->userId,
                                   'language' => $this->language,
+                                  'submitted' => $this->submitted,
                                   'decline' => $this->decline,
                                   'reason' => $this->reason,
                                   'gender' => serialize($this->gender),
@@ -338,6 +345,7 @@ class Diversity extends BackboneModel {
         DBFunctions::update('grand_diversity',
                             array('user_id' => $this->userId,
                                   'language' => $this->language,
+                                  'submitted' => $this->submitted,
                                   'decline' => $this->decline,
                                   'reason' => $this->reason,
                                   'gender' => serialize($this->gender),
@@ -389,6 +397,7 @@ class Diversity extends BackboneModel {
         $json = array('id' => $this->id,
                       'userId' => $this->userId,
                       'language' => $this->language,
+                      'submitted' => $this->submitted,
                       'decline' => $this->decline,
                       'reason' => $this->reason,
                       'gender' => $this->gender,

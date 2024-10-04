@@ -1,3 +1,10 @@
+<div id="welcome" style="display:none;" title="We Value Your Input!">
+    <p>To help us meet the Government of Canada’s requirements, GlycoNet is collecting important data on Equity, Diversity, and Inclusion (EDI) from our grant recipients. You’ve been redirected to this survey page to provide your input.</p>
+
+    <p>The survey is anonymous, and your participation is greatly appreciated. Please note that you will need to complete the survey before proceeding with your activities in the system.</p>
+
+    <p>Thank you for your time and contribution to fostering a more inclusive research environment!</p>
+</div>
 <!--div><b style="vertical-align:middle;">Language:</b> <%= HTML.Select(this, 'language', {style: "vertical-align:middle;", options: [{option: "English", value: "en"}, {option: "Français", value: "fr"}]}) %></div-->
 <p>GlycoNet is committed to the principles of Equity, Diversity, and Inclusion (EDI). This survey will help to facilitate strategies and priorities for a diverse and inclusive working and learning environment to continuously support excellence in research and training.</p>
 
@@ -175,5 +182,8 @@
         <%= HTML.TextArea(this, 'comments', {style: 'height:100px'}) %>
     </div>
 </div><br />
+<div style="display: none;">
+    <%= HTML.CheckBox(this, 'submitted', {value: 1}) %>
+</div>
 <div id="diversityMessages"></div>
 <button id="save" style="width: 8em;" type="button">Save</button><button id="submit" style="margin-left: 1em; width: 8em;" type="button">Submit</button>
