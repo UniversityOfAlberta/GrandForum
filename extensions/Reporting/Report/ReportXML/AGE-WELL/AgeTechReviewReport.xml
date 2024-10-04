@@ -309,6 +309,7 @@
                             <th style='display:none;'>Q2D Comments</th>
                             <th style='display:none;'>Q2E Comments</th>
                             <th style='display:none;'>Budget Comments</th>
+                            <th style='display:none;'>Comments</th>
                             <th>Total</th>
                             <th>Avg. Total</th>
                         </tr>
@@ -406,6 +407,7 @@
                         <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2D_COMMENTS,{$parent_id},{$user_id},0)}</td>
                         <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_2E_COMMENTS,{$parent_id},{$user_id},0)}</td>
                         <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_BUDGET_COMMENTS,{$parent_id},{$user_id},0)}</td>
+                        <td style='display:none;'>{getRawText(RP_AGETECH_REVIEW,REVIEW,REVIEW_COMMENTS,{$parent_id},{$user_id},0)}</td>
                         <td align='right'>
                             {divide({add({multiply({getNumber(RP_AGETECH_REVIEW,REVIEW,REVIEW_2A,{$parent_id},{$user_id},0)},0.5)},
                                          {multiply({getNumber(RP_AGETECH_REVIEW,REVIEW,REVIEW_2B,{$parent_id},{$user_id},0)},1.5)},
@@ -431,6 +433,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
@@ -469,6 +472,7 @@
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
+                    <td style='display:none;'></td>
                     <td></td>
                 ]]>
             </If>
@@ -485,6 +489,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
                     <td style='display:none;'></td>
