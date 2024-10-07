@@ -132,7 +132,7 @@
         </If>
         <Else>
             <!-- ATS -->
-            <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Comments" types="Select(Administrative Leave,Assisted Leave,Childbirth Leave,Compassionate Leave,Disability Leave,Leave without Pay,Medical Leave,Parental Leave,Political Leave,Sabbatical Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Textarea" class="wikitable" multiple="true" optional="true">
+            <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Comments" types="Select(Teaching a very large number of students,Managing a large number of TAs,Teaching a relatively large number of different courses,Coordinating with other instructors of multi-section courses,New course development,Redesign of an existing course,Redesign of an existing course,Scaling of an existing course amid growing enrollment,Authoring textbooks or chapters,Filming instructional videosCreating innovative course assignments,Serving in teaching-related administrative positions,Driving teaching-related initiatives on Department level,Mentoring current and onboarding new ATS members,Pedagogical research and innovation,Research that ensures currency within the discipline,Supervision and dissemination of original research with undergraduate students,Supervision and dissemination of original research with graduate students,Other Service)|Textarea" class="wikitable" multiple="true" optional="true">
                 <![CDATA[
                     <h3>Reasons For Reduced Teaching<small> (if applicable)</small></h3>
                     {$item}
