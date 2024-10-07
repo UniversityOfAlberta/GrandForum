@@ -32,7 +32,7 @@
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="pandemic" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -148,64 +148,73 @@
                         {if("{getFecPersonalInfo(lastDegree)}" != "", <tr><td><b>Last Degree:&nbsp;</b></td><td>{getFecPersonalInfo(lastDegree, false)}</td></tr>)}
                     </table>
                 </div>
-                <h3>Keywords</h3>
-                {$user_keywords}
+                
             ]]>
         </Static>
         
-        <!-- Responsibilities Variation -->
-        <If if="{and({!contains({$my_roles},Chair)},
-                     {!contains({$my_roles},ViceDean)},
-                     {!contains({$user_case_number}, D)},
-                     {!contains({$user_case_number}, E)},
-                     {!contains({$user_case_number}, F)})}">
+        <If if="{contains({$my_roles},Faculty)}">
+            <!-- Keywords -->
             <Static>
                 <![CDATA[
-                    <h2>Responsibilities Variation</h2>
+                    <h3>Keywords</h3>
+                    {$user_keywords}
                 ]]>
             </Static>
-            <If if="{==({getText(RP_LETTER5, TABLE, TEMPLATE, {$user_id}, 1, 0, {$last_year})},Variance)}">
-                <If if="{==({getText(RP_LETTER5, TABLE, REPLACE_ROLE, {$user_id}, 1, 0, {$last_year})},Yes)}">
+            
+            <!-- Responsibilities Variation -->
+            <If if="{and({!contains({$my_roles},Chair)},
+                         {!contains({$my_roles},ViceDean)},
+                         {!contains({$user_case_number}, D)},
+                         {!contains({$user_case_number}, E)},
+                         {!contains({$user_case_number}, F)})}">
+                <Static>
                     <![CDATA[
-                        <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}, {getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})}.</p>
+                        <h2>Responsibilities Variation</h2>
                     ]]>
+                </Static>
+                <If if="{==({getText(RP_LETTER5, TABLE, TEMPLATE, {$user_id}, 1, 0, {$last_year})},Variance)}">
+                    <If if="{==({getText(RP_LETTER5, TABLE, REPLACE_ROLE, {$user_id}, 1, 0, {$last_year})},Yes)}">
+                        <![CDATA[
+                            <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}, {getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})}.</p>
+                        ]]>
+                    </If>
+                    <ElseIf if="{!=({getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})},)}">
+                        <![CDATA[
+                            <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}, during which period you will be holding the role of {getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})}.</p>
+                        ]]>
+                    </ElseIf>
+                    <Else>
+                        <![CDATA[
+                            <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}.</p>
+                        ]]>
+                    </Else>
+                    <Static>
+                        <![CDATA[
+                            <table>
+                                <tr><td align='right'><b>Teaching:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, TEACHING, {$user_id}, 1, 0, {$last_year})}%</td></tr>
+                                <tr><td align='right'><b>Research:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, RESEARCH, {$user_id}, 1, 0, {$last_year})}%</td></tr>
+                                <tr><td align='right'><b>Service:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, SERVICE, {$user_id}, 1, 0, {$last_year})}%</td></tr>
+                                <tr><td align='right'><b>Admin:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, ADMIN, {$user_id}, 1, 0, {$last_year})}%</td></tr>
+                            </table>
+                        ]]>
+                    </Static>
                 </If>
-                <ElseIf if="{!=({getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})},)}">
-                    <![CDATA[
-                        <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}, during which period you will be holding the role of {getText(RP_LETTER5, TABLE, ROLE, {$user_id}, 1, 0, {$last_year})}.</p>
-                    ]]>
-                </ElseIf>
                 <Else>
                     <![CDATA[
-                        <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText(RP_LETTER5, TABLE, START_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)} to {time2date({getText(RP_LETTER5, TABLE, END_DATE, {$user_id}, 1, 0, {$last_year})}, F Y)}.</p>
+                        <table>
+                            <tr><td align='right'><b>Teaching:</b></td><td align='right' style='width:3em;'>40%</td></tr>
+                            <tr><td align='right'><b>Research:</b></td><td align='right' style='width:3em;'>40%</td></tr>
+                            <tr><td align='right'><b>Service:</b></td><td align='right' style='width:3em;'>20%</td></tr>
+                            <tr><td align='right'><b>Admin:</b></td><td align='right' style='width:3em;'>0%</td></tr>
+                        </table>
                     ]]>
                 </Else>
                 <Static>
                     <![CDATA[
-                        <table>
-                            <tr><td align='right'><b>Teaching:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, TEACHING, {$user_id}, 1, 0, {$last_year})}%</td></tr>
-                            <tr><td align='right'><b>Research:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, RESEARCH, {$user_id}, 1, 0, {$last_year})}%</td></tr>
-                            <tr><td align='right'><b>Service:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, SERVICE, {$user_id}, 1, 0, {$last_year})}%</td></tr>
-                            <tr><td align='right'><b>Admin:</b></td><td align='right' style='width:3em;'>{getText(RP_LETTER5, TABLE, ADMIN, {$user_id}, 1, 0, {$last_year})}%</td></tr>
-                        </table>
+                        <p>If this is not correct, please discuss the issue with your chair and work together to develop an appropriate “Variances of Responsibility” memo</p>
                     ]]>
                 </Static>
             </If>
-            <Else>
-                <![CDATA[
-                    <table>
-                        <tr><td align='right'><b>Teaching:</b></td><td align='right' style='width:3em;'>40%</td></tr>
-                        <tr><td align='right'><b>Research:</b></td><td align='right' style='width:3em;'>40%</td></tr>
-                        <tr><td align='right'><b>Service:</b></td><td align='right' style='width:3em;'>20%</td></tr>
-                        <tr><td align='right'><b>Admin:</b></td><td align='right' style='width:3em;'>0%</td></tr>
-                    </table>
-                ]]>
-            </Else>
-            <Static>
-                <![CDATA[
-                    <p>If this is not correct, please discuss the issue with your chair and work together to develop an appropriate “Variances of Responsibility” memo</p>
-                ]]>
-            </Static>
         </If>
 
         <!-- Leaves -->
@@ -228,25 +237,40 @@
                 </script>
             ]]>
         </ReportItem>
-        <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" sizes="200|200|350" multiple="true" addText="Add New" optional="true" encrypt="true">
-            <![CDATA[
-                <h2>Reasons For Reduced Teaching<small> (if applicable)</small> <span class='clicktooltip' title='The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.'>&#9432;</span></h2>
-                {$item}
-                <script type='text/javascript'>
-                    $("#table_Intro_reasons tr.obj select").change(function(e){
-                        var td = $($(e.target).closest("tr").children()[1]);
-                        var text = $("input", td);
-                        if($(e.target).val() == "Other"){
-                            text.prop('disabled', false);
-                        }
-                        else{
-                           text.prop('disabled', true);
-                            text.val('');
-                        }
-                    }).change();
-                </script>
-            ]]>
-        </ReportItem>
+        
+        <!-- Reduced Teaching -->
+        <If if="{contains({$my_roles},Faculty)}">
+            <!-- Faculty -->
+            <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" sizes="200|200|350" multiple="true" addText="Add New" optional="true" encrypt="true">
+                <![CDATA[
+                    <h2>Reasons For Reduced Teaching<small> (if applicable)</small> <span class='clicktooltip' title='The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.'>&#9432;</span></h2>
+                    {$item}
+                    <script type='text/javascript'>
+                        $("#table_Intro_reasons tr.obj select").change(function(e){
+                            var td = $($(e.target).closest("tr").children()[1]);
+                            var text = $("input", td);
+                            if($(e.target).val() == "Other"){
+                                text.prop('disabled', false);
+                            }
+                            else{
+                               text.prop('disabled', true);
+                                text.val('');
+                            }
+                        }).change();
+                    </script>
+                ]]>
+            </ReportItem>
+        </If>
+        <Else>
+            <!-- ATS -->
+            <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Textarea" sizes="200|350" multiple="true" addText="Add New" optional="true" encrypt="true">
+                <![CDATA[
+                    <h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
+                    The teaching load of full-time ATS members (except for Max Wyman professors) is 7 courses per year (3-3-1-0 or 3-3-0-1).  If in the past year, you were not teaching 7 courses, please describe the additional responsibilities that justify your reduced teaching load.
+                    {$item}
+                ]]>
+            </ReportItem>
+        </Else>
     </ReportSection>
     <ReportSection id="courses" tooltip="TEACHING" name="Teaching" title="TEACHING" blobSection="FEC_COURSES" type="EditableReportSection">
         <Static>
