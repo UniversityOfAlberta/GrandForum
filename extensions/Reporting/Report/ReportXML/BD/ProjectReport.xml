@@ -177,6 +177,20 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="ktee" type="Textarea" blobItem="KTEE" rich="true">
+            <![CDATA[
+                <h3>5. Knowledge mobilization and community engagement</h3>
+                <p>Have there been any updates regarding knowledge mobilization or community engagement in the past 4 months? Please provide a brief description of activities to include the type of organization or sector (public, private, not-for-profit), location or country (Canadian, international) and type of engagement (data collection, event). Please specify if you have engaged with a Canadian Indigenous Organization.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="changes" type="Textarea" blobItem="CHANGES" rich="true">
+            <![CDATA[
+                <h3>6. Changes in the research team</h3>
+                <p>Have there been any changes to the research team in the past 4 months? This includes new HQP or affiliated researchers, extension or termination of contracts etc. For new team members, please add them as members on the Forum including their first and last names, roles, institutions, contract start and end dates, and position.</p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},{$project_theme_lead_emails}" />

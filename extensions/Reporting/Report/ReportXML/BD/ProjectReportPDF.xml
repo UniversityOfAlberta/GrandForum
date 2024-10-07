@@ -36,5 +36,17 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="ktee" type="Textarea" blobItem="KTEE" rich="true">
+            <![CDATA[
+                <h3>5. Knowledge mobilization and community engagement</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="changes" type="Textarea" blobItem="CHANGES" rich="true">
+            <![CDATA[
+                <h3>6. Changes in the research team</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>
