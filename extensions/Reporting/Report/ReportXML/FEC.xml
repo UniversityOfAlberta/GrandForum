@@ -95,19 +95,32 @@
     <ReportSection id="information" tooltip="Intro" name="Intro" title="Intro" blobSection="FEC_INFORMATION" type="EditableReportSection">
         <Instructions>
             <![CDATA[
-                <p style='margin-bottom:1em;'><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Criteria for Merit Increments, Tenure, and Promotion.pdf'><b>Criteria for Merit Increments, Tenure, and Promotion</b></a></p>
-                
-                <p style='margin-bottom:1em;'><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Procedures for Annual Review of Performance.pdf'><b>Procedures for Annual Review of Performance</b></a></p>
-                
-                <p><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Standards for Faculty Service Officers.pdf'><b>Standards for Faculty Service Officers</b></a></p>
-                
-                <p><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Guidelines for Supplementary Professional Activity and University Industry Relationships.pdf'><b>Guidelines for SPA and University Industry Relationships</b></a></p>
-                
-                <h3>Responsibilities Variation</h3>
-                <p>Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.</p>
-                
-                <h3>Reasons For Reduced Teaching</h3>
-                <p>The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.</p>
+                <div id="faculty" style="display:none;">
+                    <p style='margin-bottom:1em;'><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Criteria for Merit Increments, Tenure, and Promotion.pdf'><b>Criteria for Merit Increments, Tenure, and Promotion</b></a></p>
+                    
+                    <p style='margin-bottom:1em;'><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Procedures for Annual Review of Performance.pdf'><b>Procedures for Annual Review of Performance</b></a></p>
+                    
+                    <p><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Standards for Faculty Service Officers.pdf'><b>Standards for Faculty Service Officers</b></a></p>
+                    
+                    <p><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Guidelines for Supplementary Professional Activity and University Industry Relationships.pdf'><b>Guidelines for SPA and University Industry Relationships</b></a></p>
+                    
+                    <h3>Responsibilities Variation</h3>
+                    <p>Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.</p>
+                    
+                    <h3>Reasons For Reduced Teaching</h3>
+                    <p>The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.</p>
+                </div>
+                <div id="ats" style="display:none;">
+                    <a href="{$wgServer}{$wgScriptPath}/data/FoS Annual Review of Performance ATS.ATSEC_revised 2023 Sept.pdf" target="_blank"><b>ATS Standards</b></a>
+                </div>
+                <script type="text/javascript">
+                    if(_.pluck(me.get('roles'), 'role').indexOf("ATS") != -1){
+                        $("#ats").show();
+                    }
+                    else{
+                        $("#faculty").show();
+                    }
+                </script>
             ]]>
         </Instructions>
         <Static>
