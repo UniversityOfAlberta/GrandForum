@@ -622,19 +622,21 @@
             ]]>
         </ReportItem>
         <ReportItemSet type="String" array="Departmental|Faculty|University|Scientific|Community Outreach|Other">
-            <ReportItem id="bookmark" type="SubBookmarkReportItem" title="{getExtra()}">
-                <![CDATA[
-                    <h3>{getExtra()}</h3>
-                ]]>
-            </ReportItem>
-            <ReportItemSet id="committee" type="PersonProductsReportItemSet" category="Activity" productType="{getExtra()}" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-                <Static>
+            <If if="{>({getUserServiceCount(CYCLE_START, CYCLE_END, {getExtra()})}, 0)}">
+                <ReportItem id="bookmark" type="SubBookmarkReportItem" title="{getExtra()}">
                     <![CDATA[
-                        <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
-                        <p style='margin-left:4em;'>{$product_description}</p>
+                        <h3>{getExtra()} ({getUserServiceCount(CYCLE_START, CYCLE_END, {getExtra()})})</h3>
                     ]]>
-                </Static>
-            </ReportItemSet>
+                </ReportItem>
+                <ReportItemSet id="committee" type="PersonProductsReportItemSet" category="Activity" productType="{getExtra()}" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                    <Static>
+                        <![CDATA[
+                            <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
+                            <p style='margin-left:4em;'>{$product_description}</p>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+            </If>
         </ReportItemSet>
         
         <!-- Additional Info -->

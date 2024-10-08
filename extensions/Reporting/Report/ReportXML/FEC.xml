@@ -773,7 +773,7 @@
         <ReportItemSet type="String" array="Departmental|Faculty|University|Scientific|Community Outreach|Other">
             <ReportItem id="bookmark" type="SubBookmarkReportItem" title="{getExtra()}">
                 <![CDATA[
-                    <h3>{getExtra()}</h3>
+                    <h3>{getExtra()} ({getUserServiceCount(CYCLE_START, CYCLE_END, {getExtra()})})</h3>
                 ]]>
             </ReportItem>
             <ReportItemSet id="committee" type="PersonProductsReportItemSet" category="Activity" productType="{getExtra()}" includeHQP="false" start="CYCLE_START" end="CYCLE_END">

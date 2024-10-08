@@ -153,6 +153,7 @@ class ReportItemCallback {
             "user_ats_end_date" => "getATSEndDate",
             "getFecPersonalInfo" => "getFecPersonalInfo",
             "getUserPublicationCount" => "getUserPublicationCount",
+            "getUserServiceCount" => "getUserServiceCount",
             "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
             "isAllowedToViewRecommendation" => "isAllowedToViewRecommendation",
             "getPersonVar" => "getPersonVar",
@@ -1150,8 +1151,20 @@ class ReportItemCallback {
         }
         return "";
     }
+    
+    function getUserServiceCount($start_date, $end_date, $type){
+        $person = Person::newFromId($this->reportItem->personId);
+        $products = $person->getPapersAuthored("Activity", $start_date, $end_date, false, true, true);
+        $count = 0;
+        foreach($products as $product){
+            if($product->getType() == $type){
+                $count++;
+            }
+        }
+        return $count;
+    }
 
-    function getUserPublicationCount($start_date,$end_date,$case='Publication'){
+    function getUserPublicationCount($start_date, $end_date, $case='Publication'){
         $year = substr($start_date, 0, 4);
         $person = Person::newFromId($this->reportItem->personId);
         $category = "";
