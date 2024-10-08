@@ -245,14 +245,10 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|visiting|tech|other|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Visiting Students|Research/Technical Assistants|Other|Student Committee Responsibilities">
-            <Static>
-                <![CDATA[
-                    <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>
-                ]]>
-            </Static>
             <If if="{>({getHQPCount({getExtra(value)})}, 0)}">
                 <Static>
                     <![CDATA[
+                        <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>
                         <table class='wikitable' frame='box' rules='all' width='100%'>
                             <tr>
                                 <th style='width: 20%;'>Student</th>
@@ -329,21 +325,153 @@
         </ReportItemSet>
         
         <!-- Publications -->
-        <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
-            <![CDATA[
-                <h2>Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)})</h2>
-                <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="String" array="Journal Paper|
-                                            Conference Paper\|Proceedings Paper\|Workshop Paper|
-                                            Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
-            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+        <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)}, 0)}">
+            <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
+                <![CDATA[
+                    <h2>Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)})</h2>
+                    <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>
+                    <ul>
+                ]]>
+            </ReportItem>
+            <ReportItemSet type="String" array="Journal Paper|
+                                                Conference Paper\|Proceedings Paper\|Workshop Paper|
+                                                Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+                        <![CDATA[
+                            <li style="page-break-inside: avoid;">
+                                {$item} 
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                        <![CDATA[
+                                <b>({$product_type})</b> {$item}
+                            </li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+            
+            <!-- Publication Footnotes -->
+            <Static>
+                <![CDATA[
+                    <ul>
+                ]]>
+            </Static>
+            <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                     <![CDATA[
                         <li style="page-break-inside: avoid;">
-                            {$item} 
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|PHD Thesis|Proceedings Paper|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Presentations -->
+        <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)}, 0)}">
+            <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="Presentations">
+                <![CDATA[
+                    <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)})</h2>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Invited</th>
+                                <th>Event Title</th>
+                                <th>Organization</th>
+                                <th>Location</th>
+                                <th>Date</th>
+                                <th>Length (minutes)</th>
+                            </tr>
+                        </thead>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
+                    <![CDATA[
+                        <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
+                            <td align='center'>{$presentation_type}</td>
+                            <td align='center'>{$presentation_invited}</td>
+                            <td>{getProductData(event_title)}</td>
+                            <td>{$presentation_organization}</td>
+                            <td align='center'>{$presentation_country}</td>
+                            <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                            <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </table>
+                ]]>
+            </Static>
+            
+            <!-- Presentations Footnotes -->
+            <Static>
+                <![CDATA[
+                    <ul>
+                ]]>
+            </Static>
+            <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Patents/Spin-Offs -->
+        <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Patent/Spin-Off)}, 0)}">
+            <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents/Spin-Offs">
+                <![CDATA[
+                    <h2>Patents/Spin-Offs ({getUserPublicationCount(CYCLE_START, CYCLE_END, Patent/Spin-Off)})</h2>
+                    <ul>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">{$item}
                     ]]>
                 </ReportItem>
                 <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
@@ -353,271 +481,149 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </ul>
-            ]]>
-        </Static>
-        
-        <!-- Publication Footnotes -->
-        <Static>
-            <![CDATA[
-                <ul>
-            ]]>
-        </Static>
-        <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+            <Static>
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
+                    </ul>
                 ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+            </Static>
+            
+            <!-- Patents Footnotes -->
+            <Static>
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
+                    <ul>
                 ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|PHD Thesis|Proceedings Paper|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+            </Static>
+            <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
+                    </ul>
                 ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </ul>
-            ]]>
-        </Static>
-        
-        <!-- Presentations -->
-        <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="Presentations">
-            <![CDATA[
-                <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)})</h2>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Type</th>
-                            <th>Invited</th>
-                            <th>Event Title</th>
-                            <th>Organization</th>
-                            <th>Location</th>
-                            <th>Date</th>
-                            <th>Length (minutes)</th>
-                        </tr>
-                    </thead>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
-                <![CDATA[
-                    <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
-                        <td align='center'>{$presentation_type}</td>
-                        <td align='center'>{$presentation_invited}</td>
-                        <td>{getProductData(event_title)}</td>
-                        <td>{$presentation_organization}</td>
-                        <td align='center'>{$presentation_country}</td>
-                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
-                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Presentations Footnotes -->
-        <Static>
-            <![CDATA[
-                <ul>
-            ]]>
-        </Static>
-        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
-                <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </ul>
-            ]]>
-        </Static>
-        
-        <!-- Patents/Spin-Offs -->
-        <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents/Spin-Offs">
-            <![CDATA[
-                <h2>Patents/Spin-Offs ({getUserPublicationCount(CYCLE_START, CYCLE_END, Patent/Spin-Off)})</h2>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
-                <![CDATA[
-                    <li style="page-break-inside: avoid;">{$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
-                <![CDATA[
-                        <b>({$product_type})</b> {$item}
-                    </li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </ul>
-            ]]>
-        </Static>
-        
-        <!-- Patents Footnotes -->
-        <Static>
-            <![CDATA[
-                <ul>
-            ]]>
-        </Static>
-        <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
-                <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </ul>
-            ]]>
-        </Static>
+            </Static>
+        </If>
         
         <!-- Awards Received -->
-        <ReportItem id="awardsbookmark" type="BookmarkReportItem" title="Awards Received">
-            <![CDATA[
-                <h2>Awards Received ({getUserPublicationCount(CYCLE_START, CYCLE_END, Award)})</h2>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
-                    <thead>
-                        <tr>
-                            <th>Award</th>
-                            <th>Award Category</th>
-                            <th>Scope</th>
-                            <th>Year</th>
+        <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Award)}, 0)}">
+            <ReportItem id="awardsbookmark" type="BookmarkReportItem" title="Awards Received">
+                <![CDATA[
+                    <h2>Awards Received ({getUserPublicationCount(CYCLE_START, CYCLE_END, Award)})</h2>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                        <thead>
+                            <tr>
+                                <th>Award</th>
+                                <th>Award Category</th>
+                                <th>Scope</th>
+                                <th>Year</th>
+                            </tr>
+                        </thead>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <tr><td>{$item}{$product_citation}</td>
+                            <td align='center'>{$product_type}</td>
+                            <td align='center'>{$award_scope}</td>
+                            <td align='center'>{$product_year}</td>
                         </tr>
-                    </thead>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
                 <![CDATA[
-                    <tr><td>{$item}{$product_citation}</td>
-                        <td align='center'>{$product_type}</td>
-                        <td align='center'>{$award_scope}</td>
-                        <td align='center'>{$product_year}</td>
-                    </tr>
+                    </table>
                 ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Awards Footnotes -->
-        <Static>
-            <![CDATA[
-                <ul>
-            ]]>
-        </Static>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
+            </Static>
+            
+            <!-- Awards Footnotes -->
+            <Static>
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
+                    <ul>
                 ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </ul>
-            ]]>
-        </Static>
+            </Static>
+            <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+        </If>
         
         <!-- Grants -->
-        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
-            <![CDATA[
-                <h2>Research Grants and Contracts ({$user_grant_count})</h2>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
-                    <thead>
+        <If if="{>({$user_grant_count}, 0)}">
+            <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
+                <![CDATA[
+                    <h2>Research Grants and Contracts ({$user_grant_count})</h2>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Sponsor</th>
+                                <th>Starts</th>
+                                <th>Ends</th>
+                                <th>$Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </ReportItem> 
+            <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" blobSection="FEC_GRANTS">
+                    <![CDATA[
                         <tr>
-                            <th>Title</th>
-                            <th>Sponsor</th>
-                            <th>Starts</th>
-                            <th>Ends</th>
-                            <th>$Total</th>
+                            <td align='left'>{$grant_project_id} <sup>{$item}</sup><br />
+                                {$grant_scientific_title}
+                            </td>
+                            <td align='left'>{$grant_sponsor}</td>
+                            <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                            <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                            <td align='right'>${$grant_total}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </ReportItem> 
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" blobSection="FEC_GRANTS">
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
                 <![CDATA[
-                    <tr>
-                        <td align='left'>{$grant_project_id} <sup>{$item}</sup><br />
-                            {$grant_scientific_title}
-                        </td>
-                        <td align='left'>{$grant_sponsor}</td>
-                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
-                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
-                        <td align='right'>${$grant_total}</td>
-                    </tr>
+                    </tbody></table><br />
                 ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </tbody></table><br />
-            ]]>
-        </Static>
-        
-        <!-- Grants Footnotes -->
-        <Static>
-            <![CDATA[
-                <ul>
-            ]]>
-        </Static>
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" isTopAnchor="false" blobSection="FEC_GRANTS">
+            </Static>
+            
+            <!-- Grants Footnotes -->
+            <Static>
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
+                    <ul>
                 ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </ul>
-            ]]>
-        </Static>
+            </Static>
+            <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" isTopAnchor="false" blobSection="FEC_GRANTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+        </If>
         
         <!-- Services -->
         <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service/Committees/Outreach">
