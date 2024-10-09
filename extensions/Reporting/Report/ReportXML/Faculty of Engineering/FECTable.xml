@@ -171,8 +171,7 @@
                 <Else>
                     <ReportItem id="comments_discuss" type="SingleCheckbox" blobType="BLOB_TEXT" blobItem="COMMENTS_DISCUSS" blobSubItem="{$user_id}" options="Discuss" height="75px" encrypt="true">
                         <![CDATA[
-                            <td></td>
-                            <td>
+                            <td align="center">
                                 <div id='comments_discuss_{$user_id}'>{$item}</div>
                         ]]>
                     </ReportItem>
@@ -181,7 +180,6 @@
                                 <div id='comments_{$user_id}'>{$item}</div>
                                 <script type='text/javascript'>
                                     $('#comments_discuss_{$user_id} input').change(function(){
-                                        console.log($('#comments_discuss_{$user_id} input').is(":checked"));
                                         if($('#comments_discuss_{$user_id} input').is(":checked")){
                                             $('#comments_{$user_id}').show();
                                         }
