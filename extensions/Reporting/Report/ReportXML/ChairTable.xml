@@ -1246,6 +1246,15 @@
                         {$item}
                     ]]>
                 </ReportItem>
+                <If if="{contains({$user_case_number}, T)}">
+                    <ReportItem id="reduced_teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="REDUCED_TEACHING" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                        <![CDATA[
+                            <h2>Commentary on Reduced Teaching Load</h2>
+                            <p class='pdfnodisplay'>If applicable, please comment on the "reasons for reduced teaching" provided by the ATS member; discuss your rationale for how you would "translate" these other duties into typical course-teaching duties.</p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </If>
                 <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true" encrypt="true">
                     <![CDATA[
                         <h2>Research Evaluations</h2>

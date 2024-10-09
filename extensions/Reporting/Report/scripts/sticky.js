@@ -4,7 +4,8 @@ var focusTextareas = true;
 function sticky(response, postId, stickies){
     // Add Document
     response = response.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-    $('#pdfHTML').html(response);
+    $('#pdfHTML').html(response.replace(".pdfnodisplay", ".pdfnodisplay_removed"));
+    $('#pdfHTML .pdfnodisplay').remove();
     // Add Word Spans
     (function (count) {
       'use strict';
