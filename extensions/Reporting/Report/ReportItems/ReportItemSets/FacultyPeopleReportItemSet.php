@@ -65,7 +65,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 !$me->isRole(HR) &&
                 !$me->isRole(ADMIN) &&
                 $person->getName() != "Elizabeth.Hodges"){ // TODO: Get rid of this){
-                // Don't show DD people unless user is Dean, Vice Dean, HR
+                // Don't show self unless user is Dean, Vice Dean, HR
                 continue;
             }
             if(($person->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(CHAIR)) && 

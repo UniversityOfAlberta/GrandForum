@@ -11,7 +11,7 @@
                             <th>Rank</th>
                             <th>Department</th>
                             <th width="1%">Annual Report</th>
-                            <th>Evaluation</th>
+                            <!--th>Evaluation</th-->
                             <th>Recommended Increment</th>
                             <th>Revised Increment</th>
                             <th>Increment Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
@@ -51,10 +51,10 @@
             <Static>
                 <![CDATA[
                     </td>
-                    <td align='center' style="white-space:nowrap;">
+                    <!--td align='center' style="white-space:nowrap;"-->
                 ]]>
             </Static>
-            <ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="downloadPDF" buttonName="Recommendation">
+            <!--ReportItem id="recommendation" type="PDFReportItem" reportType="ChairTable" section="Recommendations" noRenderIfNull="true" class="downloadPDF" buttonName="Recommendation">
                 <![CDATA[
                             {$item}<br />
                 ]]>
@@ -78,7 +78,7 @@
                 <![CDATA[
                     </td>
                 ]]>
-            </Static>
+            </Static-->
             <If if="{or({contains({user_sub_roles(;)},Dean's Decision)})}">
                 <![CDATA[
                     <td>
@@ -104,7 +104,7 @@
                 <!-- Increment Vote -->
                 <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
                     <![CDATA[
-                        <td class="vote">
+                        <td class="vote" align="center">
                             <div class='text' style='display:none;'>
                                 
                             </div>
@@ -117,7 +117,7 @@
                 <!-- Tenure Vote -->
                 <!--ReportItem id="t_vote" type="Select" blobType="BLOB_TEXT" blobItem="T_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
                     <![CDATA[
-                        <td class="t_vote">
+                        <td class="t_vote" align="center">
                             <div class='text' style='display:none;'>
                                 
                             </div>
@@ -130,7 +130,7 @@
                 <!-- Promotion Vote -->
                 <!--ReportItem id="p_vote" type="Select" blobType="BLOB_TEXT" blobItem="P_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
                     <![CDATA[
-                        <td class="p_vote">
+                        <td class="p_vote" align="center">
                             <div class='text' style='display:none;'>
                                 
                             </div>
