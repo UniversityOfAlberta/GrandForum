@@ -82,7 +82,7 @@
             <If if="{or({contains({user_sub_roles(;)},Dean's Decision)})}">
                 <![CDATA[
                     <td>
-                        <span class="increment dd">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span>
+                        <span class="increment dd">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span> [DD]
                     </td>
                 ]]>
             </If>
