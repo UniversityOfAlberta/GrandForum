@@ -4284,14 +4284,14 @@ class FullPerson extends Person {
         else if($this->isRoleOn("ATS", $date) && $this->isATSEC3($date)){
             return "T3";
         }
-        else if($this->isNew($date) && ($this->isAssistantProfessor($date) ||
-                                        $this->isAssociateProfessor($date) ||
-                                        $this->isProfessor($date))){
+        else if($this->isNew($date) && ($this->isAssistantProfessor("9999-99-99") ||
+                                        $this->isAssociateProfessor("9999-99-99") ||
+                                        $this->isProfessor("9999-99-99"))){
             return "N1";                          
         }
-        else if($this->isNew($date) && ($this->isFSO2($date) ||
-                                        $this->isFSO3($date) ||
-                                        $this->isFSO4($date))){
+        else if($this->isNew($date) && ($this->isFSO2("9999-99-99") ||
+                                        $this->isFSO3("9999-99-99") ||
+                                        $this->isFSO4("9999-99-99"))){
             return "M1";
         }
         else if($this->isAssistantProfessor($date)){
