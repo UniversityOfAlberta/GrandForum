@@ -39,6 +39,11 @@
                         <td align='center' style="white-space:nowrap;">{$item}<br />
                 ]]>
             </ReportItem>
+            <ReportItem id="spots" type="PDFReportItem" reportType="SPOTs" class="downloadPDF" buttonName=" SPOTs ">
+                <![CDATA[
+                        {$item}<br />
+                ]]>
+            </ReportItem>
             <!-- Rebuttal -->
             <Static>
                 {set(fileRebuttal, {getBlobMD5(RP_FEC,REBUTTAL,REBUTTAL,0,{$user_id},0)})}
