@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Rebuttal" reportType="RP_SPOT" pdfType="RPTP_SPOT" pdfFiles="SPOTs" headerName="{$user_name}" ajax="true" encrypt="true">
+<Report name="Rebuttal" reportType="RP_FEC" headerName="{$user_name}" ajax="true" encrypt="true">
     <Permissions>
         <Role role="Faculty">
             <SectionPermission id="rebuttal" permissions="rw" />
@@ -8,7 +8,7 @@
             <SectionPermission id="rebuttal" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="rebuttal" type="EditableReportSection" name="Rebuttal" title="Rebuttal">
+    <ReportSection id="rebuttal" type="EditableReportSection" blobSection="REBUTTAL" name="Rebuttal" title="Rebuttal">
         <Static>
             <![CDATA[
                 <p>As per the <a href="https://drive.google.com/file/d/11lj_O87x1PhqyqAKUELUgcslKzquU6Sr/view?usp=drive_link" target="_blank">Faculty Evaluation Standards and Procedures</a>, after being informed of the Chair's recommendation, any academic faculty member may provide, at least 4 weeks prior to the meeting of FEC, a one-page letter of rebuttal for submission to FEC. If you wish to submit a one-page letter of rebuttal, please upload your rebuttal letter using the upload button below by October 15, 2024.</p>

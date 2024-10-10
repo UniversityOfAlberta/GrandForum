@@ -33,12 +33,23 @@
                         <td>{$user_depts}</td>
                 ]]>
             </Static>
+            <!-- Annual Report -->
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="downloadPDF" buttonName=" AR ">
                 <![CDATA[
                         <td align='center' style="white-space:nowrap;">{$item}<br />
                 ]]>
             </ReportItem>
-            <For from="1" to="3">
+            <!-- Rebuttal -->
+            <Static>
+                {set(fileRebuttal, {getBlobMD5(RP_FEC,REBUTTAL,REBUTTAL,0,{$user_id},0)})}
+            </Static>
+            <If if="{!=({get(fileRebuttal)},)}">
+                <![CDATA[
+                   <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileRebuttal)}">Rebuttal</a><br />
+                ]]>
+            </If>
+            <!-- Files -->
+            <!--For from="1" to="3">
                 <Static>
                     {set(fileCR, {getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)})}
                 </Static>
@@ -47,7 +58,7 @@
                        <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileCR)}">File</a><br />
                     ]]>
                 </If>
-            </For>
+            </For-->
             <Static>
                 <![CDATA[
                     </td>
