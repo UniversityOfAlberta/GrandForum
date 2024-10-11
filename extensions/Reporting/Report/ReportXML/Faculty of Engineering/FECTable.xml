@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="../FECTable">
+    <Permissions>
+        <Role role="FEC Engineering" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="fec" permissions="rw" />
+            <SectionPermission id="fec_votes" permissions="" />
+            <SectionPermission id="fec_numbers" permissions="" />
+        </Role>
+    </Permissions>
     <ReportSection id="fec">
         <ReportItem id="header">
             <![CDATA[
