@@ -107,7 +107,7 @@
     
         <ReportItem id="q14" idLabel="Potential Supervisors" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" max="5" width="300px">
             <![CDATA[
-                    <h3>*Potential Supervisors (Choose between 1-5)<span title="The faculty members that you would like to work with.  Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Potential Supervisors (Choose between 3-5)<span title="The faculty members that you would like to work with." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     <small>Please enter the supervisors in order of preference</small>
                     {$item}
             ]]>
@@ -460,7 +460,14 @@
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CS,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <ReportItemSet type="If" if="{==({strlen({getText(RP_CS,CS_Questions_tab0,gsmsIDCS,0,{$user_id},0)})},8)}">
                 <ReportItemSet id="if_gpa" type="If" if="{!=({getText(RP_CS,CS_QUESTIONS_tab1,Q21,0,{$user_id},0)},)}">
-                    <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your CS GARS data will be generated and submitted to the CS department. &lt;br />&lt;b style='color:red;'>At this point, you will no longer be able to edit your CS GARS data. Please review the correctness of the information you have provided through the Review step.&lt;/b>" emails="{$user_email}" />
+                    <ReportItemSet id="if_sup" type="If" if="{>=({$count_supervisors},3)}">
+                        <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your CS GARS data will be generated and submitted to the CS department. &lt;br />&lt;b style='color:red;'>At this point, you will no longer be able to edit your CS GARS data. Please review the correctness of the information you have provided through the Review step.&lt;/b>" emails="{$user_email}" />
+                    </ReportItemSet>
+                    <ReportItem id="if_not_sup" type="If" if="{&lt;({$count_supervisors},3)}">
+                        <![CDATA[
+                            <p>You must provide atleast 3 supervisors.</p>
+                        ]]>
+                    </ReportItem>
                 </ReportItemSet>
                 <ReportItem id="if_not_gpa" type="If" if="{==({getText(RP_CS,CS_QUESTIONS_tab1,Q21,0,{$user_id},0)},)}">
                     <![CDATA[

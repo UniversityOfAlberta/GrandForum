@@ -135,6 +135,7 @@ class ReportItemCallback {
             //SOP
             "review_count" => "getReviewCount",
             "sop_table" => "getSopTable",
+            "count_supervisors" => "countSupervisors",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -1942,6 +1943,15 @@ class ReportItemCallback {
 
 ";
         return $html;
+    }
+    
+    function countSupervisors(){
+        $addr = ReportBlob::create_address("RP_CS", "CS_QUESTIONS_tab1", "Q14", 0);
+        $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $this->reportItem->personId, 0);
+        $result = $blb->load($addr);
+        $array = $blb->getData();
+        $value = @implode("", $array['q14']);
+        return substr_count($value, ",")+1;
     }
 
 }
