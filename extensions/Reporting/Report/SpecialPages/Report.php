@@ -21,16 +21,13 @@ class TemplateReport extends AbstractReport{
         $person = Person::newFromWgUser();
         
         if($person->isLoggedIn() && $person instanceof FullPerson){
-            $person->getFecPersonalInfo();
-            if($person->faculty == getFaculty()){
-                $tabs["Reports"] = TabUtils::createTab("My Annual Report");
-                $tabs["ReportArchive"] = TabUtils::createTab("Report Archive");
-                $tabs["Chair"] = TabUtils::createTab("Chair");
-                $tabs["Dean"] = TabUtils::createTab("Dean");
-                $tabs["FEC"] = TabUtils::createTab("FEC");
-                $tabs["ATSEC"] = TabUtils::createTab("ATSEC");
-                $tabs["CV"] = TabUtils::createTab("My QA CV");
-            }
+            $tabs["Reports"] = TabUtils::createTab("My Annual Report");
+            $tabs["ReportArchive"] = TabUtils::createTab("Report Archive");
+            $tabs["Chair"] = TabUtils::createTab("Chair");
+            $tabs["Dean"] = TabUtils::createTab("Dean");
+            $tabs["FEC"] = TabUtils::createTab("FEC");
+            $tabs["ATSEC"] = TabUtils::createTab("ATSEC");
+            $tabs["CV"] = TabUtils::createTab("My QA CV");
         }
         return true;
     }
