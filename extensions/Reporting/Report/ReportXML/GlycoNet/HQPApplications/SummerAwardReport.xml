@@ -192,7 +192,7 @@
             ]]>
         </If>
         <Else>
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,iamir@glyconet.ca,vsharko@glyconet.ca" />
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,vsharko@glyconet.ca" />
         </Else>
     </ReportSection>
 </Report>
