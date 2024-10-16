@@ -52,13 +52,15 @@
                 ]]>
             </ReportItem>
             <!-- Rebuttal -->
-            <Static>
-                {set(fileRebuttal, {getBlobMD5(RP_FEC,REBUTTAL,REBUTTAL,0,{$user_id},0)})}
-            </Static>
-            <If if="{!=({get(fileRebuttal)},)}">
-                <![CDATA[
-                   <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileRebuttal)}">Rebuttal</a><br />
-                ]]>
+            <If if="{!=({$user_id},23673)}">
+                <Static>
+                    {set(fileRebuttal, {getBlobMD5(RP_FEC,REBUTTAL,REBUTTAL,0,{$user_id},0)})}
+                </Static>
+                <If if="{!=({get(fileRebuttal)},)}">
+                    <![CDATA[
+                       <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileRebuttal)}">Rebuttal</a><br />
+                    ]]>
+                </If>
             </If>
             <!-- Files -->
             <!--For from="1" to="3">
