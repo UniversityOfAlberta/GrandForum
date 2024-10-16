@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="GlycoTwinning Science Day Survey" reportType="RP_GLYCOTWINNING_SURVEY" pdfType="RP_GLYCOTWINNING_SURVEY" pdfFiles="GlycoTwinningSurveyPDF" ajax="true" disabled="false" year="0">
+    <ReportSection id="survey" tooltip="Survey" name="Survey" title="GlycoTwinning Science Day Survey" type="EULAReportSection" blobSection="SURVEY" pagebreak="false">
+        <ReportItem id="status" type="Radio" blobItem="STATUS" options="M.Sc.|PhD|PDF|Research Associate|Technician">
+            <![CDATA[
+                <h3>1. What is your academic status?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="difficulty" type="Radio" blobItem="DIFFICULTY" options="Introductory|Advanced">
+            <![CDATA[
+                <h3>2. Do you think the course was introductory or advanced?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="valuable" type="Textarea" blobItem="VALUABLE">
+            <![CDATA[
+                <h3>3. Which sessions or presentations did you find most valuable?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="concepts" type="Textarea" blobItem="CONCEPTS">
+            <![CDATA[
+                <h3>4. What new concepts and skills did you learn?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="tools" type="Textarea" blobItem="TOOLS">
+            <![CDATA[
+                <h3>5. Did you learn about any new tools, methods, or technologies at the workshop that you could integrate into your research or studies? Please describe.</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="details" type="Textarea" blobItem="DETAILS">
+            <![CDATA[
+                <h3>6. Please provide details and examples of how this new knowledge and experience will help you in your future path/career.</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="topics" type="Textarea" blobItem="TOPICS">
+            <![CDATA[
+                <h3>7. Were there any topics you wished had been covered in more detail?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact" type="Textarea" blobItem="CONTACT">
+            <![CDATA[
+                <h3>8. Did you have the opportunity to connect with other professionals? Were you introduced to any collaborative projects or opportunities during the event?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="insights" type="Radio" blobItem="INSIGHTS" options="Yes|No">
+            <![CDATA[
+                <h3>9. Were there any opportunities provided to present your own research or share your experiences with others?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="insights_yes" type="Textarea" blobItem="INSIGHTS_YES">
+            <![CDATA[
+                <h3>10. If Yes, please provide more insights.</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="resources" type="Textarea" blobItem="RESOURCES">
+            <![CDATA[
+                <h3>11. What types of workshops, topics, or resources would you like to see GlycoNet provide in the future?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="anything" type="Textarea" blobItem="ANYTHING">
+            <![CDATA[
+                <h3>12. Is there anything else you’d like to share about your experience at the workshop?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

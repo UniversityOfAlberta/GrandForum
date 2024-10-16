@@ -54,6 +54,7 @@ class ApplicationsTable extends SpecialPage{
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=glycotwinning'>GlycoTwinning Survey</a>";
         $wgOut->addHTML("<h1>Recent</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
         
         $links = array();
@@ -147,6 +148,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "tsf" && $me->isRoleAtLeast(SD)){
             $this->generateTSF();
+        }
+        else if($program == "glycotwinning" && $me->isRoleAtLeast(SD)){
+            $this->generateGlycoTwinning();
         }
         else if($program == "cspc" && $me->isRoleAtLeast(SD)){
             $this->generateCSPC();
@@ -445,6 +449,13 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_SKILLS_SURVEY'), null, 0, "Survey", array(), true));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateGlycoTwinning(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_GLYCOTWINNING_SURVEY'), null, 0, "Survey", array(), true));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
