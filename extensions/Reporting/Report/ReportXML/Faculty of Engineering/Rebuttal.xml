@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Rebuttal" reportType="RP_FEC" headerName="{$user_name}" ajax="true" encrypt="true">
+<Report name="Rebuttal" reportType="RP_FEC" headerName="{$user_name}" ajax="true" encrypt="true" disabled="true">
     <Permissions>
         <Role role="Faculty">
             <SectionPermission id="rebuttal" permissions="rw" />
