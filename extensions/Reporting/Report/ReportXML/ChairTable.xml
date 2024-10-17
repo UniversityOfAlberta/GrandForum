@@ -1354,18 +1354,18 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file1'>{$item}</div>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file2'>{$item}</div>
                         <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file3'>{$item}</div>
                         <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
@@ -1568,18 +1568,18 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file1'>{$item}</div>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file2'>{$item}</div>
                         <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file3'>{$item}</div>
                         <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
@@ -1782,18 +1782,18 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file1'>{$item}</div>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file2'>{$item}</div>
                         <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file3'>{$item}</div>
                         <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
@@ -1996,18 +1996,18 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file1'>{$item}</div>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file2'>{$item}</div>
                         <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
                     <![CDATA[
                         <div class='files' id='file3'>{$item}</div>
                         <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
