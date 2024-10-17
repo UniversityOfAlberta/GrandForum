@@ -2614,7 +2614,7 @@ class Person extends BackboneModel {
      */
     function setCRDC($keywords){
         $me = Person::newFromWgUser();
-        if($me->isAllowedToEdit($this)){
+        if($me->isAllowedToEdit($this) && is_array($keywords)){
             $cacheId = "crdc_{$this->getId()}";
             DBFunctions::delete('grand_person_crdc',
                                 array('user_id' => $this->getId()));
