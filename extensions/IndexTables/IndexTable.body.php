@@ -82,12 +82,28 @@ class IndexTable {
             $selected = ((($project != null && $project->getType() != "Administrative" && $project->getType() != "Innovation Hub") || $wgTitle->getText() == "Projects" || $wgTitle->getText() == "CompletedProjects" || $wgTitle->getText() == "ProposedProjects") && 
                          !($me->isMemberOf($project) || $me->isThemeLeaderOf($project) || $me->isThemeCoordinatorOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
             $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
-            $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
-            if(Project::areThereDeletedProjects()){
-                $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
+            
+            if($config->getValue('networkName') == "GlycoNet"){
+                $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
+                $projectTab['dropdown'][0] = TabUtils::createSubTab("NCE", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
+                $projectTab['dropdown'][1] = TabUtils::createSubTab("SSF", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
+                
+                $projectTab['dropdown'][0]['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects?phases=1,2", $selected);
+                $projectTab['dropdown'][1]['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects?phases=3", $selected);
+                if(Project::areThereDeletedProjects()){
+                    $projectTab['dropdown'][0]['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects?phases=1,2", $selected);
+                    $projectTab['dropdown'][1]['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects?phases=3", $selected);
+                }
             }
-            if(Project::areThereProposedProjects() && $me->isRoleAtLeast(STAFF)){
-                $projectTab['dropdown'][] = TabUtils::createSubTab("Proposed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ProposedProjects", $selected);
+            else{
+                $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
+                $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
+                if(Project::areThereDeletedProjects()){
+                    $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
+                }
+                if(Project::areThereProposedProjects() && $me->isRoleAtLeast(STAFF)){
+                    $projectTab['dropdown'][] = TabUtils::createSubTab("Proposed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ProposedProjects", $selected);
+                }
             }
         }
         
@@ -314,6 +330,9 @@ class IndexTable {
             <thead>
             <tr><th>Identifier</th><th>Name</th><th>Leaders</th>{$themesHeader}{$datesHeader}{$idHeader}</tr></thead><tbody>");
         foreach($data as $proj){
+            if(isset($_GET['phases']) && strstr($_GET['phases'], $proj->getPhase()) === false){
+                continue;
+            }
             if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
                 $subProjects = array();
                 if($status == "Active"){

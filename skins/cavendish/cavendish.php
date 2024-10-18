@@ -989,7 +989,15 @@ class CavendishTemplate extends QuickTemplate {
 		       	            $class = "subtab_{$i}_{$j}";
 		           	        if(count($subtab['dropdown']) > 0){
 		           	            foreach($subtab['dropdown'] as $dropdown){
-		           	                echo "<li class='$class hidden {$dropdown['selected']}'><a class='highlights-tab' href='".htmlspecialchars($dropdown['href'])."'>".htmlspecialchars($dropdown['text'])."</a></li>";
+		           	                if(count($dropdown['dropdown']) > 0){
+		           	                    echo "<li class='$class hidden {$dropdown['selected']}'><a style='cursor: default; background: white; color: {$config->getValue('highlightColor')} !important;'>".htmlspecialchars($dropdown['text'])."</a></li>";
+		           	                    foreach($dropdown['dropdown'] as $subdropdown){
+		           	                        echo "<li class='$class hidden {$subdropdown['selected']}'><a class='highlights-tab' href='".htmlspecialchars($subdropdown['href'])."' style='line-height: 23px !important; height: 23px !important;'>&nbsp;&nbsp;&nbsp;".htmlspecialchars($subdropdown['text'])."</a></li>";
+		           	                    }
+		           	                }
+		           	                else{
+		           	                    echo "<li class='$class hidden {$dropdown['selected']}'><a class='highlights-tab' href='".htmlspecialchars($dropdown['href'])."'>".htmlspecialchars($dropdown['text'])."</a></li>";
+		           	                }
 		           	            }
 		           	            $dropdownScript .= "createDropDown('$class', '{$subtab['text']}', 125);";
 		           	        }
