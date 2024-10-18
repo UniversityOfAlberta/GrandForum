@@ -25,10 +25,10 @@ ManageProductsView = Backbone.View.extend({
         me.getProjects();
         this.listenTo(this.model, "sync", function(){
             this.products = this.model.getAll();
-            this.listenTo(this.products, "add", this.addRows);
-            this.listenTo(this.products, "remove", this.addRows);
             this.listenToOnce(this.products, "sync", function(){
                 this.products = new Products(this.products.filter(function(p){ return (p.get('category') != "SOP"); })); // Don't show SOP category
+                this.listenTo(this.products, "add", this.addRows);
+                this.listenTo(this.products, "remove", this.addRows);
                 me.projects.ready().then(function(){
                     this.projects = me.projects.getCurrent();
                     return this.projects.ready();
@@ -45,9 +45,9 @@ ManageProductsView = Backbone.View.extend({
                     return me.projects.ready();
                 }.bind(this)).then(function(){
                     this.render();
-                }.bind(this));              
+                }.bind(this));
+                this.duplicatesDialog = new DuplicatesDialogView(this.products);             
             }.bind(this));
-            this.duplicatesDialog = new DuplicatesDialogView(this.products);
         }, this);
     },
     
