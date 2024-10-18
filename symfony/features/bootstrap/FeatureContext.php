@@ -1,6 +1,6 @@
 <?php
 define('TESTING', true);
-require_once("../config/Config.php");
+require_once("../config/ForumConfig.php");
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
 require_once("Patch.php");
 
