@@ -65,10 +65,14 @@ DiversitySurveyView = Backbone.View.extend({
     
     submit: function(){
         this.$("input[name=submitted]").prop("checked", true).trigger("change");
-        this.save();
-        _.defer(function(){
-            alert("Thank you for filling out the survey!");
-            document.location = wgServer + wgScriptPath;
+        this.model.save(null, {
+            success: function(){
+                alert("Thank you for filling out the survey!");
+                document.location = wgServer + wgScriptPath;
+            }.bind(this),
+            error: function(){
+                addError("There was a problem saving your Diversity Survey", false, "#diversityMessages");
+            }.bind(this)
         });
     },
     
@@ -315,6 +319,13 @@ DiversitySurveyView = Backbone.View.extend({
             this.$("input[name=languageMinority_yes][type=radio]").prop("checked", false);
             this.model.get('languageMinority').yes = "";
             this.hide("#languageMinorityYes", initial);
+        }
+        
+        if(this.model.get('affiliation') != "" || this.model.get('decline')){
+            this.$("#submit").prop('disabled', false);
+        }
+        else{
+            this.$("#submit").prop('disabled', true);
         }
     },
     

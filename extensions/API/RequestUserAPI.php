@@ -159,24 +159,31 @@ class RequestUserAPI extends API{
 		                          'created' => 0));
 		
 		$me = Person::newFromId($requesting_user);
-		if($config->getValue('networkType') == "FES"){
+		$emailText = "A new user '{$wpName}' has been requested by {$me->getNameForForms()}\n\n{$wgServer}{$wgScriptPath}/index.php/Special:AddMember?action=view.";
+        
+        $staffEmail = "";
+		switch($config->getValue('networkName')){
+		    case "FES":
+		        $staffEmail = "fesadmin@ualberta.ca";
+		        break;
+		    case "MtS":
+		        $staffEmail = "pravinah@yorku.ca,aolaniyi@yorku.ca";
+		        break;
+		    case "GlycoNet":
+		        $staffEmail = "vsharko@glyconet.ca";
+		        break;
+		    case "BD":
+		        $staffEmail = "vsharko@glyconet.ca";
+		        break;
+		}
+		
+		if($staffEmail != ""){
 		    $headers = "From: {$config->getValue('supportEmail')}\r\n".
 		               "Reply-To: {$config->getValue('supportEmail')}\r\n".
 		               "X-Mailer: PHP/".phpversion();
-		    mail("fesadmin@ualberta.ca", "User Requested", "A new user '{$wpName}' has been requested by {$me->getNameForForms()}\n\n{$wgServer}{$wgScriptPath}/index.php/Special:AddMember?action=view.", $headers, $wgAdditionalMailParams);
+		    mail($staffEmail, "User Requested", $emailText, $headers, $wgAdditionalMailParams);
 		}
-		else if($config->getValue('networkName') == "MtS"){
-		    $headers = "From: {$config->getValue('supportEmail')}\r\n".
-		               "Reply-To: {$config->getValue('supportEmail')}\r\n".
-		               "X-Mailer: PHP/".phpversion();
-		    mail("pravinah@yorku.ca,aolaniyi@yorku.ca", "User Requested", "A new user '{$wpName}' has been requested by {$me->getNameForForms()}\n\n{$wgServer}{$wgScriptPath}/index.php/Special:AddMember?action=view.", $headers, $wgAdditionalMailParams);
-		}
-		else if($config->getValue('networkName') == "GlycoNet"){
-		    $headers = "From: {$config->getValue('supportEmail')}\r\n".
-		               "Reply-To: {$config->getValue('supportEmail')}\r\n".
-		               "X-Mailer: PHP/".phpversion();
-		    mail("vsharko@glyconet.ca", "User Requested", "A new user '{$wpName}' has been requested by {$me->getNameForForms()}\n\n{$wgServer}{$wgScriptPath}/index.php/Special:AddMember?action=view.", $headers, $wgAdditionalMailParams);
-		}
+		
 		Notification::addNotification("", $me, "User Creation Pending", "User '{$wpName}' has been requested.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you", "");
 		if($doEcho){
 		    echo "User Creation Request Submitted.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.\n";
@@ -186,7 +193,6 @@ class RequestUserAPI extends API{
 		    $wgMessage->addSuccess($message);
 		    return true;
 		}
-        
 	}
 	
 	function isLoginRequired(){

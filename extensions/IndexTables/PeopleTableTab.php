@@ -133,7 +133,9 @@ class PeopleTableTab extends AbstractTab {
             $emailHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Website</th>";
         }
         if($this->table == HQP){
-            $subRoleHeader = "<th style='white-space: nowrap;'>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>";
+            if($me->isRoleAtLeast(STAFF)){
+                $subRoleHeader = "<th style='white-space: nowrap;'>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>";
+            }
             if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRoleAtLeast(STAFF) || $me->isThemeLeader() || $me->isThemeCoordinator())){
                 $epicHeader = "<th id='epicHeader' style='white-space: nowrap;'>EPIC Due Date</th>
                                <th style='white-space: nowrap;'>Appendix A</th>

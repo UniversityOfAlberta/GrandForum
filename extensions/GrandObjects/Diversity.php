@@ -42,7 +42,7 @@ class Diversity extends BackboneModel {
         'decline' => ""
     );
     var $immigration = array(
-        'values' => array(),
+        'value' => array(),
         'other' => "",
         'decline' => ""
     );

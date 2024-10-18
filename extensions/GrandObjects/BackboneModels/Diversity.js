@@ -91,7 +91,7 @@ Diversity = Backbone.Model.extend({
             stem: "",
             racialized: '',
             immigration: {
-                values: [],
+                value: [],
                 other: "",
                 decline: ""
             },

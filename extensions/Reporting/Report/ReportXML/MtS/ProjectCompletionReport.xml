@@ -205,14 +205,62 @@
                 </tr>
             ]]>
         </ReportItem>
-        <Static>
+        <ReportItem id="research_personnel" type="Integer" blobItem="RESEARCH_PERSONNEL" size="8">
             <![CDATA[
                 <tr>
-                    <td># of highly-qualified personnel involved in this project (e.g., research assistants, peer advisors, postdoctoral fellows, community partners etc.)</td>
-                    <td align='right'>{$project_n_hqp}</td>
+                    <td>Total # of Research Personnel (those not pursuing degrees) employed over the lifetime of this project</td>
+                    <td>{$item}</td>
                 </tr>
             ]]>
-        </Static>
+        </ReportItem>
+        <ReportItem id="pdf" type="Integer" blobItem="PDF" size="8">
+            <![CDATA[
+                <tr>
+                    <td>Total # of Post Doctorate Fellows employed over the lifetime of this project</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="masters" type="Integer" blobItem="MASTERS" size="8">
+            <![CDATA[
+                <tr>
+                    <td>Total # of Master's Students employed over the lifetime of this project</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="phd" type="Integer" blobItem="PHD" size="8">
+            <![CDATA[
+                <tr>
+                    <td>Total # of PhD students employed over the lifetime of this project</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ugrad" type="Integer" blobItem="UGRAD" size="8">
+            <![CDATA[
+                <tr>
+                    <td>Total # of Undergraduate Students employed over the lifetime of this project</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="total_hqp" type="Integer" blobItem="TOTAL_HQP" size="8">
+            <![CDATA[
+                <tr>
+                    <td>Total amount ($) spent on employing Highly Qualified Personnel over the lifetime of this project.</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="total_ktee" type="Integer" blobItem="TOTAL_KTEE" size="8">
+            <![CDATA[
+                <tr>
+                    <td>Total amount ($) spent on Knowledge Mobilization activities over the lifetime of this project</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
         <Static>
             <![CDATA[
                 </table>
@@ -230,7 +278,8 @@
         </ReportItem>
         <ReportItem id="progress_reason" type="Textarea" blobItem="PROGRESS_REASON" limit="200" rich="true">
             <![CDATA[
-                <div id='progress_reason' style='display:none;'><p>Please describe the reason(s) for the delay and the steps that were taken to complete the project.</p>
+                <div id='progress_reason' style='display:none;'>
+                    <p>Please describe the reason(s) for the delay and the steps that were taken to complete the project.</p>
                     {$item}
                 </div>
                 <script type='text/javascript'>
@@ -251,10 +300,38 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="leveraged" type="Radio" blobItem="LEVERAGED" options="Yes|No">
+            <![CDATA[
+                <h3>3.3 Have you successfully leveraged MtS Funding to secure additional funding for your project?</h3>
+                
+                <div id="leveraged">
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="leveraged_yes" type="Textarea" blobItem="LEVERAGED_YES" rich="true" limit="250">
+            <![CDATA[
+                <div id="leveraged_yes">
+                    <p>How much and please explain.</p>
+                    {$item}
+                </div>
+                
+                <script type='text/javascript'>
+                    $('#leveraged input').change(function(){
+                        if($('#leveraged input:checked').val() == "Yes"){
+                            $('#leveraged_yes').show();
+                        }
+                        else{
+                            $('#leveraged_yes').hide();
+                        }
+                    }).trigger('change');
+                </script>
+            ]]>
+        </ReportItem>
         <Static>
             <![CDATA[
                 <h2>Community Engagement in Research Index (CERI)</h2>
-                <h3>3.3 Indicate the extent to which the community partner listed below were involved in your work (on a scale from 1–3):</h3>
+                <h3>3.4 Indicate the extent to which the community partner listed below were involved in your work (on a scale from 1–3):</h3>
                 <p>Please fill out this section to the best of your ability. Although a number of sections may be designated ‘1’, we understand that not all communities apply across all projects.<br /><small>
                     1 (Community partners do not participate in this activity) <br />
                     2 (Community partners are consulted on or advise on this activity)<br />
@@ -295,17 +372,31 @@
                 </table>
             ]]>
         </Static>
-        <ReportItem id="successes" type="Textarea" blobItem="SUCCESSES" rich="true" limit="300">
+        <ReportItem id="updates" type="Checkbox" blobItem="UPDATES" blobType="BLOB_ARRAY" options="Yes">
             <![CDATA[
-                <h3>3.4 What were some of the successes, opportunities, and/or barriers that you encountered during the project related to community-engageded scholarship?</h3>
+                <h3>3.5 Please confirm that you have updated your Community Partners in the Forum by selecting 'Yes.' By clicking the box, you acknowledge that the updates have been completed.</h3>
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="successes" type="Textarea" blobItem="SUCCESSES" rich="true" limit="300">
+            <![CDATA[
+                <h3>3.6 What were some of the successes, opportunities, and/or barriers that you encountered during the project related to community-engageded scholarship?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <If if="{==({$project_name},P33)}">
+            <ReportItem id="utilized" type="Textarea" blobItem="UTILIZED" rich="true" limit="300">
+                <![CDATA[
+                    <h3>3.7 Your project a recipient of the MtS Funding Opportunity for Theme 4: Enhancing Outcomes for Indigenous Youth Research. Please describe how you utilized these funds to support your research and its outcomes.</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
     </ReportSection>
     <ReportSection id="impacts" type="EditableReportSection" blobSection="IMPACTS" name="4 - Research Impacts" title="SECTION 4: RESEARCH IMPACTS">
         <Static>
             <![CDATA[
-                <h3>4.1 List all peer reviewed publications that were published in the previous year:</h3>
+                <h3>4.1 Please provide a list of <u>all</u> peer-reviewed publications developed <u>over the lifetime of</u> your project.</h3>
                 <a href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts" class="button" target="_blank">Manage Outputs</a>
                 <table class="wikitable" width="100%" frame="box" rules="all">
                     <tr>
@@ -402,16 +493,16 @@
         </Static>
     </ReportSection>
     <ReportSection id="kmb" type="EditableReportSection" blobSection="KMB" name="5 - KMb and Impact Plan" title="SECTION 5: KNOWLEDGE MOBILIZATION AND RESEARCH IMPACT PLAN">
-        <ReportItem id="activities" type="MultiText" blobType="BLOB_ARRAY" blobItem="ACTIVITIES" multiple="true"
-                    types="Milestones|CustomChosen(Researchers,Policymakers,Government Officials,Funders,Media,General Public,Practitioners,Allied organization - legal and justice,Allied Organization - Schools,Allied Organization - Child Welfare,Other)|Textarea|Textarea|Textarea|Date|Date" 
-                    indices="activity|endgroup|activities|impact|reach|start|end" 
-                    labels="Knowledge Mobilization Activity|End Group&lt;br />&lt;small style='font-weight:normal;'>(Select the end groups engaged with the activity)&lt;/small>|Knowledge Mobilization Activities&lt;br />&lt;small style='font-weight:normal;'>(include links to related materials)&lt;/small>|Impact&lt;br />&lt;small style='font-weight:normal;'>(i.e., what happened once the end user group(s) engaged with your KMb materials?) Differentiate between end user groups if needed.&lt;/small>|Projected reach&lt;br />&lt;small style='font-weight:normal;'>(The number of people you estimate to be engage your knowledge mobilization activity)&lt;/small>|Start Date|End Date" 
-                    sizes="200|200|200|200|200|75|75">
+        <ReportItem id="activities_new" type="MultiText" blobType="BLOB_ARRAY" blobItem="ACTIVITIES_NEW" multiple="true"
+                    types="Select(Conference Presentation,Presentation,Journal Article,Media,Article,Media Interviews,Webinar,Abstract,Press Release,Podcast,Policy Briefs,Lecture,Report,Panel Discussion,Report Summary,Meetings,In-Person Event,Social Media,Blog,Training/Tutorial,Website,Implementation Guide,Symposium,Round Table,Information Request,Other)|CustomChosen(Researchers,Policy Makers,Government,Funders,Media,General Public,Practitioners,Allied organization - legal and justice,Allied Organization - Schools,Allied Organization - Child Welfare)|Integer|Textarea" 
+                    indices="activity|endgroup|reach|links" 
+                    labels="Activity|End Group&lt;br />&lt;small style='font-weight:normal;'>(Select the end groups engaged with the activity)&lt;/small>|Projected reach&lt;br />&lt;small style='font-weight:normal;'>(The number of people you estimate to be engage your knowledge mobilization activity)&lt;/small>|Links" 
+                    sizes="200|300|170|250">
             <![CDATA[
                 <h2>Knowledge Mobilization Activities and Impact</h2>
-                <h3>5.1 Describe the knowledge mobilization activities you completed over the life time of your project for each of the end user groups listed below. Also indicate the impact of these activities. Where possible, include links or attachments to these publications, events, tools, reports, training, etc.</h3>
+                <h3>5.1 Select the knowledge mobilization activities you completed over the lifetime of your project for each of the end user groups listed below. Where possible, include links or attachments to these publications, events, tools, reports, training, etc.</h3>
                 {$item}
-                Please note we require projects to send notice of activities to <a href='mailto:mtsfunding@yorku.ca'>mtsfunding@yorku.ca</a> for NCE reporting and promotion to the MtS network.
+                Please note we require projects to share activities for NCE reporting and promotion to the MtS network.
             ]]>
         </ReportItem>
         <ReportItem id="share" type="Textarea" blobItem="SHARE" rich="true" limit="200">

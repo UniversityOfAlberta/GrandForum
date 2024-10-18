@@ -91,7 +91,7 @@
                     <% } else if(val.type == "Integer"){ %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:100px;", class: "integer"}) %>
                     <% } else if(val.type == "Radio"){ %>
-                        <%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %>
+                        <div style="white-space:nowrap;"><%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %></div>
                     <% } else if(val.type == "Check"){ %>
                         <%= HTML.CheckBox(this, 'data.' + index, {size: 30, value: "Yes"}) %>
                     <% } else if(val.type == "Select"){ %>
