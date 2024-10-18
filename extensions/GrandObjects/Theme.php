@@ -237,6 +237,7 @@ class Theme {
                 $papers[$paper->getId()] = $paper;
             }
         }
+        /* TODO: Don't do this yet, maybe re-enable it later if needed
         $data = DBFunctions::execSQL("SELECT id
                                       FROM grand_products
                                       WHERE data LIKE '%\"theme\"%:\"{$this->acronym}%'
@@ -244,7 +245,7 @@ class Theme {
         foreach($data as $row){
             $paper = Product::newFromId($row['id']);
             $papers[$paper->getId()] = $paper;
-        }
+        }*/
         return $papers;
     }
     
