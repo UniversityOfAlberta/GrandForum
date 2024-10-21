@@ -21,20 +21,22 @@ class QASummary extends SpecialPage{
         
         $tabbedPage = new TabbedAjaxPage("qasummary");
         $person = Person::newFromWgUser();
-        
-        if(self::checkRole($person) || $person->isSubRole("QA_PHYS"))
+        $person->getFecPersonalInfo();
+        $departments = @array_keys($person->departments);
+        $department = $departments[0];
+        if(self::checkRole($person) || $person->isSubRole("QA_PHYS")  || $department == "Physics")
             $tabbedPage->addTab(new DepartmentTab("Physics", array("PHYS")));
-        if(self::checkRole($person) || $person->isSubRole("QA_CHEM"))
+        if(self::checkRole($person) || $person->isSubRole("QA_CHEM")  || $department == "Chemistry")
             $tabbedPage->addTab(new DepartmentTab("Chemistry", array("CHEM")));
-        if(self::checkRole($person) || $person->isSubRole("QA_BIOL"))
+        if(self::checkRole($person) || $person->isSubRole("QA_BIOL")  || $department == "Biological Sciences")
             $tabbedPage->addTab(new DepartmentTab("Biological Sciences", array("BIOL")));
-        if(self::checkRole($person) || $person->isSubRole("QA_CMPUT"))
+        if(self::checkRole($person) || $person->isSubRole("QA_CMPUT") || $department == "Computing Science")
             $tabbedPage->addTab(new DepartmentTab("Computing Science", array("CMPUT")));
-        if(self::checkRole($person) || $person->isSubRole("QA_MATH"))
+        if(self::checkRole($person) || $person->isSubRole("QA_MATH")  || $department == "Mathematical And Statistical Sciences")
             $tabbedPage->addTab(new DepartmentTab("Mathematical And Statistical Sciences", array("MATH", "STAT")));
-        if(self::checkRole($person) || $person->isSubRole("QA_EAS"))
+        if(self::checkRole($person) || $person->isSubRole("QA_EAS")   || $department == "Earth And Atmospheric Sciences")
             $tabbedPage->addTab(new DepartmentTab("Earth And Atmospheric Sciences", array("EAS")));
-        if(self::checkRole($person) || $person->isSubRole("QA_PSYCH"))
+        if(self::checkRole($person) || $person->isSubRole("QA_PSYCH") || $department == "Psychology")
             $tabbedPage->addTab(new DepartmentTab("Psychology", array("PSYCH")));
         
         $tabbedPage->showPage();
@@ -45,8 +47,7 @@ class QASummary extends SpecialPage{
     }
     
     function checkRole($person){
-        return ($person->isRole(CHAIR) || 
-                $person->isRole(DEAN) || 
+        return ($person->isRole(DEAN) || 
                 $person->isRole(DEANEA) || 
                 $person->isRole(VDEAN) || 
                 $person->isRoleAtLeast(STAFF));
@@ -55,6 +56,7 @@ class QASummary extends SpecialPage{
     function userCanExecute($user){
         $me = Person::newFromUser($user);
         return (self::checkRole($me) || 
+                $me->isRole(CHAIR) ||
                 $me->isSubRole('QA_PHYS') ||
                 $me->isSubRole('QA_CHEM') ||
                 $me->isSubRole('QA_BIOL') ||
