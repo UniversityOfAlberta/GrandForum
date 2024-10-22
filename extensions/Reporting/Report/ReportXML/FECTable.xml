@@ -260,9 +260,9 @@
                     }
                 </style>
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
-                <div style='float:right; margin-top: -45px;display:flex;'>
+                <!--div style='float:right; margin-top: -45px;display:flex;'>
                     <div><button id='downloadAll' class='noDisable' type='button'>Download All</button></div>
-                </div>
+                </div-->
                 <script type='text/javascript'>
                     function postToIframe(data,url,target){
                         $('body').append('<form action="'+url+'" method="post" target="'+target+'" id="postToIframe"></form>');
