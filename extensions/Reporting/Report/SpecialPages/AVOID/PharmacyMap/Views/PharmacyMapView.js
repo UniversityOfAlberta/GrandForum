@@ -51,7 +51,8 @@ PharmacyMapView = Backbone.View.extend({
         "click #questions": "clickQuestions",
         "keypress #keywordsearch": "keywordSearch",
         "click #keysearch_btn": "keywordSearch",
-        "click #howLink": "clickHow"
+        "click #howLink": "clickHow",
+        "click #aiSearchButton": "clickAiSearchButton"
     },
     
     clickHow: function(){
@@ -64,6 +65,45 @@ PharmacyMapView = Backbone.View.extend({
         });
         $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
         $(window).resize();
+    },
+    
+    clickAiSearchButton: function(){
+        this.$("#aiSearch").slideDown();
+        this.$("#aiSearchButton").hide();
+        this.$("#searchbar_key").hide();
+        this.aiSearch();
+    },
+    
+    aiSearch: function(){
+        var data = {"fulfillmentMessages":[{"text":{"text":"Some options for free psychological therapy available to those seeking support include The Family Centre of Northern Alberta (TCA-NOA) at 20, 9912 106 Street in Edmonton, Alberta. Located in the city center, it offers a free single session counseling service for couples, families, or individuals who might need help in these trying times. Other options include the Sage Seniors Association (SSA) drop-in single session counselling at 780-423-2831 with an address of 15 Sir Winston Churchill Square, City of Edmonton, AB. This service is available to couples, families, or individuals who might need help in these trying times."}}],"fulfillmentText":"Some options for free psychological therapy available to those seeking support include The Family Centre of Northern Alberta (TCA-NOA) at 20, 9912 106 Street in Edmonton, Alberta. Located in the city center, it offers a free single session counseling service for couples, families, or individuals who might need help in these trying times. Other options include the Sage Seniors Association (SSA) drop-in single session counselling at 780-423-2831 with an address of 15 Sir Winston Churchill Square, City of Edmonton, AB. This service is available to couples, families, or individuals who might need help in these trying times.","payload":{"documents":{"0175f13a-98f3-4bfd-827b-afaf13f8e69e":{"address":"20, 9912 106 Street","categories":"CFN; CFN-MH; CFN-MH-COUNSELLING","city":"Edmonton","latitude":53.53751,"longitude":-113.503,"phone_number":"780-423-2831","postal_code":"T5K 1C5","province":"AB","service_name":"The Family Centre of Northern Alberta - Drop-In Single Session Counselling","website":"https://www.familycentre.org/counselling"},"5c43c6e6-fb6a-4b8a-922b-c69bf4408619":{"address":"10618 105 Avenue","categories":"CFN; CFN-MH; CFN-MH-COUNSELLING","city":"Edmonton","latitude":53.54796,"longitude":-113.504,"phone_number":"780-423-2831","postal_code":"T5H 0L2","province":"AB","service_name":"Pride Centre of Edmonton - Drop-In Single Session Counselling","website":"https://www.familycentre.org/counselling"},"a076dc61-137f-41e2-954e-8f7210a066a5":{"address":"15 Sir Winston Churchill Square","categories":"CFN; CFN-MH; CFN-MH-COUNSELLING","city":"Edmonton","latitude":53.544601,"longitude":-113.49126,"phone_number":"780-423-2831","postal_code":"T5J 2E5","province":"AB","service_name":"Sage Seniors Association - Drop-In Single Session Counselling","website":"https://www.familycentre.org/counselling"}}}};
+        
+        var docs = data.payload.documents;
+        var rows = new AvoidResources();
+        _.each(docs, function(doc){
+            var row = new AvoidResource({
+                PublicName: doc.service_name,
+                PhysicalAddress1: doc.address,
+                PhysicalCity: doc.city,
+                WebsiteAddress: doc.website,
+                PhysicalAddress2: doc.address,
+                PhysicalStateProvince: doc.province,
+                PhysicalPostalCode: doc.postal_code,
+                MailingPostalCode: doc.postal_code,
+                PhoneNumbers: [{"Phone": doc.phone_number}],
+                Latitude: doc.latitude,
+                Longitude: doc.longitude
+            });
+            rows.add(row);
+        });
+        this.renderMap = true;
+        this.refresh = false;
+        this.model.reset(rows.toJSON());
+        this.addRows(this.model);
+        this.$("#table").show();
+        this.$('#body_accordion').accordion({ autoHeight: false, collapsible: true, header: '#accordionHeader'});
+        this.$('#accordionHeader').show();
+        this.$('#address_bar').show();
+        this.$('#map-container').show();
     },
 
     keywordSearch(e){

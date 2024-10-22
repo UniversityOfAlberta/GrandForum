@@ -21,6 +21,17 @@
     <% } %>
     <a style='font-size:2em;padding:0.5em;margin-left:0.5em;vertical-align:middle;' id='keysearch_btn' class='program-button' title="Search"><en>Search</en><fr>Chercher</fr></a>
 </div>
+<% if(networkFullName == "AVOID AB"){ %>
+    <div id="aiSearch" style="display:none;">
+        <iframe title="Dialogflow Chat"
+                width="100%"
+                height="500px"
+                frameborder="0"
+                allow="microphone;"
+                src="https://console.dialogflow.com/api-client/demo/embedded/43f631ff-c16c-4b2a-9979-d81cbf1780c8"></iframe>
+    </div>
+    <a id="aiSearchButton" style='font-size:2em;padding:0.5em;' class='program-button' title="Search using AI">Search using AI</a>
+<% } %>
 <div class='searches'>
 </div>
 <p class="program-body" style="margin-bottom:0;">
