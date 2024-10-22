@@ -107,16 +107,18 @@
             <If if="{or({contains({user_sub_roles(;)},Dean's Decision)})}">
                 <![CDATA[
                     <td>
-                        <span class="increment dd">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span> [DD]<hr />
-                        <div style='max-height: 75px; overflow-y: auto;'>{getText(RP_CHAIR, FEC_DEAN_DECISION, COMMENTS, {$user_id}, 0, 0)}</div>
+                        <span class="increment dd">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span> [DD]<br />
+                        <div id="comment_{$user_id}" class='comments_to_fec' style='display:none;' title="Comments to FEC for {$user_name}">{getText(RP_CHAIR, FEC_DEAN_DECISION, COMMENTS, {$user_id}, 0, 0)}</div>
+                        <a class='click_comments_to_fec' data-id="comment_{$user_id}" style="cursor:pointer;">Comments to FEC</a>
                     </td>
                 ]]>
             </If>
             <Else>
                 <![CDATA[
                     <td>
-                        <span class="increment">{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</span><hr />
-                        <div style='max-height: 75px; overflow-y: auto;'>{getText(RP_CHAIR, FEC_REVIEW, COMMENTS, {$user_id}, 0, 0)}</div>
+                        <span class="increment">{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</span><br />
+                        <div id="comment_{$user_id}" class='comments_to_fec' style='display:none;' title="Comments to FEC for {$user_name}">{getText(RP_CHAIR, FEC_REVIEW, COMMENTS, {$user_id}, 0, 0)}</div>
+                        <a class='click_comments_to_fec' data-id="comment_{$user_id}" style="cursor:pointer;">Comments to FEC</a>
                     </td>
                 ]]>
             </Else>
@@ -236,6 +238,14 @@
             <![CDATA[
                     </tbody>
                 </table>
+                <script type='text/javascript'>
+                    $(".click_comments_to_fec").click(function(){
+                        var id = $(this).attr("data-id");
+                        $("#" + id).dialog({
+                            width: "600px"
+                        });
+                    });
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
