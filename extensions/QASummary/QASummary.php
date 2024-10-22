@@ -23,7 +23,7 @@ class QASummary extends SpecialPage{
         $person = Person::newFromWgUser();
         $person->getFecPersonalInfo();
         $departments = @array_keys($person->departments);
-        $department = $departments[0];
+        $department = @$departments[0];
         if(self::checkRole($person) || $person->isSubRole("QA_PHYS")  || $department == "Physics")
             $tabbedPage->addTab(new DepartmentTab("Physics", array("PHYS")));
         if(self::checkRole($person) || $person->isSubRole("QA_CHEM")  || $department == "Chemistry")
