@@ -107,14 +107,16 @@
             <If if="{or({contains({user_sub_roles(;)},Dean's Decision)})}">
                 <![CDATA[
                     <td>
-                        <span class="increment dd">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span> [DD]
+                        <span class="increment dd">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span> [DD]<hr />
+                        <div style='max-height: 75px; overflow-y: auto;'>{getText(RP_CHAIR, FEC_DEAN_DECISION, COMMENTS, {$user_id}, 0, 0)}</div>
                     </td>
                 ]]>
             </If>
             <Else>
                 <![CDATA[
                     <td>
-                        <span class="increment">{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</span>
+                        <span class="increment">{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</span><hr />
+                        <div style='max-height: 75px; overflow-y: auto;'>{getText(RP_CHAIR, FEC_REVIEW, COMMENTS, {$user_id}, 0, 0)}</div>
                     </td>
                 ]]>
             </Else>
@@ -125,7 +127,7 @@
                     </td>
                 ]]>
             </Static>
-            <If if="{contains({$my_roles},FEC)}">
+            <If if="{or({contains({$my_roles},Dean)},{contains({$my_roles},FEC)})}">
                 <!-- Increment Vote -->
                 <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
                     <![CDATA[
@@ -167,7 +169,7 @@
                 </ReportItem-->
                 
                 <!-- Comments -->
-                <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_roles},Dean)})}">
+                <If if="{or({contains({$my_roles},Dean)})}">
                     <Static>
                         <![CDATA[
                             <td>
