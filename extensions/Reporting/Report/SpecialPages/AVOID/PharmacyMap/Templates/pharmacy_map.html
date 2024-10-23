@@ -298,7 +298,9 @@
         </a>
     </p>
 <% } %>
-<div id="db_powered">
-    Database Powered by<br />
-    <img src="<%= wgServer + wgScriptPath %>/skins/cneo_logo.png" style="height: 150px;" />
-</div>
+<% if(networkFullName != "AVOID AB"){ %>
+    <div id="db_powered">
+        Database Powered by<br />
+        <img src="<%= wgServer + wgScriptPath %>/skins/cneo_logo.png" style="height: 150px;" />
+    </div>
+<% } %>

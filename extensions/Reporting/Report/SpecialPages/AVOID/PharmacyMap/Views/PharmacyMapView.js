@@ -104,6 +104,9 @@ PharmacyMapView = Backbone.View.extend({
         this.$('#accordionHeader').show();
         this.$('#address_bar').show();
         this.$('#map-container').show();
+        if($("#body_accordion").accordion("option", "active") !== false){
+            $('#accordionHeader').click();
+        }
     },
 
     keywordSearch(e){
