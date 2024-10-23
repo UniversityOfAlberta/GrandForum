@@ -81,6 +81,7 @@ PharmacyMapView = Backbone.View.extend({
         var rows = new AvoidResources();
         _.each(docs, function(doc){
             var row = new AvoidResource({
+                id: _.uniqueId("ai"),
                 PublicName: doc.service_name,
                 PhysicalAddress1: doc.address,
                 PhysicalCity: doc.city,
@@ -98,8 +99,9 @@ PharmacyMapView = Backbone.View.extend({
         this.renderMap = true;
         this.refresh = false;
         this.model.reset(rows.toJSON());
-        this.addRows(this.model);
+        this.render();
         this.$("#table").show();
+        this.refreshMap();
         this.$('#body_accordion').accordion({ autoHeight: false, collapsible: true, header: '#accordionHeader'});
         this.$('#accordionHeader').show();
         this.$('#address_bar').show();
