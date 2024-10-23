@@ -35,6 +35,7 @@
         // Only show this for CFREF (for now)
         require_once("Collaborations/Collaboration.php");
         require_once("Projections.php");
+        require_once("CRDCCodes.php");
     }
     if($config->getValue("productsEnabled")){
         //require_once("Bibliography/Bibliography.php");
