@@ -718,7 +718,14 @@ class Paper extends BackboneModel{
         else if($this->getCreatedBy() == $me->getId() || $this->getAccessId() == $me->getId()){ 
             return true; // Person created the Product
         }
-        else if(($me->isRoleAtLeast(CHAIR) || $me->isRoleAtLeast(EA)) && $this->getAccessId() == 0){
+        else if(($me->isRoleAtLeast(CHAIR) || 
+                 $me->isRoleAtLeast(EA) || 
+                 $me->isSubRole("QA_PHYS") || 
+                 $me->isSubRole("QA_CHEM") ||
+                 $me->isSubRole("QA_BIOL") ||
+                 $me->isSubRole("QA_CMPUT") ||
+                 $me->isSubRole("QA_MATH") ||
+                 $me->isSubRole("QA_EAS")) && $this->getAccessId() == 0){
             return true; // CHAIR+ (Chairs) Should have access to everything as long as the Product is not 'Private'
         }
         else if($me->isAuthorOf($this)){
