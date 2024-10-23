@@ -54,6 +54,7 @@ class CRDCCodes extends SpecialPage{
 	                                <th>Description</th>
 	                                <th>ECR</th>
 	                                <th>non-ECR</th>
+	                                <th>Total</th>
 	                            </tr>
 	                        </thead>
 	                        <tbody>");
@@ -64,6 +65,7 @@ class CRDCCodes extends SpecialPage{
 	                            <td>{$codes[$code]}</td>
 	                            <td>{$row['ecr']}</td>
 	                            <td>{$row['non']}</td>
+	                            <td>".($row['ecr']+$row['non'])."</td>
 	                         </tr>");
 	    }
         $wgOut->addHTML("</tbody></table><script type='text/javascript'>
