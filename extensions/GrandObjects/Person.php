@@ -4275,6 +4275,9 @@ class FullPerson extends Person {
         if($this->isRetired($date)){
             return "";
         }
+        else if($this->isNew($date) && $this->isATSEC1("9999-99-99")){
+            return "T1";                          
+        }
         if($this->isRoleOn("ATS", $date) && $this->isATSEC1($date)){
             return "T1";
         }
