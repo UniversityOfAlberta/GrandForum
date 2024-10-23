@@ -1,11 +1,13 @@
 ManagePeopleEditRelationsView = Backbone.View.extend({
 
+    parent: null,
     relations: null,
     person: null,
     university: null,
     relationViews: null,
 
     initialize: function(options){
+        this.parent = options.parent;
         this.person = options.person;
         this.university = options.university;
         this.relationViews = new Array();
@@ -127,7 +129,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         var relations = this.getRelations();
         relations.each(function(relation, i){
             if(this.relationViews[i] == null){
-                var view = new ManagePeopleEditRelationsRowView({model: relation});
+                var view = new ManagePeopleEditRelationsRowView({model: relation, parent: this});
                 this.$("#relation_rows").append(view.render());
                 this.relationViews[i] = view;
             }
@@ -177,9 +179,11 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
 
 ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
+    parent: null,
     tagName: 'tr',
     
-    initialize: function(){
+    initialize: function(options){
+        this.parent = options.parent;
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_relations_row_template').html());
     },
@@ -240,21 +244,28 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
             this.$el.removeClass('deleted');
         }
         this.$(".relError ul").empty();
+        this.$(".endDateCell").removeClass("inlineWarning");
+        this.$(".startDateCell").removeClass("inlineWarning");
+        this.parent.parent.$("#uniEnd").removeClass("inlineWarning");
+        if((this.model.get('status') == "Completed" ||
+            this.model.get('status') == "Withdrew") &&
+            (uniEnd == "" || uniEnd == "0000-00-00" || uniEnd == "9999-99-99")){
+            this.parent.parent.$("#uniEnd").addClass("inlineWarning");
+            this.$(".relError ul").append("<li>There should be a <b>University end date</b> when status is '" + this.model.get('status') + "'</li>").show();
+        }
         if((this.model.get('status') == "Completed" ||
             this.model.get('status') == "Withdrew" ||
             this.model.get('status') == "Changed Supervisor") &&
            (this.model.get('endDate') == "" ||
             this.model.get('endDate') == "0000-00-00")){
+            this.$(".endDateCell").addClass("inlineWarning");
             this.$(".relError ul").append("<li>There should be an end date when status is '" + this.model.get('status') + "'</li>").show();
-        }
-        if((this.model.get('status') == "Continuing") &&
-           (this.model.get('endDate') != "" &&
-            this.model.get('endDate') != "0000-00-00")){
-            this.$(".relError ul").append("<li>There should be no end date when status is '" + this.model.get('status') + "'</li>").show();
         }
         if(this.model.get('personUniversity') != null && 
            ((uniStart > relStart && uniStart > relEnd) || 
             (uniEnd < relStart))){
+            this.$(".startDateCell").addClass("inlineWarning");
+            this.$(".endDateCell").addClass("inlineWarning");
             this.$(".relError ul").append("<li>The dates for this relation do not fall within the dates of the university</li>").show();
         }
     },

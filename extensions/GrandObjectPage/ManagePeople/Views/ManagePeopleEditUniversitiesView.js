@@ -159,7 +159,8 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.$el.html(this.template());
         this.addRows();
         if(this.person.get('id') != me.get('id')){
-            this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
+            this.editRelations = new ManagePeopleEditRelationsView({model: me.relations,
+                                                                    parent: this,
                                                                     person: this.person, 
                                                                     university: null,
                                                                     el: this.$("#orphans")});
@@ -259,6 +260,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         }.bind(this));
         if(this.person.get('id') != me.get('id')){
             this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
+                                                                    parent: this,
                                                                     person: this.person, 
                                                                     university: this.model,
                                                                     el: this.$(".relations")});
