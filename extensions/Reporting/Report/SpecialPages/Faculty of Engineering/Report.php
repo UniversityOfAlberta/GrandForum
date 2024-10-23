@@ -13,6 +13,7 @@ class Report extends TemplateReport{
             $person->getFecPersonalInfo();
             if($person->faculty == getFaculty()){
                 $tabs["Rebuttal"] = TabUtils::createTab("Rebuttal");
+                $tabs["Variance"] = TabUtils::createTab("Variance");
             }
         }
         return true;
@@ -30,6 +31,11 @@ class Report extends TemplateReport{
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Rebuttal")) ? "selected" : false;
                     $tabs["Rebuttal"]['subtabs'][] = TabUtils::createSubTab("Rebuttal", "{$url}Rebuttal", $selected);
                 }*/
+                
+                if($person->isRole(NI) || $person->isRole("ATS")){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Variance")) ? "selected" : false;
+                    $tabs["Variance"]['subtabs'][] = TabUtils::createSubTab("Variance", "{$url}Variance", $selected);
+                }
             }
             
             // FEC Table

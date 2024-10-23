@@ -62,6 +62,15 @@
                     ]]>
                 </If>
             </If>
+            <!-- Variance -->
+            <Static>
+                {set(fileVariance, {getBlobMD5(RP_FEC,VARIANCE,VARIANCE,0,{$user_id},0)})}
+            </Static>
+            <If if="{!=({get(fileVariance)},)}">
+                <![CDATA[
+                   <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileVariance)}">Variance</a><br />
+                ]]>
+            </If>
             <!-- Files -->
             <!--For from="1" to="3">
                 <Static>

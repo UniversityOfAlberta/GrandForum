@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Variance" reportType="RP_FEC" headerName="{$user_name}" ajax="true" encrypt="true" disabled="false">
+    <Permissions>
+        <Role role="Faculty">
+            <SectionPermission id="variance" permissions="rw" />
+        </Role>
+        <Role role="ATS">
+            <SectionPermission id="variance" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="variance" type="EditableReportSection" blobSection="VARIANCE" name="Variance" title="Variance">
+        <Static>
+            <![CDATA[
+                <p>Please upload your variance letter using the upload button below.</p>
+            ]]>
+        </Static>
+        <ReportItem id="variance" type="Upload" blobType="BLOB_RAW" blobItem="VARIANCE" mimeType=".pdf" fileSize="5" optional="true" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
