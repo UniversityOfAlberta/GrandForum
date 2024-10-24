@@ -177,7 +177,7 @@ class PersonFECTab extends AbstractEditableTab {
             $departments = array_keys($this->person->departments);
             $percents = array_values($this->person->departments);
             
-            $facultySelect = new SelectBox('faculty', 'faculty', $this->person->faculty, array_merge(array(''), array_keys($facultyMap)));
+            $facultySelect = new SelectBox('faculty', 'faculty', $this->person->faculty, array_merge(array('', 'All'), array_keys($facultyMap)));
             $department1Select = new SelectBox('department1', 'department1', @$departments[0], array_merge(array(''), $facultyMapSimple));
             $department2Select = new SelectBox('department2', 'department2', @$departments[1], array_merge(array(''), $facultyMapSimple));
             
