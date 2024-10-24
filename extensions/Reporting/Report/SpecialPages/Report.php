@@ -37,7 +37,7 @@ class TemplateReport extends AbstractReport{
         $person = Person::newFromWgUser();
         if($person->isLoggedIn() && $person instanceof FullPerson){
             $person->getFecPersonalInfo();
-            if($person->faculty == getFaculty() || $person->faculty == "All"){
+            if($person->inFaculty()){
                 $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
                 if($person->isRole(NI) || $person->isRole("ATS")){
                     if(getFaculty() == 'Engineering' && $person->isRole("ATS")){

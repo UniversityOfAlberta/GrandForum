@@ -679,6 +679,11 @@ class Person extends BackboneModel {
         return $ret;
     }
     
+    function inFaculty(){
+        $this->getFecPersonalInfo();
+        return ($this->faculty == getFaculty() || $this->faculty == "All");
+    }
+    
     function isTAEligible($date=null){
         if($date == null){
             $date = date('Y-m-d');

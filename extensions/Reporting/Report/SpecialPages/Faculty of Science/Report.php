@@ -11,7 +11,7 @@ class Report extends TemplateReport{
         $person = Person::newFromWgUser();
         if($person->isLoggedIn() && $person instanceof FullPerson){
             $person->getFecPersonalInfo();
-            if($person->faculty == getFaculty()){
+            if($person->inFaculty()){
                 $tabs["Sabbatical"] = TabUtils::createTab("Sabbatical Application");
             }
         }
@@ -24,7 +24,7 @@ class Report extends TemplateReport{
         $person = Person::newFromWgUser();
         if($person->isLoggedIn() && $person instanceof FullPerson){
             $person->getFecPersonalInfo();
-            if($person->faculty == getFaculty()){
+            if($person->inFaculty()){
                 $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
                 if($person->isRole(NI)){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SabbaticalApplication")) ? "selected" : false;

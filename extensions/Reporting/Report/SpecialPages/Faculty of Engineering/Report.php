@@ -11,7 +11,7 @@ class Report extends TemplateReport{
         $person = Person::newFromWgUser();
         if($person->isLoggedIn() && $person instanceof FullPerson){
             $person->getFecPersonalInfo();
-            if($person->faculty == getFaculty()){
+            if($person->inFaculty()){
                 $tabs["Rebuttal"] = TabUtils::createTab("Rebuttal");
                 $tabs["Variance"] = TabUtils::createTab("Variance");
             }
@@ -26,7 +26,7 @@ class Report extends TemplateReport{
         if($person->isLoggedIn() && $person instanceof FullPerson){
             $person->getFecPersonalInfo();
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-            if($person->faculty == getFaculty()){
+            if($person->inFaculty()){
                 /*if($person->isRole(NI) || $person->isRole("ATS")){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Rebuttal")) ? "selected" : false;
                     $tabs["Rebuttal"]['subtabs'][] = TabUtils::createSubTab("Rebuttal", "{$url}Rebuttal", $selected);
@@ -39,7 +39,7 @@ class Report extends TemplateReport{
             }
             
             // FEC Table
-            if($person->faculty == getFaculty() || $person->faculty == "All" || $person->isRole("FEC ".getFaculty())){
+            if($person->inFaculty() || $person->isRole("FEC ".getFaculty())){
                 if($person->isRole(ADMIN) || $person->isRole(DEAN) || $person->isRole(VDEAN) || $person->isRole(HR) || $person->isRole("FEC") || $person->isRole("FEC ".getFaculty())){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECTable")) ? "selected" : false;
                     $tabs["FEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
