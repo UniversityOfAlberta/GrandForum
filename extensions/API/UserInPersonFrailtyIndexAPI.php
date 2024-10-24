@@ -333,7 +333,10 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $strength2 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "InPersonAssessment", "avoid_strength5", $user_id);
         $scores['Strength'] = 0;
         if($gender == "Man"){
-            if(($age < 65 && $strength1 < 31.8) ||
+            if(($age < 50 && $strength1 < 36.9) ||
+               ($age < 55 && $strength1 < 35.9) ||
+               ($age < 60 && $strength1 < 34.2) ||
+               ($age < 65 && $strength1 < 31.8) ||
                ($age < 70 && $strength1 < 28.8) ||
                ($age < 75 && $strength1 < 25.1) ||
                ($age >= 75 && $strength1 < 20.7)){
@@ -342,7 +345,10 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
             }
         }
         else if($gender == "Woman"){
-            if(($age < 65 && $strength1 < 18.7) ||
+            if(($age < 50 && $strength1 < 21.6) ||
+               ($age < 55 && $strength1 < 21.0) ||
+               ($age < 60 && $strength1 < 20.0) ||
+               ($age < 65 && $strength1 < 18.7) ||
                ($age < 70 && $strength1 < 17.2) ||
                ($age < 75 && $strength1 < 15.3) ||
                ($age >= 75 && $strength1 < 13.1)){
