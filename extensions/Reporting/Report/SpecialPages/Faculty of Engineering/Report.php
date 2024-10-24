@@ -39,7 +39,7 @@ class Report extends TemplateReport{
             }
             
             // FEC Table
-            if($person->faculty == getFaculty() || $person->isRole("FEC ".getFaculty())){
+            if($person->faculty == getFaculty() || $person->faculty == "All" || $person->isRole("FEC ".getFaculty())){
                 if($person->isRole(ADMIN) || $person->isRole(DEAN) || $person->isRole(VDEAN) || $person->isRole(HR) || $person->isRole("FEC") || $person->isRole("FEC ".getFaculty())){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECTable")) ? "selected" : false;
                     $tabs["FEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
