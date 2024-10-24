@@ -139,7 +139,7 @@ function onUserCan(&$title, &$user, $action, &$result){
     $me = Person::newFromUser($user);
     if($me instanceof FullPerson){
         $me->getFecPersonalInfo();
-        if(($me->faculty != getFaculty() || $me->faculty == "All") && !$me->isRoleAtLeast(MANAGER) && !$me->isRole("FEC ".getFaculty())){
+        if($me->faculty != getFaculty() && $me->faculty != "All" && !$me->isRoleAtLeast(MANAGER) && !$me->isRole("FEC ".getFaculty())){
             $wgMessage->clearError();
             $wgMessage->addError("You are on the wrong AIMS instance.  Make sure you clicked on the correct faculty.  Contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a> if you still don't have access.");
             $ret = false;
