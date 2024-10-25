@@ -677,6 +677,51 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
+        <ReportItem id="symptoms_avoid8" blobItem="symptoms_avoid8" type="RadioReportItem" orientation="vertical" 
+                    options="No|Yes"
+                    labels="{showLanguage(No|Yes, Non|Oui)}">
+            <![CDATA[
+                    <h3>
+                        <en>Is the distance that you are able to walk limited by your health?</en>
+                        <fr>La distance que vous êtes capable de parcourir à pied est-elle limitée par votre état de santé?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms_avoid8_specify" type="RadioReportItem" orientation="vertical" blobItem="SYMPTOMS8SPECIFY" optional="true" 
+                    options="Less than 1 kilometer occasionally|Less than 1 kilometer most days|Less than 100 meters most occasionally|Less than 100 meters most days"
+                    labels="{showLanguage(Less than 1 kilometer occasionally|
+                                          Less than 1 kilometer most days|
+                                          Less than 100 meters most occasionally|
+                                          Less than 100 meters most days,
+                                          
+                                          Moins d’un kilomètre occasionnellement|
+                                          Moins d’un kilomètre la plupart des jours|
+                                          Moins de 100 mètres à l’occasion|
+                                          Moins de 100 mètres la plupart des jours)}">
+            <![CDATA[
+                <span id="symptoms8_specify">
+                    <en>Please indicate at what distance, and how often your walking becomes limited:</en>
+                    <fr>Veuillez indiquer la distance:</fr>
+                    <div class="requiredField">{$item}</div>
+                </span>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('span#symptoms8_specify').hide();
+                    function specifySymptoms8(){
+                            if($("input:radio[name='HealthStatus_symptoms_avoid8'][value='Yes']").is(':checked')){
+                                    $('span#symptoms8_specify').show();
+                            }
+                            else{ $('span#symptoms8_specify').hide();}
+                    }
+                    _.defer(specifySymptoms8);
+                    $("input:radio[name='HealthStatus_symptoms_avoid8']").change(specifySymptoms8);
+                </script>
+            ]]>
+        </Static>
         <ReportItem id="symptoms_avoid9" blobItem="symptoms_avoid9" type="RadioReportItem" orientation="vertical" 
                     options="Good|Bad"
                     labels="{showLanguage(Good|Bad, Bonne|Mauvaise)}">

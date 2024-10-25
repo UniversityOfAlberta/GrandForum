@@ -2322,6 +2322,7 @@ class ReportItemCallback {
         return !$this->matches($str, $pattern);
     }
     
+    // $haystack, $needle
     function contains($val1, $val2){
         return (strstr($val1, $val2) !== false);
     }
