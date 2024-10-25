@@ -58,7 +58,7 @@
                 </Static>
                 <If if="{!=({get(fileRebuttal)},)}">
                     <![CDATA[
-                       <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileRebuttal)}">Rebuttal</a><br />
+                       <a class="downloadPDF file_{$user_id}" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileRebuttal)}&mime=application/pdf&stream">Rebuttal</a><br />
                     ]]>
                 </If>
             </If>
@@ -68,7 +68,7 @@
             </Static>
             <If if="{!=({get(fileVariance)},)}">
                 <![CDATA[
-                   <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileVariance)}">Variance</a><br />
+                   <a class="downloadPDF file_{$user_id}" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileVariance)}&mime=application/pdf&stream">Variance</a><br />
                 ]]>
             </If>
             <!-- Files -->

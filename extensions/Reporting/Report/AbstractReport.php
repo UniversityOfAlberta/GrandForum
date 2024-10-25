@@ -1050,7 +1050,12 @@ abstract class AbstractReport extends SpecialPage {
                 }
                 if($json != null){
                     $fileName = $json->name;
-                    header("Content-disposition: attachment; filename=\"".addslashes($fileName)."\"");
+                    if(isset($_GET['stream'])){
+                        header("Content-disposition: inline; filename=\"".addslashes($fileName)."\"");
+                    }
+                    else{
+                        header("Content-disposition: attachment; filename=\"".addslashes($fileName)."\"");
+                    }
                     echo base64_decode($json->file);
                     exit;
                 }
@@ -1058,7 +1063,12 @@ abstract class AbstractReport extends SpecialPage {
                     if(isset($_GET['fileName'])){
                         $fileName = $_GET['fileName'];
                     }
-                    header("Content-disposition: attachment; filename=\"".addslashes($fileName)."\"");
+                    if(isset($_GET['stream'])){
+                        header("Content-disposition: inline; filename=\"".addslashes($fileName)."\"");
+                    }
+                    else{
+                        header("Content-disposition: attachment; filename=\"".addslashes($fileName)."\"");
+                    }
                     echo $data;
                     exit;
                 }
