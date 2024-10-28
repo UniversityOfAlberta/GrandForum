@@ -40,6 +40,9 @@ require_once("ActionPlan/ActionPlan.php");
 if($config->getValue('reportingExtras', 'CommunityPrograms')){
     require_once("PharmacyMap/PharmacyMap.php");
     require_once("ClipboardList/ClipboardList.php");
+    if($config->getValue("networkFullName") == "AVOID AB"){
+        require_once("PharmacyMap/ServiceRecommendations.php");
+    }
 }
 if($config->getValue('reportingExtras', 'AskAnExpert')){
     require_once("AskAnExpert/AskAnExpert.php");
