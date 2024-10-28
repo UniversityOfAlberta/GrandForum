@@ -24,6 +24,7 @@ class AVOIDDashboard extends SpecialPage {
         if(!$wgUser->isLoggedIn()){
             $wgOut->setPageTitle("Please Login");
             $wgOut->addHTML("<div class='program-body'>In order to view this page you must login.  Return to the <a href='$wgServer$wgScriptPath/index.php/Main_Page'>front page</a> to login.</div>");
+            $wgOut->addHTML("<style> #avoidButtons { display: none; } </style>");
             $wgOut->output();
             $wgOut->disable();
             exit;
