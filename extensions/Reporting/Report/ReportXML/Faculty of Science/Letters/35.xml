@@ -10,19 +10,16 @@
             <If if="{==({getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)},N/A)}">
                 <![CDATA[
                     <p>Based on my review of your performance, your annual report, and our meeting to discuss my review <b>N/A</b>, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of <b>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</b>.</p>
-                    
-                    <p>My merit incrementation recommendation was explained to you in my Chair recommendation report.</p>
                 ]]>
             </If>
             <Else>
                 <![CDATA[
                     <p>Based on my review of your performance, your annual report, and our meeting to discuss my review on <b>{getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}</b>, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of <b>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</b>.</p>
-                    
-                    <p>My merit incrementation recommendation was explained to you in my Chair recommendation report and during our meeting</p>
                 ]]>
             </Else>
             <Static>
                 <![CDATA[
+                    <p>The specifics of my recommendation can be accessed in the AIMS forum by selecting the recommendation link.</p>
                     <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                     
                     You may wish to consider the following option:

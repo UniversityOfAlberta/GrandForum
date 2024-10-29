@@ -65,7 +65,7 @@ class TemplateReport extends AbstractReport{
                 
                 if($person->isRole(DEAN) || $person->isRole(VDEAN) || $person->isRole(HR) || $person->isRole("FEC")){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECTable")) ? "selected" : false;
-                    //$tabs["FEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
+                    $tabs["FEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
                 }
                 
                 if($person->isRole(DEAN) || $person->isRole(VDEAN) || $person->isRole(HR) || $person->isRole("ATSEC")){
@@ -90,7 +90,7 @@ class TemplateReport extends AbstractReport{
                 
                 if($person->isRole(DEAN) || $person->isRole(DEANEA) || $person->isRole(VDEAN) || $person->isRole(HR) || $person->isRoleAtLeast(MANAGER)){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Letters/Base")) ? "selected" : false;
-                    //$tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Letters", "{$url}Letters/Base", $selected);
+                    $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Letters", "{$url}Letters/Base", $selected);
                 }
             }
         }
