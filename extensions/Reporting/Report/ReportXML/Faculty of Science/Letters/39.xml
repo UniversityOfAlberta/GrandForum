@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/39" extends="Letters/Base">
+    <ReportSection id="letter" title="Incrementation - FEC Reduces Recommendation and Awards &lt;1.0">
+        <ReportItem id="from">
+            <![CDATA[
+                FEC Chair
+            ]]>
+        </ReportItem>
+        <ReportItem id="body">
+            <![CDATA[
+                <p>As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of December 2 - 6, the FEC did not support your Department Chair’s recommendation. Instead it is prepared to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Department Chair continues to support their original recommendation OR now supports the preliminary position of FEC. Under Article A6.19.1 of Schedule A, this is the preliminary position of FEC. This decision was based on the following:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                
+                <p>You may wish to consider the following options:</p>
+                <ul style='margin-left: 1em;'>
+                    <li>I am willing to meet with you during the week of {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case as it was</li>
+presented before FEC. Please contact my office at sciea@ualberta.ca for an appointment.
+                    <li>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s preliminary decision by informing me, in writing, within 5 working days from the receipt of this letter.</li>
+                </ul>
+                
+                <p>If you have your case reconsidered by FEC and they stand by their preliminary decision, you have the right to appeal this decision to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A.</p>
+                
+                <p>If you choose not to appear before FEC to present your case or submit documentation in support of your case, the decision will be final and binding.  Under Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC.</p>
+                
+                <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</p>
+                
+                <p>Should you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

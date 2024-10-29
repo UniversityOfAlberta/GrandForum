@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/37" extends="Letters/Base">
-    <ReportSection id="letter" title="Merit Recommendation">
+    <ReportSection id="letter" title="Incrementation - After Contesting FEC Awards &lt;1.0">
+        <ReportItem id="from">
+            <![CDATA[
+                FEC Chair
+            ]]>
+        </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>Based on my review of your academic activities and your annual report, and our meeting to review such on December 7, 2023, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of 0D.</p>
-                
-                My issues of concern are as follows:
-                <ul><li>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
+                <p>This is to inform you at the Faculty Evaluation Committee (FEC) meeting of December 2 - 6, the FEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
 
-                You may wish to consider the following option: 
-                <ul>
-                    <li>Pursuant to Article A6.17.1 of the Collective Agreement, you have the right to appear before FEC to contest the recommendation. Under Article A6.17.2 of the Collective Agreement, you must indicate to the FEC Chair, in writing, whether you intend to appear or submit materials or both at least 10 working days before the hearing which is on {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}. The materials should be submitted electronically, if feasible.</li>
-                </ul><br />
+                <p>This decision was based on the following:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+            
+                <p>Since you chose to contest and appear before FEC to present your case and/or submit documentation in support of your case, as per Article A6.16.8 of Schedule A, you have the right to appeal this decision to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of this letter.</p>
                 
                 <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
                 
-                <p>If FEC endorses the recommendation that you receive a [enter increment value] incrementation, you have the right to appeal this decision to the General Appeals Committee (GAC) under Article A8.03.1 of the Collective Agreement. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty and Staff Relations), in writing, within 10 working days from the receipt of the letter confirming FEC's decision.</p>
+                <p>Should you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer">
+            <![CDATA[
                 
-                <p>If you choose not to appear before FEC to present your case or submit documentation in support of your case, its decision will be final and binding. Under Article A8.03.1 you may not appeal this decision to the General Appeals Committee (GAC).</p>
-                
-                <p>If you have any procedural questions, please contact the Secretary to FEC, Lori Dammann-Thomson, at 780-492-6232 or sciea@ualberta.ca.</p>
             ]]>
         </ReportItem>
     </ReportSection>

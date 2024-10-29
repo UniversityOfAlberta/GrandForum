@@ -1,13 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/36" extends="Letters/Base">
-    <ReportSection id="letter" title="FEC Decision Regarding Merit">
+    <ReportSection id="letter" title="Incrementation - FEC Awards Less than Recommendation">
+        <ReportItem id="from">
+            <![CDATA[
+                FEC Chair
+            ]]>
+        </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Faculty Evaluation Committee (FEC) has approved the award of a {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} incrementation for you, rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation recommended by your Department Chair.</p>
+                <p>As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of December 2 - December 6, the FEC did not support your Department Chair's recommendation of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment instead, FEC is prepared to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}.</p>
+            
+                <p>Under Article A6.19.1 of Schedule A, this becomes the preliminary position of FEC. The Department Chair [Dean] continues to support their original recommendation OR now supports the preliminary position of FEC. This decision was based on the following concerns with your performance:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+            
+                <p>You may wish to consider the following options:</p>
+                <ul style='margin-left:1em;'>
+                    <li>I am offering to meet with you during the week of {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case as it was presented before FEC. Please contact my office at sciea@ualberta.ca for an appointment.</li>
+                    <li>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s preliminary position by informing me, in writing, within 5 working days from the receipt of this letter.</li>
+                </ul>
                 
-                <p>Each year, the FEC is charged with the responsibility of awarding incrementation to its faculty, from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty. This decision was made within the context of the relative performance of your colleagues of similar rank.</p>
+                <p>Should you decide to have your case reconsidered, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to your Department Chair:</p>
+                <ul style='margin-left:1em;'>
+                    <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
+                    <li>any material in response to the Department Chair’s [Dean’s] recommendation and any other material relevant to your case;</li>
+                    <li>a list of names of persons who will attend the FEC hearing as your witnesses.</li>
+                </ul>
                 
-                <p>FEC would like to thank you for your contributions to the Faculty in the past year and wishes you well in the coming year.</p>
+                <p>Please be advised that reconsideration cases are scheduled for December 5, 2024 in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}. Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
+
+                <p>If you choose not to request reconsideration of FECs preliminary decision, the FEC decision will be final and binding; pursuant to Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC. If you have your case reconsidered by FEC and it stands by its preliminary position, you have the right to appeal to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A.</p>
+                
+                <p>Should you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer">
+            <![CDATA[
+                
             ]]>
         </ReportItem>
     </ReportSection>
