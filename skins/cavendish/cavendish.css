@@ -2422,7 +2422,7 @@ div.program-text {
         margin: 0 0 0 3px !important;
     }
     
-    #header ul a {
+    #header ul a:not(.button) {
         padding: 0 5px 0 5px !important;
     }
     
