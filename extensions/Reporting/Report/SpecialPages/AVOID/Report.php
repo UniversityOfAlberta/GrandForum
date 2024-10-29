@@ -207,6 +207,19 @@ class Report extends AbstractReport{
             #status_notifications {
                 display: none !important;
             }
+            
+            .top-button {
+                padding: 6px 0 !important;
+                width: 132;
+                font-size: 1em;
+                display: inline-block;
+                margin-right: 10px;
+                margin-top: 13px;
+                float: right;
+                height: calc(1em + 1px);
+                line-height: calc(1em + 1px);
+            }
+            
         </style>");
         $wgOut->addHTML("<script type='text/javascript'>
             if(!embed){
