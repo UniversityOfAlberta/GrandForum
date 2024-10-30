@@ -1,15 +1,12 @@
 $(document).ready(function(){
-    if($("h1").text() == "Please Login"){
-        $("#mw-returnto").hide();
-        _.defer(function(){
-            $("#avoidButtons").hide();
-        });
-    }
-    if($('.top-nav-element.selected').text().indexOf("Manager") != -1 || $('.top-nav-element.selected').text().trim() == "Assessor"){
-        $("#submenu").show();
-    }
 
     $('#bodyContent').append("<div id='avoidButtons' class='program-body'></div>");
+    
+    if($("h1").text() == "Please Login" || $("h1").text() == "Login required"){
+        // For HAA
+        $("#mw-returnto").hide();
+        $("#avoidButtons").hide();
+    }
     
     $('#avoidButtons').append("<a id='scrollToTop' class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='#'><en>Top of Page</en><fr>Haut de la page</fr></a>");
     if(me.isLoggedIn()){
@@ -20,6 +17,10 @@ $(document).ready(function(){
         if(selected.text() != "" && selected.text().indexOf("My Profile") == -1){
             $('#avoidButtons').append("<a class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='" + selected.attr('href') + "'><en>Back to</en><fr>Retour à</fr> " + selected.html() + "</a>");
         }
+    }
+    
+    if($('.top-nav-element.selected').text().indexOf("Manager") != -1 || $('.top-nav-element.selected').text().trim() == "Assessor"){
+        $("#submenu").show();
     }
     
     $('#scrollToTop').click(function(){
