@@ -496,7 +496,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
             $user_id = $wgUser->getId();
         }
         else{
-            if(!$user->isRoleAtLeast(MANAGER)){
+            if(!$user->isRoleAtLeast(MANAGER) && !$user->isRole("Assessor")){
                 echo "Permission Required\n";
             }
             $user_id = $_GET['id'];
