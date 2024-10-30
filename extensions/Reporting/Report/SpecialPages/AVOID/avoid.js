@@ -1,4 +1,10 @@
 $(document).ready(function(){
+    if($("h1").text() == "Please Login"){
+        $("#mw-returnto").hide();
+        _.defer(function(){
+            $("#avoidButtons").hide();
+        });
+    }
     if($('.top-nav-element.selected').text().indexOf("Manager") != -1 || $('.top-nav-element.selected').text().trim() == "Assessor"){
         $("#submenu").show();
     }
