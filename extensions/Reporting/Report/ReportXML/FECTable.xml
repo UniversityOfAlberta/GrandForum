@@ -382,6 +382,8 @@
                     </td>
                 ]]>
             </Static>
+            
+            <!-- Votes -->
             <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_roles},FEC)})}">
                 <!-- Increment Vote -->
                 <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
@@ -422,49 +424,48 @@
                         </td>
                     ]]>
                 </ReportItem>
-                
-                <!-- Comments -->
-                <If if="{contains({$my_roles},ViceDean)}">
-                    <Static>
-                        <![CDATA[
-                            <td>
-                        ]]>
-                    </Static>
-                    <ReportItemSet id="fec_comments" type="FECReportItemSet">
-                        <Static>
-                            <![CDATA[
-                                {set(comment, {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)})}
-                            ]]>
-                        </Static>
-                        <If id="comment_if" if="{!=({get(comment)},)}">
-                            <![CDATA[
-                                <b>{$user_name}:</b> {get(comment)}
-                                <hr />
-                            ]]>
-                        </If>
-                    </ReportItemSet>
-                    <Static>
-                        <![CDATA[
-                            </td>
-                        ]]>
-                    </Static>
-                </If>
-                <Else>
-                    <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" height="75px" encrypt="true">
-                        <![CDATA[
-                            <td>{$item}</td>
-                        ]]>
-                    </ReportItem>
-                </Else>
             </If>
             <Else>
                 <![CDATA[
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
                 ]]>
             </Else>
+            
+            <!-- Comments -->
+            <Static>
+                <![CDATA[
+                    <td>
+                ]]>
+            </Static>
+            <If if="{or({contains({$my_roles},HR)},{contains({$my_roles},FEC)})}">
+                <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" height="75px" encrypt="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </If>
+            <If if="{or({contains({$my_roles},HR)},{contains({$my_roles},ViceDean)})}">
+                <ReportItemSet id="fec_comments" type="FECReportItemSet" includeHR="true" excludeMe="true">
+                    <Static>
+                        <![CDATA[
+                            {set(comment, {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)})}
+                        ]]>
+                    </Static>
+                    <If id="comment_if" if="{!=({get(comment)},)}">
+                        <![CDATA[
+                            <b>{$user_name}:</b> {get(comment)}
+                            <hr />
+                        ]]>
+                    </If>
+                </ReportItemSet>
+            </If>
+            <Static>
+                <![CDATA[
+                    </td>
+                ]]>
+            </Static>
             <Static>
                 <![CDATA[
                     </tr>
