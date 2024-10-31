@@ -52,7 +52,9 @@ PharmacyMapView = Backbone.View.extend({
         "keypress #keywordsearch": "keywordSearch",
         "click #keysearch_btn": "keywordSearch",
         "click #howLink": "clickHow",
-        "click #aiSearchButton": "clickAiSearchButton"
+        "click #aiSearchButton": "clickAiSearchButton",
+        "keypress #messageInput": "enterAiSearch",
+        "click #sendButton": "clickSend"
     },
     
     clickHow: function(){
@@ -71,13 +73,46 @@ PharmacyMapView = Backbone.View.extend({
         this.$("#aiSearch").slideDown();
         this.$("#aiSearchButton").hide();
         this.$("#searchbar_key").hide();
-        this.aiSearch();
+        //this.aiSearch();
     },
     
-    aiSearch: function(){
-        var data = {"fulfillmentMessages":[{"text":{"text":"Some options for free psychological therapy available to those seeking support include The Family Centre of Northern Alberta (TCA-NOA) at 20, 9912 106 Street in Edmonton, Alberta. Located in the city center, it offers a free single session counseling service for couples, families, or individuals who might need help in these trying times. Other options include the Sage Seniors Association (SSA) drop-in single session counselling at 780-423-2831 with an address of 15 Sir Winston Churchill Square, City of Edmonton, AB. This service is available to couples, families, or individuals who might need help in these trying times."}}],"fulfillmentText":"Some options for free psychological therapy available to those seeking support include The Family Centre of Northern Alberta (TCA-NOA) at 20, 9912 106 Street in Edmonton, Alberta. Located in the city center, it offers a free single session counseling service for couples, families, or individuals who might need help in these trying times. Other options include the Sage Seniors Association (SSA) drop-in single session counselling at 780-423-2831 with an address of 15 Sir Winston Churchill Square, City of Edmonton, AB. This service is available to couples, families, or individuals who might need help in these trying times.","payload":{"documents":{"0175f13a-98f3-4bfd-827b-afaf13f8e69e":{"address":"20, 9912 106 Street","categories":"CFN; CFN-MH; CFN-MH-COUNSELLING","city":"Edmonton","latitude":53.53751,"longitude":-113.503,"phone_number":"780-423-2831","postal_code":"T5K 1C5","province":"AB","service_name":"The Family Centre of Northern Alberta - Drop-In Single Session Counselling","website":"https://www.familycentre.org/counselling"},"5c43c6e6-fb6a-4b8a-922b-c69bf4408619":{"address":"10618 105 Avenue","categories":"CFN; CFN-MH; CFN-MH-COUNSELLING","city":"Edmonton","latitude":53.54796,"longitude":-113.504,"phone_number":"780-423-2831","postal_code":"T5H 0L2","province":"AB","service_name":"Pride Centre of Edmonton - Drop-In Single Session Counselling","website":"https://www.familycentre.org/counselling"},"a076dc61-137f-41e2-954e-8f7210a066a5":{"address":"15 Sir Winston Churchill Square","categories":"CFN; CFN-MH; CFN-MH-COUNSELLING","city":"Edmonton","latitude":53.544601,"longitude":-113.49126,"phone_number":"780-423-2831","postal_code":"T5J 2E5","province":"AB","service_name":"Sage Seniors Association - Drop-In Single Session Counselling","website":"https://www.familycentre.org/counselling"}}}};
-        
-        var docs = data.payload.documents;
+    enterAiSearch: function(event){
+        if (event.key === "Enter") {
+            event.preventDefault();
+            $("#sendButton").click();
+        }
+    },
+    
+    clickSend: function(){
+        var input = $('#messageInput');
+        if ($(input).val().trim() !== '') {
+            var text = input.val()
+            var li = document.createElement('li');
+            li.textContent = text;
+            document.getElementById('messageList').appendChild(li);
+            $(input).val(''); // Clear input after sending
+
+            var data = {queryText: text};
+            $('.chat-box .throbber').show();
+            $.ajax({
+                type: "POST",
+                url: "http://129.128.215.129:5000/nlp_query",
+                data: JSON.stringify(data),
+                success: function(response){
+                    var li = document.createElement('li');
+                    li.textContent = response.message;
+                    li.classList.add("ai");
+                    document.getElementById('messageList').appendChild(li);
+                    $('.chat-box .throbber').hide();
+                    this.aiSearch(response.documents);
+                }.bind(this),
+                contentType: "application/json",
+                dataType: 'json'
+            });
+        }
+    },
+    
+    aiSearch: function(docs){        
         var rows = new AvoidResources();
         _.each(docs, function(doc){
             var row = new AvoidResource({
@@ -99,7 +134,7 @@ PharmacyMapView = Backbone.View.extend({
         this.renderMap = true;
         this.refresh = false;
         this.model.reset(rows.toJSON());
-        this.render();
+        //this.render();
         this.$("#table").show();
         this.refreshMap();
         this.$('#body_accordion').accordion({ autoHeight: false, collapsible: true, header: '#accordionHeader'});

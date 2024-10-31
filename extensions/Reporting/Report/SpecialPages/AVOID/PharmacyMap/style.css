@@ -295,3 +295,68 @@ input.hs-search-field__input {
     font-size:20px;
     margin-bottom:20px;
 }
+
+/* AI Search */
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    border: 1px solid #ccc;
+    overflow: hidden;
+}
+.chat-box {
+    flex: 1;
+    overflow: auto;
+    background: #F4F4F4;
+    padding: 10px;
+}
+.message-list {
+    list-style: none;
+    padding: 0;
+}
+.message-list li {
+    margin-bottom: 10px;
+    padding: 0.5em;
+    border-radius: 5px;
+    background: #0070c7;
+    color: white;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+}
+.message-list li.ai {
+    background-color: #fff;
+    color: black;
+    margin-right: 30px;
+    margin-left: -30px;
+}
+
+.input-area {
+    display: flex;
+    padding: 10px;
+    background: #fff;
+}
+.input-field {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.icon-button, .send-button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #0070c7;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.icon-button:hover, .send-button:hover {
+    background-color: #0056B3;
+}
+
+.icon-button:focus, .send-button:focus {
+    background-color: #0070c7 !important;
+}
