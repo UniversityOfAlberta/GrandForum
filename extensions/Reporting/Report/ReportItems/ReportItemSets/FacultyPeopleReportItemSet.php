@@ -35,8 +35,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 continue;
             }
             */
-            if(!$includeDD && $person->isSubRole('DD') &&
-               $person->getName() != "Elizabeth.Hodges"){ // TODO: Get rid of this
+            if(!$includeDD && $person->isSubRole('DD')){
                 continue;
             }
             $caseNumber = $person->getCaseNumber($this->getReport()->year);
@@ -53,8 +52,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 !$me->isRole(DEANEA) &&
                 !$me->isRole(VDEAN) && 
                 !$me->isRole(HR) &&
-                !$me->isRole(ADMIN) &&
-                $person->getName() != "Elizabeth.Hodges"){ // TODO: Get rid of this
+                !$me->isRole(ADMIN)){
                 // Don't show DD people unless user is Dean, Vice Dean, HR
                 continue;
             }
@@ -63,8 +61,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 !$me->isRole(DEANEA) &&
                 !$me->isRole(VDEAN) && 
                 !$me->isRole(HR) &&
-                !$me->isRole(ADMIN) &&
-                $person->getName() != "Elizabeth.Hodges"){ // TODO: Get rid of this){
+                !$me->isRole(ADMIN)){
                 // Don't show self unless user is Dean, Vice Dean, HR
                 continue;
             }
