@@ -127,6 +127,7 @@ PharmacyMapView = Backbone.View.extend({
         this.renderMap = true;
         this.refresh = false;
         this.model.reset(rows.toJSON());
+        this.addRows(this.model);
         //this.render();
         this.$("#table").show();
         this.refreshMap();
