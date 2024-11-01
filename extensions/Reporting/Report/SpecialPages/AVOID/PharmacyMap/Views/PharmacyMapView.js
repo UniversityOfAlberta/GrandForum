@@ -94,21 +94,14 @@ PharmacyMapView = Backbone.View.extend({
 
             var data = {queryText: text};
             $('.chat-box .throbber').show();
-            $.ajax({
-                type: "POST",
-                url: "http://129.128.215.129:5000/nlp_query",
-                data: JSON.stringify(data),
-                success: function(response){
-                    var li = document.createElement('li');
-                    li.textContent = response.message;
-                    li.classList.add("ai");
-                    document.getElementById('messageList').appendChild(li);
-                    $('.chat-box .throbber').hide();
-                    this.aiSearch(response.documents);
-                }.bind(this),
-                contentType: "application/json",
-                dataType: 'json'
-            });
+            $.post(wgServer + wgScriptPath + "/index.php?action=api.aiSearch", data, function(response){
+                var li = document.createElement('li');
+                li.textContent = response.message;
+                li.classList.add("ai");
+                document.getElementById('messageList').appendChild(li);
+                $('.chat-box .throbber').hide();
+                this.aiSearch(response.documents);
+            }.bind(this));
         }
     },
     

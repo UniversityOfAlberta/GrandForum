@@ -140,6 +140,7 @@ class APIRequest{
 		$this->addAction('Projects', 'deleteProject', 'DeleteProjectAPI');
 		
 		$this->addAction("Hidden", "fitbit", "AvoidFitbitAPI");
+		$this->addAction("Hidden", "aiSearch", "AISearchAPI");
 		$this->addAction("User Accounts", "callAvoidResourcesApi", "AvoidResourcesAPI");
 		$this->addAction("User Accounts", "DownloadWordHtmlApi", "DownloadWordHtmlAPI");
 	}
