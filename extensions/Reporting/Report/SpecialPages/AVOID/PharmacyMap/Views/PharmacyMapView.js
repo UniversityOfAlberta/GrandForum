@@ -16,6 +16,11 @@ PharmacyMapView = Backbone.View.extend({
     category_text: "",
     note: null,
     clipboard: null,
+    
+    // AI Stuff
+    isListening: false,
+    recognition: null,
+    
     initialize: function () {
         dc.init(me.get('id'), 'ProgramLibrary');
         dc.increment("count");
@@ -54,7 +59,8 @@ PharmacyMapView = Backbone.View.extend({
         "click #howLink": "clickHow",
         "click #aiSearchButton": "clickAiSearchButton",
         "keypress #messageInput": "enterAiSearch",
-        "click #sendButton": "clickSend"
+        "click #sendButton": "clickSend",
+        "click #micButton": "clickMic"
     },
     
     clickHow: function(){
@@ -103,6 +109,50 @@ PharmacyMapView = Backbone.View.extend({
                 this.aiSearch(response.documents);
             }.bind(this));
         }
+    },
+    
+    handleInputChange: function(event) {
+        //setInputText(event.target.value);
+        console.log(event.target.value);
+    },
+    
+    toggleListening: function(){
+        if (this.isListening) {
+            this.recognition.stop();
+            this.isListening = false;
+        } else {
+            if ('webkitSpeechRecognition' in window) {
+                this.recognition = new window.webkitSpeechRecognition();
+                this.recognition.continuous = false;
+                this.recognition.interimResults = false;
+                this.recognition.lang = 'en-US';
+                this.recognition.onstart = () => {
+                    this.isListening = true;
+                };
+                this.recognition.onresult = function(event) {
+                    transcript = event.results[0][0].transcript;
+                    $('#messageInput').val(transcript);
+                    this.clickSend();
+                    this.clickMic();
+                }.bind(this);
+                this.recognition.onerror = function(event) {
+                    console.error('Speech recognition error', event);
+                    this.isListening = false;
+                };
+                this.recognition.onend = function() {
+                    this.isListening = false;
+                };
+                this.recognition.start();
+            } else {
+                console.warn('Speech recognition not supported in this browser.');
+            }
+        }
+    },
+    
+    clickMic: function(){
+        var micButton = document.getElementById('micButton')
+        micButton.textContent = micButton.textContent === 'Mic' ? 'Mic Off' : 'Mic';
+        this.toggleListening();
     },
     
     aiSearch: function(docs){        
