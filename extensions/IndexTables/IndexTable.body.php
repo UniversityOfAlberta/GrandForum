@@ -363,7 +363,8 @@ class IndexTable {
                     $challenges = $proj->getChallenges();
                     $text = array();
                     foreach($challenges as $challenge){
-                        $text[] = ($challenge->getAcronym() != "") ? "<a href='{$challenge->getUrl()}'>{$challenge->getName()} ({$challenge->getAcronym()})</a>" : "";
+                        $acronym = ($proj->getPhase(true) == "SSF") ? "" : " ({$challenge->getAcronym()})";
+                        $text[] = ($challenge->getAcronym() != "") ? "<a href='{$challenge->getUrl()}'>{$challenge->getName()}{$acronym}</a>" : "";
                     }
                     $wgOut->addHTML("<td align='left'>".implode(", ", $text)."</td>");
                 }
