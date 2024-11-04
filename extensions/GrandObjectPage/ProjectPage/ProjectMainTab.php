@@ -402,7 +402,7 @@ class ProjectMainTab extends AbstractEditableTab {
         else{
             $text = array();
             foreach($challenges as $challenge){
-                $text[] = "{$challenge->getName()} ({$challenge->getAcronym()})";
+                $text[] = "{$challenge->getName()}{$challenge->getAcronymForPhase()}";
             }
             $this->html .= implode(", ", $text);
         }

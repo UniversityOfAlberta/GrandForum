@@ -55,7 +55,7 @@ class ThemePage {
                 $edit = (isset($_POST['edit']) && $isLead);
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
-                $wgOut->setPageTitle("{$theme->getName()} ({$theme->getAcronym()})");
+                $wgOut->setPageTitle("{$theme->getName()}{$theme->getAcronymForPhase()}");
                 
                 $visibility = array();
                 

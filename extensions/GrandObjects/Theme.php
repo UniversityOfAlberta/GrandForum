@@ -107,6 +107,10 @@ class Theme {
         return $this->acronym;
     }
     
+    function getAcronymForPhase(){
+        return ($this->getPhase() == "SSF") ? "" : " ({$this->getAcronym()})";
+    }
+    
     /**
      * Returns this Theme's name
      * @return This Theme's name
