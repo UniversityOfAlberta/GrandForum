@@ -286,6 +286,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     $niStructure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_NI_BUDGET_STRUCTURE2020');
                 }
                 
+                if($config->getValue('networkName') == "GlycoNet"){
+                    $structure = null;
+                    $niStructure = null;
+                }
+                
                 // Allocation
                 $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->project->getId());
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_ALLOCATION', 0);
