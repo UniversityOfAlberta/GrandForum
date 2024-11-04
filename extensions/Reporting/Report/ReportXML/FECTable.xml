@@ -260,9 +260,7 @@
                     }
                 </style>
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
-                <!--div style='float:right; margin-top: -45px;display:flex;'>
-                    <div><button id='downloadAll' class='noDisable' type='button'>Download All</button></div>
-                </div-->
+                
                 <script type='text/javascript'>
                     function postToIframe(data,url,target){
                         $('body').append('<form action="'+url+'" method="post" target="'+target+'" id="postToIframe"></form>');
@@ -271,19 +269,25 @@
                         });
                         $('#postToIframe').submit().remove();
                     }
-                    $('#downloadAll').click(function(){
-                        var pdfs = $.makeArray($(".downloadPDF:visible").map(function(i, pdf){
-                            return $(pdf).attr('href');
-                        })).join(',')
-                           .replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '')
-                           .replaceAll(wgServer + wgScriptPath + '/index.php?action=downloadBlob&id=', '');
-                        postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip', 'downloadFrame');
+                    $(document).ready(function(){
+                        $('#downloadAll').click(function(){
+                            var pdfs = $.makeArray($(".downloadPDF:visible").map(function(i, pdf){
+                                return $(pdf).attr('href');
+                            })).join(',')
+                               .replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '')
+                               .replaceAll(wgServer + wgScriptPath + '/index.php?action=downloadBlob&id=', '');
+                            postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip', 'downloadFrame');
+                        });
                     });
                 </script>
             ]]>
         </Static>
         <Static id="header">
             <![CDATA[
+                <div style='text-align: right; width: 50%; float: right; width: 50%;'>
+                    <button id='downloadAll' class='noDisable' type='button'>Download All</button><br />
+                    <small style='width:525px; line-height: 1.5em;'>This function is provided for the convenience of the Faculty Evaluation Committee, while reviewing the materials. Please make sure to destroy any information stored locally immediately after the FEC week.</small>
+                </div>
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
                     <thead>
                         <tr>
@@ -355,16 +359,20 @@
                         {contains({$my_roles},DEAN)},
                         {contains({$my_roles},VDEAN)},
                         {contains({$my_roles},HR)})}">
-                <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Advice">
-                    <![CDATA[
-                            {$item}<br />
-                    ]]>
-                </ReportItem>
-                <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Decision">
-                    <![CDATA[
-                            {$item}<br />
-                    ]]>
-                </ReportItem>
+                <If if="{or({contains({user_sub_roles(;)},Dean's Advice)})}">
+                    <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Advice">
+                        <![CDATA[
+                                {$item}<br />
+                        ]]>
+                    </ReportItem>
+                </If>
+                <If if="{or({contains({user_sub_roles(;)},Dean's Decision)})}">
+                    <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Decision">
+                        <![CDATA[
+                                {$item}<br />
+                        ]]>
+                    </ReportItem>
+                </If>
             </If>
             <Static>
                 <![CDATA[

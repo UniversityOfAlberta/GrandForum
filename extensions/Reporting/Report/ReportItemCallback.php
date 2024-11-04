@@ -899,14 +899,14 @@ class ReportItemCallback {
         }
     }
     
-    function getMyRoles(){
+    function getMyRoles($delim=", "){
         $person = Person::newFromWgUser();
         $roles = $person->getRoles();
         $roleNames = array();
         foreach($roles as $role){
             $roleNames[$role->getRole()] = $role->getRole();
         }
-        return implode(", ", $roleNames);
+        return implode($delim, $roleNames);
     }
     
     function getMyRolesDuring(){
