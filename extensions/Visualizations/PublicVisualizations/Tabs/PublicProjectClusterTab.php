@@ -21,7 +21,7 @@ class PublicProjectClusterTab extends AbstractTab {
                 }
             });
             </script>
-            <p>This visualization shows which projects are in each ".strtolower($config->getValue('projectThemes')).".  Click on a ".strtolower($config->getValue('projectThemes'))." or project to take you to its page.</p>";
+            <p>This visualization shows which projects are in each ".strtolower($config->getValue('projectThemes', 1)).".  Click on a ".strtolower($config->getValue('projectThemes', 1))." or project to take you to its page.</p>";
 	}
 	
 	static function getProjectClusterData($action, $article){

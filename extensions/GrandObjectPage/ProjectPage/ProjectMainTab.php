@@ -384,8 +384,8 @@ class ProjectMainTab extends AbstractEditableTab {
                                 <td>{$this->project->getPhase(true)}</td>
                             </tr>";
         }
-        $this->html .= ($edit) ? "<tr><td class='label'>{$config->getValue("projectThemes")}:</td><td class='value'>"
-                               : "<tr><td><b>{$config->getValue("projectThemes")}:</b></td><td>";
+        $this->html .= ($edit) ? "<tr><td class='label'>{$config->getValue("projectThemes", $this->project->getPhase())}:</td><td class='value'>"
+                               : "<tr><td><b>{$config->getValue("projectThemes", $this->project->getPhase())}:</b></td><td>";
         $challenges = $this->project->getChallenges();
         
         if($edit){

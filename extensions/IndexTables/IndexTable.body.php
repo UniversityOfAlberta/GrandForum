@@ -60,17 +60,17 @@ class IndexTable {
         $tabs['Main']['subtabs'][] = $hubsSubTab;
         if(count($themes) > 0){
             $selected = (($wgTitle->getNSText() == $config->getValue('networkName') && 
-                         (strstr($wgTitle->getText(), Inflect::pluralize($config->getValue('projectThemes'))) !== false)) ||
+                         (strstr($wgTitle->getText(), Inflect::pluralize($config->getValue('projectThemes',1))) !== false)) ||
                          (array_search($wgTitle->getNSText(), $themeAcronyms) !== false)) ? "selected" : "";
-            $themeTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectThemes')), 
-                                                                  "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes')), 
+            $themeTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectThemes', 1)), 
+                                                                  "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes', 1)), 
                                                                   "$selected");
             if(PROJECT_PHASE > 1){
                 for($phase = 1; $phase <= PROJECT_PHASE; $phase++){
                     $phaseNames = $config->getValue("projectPhaseNames");
                     $rome = rome($phase);
                     $themeTab['dropdown'][$phaseNames[$phase]] = TabUtils::createSubTab(Inflect::pluralize($phaseNames[$phase]), 
-                                                                 "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes'))." {$rome}", "$selected");
+                                                                 "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes', 1))." {$rome}", "$selected");
                 }
                 ksort($themeTab['dropdown']);
             }
@@ -261,18 +261,18 @@ class IndexTable {
                     $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
                     self::generateAdminTable(3);
                     break;
-                case Inflect::pluralize($config->getValue('projectThemes')):
-                case Inflect::pluralize($config->getValue('projectThemes'))." I":
+                case Inflect::pluralize($config->getValue('projectThemes',1)):
+                case Inflect::pluralize($config->getValue('projectThemes',1))." I":
                     // Phase 1
                     $wgOut->setPageTitle(Inflect::pluralize($phaseNames[1]));
                     self::generateThemesTable(1);
                     break;
-                case Inflect::pluralize($config->getValue('projectThemes'))." II":
+                case Inflect::pluralize($config->getValue('projectThemes',1))." II":
                     // Phase 2
                     $wgOut->setPageTitle(Inflect::pluralize($phaseNames[2]));
                     self::generateThemesTable(2);
                     break;
-                case Inflect::pluralize($config->getValue('projectThemes'))." III":
+                case Inflect::pluralize($config->getValue('projectThemes',1))." III":
                     // Phase 3 (unlikly to have more than that)
                     $wgOut->setPageTitle(Inflect::pluralize($phaseNames[3]));
                     self::generateThemesTable(3);
@@ -315,7 +315,8 @@ class IndexTable {
         $datesHeader = "";
         $idHeader = "";
         if($type != "Administrative"){
-            $themesHeader = "<th>{$config->getValue('projectThemes')}</th>";
+            $phases = explode(",", $_GET['phases']);
+            $themesHeader = "<th>{$config->getValue('projectThemes', $phases[0])}</th>";
         }
         if($me->isLoggedIn()){
             $datesHeader = "<th style='white-space:nowrap;'>Start Date</th>
