@@ -108,7 +108,7 @@ class Theme {
     }
     
     function getAcronymForPhase(){
-        return ($this->getPhase() == "SSF") ? "" : " ({$this->getAcronym()})";
+        return ($this->getPhase(true) == "SSF") ? "" : " ({$this->getAcronym()})";
     }
     
     /**
@@ -147,7 +147,12 @@ class Theme {
      * Returns this Theme's phase
      * @return int This Theme's phase
      */
-    function getPhase(){
+    function getPhase($name=false){
+        global $config;
+        if($name){
+            $phases = $config->getValue('projectPhaseNames');
+            return $phases[max(1, $this->phase)];
+        }
         return $this->phase;
     }
     
