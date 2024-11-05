@@ -28,6 +28,8 @@ class VoteResultsReportItem extends SelectReportItem {
             } 
         }
         
+        sort($names);
+        
         $options = $this->parseOptions();
         $value = $this->getBlobValue();
         $default = $this->getAttr('default', '');
