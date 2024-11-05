@@ -76,6 +76,11 @@ class Report extends AbstractReport{
             }*/
         }
         
+        if($person->isSubRole("Kickstart2024")){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KickstartReport")) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Kickstart", "{$url}KickstartReport", $selected);
+        }
+        
         if($person->isSubRole("Trans2024")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TranslationalReport")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Translational", "{$url}TranslationalReport", $selected);
