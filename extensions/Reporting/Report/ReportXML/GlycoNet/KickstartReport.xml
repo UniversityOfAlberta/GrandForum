@@ -98,7 +98,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_APPLICATION" mimeType="application/pdf" fileSize="10">
             <![CDATA[
                 <p><b>You are only required to complete Step 1 – submitting the Business Case.</b></p>
-                      
+                Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Kickstart Application Template.docx"><b>Application Template</b></a> 
                 <p><b>Elements of the Kickstart Business Case (2-3 Pages):</b></p>
                 
                 <ul>
@@ -119,10 +119,8 @@
                     Business Case – November 20, 2024 (must be submitted by midnight PDT).
                 </p>
                 <ul>
-                    <li>The application must be uploaded as a single PDF file to the GlycoNet Forum (after completing the application template, convert it to PDF format).</li>
-                    <li>Please ensure that each section of the document is filled out carefully. All sections are obligatory to complete. Partially filled proposals will not be considered.</li>
                     <li>Use Times Roman/Times New Roman 11 for the text format</li>
-                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Kickstart Application Template.docx"><b>Application Template</b></a></li>
+                    <li>The application must be uploaded as a single PDF file to the GlycoNet Forum (after completing the application template, convert it to PDF format).</li>
                 </ul>
                 <h3>Application Upload</h3>
                 {$item}
