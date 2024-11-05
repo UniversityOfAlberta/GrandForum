@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Kickstart 2024 Application" reportType="RP_KICK" pdfType="RPTP_KICK" ajax="true" year="2024" allowIdProjects="true" prepend="true" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <Static>
+            <![CDATA[
+                    <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                    <h4 style='font-size: 2em; margin-top: 1.5em; margin-bottom:2em;'>Kickstart 2024 Application</h4>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="description" tooltip="Application" name="Application" blobSection="CAT_DESC" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="upload" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_APPLICATION">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
