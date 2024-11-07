@@ -55,7 +55,7 @@
                 <ReportItem id="review" type="Upload" blobType="BLOB_RAW" blobItem="SAB_REVIEW" blobSubItem="{$user_id}" fileSize="5">
                     <![CDATA[
                         <p><b>Please complete your review using the provided template, ensuring all requested details are included, and upload it to the Forum in the WORD document format.</b></p>
-                        <p><a href='{$wgServer}{$wgScriptPath}/data/Scientific Review 2024.docx'><b>Download Scientific Review Template</b></a></p>
+                        <p><a href='{$wgServer}{$wgScriptPath}/data/Scientific Review Template Nov 2024.docx'><b>Download Scientific Review Template</b></a></p>
                         
                         <h3>Scientific Review Upload</h3>
                         {$item}
