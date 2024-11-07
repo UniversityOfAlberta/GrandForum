@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="SAB Collaborative Fall 2024 Report" reportType="RP_SAB_COLLAB_FALL_2024_REPORT" pdfType="RPTP_SAB_COLLAB_FALL_REPORT" personId="0" ajax="true" disabled="false" year="2024">
+    <Permissions>
+        <Role role="SD">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="STAFF+">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="RMC">
+            <SectionPermission id="materials" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
+        <Role role="MANAGER">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Person id="2513">
+            <SectionPermission id="materials" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="" />
+        </Person>
+    </Permissions>
+    <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="MATERIALS" type="EditableReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+            <table id='materialsTable' align="left" class='wikitable'>
+                <thead>
+                    <tr>
+                        <th style="min-width:110px;">Project Code</th>
+                        <th style="min-width:110px;">PI Name</th>
+                        <th style="min-width:110px;">Project Name</th>
+                        <th style="min-width:125px;">Project Proposal PDF</th>
+                    </tr>
+                </thead>
+                <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-CollaborativeFall2024">
+            <ReportItem id="code" type="Text" width="100px" blobItem="CODE" blobSubItem="{$user_id}_{$project_id}">
+                <![CDATA[
+                    <tr><td align='center'><span style='display:none;'>{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReportFall2024" project="false">
+                <![CDATA[<td>{$user_name}</td><td>{getText(RP_FALL_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td></tr>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#materialsTable').dataTable({
+                        aLengthMenu: [[100,-1], [100,'All']], 
+                        iDisplayLength: -1, 
+                        columnDefs: [
+                           {type: 'natural', targets: 0}
+                        ]
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-CollaborativeFall2024" sortBy="{getText(RP_SAB_COLLAB_FALL_2024_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}">
+            <If id="if" if="{!=({$user_id},{$my_id})}">
+                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_COLLAB_FALL_2024_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_FALL_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+                    <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-CollaborativeFall2024" includeSelf="true">
+                        <Static>
+                            <![CDATA[
+                                <h2>Reviewer {$index}</h2>
+                                <div style='margin-left:15px;'>
+                                    {if("{getBlobMD5(RP_SAB_COLLAB_FALL_2024_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_COLLAB_FALL_2024_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}'>Download CDA</a></p>)}
+
+                                    {if("{getBlobMD5(RP_SAB_COLLAB_FALL_2024_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_COLLAB_FALL_2024_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}'>Download Review</a></p>)}
+                                </div>
+                            ]]>
+                        </Static>
+                    </ReportItemSet>
+                </ReportItemSet>
+            </If>
+        </ReportItemSet>
+    </ReportSection>
+    <!--ReportSection id="submit" tooltip="PDF generation of the Review" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection-->
+</Report>
