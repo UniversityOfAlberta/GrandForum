@@ -114,7 +114,7 @@ class UploadReportItem extends AbstractReportItem {
         
         $report = $this->getReport();
         $section = $this->getSection();
-        
+        $width = $this->getAttr("width", "100%");
         echo "<html>
                 <head>
                     <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery.min.js'></script>
@@ -137,6 +137,7 @@ class UploadReportItem extends AbstractReportItem {
                             background: none;
                             padding-bottom:25px;
                             overflow-y: hidden;
+                            overflow-x: hidden;
                         }
                         
                         #bodyContent {
@@ -168,8 +169,8 @@ class UploadReportItem extends AbstractReportItem {
                         }
                     </style>";
         echo "</head>
-              <body style='margin:0;'>
-                    <div>";
+              <body style='margin: 0; width: {$width};'>
+                    <div style='width: {$width};'>";
         if(isset($_POST['upload'])){
             $this->save();
         }
@@ -182,10 +183,12 @@ class UploadReportItem extends AbstractReportItem {
                 });
             </script>";
         }
+        $fileSizeMessage = ($this->getAttr("showMaxFileSize", "true") === "true") ? "<span class='en'>Max File Size</span><span class='fr'>Taille maximale du fichier</span>: {$this->getAttr('fileSize', 1)} MB" : "";
+
         echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->getPostId())."&fileUploadForm={$this->getPostId()}{$projectGet}{$personId}{$year}{$candidate}{$id}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='file' accept='{$this->getAttr('mimeType')}' />
-                            <button type='submit' name='upload' value='Upload'><en>Upload</en><fr>Télécharger</fr></button> <en>Max File Size</en><fr>Taille maximale du fichier</fr>: {$this->getAttr('fileSize', 1)} MB<br />
-                            <small><i><b><en>NOTE</en><fr>NB</fr>:</b> <en>Uploading a new file replaces the old one</en><fr>Téléchargé un nouveau fichier remplace l’ancien</fr></i></small>
+                            <button type='submit' name='upload' value='Upload'><span class='en'>Upload</span><span class='fr'>Télécharger</span></button> {$fileSizeMessage}<br />
+                            <small><i><b><span class='en'>NOTE</span><span class='fr'>NB</span>:</b> <span class='en'>Uploading a new file replaces the old one</span><span class='fr'>Téléchargé un nouveau fichier remplace l’ancien</span></i></small>
                         </form>";
         $data = $this->getBlobValue();
         if($data !== null && $data !== ""){

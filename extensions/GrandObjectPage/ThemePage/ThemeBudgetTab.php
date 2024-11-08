@@ -243,7 +243,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 $this->html .="</div>";
             }
             if($i == $startYear){
-                $this->html .= "No Allocated Budgets have been created yet for this {$config->getValue('projectThemes')}.";
+                $this->html .= "No Allocated Budgets have been created yet for this {$config->getValue('projectThemes', 1)}.";
             }
             $this->html .= "</div>";
 

@@ -117,7 +117,7 @@ class PersonProjectTab extends AbstractTab {
                 }
                 $themeNames[] = "<li><a href='{$theme->getUrl()}'>{$theme->getName()} ({$theme->getAcronym()})</a>{$lead}</li>";
             }
-            $this->html .= "<h3>".Inflect::pluralize($config->getValue('projectThemes'))."</h3>";
+            $this->html .= "<h3>".Inflect::pluralize($config->getValue('projectThemes', 1))."</h3>";
             $this->html .= "<ul>".implode("\n", $themeNames)."</ul>";
         }
     }

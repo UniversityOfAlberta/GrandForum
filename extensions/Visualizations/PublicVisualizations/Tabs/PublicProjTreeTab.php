@@ -38,7 +38,7 @@ class PublicProjTreeTab extends AbstractTab {
                 <li>Activities";
         }
         $this->html .= "<ul type='disc'>
-                            <li>".Inflect::pluralize($config->getValue('projectThemes'))."
+                            <li>".Inflect::pluralize($config->getValue('projectThemes', 1))."
                                 <ul type='disc'>
                                     <li>Projects
                                         <ul type='disc'>

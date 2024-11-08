@@ -37,8 +37,11 @@
             if($subKey == null){
                 return @$this->config[$key];
             }
-            else if(isset($this->config[$key][$subKey])){
+            else if(is_array($this->config[$key]) && isset($this->config[$key][$subKey])){
                 return $this->config[$key][$subKey];
+            }
+            else if(isset($this->config[$key])){
+                return $this->config[$key];
             }
             else{
                 return "";

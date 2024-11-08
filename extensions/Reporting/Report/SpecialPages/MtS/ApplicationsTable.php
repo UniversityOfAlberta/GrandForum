@@ -306,10 +306,79 @@ class ApplicationsTable extends SpecialPage{
         
         $tabbedPage = new InnerTabbedPage("reports");
         for($year=date('Y'); $year >= 2021; $year--){
-            $tab = new ApplicationTab('RP_COMPLETION', null, $year, "{$year}", array());                                           
+            $tab = new ApplicationTab('RP_COMPLETION', null, $year, "{$year}", array());
+            $tab->addExtra($this->completionReportSummary($year));
+                                                      
             $tabbedPage->addTab($tab);
         }
         $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function completionReportSummary($year){
+        $table = array("Conference Presentation" => 0,
+                       "Presentation" => 0,
+                       "Journal Article" => 0,
+                       "Media Article" => 0,
+                       "Media Interviews" => 0,
+                       "Webinar" => 0,
+                       "Abstract" => 0,
+                       "Press Release" => 0,
+                       "Podcast" => 0,
+                       "Policy Briefs" => 0,
+                       "Lecture" => 0,
+                       "Report" => 0,
+                       "Panel Discussion" => 0,
+                       "Report Summary" => 0,
+                       "Meetings" => 0,
+                       "In-Person Event" => 0,
+                       "Social Media" => 0,
+                       "Blog" => 0,
+                       "Training/Tutorial" => 0,
+                       "Website" => 0,
+                       "Implementation Guide" => 0,
+                       "Symposium" => 0,
+                       "Round Table" => 0,
+                       "Information Request" => 0,
+                       "Other" => 0);
+        foreach($this->projects as $project){
+            $data = self::getBlobValue("RP_COMPLETION", "KMB", "ACTIVITIES_NEW", 0, BLOB_ARRAY, $year, 0, $project->getId());
+            if(isset($data['activities_new'])){
+                foreach($data['activities_new'] as $activity){
+                    @$table[$activity['activity']]++;
+                }
+            }
+        }
+        $html = "<h3>Section 5.1</h3>
+                 <table class='wikitable summary{$year}'>
+                    <thead>
+                        <tr>
+                            <th>Activity</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+            foreach($table as $key => $row){
+                $html .= "<tr><td>{$key}</td><td>{$row}</td></tr>";
+            }
+        $html .= "</tbody></table>
+        <script type='text/javascript'>
+            $('.summary{$year}').dataTable({
+                autoWidth: false,
+                aLengthMenu: [
+                    [25, 50, 100, -1],
+                    [25, 50, 100, 'All']
+                ],
+                'columnDefs': [
+                    {'type': 'natural', 'targets': 0 }
+                ],
+                iDisplayLength: -1,
+                'dom': 'Blfrtip',
+                'buttons': [
+                    'excel', 'pdf'
+                ]
+            });
+        </script>";
+        return $html;
     }
     
     function generateImpact(){

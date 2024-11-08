@@ -35,7 +35,7 @@ class ManageSOP extends BackbonePage {
     
     static function createToolboxLinks(&$toolbox){
 	    global $wgServer, $wgScriptPath, $config, $wgUser;
-	    if(ManageSOP::userCanExecute($wgUser)){
+	    if((new self)->userCanExecute($wgUser)){
 	        $toolbox['Other']['links'][] = TabUtils::createToolboxLink("SOP", "$wgServer$wgScriptPath/index.php/Special:ManageSOP");
 	    }
 	    return true;

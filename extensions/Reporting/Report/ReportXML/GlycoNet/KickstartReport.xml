@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Kickstart 2024 Application" reportType="RP_KICK" pdfType="RPTP_KICK" pdfFiles="KickstartReportPDF" ajax="true" year="2024" allowIdProjects="true" prepend="true" disabled="false">
+    <Permissions>
+        <Role role="" subRole="Kickstart2024">
+
+        </Role>
+        <Role role="STAFF+">
+
+        </Role>
+    </Permissions>
+    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Kickstart Program" title="Kickstart 2024 Application" blobSection="SEC_NONE" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <p><b>This request for proposals seeks to support the creation of new companies (NewCo) as well as existing start-ups</b> during their initial phase of development. Kickstart funds can be used for legal services, research and technology development, business development, and commercialization.</p>
+                
+                <h3>Requirements</h3>
+                
+                <b>The NewCo applicant must meet the following requirements:</b>
+                <ul>
+                    <li>Be engaged in developing a glycomics-based technology</li>
+                    <li>Have technology that is protected by valid IP (licensable)</li>
+                    <li>Provide a comprehensive business plan</li>
+                    <li>Seek creation as a for-profit Canadian incorporated company</li>
+                </ul>
+                <b>Or be an existing company that:</b>
+                <ul>
+                    <li>Has been incorporated for under 3 years</li>
+                    <li>Has raised under $5M in external funding</li>
+                    <li>Has a maximum of 10 employees</li>
+                </ul>
+                
+                <h3>Funding Available</h3>
+                <p>GlycoNet has set aside up to $200,000 for Kickstart Program for 2024 – 2025 (for 2-3 start-up companies). Proposals may request up to $100,000 in funding.</p>
+                
+                <p>Funding terms will be negotiated on a case-by-case basis, depending on amount requested, funding sources, etc. Matching funds and co-investment are preferable, but may be not required.</p>
+                
+                Kickstart funds can be used for the following activities:
+                <ul>
+                    <li>Legal Services:
+                        <ul>
+                            <li>IP filings and maintenance</li>
+                            <li>Costs for incorporation</li>
+                            <li>Licensing and partnership agreements</li>
+                        </ul>
+                    </li>
+                    <li>Research and Technology:
+                        <ul>
+                            <li>Salary support for key hires</li>
+                            <li>Technology development and validation;</li>
+                            <li>Outsourcing research</li>
+                            <li>Manufacturing analysis and planning</li>
+                        </ul>
+                    </li>
+                    <li>Commercialization:
+                        <ul>
+                            <li>Business plan creation;</li>
+                            <li>Business development</li>
+                            <li>Financial strategy;</li>
+                            <li>Regulatory strategy</li>
+                            <li>Sales & marketing plan</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h3>Application Steps:</h3>
+                <b>Step 1:</b>
+                <ul>
+                    <li>Submission of the Business Case, followed by a discussion with GlycoNet Management to review the opportunity, ensure alignment of goals, and discuss the funding details.</li>
+                </ul>
+                
+                <b>Step 2 (by invitation only):</b>
+                <ul>
+                    <li>Summary and preparation of a “Pitch Deck” outlining the detailed business plan.</li>
+                    <li>Submission of the “Pitch Deck” followed by first presentation of the opportunity to the Commercialization Committee.</li>
+                </ul>
+                
+                <b>Step 3:</b>
+                <ul>
+                    <li>Detailed diligence review by GlycoNet and refinement of the business plan, including financial terms for funding.</li>
+                    <li>Final presentation of the opportunity to the Commercialization Committee to approve funding.</li>
+                </ul>
+                
+                <p><b>You are only required to complete Step 1 – submitting the Business Case.</b></p>
+                
+                <p>
+                    <b>Deadline for Step 1:</b><br />
+                    Business Case – November 20, 2024 (must be submitted by midnight PDT).
+                </p>
+                
+                <p>
+                    <b>Additional Information</b><br />
+                    Questions about this opportunity can be sent to <a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> (cc <a href='mailto:sxanthoudakis@glyconet.ca'>sxanthoudakis@glyconet.ca</a> and <a href='mailto:enanak@ualberta.ca'>enanak@ualberta.ca</a>).
+                </p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="description" tooltip="Application" name="Application" blobSection="CAT_DESC" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_APPLICATION" mimeType="application/pdf" fileSize="10">
+            <![CDATA[
+                <p><b>You are only required to complete Step 1 – submitting the Business Case.</b></p>
+                Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Kickstart Application Template.docx"><b>Application Template</b></a> 
+                <p><b>Elements of the Kickstart Business Case (2-3 Pages):</b></p>
+                
+                <ul>
+                    <li>Company description: Overview of the business, including founders, management and structure</li>
+                    <li>Core technology or service
+                        <ul>
+                            <li>What is the technology offering?</li>
+                            <li>What specific need does the technology or service address?</li>
+                            <li>How does the technology or service differentiate from existing solutions?</li>
+                        </ul>
+                    </li>
+                    <li>IP status: Summary of patent filings and strategy</li>
+                    <li>Commercial Plan: Competition, market description (size, growth rate) and future market expansion</li>
+                    <li>Financial plan: Funding needed to reach next major inflection point; timeline for spending and raising funds</li>
+                </ul>
+                <p>
+                    <b>Deadline for Step 1:</b><br />
+                    Business Case – November 20, 2024 (must be submitted by midnight PDT).
+                </p>
+                <ul>
+                    <li>Use Times Roman/Times New Roman 11 for the text format</li>
+                    <li>The application must be uploaded as a single PDF file to the GlycoNet Forum (after completing the application template, convert it to PDF format).</li>
+                </ul>
+                <h3>Application Upload</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},vsharko@glyconet.ca" />
+    </ReportSection>
+</Report>

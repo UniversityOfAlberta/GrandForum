@@ -187,7 +187,7 @@ class PublicChordTab extends AbstractTab {
                                               array('name' => "Theme", 'value' => 'theme', 'checked' => (@$_GET['sortBy'] == 'theme') ? 'checked' : ""));
             }
             else{
-                $array['sortOptions'] = array(array('name' => $config->getValue('projectThemes'), 'value' => 'theme', 'checked' => 'checked'));
+                $array['sortOptions'] = array(array('name' => $config->getValue('projectThemes', 1), 'value' => 'theme', 'checked' => 'checked'));
             }
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;

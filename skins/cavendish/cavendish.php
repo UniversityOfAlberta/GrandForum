@@ -1034,7 +1034,15 @@ class CavendishTemplate extends QuickTemplate {
 		       	            $class = "subtab_{$i}_{$j}";
 		           	        if(!empty($subtab['dropdown'])){
 		           	            foreach($subtab['dropdown'] as $dropdown){
-		           	                echo "<li class='$class hidden {$dropdown['selected']}'><a class='highlights-tab' href='".htmlspecialchars($dropdown['href'])."'>".htmlspecialchars($dropdown['text'])."</a></li>";
+		           	                if(count($dropdown['dropdown']) > 0){
+		           	                    echo "<li class='$class hidden {$dropdown['selected']}'><a style='cursor: default; background: white; color: {$config->getValue('highlightColor')} !important;'>".htmlspecialchars($dropdown['text'])."</a></li>";
+		           	                    foreach($dropdown['dropdown'] as $subdropdown){
+		           	                        echo "<li class='$class hidden {$subdropdown['selected']}'><a class='highlights-tab' href='".htmlspecialchars($subdropdown['href'])."' style='line-height: 23px !important; height: 23px !important;'>&nbsp;&nbsp;&nbsp;".htmlspecialchars($subdropdown['text'])."</a></li>";
+		           	                    }
+		           	                }
+		           	                else{
+		           	                    echo "<li class='$class hidden {$dropdown['selected']}'><a class='highlights-tab' href='".htmlspecialchars($dropdown['href'])."'>".htmlspecialchars($dropdown['text'])."</a></li>";
+		           	                }
 		           	            }
 		           	            $dropdownScript .= "createDropDown('$class', '{$subtab['text']}', 125);";
 		           	        }
@@ -1220,6 +1228,7 @@ class CavendishTemplate extends QuickTemplate {
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("E-Resource Library", "$wgServer$wgScriptPath/index.php/E-Resource_Library");
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Ecosystem Map", "$wgServer$wgScriptPath/index.php/Ecosystem_Map");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
 	        if($config->getValue("showOtherTools") && !$me->isCandidate()){
