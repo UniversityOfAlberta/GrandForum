@@ -314,7 +314,7 @@ class IndexTable {
         $datesHeader = "";
         $idHeader = "";
         if($type != "Administrative"){
-            $phases = explode(",", $_GET['phases']);
+            $phases = @explode(",", $_GET['phases']);
             $themesHeader = "<th>{$config->getValue('projectThemes', $phases[0])}</th>";
         }
         if($me->isLoggedIn()){
