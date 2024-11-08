@@ -17,7 +17,7 @@ class ElseIfReportItem extends IfReportItem {
             if($this->cond === null){
                 $this->cond = $this->getAttr("if", '');
             }
-            return ($cond == "1");
+            return ($this->cond == "1");
         }
         return false;
     }
