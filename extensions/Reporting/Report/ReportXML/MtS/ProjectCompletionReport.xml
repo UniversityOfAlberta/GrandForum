@@ -20,7 +20,7 @@
         <Static>
             <![CDATA[
                 <h1>SECTION 1: INTRO & CONSENT</h1>
-                <p><b>Network Members are required to submit a completion report within 60 days of their project end date.</b> This report is designed to capture all research findings, knowledge mobilization activities, partnerships, successes, and opportunities for future improvement.</p>
+                <p><b>Network Members are required to submit a completion report by February 28, 2024 by 5pm EST</b> This report is designed to capture all research findings, knowledge mobilization activities, partnerships, successes, and opportunities for future improvement.</p>
                 
                 <p>In addition to this completion report, Network Members are also required to upload a detailed listing of in-kind support from the previous year, along with a copy of the FORM 300 form, using the templates provided by Making the Shift. Form 300 can be downloaded and attached under section 8.</p>
             ]]>
@@ -533,7 +533,53 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="form300" type="EditableReportSection" blobSection="FORM300" name="7 - Form 300" title="SECTION 7: FORM 300">
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="7 - Contributions" title="SECTION 7: Contributions">
+        <Static>
+            <![CDATA[
+                <h3>7.1 List all cash and in-kind contributions from 2024 – 2025. Please upload relevant documents for proof of contribution:</h3>
+                <a href="{$wgServer}{$wgScriptPath}/index.php/Special:Contributions" class="button" target="_blank">Manage Contributions</a>
+                <table class="wikitable" width="100%" frame="box" rules="all">
+                    <tr>
+                        <th>Title</th>
+                        <th>Partners</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Cash</th>
+                        <th>In-kind</th>
+                        <th>Total</th>
+                        <th style='width:550px;'>Proof</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet type="ProjectContributions" start="2024-01-01" end="2025-12-31">
+            <ReportItem id="proof_{$contribution_id}" type="Upload" blobItem="PROOF" blobSubItem="{$contribution_id}" blobType="BLOB_RAW" mimeType="application/pdf" showMaxFileSize="false" width="550px">
+                <![CDATA[
+                    <tr>
+                        <td>{$contribution_title}</td>
+                        <td>{$contribution_partners}</td>
+                        <td>{$contribution_start}</td>
+                        <td>{$contribution_end}</td>
+                        <td align='right'>${number_format({$contribution_cash})}</td>
+                        <td align='right'>${number_format({$contribution_inkind})}</td>
+                        <td align='right'>${number_format({$contribution_total})}</td>
+                        <td>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        <ReportItem id="inkind" type="Text" blobItem="INKIND">
+            <![CDATA[
+                <h3>7.2 Total # in-kind support received over the entire lifetime of the project:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="form300" type="EditableReportSection" blobSection="FORM300" name="8 - Form 300" title="SECTION 8: FORM 300">
         <ReportItem id="form300" type="Upload" blobItem="FORM300" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <a href="{$wgServer}{$wgScriptPath}/data/F300_2020-21_[PIsFirstName-LastName].pdf"><b>Form 300 Template</b></a>
