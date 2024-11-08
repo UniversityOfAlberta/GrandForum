@@ -6,8 +6,8 @@ class ElseReportItemSet extends IfReportItemSet {
         $ret = true;
         $prev = $this->getPrev();
         while($prev instanceof IfReportItemSet || $prev instanceof IfReportItem){
-            $cond = $prev->getAttr("if", '');
-            $ret = $ret && !($cond == "1");
+            $cond = $prev->checkCondition();
+            $ret = $ret && !$cond;
             if(get_class($prev) == "IfReportItemSet" || get_class($prev) == "IfReportItem"){
                 break;
             }

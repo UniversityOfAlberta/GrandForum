@@ -2,9 +2,13 @@
 
 class IfReportItem extends StaticReportItem {
 
+    var $cond;
+
     function checkCondition(){
-        $cond = $this->getAttr("if", '');
-        return ($cond == "1");
+        if($this->cond === null){
+            $this->cond = $this->getAttr("if", '');
+        }
+        return ($this->cond == "1");
     }
 
 	function render(){
