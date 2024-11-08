@@ -2,6 +2,8 @@
 
 class PDFReportItem extends StaticReportItem {
 
+    static $reports = array();
+
     function render(){
         global $wgServer, $wgScriptPath, $wgOut;
         $me = $this->getReport()->person;
@@ -23,14 +25,20 @@ class PDFReportItem extends StaticReportItem {
         }
         $project = null;
         $person = Person::newFromId($this->personId);
-        $report = new DummyReport($reportType, $person, $project, $year, true);
+        if(!isset(self::$reports[$reportType])){
+            self::$reports[$reportType] = new DummyReport($reportType, $person, $project, $year, true);
+        }
+        $report = self::$reports[$reportType];
+        $report->project = $project;
+        $report->person = $person;
+        $report->year = $year;
+
         if($blobReport != ""){
             $report->reportType = $blobReport;
         }
         if($pdfReport != ""){
             $report->pdfType = $pdfReport;
         }
-        $report->person = $person;
         $tok = false;
         $check = $report->getPDF(false, $section);
         if (count($check) > 0) {
