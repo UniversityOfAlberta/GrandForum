@@ -570,6 +570,7 @@
         
         <Activity type="Conference/Symposium/Workshop Contribution" status="Invited|Not Invited">
             <data>
+                <field label="End Date" type="Date">end_date</field>
                 <field label="Involvement/Contribution Type" type="Select" options="Attendance only|Conference session|Event Chair/MC|Keynote|Oral Presentation|Poster Presentation|Session Chair|Symposium Contribution|Workshop Contribution">involvement</field>
                 <field label="Conference/Symposium/Workshop Name" type="String">conference</field>
                 <field label="Location" type="String">location</field>

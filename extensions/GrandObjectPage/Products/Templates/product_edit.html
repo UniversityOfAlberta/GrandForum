@@ -68,7 +68,15 @@
         </tr>
     <% } %>
     <tr>
-        <td class="label"><% if(category == 'Grants'){ %> Start <% } %>Date<% if(networkType == "CFREF"){ %> Published<% } %>:</td>
+        <td class="label">
+            <% if(category == 'Grants' || type == 'Conference/Symposium/Workshop Contribution'){ %>
+                Start Date:
+            <% } else if(networkType == "CFREF"){ %>
+                Date Published:
+            <% } else { %>
+                Date:
+            <% } %>
+        </td>
         <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>
         <td valign="top" rowspan="<%= _.size(this.model.getPossibleFields()) + 1 %>" style="width:100%;">
             <div id="projects">
