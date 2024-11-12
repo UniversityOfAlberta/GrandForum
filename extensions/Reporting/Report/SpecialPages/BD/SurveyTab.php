@@ -73,87 +73,127 @@ class SurveyTab extends AbstractTab {
         }
         
         if($project != null){
-            $people = new Collection($project->getAllPeople());
+            $people = $project->getAllPeople();
         }
         else if($theme != null){
-            $people = new Collection($theme->getAllPeople());
+            $people = $theme->getAllPeople();
         }
         else{
-            $people = new Collection(Person::getAllPeople());
+            $people = Person::getAllPeople();
         }
-        $peopleIds = $people->pluck('id');
-        if(count($peopleIds) == 0){
-            return "";
-        }
-        $rows = DBFunctions::execSQL("SELECT *
-                                      FROM grand_report_blobs
-                                      WHERE rp_type = 'RP_SELF_IDENTIFICATION'
-                                      AND rp_item = 'SNAPSHOT'
-                                      AND rp_subitem BETWEEN '{$start}' AND '{$end}'
-                                      AND user_id IN (".implode(",", $peopleIds).")
-                                      ORDER BY rp_subitem DESC");
-        $skipped = 0;
-        $data = self::$fields;
-        $alreadyDone = array();
-        foreach($rows as $row){
-            if(isset($alreadyDone[$row['user_id']])){
-                continue;
-            }
-            $alreadyDone[$row['user_id']] = true;
-            $snapshot = json_decode(decrypt($row['data']), true);
-            if($snapshot == null){
-                continue;
-            }
-            if($snapshot['skip'] != ''){
-                $skipped++;
-                continue;
-            }
-            foreach($data as $i => $options){
-                $found = false;
-                if($i == 'age' && $snapshot[$i] != '' && is_numeric($snapshot[$i])){
-                    $age = $year - $snapshot[$i];
-                    @$data[$i]['counts'][$age]++;
-                    $found = true;
+        
+        $groups = array('All' => array(),
+                        'Researcher' => array(),
+                        'HQP' => array(),
+                        'Admin' => array());
+        
+        foreach($people as $person){
+            $groups['All'][] = $person->getId();
+            if($project == null && $theme == null){
+                if($person->isRoleDuring(NI, $start."-01", $end."-31")){
+                    $groups['Researcher'][] = $person->getId();
                 }
-                foreach($options['values'] as $j => $value){
-                    if($snapshot[$i] == $value){
-                        @$data[$i]['counts'][$j]++;
-                        $found = true;
-                        break;
-                    }
+                if($person->isRoleDuring(HQP, $start."-01", $end."-31")){
+                    $groups['HQP'][] = $person->getId();
                 }
-                if(!$found){
-                    @$data[$i]['counts']['none']++;
+                if($person->isRoleAtLeastDuring(STAFF, $start."-01", $end."-31")){
+                    $groups['Admin'][] = $person->getId();
                 }
             }
         }
         
-        $html = "";
-        if($project == null && $theme == null){
-            $html .= "<b>Skipped:</b> {$skipped}<br />";
-        }
-        $html .= "<div style='display: flex; flex-wrap: wrap; gap: 10px;'>";
-        foreach(self::$fields as $key => $options){
-            $html .= "<div style='width:24%;'>
-                        <h3>{$options['label']}</h3>
-                        <table class='wikitable'>";
-            if($key == 'age' && isset($data[$key]['counts']) && is_array($data[$key]['counts'])){
-                ksort($data[$key]['counts']);
-                foreach($data[$key]['counts'] as $j => $count){
-                    $html .= "<tr><td><b>{$j}</b></td><td align='right' style='min-width: 3em;'>{$count}</td></tr>";
+        $html = "<div id='accordion{$year}'>";
+        foreach($groups as $group => $peopleIds){
+            if(count($peopleIds) == 0){
+                continue;
+            }
+            if($project == null && $theme == null){
+                $html .= "<h3>{$group}</h3>";
+            }
+            $html .= "<div>";
+            $rows = DBFunctions::execSQL("SELECT *
+                                          FROM grand_report_blobs
+                                          WHERE rp_type = 'RP_SELF_IDENTIFICATION'
+                                          AND rp_item = 'SNAPSHOT'
+                                          AND rp_subitem BETWEEN '{$start}' AND '{$end}'
+                                          AND user_id IN (".implode(",", $peopleIds).")
+                                          ORDER BY rp_subitem DESC");
+            $skipped = 0;
+            $data = self::$fields;
+            $alreadyDone = array();
+            foreach($rows as $row){
+                if(isset($alreadyDone[$row['user_id']])){
+                    continue;
+                }
+                $alreadyDone[$row['user_id']] = true;
+                $snapshot = json_decode(decrypt($row['data']), true);
+                if($snapshot == null){
+                    continue;
+                }
+                if($snapshot['skip'] != ''){
+                    $skipped++;
+                    continue;
+                }
+                foreach($data as $i => $options){
+                    $found = false;
+                    if($i == 'age' && $snapshot[$i] != '' && is_numeric($snapshot[$i])){
+                        $age = $year - $snapshot[$i];
+                        @$data[$i]['counts'][$age]++;
+                        $found = true;
+                    }
+                    foreach($options['values'] as $j => $value){
+                        if($snapshot[$i] == $value){
+                            @$data[$i]['counts'][$j]++;
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if(!$found){
+                        @$data[$i]['counts']['none']++;
+                    }
                 }
             }
-            else{
-                foreach($options['values'] as $j => $value){
-                    $val = isset($data[$key]['counts'][$j]) ? $data[$key]['counts'][$j] : 0;
-                    $html .= "<tr><td><b>{$value}</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
-                }
+            
+            if($project == null && $theme == null){
+                $html .= "<b>Total:</b> ".count($peopleIds)."<br />";
+                $html .= "<b>Skipped:</b> {$skipped}<br />";
             }
-            //$val = isset($data[$key]['counts']['none']) ? $data[$key]['counts']['none'] : 0;
-            //$html .= "<tr><td><b>No Answer</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
-            $html .= "</table></div>";
+            $html .= "<div style='display: flex; flex-wrap: wrap; gap: 10px;'>";
+            foreach(self::$fields as $key => $options){
+                $html .= "<div style='width:24%;'>
+                            <h3>{$options['label']}</h3>
+                            <table class='wikitable'>";
+                if($key == 'age' && isset($data[$key]['counts']) && is_array($data[$key]['counts'])){
+                    ksort($data[$key]['counts']);
+                    foreach($data[$key]['counts'] as $j => $count){
+                        $html .= "<tr><td><b>{$j}</b></td><td align='right' style='min-width: 3em;'>{$count}</td></tr>";
+                    }
+                }
+                else{
+                    foreach($options['values'] as $j => $value){
+                        $val = isset($data[$key]['counts'][$j]) ? $data[$key]['counts'][$j] : 0;
+                        $html .= "<tr><td><b>{$value}</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
+                    }
+                }
+                //$val = isset($data[$key]['counts']['none']) ? $data[$key]['counts']['none'] : 0;
+                //$html .= "<tr><td><b>No Answer</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
+                $html .= "</table></div>";
+            }
+            $html .= "</div></div>";
         }
         $html .= "</div>";
+        if($project == null && $theme == null){
+            $html .= "<script type='text/javascript'>
+                var interval{$year} = setInterval(function(){
+                    if($('#accordion{$year}').is(':visible')){
+                        $('#accordion{$year}').accordion({
+                              collapsible: true
+                        });
+                        clearInterval(interval{$year});
+                    };
+                }, 100);
+            </script>";
+        }
         return $html;
     }
 
