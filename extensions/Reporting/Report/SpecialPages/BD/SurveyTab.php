@@ -155,8 +155,12 @@ class SurveyTab extends AbstractTab {
             }
             
             if($project == null && $theme == null){
-                $html .= "<b>Total:</b> ".count($peopleIds)."<br />";
-                $html .= "<b>Skipped:</b> {$skipped}<br />";
+                $html .= "<table>
+                            <tr><td align='right'><b>Total:</b></td><td>".count($peopleIds)."</td></tr>
+                            <tr><td align='right'><b>Submitted<sup>*</sup>:</b></td><td>".count($rows)."</td></tr>
+                            <tr><td align='right'><b>Skipped:</b></td><td>{$skipped}</td></tr>
+                          </table>
+                          <small>*Submitted includes those who have skipped the survey</small>";
             }
             $html .= "<div style='display: flex; flex-wrap: wrap; gap: 10px;'>";
             foreach(self::$fields as $key => $options){
