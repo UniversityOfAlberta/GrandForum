@@ -91,10 +91,10 @@ class Report extends AbstractReport{
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Strategic", "{$url}StrategicReport", $selected);
         }
         
-        if($person->isSubRole("CollabFall2024")){
+        /*if($person->isSubRole("CollabFall2024")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CollaborativeReportFall2024")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Collaborative", "{$url}CollaborativeReportFall2024", $selected);
-        }
+        }*/
         
         if($person->isSubRole("GlycoTwinning Survey")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "GlycoTwinningSurvey")) ? "selected" : false;
