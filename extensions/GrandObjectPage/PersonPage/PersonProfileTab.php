@@ -835,7 +835,7 @@ EOF;
         }
         $this->html .= "    <tr>
                                 <td class='label'>Email:</td>";
-        if(!isExtensionEnabled("Shibboleth") || $me->isRoleAtLeast(MANAGER)){
+        if((!isExtensionEnabled("Shibboleth") && !isExtensionEnabled("OpenIDConnect")) || $me->isRoleAtLeast(MANAGER)){
             $this->html .= "<td class='value'><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>";
         }
         else{
