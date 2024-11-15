@@ -379,6 +379,9 @@ class AddMember extends SpecialPage{
         $nationalityRow = new FormTableRow("nationality_row");
         $nationalityRow->append($nationalityLabel)->append($nationalityField);
         $nationalityRow->attr('id', 'nationality_row');
+        if(!$config->getValue('nationalityEnabled')){
+            $nationalityRow->attr('style', 'display:none;');
+        }
         
         $employmentLabel1 = new Label("employment_label1", "Please select institution type of employment (if applicable)", "", VALIDATE_NOTHING);
         $employmentLabel1->colspan = 2;
