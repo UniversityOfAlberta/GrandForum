@@ -124,7 +124,7 @@ class ApplicationsTable extends SpecialPage{
     function generateSurvey(){
         global $wgOut, $config;
         $tabbedPage = new InnerTabbedPage("reports");
-        for($y=date('Y');$y>=substr($config->getValue('projectPhaseDates')[1],0,4);$y--){
+        for($y=date('Y');$y>=substr($config->getValue('projectPhaseDates')[1],0,4)+1;$y--){
             $tabbedPage->addTab(new SurveyTab($y));
         }
         $wgOut->addHTML($tabbedPage->showPage());

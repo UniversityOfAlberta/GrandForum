@@ -58,7 +58,7 @@ class SurveyTab extends AbstractTab {
 
     function __construct($year){
         $this->year = $year;
-        parent::__construct("$year/".($year+1));
+        parent::__construct(($year-1)."/".($year));
     }
     
     static function getHTML($year="", $project=null, $theme=null){
@@ -83,15 +83,19 @@ class SurveyTab extends AbstractTab {
         }
         
         $groups = array('All' => array(),
-                        'Researcher' => array(),
+                        'Principal Researcher' => array(),
+                        'Affiliated Researcher' => array(),
                         'HQP' => array(),
                         'Admin' => array());
         
         foreach($people as $person){
             $groups['All'][] = $person->getId();
             if($project == null && $theme == null){
-                if($person->isRoleDuring(NI, $start."-01", $end."-31")){
-                    $groups['Researcher'][] = $person->getId();
+                if($person->isRoleDuring(CI, $start."-01", $end."-31")){
+                    $groups['Principal Researcher'][] = $person->getId();
+                }
+                if($person->isRoleDuring(AR, $start."-01", $end."-31")){
+                    $groups['Affiliated Researcher'][] = $person->getId();
                 }
                 if($person->isRoleDuring(HQP, $start."-01", $end."-31")){
                     $groups['HQP'][] = $person->getId();
