@@ -546,8 +546,8 @@ class AddMember extends SpecialPage{
             $positionRow->append($positionLabel)->append($positionField);
             $positionRow->attr('id', "position_row$i");
             
-            $startLabel = new Label("start_label$i", "Start Date", "When the member's role, project, institution should take effect", VALIDATE_NOTHING);
-            $startField = new CalendarField("start_field$i", "Start Date", date('Y-m-d'), VALIDATE_NOTHING);
+            $startLabel = new Label("start_label$i", "Start Date", "When the member's role, project, institution should take effect", VALIDATE_NOT_NULL);
+            $startField = new CalendarField("start_field$i", "Start Date", date('Y-m-d'), VALIDATE_NOT_NULL);
             $startRow = new FormTableRow("start_row$i");
             $startRow->append($startLabel)->append($startField);
             $startRow->attr('id', "start_row$i");
