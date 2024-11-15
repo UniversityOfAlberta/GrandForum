@@ -321,10 +321,13 @@ class AddMember extends SpecialPage{
                 $text = " <i> (A researcher external to the network)</i>";
             }
             else if($role == CI){
-                $text = " <i> (The principal investigator/leader on a project)</i>";
+                $text = " <i> (The principal investigator on a project)</i>";
             }
             else if($role == AR){
                 $text = " <i> (An affiliated researcher in the network)</i>";
+            }
+            else if($role == PL){
+                $text = " <i> (The person who manages or leads a project)</i>";
             }
             $roleOptions[$config->getValue('roleDefs', $role).$text] = $role;
         }
