@@ -1,0 +1,679 @@
+[
+    {
+        "id": "IngredientsForChange",
+        "title": "Ingredients for Change",
+        "titleFr": "",
+        "videos": 5,
+        "questions": 4,
+        "tags": ["everything"],
+        "resources": []
+    },
+    {
+        "id": "Activity",
+        "title": "Activity",
+        "titleFr": "",
+        "videos": 8,
+        "questions": 3,
+        "tags": ["activity module"],
+        "resources": {
+            "Fact Sheets": [
+                {
+                    "file": "choose-health-be-active-a-physical-guide-for-older-australians.pdf",
+                    "title": "Choose Health- Be Active- Department of Health and Ageing 2008",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.physicalactivityaustralia.org.au/healthy-ageing-staying-physically-active/",
+                    "title": "Healthy Ageing- Staying Physically Active- Physical Activity Australia",
+                    "tags": []
+                },
+                {
+                    "file": "Movement is Medicine.pdf",
+                    "title": "Movement is Medicine",
+                    "tags": []
+                }
+            ],
+            "Videos": [
+                {
+                    "file": "https://www.youtube.com/watch?v=c0RCATcEQY0&t=4s",
+                    "title": "What is Strength For Life",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/playlist?list=PLXdUqOIbOj3c9foD93mCxPlRBDCwSHn1x",
+                    "title": "COTA Strength For Life Exercise Videos",
+                    "tags": []
+                }
+            ],
+            "Self-Paced Healthy Ageing Online Learning (NSW Health)": [
+                {
+                    "file": "https://www.activeandhealthy.nsw.gov.au/active-living/healthy-ageing-online-learning/#e333",
+                    "title": "Healthy Ageing Online Learning",
+                    "tags": []
+                }
+            ],
+            "COTA Strength For Life Program (Tier 2)- delivered by fitness trainers": [
+                {
+                    "file": "https://www.stclair.ymca.org.au/",
+                    "title": "YMCA St Clair Recreation Centre 109 Woodville Road; Tel 7078 4184",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.parksrsc.ymca.org.au/",
+                    "title": "YMCA The Parks Recreation and Sports Centre 46 Cowan Street, Angle Park; Tel 8406 2900",
+                    "tags": []
+                },
+                {
+                    "file": "",
+                    "title": "Olon 86-96 Trimmer Parade, Seaton Tel 1800 006566",
+                    "tags": []
+                },
+                {
+                    "file": "https://inertiahealthgroup.com.au/",
+                    "title": "Inertia Health Group, 982-986 Port Road, Albert Park; Tel 83592022",
+                    "tags": []
+                },
+                {
+                    "file": "",
+                    "title": "Thebarton Aquatic Centre 1 Meyer Street Torrensville; Tel  8200 2531",
+                    "tags": []
+                }
+            ],
+            "Other Falls Prevention/Exercise Programs": [
+                {
+                    "file": "https://bbfs.com.au/what-is-bbfs/",
+                    "title": "Brain Body Fitness Studio for 50+ (a service of the Hospital Research Foundation)   60 Woodville Road, Woodville SA 5011; Tel 0491 810 819",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.stclair.ymca.org.au/",
+                    "title": "YMCA St Clair Recreation Centre 109 Woodville Road; Tel 7078 4184",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.parksrsc.ymca.org.au/",
+                    "title": "YMCA The Parks Recreation and Sports Centre 46 Cowan Street, Angle Park; Tel 8406 2900",
+                    "tags": []
+                },
+                {
+                    "file": "",
+                    "title": "Olon 86-96 Trimmer Parade, Seaton Tel 1800 006566",
+                    "tags": []
+                },
+                {
+                    "file": "https://inertiahealthgroup.com.au/",
+                    "title": "Inertia Health Group, 982-986 Port Road, Albert Park; Tel 83592022",
+                    "tags": []
+                },
+                {
+                    "file": "https://inertiahealthgroup.com.au/",
+                    "title": "Thebarton Aquatic Centre 1 Meyer Street Torrensville; Tel  8200 2531",
+                    "tags": []
+                },
+                {
+                    "file": "https://prohealthcare.com.au/exercise-falls-prevention-class/",
+                    "title": "Pro Exercise SA 380 Grange Road Kidman Park; Tel 8356 2299",
+                    "tags": []
+                },
+                {
+                    "file": "https://aep.net.au/community-health/prevention/falls-prevention-adelaide/",
+                    "title": "Adelaide Exercise Physiology (AEP Group) 699 Port Road, Woodville Park; Tel 8244 0450",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.adelaidewestphysio.com.au/exercise-groups-classes/",
+                    "title": "Adelaide West Physio and Pilates 506 Henley Beach Road, Fulham Tel 7110 0804",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.ech.asn.au/app/uploads/2024/05/AECH1371-Wellness-timetable-Henley-Beach_May2024.pdf",
+                    "title": "ECH Wellness 168A Cudmore Terrace, Henley Beach; Tel 1300 275324",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.southerncrosscare.com.au/locations/health-wellness/philip-kennedy-centre-health-wellness-centre",
+                    "title": "Southern Cross Welness Centre  477-479 Military Road Largs Bay, SA 5016; Tel 1800 920 492",
+                    "tags": []
+                },
+                {
+                    "file": "https://bene.org.au/lifestyle-wellness/",
+                    "title": "Bene Padre Pio 480 Torrens Road, Woodville North; 8131 2000",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.anfe.org.au/active-ageing-exercise",
+                    "title": "ANFE Community Care Uniting Church Australia Western Link, Findon 93 Crittenden Road, Findon Tel 8243 5550",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.resthaven.asn.au/living-at-home/exercise-and-wellness/",
+                    "title": "Resthaven Exercise and Wellness 96 Woodville Road; Tel 1300 13 66 33",
+                    "tags": []
+                }
+            ]
+        }
+    },
+    {
+        "id": "Vaccination",
+        "title": "Vaccinate",
+        "titleFr": "",
+        "videos": 7,
+        "questions": 3,
+        "tags": ["vaccination module"],
+        "resources": {
+            "Fact Sheets": [
+                {
+                    "file": "national-immunisation-program-fact-sheet-adult-vaccinations Nov23.pdf",
+                    "title": "National Immunisation Program - Adult Vaccinations (Nov 23)",
+                    "tags": [ ]
+                },
+                {
+                    "file": "shield-yourself-from-shingles-fact-sheet_2024.pdf",
+                    "title": "Shiled Yourself From Shingles - 2024",
+                    "tags": [ ]
+                }
+            ],
+            "FAQ": [
+                {
+                    "file": "https://www.vaccinehub.com.au/faq/what-vaccinations-are-recommended-older-adults",
+                    "title": "What vaccinations are recommended for older adults?",
+                    "tags": [ ]
+                }
+            ],
+            "Video": [
+                {
+                    "file": "11. Vaccinate with Hal _ Joanne.mp4",
+                    "title": "Vaccinate with Hal & Joanne",
+                    "tags": []
+                },
+                {
+                    "file": "Vaccinate Vid.mp4",
+                    "title": "Vaccination",
+                    "tags": [ ]
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=vsS4BjL8qJ0&t=12s",
+                    "title": "RSV vaccine",
+                    "tags": [ ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "OptimizeMedication",
+        "title": "Optimize Medication",
+        "titleFr": "",
+        "videos": 6,
+        "questions": 3,
+        "tags": ["optimize medication module"],
+        "resources": {
+            "Videos": [
+                {
+                    "file": "https://www.youtube.com/watch?v=JVd85nLcXfs&t=1s",
+                    "title": "Is it old age or could it be your medicine?",
+                    "tags": [ ]
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=mOJESyu5Qqo",
+                    "title": "Checking Your Medicines to Prevent Falls",
+                    "tags": [ ]
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=bND_-yhR39c",
+                    "title": "Check Your Medicines With Nancy (Medications and Falls)",
+                    "tags": [ ]
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=J71xQbjIwlQ&t=26s",
+                    "title": "Antimicrobial Stewardship",
+                    "tags": [ ]
+                }
+            ],
+            "NPS Medicinewise resources": [
+                {
+                    "file": "NPSMW5-QuestionsAboutYourMedicines.pdf",
+                    "title": "5 Questions to Ask About Your Medications",
+                    "tags": [ ]
+                },
+                {
+                    "file": "What-is-Polypharmacy.pdf",
+                    "title": "What is Polypharmacy",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Medicine-List_English_Fillable-Fields.pdf",
+                    "title": "Medicine Lists Fillable (2019)",
+                    "tags": [ ]
+                },
+                {
+                    "file": "MyMedicationActionPlan.pdf",
+                    "title": "My Medication Action Plan",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Home Medication Review NPS.pdf",
+                    "title": "Home Medication Review",
+                    "tags": [ ]
+                },
+                {
+                    "file": "How to Get A Good Night Sleep (2019).pdf",
+                    "title": "How to Get A Good Night Sleep",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Lowering-your-benzodiazepine-embellish.pdf",
+                    "title": "Lowering Your Benzodiazepine Use",
+                    "tags": [ ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "Interact",
+        "title": "Interact",
+        "titleFr": "",
+        "videos": 7,
+        "questions": 3,
+        "tags": ["interact module"],
+        "resources": {
+            "Podcast": [
+                {
+                    "file": "https://cotasa.org.au/programs-and-services/voices-on-ageing-podcast",
+                    "title": "Voices on Ageing podcast",
+                    "tags": []
+                }
+            ],
+            "Video": [
+                {
+                    "file": "https://www.youtube.com/watch?v=Sric7XAaaqU",
+                    "title": "Interact to AVOID Frailty",
+                    "tags": []
+                }
+            ],
+            "Visitor Program": [
+                {
+                    "file": "https://cotasa.org.au/programs-and-services/cota-visitors",
+                    "title": "COTA Visitors",
+                    "tags": []
+                }
+            ],
+            "Telephone Support": [
+                {
+                    "file": "https://griefline.org.au/gday-line/",
+                    "title": "The G’Day Line",
+                    "tags": []
+                }
+            ]
+        }
+    },
+    {
+        "id": "DietAndNutrition",
+        "title": "Diet and Nutrition",
+        "titleFr": "",
+        "videos": 12,
+        "questions": 4,
+        "tags": ["diet and nutrition module"],
+        "resources": {
+            "Videos": [
+                {
+                    "file": "",
+                    "title": "Diet and Frailty Video - 5 minutes on Frailty",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=KD-FmeueFUo&t=162s",
+                    "title": "Healthy Aging with Nutrition (Alliance for Aging Research)",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=v0b95VhZdeE",
+                    "title": "Healthy Ageing: Eat Well (South Eastern Sydney Local Health Distric)",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=rBRafhWgPyU",
+                    "title": "Protein Intake In The Elderly- Professor Jurgen Bauer",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=_4Hvz4eq7Qk",
+                    "title": "How to prevent Sarcopenia?",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/playlist?list=PLXdUqOIbOj3dZma6YTjPQrx87qOwNgFaG",
+                    "title": "Some Healthy Recipe Tips",
+                    "tags": []
+                }
+            ],
+            "Nutrition Tips and Recipes PDFs": [
+                {
+                    "file": "Healthy-Living-for-Seniors-Booklet-Reduced-4.pdf",
+                    "title": "Healthy Living for Seniors- Helpful Tips and Recipe Ideas (9th May 2021)",
+                    "tags": []
+                },
+                {
+                    "file": "EatingWellResource.pdf",
+                    "title": "A Nutrition Resource for Older People and their Carers (3rd Edition 2015)",
+                    "tags": []
+                },
+                {
+                    "file": "Nutrition-for-Seniors.pdf",
+                    "title": "Nutrition for Seniors- Ngaire Hobbins(2020/2021)",
+                    "tags": []
+                }
+            ],
+            "Self-Paced Healthy Ageing Online Learning (NSW Health)": [
+                {
+                    "file": "https://www.activeandhealthy.nsw.gov.au/active-living/healthy-ageing-online-learning/#e333",
+                    "title": "Healthy Ageing Online Learning",
+                    "tags": []
+                }
+            ]
+        }
+    },
+    {
+        "id": "Sleep",
+        "title": "Sleep",
+        "titleFr": "",
+        "videos": 6,
+        "questions": 4,
+        "tags": [],
+        "resources": {
+            "Fact Sheets": [
+                {
+                    "file": "Facts About Sleep (Sleep Foundation).pdf",
+                    "title": "Facts About Sleep- Australian Sleep Foundation (Accessed Sep 24)",
+                    "tags": []
+                },
+                {
+                    "file": "Common Causes of Inadequate Sleep.pdf",
+                    "title": "Common Causes of Inadequate Sleep – Australian Sleep Foundation (Accessed Sep 24)",
+                    "tags": []
+                },
+                {
+                    "file": "Understanding and Helping Poor Sleep.pdf",
+                    "title": "Understanding and Helping Poor Sleep- Australian Sleep Foundation (Accessed Sep 24)",
+                    "tags": []
+                },
+                {
+                    "file": "Sleep Hygiene Good Sleep Habits.pdf",
+                    "title": "Sleep Hygiene- Australian Sleep Foundation (Accessed Sep 24)",
+                    "tags": []
+                },
+                {
+                    "file": "Caffeine, Food, Alcohol, Smoking and Sleep.pdf",
+                    "title": "Caffeine, Alcohol, Food, Smoking and Poor Sleep- Australian Sleep Foundation (Accessed Sep 24)",
+                    "tags": []
+                },
+                {
+                    "file": "Mindfulness and Sleep.pdf",
+                    "title": "Mindfulness and Sleep - Australian Sleep Foundation (Accessed Sep 24)",
+                    "tags": []
+                },
+                {
+                    "file": "Excessive Daytime Sleepiness.pdf",
+                    "title": "Excessive Daytime Sleepiness- Australian Sleep Foundation (Accessed Sep 24)",
+                    "tags": []
+                },
+                {
+                    "file": "Sleeping Tablets.pdf",
+                    "title": "Sleeping Tablets- Australian Sleep Foundation (Accessed Sep 24)",
+                    "tags": []
+                }
+            ],
+            "Video": [
+                {
+                    "file": "https://www.youtube.com/watch?v=Bl5wSPJNvTk&t=9s",
+                    "title": "Relaxing Bedtime Stretches For Better Sleep",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.preventivehealth.sa.gov.au/healthy-living/looking-after-your-mental-health-wellbeing/mindfulness",
+                    "title": "Mindfulness- Preventive SA",
+                    "tags": []
+                }
+            ],
+            "Web Literature": [
+                {
+                    "file": "https://www.slhd.nsw.gov.au/RPA/PainMgmt/pdf/sleep_diary.pdf ",
+                    "title": "Sleep Diary (NSW Health- Accessed Sep 24)",
+                    "tags": []
+                }
+            ]
+        }
+    },
+    {
+        "id": "FallsPrevention",
+        "title": "Falls Prevention",
+        "titleFr": "",
+        "videos": 6,
+        "questions": 3,
+        "tags": [],
+        "resources": {
+            "Fact Sheets": [
+                {
+                    "file": "Don't Fall For it booklet +Falls-Guide-2020 version.pdf",
+                    "title": "Don’t Fall For It Booklet- 2020",
+                    "tags": []
+                },
+                {
+                    "file": "https://fallssa.com.au/reducing-my-risk-of-falls/",
+                    "title": "Staying Active And On Your Feet- NSW Health",
+                    "tags": []
+                },
+                {
+                    "file": "https://fallssa.com.au/wp-content/uploads/2016/07/Standing_Up_to_Falls.pdf",
+                    "title": "Standing Up To Falls",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.sahealth.sa.gov.au/wps/wcm/connect/9b31608047c0d365bc86fe7c69742d6b/19035.1-3%2BFalls-FS3-Medicines%2Band%2BBalance-V1.pdf?MOD=AJPERES&CACHE=NONE&CONTENTCACHE=NONE",
+                    "title": "Medicines and Balance",
+                    "tags": []
+                },
+                {
+                    "file": "How-to-get-up-if-you-have-a-fall.pdf",
+                    "title": "How to get up if you have a fall",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.sahealth.sa.gov.au/wps/wcm/connect/6ce18b8047c0d4f3bcd3fe7c69742d6b/19035.1-4%2BFalls-FS4-Dizziness%2Band%2BBalance-V1.pdf?MOD=AJPERES&CACHE=NONE&CONTENTCACHE=NONE",
+                    "title": "Dizziness and Balance",
+                    "tags": []
+                },
+                {
+                    "file": "Making_Your_Home_Your_Haven.pdf",
+                    "title": "Making Your Home Your Haven",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.sahealth.sa.gov.au/wps/wcm/connect/71c34e0047c0d65fbd44ff7c69742d6b/14012.2-6+Comfy+Feet%282015%29webS.pdf?MOD=AJPERES&CACHEID=71c34e0047c0d65fbd44ff7c69742d6b",
+                    "title": "Foot Care and Safe Shoes",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.sahealth.sa.gov.au/wps/wcm/connect/9d87b20047c0d2b4bc47fe7c69742d6b/14012.2-2+Eyesight+and+Walk%282015%29WebS.pdf?MOD=AJPERES&CACHEID=9d87b20047c0d2b4bc47fe7c69742d6b",
+                    "title": "Eyesight and Walking",
+                    "tags": []
+                },
+                {
+                    "file": "https://fallssa.com.au/wp-content/uploads/2016/07/EatWellAndStayStrong_CNAHS.pdf",
+                    "title": "Eat Well and Stay Strong",
+                    "tags": []
+                }
+            ],
+            "Online Education Program": [
+                {
+                    "file": "14 Exercises for Seniors to Improve Strength and Balance.pdf",
+                    "title": "14 Exercises for Seniors to Improve Strength and Balance",
+                    "tags": []
+                },
+                {
+                    "file": "https://drive.google.com/file/d/1Yuaur9QmvNOSx_ijzWiLzrYmeH2Cz2xD/view",
+                    "title": "Balancing Act: Empowering Aging with Exercise",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Fall Prevention Guide.pdf",
+                    "title": "Fall Prevention Guide",
+                    "tags": []
+                },
+                {
+                    "file": "Preventing Falls on Stairs.pdf",
+                    "title": "Preventing Falls on Stairs",
+                    "tags": []
+                },
+                {
+                    "file": "Preventing Vision Related Falls.pdf",
+                    "title": "Preventing Vision Related Falls",
+                    "tags": []
+                },
+                {
+                    "file": "What to do AFTER a fall.pdf",
+                    "title": "What to do AFTER a fall",
+                    "tags": []
+                }
+                ,
+                {
+                    "file": "You CAN prevent falls.pdf",
+                    "title": "You CAN prevent falls",
+                    "tags": []
+                },
+                {
+                    "file": "https://safe-seniors.com/",
+                    "title": "Online Fitness Exercises",
+                    "tags": []
+                }
+            ],
+            "Videos": [
+                {
+                    "file": "https://www.youtube.com/watch?v=c0RCATcEQY0&t=4s",
+                    "title": "What is Strength For Life",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/playlist?list=PLXdUqOIbOj3c9foD93mCxPlRBDCwSHn1x",
+                    "title": "COTA Strength For Life Exercise Videos (recommended only for people who have undergone supervised program)",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.activeandhealthy.nsw.gov.au/active-living/healthy-ageing-online-learning/#e333",
+                    "title": "Self-Paced Healthy Ageing Online Learning (NSW Health)",
+                    "tags": []
+                }
+            ],
+            "COTA Strength For Life Program (Tier 2)- delivered by fitness trainers": [
+                {
+                    "file": "https://www.stclair.ymca.org.au/",
+                    "title": "YMCA St Clair Recreation Centre 109 Woodville Road; Tel 7078 4184",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.parksrsc.ymca.org.au/",
+                    "title": "YMCA The Parks Recreation and Sports Centre 46 Cowan Street, Angle Park; Tel 8406 2900",
+                    "tags": []
+                },
+                {
+                    "file": "",
+                    "title": "Olon 86-96 Trimmer Parade, Seaton Tel 1800 006566",
+                    "tags": []
+                },
+                {
+                    "file": "https://inertiahealthgroup.com.au/",
+                    "title": "Inertia Health Group, 982-986 Port Road, Albert Park; Tel 83592022",
+                    "tags": []
+                },
+                {
+                    "file": "",
+                    "title": "Thebarton Aquatic Centre 1 Meyer Street Torrensville; Tel  8200 2531",
+                    "tags": []
+                }
+            ],
+            "Falls Prevention/Exercise Programs": [
+                {
+                    "file": "https://bbfs.com.au/what-is-bbfs/",
+                    "title": "Brain Body Fitness Studio for 50+ (a service of the Hospital Research Foundation) 60 Woodville Road, Woodville SA 5011; Tel 0491 810 819",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.stclair.ymca.org.au/",
+                    "title": "YMCA St Clair Recreation Centre 109 Woodville Road; Tel 7078 4184",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.parksrsc.ymca.org.au/",
+                    "title": "YMCA The Parks Recreation and Sports Centre 46 Cowan Street, Angle Park; Tel 8406 2900",
+                    "tags": []
+                },
+                {
+                    "file": "",
+                    "title": "Olon 86-96 Trimmer Parade, Seaton Tel 1800 006566",
+                    "tags": []
+                },
+                {
+                    "file": "https://inertiahealthgroup.com.au/",
+                    "title": "Inertia Health Group, 982-986 Port Road, Albert Park; Tel 83592022",
+                    "tags": []
+                },
+                {
+                    "file": "",
+                    "title": "Thebarton Aquatic Centre 1 Meyer Street Torrensville; Tel  8200 2531",
+                    "tags": []
+                },
+                {
+                    "file": "https://prohealthcare.com.au/exercise-falls-prevention-class/",
+                    "title": "Pro Exercise SA 380 Grange Road Kidman Park; Tel 8356 2299",
+                    "tags": []
+                },
+                {
+                    "file": "https://aep.net.au/community-health/prevention/falls-prevention-adelaide/",
+                    "title": "Adelaide Exercise Physiology (AEP Group) 699 Port Road, Woodville Park; Tel 8244 0450",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.adelaidewestphysio.com.au/exercise-groups-classes/",
+                    "title": "Adelaide West Physio and Pilates 506 Henley Beach Road, Fulham Tel 7110 0804",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.ech.asn.au/app/uploads/2024/05/AECH1371-Wellness-timetable-Henley-Beach_May2024.pdf",
+                    "title": "ECH Wellness 168A Cudmore Terrace, Henley Beach; Tel 1300 275324",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.southerncrosscare.com.au/locations/health-wellness/philip-kennedy-centre-health-wellness-centre",
+                    "title": "Southern Cross Welness Centre  477-479 Military Road Largs Bay, SA 5016; Tel 1800 920 492",
+                    "tags": []
+                },
+                {
+                    "file": "https://bene.org.au/lifestyle-wellness/",
+                    "title": "Bene Padre Pio 480 Torrens Road, Woodville North; 8131 2000",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.anfe.org.au/active-ageing-exercise",
+                    "title": "ANFE Community Care Uniting Church Australia Western Link, Findon 93 Crittenden Road, Findon Tel 8243 5550",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.resthaven.asn.au/living-at-home/exercise-and-wellness/",
+                    "title": "Resthaven Exercise and Wellness 96 Woodville Road; Tel 1300 13 66 33",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.eldercare.net.au/aged-care/day-therapy-centre",
+                    "title": "Eldercare’s Day Therapy Centre Acacia Court, 81 Taplye’s Hill Road; Tel 82431844",
+                    "tags": []
+                }
+            ],
+            "Research Participation Opportunity": [
+                {
+                    "file": "https://www.revolutionise.com.au/aujudo/dynamic-balance",
+                    "title": "Dynamic Balance For Life To Prevent Falls",
+                    "tags": []
+                }
+            ]
+        }
+    }
+]

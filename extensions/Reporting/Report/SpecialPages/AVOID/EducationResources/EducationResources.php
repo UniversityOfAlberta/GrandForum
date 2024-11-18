@@ -23,9 +23,15 @@ class EducationResources extends SpecialPage {
 	}
 	
 	static function JSON(){
+	    global $config;
         if(self::$json == null){
             $dir = dirname(__FILE__) . '/';
-            self::$json = json_decode(file_get_contents("{$dir}resources.json"));
+            if($config->getValue('networkFullName') == "AVOID Australia"){
+                self::$json = json_decode(file_get_contents("{$dir}resources_australia.json"));
+            }
+            else{
+                self::$json = json_decode(file_get_contents("{$dir}resources.json"));
+            }
         }
         return self::$json;
     }
@@ -120,8 +126,13 @@ class EducationResources extends SpecialPage {
                                         Gamification::log("EducationResource/".md5("{$category->id}-{$resource->file}"));
                                         exit;
                                     }
-                                    $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
-                                    $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
+                                    if($resource->file == ""){
+                                        $wgOut->addHTML("<li>{$resource->title}</li>");
+                                    }
+                                    else{
+                                        $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
+                                        $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
+                                    }
                                 }
                                 $wgOut->addHTML("</ul></div>");
                             }
@@ -135,8 +146,13 @@ class EducationResources extends SpecialPage {
                                 Gamification::log("EducationResource/".md5("{$category->id}-{$resource->file}"));
                                 exit;
                             }
-                            $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
-                            $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
+                            if($resource->file == ""){
+                                $wgOut->addHTML("<li>{$resource->title}</li>");
+                            }
+                            else{
+                                $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
+                                $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
+                            }
                         }
                         $wgOut->addHTML("</ul>");
                     }
