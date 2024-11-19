@@ -355,7 +355,7 @@
                 <div style='display:inline-block; margin-left: 15px;'>
                     <style>
                         .histogram td {
-                            height: 100%;
+                            height: 200px;
                             vertical-align: bottom;
                         }
                         
@@ -373,7 +373,7 @@
                         }
                     </style>
                     <table class='wikitable histogram' frame='box' rules='all'>
-                        <tr style='height: 200px;'>
+                        <tr>
                             <td id='000'><div></div></td>
                             <td id='025'><div></div></td>
                             <td id='050'><div></div></td>
