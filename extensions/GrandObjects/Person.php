@@ -4384,36 +4384,6 @@ class FullPerson extends Person {
         return Cache::fetch("cna_{$this->id}_{$year}");
     }
     
-    static function getSalaryIncrement($year, $type){
-        if(!isset(self::$salaryCache["increment_{$type}_{$year}"])){
-            $increment = DBFunctions::select(array('grand_salary_scales'),
-                                             array("increment_$type"),
-                                             array('year' => $year));
-            self::$salaryCache["increment_{$type}_{$year}"] = @$increment[0]["increment_$type"];
-        }
-        return self::$salaryCache["increment_{$type}_{$year}"];
-    }
-    
-    static function getMinSalary($year, $type){
-        if(!isset(self::$salaryCache["min_salary_{$type}_{$year}"])){
-            $increment = DBFunctions::select(array('grand_salary_scales'),
-                                             array("min_salary_$type"),
-                                             array('year' => $year));
-            self::$salaryCache["min_salary_{$type}_{$year}"] = @$increment[0]["min_salary_$type"];
-        }
-        return self::$salaryCache["min_salary_{$type}_{$year}"];
-    }
-    
-    static function getMaxSalary($year, $type){
-        if(!isset(self::$salaryCache["max_salary_{$type}_{$year}"])){
-            $increment = DBFunctions::select(array('grand_salary_scales'),
-                                             array("max_salary_$type"),
-                                             array('year' => $year));
-            self::$salaryCache["max_salary_{$type}_{$year}"] = @$increment[0]["max_salary_$type"];
-        }
-        return self::$salaryCache["max_salary_{$type}_{$year}"];
-    }
-    
     function create(){
         global $wgRequest;
         $me = Person::newFromWgUser();
