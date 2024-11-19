@@ -362,6 +362,10 @@
                         .histogram td div {
                             width: 100%;
                             background: #007d43;
+                            color: white;
+                            text-align: center;
+                            font-size: smaller;
+                            user-select: none;
                         }
                         
                         .histogram th {
@@ -520,12 +524,14 @@
                         }
                         
                         $(".histogram td div").height(0)
-                                              .attr("title", "");
+                                              .attr("title", "")
+                                              .text("");
                         var max = _.max(histogram);
                         
                         for (const [key, val] of Object.entries(histogram)){
                             $(".histogram td#" + key + " div").height((val/Math.max(max,1))*100 + "%")
-                                                              .attr("title", val);
+                                                              .attr("title", val)
+                                                              .text(val);
                         }
                     });
                     
