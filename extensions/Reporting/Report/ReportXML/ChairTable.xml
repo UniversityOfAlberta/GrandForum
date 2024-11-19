@@ -373,10 +373,11 @@
                             width: 40px;
                         }
                     </style>
-                    <h3 style='text-align: center;'>Faculty Increments</h3>
+                    <h3 style='text-align: center;'>Faculty Increments (n=<span id='nFac'></span>)</h3>
                     <table class='wikitable histogram' frame='box' rules='all'>
                         <tr>
                             <td id='000'><div></div></td>
+                            <td id='PTC'><div></div></td>
                             <td id='050'><div></div></td>
                             <td id='075'><div></div></td>
                             <td id='100'><div></div></td>
@@ -386,10 +387,10 @@
                             <td id='200'><div></div></td>
                             <td id='225'><div></div></td>
                             <td id='250'><div></div></td>
-                            <td id='PTC'><div></div></td>
                         </tr>
                         <tr>
-                            <th>0.00</th>
+                            <th title='0B, 0C, 0D'>0.00</th>
+                            <th title='PTC, 0A'>PTC</th>
                             <th>0.50</th>
                             <th>0.75</th>
                             <th>1.00</th>
@@ -399,7 +400,6 @@
                             <th>2.00</th>
                             <th>2.25</th>
                             <th>2.50+</th>
-                            <th>PTC</th>
                         </tr>
                     </table>
                 </div><br />
@@ -468,7 +468,7 @@
                                                      $(tr).attr('data-fecid').includes("B") ||
                                                      $(tr).attr('data-fecid').includes("C") ||
                                                      $(tr).attr('data-fecid').includes("N"))){
-                                if($(el).val().indexOf("PTC") != -1){
+                                if($(el).val().indexOf("PTC") != -1 || $(el).val() == "0A"){
                                     if(_.isUndefined(histogram["PTC"])){
                                         histogram["PTC"] = 0;
                                     }
@@ -529,12 +529,14 @@
                                               .attr("title", "")
                                               .text("");
                         var max = _.max(histogram);
-                        
+                        var nFac = 0;
                         for (const [key, val] of Object.entries(histogram)){
                             $(".histogram td#" + key + " div").height((val/Math.max(max,1))*100 + "%")
                                                               .attr("title", val)
                                                               .text(val);
+                            nFac += val;
                         }
+                        $("#nFac").text(nFac);
                     });
                     
                     setInterval(function(){
