@@ -369,13 +369,12 @@
                         }
                         
                         .histogram th {
-                            width: 35px;
+                            width: 40px;
                         }
                     </style>
                     <table class='wikitable histogram' frame='box' rules='all'>
                         <tr>
                             <td id='000'><div></div></td>
-                            <td id='025'><div></div></td>
                             <td id='050'><div></div></td>
                             <td id='075'><div></div></td>
                             <td id='100'><div></div></td>
@@ -385,13 +384,10 @@
                             <td id='200'><div></div></td>
                             <td id='225'><div></div></td>
                             <td id='250'><div></div></td>
-                            <td id='275'><div></div></td>
-                            <td id='300'><div></div></td>
                             <td id='PTC'><div></div></td>
                         </tr>
                         <tr>
                             <th>0.00</th>
-                            <th>0.25</th>
                             <th>0.50</th>
                             <th>0.75</th>
                             <th>1.00</th>
@@ -400,9 +396,7 @@
                             <th>1.75</th>
                             <th>2.00</th>
                             <th>2.25</th>
-                            <th>2.50</th>
-                            <th>2.75</th>
-                            <th>3.00</th>
+                            <th>2.50+</th>
                             <th>PTC</th>
                         </tr>
                     </table>
@@ -483,7 +477,13 @@
                                         histogram["000"] = 0;
                                     }
                                     histogram["000"]++;
-                                } 
+                                }
+                                else if(parseFloat($(el).val()) >= 2.5){
+                                    if(_.isUndefined(histogram["250"])){
+                                        histogram["250"] = 0;
+                                    }
+                                    histogram["250"]++;
+                                }
                                 else{
                                     if(_.isUndefined(histogram[$(el).val().replace(".", "")])){
                                         histogram[$(el).val().replace(".", "")] = 0;
