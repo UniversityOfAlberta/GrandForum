@@ -308,48 +308,101 @@
             <![CDATA[
                     </tbody>
                 </table><br />
-                <table class='wikitable' frame='box' rules='all'>
-                    <tr>
-                        <th>Year</th>
-                        <th>Average<br />Faculty Increment</th>
-                        <th>Average<br />FSO Increment</th>
-                    </tr>
-                    <tr>
-                        <td><b>{$this_year}</b></td>
-                        <td id='averageFac' align='right'></td>
-                        <td id='averageFSO' align='right'></td>
-                    </tr>
-                    <tr>
-                        <td><b>{subtract({$this_year},1)}</b></td>
-                        <td id='averageFac{subtract({$this_year},1)}' align='right'></td>
-                        <td id='averageFSO{subtract({$this_year},1)}' align='right'></td>
-                    </tr>
-                    <tr>
-                        <td><b>{subtract({$this_year},2)}</b></td>
-                        <td id='averageFac{subtract({$this_year},2)}' align='right'></td>
-                        <td id='averageFSO{subtract({$this_year},2)}' align='right'></td>
-                    </tr>
-                    <tr>
-                        <td><b>{subtract({$this_year},3)}</b></td>
-                        <td id='averageFac{subtract({$this_year},3)}' align='right'></td>
-                        <td id='averageFSO{subtract({$this_year},3)}' align='right'></td>
-                    </tr>
-                    <tr>
-                        <td><b>{subtract({$this_year},4)}</b></td>
-                        <td id='averageFac{subtract({$this_year},4)}' align='right'></td>
-                        <td id='averageFSO{subtract({$this_year},4)}' align='right'></td>
-                    </tr>
-                    <tr>
-                        <td><b>{subtract({$this_year},5)}</b></td>
-                        <td id='averageFac{subtract({$this_year},5)}' align='right'></td>
-                        <td id='averageFSO{subtract({$this_year},5)}' align='right'></td>
-                    </tr>
-                    <tr>
-                        <td><b>{subtract({$this_year},6)}</b></td>
-                        <td id='averageFac{subtract({$this_year},6)}' align='right'></td>
-                        <td id='averageFSO{subtract({$this_year},6)}' align='right'></td>
-                    </tr>
-                </table>
+                <div style='display: inline-block;'>
+                    <table class='wikitable' frame='box' rules='all'>
+                        <tr>
+                            <th>Year</th>
+                            <th>Average<br />Faculty Increment</th>
+                            <th>Average<br />FSO Increment</th>
+                        </tr>
+                        <tr>
+                            <td><b>{$this_year}</b></td>
+                            <td id='averageFac' align='right'></td>
+                            <td id='averageFSO' align='right'></td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},1)}</b></td>
+                            <td id='averageFac{subtract({$this_year},1)}' align='right'></td>
+                            <td id='averageFSO{subtract({$this_year},1)}' align='right'></td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},2)}</b></td>
+                            <td id='averageFac{subtract({$this_year},2)}' align='right'></td>
+                            <td id='averageFSO{subtract({$this_year},2)}' align='right'></td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},3)}</b></td>
+                            <td id='averageFac{subtract({$this_year},3)}' align='right'></td>
+                            <td id='averageFSO{subtract({$this_year},3)}' align='right'></td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},4)}</b></td>
+                            <td id='averageFac{subtract({$this_year},4)}' align='right'></td>
+                            <td id='averageFSO{subtract({$this_year},4)}' align='right'></td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},5)}</b></td>
+                            <td id='averageFac{subtract({$this_year},5)}' align='right'></td>
+                            <td id='averageFSO{subtract({$this_year},5)}' align='right'></td>
+                        </tr>
+                        <tr>
+                            <td><b>{subtract({$this_year},6)}</b></td>
+                            <td id='averageFac{subtract({$this_year},6)}' align='right'></td>
+                            <td id='averageFSO{subtract({$this_year},6)}' align='right'></td>
+                        </tr>
+                    </table>
+                </div>
+                <div style='display:inline-block; margin-left: 15px;'>
+                    <style>
+                        .histogram td {
+                            height: 100%;
+                            vertical-align: bottom;
+                        }
+                        
+                        .histogram td div {
+                            width: 100%;
+                            background: #007d43;
+                        }
+                        
+                        .histogram th {
+                            width: 35px;
+                        }
+                    </style>
+                    <table class='wikitable histogram' frame='box' rules='all'>
+                        <tr style='height: 200px;'>
+                            <td id='000'><div></div></td>
+                            <td id='025'><div></div></td>
+                            <td id='050'><div></div></td>
+                            <td id='075'><div></div></td>
+                            <td id='100'><div></div></td>
+                            <td id='125'><div></div></td>
+                            <td id='150'><div></div></td>
+                            <td id='175'><div></div></td>
+                            <td id='200'><div></div></td>
+                            <td id='225'><div></div></td>
+                            <td id='250'><div></div></td>
+                            <td id='275'><div></div></td>
+                            <td id='300'><div></div></td>
+                            <td id='PTC'><div></div></td>
+                        </tr>
+                        <tr>
+                            <th>0.00</th>
+                            <th>0.25</th>
+                            <th>0.50</th>
+                            <th>0.75</th>
+                            <th>1.00</th>
+                            <th>1.25</th>
+                            <th>1.50</th>
+                            <th>1.75</th>
+                            <th>2.00</th>
+                            <th>2.25</th>
+                            <th>2.50</th>
+                            <th>2.75</th>
+                            <th>3.00</th>
+                            <th>PTC</th>
+                        </tr>
+                    </table>
+                </div><br />
                 <small>Averages are based on the people currently in the table, so previous averages may differ slightly as it does not factor in people who are no longer in the department</small>
                 <script type='text/javascript'>
                     $('#chairTable').dataTable({
@@ -389,6 +442,7 @@
                         var fac_count = 0;
                         var fso_sum = 0;
                         var fso_count = 0;
+                        var histogram = {};
                         $(".increment select").each(function(i, el){
                             var tr = $(el).closest("tr");
                             if($($("td", tr)[1]).text() == "Stroulia, Eleni"){
@@ -408,6 +462,29 @@
                                         $(tr).attr('data-fecid').includes("M")){
                                     fso_sum += parseFloat($(el).val());
                                     fso_count++;
+                                }
+                            }
+                            if($(el).val() != "" && ($(tr).attr('data-fecid').includes("A") ||
+                                                     $(tr).attr('data-fecid').includes("B") ||
+                                                     $(tr).attr('data-fecid').includes("C") ||
+                                                     $(tr).attr('data-fecid').includes("N"))){
+                                if($(el).val().indexOf("PTC") != -1){
+                                    if(_.isUndefined(histogram["PTC"])){
+                                        histogram["PTC"] = 0;
+                                    }
+                                    histogram["PTC"]++;
+                                }
+                                else if(parseFloat($(el).val()) == 0){
+                                    if(_.isUndefined(histogram["000"])){
+                                        histogram["000"] = 0;
+                                    }
+                                    histogram["000"]++;
+                                } 
+                                else{
+                                    if(_.isUndefined(histogram[$(el).val().replace(".", "")])){
+                                        histogram[$(el).val().replace(".", "")] = 0;
+                                    }
+                                    histogram[$(el).val().replace(".", "")]++;
                                 }
                             }
                         });
@@ -440,6 +517,15 @@
                         else{
                             $("#deltaFSO").css("background", "white");
                             $("#deltaFSO").css("color", "black");
+                        }
+                        
+                        $(".histogram td div").height(0)
+                                              .attr("title", "");
+                        var max = _.max(histogram);
+                        
+                        for (const [key, val] of Object.entries(histogram)){
+                            $(".histogram td#" + key + " div").height((val/Math.max(max,1))*100 + "%")
+                                                              .attr("title", val);
                         }
                     });
                     
