@@ -137,6 +137,70 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
+        <ReportItem id="active_specify_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="active_specify_end" orientation="vertical" optional="true" 
+                    options="I am physically and/or mentally unable to be active|I don't know where/how to get help in my community|I have trouble maintaining a routine when it comes to activity|Other"
+                    labels="{showLanguage(I am physically and/or mentally unable to be active|
+                                          I don't know where/how to get help in my community|
+                                          I have trouble maintaining a routine when it comes to activity|
+                                          Other,
+                    
+                                          Je suis physiquement ou mentalement incapable d’être actif&amp;#40;ve&amp;#41;|
+                                          Je ne sais pas où ni comment obtenir de l’aide dans ma communauté| 
+                                          J’ai du mal à maintenir une routine lorsqu’il s’agit d’activité physique| 
+                                          Autre)}">
+            <![CDATA[
+                <span id="active_specify_end">
+                    <h3>
+                        <en>What challenges have you faced when it comes to staying active? (choose all that apply):</en>
+                        <fr>Quel votre défi principal pour rester actif(ve)? (Cochez tout ce qui s’applique)</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="active_text_specify" type="Text" blobItem="ACTIVESPECIFY" width="400px" optional="true">
+            <![CDATA[
+                    <span id="activespecify">
+                        <div class="requiredField"><en>Specify</en><fr>Précisez</fr>: {$item}</div>
+                    </span>
+                </span>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+            <script type='text/javascript'>
+                $('span#active_specify_end').hide();
+                    function specifyActiveEnd(){
+                        if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "No"){$('span#active_specify_end').show();}
+                        else if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "All day"){$('span#active_specify_end').show();}
+                        else if($("input:radio[name='SelfAssessment_behave2_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
+                        else if($("input:radio[name='SelfAssessment_behave0_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
+                        else{$('span#active_specify_end').hide();}
+                    }
+                    _.defer(specifyActiveEnd);
+                    $("input:radio[name='SelfAssessment_behave1_avoid']").change(specifyActiveEnd);
+                    $("input:radio[name='SelfAssessment_behave2_avoid']").change(specifyActiveEnd);
+                    $("input:radio[name='SelfAssessment_behave0_avoid']").change(specifyActiveEnd);
+                    $("input:radio[name='SelfAssessment_behave4_avoid']").change(specifyActiveEnd);
+                    $("input:radio[name='SelfAssessment_behave5_avoid']").change(specifyActiveEnd);
+                    $('span#activespecify').hide();
+                    
+                    function specifyActiveOther(){
+                        var flag = false;
+                        $('input[name="SelfAssessment_active_specify_end[]"]:checked').each(function() {
+                            if(this.value == "Other"){
+                                flag = true;
+                            }
+                        });
+                        if(flag){
+                            $('span#activespecify').show();
+                        }
+                        else{ $('span#activespecify').hide();}
+                    }
+                    _.defer(specifyActiveOther);
+                    $("input:checkbox[name='SelfAssessment_active_specify_end[]']").change(specifyActiveOther);
+            </script>
+        ]]>
+        </Static>
         <Static>
             <![CDATA[
                 <br/>
@@ -203,6 +267,75 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
+        <ReportItem id="vax_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="vax_end" orientation="vertical" optional="true" 
+                    options="I was not aware of the recommended vaccines|I don't know where or how to get vaccinated|I don't see the point of getting vaccinated|Other"
+                    labels="{showLanguage(I was not aware of the recommended vaccines|
+                                          I don't know where or how to get vaccinated|
+                                          I don't see the point of getting vaccinated|
+                                          Other,
+                                          
+                                          Je ne connaissais pas les vaccins recommandés|
+                                          Je ne sais pas où ni comment me faire vacciner| 
+                                          Je ne vois pas l’intérêt de me faire vacciner|
+                                          Autre)}">
+            <![CDATA[
+                <span id="vax_end">
+                    <h3>
+                        <en>What are the main reasons that you have not had all of the recommended vaccinations listed above? (choose all that apply):</en>
+                        <fr>Quelle est la principale raison pour laquelle vous n’avez pas reçu tous les vaccins recommandés énumérés ci-dessus? (Cochez tout ce qui s’applique)</fr>
+                    </h3>
+                    {$item}
+                </span>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vax_end_text_specify" blobItem="VAXENDTEXTSPECIFY" type="Textarea" optional="true">
+            <![CDATA[
+                    <span id="vax_end_specify">
+                        <en>Specify:</en>
+                        <fr>Précisez:</fr> {$item}
+                    </span>
+                </span>
+                ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+            <script type='text/javascript'>
+                $('span#vax_end').hide();
+                    function specifyVaxEnd(){
+                        if($("input:radio[name='SelfAssessment_vaccinate2_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                        else if($("input:radio[name='SelfAssessment_vaccinate3_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                        else if($("input:radio[name='SelfAssessment_vaccinate4_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                        else if($("input:radio[name='SelfAssessment_vaccinate5_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                        else if($("input:radio[name='SelfAssessment_vaccinate6_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                        else{$('span#vax_end').hide();}
+                    }
+                    _.defer(specifyVaxEnd);
+                    $("input:radio[name='SelfAssessment_vaccinate2_avoid']").change(specifyVaxEnd);
+                    $("input:radio[name='SelfAssessment_vaccinate3_avoid']").change(specifyVaxEnd);
+                    $("input:radio[name='SelfAssessment_vaccinate4_avoid']").change(specifyVaxEnd);
+                    $("input:radio[name='SelfAssessment_vaccinate5_avoid']").change(specifyVaxEnd);
+                    $("input:radio[name='SelfAssessment_vaccinate6_avoid']").change(specifyVaxEnd);
+
+                    $('span#vax_end_specify').hide();
+                    function specifyVaxOther(){
+                        var flag = false;
+                        $('input[name="SelfAssessment_vax_end[]"]:checked').each(function() {
+                            if(this.value == "Other"){
+                                flag = true;
+                            }
+                        });
+                        if(flag){
+                            $('span#vax_end_specify').show();
+                        }
+                        else{ 
+                            $('span#vax_end_specify').hide();
+                        }
+                    }
+                    _.defer(specifyVaxOther);
+                    $("input:checkbox[name='SelfAssessment_vax_end[]']").change(specifyVaxOther);
+                </script>          
+            ]]>
+        </Static>
         <Static>
             <![CDATA[
                 <br/>
@@ -241,6 +374,75 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
+        <ReportItem id="meds_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="meds_end" orientation="vertical" optional="true" 
+                    options="I was not aware that this is recommended|I do not feel comfortable and/or prepared to have this conversation with a healthcare provider|I do not know who to talk to about this|I have had my medication reviewed in the past, but find it hard to remember each year|I do not understand why this is important|Other"
+                    labels="{showLanguage(I was not aware that this is recommended|
+                                          I do not feel comfortable and/or prepared to have this conversation with a healthcare provider|
+                                          I do not know who to talk to about this|
+                                          I have had my medication reviewed in the past&amp;#44; but find it hard to remember each year|
+                                          I do not understand why this is important|
+                                          Other,
+                                          
+                                          Je ne savais pas que c’était recommandé|
+                                          Je ne me sens pas à l’aise ou préparé à avoir cette conversation avec un fournisseur de soins de santé|
+                                          Je ne sais pas à qui m’adresser à ce sujet Étiquette : programmes d’optimisation des médicaments|
+                                          J’ai déjà fait réviser mes médicaments par le passé&amp;#44; mais j’ai du mal à m’en souvenir chaque année| 
+                                          Je ne comprends pas pourquoi cela est important|
+                                          Autre)}">
+            <![CDATA[
+                <span id="meds_end">
+                <h3>
+                    <en>Why have you not had your medication reviewed in the last year? (choose all that apply):</en>
+                    <fr>Pourquoi n’avez-vous pas fait vérifier vos médicaments au cours de la dernière année? (Cochez tout ce qui s’applique)</fr>
+                </h3>
+                <div class="requiredField">{$item}</div>
+                </span>
+            ]]>
+        </ReportItem>
+        <ReportItem id="meds_end_text_specify" blobItem="MEDSENDTEXTSPECIFY" type="Textarea" optional="true">
+            <![CDATA[
+                <span id="meds_end_specify">
+                    <div class="requiredField">
+                        <en>Specify:</en>
+                        <fr>Précisez:</fr> {$item}</div>
+                </span>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('span#meds_end').hide();
+                    function specifyMedsEnd(){
+                        if($("input:radio[name='SelfAssessment_meds3_avoid']:checked").val() == "No"){
+                            $('span#meds_end').show();
+                        }
+                        else{
+                            $('span#meds_end').hide();
+                        }
+                    }
+                    _.defer(specifyMedsEnd);
+                    $("input:radio[name='SelfAssessment_meds3_avoid']").change(specifyMedsEnd);
+
+                    $('span#meds_end_specify').hide();
+                    function specifyMedsOther(){
+                        var flag = false;
+                        $('input[name="SelfAssessment_meds_end[]"]:checked').each(function() {
+                            if(this.value == "Other"){
+                                flag = true;
+                            }
+                        });
+                        if(flag){
+                            $('span#meds_end_specify').show();
+                        }
+                        else{ 
+                            $('span#meds_end_specify').hide();
+                        }
+                    }
+                    _.defer(specifyMedsOther);
+                    $("input:checkbox[name='SelfAssessment_meds_end[]']").change(specifyMedsOther);
+                </script>        
+            ]]>
+        </Static>
         <Static>
             <![CDATA[
             <br/>
@@ -452,6 +654,99 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
+        <ReportItem id="interact_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="interact_end" orientation="vertical" optional="true"
+                    options="I have been restricted due to COVID-19 public health measures|I find it physically/mentally difficult to participate in social interactions|I am not aware of opportunities for social interaction in my community|I have trouble maintaining social connections over time|I do not feel that I need more interaction than I already have|Other"
+                    labels="{showLanguage(I have been restricted due to COVID-19 public health measures|
+                                          I find it physically/mentally difficult to participate in social interactions|
+                                          I am not aware of opportunities for social interaction in my community|
+                                          I have trouble maintaining social connections over time|
+                                          I do not feel that I need more interaction than I already have|
+                                          Other,
+                    
+                                          J’ai été restreint&amp;#40;e&amp;#41; en raison des mesures de santé publique contre la COVID-19 |
+                                          Je trouve qu’il est physiquement ou mentalement difficile d’avoir une vie sociale|
+                                          Je ne suis pas au courant des possibilités d’interaction sociale dans ma communauté|
+                                          J’ai du mal à maintenir des liens sociaux dans le temps|
+                                          J’estime que ma vie sociale est satisfaisante pour le moment|
+                                          Autre)}">
+            <![CDATA[
+                <span id="interact_end">
+                    <h3>
+                        <en>What challenges have you faced when it comes to social interaction? (choose all that apply):</en>
+                        <fr>Quel a été votre principal défi en matière d’interaction sociale (cochez tout ce qui s’applique)?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+                </span>
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact_end_text_specify" blobItem="INTERACTENDTEXTSPECIFY" type="Textarea" optional="true">
+            <![CDATA[
+                <span id="interact_end_specify">
+                    <div class="requiredField">
+                        <en>Specify</en>
+                        <fr>Précisez</fr>: {$item}</div>
+                </span>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    function getScore(score){
+                        if(score == "None"){return 0}
+                        else if(score=="1"){return 1}
+                        else if(score=="2"){return 2}
+                        else if (score=="3-4"){return 3}
+                        else if(score=="5-8"){return 4}
+                        else{return 5}
+                    }
+
+                    function calculateInteractionScore(){
+                        var score1 = $("input:radio[name='SelfAssessment_interact1_avoid']:checked").val()
+                        var score2 = $("input:radio[name='SelfAssessment_interact2_avoid']:checked").val()
+                        var score3 = $("input:radio[name='SelfAssessment_interact3_avoid']:checked").val()
+                        var score4 = $("input:radio[name='SelfAssessment_interact4_avoid']:checked").val()
+                        var score5 = $("input:radio[name='SelfAssessment_interact5_avoid']:checked").val()
+                        var score6 = $("input:radio[name='SelfAssessment_interact6_avoid']:checked").val()
+                        return getScore(score1) + getScore(score2) + getScore(score3) + getScore(score4) + getScore(score5) + getScore(score6)
+                    }
+
+                    $('span#interact_end').hide();
+                    function specifyInteractEnd(){
+                        if(calculateInteractionScore() < 12 ){
+                            $('span#interact_end').show();
+                        }
+                        else{
+                            $('span#interact_end').hide();
+                        }
+                    }
+                    _.defer(specifyInteractEnd);
+                    $("input:radio[name='SelfAssessment_interact1_avoid']").change(specifyInteractEnd);
+                    $("input:radio[name='SelfAssessment_interact2_avoid']").change(specifyInteractEnd);
+                    $("input:radio[name='SelfAssessment_interact3_avoid']").change(specifyInteractEnd);
+                    $("input:radio[name='SelfAssessment_interact4_avoid']").change(specifyInteractEnd);
+                    $("input:radio[name='SelfAssessment_interact5_avoid']").change(specifyInteractEnd);
+                    $("input:radio[name='SelfAssessment_interact6_avoid']").change(specifyInteractEnd);
+
+                    $('span#interact_end_specify').hide();
+                    function specifyInteractOther(){
+                        var flag = false;
+                        $('input[name="SelfAssessment_interact_end[]"]:checked').each(function() {
+                            if(this.value == "Other"){
+                                flag = true;
+                            }
+                        });
+                        if(flag){
+                            $('span#interact_end_specify').show();
+                        }
+                        else{ 
+                            $('span#interact_end_specify').hide();
+                        }
+                    }
+                    _.defer(specifyInteractOther);
+                    $("input:checkbox[name='SelfAssessment_interact_end[]']").change(specifyInteractOther);
+            </script> 
+        ]]>
+        </Static>
         <Static>
             <![CDATA[
             <br/><br/>
@@ -503,6 +798,78 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
+        <ReportItem id="diet_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="diet_end" orientation="vertical" optional="true" 
+                    options="I find it physically/mentally difficult to do this|I was not aware of one or more of the recommendations in the questions above|It's difficult for me to access nutritious and/or culturally appropriate food because of where I live|I can't afford the type of food that I would like to eat|I have trouble maintaining a healthy eating routine|Other"
+                    labels="{showLanguage(I find it physically/mentally difficult to do this|
+                                          I was not aware of one or more of the recommendations in the questions above|
+                                          It's difficult for me to access nutritious and/or culturally appropriate food because of where I live|
+                                          I can't afford the type of food that I would like to eat|
+                                          I have trouble maintaining a healthy eating routine|
+                                          Other,
+                                          
+                                          Je trouve cela physiquement ou mentalement difficile|
+                                          Je n’étais pas au courant de certaines recommandations ci-dessus|
+                                          Il m’est difficile d’accéder à des aliments nutritifs ou culturellement adaptés en raison de l’endroit où je vis|
+                                          Je n’ai pas les moyens de me procurer le type de nourriture que j’aimerais manger|
+                                          J’ai du mal à maintenir une routine alimentaire saine|
+                                          Autre)}">
+            <![CDATA[
+            <span id="diet_end">
+                <h3>
+                    <en>What challenges have you faced when it comes to maintaining a balanced diet? (choose all that apply):</en>
+                    <fr>Quel est l’aspect le plus difficile pour vous dans le maintien d’une alimentation équilibrée? (Cochez tout ce qui s’applique)</fr>
+                </h3>
+                <div class="requiredField">{$item}</div>
+            </span>
+            ]]>
+        </ReportItem>
+        <ReportItem id="diet_end_text_specify" blobItem="DIETENDTEXTSPECIFY" type="Textarea" optional="true">
+            <![CDATA[
+                <span id="diet_end_specify">
+                    <div class="requiredField">
+                        <en>Specify</en>
+                        <fr>Précisez</fr>: {$item}
+                    </div>
+                </span>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+            <script type='text/javascript'>
+                $('span#diet_end').hide();
+                    function specifyDietEnd(){
+                        if($("input:radio[name='SelfAssessment_diet1_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_diet2_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_diet3_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_diet4_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                            else{$('span#diet_end').hide();}
+                                   }
+                             _.defer(specifyDietEnd);
+                                $("input:radio[name='SelfAssessment_diet1_avoid']").change(specifyDietEnd);
+                                $("input:radio[name='SelfAssessment_diet2_avoid']").change(specifyDietEnd);
+                                $("input:radio[name='SelfAssessment_diet3_avoid']").change(specifyDietEnd);
+                                $("input:radio[name='SelfAssessment_diet4_avoid']").change(specifyDietEnd);
+
+
+                                $('span#diet_end_specify').hide();
+                                function specifyDietOther(){
+                    var flag = false;
+                    $('input[name="SelfAssessment_diet_end[]"]:checked').each(function() {
+                        if(this.value == "Other"){
+                            flag = true;
+                        }
+                    });
+                                        if(flag){
+                                                $('span#diet_end_specify').show();
+                                        }
+                                        else{ $('span#diet_end_specify').hide();}
+                                }
+                                _.defer(specifyDietOther);
+                                $("input:checkbox[name='SelfAssessment_diet_end[]']").change(specifyDietOther);
+
+            </script>          
+                ]]>
+        </Static>
     </ReportSection>
     <ReportSection id="healthquestions7" tooltip="Health Related QoL7" name="Health Related QoL" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" >
         <ReportItem id="healthstatus6_avoid" type="RangeSliderReportItem" step="5" default="50" orientation="vertical" blobItem="healthstatus_avoid6">
