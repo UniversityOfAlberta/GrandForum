@@ -309,6 +309,7 @@
                     </tbody>
                 </table><br />
                 <div style='display: inline-block;'>
+                    <h3 style='text-align: center;'>Average Increments</h3>
                     <table class='wikitable' frame='box' rules='all'>
                         <tr>
                             <th>Year</th>
@@ -372,6 +373,7 @@
                             width: 40px;
                         }
                     </style>
+                    <h3 style='text-align: center;'>Faculty Increments</h3>
                     <table class='wikitable histogram' frame='box' rules='all'>
                         <tr>
                             <td id='000'><div></div></td>
