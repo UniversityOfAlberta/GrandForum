@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/18" extends="Letters/Base">
+    <ReportSection id="letter" title="End of Second Probationary Period - No Further Appointment Awarded">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) did not support your Department Chair’s recommendation to offer you a one-year extension to your second probationary appointment and has made a preliminary decision that no further appointment be offered to you at the end of your probationary period.</p>
+                
+                <p>Pursuant to Article A.6.19.1, this is the preliminary position of FEC which enables you to request a reconsideration by FEC.</p>
+                <p>The matters of concern to FEC were as follows:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                
+                <p>As per Article A6.19.2 of Schedule A, your Department Chair continues to support their original recommendation to offer you a one-year extension OR now supports the FEC preliminary position to offer no further appointment.</p>
+                
+                You may wish to consider the following options:
+                <ul style='margin-left:1em;'>
+                    <li>Pursuant to Article A6.19.3 of Schedule A, I am able to meet with you during the week of November 12 - 15 to discuss your individual case, as it was presented before FEC. Please contact my office at enggdeanea@ualberta.ca for an appointment.</li>
+                    <li>Pursuant to Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s decision by informing me, in writing, within 5 working days from the receipt of this letter</li>
+                </ul>
+                
+                <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
+                
+                <p>If you have your case reconsidered by FEC and they stand by their preliminary decision, you have the right to appeal this decision to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A.</p>
+                
+                <p>Should you choose not to have your case reconsidered by FEC, in accordance with A6.20.2 the preliminary position of FEC shall become the final and binding decision of FEC. Thus, your appointment with the {$user_dept} at the University of Alberta will terminate effective June 30, 2025. You would be entitled to severance in accordance with Article A5.06 of Schedule A.</p>
+                
+                <p>If you have any procedural questions, please contact the FEC Administrator, Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

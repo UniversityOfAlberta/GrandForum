@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/20" extends="Letters/Base">
+    <ReportSection id="letter" title="End of Second Probationary Period - No Further Appointment Awarded">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that, following reconsideration on November 12 - 15 of its preliminary position determined at its meeting on November 12 - 15, the Faculty Evaluation Committee (FEC) has reconfirmed its preliminary position that you receive no further appointment at the end of your probationary period.</p>
+                
+                <p>Given that you appeared before the FEC on November 12 - 15 seeking reconsideration of your case, you have the right to appeal this decision in accordance with Article A6.16.8 of Schedule A, to the General Appeals Committee (GAC). A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of this letter.</p>
+                
+                <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
+                
+                <p>Should you choose not to appeal your case through GAC, the decision made by FEC at the reconsideration meeting becomes final and binding and your appointment with the {$user_dept} at the University of Alberta will terminate effective June 30, 2025. You are entitled to severance pursuant to Article A5.06 of Schedule A.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

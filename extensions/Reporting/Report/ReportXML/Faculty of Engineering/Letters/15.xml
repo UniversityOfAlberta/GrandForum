@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/15" extends="Letters/Base">
+    <ReportSection id="letter" title="End of Second Probationary Period - One Year Extension Awarded">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its meeting held on November 12 - 15 has agreed with your Department Chair’s recommendation that your probationary period be extended by one year. In accordance with the provisions of Article A5.04.2(c) of Schedule A, your second probationary period has been extended to June 30, 2025. This decision is final and binding</p>
+                
+                <p>Your appointment will be governed by the Common Agreement and Schedule A, as amended from time to time.</p>
+                <p>It will be important to address the following matters that were of concern:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                
+                <p>I encourage you to remain familiar with the standards for tenure and promotion of the Faculty and understand the expectations of your Department Chair. You may wish to consult with your Department Chair about the matters of concern to FEC.</p>
+                
+                <p>Thank you for your contributions to the University, and I wish you great success during the coming year.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

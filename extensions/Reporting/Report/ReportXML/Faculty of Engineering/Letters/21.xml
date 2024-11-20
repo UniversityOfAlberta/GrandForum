@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/21" extends="Letters/Base">
+    <ReportSection id="letter" title="End of Second Probationary Period - Tenure Awarded">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that, following the FEC meeting on November 12 - 15 at which you appeared to contest the Department Chair’s recommendation that you not be awarded tenure, I can advise that the Faculty Evaluation Committee has decided to grant you tenure.</p>
+                <p>In accordance with Article A6.18.12, FEC arrived at the decision to award tenure based on it’s assessment of your</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                
+                <p>In accordance with FEC’s decision, your appointment will be changed from a probationary to an appointment with tenure effective July 1, 2025. Your appointment will continue to be governed by the Common Agreement and Schedule A, as amended from time to time.</p>
+                
+                <p>The granting of tenure also constitutes designation as Associate Professor, the rank which you will hold effective July 1, 2025.</p>
+                
+                <p>I would like to take this opportunity to congratulate you on your attainment of tenure. Thank you for your contributions to the University, and I wish you great success.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
