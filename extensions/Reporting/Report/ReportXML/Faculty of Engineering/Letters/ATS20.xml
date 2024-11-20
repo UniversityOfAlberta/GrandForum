@@ -1,36 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/ATS20" extends="Letters/Base">
-    <ReportSection id="letter" title="Merit Recommendation">
+    <ReportSection id="letter" title="ATSEC Decision Regarding Merit Increment">
         <ReportItem id="from">
             <![CDATA[
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
-                Chair Academic Teaching Staff Evaluation Committee
+                Simaan Abourizk<br />
+                Dean of Engineering<br />
+                Chair of the Engineering Faculty Evaluation Committee
             ]]>
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within Faculty of Science.</p>
+                <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within the Faculty of Engineering.</p>
 
-                <p>At its meetings of April 3, 2023, the ATSEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
+                <p>At its meeting of April 3, 2024, the ATSEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
 
                 <p>As you chose not to appear before ATSEC to present your case or submit documentation in support of your case, the decision will be final and binding. As per Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC.</p>
 
-                <p>Should you have any procedural questions, please contact the Secretary to ATSEC, Lori Dammann-Thomson, at 780-492-6232 or sciea@ualberta.ca.</p>
-            ]]>
-        </ReportItem>
-        <ReportItem id="footer">
-            <![CDATA[
-                Sincerely,<br />
-                <br />
-                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
-                <br />
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
-                Chair of the Academic Teaching Staff Evaluation Committee<br />
-                ES/jb
-                </div>
+                <p>Should you have any procedural questions, please contact Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
             ]]>
         </ReportItem>
     </ReportSection>

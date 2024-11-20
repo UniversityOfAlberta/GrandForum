@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/27" extends="Letters/Base">
-    <ReportSection id="letter" title="FEC Decision Regarding Merit">
+    <ReportSection id="letter" title="Application for Promotion - Promotion not Awarded by FEC">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Faculty Evaluation Committee (FEC) has approved the award of a {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} incrementation rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation recommended by your Department Chair. FEC was impressed by your contributions to the Faculty and wishes you continued success in the coming year.</p>
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its contested case meeting on the week of November 12 - 15 has agreed with your Department Chair’s recommendation and decided not to approve your application for promotion to Professor. Although FEC values your contributions in many areas, the following matters are of concern to the FEC:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                 
-                <p>Each year, the FEC is charged with the responsibility of awarding incrementation to its faculty from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
+                You may wish to consider the following options:
+                <ul style='margin-left: 1em;'>
+                    <li>As per Article A6.16.8 of Schedule A, you have the right to appeal this decision to the General Appeals Committee (GAC).</li>
+                    <li>As per Article A8.04.5 of Schedule A, a request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of this letter.</li>
+                </ul>
                 
-                <p>I wish to thank you for your dedication and outstanding contribution to the Faculty.</p>
+                <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
+                
+                <p>If you have any procedural questions, please contact the FEC Administrator, Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
             ]]>
         </ReportItem>
     </ReportSection>

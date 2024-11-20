@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/23" extends="Letters/Base">
-    <ReportSection id="letter" title="Incrementation">
+    <ReportSection id="letter" title="Application for Promotion - Promotion not Recommended">
+        <ReportItem id="from">
+            <![CDATA[
+                {getText({$report_type}, TABLE, CHAIR, {$user_id}, 1, 0)}
+            ]]>
+        </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>I am writing to inform you that you will receive a 1.0 increment as per Article A6.11.1 of Schedule A, which provides that an Academic Faculty member whose appointment takes effect in the period July 1 to October 1, inclusive, is eligible to receive a full increment. The award takes effect on July 1, 2024.</p>
+                <p>This is to inform you that I do not support and will not be recommending to the Faculty Evaluation Committee (FEC) your application for promotion to the rank of Professor. My recommendation is based on the following rationale:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                 
-                <p>I would like to take this opportunity to wish you continued success in your teaching, research and service.</p>
+                <p>Under Article A6.17.1 of Schedule A, you have the right to appear before FEC and contest the recommendation. It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
+                
+                <p>Please be advised that the date for your case has been scheduled for November 12 - 15 in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}.</p>
+                
+                Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Simaan Abourizk by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to your Department Chair:
+                <ul style='margin-left: 1em;'>
+                    <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
+                    <li>any material in response to the Department Chair’s [Dean’s] recommendation and any other material relevant to your case;</li>
+                    <li>a list of names of persons who will attend the FEC hearing as your witnesses.</li>
+                </ul>
+                
+                <p>Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
+                
+                <p>If you have any procedural questions, please contact the FEC Administrator, Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
             ]]>
         </ReportItem>
     </ReportSection>

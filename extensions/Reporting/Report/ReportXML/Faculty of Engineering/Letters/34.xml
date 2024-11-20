@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/34" extends="Letters/Base">
-    <ReportSection id="letter" title="Merit Recommendation">
-        <ReportItem id="body">
+    <ReportSection id="letter" title="Incrementation - Incrementation Awarded is Less than Recommendation">
+        <ReportItem id="from">
             <![CDATA[
-                <p>Each year, the Faculty Evaluation Committee (FEC) is charged with the responsibility of awarding incrementation to its faculty, from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
+                FEC Chair
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="bodyset">
+            <Static>
+                <![CDATA[
+                    <p>This is to inform you that at the Faculty Evaluation Committee (FEC) reconsideration meeting on {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, FEC did not support your minimal acceptable position of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation which was supported OR not supported by your Department Chair and have instead awarded incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}.</p>
+                    
+                    <p>Since you appeared before the FEC seeking reconsideration of its preliminary position, you have the right to appeal this decision to the General Appeals Committee (GAC) in accordance with Article A8.03.1 of Schedule A. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of this letter.</p>
+                    
+                    
+                    <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</p>
+                ]]>
+            </Static>
+            <If if="{==({getText({$report_type}, TABLE, 0D, {$user_id}, 1, 0)},Yes)}">
+                <![CDATA[
+                    <p>Since the increment award is 0d and this is the second 0d over the last three years of review, the record will be forwarded to the Provost in accordance with Article A7 of Schedule A if the GAC upholds the FEC decision</p>
+                ]]>
+            </If>
+            <Static>
+                <![CDATA[
+                    <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</p>
+                    
+                    <p>Should you have any procedural questions, please contact the FEC Administrator, Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <ReportItem id="footer">
+            <![CDATA[
                 
-                As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of December 7, 2023, the FEC did not support your Chair’s recommendation. Instead it is prepared to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Chair {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}. Under Article A6.19.1 of Schedule A, this is the preliminary position of FEC. This decision was based on the following:
-                
-                <ul><li>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
-                
-                You may wish to consider the following options: 
-                <ul>
-                    <li>I am willing to meet with you during the week of {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case as it was presented before FEC. Please contact my office at 780-492-6232 for an appointment.</li>
-                    <li>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s preliminary decision by informing me, in writing, within 5 working days from the receipt of this letter.</li>
-                </ul><br />
-
-                <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</p>
-                
-                <p>If you have your case reconsidered by FEC and they stand by their preliminary decision, you have the right to appeal this decision to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of the letter confirming FEC's reconsideration decision.</p>
-                
-                <p>If you choose not to appear before FEC to present your case or submit documentation in support of your case, the decision will be final and binding. Under Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC.</p>
-                
-                <p>Should you have any procedural questions, please contact the Secretary to FEC, Lori Dammann-Thomson, at 780-492-6232 or sciea@ualberta.ca.</p>
             ]]>
         </ReportItem>
     </ReportSection>

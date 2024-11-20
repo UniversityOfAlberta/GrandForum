@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/26" extends="Letters/Base">
-    <ReportSection id="letter" title="FEC Decision Regarding Merit">
+    <ReportSection id="letter" title="Application for Promotion - Promotion not Awarded by FEC">
         <ReportItem id="body">
             <![CDATA[
-                <p>I am writing to inform you that the Faculty Evaluation Committee (FEC) has accepted the recommendation of your Department Chair and awarded you {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation in recognition of your achievements during the past evaluation period. The award takes effect on July 1, 2024.</p>
-
-                <p>Each year, the FEC is charged with the responsibility of awarding incrementation to its faculty from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
-
-                <p>I would like to take this opportunity to thank you for your {getText({$report_type}, TABLE, PERFORMANCE, {$user_id}, 1, 0)} performance and to wish you continued success in your teaching, research and service.</p>
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) does not support the recommendation of your Department Chair and has made a preliminary decision not to approve your application for promotion to the rank of Professor (preliminary position). Although FEC values your contributions in many areas, the following matters are of concern to the FEC</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                
+                You may wish to consider the following options:
+                <ul>
+                    <li>Pursuant to Article A6.19.3 of Schedule A, I am willing to meet with you during the week of {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case, as it was presented before FEC. Please contact my office at enggdeanea@ualberta.ca for an appointment.</li>
+                    <li>Pursuant to Article A6.20.1 of Schedule A, you have the right to request reconsideration of FEC’s decision by informing me, in writing, within 5 working days from the receipt of this letter.</li>
+                </ul>
+                
+                <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
+                
+                <p>If you have any procedural questions, please contact the FEC Administrator, Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
             ]]>
         </ReportItem>
     </ReportSection>

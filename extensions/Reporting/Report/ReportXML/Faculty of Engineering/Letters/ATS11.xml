@@ -1,34 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/ATS11" extends="Letters/Base">
-    <ReportSection id="letter" title="ATSEC Decision Regarding Merit">
+    <ReportSection id="letter" title="ATSEC Decision Regarding Merit Increment">
         <ReportItem id="from">
             <![CDATA[
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
-                Chair Academic Teaching Staff Evaluation Committee
+                Simaan Abourizk<br />
+                Dean of Engineering<br />
+                Chair of the Engineering Faculty Evaluation Committee
             ]]>
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>I am writing to inform you that the Academic Teaching Staff Evaluation Committee (ATSEC) has accepted the recommendation of your Department Chair and awarded you {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} merit increment in recognition of your achievements during the past evaluation period. The award takes effect on July 1, 2023.</p>
+                <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within the Faculty of Engineering.</p>
+                
+                <p>I am writing to inform you that the ATSEC has accepted the recommendation of your Department Chair and has awarded you a merit increment of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} in recognition of your achievements during the past evaluation period. The award takes effect on July 1, 2024.</p>
 
-                <p>Each year, the ATSEC is charged with the responsibility of awarding merit increments to its faculty from an increment pool that is currently equal to 1.2 of the eligible staff within the Faculty.</p>
-
-                <p>I would like to take this opportunity to thank you for your work this past year and to wish you continued success in your teaching</p>
-            ]]>
-        </ReportItem>
-        <ReportItem id="footer">
-            <![CDATA[
-                Sincerely,<br />
-                <br />
-                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
-                <br />
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
-                Chair of the Academic Teaching Staff Evaluation Committee<br />
-                ES/jb
-                </div>
+                <p>I would like to take this opportunity to thank you for your work this past year, and to wish you continued success in your teaching.</p>
+                
+                <p>Should you have any procedural questions, please contact Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
             ]]>
         </ReportItem>
     </ReportSection>
