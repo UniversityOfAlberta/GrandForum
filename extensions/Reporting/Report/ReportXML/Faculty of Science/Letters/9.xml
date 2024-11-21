@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/9" extends="Letters/Base">
+    <ReportSection id="letter" title="End of First Probationary Period - Tenure Awarded">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that the Faculty Evaluation Committee at its meeting held on December 2 - 6 has agreed with your Department Chair’s recommendation and has awarded you tenure.</p>
+                
+                <p>In accordance with its decision, your appointment will change from a probationary appointment to a tenured appointment effective July 1, 2025. Your appointment will continue to be governed by the Common Agreement and Schedule A, as amended from time to time.</p>
+                
+                <p>With the awarding of tenure your rank will be that of Associate Professor, effective July 1, 2025.</p>
+                
+                <p>I would like to take this opportunity to congratulate you on your achievement of tenure. Thank you for your contributions to the University and I wish you great success during the coming year.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

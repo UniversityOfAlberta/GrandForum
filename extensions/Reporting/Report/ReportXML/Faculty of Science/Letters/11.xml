@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report pdfFiles="Letters/10" extends="Letters/Base">
+<Report pdfFiles="Letters/11" extends="Letters/Base">
     <ReportSection id="letter" title="End of First Probationary Period - Recommendation of No Further Appointment">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that as Dean, I have received your Department Chair’s recommendation that no further appointment be offered to you. As such, the decision regarding the granting of a second probation period has been referred to FEC.</p>
+                <p>This is to inform you that I will be recommending to the Faculty Evaluation Committee (FEC) that at the end of your first probationary period, no further appointment be offered to you. My recommendation is based on the following rationale:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                 
                 <p>Under Article A6.17.1 of Schedule A, you have a right to appear before FEC and contest the recommendation. It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
                 
@@ -12,11 +13,11 @@
                 Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to me, as Dean:
                 <ul style='margin-left: 1em;'>
                     <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
-                    <li>any material in response to the Department Chair’s recommendation and any other material relevant to your case;</li>
+                    <li>any material in response to my recommendation and any other material relevant to your case;</li>
                     <li>a list of names of persons who will attend the FEC hearing as your witnesses.</li>
                 </ul>
                 
-                <p>Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
+                <p>Materials submitted to the FEC Chair and myself should be submitted electronically, if feasible.</p>
                 
                 <p>If you choose not to appear before FEC to present your case or submit documentation in support of your position, the FEC decision will be final and binding. Under Article A8.03.1 of Schedule A, you may not appeal this decision to the General Appeals Committee (GAC).</p>
                 
