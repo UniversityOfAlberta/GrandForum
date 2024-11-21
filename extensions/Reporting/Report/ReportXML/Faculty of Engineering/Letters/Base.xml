@@ -110,7 +110,8 @@
                         </td>
                         <td style='white-space:nowrap;' align='center'>
                             <input class='generatePDF' type='button' value="Generate PDF" />
-                            <img class="throbber" style="display: none; vertical-align: -20%;" src="../skins/Throbber.gif">
+                            <img class="throbber" style="display: none; vertical-align: -20%;" src="../skins/Throbber.gif"><br />
+                            <a style='cursor: pointer;' class='preview'>Preview</a>
                         </td>
                 ]]>
             </ReportItem>
@@ -225,6 +226,16 @@
                     }).trigger("change");
                     $('#letterTable select, #letterTable textarea, #letterTable input').change(function(){
                         saveAll();
+                    });
+                    $('#letterTable a.preview').click(function(){
+                        var userid = $(this).closest("tr").attr("data-userid");
+                        var template = $(".template select option:selected", $(this).closest("tr")).val();
+                        
+                        var url = wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + 
+                                                            "&n=" + "{$report_type}".slice(-1) + 
+                                                            "&userId=" + userid + 
+                                                            "&generatePDF&preview&dpi=100";
+                        window.open(url,"Preview",'height=720,width=825');
                     });
                     $('#letterTable input.generatePDF').click(function(){
                         var userid = $(this).closest("tr").attr("data-userid");
@@ -493,11 +504,10 @@
         <Static id="footer">
             <![CDATA[
                 Sincerely,<br />
-                <!--<br />
-                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
                 <br />
-                -->
+                <div class='previewnodisplay'><img src='skins/Signature3.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature3.png' style='height: 3em;' /></div>
+                <br />
                 Simaan Abourizk<br />
                 Dean of Engineering<br />
                 Chair of the Engineering Faculty Evaluation Committee
