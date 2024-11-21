@@ -237,7 +237,9 @@
                                                             "&n=" + "{$report_type}".slice(-1) + 
                                                             "&userId=" + userid + 
                                                             "&generatePDF&preview&dpi=100";
-                        window.open(url,"Preview",'height=720,width=825');
+                        saveAll(function(){
+                            window.open(url,"Preview",'height=720,width=825');
+                        });
                     });
                     $('#letterTable input.generatePDF').click(function(){
                         var userid = $(this).closest("tr").attr("data-userid");
