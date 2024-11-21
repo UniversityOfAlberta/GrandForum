@@ -36,8 +36,14 @@ class PharmacyMap extends BackbonePage {
     }
     
     static function getCategoryJSON(){
+        global $config;
         $dir = dirname(__FILE__) . '/';
-        $json = json_decode(file_get_contents("{$dir}categories.json"));
+        if($config->getValue('networkFullName') == "AVOID Australia"){
+            $json = json_decode(file_get_contents("{$dir}categories_australia.json"));
+        }
+        else{
+            $json = json_decode(file_get_contents("{$dir}categories.json"));
+        }
         return $json;
     }
     

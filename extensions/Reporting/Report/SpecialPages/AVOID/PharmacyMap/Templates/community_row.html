@@ -29,7 +29,7 @@
         <% if ( output.PhoneNumbers.length != 0){ %>
             <b>Phone:</b> <%= output.PhoneNumbers[0].Phone %><br />
         <% } %>
-        <% if (output.WebsiteAddress != ""){ %>
+        <% if (output.WebsiteAddress != "" && output.WebsiteAddress != "http://"){ %>
             <b>Website:</b> <a class='programWebsite' href='<%=output.WebsiteAddress %>' target='_blank'><%=output.WebsiteAddress%></a><br />
         <% } %>
 	<a style="cursor: pointer;" onClick="$(this).parent().slideUp();$(this).parent().siblings('a').show();">Show less</a>
