@@ -705,5 +705,206 @@
                 }
             ]
         }
+    },
+    {
+        "id": "ChronicDiseases",
+        "title": "Chronic Diseases",
+        "titleFr": "",
+        "videos": 0,
+        "questions": 0,
+        "tags": ["everything"],
+        "resources": [
+            {
+                "file": "https://unisa.edu.au/research/research-volunteers/healthy-choices/#:~:text=%27Healthy%20Choices%27%20is%20a%206,online%2C%20or%20over%20the%20phone",
+                "title": "University SA Healthy Choices",
+                "tags": []
+            },
+            {
+                "file": "https://www.preventivehealth.sa.gov.au/healthy-living/being-active-healthy/better-health-coaching-service",
+                "title": "Preventive SA Better Health Coaching Service",
+                "tags": []
+            },
+            {
+                "file": "https://www.healthdirect.gov.au/management-of-chronic-conditions",
+                "title": "Management Of Chronic Diseases",
+                "tags": []
+            }
+        ]
+    },
+    {
+        "id": "Memory",
+        "title": "Memory",
+        "titleFr": "",
+        "videos": 0,
+        "questions": 0,
+        "tags": ["everything"],
+        "resources": {
+            "Information": [
+                {
+                    "file": "DA-Healthy-Brain-Healthy-Life-booklet.pdf",
+                    "title": "Healthy Brain and Healthy Life",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.dementia.org.au/brain-health",
+                    "title": "Dementia Australia- Brain Health",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.dementia.org.au/news/how-do-we-maintain-healthy-brain",
+                    "title": "How do we maintain a healthy brain",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.dementia.org.au/brain-health/reducing-your-risk-dementia/mental-exercise",
+                    "title": "Mental Exercise (includes library guide)",
+                    "tags": []
+                }
+            ],
+            "Videos": [
+                {
+                    "file": "What is dementia.mp4",
+                    "title": "What is Dementia?",
+                    "tags": []
+                }
+            ]
+        }
+    },
+    {
+        "id": "Pain",
+        "title": "Pain",
+        "titleFr": "",
+        "videos": 0,
+        "questions": 0,
+        "tags": ["everything"],
+        "resources": {
+            "Resource Guide": [
+                {
+                    "file": "3040-Taking-control-of-your-pain-in-Arthritis_web-version2.pdf",
+                    "title": "Taking control of your pain in athritis",
+                    "tags": []
+                }
+            ],
+            "Videos": [
+                {
+                    "file": "https://www.youtube.com/watch?v=eakyDiXX6Uc",
+                    "title": "The mysterious science of pain",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=jIwn9rC3rOI",
+                    "title": "Understanding Pain",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=lUQLMGdiYgc",
+                    "title": "Pain Control In Older Adults",
+                    "tags": []
+                }
+            ],
+            "Help": [
+                {
+                    "file": "https://chronicpainaustralia.org.au/",
+                    "title": "Chronic Pain Australia",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.painaustralia.org.au/pain-services-directory/pain-directory",
+                    "title": "National Pain Service Directory",
+                    "tags": []
+                },
+                {
+                    "file": "https://adelaidephn.com.au/our-work/programs-directory/living-well-with-persistent-pain-program",
+                    "title": "Living Well With Persistent Pain Program (GP referral required)",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.sahealth.sa.gov.au/wps/wcm/connect/public+content/sa+health+internet/services/hospitals/outpatient+services/outpatient+clinics/central+adelaide+lhn+specialist+and+outpatient+clinics/pain+management+unit/pain+management+unit+outpatient+services+at+central+adelaide",
+                    "title": "Pain Management Unit Central Adelaide (GP referral required)",
+                    "tags": []
+                }
+            ]
+        }
+    },
+    {
+        "id": "UrinaryIncontinence",
+        "title": "Urinary Incontinence",
+        "titleFr": "",
+        "videos": 0,
+        "questions": 0,
+        "tags": ["everything"],
+        "resources": {
+            "Information - Types of Urinary Incontinence": [
+                {
+                    "file": "https://www.continence.org.au/types-incontinence/urinary-incontinence/urge-incontinence",
+                    "title": "Urge Incontinence",
+                    "tags": []
+                },
+                {
+                    "file": "OveractiveBladderUrgency.pdf",
+                    "title": "Overactive Bladder and Urgency- fact sheet",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.continence.org.au/types-incontinence/urinary-incontinence/stress-incontinence",
+                    "title": "Stress Incontinence",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.continence.org.au/types-incontinence/urinary-incontinence/functional-incontinence",
+                    "title": "Functional Incontinence",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.continence.org.au/types-incontinence/urinary-incontinence/chronic-urinary-retention",
+                    "title": "Urinary Retention",
+                    "tags": []
+                }
+            ],
+            "Information - Other": [
+                {
+                    "file": "PelvicFloorExerciseMen.pdf",
+                    "title": "Pelvic Floor Muscle Exercise- Men",
+                    "tags": []
+                },
+                {
+                    "file": "PelvicFloorExerciseWomen.pdf",
+                    "title": "Pelvic Floor Muscle Exercise- Women",
+                    "tags": []
+                },
+                {
+                    "file": "Prolapse-Women.pdf",
+                    "title": "Prolapse-Women",
+                    "tags": []
+                },
+                {
+                    "file": "Prostate and Bladder-Men.pdf",
+                    "title": "Prostate and Bladder Problems- Men",
+                    "tags": []
+                },
+                {
+                    "file": "ContinenceProducts.pdf",
+                    "title": "Continence Products",
+                    "tags": []
+                }
+            ],
+            "Help": [
+                {
+                    "file": "Incontinence Help line Flyer.pdf",
+                    "title": "Incontinence Helpline Flyer",
+                    "tags": []
+                },
+                {
+                    "file": "Public Toilet Map Poster.pdf",
+                    "title": "Public Toilet Map Poster",
+                    "tags": []
+                },
+                {
+                    "file": "Continence Aids Payment Scheme.pdf",
+                    "title": "Continence Aids Payment Scheme- Guideline and Application Form",
+                    "tags": []
+                }
+            ]
+        }
     }
 ]

@@ -2145,7 +2145,7 @@ div.program-text {
 }
 
 .module-empty {
-    border: none;
+    border: 2px transparent solid;
     flex: 1 1 auto;
 }
 
