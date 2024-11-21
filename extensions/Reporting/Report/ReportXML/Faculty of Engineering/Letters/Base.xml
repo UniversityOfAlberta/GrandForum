@@ -219,9 +219,11 @@
                     $(".template").change(function(){
                         if($("option:selected", $(this)).val() == ""){
                             $(".generatePDF", $(this).closest("tr")).prop("disabled", true);
+                            $(".preview", $(this).closest("tr")).hide();
                         }
                         else{
                             $(".generatePDF", $(this).closest("tr")).prop("disabled", false);
+                            $(".preview", $(this).closest("tr")).show();
                         }
                     }).trigger("change");
                     $('#letterTable select, #letterTable textarea, #letterTable input').change(function(){
