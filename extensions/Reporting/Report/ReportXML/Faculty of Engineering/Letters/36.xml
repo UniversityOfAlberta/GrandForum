@@ -22,7 +22,7 @@
                 <p>Should you decide to have your case reconsidered, the following information is to be included in your written submission to the FEC Chair, Simaan Abourizk by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to your Department Chair:</p>
                 <ul style='margin-left:1em;'>
                     <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
-                    <li>any material in response to the Department Chair’s [Dean’s] recommendation and any other material relevant to your case;</li>
+                    <li>any material in response to FEC's preliminary position recommendation and any other material relevant to your case;</li>
                     <li>a list of names of persons who will attend the FEC hearing as your witnesses.</li>
                 </ul>
                 
