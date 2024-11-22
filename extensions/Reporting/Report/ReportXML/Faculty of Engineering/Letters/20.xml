@@ -9,7 +9,7 @@
                 
                 <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
                 
-                <p>Should you choose not to appeal your case through GAC, the decision made by FEC at the reconsideration meeting becomes final and binding and your appointment with the {$user_dept} at the University of Alberta will terminate effective June 30, 2025. You are entitled to severance pursuant to Article A5.06 of Schedule A.</p>
+                <p>Should you choose not to appeal your case through GAC, the decision made by FEC at the reconsideration meeting becomes final and binding and your appointment with the {$user_dept} at the University of Alberta will terminate effective June 30, {$next_year}. You are entitled to severance pursuant to Article A5.06 of Schedule A.</p>
             ]]>
         </ReportItem>
     </ReportSection>

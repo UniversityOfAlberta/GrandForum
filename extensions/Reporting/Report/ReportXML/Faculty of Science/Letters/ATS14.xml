@@ -12,7 +12,7 @@
             <![CDATA[
                 <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within the Faculty of Science.</p>
                 
-                <p>This is to inform you that the ATSEC has approved the award of a {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} merit increment for you, rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} merit increment recommended by your Department Chair. This increment takes effect July 1, 2024.</p>
+                <p>This is to inform you that the ATSEC has approved the award of a {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} merit increment for you, rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} merit increment recommended by your Department Chair. This increment takes effect July 1, {$next_year}.</p>
 
                 <p>ATSEC would like to thank you for your contributions to the Faculty in the past year, and wishes you well in the coming year.</p>
                 

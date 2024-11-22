@@ -3,7 +3,7 @@
     <ReportSection id="letter" title="End of Second Probationary Period - One Year Extension Awarded">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its meeting held on November 12 - 15 has agreed with your Department Chair’s recommendation that your probationary period be extended by one year. In accordance with the provisions of Article A5.04.2(c) of Schedule A, your second probationary period has been extended to June 30, 2025. This decision is final and binding</p>
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its meeting held on November 12 - 15 has agreed with your Department Chair’s recommendation that your probationary period be extended by one year. In accordance with the provisions of Article A5.04.2(c) of Schedule A, your second probationary period has been extended to June 30, {$next_year}. This decision is final and binding</p>
                 
                 <p>Your appointment will be governed by the Common Agreement and Schedule A, as amended from time to time.</p>
                 <p>It will be important to address the following matters that were of concern:</p>

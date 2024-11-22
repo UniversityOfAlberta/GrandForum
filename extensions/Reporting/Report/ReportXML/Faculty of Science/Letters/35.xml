@@ -28,9 +28,9 @@
                         <li>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</li>
                     </ul>
                     
-                    <p>Please be advised that the date for contested cases has been scheduled for <b>December 5, 2024 in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}</b>.</p>
+                    <p>Please be advised that the date for contested cases has been scheduled for <b>December 5, {$this_year} in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}</b>.</p>
                     
-                    Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by November 5, 2024, with a copy to your Department Chair:
+                    Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by November 5, {$this_year}, with a copy to your Department Chair:
                     <ul style='margin-left: 1em;'>
                         <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
                         <li>any material in response to the Department Chair’s recommendation and any other material relevant to your case;</li>

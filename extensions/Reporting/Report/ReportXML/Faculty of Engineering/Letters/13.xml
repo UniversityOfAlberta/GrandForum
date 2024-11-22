@@ -3,7 +3,7 @@
     <ReportSection id="letter" title="End of First Probationary Period - No Further Appointment">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its hearing of your contested case held on November 12 - 15, has agreed with your Department Chair’s recommendation that no further appointment be offered to you at the end of your first probationary period. Your appointment with the department at the University of Alberta will terminate effective June 30, 2025</p>
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its hearing of your contested case held on November 12 - 15, has agreed with your Department Chair’s recommendation that no further appointment be offered to you at the end of your first probationary period. Your appointment with the department at the University of Alberta will terminate effective June 30, {$next_year}</p>
                 <p>The following matters are of concern to the FEC:</p>
                 <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                 
@@ -15,7 +15,7 @@
                 
                 <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
                 
-                <p>Should you choose not to appeal to GAC, in accordance with A6.16.7 the decision of FEC shall be final and binding. Thus, your appointment with the {$user_dept} at the University of Alberta will terminate effective June 30, 2025. You would be entitled to severance in accordance with Article A5.06 of Schedule A.</p>
+                <p>Should you choose not to appeal to GAC, in accordance with A6.16.7 the decision of FEC shall be final and binding. Thus, your appointment with the {$user_dept} at the University of Alberta will terminate effective June 30, {$next_year}. You would be entitled to severance in accordance with Article A5.06 of Schedule A.</p>
                 
                 <p>Should you have any procedural questions, please contact the FEC Administrator, Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
             ]]>

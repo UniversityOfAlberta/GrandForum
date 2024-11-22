@@ -19,7 +19,7 @@
                     <li>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</li>
                 </ul>
                 
-                <p>Please be advised that the date for contested cases has been scheduled for December 5, 2024 in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}.</p>
+                <p>Please be advised that the date for contested cases has been scheduled for December 5, {$this_year} in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}.</p>
                 
                 <p>Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to your Department Chair:</p>
                 

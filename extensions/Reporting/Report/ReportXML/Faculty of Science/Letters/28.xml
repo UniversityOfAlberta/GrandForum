@@ -3,7 +3,7 @@
     <ReportSection id="letter" title="Incrementation - New Appointments">
         <ReportItem id="body">
             <![CDATA[
-                <p>I am writing to inform you that you will receive a 1.0 increment as per Article A6.11.1 of Schedule A, which provides that an Academic Faculty member whose appointment takes effect in the period July 1 to October 1 (in the current academic year), inclusive, is eligible to receive a full increment. The award takes effect on July 1, 2025.</p>
+                <p>I am writing to inform you that you will receive a 1.0 increment as per Article A6.11.1 of Schedule A, which provides that an Academic Faculty member whose appointment takes effect in the period July 1 to October 1 (in the current academic year), inclusive, is eligible to receive a full increment. The award takes effect on July 1, {$next_year}.</p>
 
                 <p>I would like to take this opportunity to wish you success in your teaching, research and service</p>
             ]]>
