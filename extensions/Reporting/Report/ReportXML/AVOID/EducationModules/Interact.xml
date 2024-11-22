@@ -68,15 +68,15 @@
     </ReportSection>
     
     <ReportSection id="video5" tooltip="Benefits Video" name="Benefits Video" title="Benefits Video" type="VideoReportSection">
-        <If if="{=({$networkFullName},AVOID Australia)}">
-            <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/5. Benefits Video.mp4">
+        <If if="{==({$networkFullName},AVOID Australia)}">
+            <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/Interact to Avoid Frailty Final.mp4">
                 <![CDATA[
                     {$item}
                 ]]>
             </ReportItem>
         </If>
         <Else>
-            <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/Interact to Avoid Frailty Final.mp4">
+            <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/5. Benefits Video.mp4">
                 <![CDATA[
                     {$item}
                 ]]>
