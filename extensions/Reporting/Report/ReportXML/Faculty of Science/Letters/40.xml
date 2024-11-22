@@ -8,7 +8,7 @@
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>Pursuant to Article A6.21.5(h) of Schedule A, I wish to advise that at its reconsideration meeting of December 5, {$this_year}, FEC did not accept your minimal acceptable position of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation which was OR wasn’t supported by your Department Chair. Instead FEC decided to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} for the following reasons:</p>
+                <p>Pursuant to Article A6.21.5(h) of Schedule A, I wish to advise that at its reconsideration meeting of December 5, {$this_year}, FEC did not accept your minimal acceptable position of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation which {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)} supported by your Department Chair. Instead FEC decided to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} for the following reasons:</p>
                 <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
             
                 <p>Having sought reconsideration by the FEC, you have the right to appeal its decision to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A. Written notice of your intention to appeal must be provided to the Chair of the GAC through the Office of the Provost, cc’d to Faculty Relations, within 10 working days from the receipt of this letter.</p>

@@ -9,7 +9,7 @@
         <ReportItemSet id="bodyset">
             <Static>
                 <![CDATA[
-                    <p>This is to inform you that at the Faculty Evaluation Committee (FEC) reconsideration meeting on {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, FEC did not support your minimal acceptable position of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation which was supported OR not supported by your Department Chair and have instead awarded incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}.</p>
+                    <p>This is to inform you that at the Faculty Evaluation Committee (FEC) reconsideration meeting on {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, FEC did not support your minimal acceptable position of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation which was {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)} by your Department Chair and have instead awarded incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}.</p>
                     
                     <p>Since you appeared before the FEC seeking reconsideration of its preliminary position, you have the right to appeal this decision to the General Appeals Committee (GAC) in accordance with Article A8.03.1 of Schedule A. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of this letter.</p>
                     

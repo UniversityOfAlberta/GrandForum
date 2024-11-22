@@ -88,13 +88,10 @@
                             <th>Location</th>
                             <th>Show 0D Message</th>
                             <th>Chair Position</th>
-                            <th>Performance</th>
-                            <th>Present Case</th>
                             <th>Chair (From)</th>
                             <th>Sabbatical Duration</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>AVG Increment</th>
                     </thead>
                     <tbody>
             ]]>
@@ -155,21 +152,7 @@
                         </td>
                 ]]>
             </ReportItem>
-            <ReportItem id="chair_position" type="Select" personId="1" blobItem="CHAIR_POSITION" blobSubItem="{$user_id}" options="|continues to support their original recommendation|now supports the preliminary position of FEC">
-                <![CDATA[
-                        <td align="center">
-                            {$item}
-                        </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="performance" type="Select" personId="1" blobItem="PERFORMANCE" blobSubItem="{$user_id}" width="8em" options="|satisfactory|strong|exemplary">
-                <![CDATA[
-                        <td align="center">
-                            {$item}
-                        </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="present_case" type="Select" personId="1" blobItem="PRESENT_CASE" blobSubItem="{$user_id}" options="|present your case|submit documentation in support of your case">
+            <ReportItem id="chair_position" type="Select" personId="1" blobItem="CHAIR_POSITION" blobSubItem="{$user_id}" options="|continues to support their original recommendation|now supports the preliminary position of FEC|was|wasn't|supported|not supported">
                 <![CDATA[
                         <td align="center">
                             {$item}
@@ -198,13 +181,6 @@
                 ]]>
             </ReportItem>
             <ReportItem id="sabb_end" type="Text" personId="1" blobItem="SABB_END" blobSubItem="{$user_id}">
-                <![CDATA[
-                        <td align="center">
-                            {$item}
-                        </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="avg_increment" type="Text" personId="1" blobItem="AVG_INCREMENT" blobSubItem="{$user_id}">
                 <![CDATA[
                         <td align="center">
                             {$item}
