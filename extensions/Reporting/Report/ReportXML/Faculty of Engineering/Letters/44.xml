@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/44" extends="Letters/Base">
+    <ReportSection id="letter" title="Sabbatical Application - Recommended but Not Approved">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that your application for a {getText({$report_type}, TABLE, SABB_DURATION, {$user_id}, 1, 0)} month sabbatical from {getText({$report_type}, TABLE, SABB_START, {$user_id}, 1, 0)} to {getText({$report_type}, TABLE, SABB_END, {$user_id}, 1, 0)} was recommended for approval by the FEC; however, higher-ranked applications received first approval which has resulted in the Faculty reaching maximum quota and your application not being approved.</p>
+            
+                <p>You are encouraged to apply for sabbatical again. Should you choose to do so, please ensure your application is submitted by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

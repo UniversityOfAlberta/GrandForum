@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/43" extends="Letters/Base">
+    <ReportSection id="letter" title="Sabbatical Application - Approved">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that your application for a {getText({$report_type}, TABLE, SABB_DURATION, {$user_id}, 1, 0)} month sabbatical from {getText({$report_type}, TABLE, SABB_START, {$user_id}, 1, 0)} to {getText({$report_type}, TABLE, SABB_END, {$user_id}, 1, 0)} has been approved.</p>
+            
+                <p>Further information concerning your sabbatical will be sent to you by the Staff Service Centre. Please ensure that you have read Article A4 and Appendix A.3 of Schedule A of the Academic Agreement for detailed information concerning sabbaticals.</p>
+                
+                <p>I hope your sabbatical is satisfying and rewarding, and look forward to receiving your report on the sabbatical program as it was approved by FEC in accordance with Article A4.03.8 of Schedule A.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
