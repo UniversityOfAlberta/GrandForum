@@ -281,13 +281,6 @@ class ReportArchive extends SpecialPage {
         global $wgOut;
         $wgOut->addHTML("<h3>Letter Templates Legend (updated Oct 2024)</h3>
              <table>
-                <tr><td colspan='2'><b>Miscellaneous Templates</b></tr>
-                <tr><td>Template 1&nbsp;&nbsp;&nbsp;</td><td>Failure to provide an annual report - Article A2.05</td></tr>
-                <tr><td colspan='2'><b>Evaluation of Staff on Childbirth/Parental Leave
-
-</b></tr>
-                <tr><td>Template 5&nbsp;&nbsp;&nbsp;</td><td>Option for non-adjudicated adjustment - Article A6.05(d)</td></tr>
-                <tr><td>Template 6&nbsp;&nbsp;&nbsp;</td><td>Confirmation of non-adjudicated adjustment</td></tr>
                 <tr><td colspan='2'><b>End of First Probationary Period</b></tr>
                 <tr><td>Template 7&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends 2nd probationary period, FEC agrees - Article A5.03.2(a) or A5.03.4(a)</td></tr>
                 <tr><td>Template 8&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure, FEC awards 2nd probationary period - Article 5.03.4(a)</td></tr>
@@ -330,9 +323,15 @@ class ReportArchive extends SpecialPage {
                 <tr><td>Template 41&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends 0d for the second time in three years - A6.14(a)</td></tr>
                 <tr><td>Template 42&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a 0b, 0.50, or 0.75, staff member does not contest, FEC awards 0d incrementation - A6.16.5(b) (Possible Reconsideration Case).</td></tr>
                 
+                <tr><td colspan='2'><b>Sabbaticals</b></tr>
+                <tr><td>Template 43&nbsp;&nbsp;&nbsp;</td><td>FEC recommends approval of sabbatical, Dean accepts the FEC recommendation - A4.02.4</td></tr>
+                <tr><td>Template 44&nbsp;&nbsp;&nbsp;</td><td>FEC recommends approval of sabbatical, Dean denies due to being over quota - A4.02.4 and A4.02.8</td></tr>
+                <tr><td>Template 45&nbsp;&nbsp;&nbsp;</td><td>FEC does not recommend approval of sabbatical, Dean denies application - A4.02.4</td></tr>
+                
                 <tr><td colspan='2'><b>FSO Promotion</b></tr>
                 <tr><td>Template 50&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO III</td></tr>
                 <tr><td>Template 51&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO IV</td></tr>
+                
                 <tr><td colspan='2'><b>ATS</b></tr>
                 <tr><td>Template ATS11&nbsp;&nbsp;&nbsp;</td><td>Agree with Chair (1.0 or Higher)</td></tr>
                 <tr><td>Template ATS12&nbsp;&nbsp;&nbsp;</td><td>Contestable from ATSEC</td></tr>
