@@ -55,76 +55,7 @@
                 "code": "CFN-ACT-EX",
                 "description": " Improve your strength, balance, and endurance with these programs",
                 "descriptionFr": "Améliorez votre force, votre équilibre et votre endurance grâce à ces activités",
-                "tags": ["exercise programs"],
-                "children": [
-                    {
-                        "text": "<en>Biking</en><fr>Vélo</fr>",
-                        "value": 90,
-                        "code": "CFN-ACT-EX-BIKING",
-                        "description": "Join a group in your community for your next road or trail ride",
-                        "descriptionFr": "Rejoignez un groupe dans votre communauté pour votre prochaine randonnée sur la route ou sur les sentiers",
-                        "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
-                    },
-                    {
-                        "text": "<en>Dance</en><fr>Danse</fr>",
-                        "value": 90,
-                        "code": "CFN-ACT-EX-DANCE",
-                        "description": "Try a new style of dance, whether you’re a beginner or expert",
-                        "descriptionFr": "Débutant ou expert, essayez un nouveau style de danse",
-                        "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
-                    },
-                    {
-                        "text": "<en>Movement and Mindfulness</en><fr>Mouvement et pleine conscience</fr>",
-                        "value": 90,
-                        "code": "CFN-ACT-EX-MOV",
-                        "description": "Enjoy classes for all mobility levels such as Yoga and Tai-Chi",
-                        "descriptionFr": "Profitez de cours adaptés à tous les niveaux de mobilité, comme le yoga et le tai-chi",
-                        "tags": ["movement and mindfulness programs"],
-                        "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
-                    },
-                    {
-                        "text": "<en>Fitness</en><fr>Conditionnement physique</fr>",
-                        "value": 90,
-                        "code": "CFN-ACT-EX-FIT",
-                        "description": "Choose from a variety of programs such as Pilates and aerobics for a fun way to move",
-                        "descriptionFr": "Choisissez parmi une variété de programmes, comme le Pilates et l’aérobie, pour bouger tout en vous amusant",
-                        "tags": ["fitness programs"],
-                        "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
-                    },
-                    {
-                        "text": "<en>Horseback Riding</en><fr>Équitation</fr>",
-                        "value": 90,
-                        "code": "CFN-ACT-EX-HORSE",
-                        "description": "Find recreational and therapeutic options for all levels",
-                        "descriptionFr": "Trouvez des options récréatives et thérapeutiques à tous les niveaux",
-                        "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
-                    },
-                    {
-                        "text": "<en>Recreation Facilities</en><fr>Installations récréatives</fr>",
-                        "value": 90,
-                        "code": "CFN-ACT-EX-RECF",
-                        "description": "Visit a gym or community centre near you",
-                        "descriptionFr": "Visitez une salle de sport ou un centre communautaire près de chez vous",
-                        "tags": ["recreation programs"],
-                        "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
-                    },
-                    {
-                        "text": "<en>Walking/Running</en><fr>Marche et course</fr>",
-                        "value": 90,
-                        "code": "CFN-ACT-EX-WALK",
-                        "description": "Join a group in your community for your next walk or run",
-                        "descriptionFr": "Rejoignez un groupe dans votre communauté pour votre prochaine promenade ou sortie de course à pied",
-                        "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
-                    },
-                    {
-                        "text": "<en>Swimming</en><fr>Baignade</fr>",
-                        "value": 90,
-                        "code": "CFN-ACT-EX-SWIM",
-                        "description": "Attend aquatic classes or enjoy a community pool",
-                        "descriptionFr": "Suivez des cours de natation ou profitez des bienfaits d’une baignade à la piscine communautaire",
-                        "note": "<en><ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul></en><fr><ul><li>Quel est le coût? Doit-on payer pour chaque classe, payer un abonnement, etc.?</li><li>Y a-t-il une option de service ponctuel sans adhésion ou de paiement individuel?</li><li>L’horaire est-il flexible ou dois-je m’engager à participer une journée en particulier ou à une heure précise?</li><li>Puis-je mettre l’adhésion en pause au besoin ou y a-t-il des frais d’annulation?</li><li>Les instructeurs sont-ils en mesure de proposer des adaptations aux personnes ayant des limitations physiques/médicales?</li><li>La préinscription est-elle obligatoire?</li><li>Puis-je essayer un cours avant de m’engager?</li><li>Le programme est-il offert virtuellement ou en personne?</li><li>Existe-t-il une aide au transport pour s’y rendre?</li></ul></fr>"
-                    }
-                ]
+                "tags": ["exercise programs"]
             },
             {
                 "text": "<en>Gardening</en><fr>Jardinage</fr>",

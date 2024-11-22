@@ -22,7 +22,7 @@
             return $newjson;
         }
 
-        function callAPI($cat="CFN-ACT-EX-DANCE", $key=""){
+        function callAPI($cat="", $key=""){
             global $config, $wgLang;
             
             $catMap = array();
