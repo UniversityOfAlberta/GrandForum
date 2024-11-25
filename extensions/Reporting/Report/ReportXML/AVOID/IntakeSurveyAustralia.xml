@@ -207,6 +207,44 @@
                 <div id="reportHeader" class="headers-behaviour"><b><en>VACCINATE</en><fr>VACCINATION</fr></b></div><hr>
             ]]>
         </Static>
+        <ReportItem id="vaccinate1_avoid" blobItem="vaccinate1_avoid" type="RadioReportItem" orientation="horizontal" 
+                    options="Yes|No"
+                    labels="{showLanguage(Yes|No, Oui|Non)}">
+            <![CDATA[
+                    <h3>
+                        <en>Have you ever been told by a health care provider that you are not to be vaccinated?</en>
+                        <fr>Un professionnel ou une professionnelle de soins ou de services de santé vous a-t-il (ou elle) déjà dit que vous ne deviez pas être vacciné(e)?</fr>
+                    </h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vax_text_specify" blobItem="VACCINATESPECIFY" type="Textarea" optional="true">
+            <![CDATA[
+                <span id="vaxspecify">
+                    <en>Please let us know the reason for this if you are comfortable doing so:</en>
+                    <fr>Veuillez nous indiquer la raison, si vous êtes à l’aise de le faire:</fr> {$item}
+                </span>
+                ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('span#vaxspecify').hide();
+                    function specifyVax(){
+                        if($("input:radio[name='SelfAssessment_vaccinate1_avoid']:checked").val() == "Yes"){
+                            $('span#vaxspecify').show();
+                            $('span.vaccinateyes').hide();
+                        }
+                        else{ 
+                            $('span#vaxspecify').hide();
+                            $('span.vaccinateyes').show();
+                        }
+                    }
+                    _.defer(specifyVax);
+                    $("input:radio[name='SelfAssessment_vaccinate1_avoid']").change(specifyVax);
+            </script>        
+        ]]>
+        </Static>
         <ReportItem id="vaccinate2_avoid" blobItem="vaccinate2_avoid" type="RadioReportItem" orientation="horizontal" optional="true" 
                     options="Yes|No"
                     labels="{showLanguage(Yes|No, Oui|Non)}">
@@ -238,7 +276,7 @@
             <![CDATA[
                 <span id="vaccinate4_avoid">
                     <h3>
-                        <en>Have you had a pneumonia vaccine? (once at age 65)</en>
+                        <en>Have you had a pneumococcal vaccine? (free from 70 years of age)</en>
                         <fr>Avez-vous été vacciné(e) contre la pneumonie? (une fois à l’âge de 65 ans)</fr>
                     </h3>
                     <div class="requiredField">{$item}</div>
@@ -261,7 +299,7 @@
                     labels="{showLanguage(Yes|No, Oui|Non)}">
             <![CDATA[
                     <h3>
-                        <en>Have you had the most recent annual COVID vaccine?</en>
+                        <en>Have you had two doses of the COVID-19 vaccine?</en>
                         <fr>Avez-vous reçu deux doses du vaccin contre la COVID-19?</fr>
                     </h3>
                     <div class="requiredField">{$item}</div>
