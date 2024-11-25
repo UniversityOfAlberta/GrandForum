@@ -218,25 +218,14 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="vax_text_specify" blobItem="VACCINATESPECIFY" type="Textarea" optional="true">
-            <![CDATA[
-                <span id="vaxspecify">
-                    <en>Please let us know the reason for this if you are comfortable doing so:</en>
-                    <fr>Veuillez nous indiquer la raison, si vous êtes à l’aise de le faire:</fr> {$item}
-                </span>
-                ]]>
-        </ReportItem>
         <Static>
             <![CDATA[
                 <script type='text/javascript'>
-                    $('span#vaxspecify').hide();
                     function specifyVax(){
                         if($("input:radio[name='SelfAssessment_vaccinate1_avoid']:checked").val() == "Yes"){
-                            $('span#vaxspecify').show();
                             $('span.vaccinateyes').hide();
                         }
                         else{ 
-                            $('span#vaxspecify').hide();
                             $('span.vaccinateyes').show();
                         }
                     }
