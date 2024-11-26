@@ -17,7 +17,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <If if="{>({timestamp(Y-m-d)},2025-04-00)}">
+        <If if="{>({timestamp(Y-m-d)},2025-01-26)}">
             <SectionPermission id="background" permissions="-" />
             <SectionPermission id="application" permissions="-" />
             <SectionPermission id="proposal" permissions="-" />
@@ -47,10 +47,10 @@
                 </ul>
                 
                 <h3>Budget</h3>
-                <p>GlycoNet will fund up to four proposals each year. Each proposal may request up to $8,000.</p>
+                <p>GlycoNet will fund up to four proposals each year. Each proposal may request up to $9,000.</p>
 
                 <h3>Deadline</h3>
-                <p>Proposals must be submitted through the Forum no later than <b>March 31, 2025</b>, with projects carried out in the period between April 1<sup>st</sup> to March 31<sup>st</sup>.</p>
+                <p>Proposals must be submitted through the Forum no later than <b>January 26, 2025</b>, with projects carried out in the period between April 1<sup>st</sup> to March 31<sup>st</sup>.</p>
             ]]>
         </Static>
     </ReportSection>
