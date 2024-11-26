@@ -6,9 +6,16 @@
                 FEC Chair
             ]]>
         </ReportItem>
+        <ReportItem id="cc">
+            <![CDATA[
+                            Department Chair<br />
+                            Faculty Relations<br />
+                            Faculty Personnel File
+            ]]>
+        </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of November 12 - 15, the FEC did not support your Department Chair's recommendation of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment instead, FEC is prepared to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}.</p>
+                <p>As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of November 12 - 15, the FEC did not support your Department Chair's recommendation of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment.  Instead, FEC is prepared to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}.</p>
             
                 <p>Under Article A6.19.1 of Schedule A, this becomes the preliminary position of FEC. The Department Chair {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}. This decision was based on the following concerns with your performance:</p>
                 <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>

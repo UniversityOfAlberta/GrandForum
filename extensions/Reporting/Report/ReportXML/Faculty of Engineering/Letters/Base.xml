@@ -484,8 +484,17 @@
                     </tr>
                     <tr>
                         <td valign="top">Cc:</td>
-                        <td valign="top">Department Chair<br />
+                        <td valign="top">
+            ]]>
+        </Static>
+        <Static id="cc">
+            <![CDATA[
+                            Department Chair<br />
                             Faculty Personnel File
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
                             <div style='height:0.25em;' />
                         </td>
                     </tr>

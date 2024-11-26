@@ -8,8 +8,7 @@
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Faculty Evaluation Committee (FEC) has approved the award of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} increment for you, rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment recommended by your Department Chair, in recognition of your performance during the 20XX/XX period under review. The
-award takes effect on July 1, {$next_year}.</p>
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) has approved the award of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} increment for you, rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment recommended by your Department Chair, in recognition of your performance during the {$last_year}/{substr({$this_year},2,2)} period under review. The award takes effect on July 1, {$next_year}.</p>
                 
                 <p>Thank you for your contributions to the University, and I wish you great success during the coming year.</p>
             ]]>
