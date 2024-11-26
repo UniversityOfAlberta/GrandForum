@@ -432,8 +432,8 @@
                             <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/UAlberta_Black.png' style='height: 4em;' /></div>
                         </td>
                         <td align="right">
-                            <div class='previewnodisplay' style='margin-left: 3em; margin-top: 1em;'><img src='skins/LetterTitle.png' style='height: 4em;' /></div>
-                            <div class='generatenodisplay' style='margin-left: 3em; margin-top: 1em;'><img src='{$wgServer}{$wgScriptPath}/skins/LetterTitle.png' style='height: 4em;' /></div>
+                            <div class='previewnodisplay' style='margin-top: 1em;'><img src='skins/LetterTitle.png' style='height: 4em;' /></div>
+                            <div class='generatenodisplay' style='margin-top: 1em;'><img src='{$wgServer}{$wgScriptPath}/skins/LetterTitle.png' style='height: 4em;' /></div>
                         </td>
                     </tr>
                 </table>
