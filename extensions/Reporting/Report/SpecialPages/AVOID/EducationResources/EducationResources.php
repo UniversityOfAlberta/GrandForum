@@ -127,7 +127,11 @@ class EducationResources extends SpecialPage {
                         foreach($resources as $subCategory => $subResources){
                             if(count($subResources) > 0){
                                 $wgOut->addHTML("<h4 id='resources".str_replace(" ", "", $subCategory)."' style='margin-top: 0; padding-top: 0;'>{$subCategory}</h4>");
-                                $wgOut->addHTML("<div style='padding:1em !important;'><ul style='margin-top: 0;'>");
+                                $wgOut->addHTML("<div style='padding:1em !important;'>");
+                                if($subCategory == "Pharmacy Medication Review Tab"){
+                                    $wgOut->addHTML("Enquire at your regular pharmacy if a Medication Review is available");
+                                }
+                                $wgOut->addHTML("<ul style='margin-top: 0;'>");
                                 foreach($subResources as $resource){
                                     if(isset($_GET['clickedResource']) && $_GET['clickedResource'] == "{$category->id}-{$resource->file}"){
                                         Gamification::log("EducationResource/".md5("{$category->id}-{$resource->file}"));

@@ -35,6 +35,16 @@
             ],
             "Videos": [
                 {
+                    "file": "https://www.youtube.com/watch?v=XbdpJiul_DI",
+                    "title": "Ask the Expert - What’s the best way to get started with exercise?",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=_4Hvz4eq7Qk",
+                    "title": "Ask the Expert - How to Prevent Sarcopenia",
+                    "tags": []
+                },
+                {
                     "file": "https://www.youtube.com/watch?v=c0RCATcEQY0&t=4s",
                     "title": "What is Strength For Life",
                     "tags": []
@@ -178,6 +188,16 @@
                     "file": "https://www.vaccinehub.com.au/faq/what-vaccinations-are-recommended-older-adults",
                     "title": "What vaccinations are recommended for older adults?",
                     "tags": [ ]
+                },
+                {
+                    "file": "https://www.health.gov.au/our-work/covid-19-vaccines/getting-your-vaccination",
+                    "title": "Advice About COVID-19 Vaccination",
+                    "tags": [ ]
+                },
+                {
+                    "file": "https://immunisationhandbook.health.gov.au/contents/vaccine-preventable-diseases/respiratory-syncytial-virus-rsv#recommendations",
+                    "title": "Advice About RSV vaccination",
+                    "tags": [ ]
                 }
             ],
             "Video": [
@@ -263,6 +283,23 @@
                 {
                     "file": "Lowering-your-benzodiazepine-embellish.pdf",
                     "title": "Lowering Your Benzodiazepine Use",
+                    "tags": [ ]
+                }
+            ],
+            "Pharmacy Medication Review Tab": [
+                {
+                    "file": "https://www.amcal.com.au/our-pharmacists-services/medicine-review/",
+                    "title": "Amcal Pharmacies",
+                    "tags": [ ]
+                },
+                {
+                    "file": "https://terrywhitechemmart.com.au/health-services/medication-review?srsltid=AfmBOoqU4dzOQ5OG6UZahFTD2QdKCN7XtDL3MJZZEmYrTUKTGQPtNfHK",
+                    "title": "Terry White Pharmacies",
+                    "tags": [ ]
+                },
+                {
+                    "file": "https://www.priceline.com.au/pharmacy-services/medication-reviews?srsltid=AfmBOopmLfk9ffvmvAS--eCDqT7Tr5G2dCPOuxaLqjiVGRPhSrllW82s",
+                    "title": "Priceline Pharmacies",
                     "tags": [ ]
                 }
             ]
@@ -361,6 +398,16 @@
                     "file": "Nutrition-for-Seniors.pdf",
                     "title": "Nutrition for Seniors- Ngaire Hobbins(2020/2021)",
                     "tags": []
+                },
+                {
+                    "file": "https://www.healthdirect.gov.au/how-to-read-food-labels",
+                    "title": "How to read food labels",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.heartfoundation.org.au/healthy-living/healthy-eating/reading-food-labels",
+                    "title": "Heart Foundation’s guide to reading food labels",
+                    "tags": []
                 }
             ],
             "Self-Paced Healthy Ageing Online Learning (NSW Health)": [
@@ -431,6 +478,11 @@
                 {
                     "file": "https://www.preventivehealth.sa.gov.au/healthy-living/looking-after-your-mental-health-wellbeing/mindfulness",
                     "title": "Mindfulness- Preventive SA",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=7jRreEmTJyQ&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE&index=10",
+                    "title": "Ask the expert - Obstructive Sleep Apnoea and Metabolic Health",
                     "tags": []
                 }
             ],
@@ -578,6 +630,11 @@
             ],
             "Videos": [
                 {
+                    "file": "https://www.youtube.com/watch?v=_4Hvz4eq7Qk",
+                    "title": "Ask the Expert - How to Prevent Sarcopenia",
+                    "tags": []
+                },
+                {
                     "file": "https://www.youtube.com/watch?v=c0RCATcEQY0&t=4s",
                     "title": "What is Strength For Life",
                     "tags": []
@@ -713,23 +770,44 @@
         "videos": 0,
         "questions": 0,
         "tags": ["everything"],
-        "resources": [
-            {
-                "file": "https://unisa.edu.au/research/research-volunteers/healthy-choices/#:~:text=%27Healthy%20Choices%27%20is%20a%206,online%2C%20or%20over%20the%20phone",
-                "title": "University SA Healthy Choices",
-                "tags": []
-            },
-            {
-                "file": "https://www.preventivehealth.sa.gov.au/healthy-living/being-active-healthy/better-health-coaching-service",
-                "title": "Preventive SA Better Health Coaching Service",
-                "tags": []
-            },
-            {
-                "file": "https://www.healthdirect.gov.au/management-of-chronic-conditions",
-                "title": "Management Of Chronic Diseases",
-                "tags": []
-            }
-        ]
+        "resources": {
+            "Coaching Services": [
+                {
+                    "file": "https://unisa.edu.au/research/research-volunteers/healthy-choices/#:~:text=%27Healthy%20Choices%27%20is%20a%206,online%2C%20or%20over%20the%20phone",
+                    "title": "University SA Healthy Choices",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.preventivehealth.sa.gov.au/healthy-living/being-active-healthy/better-health-coaching-service",
+                    "title": "Preventive SA Better Health Coaching Service",
+                    "tags": []
+                }
+            ],
+            "FAQ": [
+                {
+                    "file": "https://www.healthdirect.gov.au/management-of-chronic-conditions",
+                    "title": "Management Of Chronic Diseases",
+                    "tags": []
+                }
+            ],
+            "Videos": [
+                {
+                    "file": "https://www.youtube.com/watch?v=da8iw9hvQX4",
+                    "title": "Chronic Diseases: Everyone’s Business",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=hc-nL4KFAiI&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE&index=9",
+                    "title": "Symptoms of Kidney Diseases",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=xdnHvgL4HIE&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE&index=13",
+                    "title": "Common Questions about Vascular Surgery",
+                    "tags": []
+                }
+            ]
+        }
     },
     {
         "id": "Memory",
