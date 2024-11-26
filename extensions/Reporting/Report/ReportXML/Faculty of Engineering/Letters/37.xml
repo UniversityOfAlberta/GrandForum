@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/37" extends="Letters/Base">
     <ReportSection id="letter" title="Incrementation - After Contesting FEC Awards &lt;1.0">
-        <ReportItem id="from">
-            <![CDATA[
-                FEC Chair
-            ]]>
-        </ReportItem>
         <ReportItem id="body">
             <![CDATA[
                 <p>This is to inform you at the Faculty Evaluation Committee (FEC) meeting of November 12 - 15, the FEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
@@ -18,11 +13,6 @@
                 <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
                 
                 <p>Should you have any procedural questions, please contact the FEC Administrator, Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
-            ]]>
-        </ReportItem>
-        <ReportItem id="footer">
-            <![CDATA[
-                
             ]]>
         </ReportItem>
     </ReportSection>

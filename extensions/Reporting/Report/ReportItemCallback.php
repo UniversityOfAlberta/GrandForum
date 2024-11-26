@@ -1971,7 +1971,7 @@ class ReportItemCallback {
     }
     
     function getSectionTitle(){
-        return $this->reportItem->getSection()->title;
+        return htmlentities($this->reportItem->getSection()->title);
     }
     
     function getReportName(){

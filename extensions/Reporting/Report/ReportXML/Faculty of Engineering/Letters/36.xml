@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/36" extends="Letters/Base">
     <ReportSection id="letter" title="Incrementation - FEC Awards Less than Recommendation">
-        <ReportItem id="from">
-            <![CDATA[
-                FEC Chair
-            ]]>
-        </ReportItem>
         <ReportItem id="cc">
             <![CDATA[
                             Department Chair<br />
@@ -38,11 +33,6 @@
                 <p>If you choose not to request reconsideration of FECs preliminary decision, the FEC decision will be final and binding; pursuant to Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC. If you have your case reconsidered by FEC and it stands by its preliminary position, you have the right to appeal to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A.</p>
                 
                 <p>Should you have any procedural questions, please contact the FEC Administrator, Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
-            ]]>
-        </ReportItem>
-        <ReportItem id="footer">
-            <![CDATA[
-                
             ]]>
         </ReportItem>
     </ReportSection>

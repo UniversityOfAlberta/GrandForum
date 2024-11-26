@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/39" extends="Letters/Base">
     <ReportSection id="letter" title="Incrementation - FEC Reduces Recommendation and Awards &lt;1.0">
-        <ReportItem id="from">
-            <![CDATA[
-                FEC Chair
-            ]]>
-        </ReportItem>
         <ReportItem id="body">
             <![CDATA[
                 <p>As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of November 12 - 15, the FEC did not support your Department Chair’s recommendation. Instead it is prepared to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Department Chair {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}. Under Article A6.19.1 of Schedule A, this is the preliminary position of FEC. This decision was based on the following:</p>

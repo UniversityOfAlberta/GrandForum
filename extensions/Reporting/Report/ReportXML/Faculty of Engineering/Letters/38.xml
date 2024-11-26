@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/38" extends="Letters/Base">
-    <ReportSection id="letter" title="Incrementation - FEC Awards Recommendation of &lt;1.0">
-        <ReportItem id="from">
-            <![CDATA[
-                FEC Chair
-            ]]>
-        </ReportItem>
+    <ReportSection id="letter" title="Incrementation - FEC Awards Recommendation of &#60;1.0">
         <ReportItemSet id="bodyset">
             <Static>
                 <![CDATA[
@@ -25,10 +20,5 @@
                 ]]>
             </Static>
         </ReportItemSet>
-        <ReportItem id="footer">
-            <![CDATA[
-                
-            ]]>
-        </ReportItem>
     </ReportSection>
 </Report>

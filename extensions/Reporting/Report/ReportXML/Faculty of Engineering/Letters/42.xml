@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/42" extends="Letters/Base">
     <ReportSection id="letter" title="Incrementation - FEC Reduces Recommendation and Awards 0d">
-        <ReportItem id="from">
-            <![CDATA[
-                FEC Chair
-            ]]>
-        </ReportItem>
         <ReportItemSet id="bodyset">
             <Static>
                 <![CDATA[

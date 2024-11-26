@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/40" extends="Letters/Base">
     <ReportSection id="letter" title="Incrementation - After Reconsideration FEC Awards &lt;1.0">
-        <ReportItem id="from">
-            <![CDATA[
-                FEC Chair
-            ]]>
-        </ReportItem>
         <ReportItem id="body">
             <![CDATA[
                 <p>Pursuant to Article A6.21.5(h) of Schedule A, I wish to advise that at its reconsideration meeting of November 12 - 15, FEC did not accept your minimal acceptable position of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation which {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)} supported by your Department Chair. Instead FEC decided to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} for the following reasons:</p>
