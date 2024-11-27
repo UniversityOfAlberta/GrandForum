@@ -35,6 +35,8 @@
                         $("#Quiz").text("Quiz").removeClass("fakeSelectedReportTab");
                     }
                 }, 100);
+                
+                $('#reportTabs').append("<div class='program-body' style='text-align: center; margin:5px;'><img src='" + wgServer + wgScriptPath + "/EducationModules/IngredientsForChange.png' style='width:100%;' /><br ><b>Ingredients for Change</b></div>");
             </script>
         ]]>
     </Script>

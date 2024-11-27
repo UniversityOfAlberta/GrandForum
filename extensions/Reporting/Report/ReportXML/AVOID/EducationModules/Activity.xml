@@ -31,6 +31,8 @@
                         $("#Quiz").text("Quiz").removeClass("fakeSelectedReportTab");
                     }
                 }, 100);
+                
+                $('#reportTabs').append("<div class='program-body' style='text-align: center; margin:5px;'><img src='" + wgServer + wgScriptPath + "/EducationModules/Activity.png' style='width:100%;' /><br ><b>Activity</b></div>");
             </script>
         ]]>
     </Script>
