@@ -16,6 +16,27 @@
         </Role>
     </Permissions>
     
+    <ReportSection id="socio_info" blobSection="AVOID_Questions_tab0" type="NextPrevReportSection" pagebreak="false"
+                   postId="GettingtoKnowYou" 
+                   tooltip="Coaching Questions" 
+                   name="Coaching Questions" 
+                   title="Coaching Questions">
+        <ReportItem id="socio_info1" type="SelectReportItem" blobItem="avoid_age" 
+                    options="less than 60|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105"
+                    labels="{showLanguage(less than 60,moins de 60)}|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105">
+            <![CDATA[
+                <h3>Age</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="bmi" type="Text" blobItem="bmi">
+            <![CDATA[
+                <h3>Body mass index</h3>
+                <div class="requiredField">{$item} kg/m2</div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
     <Script>
         <![CDATA[
             <style>
