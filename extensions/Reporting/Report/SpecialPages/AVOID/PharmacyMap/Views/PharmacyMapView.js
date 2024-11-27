@@ -423,6 +423,7 @@ PharmacyMapView = Backbone.View.extend({
             }
             this.$('#treemap').append(r);
         }
+        this.$('#treemap').append('<div class="module-3cols-outer" style="height: 2.25em;"></div>');
     },
 
     addRows: function (rows) {
@@ -461,9 +462,8 @@ PharmacyMapView = Backbone.View.extend({
 
     createDataTable: function () {
         // Create the DataTable
-        this.table = this.$('#listTable').DataTable({
-            "scrollY": "650px"
-        });
+        var options = (networkFullName == 'AVOID Australia') ? {} : {"scrollY": "650px"};
+        this.table = this.$('#listTable').DataTable(options);
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
         table = this.table;
     },

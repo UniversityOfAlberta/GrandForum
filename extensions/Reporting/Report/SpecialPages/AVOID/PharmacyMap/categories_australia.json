@@ -55,7 +55,25 @@
                 "code": "CFN-ACT-EX",
                 "description": " Improve your strength, balance, and endurance with these programs",
                 "descriptionFr": "Améliorez votre force, votre équilibre et votre endurance grâce à ces activités",
-                "tags": ["exercise programs"]
+                "tags": ["exercise programs"],
+                "children": [
+                    {
+                        "text": "COTA Tier 2",
+                        "value": 114,
+                        "code": "CFN-ACT-EX-COTA",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": ["exercise programs"]
+                    },
+                    {
+                        "text": "Other",
+                        "value": 115,
+                        "code": "CFN-ACT-EX-OTHER",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": ["exercise programs"]
+                    }
+                ]
             },
             {
                 "text": "<en>Gardening</en><fr>Jardinage</fr>",
