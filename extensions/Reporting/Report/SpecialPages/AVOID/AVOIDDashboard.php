@@ -350,12 +350,14 @@ class AVOIDDashboard extends SpecialPage {
                                         <a href='{$wgServer}{$wgScriptPath}/EducationModules/What is Frailty-".strtoupper($wgLang->getCode()).".pdf' target='_blank'>
                                             <en>What is Frailty?</en>
                                             <fr>Qu’est-ce que la fragilité?</fr>
-                                        </a>
-                                        <en>
+                                        </a>");
+            if($config->getValue('networkFullName') != "AVOID Australia"){
+                $wgOut->addHTML("       <en>
                                             | 
                                             <a href='https://www.youtube.com/watch?v=tzyYBp1v1WI&list=PLR7yWL6rqm9z9qi4VLAhNtUUBOuOG7qHE' target='_blank'>Frailty: Ask the Expert</a>
-                                        </en>
-                                        <br />
+                                        </en>");
+            }
+            $wgOut->addHTML("           <br />
                                     </p>
                                     <p style='margin-bottom: 0;'>
                                         <b><en>What’s Next?</en><fr>Utilisation du programme</fr></b><br />
