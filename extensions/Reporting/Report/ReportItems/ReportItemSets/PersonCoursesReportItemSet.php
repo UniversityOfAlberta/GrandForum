@@ -8,8 +8,8 @@ class PersonCoursesReportItemSet extends ReportItemSet {
         $start = $this->getAttr('start', REPORTING_CYCLE_START);
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
         $term = $this->getAttr('term', '');
-        $unique = strtolower($this->getAttr('unique', 'false'));
-        $exclude13Week = strtolower($this->getAttr('exclude13Week', 'false'));
+        $unique = (strtolower($this->getAttr('unique', 'false')) == "true");
+        $exclude13Week = (strtolower($this->getAttr('exclude13Week', 'false')) == "true");
         $component = $this->getAttr('component', '');
         if($term == ''){
             $courses = $person->getCourses($start, $end);
