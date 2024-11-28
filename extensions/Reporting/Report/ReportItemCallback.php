@@ -196,6 +196,8 @@ class ReportItemCallback {
             "GET" => "getGet",
             "networkName" => "getNetworkName",
             "id" => "getId",
+            "strtotime" => "strtotime",
+            "date_format" => "date_format",
             "time2date" => "time2date",
             "name" => "getName",
             "i" => "getI",
@@ -1592,6 +1594,16 @@ class ReportItemCallback {
         else if($productId != 0){
             return $productId;
         }
+    }
+    
+    function strtotime($date){
+        $date = str_replace("&#44;", ",", $date);
+        return strtotime($date);
+    }
+    
+    function date_format($time, $format='F j, Y'){
+        $format = str_replace("#COMMA", ",", $format);
+        return date($format, $time);
     }
     
     function time2date($time, $format='F j, Y'){

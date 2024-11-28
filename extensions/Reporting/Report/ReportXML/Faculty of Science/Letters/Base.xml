@@ -89,9 +89,6 @@
                             <th>Show 0D Message</th>
                             <th>Chair Position</th>
                             <th>Chair (From)</th>
-                            <th>Sabbatical Duration</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
                     </thead>
                     <tbody>
             ]]>
@@ -160,27 +157,6 @@
                 ]]>
             </ReportItem>
             <ReportItem id="chair" type="Text" personId="1" blobItem="CHAIR" blobSubItem="{$user_id}">
-                <![CDATA[
-                        <td align="center">
-                            {$item}
-                        </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="sabb_duration" type="Select" personId="1" blobItem="SABB_DURATION" blobSubItem="{$user_id}" options="|6 month|12 month">
-                <![CDATA[
-                        <td align="center">
-                            {$item}
-                        </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="sabb_start" type="Text" personId="1" blobItem="SABB_START" blobSubItem="{$user_id}">
-                <![CDATA[
-                        <td align="center">
-                            {$item}
-                        </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="sabb_end" type="Text" personId="1" blobItem="SABB_END" blobSubItem="{$user_id}">
                 <![CDATA[
                         <td align="center">
                             {$item}

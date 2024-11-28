@@ -3,7 +3,21 @@
     <ReportSection id="letter" title="Sabbatical Application - Recommended but Not Approved">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that your application for a {getText({$report_type}, TABLE, SABB_DURATION, {$user_id}, 1, 0)} month sabbatical from {getText({$report_type}, TABLE, SABB_START, {$user_id}, 1, 0)} to {getText({$report_type}, TABLE, SABB_END, {$user_id}, 1, 0)} was recommended for approval by the FEC; however, higher-ranked applications received first approval which has resulted in the Faculty reaching maximum quota and your application not being approved.</p>
+                {set(length, {getText(RP_SABBATICAL, SABBATICAL, LENGTH, 0, {$user_id}, 0)})}
+                {set(start6, {getText(RP_SABBATICAL, SABBATICAL, START6, 0, {$user_id}, 0)})}
+                {set(start12, {getText(RP_SABBATICAL, SABBATICAL, START12, 0, {$user_id}, 0)})}
+                
+                {set(end6, {date_format({strtotime({get(start6)} + 6 months - 1 day)})})}
+                {set(end12, {date_format({strtotime({get(start12)} + 12 months - 1 day)})})}
+                <p>
+                    This is to inform you that your application for a {replace(months, month, {get(length)})} sabbatical from 
+                        {if("{get(length)}" == "6 months", {get(start6)})}
+                        {if("{get(length)}" == "12 months", {date_format({strtotime({get(start12)})})})} 
+                    to 
+                        {if("{get(length)}" == "6 months", {get(end6)})}
+                        {if("{get(length)}" == "12 months", {get(end12)})}
+                    was recommended for approval by the FEC; however, higher-ranked applications received first approval which has resulted in the Faculty reaching maximum quota and your application not being approved.
+                </p>
             
                 <p>You are encouraged to apply for sabbatical again. Should you choose to do so, please ensure your application is submitted by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}.</p>
             ]]>
