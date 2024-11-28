@@ -365,9 +365,12 @@ class AVOIDDashboard extends SpecialPage {
                                         <fr>Étape 1. Consultez votre rapport personnel ci-dessus pour connaître vos risques et les recommandations à suivre.<br /></fr>
                                         <fr>Étape 2. Utilisez le modèle de plan d’action ci-dessous pour choisir un changement sain et en faire le suivi <b>cette semaine</b><br /></fr>
                                         <fr>Étape 3. Utilisez les modules d’éducation, les programmes et les ressources pour soutenir vos objectifs de vieillissement sain.</fr>
-                                    </p>
-
-                                    <div>
+                                    </p>");
+                                    
+            if($config->getValue('networkFullName') == "AVOID Australia"){
+                $wgOut->addHTML("   <p><b>EVERY STEP YOU TAKE MATTERS</b><br /><a href='https://www.youtube.com/watch?v=agGYvoLL_vo' target='_blank'>Click Here</a></p>");
+            }
+            $wgOut->addHTML("       <div>
                                         <en>
                                             <div class='modules' style='margin-top: 0.5em;'>
                                                 <div class='module-2cols-outer'>{$facebookLink}</div>
