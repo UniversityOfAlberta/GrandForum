@@ -1,5 +1,9 @@
 $(document).ready(function(){
 
+    if(networkFullName == "AVOID Australia"){
+        $("form[name=userlogin]").attr("action", $("form[name=userlogin]").attr("action") + "?returnto=Special:AvoidDashboard");
+    }
+
     $('#bodyContent').append("<div id='avoidButtons' class='program-body'></div>");
     
     if($("h1").text() == "Please Login" || $("h1").text() == "Login required"){
