@@ -995,10 +995,17 @@ class AVOIDDashboard extends SpecialPage {
     }
 
     static function createTab(&$tabs){
-        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $config;
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
             if(AVOIDDashboard::checkAllSubmissions($me->getId())){
+                if($config->getValue('networkFullName') == "AVOID Australia"){
+                    $selected = @($wgTitle->getText() == "Main Page") ? "selected" : false;
+                    $GLOBALS['tabs'] = array_reverse($GLOBALS['tabs'], true);
+                    $GLOBALS['tabs']['Home'] = TabUtils::createTab("Home", "{$wgServer}{$wgScriptPath}/index.php/Main_Page", $selected);
+                    $GLOBALS['tabs'] = array_reverse($GLOBALS['tabs'], true);
+                }
+            
                 $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
                 $GLOBALS['tabs']['Profile'] = TabUtils::createTab("<en>My Profile</en><fr>Mon Profil</fr>", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
             }
