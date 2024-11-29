@@ -689,7 +689,7 @@ EOF;
                 $lnk_id = "lnk_thes_" .$pos. "_" .$gender. "_total";
                 $div_id = "div_thes_" .$pos. "_" .$gender. "_total";
 
-                $num_total_nat_thes = count($total_nat[1]);
+                $num_total_nat_thes = @count($total_nat[1]);
                 $total_nat_thes_details = Dashboard::paperDetails($total_nat[1]);
 
                 $total_gen[0] = @array_merge($total_gen[0], $total_nat[0]); // += $total_nat[0];
@@ -729,7 +729,7 @@ EOF;
             $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
             $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
             
-            $num_total_gen_thes = count($total_gen[1]);
+            $num_total_gen_thes = @count($total_gen[1]);
             $total_gen_thes_details = Dashboard::paperDetails($total_gen[1]);
             if($num_total_gen_thes > 0){
                 $inner_tbl .=<<<EOF
@@ -778,7 +778,7 @@ EOF;
         $html .= "</td><td>";
         $lnk_id = "lnk_thes_total";
         $div_id = "div_thes_total";
-        $num_total_thes = count($total[1]);
+        $num_total_thes = @count($total[1]);
         $total_thes_details = Dashboard::paperDetails($total[1]);
         if($num_total_thes > 0){
             $html .=<<<EOF
