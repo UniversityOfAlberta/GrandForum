@@ -396,6 +396,7 @@ PharmacyMapView = Backbone.View.extend({
     },
 
     drawButtons: function () {
+        this.addRows(new AvoidResources());
         var hash = document.location.hash.replace("#", "");
         this.$('#treemap').remove();
         this.$('#prev_button').remove();
