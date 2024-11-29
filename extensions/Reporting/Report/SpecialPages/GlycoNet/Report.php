@@ -91,10 +91,10 @@ class Report extends AbstractReport{
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Strategic", "{$url}StrategicReport", $selected);
         }
         
-        if($person->isSubRole("CollabFall2024")){
+        /*if($person->isSubRole("CollabFall2024")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CollaborativeReportFall2024")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Collaborative", "{$url}CollaborativeReportFall2024", $selected);
-        }
+        }*/
         
         if($person->isSubRole("GlycoTwinning Survey")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "GlycoTwinningSurvey")) ? "selected" : false;
@@ -146,10 +146,10 @@ class Report extends AbstractReport{
                 }
             }
         }
-        /*if(count($person->getEvaluates("SAB-CollaborativeFall2024", 2024)) > 0){
+        if(count($person->getEvaluates("SAB-CollaborativeFall2024", 2024)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABCollaborativeFall2024Review")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Collab Fall Review", "{$url}SABCollaborativeFall2024Review", $selected);
-        }*/
+        }
         if(count($person->getEvaluates("SAB-International", 2022)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABInternationalReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("International Review", "{$url}SABInternationalReview", $selected);
@@ -217,12 +217,12 @@ class Report extends AbstractReport{
             //$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/ResearchTravel")) ? "selected" : false;
             //$tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("Research & Travel Supplements", "{$url}HQPApplications/ResearchTravel", $selected);
             
-            if(date('Y-m-d') < '2024-04-01'){
+            if(date('Y-m-d') < '2025-01-27'){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/SummerAward")) ? "selected" : false;
                 $tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("Summer Award", "{$url}HQPApplications/SummerAward", $selected);
             }
             
-            if(date('Y-m-d') < '2024-04-01'){
+            if(date('Y-m-d') < '2025-01-27'){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/ATOP")) ? "selected" : false;
                 $tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("ATOP", "{$url}HQPApplications/ATOP", $selected);
             }
