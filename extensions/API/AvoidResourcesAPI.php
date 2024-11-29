@@ -124,7 +124,7 @@
                             "PhoneNumbers"              => [["Phone" => $row[2], "Name" => "Office", "Description" => "", "Type" => ""]],
                             "Website"                   => $website,
                             "WebsiteAddress"            => $website,
-                            "Email"                     => $row[13],
+                            "EmailAddressMain"          => $row[13],
                             "Hours"                     => $row[5],
                             "PhysicalAddress1"          => $row[6],
                             "MailingAddressCity"        => $row[7],
