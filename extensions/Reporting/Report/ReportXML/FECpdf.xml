@@ -175,28 +175,14 @@
                 </Static>
                 <ReportItem id="teaching_methods1" type="Textarea" blobItem="TEACHING_METHODS1" blobSection="FEC_COURSES" height="150px">
                     <![CDATA[
-                        <table style='width:100%;'>
-                            <tr>
-                                <td style='width: 50%;' valign='top'>
-                                    <b>(i) Course Design</b><br />
-                                </td>
-                                <td style='width: 50%;' valign='top'>
-                                    <b>(ii) Instructional Practices</b><br />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    {$item}
-                                </td>
+                            <b>(i) Course Design</b><br />
+                            {$item}<br /><br />
                     ]]>
                 </ReportItem>
                 <ReportItem id="teaching_methods2" type="Textarea" blobItem="TEACHING_METHODS2" blobSection="FEC_COURSES" height="150px">
                     <![CDATA[
-                                <td>
-                                    {$item}
-                                </td>
-                            </tr>
-                        </table>
+                            <b>(ii) Instructional Practices</b><br />
+                            {$item}<br />
                         </div>
                     ]]>
                 </ReportItem>
