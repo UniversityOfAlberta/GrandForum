@@ -53,6 +53,21 @@
                     "file": "https://www.youtube.com/playlist?list=PLXdUqOIbOj3c9foD93mCxPlRBDCwSHn1x",
                     "title": "COTA Strength For Life Exercise Videos",
                     "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=rU_zmzDU3QY",
+                    "title": "Quick 10-minute Chair Workout For Seniors - Beginners",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=C7XQvmP_JKI",
+                    "title": "10 minute chair-based workout for Pre-op patients",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=py-cemjBcTo",
+                    "title": "10 minute chair-based workout for seniors",
+                    "tags": []
                 }
             ],
             "Self-Paced Healthy Ageing Online Learning (NSW Health)": [
@@ -806,6 +821,13 @@
                     "title": "Common Questions about Vascular Surgery",
                     "tags": []
                 }
+            ],
+            "Rehabilitation": [
+                {
+                    "file": "https://www.calhn-prehab.sa.gov.au/about-us",
+                    "title": "CALHN PreHab- Helping People Get Fit For Surgery",
+                    "tags": []
+                }
             ]
         }
     },
@@ -860,6 +882,21 @@
                 {
                     "file": "3040-Taking-control-of-your-pain-in-Arthritis_web-version2.pdf",
                     "title": "Taking control of your pain in athritis",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.nswtag.org.au/wp-content/uploads/2017/08/pain-chronic-patient-dec-2002.pdf",
+                    "title": "Pain Management- What You Can Do?",
+                    "tags": []
+                },
+                {
+                    "file": "https://aci.health.nsw.gov.au/__data/assets/pdf_file/0020/216308/Chronic_Pain_Management_Strategies.pdf",
+                    "title": "Chronic Pain Management Strategies",
+                    "tags": []
+                },
+                {
+                    "file": "https://www.painaustralia.org.au/static/uploads/files/painaust-factsheet10-final-wfbdhlqkosbm.pdf",
+                    "title": "Self Managing Chronic Pain",
                     "tags": []
                 }
             ],
