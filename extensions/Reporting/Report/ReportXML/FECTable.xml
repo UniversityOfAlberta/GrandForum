@@ -27,6 +27,9 @@
             <script type='text/javascript'>
                 var lastData = null;
                 var freezeUpdate = function(){
+                    if(!$("#FECTable").hasClass("selectedReportTab")){
+                        return;
+                    }
                     $.get(wgServer + wgScriptPath + '/index.php?action=api.voteFreeze', function(response){
                         var data = response.data;
                         
@@ -678,16 +681,20 @@
                 <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" personId="1" width="80px" history="false" encrypt="true">
                     <![CDATA[
                         <td>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</td>
-                        <td>
+                        <td class='revised_increment_{$user_id}'>
                             {$item}
+                            <script type='text/javascript'>
+                                $(".revised_increment_{$user_id}").change(function(){
+                                    
+                                });
+                            </script>
                         </td>
                     ]]>
                 </ReportItem>
-                
             </Else>
             
             <!-- Increment Votes -->
-            <ReportItem id="freeze" type="VoteResultsReportItem" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="75px">
+            <ReportItem id="freeze" type="VoteResultsReportItem" freezeId="vote_{$user_id}" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="75px">
                 <![CDATA[
                         {$item}
                 ]]>
