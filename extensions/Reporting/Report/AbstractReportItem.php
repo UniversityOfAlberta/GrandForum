@@ -30,6 +30,7 @@ abstract class AbstractReportItem extends Callbackable {
     var $value;
     var $attributes;
     var $variables = array();
+    var $prev = null;
     
     // Creates a new AbstractReportItem
     function __construct(){
@@ -89,16 +90,16 @@ abstract class AbstractReportItem extends Callbackable {
     }
     
     function getPrev(){
-        $items = $this->getParent()->getItems();
-        $prev = null;
-        foreach($items as $item){
-            if($item == $this){
-                return $prev;
+        if($this->prev == null){
+            $items = $this->getParent()->getItems();
+            $prev = null;
+            foreach($items as $item){
+                $item->prev = $prev;
+                $prev = $item;
             }
-            $prev = $item;
         }
-        return null;
-    }
+        return $this->prev;
+    }  
        
     function getSet(){
         $parent = $this->getParent();
