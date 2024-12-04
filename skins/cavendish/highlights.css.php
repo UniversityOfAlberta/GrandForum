@@ -64,6 +64,7 @@ echo <<<EOF
     color: white;
 }
 
+/*
 #side .highlights-text {
     color: $shl !important;
 }
@@ -71,6 +72,7 @@ echo <<<EOF
 #side .highlights-text-hover:hover {
     color: $shl !important;
 }
+*/
 
 #side .highlights-background {
     background: $shl !important;

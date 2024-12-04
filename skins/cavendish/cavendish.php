@@ -1078,15 +1078,7 @@ class CavendishTemplate extends QuickTemplate {
 		    </ul>
 		    <?php
 		        echo "<div id='sideFooter' style='font-size: 0.80em; text-align:center; padding:5px; position:absolute; bottom:0;'>";
-		        if($config->getValue('networkSite') != ""){
-                    echo "&nbsp;&nbsp;<a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a>&nbsp;&nbsp;";
-                }
-                if(!isExtensionEnabled("ContactUs")){
-                    echo "&nbsp;&nbsp;<a href='mailto:{$config->getValue('supportEmail')}'><span class='en'>Support</span><span class='fr'>Soutien</span></a>&nbsp;&nbsp;";
-                }
-                if($config->getValue("networkName") != "AVOID"){
-                    echo "    <p style='text-align:left;'><span class='en'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</span><span class='fr'>Les RCE suivants ont contribué au développement du Forum : GRAND, AGE-WELL, GlycoNet, CFN</span></p>";
-                }
+		        
                 echo "</div>";
             ?>
 		</div><!-- end of SIDE div -->
