@@ -683,47 +683,29 @@
                         <td>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</td>
                         <td class='revised_increment_{$user_id}'>
                             {$item}
-                            <script type='text/javascript'>
-                                $(".revised_increment_{$user_id}").change(function(){
-                                    
-                                });
-                            </script>
                         </td>
                     ]]>
                 </ReportItem>
             </Else>
             
             <!-- Increment Votes -->
-            <ReportItem id="freeze" type="VoteResultsReportItem" freezeId="vote_{$user_id}" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="75px">
+            <ReportItem id="freeze" type="VoteResultsReportItem" voteType="increment" freezeId="vote_{$user_id}" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="75px">
                 <![CDATA[
                         {$item}
                 ]]>
             </ReportItem>
             
             <!-- Tenure Votes -->
-            <ReportItem id="t_freeze" type="VoteResultsReportItem" freezeId="t_vote_{$user_id}" blobItem="T_FREEZE" blobSubItem="{$user_id}" voteBlobItem="T_VOTE" personId="1" width="75px">
+            <ReportItem id="t_freeze" type="VoteResultsReportItem" voteType="tenure" freezeId="t_vote_{$user_id}" blobItem="T_FREEZE" blobSubItem="{$user_id}" voteBlobItem="T_VOTE" personId="1" width="75px">
                 <![CDATA[
                         {$item}
-                        <script type='text/javascript'>
-                            var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
-                            if(tenure != "i recommend that an appointment with tenure be offered" &&
-                               tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
-                                $(".t_vote_{$user_id}").empty();
-                            }
-                        </script>
                 ]]>
             </ReportItem>
             
             <!-- Promotion Votes -->
-            <ReportItem id="p_freeze" type="VoteResultsReportItem" freezeId="p_vote_{$user_id}" blobItem="P_FREEZE" blobSubItem="{$user_id}" voteBlobItem="P_VOTE" personId="1" width="75px">
+            <ReportItem id="p_freeze" type="VoteResultsReportItem" voteType="promotion" freezeId="p_vote_{$user_id}" blobItem="P_FREEZE" blobSubItem="{$user_id}" voteBlobItem="P_VOTE" personId="1" width="75px">
                 <![CDATA[
                         {$item}
-                        <script type='text/javascript'>
-                            var promotion = "{getText(RP_CHAIR, FEC_REVIEW, PROMOTION, {$user_id}, 0, 0)}";
-                            if(promotion.indexOf("i recommend promotion") == -1){
-                                $(".p_vote_{$user_id}").empty();
-                            }
-                        </script>
                 ]]>
             </ReportItem>
             <If if="{contains({$my_roles},HR)}">

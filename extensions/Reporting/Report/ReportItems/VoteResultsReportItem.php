@@ -5,6 +5,36 @@ class VoteResultsReportItem extends SelectReportItem {
     function render(){
         global $wgOut;
         $me = Person::newFromWgUser();
+        $voteType = $this->getAttr("voteType");
+        if($voteType == "tenure"){
+            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, 0, 0);
+            $address = ReportBlob::create_address("RP_CHAIR", "FEC_REVIEW", "TENURE", $this->blobSubItem);
+            $blob->load($address);
+            $data = $blob->getData();
+            
+            if($data != "i recommend that an appointment with tenure be offered" &&
+               $data != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
+                $wgOut->addHTML("<td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>");
+                return;
+            }
+        }
+        else if($voteType == "promotion"){
+            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, 0, 0);
+            $address = ReportBlob::create_address("RP_CHAIR", "FEC_REVIEW", "PROMOTION", $this->blobSubItem);
+            $blob->load($address);
+            $data = $blob->getData();
+            
+            if(strstr($data, "i recommend promotion") === false){
+                $wgOut->addHTML("<td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>");
+                return;
+            }
+        }
         $freezeId = $this->getAttr("freezeId", "");
         
         $votes = $this->getVotes();
