@@ -46,7 +46,6 @@ class PersonProfileTab extends AbstractEditableTab {
         if(isExtensionEnabled("Visualizations")){
             $extra[] = $this->showDoughnut($this->person, $this->visibility);
         }
-        $extra[] = $this->showTwitter($this->person, $this->visibility);
         
         // Delete extra widgets which have no content
         foreach($extra as $key => $e){
@@ -301,26 +300,6 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->html .= "</ul>";
         }
         $this->html .= "</div>";
-    }
-    
-    /**
-     * Displays the twitter widget for this user
-     */
-    function showTwitter($person, $visibility){
-        $html = "";
-        if($person->getTwitter() != ""){
-            $twitter = str_replace("@", "", $person->getTwitter());
-            $html = <<<EOF
-                <br />
-                <div id='twitter' style='display: block; width: 100%; text-align: right; overflow: hidden; position:relative;'>
-                    <div>
-                        <a class="twitter-timeline" width="100%" height="400" href="https://twitter.com/{$twitter}" data-screen-name="{$twitter}" data-widget-id="553303321864196097">Tweets by @{$twitter}</a>
-                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                    </div>
-                </div>
-EOF;
-        }
-        return $html;
     }
     
     function showEditProfile($person, $visibility){
