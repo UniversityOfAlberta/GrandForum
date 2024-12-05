@@ -23,7 +23,7 @@
         </Static>
         <If if="{==({get(quarter)},1)}">
             <![CDATA[
-                <h3>{get(year)}:R{get(quarter)} Report - Submit by: March 15, {subtract({get(year)},1)}</h3>
+                <h3>{get(year)}:R{get(quarter)} Report - Submit by: March 15, {get(year)}</h3>
             ]]>
         </If>
         <ElseIf if="{==({get(quarter)},2)}">
