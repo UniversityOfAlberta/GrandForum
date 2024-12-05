@@ -336,16 +336,15 @@
                         <td align='center' style="white-space:nowrap;">{$item}<br />
                 ]]>
             </ReportItem>
-            <For from="1" to="3">
-                <Static>
-                    {set(fileCR, {getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)})}
-                </Static>
-                <If if="{!=({get(fileCR)},)}">
-                    <![CDATA[
-                       <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(fileCR)}">File</a><br />
-                    ]]>
-                </If>
-            </For>
+            <If if="{!=({getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE1,{$user_id},0,0)},)}">
+                <For from="1" to="3">
+                    <If if="{!=({getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)},)}">
+                        <![CDATA[
+                           <a class="downloadPDF file_{$user_id}" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CHAIR,FEC_REVIEW,FILE{$index},{$user_id},0,0)}">File</a><br />
+                        ]]>
+                    </If>
+                </For>
+            </If>
             <Static>
                 <![CDATA[
                     </td>
