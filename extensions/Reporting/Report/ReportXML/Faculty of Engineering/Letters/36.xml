@@ -15,7 +15,7 @@
                 <p>Under Article A6.19.1 of Schedule A, this becomes the preliminary position of FEC. The Department Chair {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}. This decision was based on the following:</p>
                 <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
             
-                <p>You may wish to consider the following options:</p>
+                <!--p>You may wish to consider the following options:</p>
                 <ul style='margin-left:1em;'>
                     <li>I am offering to meet with you <b><u>before</u></b> January 3, 2025, to discuss your individual case as it was presented before FEC. Please contact my office at enggdeanea@ualberta.ca for an appointment.</li>
                     <li>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s preliminary position by informing me, in writing, within 5 working days from the receipt of this letter.</li>
@@ -30,7 +30,9 @@
                 
                 <p>Please be advised that reconsideration cases are scheduled for January 17 in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}. Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
 
-                <p>If you choose not to request reconsideration of FECs preliminary decision, the FEC decision will be final and binding; pursuant to Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC. If you have your case reconsidered by FEC and it stands by its preliminary position, you have the right to appeal to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A.</p>
+                <p>If you choose not to request reconsideration of FECs preliminary decision, the FEC decision will be final and binding; pursuant to Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC. If you have your case reconsidered by FEC and it stands by its preliminary position, you have the right to appeal to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A.</p-->
+                
+                <p>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC's preliminary position. Information on how to request reconsideration and the deadline by which to request reconsideration of your case was communicated to you via email on December 5, 2024.</p>
                 
                 <p>Should you have any procedural questions, please contact the FEC Administrator, Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
             ]]>
