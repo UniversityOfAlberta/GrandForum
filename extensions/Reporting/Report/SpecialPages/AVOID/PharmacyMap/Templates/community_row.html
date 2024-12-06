@@ -26,7 +26,7 @@
         <% if (output.EmailAddressMain != ""){ %>
             <b>Email:</b> <a href='mailto:<%= output.EmailAddressMain %>'><%= output.EmailAddressMain %></a><br />
         <% } %>
-        <% if ( output.PhoneNumbers.length != 0){ %>
+        <% if ( output.PhoneNumbers.length != 0 && output.PhoneNumbers[0].Phone != ""){ %>
             <b>Phone:</b> <%= output.PhoneNumbers[0].Phone %><br />
         <% } %>
         <% if (output.WebsiteAddress != "" && output.WebsiteAddress != "http://"){ %>

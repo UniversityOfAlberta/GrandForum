@@ -763,5 +763,12 @@
                 "descriptionFr": ""
             }
         ]
+    },
+    {
+        "text": "Digital Guidance",
+        "value": 43,
+        "code": "CFN-DIGITAL",
+        "description": "",
+        "descriptionFr": ""
     }
 ]
