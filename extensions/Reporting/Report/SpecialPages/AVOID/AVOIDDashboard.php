@@ -282,7 +282,10 @@ class AVOIDDashboard extends SpecialPage {
         $score = $scores["Total"];
         $label = $scores["Label"];
         $frailty = "";
-        if($label == "very low risk"){ 
+        if($config->getValue("networkFullName") == "AVOID Australia"){
+            $frailty = "Based on your answers in the assessment, your risks for frailty are described in the health assessment. Have a look.";
+        }
+        else if($label == "very low risk"){ 
             $frailty = "<en>Based on your answers in the assessment, you have a <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.  Find out why below.</en>
                         <fr>Sur la base de vos réponses à l’évaluation, vous avez un <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$scores["LabelFr"]}</span> de fragilisation.</fr>
 ";
