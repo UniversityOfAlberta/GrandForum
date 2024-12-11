@@ -19,7 +19,7 @@
                     <li>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s preliminary position by informing me, in writing, within 5 working days from the receipt of this letter.</li>
                 </ul>
                 
-                <p>Should you decide to have your case reconsidered, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by January 15, 2025 with a copy to your Department Chair:</p>
+                <p>Should you decide to have your case reconsidered, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by January 15, {$next_year} with a copy to your Department Chair:</p>
                 <ul style='margin-left:1em;'>
                     <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
                     <li>any material in response to FEC's preliminary position recommendation and any other material relevant to your case;</li>
