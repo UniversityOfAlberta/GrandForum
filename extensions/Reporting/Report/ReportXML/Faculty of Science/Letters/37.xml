@@ -20,10 +20,5 @@
                 <p>Should you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
             ]]>
         </ReportItem>
-        <ReportItem id="footer">
-            <![CDATA[
-                
-            ]]>
-        </ReportItem>
     </ReportSection>
 </Report>

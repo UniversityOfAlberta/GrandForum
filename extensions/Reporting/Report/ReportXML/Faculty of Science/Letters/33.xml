@@ -13,10 +13,5 @@
                 <p>Thank you for your contributions to the University, and I wish you great success during the coming year.</p>
             ]]>
         </ReportItem>
-        <ReportItem id="footer">
-            <![CDATA[
-                
-            ]]>
-        </ReportItem>
     </ReportSection>
 </Report>

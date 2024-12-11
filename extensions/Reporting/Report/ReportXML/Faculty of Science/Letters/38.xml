@@ -25,10 +25,5 @@
                 ]]>
             </Static>
         </ReportItemSet>
-        <ReportItem id="footer">
-            <![CDATA[
-                
-            ]]>
-        </ReportItem>
     </ReportSection>
 </Report>

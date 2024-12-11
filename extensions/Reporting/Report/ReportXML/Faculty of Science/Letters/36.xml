@@ -26,16 +26,11 @@
                     <li>a list of names of persons who will attend the FEC hearing as your witnesses.</li>
                 </ul>
                 
-                <p>Please be advised that reconsideration cases are scheduled for December 5, {$this_year} in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}. Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
+                <p>Please be advised that reconsideration cases are scheduled for January 31, {$next_year} in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}. Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
 
                 <p>If you choose not to request reconsideration of FECs preliminary decision, the FEC decision will be final and binding; pursuant to Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC. If you have your case reconsidered by FEC and it stands by its preliminary position, you have the right to appeal to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A.</p>
                 
                 <p>Should you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
-            ]]>
-        </ReportItem>
-        <ReportItem id="footer">
-            <![CDATA[
-                
             ]]>
         </ReportItem>
     </ReportSection>
