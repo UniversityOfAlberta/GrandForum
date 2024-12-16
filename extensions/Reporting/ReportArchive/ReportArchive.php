@@ -279,71 +279,151 @@ class ReportArchive extends SpecialPage {
     
     static function showTemplateLegend(){
         global $wgOut;
-        $wgOut->addHTML("<h3>Letter Templates Legend (updated Oct 2024)</h3>
-             <table>
-                <tr><td colspan='2'><b>End of First Probationary Period</b></tr>
-                <tr><td>Template 7&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends 2nd probationary period, FEC agrees - Article A5.03.2(a) or A5.03.4(a)</td></tr>
-                <tr><td>Template 8&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure, FEC awards 2nd probationary period - Article 5.03.4(a)</td></tr>
-                <tr><td>Template 9&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure, FEC agree - Article A5.03.4</td></tr>
-                <tr><td>Template 10&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends no further appointment - Article A5.03.1(c) (Possible Contested Case)</td></tr>
-                <tr><td>Template 11&nbsp;&nbsp;&nbsp;</td><td>Dean recommends no further appointment - Article A5.03.1(c) (Possible Contested Case)</td></tr>
-                <tr><td>Template 12&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure, FECs preliminary position is no further appointment - Article A5.03.4 (c) (Possible Reconsideration)</td></tr>
-                <tr><td>Template 13&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends no further appointment, staff member contests, FEC agrees with recommendation - Article A5.03.4(c) (Possible GAC)</td></tr>
-                <tr><td colspan='2'><b>End of Second Probationary Period</b></tr>
-                <tr><td>Template 14&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC agrees - A5.04.2(a)</td></tr>
-                <tr><td>Template 15&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a one-year extension and FEC agrees - A5.04.2(c)</td></tr>
-                <tr><td>Template 16&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC awards an one-year extension - A5.04.2(c)</td></tr>
-                <tr><td>Template 17&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure, FEC preliminary position is no further appointment be offered - A5.04.2(b) (Possible Reconsideration Case)</td></tr>
-                <tr><td>Template 18&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends 1 year extension, FEC preliminary position is no further appointment be offered - A5.04.2(b) (Possible Reconsideration Case)</td></tr>
-                <tr><td>Template 19&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends no further appointment - A5.04.1(b) (Possible Contested Case)</td></tr>
-                <tr><td>Template 20&nbsp;&nbsp;&nbsp;</td><td>FEC reconsideration meeting upholds preliminary decision to award no further appointment - A6.21.5(h) and A6.16.7</td></tr>
-                <tr><td>Template 21&nbsp;&nbsp;&nbsp;</td><td>FEC awards tenure after member contests Department Chair's recommendation to not support tenure - A6.18.12 and A6.16.7</td></tr>
-                <tr><td colspan='2'><b>Promotion to Professor</b></tr>
-                <tr><td>Template 22&nbsp;&nbsp;&nbsp;</td><td>Department Chair supports application for promotion and preliminary position of FEC is to deny promotion</td></tr>
-                <tr><td>Template 23&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not recommend promotion - A6.14.1(b) (Possible Contested Case)</td></tr>
-                <tr><td>Template 24&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends promotion and FEC agrees - A6.16.5(a)</td></tr>
-                <tr><td>Template 25&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not recommend promotion and FEC awards promotion - A6.16.5(b)</td></tr>
-                <tr><td>Template 26&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends promotion and FEC denies promotion - A6.19.1(b) (Possible Reconsideration Case)</td></tr>
-                <tr><td>Template 27&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not recommend promotion, staff member appears before FEC to contest, and FEC denies promotion - A6.18.12 and A6.16.7 (Possible GAC Case)</td></tr>
-                <tr><td colspan='2'><b>Incrementation</b></tr>
-                <tr><td>Template 28&nbsp;&nbsp;&nbsp;</td><td>New appointment between July 1 and October 1 (inclusive) - A6.11.1</td></tr>
-                <tr><td>Template 29&nbsp;&nbsp;&nbsp;</td><td>New appointment between October 2 and June 1 (inclusive) - A6.11.2</td></tr>
-                <tr><td colspan='2'><b>Incrementation</b></tr>
-                <tr><td>Template 30&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends ≥ 1.0 - A6.14.1(a)</td></tr>
-                <tr><td>Template 31&nbsp;&nbsp;&nbsp;</td><td>FEC supports Department Chair’s recommended incrementation of > 1.0 - A6.16.5(a)</td></tr>
-                <tr><td>Template 32&nbsp;&nbsp;&nbsp;</td><td>FEC awards higher incrementation than Department Chair’s recommendation - A6.16.5(b)</td></tr>
-                <tr><td>Template 33&nbsp;&nbsp;&nbsp;</td><td>FEC awards lower incrementation than Department Chair’s recommendation but award is still > 1.0 - A6.16.5(b)</td></tr>
-                <tr><td>Template 34&nbsp;&nbsp;&nbsp;</td><td>After reconsideration, FEC awards lower incrementation than Department Chair’s recommendation - A6.21.5(h) and A6.16.7 (Possible GAC Case)</td></tr>
-                <tr><td>Template 35&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends <1.0 - A6.14.1 (Possible Contested Case)</td></tr>
-                <tr><td>Template 36&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends <1, staff member did not contest, FEC reduces incrementation even lower - A6.18.12 and A6.16.7 (Possible Reconsideration Case)</td></tr>
-                <tr><td>Template 37&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends <1.0, staff member contests, FEC agrees with recommendation - A6.18.12 and A6.16.7 (Possible GAC Case)</td></tr>
-                <tr><td>Template 38&nbsp;&nbsp;&nbsp;</td><td>FEC agrees with Department Chair’s recommendation of <1.0, staff member does not contest - A6.16.5(a)</td></tr>
-                <tr><td>Template 39&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends > 1.0 incrementation, FEC awards <1.0 incrementation - A6.16.5(b) (Possible Reconsideration Case)</td></tr>
-                <tr><td>Template 40&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends 1.0, FECs preliminary position awarded <1.0, staff member has case reconsidered, FEC decision remains <1.0 - A6.21.5(h) and A6.16.7 (Possible GAC Case)</td></tr>
-                <tr><td>Template 41&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends 0d for the second time in three years - A6.14(a)</td></tr>
-                <tr><td>Template 42&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a 0b, 0.50, or 0.75, staff member does not contest, FEC awards 0d incrementation - A6.16.5(b) (Possible Reconsideration Case).</td></tr>
-                
-                <tr><td colspan='2'><b>Sabbaticals</b></tr>
-                <tr><td>Template 43&nbsp;&nbsp;&nbsp;</td><td>FEC recommends approval of sabbatical, Dean accepts the FEC recommendation - A4.02.4</td></tr>
-                <tr><td>Template 44&nbsp;&nbsp;&nbsp;</td><td>FEC recommends approval of sabbatical, Dean denies due to being over quota - A4.02.4 and A4.02.8</td></tr>
-                <tr><td>Template 45&nbsp;&nbsp;&nbsp;</td><td>FEC does not recommend approval of sabbatical, Dean denies application - A4.02.4</td></tr>
-                
-                <tr><td colspan='2'><b>FSO Promotion</b></tr>
-                <tr><td>Template 50&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO III</td></tr>
-                <tr><td>Template 51&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO IV</td></tr>
-                
-                <tr><td colspan='2'><b>ATS</b></tr>
-                <tr><td>Template ATS11&nbsp;&nbsp;&nbsp;</td><td>Agree with Chair (1.0 or Higher)</td></tr>
-                <tr><td>Template ATS12&nbsp;&nbsp;&nbsp;</td><td>Contestable from ATSEC</td></tr>
-                <tr><td>Template ATS13&nbsp;&nbsp;&nbsp;</td><td>Higher than Recommendation</td></tr>
-                <tr><td>Template ATS14&nbsp;&nbsp;&nbsp;</td><td>Lower but not less than 1.0</td></tr>
-                <tr><td>Template ATS15&nbsp;&nbsp;&nbsp;</td><td>0A</td></tr>
-                <tr><td>Template ATS16&nbsp;&nbsp;&nbsp;</td><td>0B</td></tr>
-                <tr><td>Template ATS17&nbsp;&nbsp;&nbsp;</td><td>0C</td></tr>
-                <tr><td>Template ATS18&nbsp;&nbsp;&nbsp;</td><td>0D</td></tr>
-                <tr><td>Template ATS19&nbsp;&nbsp;&nbsp;</td><td>Promotion</td></tr>
-                <tr><td>Template ATS20&nbsp;&nbsp;&nbsp;</td><td>Agree for Lower than 1</td></tr>
-            </table>");
+        $wgOut->addHTML("<div id='legend'>
+              <ul>
+                <li><a href='#tabs-1'>Current (2024)</a></li>
+                <li><a href='#tabs-2'>Past (pre-2024)</a></li>
+              </ul>");
+        $wgOut->addHTML("
+            <div id='tabs-1'>
+                <h3>Letter Templates Legend (updated Oct 2024)</h3>
+                 <table>
+                    <tr><td colspan='2'><b>End of First Probationary Period</b></tr>
+                    <tr><td>Template 7&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends 2nd probationary period, FEC agrees - Article A5.03.2(a) or A5.03.4(a)</td></tr>
+                    <tr><td>Template 8&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure, FEC awards 2nd probationary period - Article 5.03.4(a)</td></tr>
+                    <tr><td>Template 9&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure, FEC agree - Article A5.03.4</td></tr>
+                    <tr><td>Template 10&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends no further appointment - Article A5.03.1(c) (Possible Contested Case)</td></tr>
+                    <tr><td>Template 11&nbsp;&nbsp;&nbsp;</td><td>Dean recommends no further appointment - Article A5.03.1(c) (Possible Contested Case)</td></tr>
+                    <tr><td>Template 12&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure, FECs preliminary position is no further appointment - Article A5.03.4 (c) (Possible Reconsideration)</td></tr>
+                    <tr><td>Template 13&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends no further appointment, staff member contests, FEC agrees with recommendation - Article A5.03.4(c) (Possible GAC)</td></tr>
+                    <tr><td colspan='2'><b>End of Second Probationary Period</b></tr>
+                    <tr><td>Template 14&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC agrees - A5.04.2(a)</td></tr>
+                    <tr><td>Template 15&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a one-year extension and FEC agrees - A5.04.2(c)</td></tr>
+                    <tr><td>Template 16&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC awards an one-year extension - A5.04.2(c)</td></tr>
+                    <tr><td>Template 17&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure, FEC preliminary position is no further appointment be offered - A5.04.2(b) (Possible Reconsideration Case)</td></tr>
+                    <tr><td>Template 18&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends 1 year extension, FEC preliminary position is no further appointment be offered - A5.04.2(b) (Possible Reconsideration Case)</td></tr>
+                    <tr><td>Template 19&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends no further appointment - A5.04.1(b) (Possible Contested Case)</td></tr>
+                    <tr><td>Template 20&nbsp;&nbsp;&nbsp;</td><td>FEC reconsideration meeting upholds preliminary decision to award no further appointment - A6.21.5(h) and A6.16.7</td></tr>
+                    <tr><td>Template 21&nbsp;&nbsp;&nbsp;</td><td>FEC awards tenure after member contests Department Chair's recommendation to not support tenure - A6.18.12 and A6.16.7</td></tr>
+                    <tr><td colspan='2'><b>Promotion to Professor</b></tr>
+                    <tr><td>Template 22&nbsp;&nbsp;&nbsp;</td><td>Department Chair supports application for promotion and preliminary position of FEC is to deny promotion</td></tr>
+                    <tr><td>Template 23&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not recommend promotion - A6.14.1(b) (Possible Contested Case)</td></tr>
+                    <tr><td>Template 24&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends promotion and FEC agrees - A6.16.5(a)</td></tr>
+                    <tr><td>Template 25&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not recommend promotion and FEC awards promotion - A6.16.5(b)</td></tr>
+                    <tr><td>Template 26&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends promotion and FEC denies promotion - A6.19.1(b) (Possible Reconsideration Case)</td></tr>
+                    <tr><td>Template 27&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not recommend promotion, staff member appears before FEC to contest, and FEC denies promotion - A6.18.12 and A6.16.7 (Possible GAC Case)</td></tr>
+                    <tr><td colspan='2'><b>Incrementation</b></tr>
+                    <tr><td>Template 28&nbsp;&nbsp;&nbsp;</td><td>New appointment between July 1 and October 1 (inclusive) - A6.11.1</td></tr>
+                    <tr><td>Template 29&nbsp;&nbsp;&nbsp;</td><td>New appointment between October 2 and June 1 (inclusive) - A6.11.2</td></tr>
+                    <tr><td colspan='2'><b>Incrementation</b></tr>
+                    <tr><td>Template 30&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends ≥ 1.0 - A6.14.1(a)</td></tr>
+                    <tr><td>Template 31&nbsp;&nbsp;&nbsp;</td><td>FEC supports Department Chair’s recommended incrementation of > 1.0 - A6.16.5(a)</td></tr>
+                    <tr><td>Template 32&nbsp;&nbsp;&nbsp;</td><td>FEC awards higher incrementation than Department Chair’s recommendation - A6.16.5(b)</td></tr>
+                    <tr><td>Template 33&nbsp;&nbsp;&nbsp;</td><td>FEC awards lower incrementation than Department Chair’s recommendation but award is still > 1.0 - A6.16.5(b)</td></tr>
+                    <tr><td>Template 34&nbsp;&nbsp;&nbsp;</td><td>After reconsideration, FEC awards lower incrementation than Department Chair’s recommendation - A6.21.5(h) and A6.16.7 (Possible GAC Case)</td></tr>
+                    <tr><td>Template 35&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends <1.0 - A6.14.1 (Possible Contested Case)</td></tr>
+                    <tr><td>Template 36&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends <1, staff member did not contest, FEC reduces incrementation even lower - A6.18.12 and A6.16.7 (Possible Reconsideration Case)</td></tr>
+                    <tr><td>Template 37&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends <1.0, staff member contests, FEC agrees with recommendation - A6.18.12 and A6.16.7 (Possible GAC Case)</td></tr>
+                    <tr><td>Template 38&nbsp;&nbsp;&nbsp;</td><td>FEC agrees with Department Chair’s recommendation of <1.0, staff member does not contest - A6.16.5(a)</td></tr>
+                    <tr><td>Template 39&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends > 1.0 incrementation, FEC awards <1.0 incrementation - A6.16.5(b) (Possible Reconsideration Case)</td></tr>
+                    <tr><td>Template 40&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends 1.0, FECs preliminary position awarded <1.0, staff member has case reconsidered, FEC decision remains <1.0 - A6.21.5(h) and A6.16.7 (Possible GAC Case)</td></tr>
+                    <tr><td>Template 41&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends 0d for the second time in three years - A6.14(a)</td></tr>
+                    <tr><td>Template 42&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a 0b, 0.50, or 0.75, staff member does not contest, FEC awards 0d incrementation - A6.16.5(b) (Possible Reconsideration Case).</td></tr>
+                    
+                    <tr><td colspan='2'><b>Sabbaticals</b></tr>
+                    <tr><td>Template 43&nbsp;&nbsp;&nbsp;</td><td>FEC recommends approval of sabbatical, Dean accepts the FEC recommendation - A4.02.4</td></tr>
+                    <tr><td>Template 44&nbsp;&nbsp;&nbsp;</td><td>FEC recommends approval of sabbatical, Dean denies due to being over quota - A4.02.4 and A4.02.8</td></tr>
+                    <tr><td>Template 45&nbsp;&nbsp;&nbsp;</td><td>FEC does not recommend approval of sabbatical, Dean denies application - A4.02.4</td></tr>
+                    
+                    <tr><td colspan='2'><b>FSO Promotion</b></tr>
+                    <tr><td>Template 50&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO III</td></tr>
+                    <tr><td>Template 51&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO IV</td></tr>
+                    
+                    <tr><td colspan='2'><b>ATS</b></tr>
+                    <tr><td>Template ATS11&nbsp;&nbsp;&nbsp;</td><td>Agree with Chair (1.0 or Higher)</td></tr>
+                    <tr><td>Template ATS12&nbsp;&nbsp;&nbsp;</td><td>Contestable from ATSEC</td></tr>
+                    <tr><td>Template ATS13&nbsp;&nbsp;&nbsp;</td><td>Higher than Recommendation</td></tr>
+                    <tr><td>Template ATS14&nbsp;&nbsp;&nbsp;</td><td>Lower but not less than 1.0</td></tr>
+                    <tr><td>Template ATS15&nbsp;&nbsp;&nbsp;</td><td>0A</td></tr>
+                    <tr><td>Template ATS16&nbsp;&nbsp;&nbsp;</td><td>0B</td></tr>
+                    <tr><td>Template ATS17&nbsp;&nbsp;&nbsp;</td><td>0C</td></tr>
+                    <tr><td>Template ATS18&nbsp;&nbsp;&nbsp;</td><td>0D</td></tr>
+                    <tr><td>Template ATS19&nbsp;&nbsp;&nbsp;</td><td>Promotion</td></tr>
+                    <tr><td>Template ATS20&nbsp;&nbsp;&nbsp;</td><td>Agree for Lower than 1</td></tr>
+                </table>
+            </div>
+            <div id='tabs-2'>
+                <h3>Letter Templates Legend</h3>
+                     <table>
+                        <tr><td colspan='2'><b>Annual Report</b></tr>
+                        <tr><td>Template 1&nbsp;&nbsp;&nbsp;</td><td>Failure to provide an annual report</td></tr>
+                        <tr><td colspan='2'><b>Staff who take Childbirth/Parental Leaves</b></tr>
+                        <tr><td>Template 2&nbsp;&nbsp;&nbsp;</td><td>Annual evaluations of staff who take childbirth/parental leaves</td></tr>
+                        <tr><td colspan='2'><b>External Referees for Tenure or Promotion to Professor</b></tr>
+                        <tr><td>Template 3&nbsp;&nbsp;&nbsp;</td><td>Requesting assistance in serving as an external referee</td>
+                        <tr><td>Template 4&nbsp;&nbsp;&nbsp;</td><td>Follow-up to external referee</td>
+                        <tr><td colspan='2'><b>End of First Probationary Period</b></tr>
+                        <tr><td>Template 5&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends second probationary period and Dean supports recommendation</td></tr>
+                        <tr><td>Template 6&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC offers a second probationary period</td></tr>
+                        <tr><td>Template 7&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends that no further appointment be offered and staff member is advised of the right to appear before FEC and contest the decision</td></tr>
+                        <tr><td>Template 8&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends that no further appointment be offered and staff member appears before FEC to contest Chair’s recommendation and final decision of FEC is that no further appointment be offered</td></tr>
+                        <tr><td>Template 9&nbsp;&nbsp;&nbsp;</td><td>FEC makes preliminary decision that no further appointment be offered and staff member appears before FEC's reconsideration meeting and FEC upholds preliminary decision that no further appointment be offered</td></tr>
+                        <tr><td colspan='2'><b>End of First or Second Probationary Period</b></tr>
+                        <tr><td>Template 10&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC supports recommendation</td></tr>
+                        <tr><td colspan='2'><b>End of Second Probationary Period</b></tr>
+                        <tr><td>Template 11&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends that no further appointment be offered and staff member is advised of the right to appear before FEC and contest the decision</td></tr>
+                        <tr><td>Template 12&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC's preliminary position is that no further appointment be offered</td></tr>
+                        <tr><td>Template 13&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a one-year extension and FEC's preliminary decision is that no further appointment be offered</td></tr>
+                        <tr><td>Template 14&nbsp;&nbsp;&nbsp;</td><td>FEC makes preliminary decision that no further appointment be offered and staff member appears before FEC's reconsideration meeting and FEC upholds preliminary position that no further appointment be offered</td></tr>
+                        <tr><td>Template 15&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a one-year extension and FEC supports recommendation</td></tr>
+                        <tr><td>Template 16&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends tenure and FEC extends second probationary period by one year</td></tr>
+                        <tr><td>Template 17&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not support tenure and staff member appears before FEC to contest the Chair’s decision and final decision is to aware tenure</td></tr>
+                        <tr><td>Template 18&nbsp;&nbsp;&nbsp;</td><td>Department Chair supports application for promotion and FEC awards promotion</td></tr>
+                        <tr><td>Template 19&nbsp;&nbsp;&nbsp;</td><td>Department Chair supports application for promotion and preliminary position of FEC is to deny promotion</td></tr>
+                        <tr><td>Template 20&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not support promotion and staff member is advised of the right to appear before FEC and contest the recommendation</td></tr>
+                        <tr><td>Template 21&nbsp;&nbsp;&nbsp;</td><td>Department Chair does not support promotion and staff member appears before FEC to contest the Chair’s recommendation and the final decision of FEC is to deny promotion</td></tr>
+                        <tr><td>Template 22&nbsp;&nbsp;&nbsp;</td><td>Department Chair opposes application for promotion and FEC awards promotion</td></tr>
+                        <tr><td colspan='2'><b>Incrementation</b></tr>
+                        <tr><td>Template 23&nbsp;&nbsp;&nbsp;</td><td>New appointments between July 1 and October 1</td></tr>
+                        <tr><td>Template 24&nbsp;&nbsp;&nbsp;</td><td>New appointments between October 2 and June 1</td></tr>
+                        <tr><td>Template 25&nbsp;&nbsp;&nbsp;</td><td>Non-adjudicated increment for staff who take childbirth/parental leaves</td></tr>
+                        <tr><td>Template 26&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends single/multiple increment and FEC supports recommendation</td><tr>
+                        <tr><td>Template 27&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends single/multiple increment and FEC decides on higher increment</td></tr>
+                        <tr><td>Template 28&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a single increment and FEC's preliminary position is less than the Chair's recommendation and staff member appeared before FEC</td></tr>
+                        <tr><td>Template 29&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends less than a single increment</td></tr>
+                        <tr><td>Template 30&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends less than a single increment and FEC's preliminary position is less than the Chair's recommendation</td></tr>
+                        <tr><td>Template 31&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends less than a single increment and FEC at reconsideration lowers the Chair's recommended increment</td></tr>
+                        <tr><td>Template 32&nbsp;&nbsp;&nbsp;</td><td>FEC concurs with Department Chair's increment recommendation of less than a single increment and staff member appears before FEC</td></tr>
+                        <tr><td>Template 33&nbsp;&nbsp;&nbsp;</td><td>FEC concurs with Department Chair's increment recommendation of less than a single increment and staff member does not appear before FEC</td></tr>
+                        <tr><td>Template 34&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends single/multiple increment and FEC decides on less than a single increment</td></tr>
+                        <tr><td>Template 35&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends single increment and FEC decides on less than a single increment and staff member appears before FEC</td></tr>
+                        <tr><td>Template 36&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends multiple increment and FEC decides on lower increment but not less than a single increment</td></tr>
+                        <tr><td>Template 37&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends a 0D increment for the second time in three years</td></tr>
+                        <tr><td>Template 38&nbsp;&nbsp;&nbsp;</td><td>Department Chair recommends no increment and FEC decides on a 0D increment</td></tr>
+                        <tr><td colspan='2'><b>Sabbatical</b></tr>
+                        <tr><td>Template 40&nbsp;&nbsp;&nbsp;</td><td>FEC recommends approval of sabbatical and Dean accepts FEC's recommendation</td></tr>
+                        
+                        <tr><td colspan='2'><b>FSO Promotion</b></tr>
+                        <tr><td>Template 50&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO III</td></tr>
+                        <tr><td>Template 51&nbsp;&nbsp;&nbsp;</td><td>Promotion to FSO IV</td></tr>
+                        
+                        <tr><td colspan='2'><b>ATS</b></tr>
+                        <tr><td>Template ATS11&nbsp;&nbsp;&nbsp;</td><td>Agree with Chair (1.0 or Higher)</td></tr>
+                        <tr><td>Template ATS12&nbsp;&nbsp;&nbsp;</td><td>Contestable from ATSEC</td></tr>
+                        <tr><td>Template ATS13&nbsp;&nbsp;&nbsp;</td><td>Higher than Recommendation</td></tr>
+                        <tr><td>Template ATS14&nbsp;&nbsp;&nbsp;</td><td>Lower but not less than 1.0</td></tr>
+                        <tr><td>Template ATS15&nbsp;&nbsp;&nbsp;</td><td>0A</td></tr>
+                        <tr><td>Template ATS16&nbsp;&nbsp;&nbsp;</td><td>0B</td></tr>
+                        <tr><td>Template ATS17&nbsp;&nbsp;&nbsp;</td><td>0C</td></tr>
+                        <tr><td>Template ATS18&nbsp;&nbsp;&nbsp;</td><td>0D</td></tr>
+                        <tr><td>Template ATS19&nbsp;&nbsp;&nbsp;</td><td>Promotion</td></tr>
+                        <tr><td>Template ATS20&nbsp;&nbsp;&nbsp;</td><td>Agree for Lower than 1</td></tr>
+                    </table>
+                </div>
+                </div>
+            <script type='text/javascript'>
+              $('#legend').tabs();
+            </script>");
     }
     
     static function createSubTabs(&$tabs){
