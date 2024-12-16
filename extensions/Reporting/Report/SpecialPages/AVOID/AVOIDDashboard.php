@@ -445,6 +445,7 @@ class AVOIDDashboard extends SpecialPage {
                             <en>My Weekly Action Plan</en>
                             <fr>Mon plan d’action hebdomadaire</fr>
                         </h1>");
+        $actionPlanVideo = ($config->getValue('networkFullName') == "AVOID Australia") ? "" : "<a href='https://www.youtube.com/watch?v=haRCpUOCG_M' target='_blank'>How to create an effective action plan</a>";
         $wgOut->addHTML("<div class='program-body $membersOnly' style='width: 100%;'>
                             <div id='actionPlanMessages'></div>
                             <p>
@@ -459,7 +460,7 @@ class AVOIDDashboard extends SpecialPage {
                             </p>
                             <p>
                                 <en>Use the action plan template provided to develop weekly plans, track your daily progress, then review your achievements in your action plans log.<br />
-                                    <a href='https://www.youtube.com/watch?v=haRCpUOCG_M' target='_blank'>How to create an effective action plan</a></en>
+                                    {$actionPlanVideo}</en>
                                 <fr>Utilisez le modèle de plan d’action fourni pour élaborer des plans hebdomadaires, suivre vos progrès quotidiens et examiner vos réalisations dans votre journal de plans d’action.</fr>
                             </p>
                             {$fitbitHTML}
