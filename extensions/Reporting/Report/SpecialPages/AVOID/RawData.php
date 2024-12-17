@@ -44,7 +44,7 @@ class RawData extends SpecialPage {
                       <td>".$scores["CFS"]."</td>";
         }
         else{
-            $html .= "<td>N/A</td><td>N/A</td>";
+            $html .= "<td>N/A</td><td>N/A</td><td>N/A</td>";
         }
         if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")){
             $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID_TWELVEMO");
@@ -53,7 +53,7 @@ class RawData extends SpecialPage {
                       <td>".$scores["CFS"]."</td>";
         }
         else{
-            $html .= "<td>N/A</td><td>N/A</td>";
+            $html .= "<td>N/A</td><td>N/A</td><td>N/A</td>";
         }
         $html .= "</tr>";
 
