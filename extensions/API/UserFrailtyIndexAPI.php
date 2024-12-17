@@ -250,6 +250,148 @@ class UserFrailtyIndexAPI extends API{
         )
     );
 
+    static $extraanswers = array(
+        "Diet and Nutrition" => array(
+            "diet1_avoid" => array( //Question: Do you eat foods high in protein?
+                "ReportSection"=>"behaviouralassess", 
+                "blobItem"=>"diet1_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>0,
+                    "No"=>1
+                )
+            ),
+            "diet2_avoid" => array( //Question: At meal times, is half your plate usually filled with fruits and vegetables?
+                "ReportSection"=>"behaviouralassess", 
+                "blobItem"=>"diet2_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>0,
+                    "No"=>1
+                )
+            ),
+            "diet3_avoid" => array( //Question: Do you eat foods high in calcium every day?
+                "ReportSection"=>"behaviouralassess", 
+                "blobItem"=>"diet3_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>0,
+                    "No"=>1
+                )
+            ),
+            "diet4_avoid" => array( //Question: Do you take a vitamin D supplement?
+                "ReportSection"=>"behaviouralassess", 
+                "blobItem"=>"diet4_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>0,
+                    "No"=>1
+                )
+            )
+        ),
+        "Health Status" => array(
+            "help_avoid" => array( //Question: Help from others (Eating)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help2_avoid" => array( //Question: Help from others (Dressing)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help2_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help3_avoid" => array( //Question: Help from others (Transferring)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help3_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help4_avoid" => array( //Question: Help from others (Toileting)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help4_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help5_avoid" => array( //Question: Help from others (Bathing)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help5_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help6_avoid" => array( //Question: Help from others (Shopping)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help6_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help7_avoid" => array( //Question: Help from others (Taking Medications)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help7_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help8_avoid" => array( //Question: Help from others (Using the Telephone)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help8_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help9_avoid" => array( //Question: Help from others (Financing)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help9_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help10_avoid" => array( //Question: Help from others (Transportation)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help10_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help11_avoid" => array( //Question: Help from others (Preparing Meals)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help11_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help12_avoid" => array( //Question: Help from others (Doing Light Housework)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help12_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            ),
+            "help13_avoid" => array( //Question: Help from others (Doing Laundry)
+                "ReportSection"=>"clinicalfrailty", 
+                "blobItem"=>"help13_avoid",
+                "answer_scores"=> array(
+                    "Yes"=>1,
+                    "No"=>0
+                )
+            )
+        )
+    );
 
     function processParams($params){
 
@@ -572,6 +714,31 @@ class UserFrailtyIndexAPI extends API{
         
         return $scores;
     }
+    
+    function getExtra($user_id, $reportType="RP_AVOID"){
+        $scores = array();
+        foreach(self::$extraanswers as $category => $categories){
+            $score = 0;
+            foreach($categories as $bId => $answer){
+                $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, $answer["ReportSection"], $answer["blobItem"], $user_id);
+                $check_answers_list = $answer["answer_scores"];
+                foreach($check_answers_list as $key=>$value){
+                    if($key == $ans){
+                        $score = $score + $value;
+                        $scores[$category."#".$bId] = $value;
+                    }
+                }
+            }
+            $scores[$category] = $score;
+        }
+        $scores["Total"] = 0;
+        foreach($scores as $key => $score){
+            if($key != "Total" && strstr($key, "#") == false){
+                $scores["Total"] += $score;
+            }
+        }
+        return $scores;
+    }
 
     function getFrailtyScore($user_id, $reportType="RP_AVOID"){
         $scores = array();
@@ -618,6 +785,7 @@ class UserFrailtyIndexAPI extends API{
         $scores["CFS"] = ($hasSubmitted) ? $this->getCFS($user_id, $reportType) : 0;
         $scores["VFS"] = ($hasSubmitted) ? $this->getVFS($user_id, $reportType) : "N/A";
         $scores["HAAI"] = ($hasSubmitted) ? $this->getHAAI($user_id, $reportType) : array("Total" => "N/A");
+        $scores["Extra"] = ($hasSubmitted) ? $this->getExtra($user_id, $reportType) : array("Total" => "0");
 
         // Labels
         if($scores["Total"] >= 0 && $scores["Total"] <= 3){

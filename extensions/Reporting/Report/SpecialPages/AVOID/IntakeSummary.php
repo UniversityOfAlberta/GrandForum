@@ -258,6 +258,7 @@ class IntakeSummary extends SpecialPage {
         }
         if(static::$rpType != "RP_AVOID_THREEMO" && static::$rpType != "RP_AVOID_NINEMO"){
             $html .= "<th>Frailty Score</th>";
+            $html .= "<th>Revised Frailty Score</th>";
             $html .= "<th>EQ Health State</th>";
             $html .= "<th>EQ Health Score</th>";
             $html .= "<th>VAS Score</th>";
@@ -265,6 +266,7 @@ class IntakeSummary extends SpecialPage {
             $html .= "<th>In Person Frailty Score</th>";
             
             $html .= "<th>&Delta; Frailty Score</th>";
+            $html .= "<th>&Delta; Revised Frailty Score</th>";
             $html .= "<th>&Delta; EQ Health Score</th>";
             $html .= "<th>&Delta; VAS Score</th>";
             $html .= "<th>&Delta; CFS Score</th>";
@@ -386,6 +388,7 @@ class IntakeSummary extends SpecialPage {
             if($report->reportType != "RP_AVOID_THREEMO" && $report->reportType != "RP_AVOID_NINEMO"){
                 // Full Reports
                 $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
+                $html .= "<td>".number_format(($scores["Total"] + $scores["Extra"]["Total"])/53, 3)."</td>";
                 $html .= "<td>".implode("", $scores["Health"])."</td>";
                 $html .= "<td>".$EQ5D5L[implode("", $scores["Health"])]."</td>";
                 $html .= "<td>".$scores["VAS"]."</td>";
@@ -393,6 +396,7 @@ class IntakeSummary extends SpecialPage {
                 $html .= "<td>".$inPersonScore."</td>";
                 
                 $html .= "<td>".number_format($scores["Total"]/36 - $initialScores["Total"]/36, 3)."</td>";
+                $html .= "<td>".number_format(($scores["Total"] + $scores["Extra"]["Total"])/53 - ($initialScores["Total"] + $initialScores["Extra"]["Total"])/53, 3)."</td>";
                 $html .= "<td>".($EQ5D5L[implode("", $scores["Health"])] - $EQ5D5L[implode("", $initialScores["Health"])])."</td>";
                 $html .= "<td>".($scores["VAS"] - $initialScores["VAS"])."</td>";
                 $html .= "<td>".($scores["CFS"] - $initialScores["CFS"])."</td>";

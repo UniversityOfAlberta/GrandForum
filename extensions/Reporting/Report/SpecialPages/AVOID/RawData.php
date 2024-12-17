@@ -35,10 +35,12 @@ class RawData extends SpecialPage {
         $html .= "<tr data-id='{$person->getId()}'>
                     <td>{$person->getId()}</td>
                     <td>".number_format($scores["Total"]/36, 3)."</td>
+                    <td>".number_format(($scores["Total"] + $scores["Extra"]["Total"])/53, 3)."</td>
                     <td>".$scores["CFS"]."</td>";
         if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")){
             $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
             $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>
+                      <td>".number_format(($scores["Total"] + $scores["Extra"]["Total"])/53, 3)."</td>
                       <td>".$scores["CFS"]."</td>";
         }
         else{
@@ -47,6 +49,7 @@ class RawData extends SpecialPage {
         if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO")){
             $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID_TWELVEMO");
             $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>
+                      <td>".number_format(($scores["Total"] + $scores["Extra"]["Total"])/53, 3)."</td>
                       <td>".$scores["CFS"]."</td>";
         }
         else{
@@ -66,16 +69,19 @@ class RawData extends SpecialPage {
                             <thead>
                                 <tr>
                                     <th rowspan='2'>User Id</th>
-                                    <th colspan='2'>Baseline</th>
-                                    <th colspan='2'>6 Month</th>
-                                    <th colspan='2'>12 Month</th>
+                                    <th colspan='3'>Baseline</th>
+                                    <th colspan='3'>6 Month</th>
+                                    <th colspan='3'>12 Month</th>
                                 </tr>
                                 <tr>
                                     <th>Frailty Score</th>
+                                    <th>Revised Frailty Score</th>
                                     <th>CFS Score</th>
                                     <th>Frailty Score</th>
+                                    <th>Revised Frailty Score</th>
                                     <th>CFS Score</th>
                                     <th>Frailty Score</th>
+                                    <th>Revised Frailty Score</th>
                                     <th>CFS Score</th>
                                 </tr>
                             </thead>");
