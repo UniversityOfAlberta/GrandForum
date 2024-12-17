@@ -49,6 +49,18 @@
             <SectionPermission id="atsec4" permissions="rw" />
             <SectionPermission id="letter" permissions="rw" />
         </Role>
+        <Role role="CHAIR">
+            <SectionPermission id="fec1" permissions="r" />
+            <SectionPermission id="fec2" permissions="r" />
+            <SectionPermission id="fec3" permissions="r" />
+            <SectionPermission id="fec4" permissions="r" />
+            <SectionPermission id="fec5" permissions="r" />
+            <SectionPermission id="atsec1" permissions="r" />
+            <SectionPermission id="atsec2" permissions="r" />
+            <SectionPermission id="atsec3" permissions="r" />
+            <SectionPermission id="atsec4" permissions="r" />
+            <SectionPermission id="letter" permissions="r" />
+        </Role>
     </Permissions>
     <ReportSection id="fec1" name="FEC Letter 1" title="FEC Letters Table" type="EditableReportSection" blobSection="TABLE" renderpdf="false">
         <Static>

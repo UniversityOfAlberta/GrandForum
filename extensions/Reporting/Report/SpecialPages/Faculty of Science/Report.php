@@ -31,6 +31,13 @@ class Report extends TemplateReport{
                     $tabs["Sabbatical"]['subtabs'][] = TabUtils::createSubTab("Sabbatical Application", "{$url}SabbaticalApplication", $selected);
                 }
             }
+            if($person->isRole(CHAIR)){
+                $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
+                if($person->isRole(CHAIR)){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Letters/Base")) ? "selected" : false;
+                    $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Letters", "{$url}Letters/Base", $selected);
+                }
+            }
         }
         return true;
     }
