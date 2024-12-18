@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/X" extends="Letters/Base">
+    <ReportSection id="letter" title="Incrementation - Incrementation Awarded as Recommended">
+        <ReportItem id="from">
+            <![CDATA[
+                Declan Ali<br />
+                Dean of Science
+            ]]>
+        </ReportItem>
+        <ReportItem id="body">
+            <![CDATA[
+                <p>I am writing to inform you that the Faculty Evaluation Committee (FEC) has accepted the recommendation of your Faculty Dean and awarded you a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment in recognition of your achievements during the {$last_year}/{substr({$this_year},2,2)} period under review. The award takes effect on July 1, {$next_year}.</p>
+
+                <p>Thank you for your contributions to the University, and I wish you great success during the coming year.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer">
+            <![CDATA[
+                Sincerely,<br />
+                <br />
+                <div class='previewnodisplay'><img src='skins/Signature.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <br />
+                Declan Ali<br />
+                Dean of Science
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
