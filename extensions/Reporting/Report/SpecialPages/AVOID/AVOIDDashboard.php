@@ -371,7 +371,7 @@ class AVOIDDashboard extends SpecialPage {
                                     </p>");
                                     
             if($config->getValue('networkFullName') == "AVOID Australia"){
-                $wgOut->addHTML("   <p><b>EVERY STEP YOU TAKE MATTERS</b><br /><a href='https://www.youtube.com/watch?v=agGYvoLL_vo' target='_blank'>Click Here</a></p>");
+                $wgOut->addHTML("   <p><b>EVERY STEP YOU TAKE MATTERS</b><br /><a style='cursor:pointer;' onClick=\"window.open('https://www.youtube.com/embed/agGYvoLL_vo?si=tenudfwvUulgjopM', 'video', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=854,height=480');\"><img src='{$wgServer}{$wgScriptPath}/EducationModules/poster2.png' style='height:8.65em;' /></a></p>");
             }
             $wgOut->addHTML("       <div>
                                         <en>
