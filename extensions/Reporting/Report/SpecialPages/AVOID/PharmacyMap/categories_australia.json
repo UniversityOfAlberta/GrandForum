@@ -313,6 +313,14 @@
                 "description": "",
                 "descriptionFr": "",
                 "note": ""
+            },
+            {
+                "text": "Men's Shed",
+                "value": 88,
+                "code": "CFN-INT-MEN",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
             }
         ]
     },
@@ -351,6 +359,14 @@
                 "note": ""
             }
         ]
+    },
+    {
+        "text": "Vaccination",
+        "value": 88,
+        "code": "CFN-VAC",
+        "description": "",
+        "descriptionFr": "",
+        "tags": []
     },
     {
         "text": "Diet and Nutrition",
