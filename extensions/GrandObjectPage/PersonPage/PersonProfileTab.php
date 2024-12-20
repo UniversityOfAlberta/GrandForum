@@ -46,7 +46,7 @@ class PersonProfileTab extends AbstractEditableTab {
                 $extra[] = $this->showCloud($this->person, $this->visibility);
             }
             $extra[] = $this->showDoughnut($this->person, $this->visibility);
-            $extra[] = $this->showTwitter($this->person, $this->visibility);
+            //$extra[] = $this->showTwitter($this->person, $this->visibility);
         }
         
         
