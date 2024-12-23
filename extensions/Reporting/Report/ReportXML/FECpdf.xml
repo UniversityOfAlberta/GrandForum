@@ -52,7 +52,7 @@
                 ]]>
             </Static>
             
-            <!-- Responsibilities Variation -->
+            <!-- Variance of Responsibilities -->
             <If if="{and({!contains({$my_roles},Chair)},
                          {!contains({$my_roles},ViceDean)},
                          {!contains({$user_case_number}, D)},
@@ -60,7 +60,7 @@
                          {!contains({$user_case_number}, F)})}">
                 <Static>
                     <![CDATA[
-                        <h2>Responsibilities Variation</h2>
+                        <h2>Variance of Responsibilities</h2>
                     ]]>
                 </Static>
                 <If if="{==({getText(RP_LETTER5, TABLE, TEMPLATE, {$user_id}, 1, 0, {$last_year})},Variance)}">

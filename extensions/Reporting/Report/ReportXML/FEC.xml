@@ -104,7 +104,7 @@
                     
                     <p><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Guidelines for Supplementary Professional Activity and University Industry Relationships.pdf'><b>Guidelines for SPA and University Industry Relationships</b></a></p>
                     
-                    <h3>Responsibilities Variation</h3>
+                    <h3>Variance of Responsibilities</h3>
                     <p>Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.</p>
                     
                     <h3>Reasons For Reduced Teaching</h3>
@@ -171,7 +171,7 @@
                 ]]>
             </Static>
             
-            <!-- Responsibilities Variation -->
+            <!-- Variance of Responsibilities -->
             <If if="{and({!contains({$my_roles},Chair)},
                          {!contains({$my_roles},ViceDean)},
                          {!contains({$user_case_number}, D)},
@@ -179,7 +179,7 @@
                          {!contains({$user_case_number}, F)})}">
                 <Static>
                     <![CDATA[
-                        <h2>Responsibilities Variation</h2>
+                        <h2>Variance of Responsibilities</h2>
                     ]]>
                 </Static>
                 <If if="{==({getText(RP_LETTER5, TABLE, TEMPLATE, {$user_id}, 1, 0, {$last_year})},Variance)}">
