@@ -314,75 +314,127 @@
                 <h2>Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)})</h2>
             ]]>
         </ReportItem>
-        <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)}, 0)}">
+        <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)}, 0)}">
             <Static>
                 <![CDATA[
                     <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>
-                    <ul>
-                ]]>
-            </Static>
-            <ReportItemSet type="String" array="Journal Paper|
-                                                Conference Paper\|Proceedings Paper\|Workshop Paper|
-                                                Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
-                <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
-                        <![CDATA[
-                            <li style="page-break-inside: avoid;">
-                                {$item} 
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
-                        <![CDATA[
-                                <b>({$product_type})</b> {$item}
-                            </li>
-                        ]]>
-                    </ReportItem>
-                </ReportItemSet>
-            </ReportItemSet>
-            <Static>
-                <![CDATA[
-                    </ul>
+                    
                 ]]>
             </Static>
             
-            <!-- Publication Footnotes -->
-            <Static>
-                <![CDATA[
-                    <ul>
-                ]]>
-            </Static>
-            <ReportItemSet id="products1" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+            <!-- Refereed Publications -->
+            <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)},0)}">
+                <Static>
                     <![CDATA[
-                        <li style="page-break-inside: avoid;">
-                            {$item}
-                        </li>
+                        <h3>Refereed Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)})</h3>
+                        <table class='wikitable' frame='box' rules='all' width='100%'>
                     ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                </Static>
+                <ReportItemSet type="String" array="Journal Paper|
+                                                    Conference Paper\|Proceedings Paper\|Workshop Paper|
+                                                    Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                    <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
+                        <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+                            <![CDATA[
+                                <tr><td>
+                                    {$item} 
+                            ]]>
+                        </ReportItem>
+                        <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                            <![CDATA[
+                                    <b>({$product_type})</b> {$item}
+                                </td></tr>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
+                <Static>
                     <![CDATA[
-                        <li style="page-break-inside: avoid;">
-                            {$item}
-                        </li>
+                        </table>
                     ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItemSet id="products3" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Book Review|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|PHD Thesis|Proceedings Paper|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
-                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                </Static>
+                <!-- Footnotes -->
+                <Static>
                     <![CDATA[
-                        <li style="page-break-inside: avoid;">
-                            {$item}
-                        </li>
+                        <ul>
                     ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <Static>
-                <![CDATA[
-                    </ul>
-                ]]>
-            </Static>
+                </Static>
+                <ReportItemSet type="String" array="Journal Paper|
+                                                    Conference Paper\|Proceedings Paper\|Workshop Paper|
+                                                    Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                    <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
+                        <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                            <![CDATA[
+                                <li style="page-break-inside: avoid;">
+                                    {$item}
+                                </li>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul>
+                    ]]>
+                </Static>
+            </If>
+            
+            <!-- Non-Refereed Publications -->
+            <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Not Refereed)},0)}">
+                <Static>
+                    <![CDATA[
+                        <h3>Non-Refereed Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, Not Refereed)})</h3>
+                        <table class='wikitable' frame='box' rules='all' width='100%'>
+                    ]]>
+                </Static>
+                <ReportItemSet type="String" array="Journal Paper|
+                                                    Conference Paper\|Proceedings Paper\|Workshop Paper|
+                                                    Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                    <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="No">
+                        <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+                            <![CDATA[
+                                <tr><td>
+                                    {$item} 
+                            ]]>
+                        </ReportItem>
+                        <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                            <![CDATA[
+                                    <b>({$product_type})</b> {$item}
+                                </td></tr>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </table>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        <ul>
+                    ]]>
+                </Static>
+                <!-- Footnotes -->
+                <ReportItemSet type="String" array="Journal Paper|
+                                                    Conference Paper\|Proceedings Paper\|Workshop Paper|
+                                                    Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                    <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="No">
+                        <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                            <![CDATA[
+                                <li style="page-break-inside: avoid;">
+                                    {$item}
+                                </li>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul>
+                    ]]>
+                </Static>
+            </If>
         </If>
         
         <!-- Presentations -->

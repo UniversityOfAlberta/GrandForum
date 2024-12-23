@@ -560,6 +560,13 @@
             <![CDATA[
                 <h2 style='margin-top:-5px;padding-top:0;'>Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)}) <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
                 <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
+            ]]>
+        </Static>
+        
+        <!-- Refereed Publications -->
+        <Static>
+            <![CDATA[
+                <h3>Refereed Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)})</h3>
                 <table class='wikitable' style='width:100%'>
                     <thead>
                     <tr>
@@ -572,9 +579,9 @@
             ]]>
         </Static>
         <ReportItemSet type="String" array="Journal Paper|
-                                         Conference Paper\|Proceedings Paper\|Workshop Paper|
-                                         Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
-            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                                            Conference Paper\|Proceedings Paper\|Workshop Paper|
+                                            Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
                 <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                     <![CDATA[
                         <tr><td>{$product_type}</td><td>{$item}</td>
@@ -592,6 +599,44 @@
                 </tbody></table><br />
             ]]>
         </Static>
+        
+        <!-- Non-Refereed Publications -->
+        <Static>
+            <![CDATA[
+                <h3>Non-Refereed Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, Not Refereed)})</h3>
+                <table class='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet type="String" array="Journal Paper|
+                                         Conference Paper\|Proceedings Paper\|Workshop Paper|
+                                         Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="No">
+                <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+                    <![CDATA[
+                        <tr><td>{$product_type}</td><td>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                    <![CDATA[
+                        <td width="30px" align="center">{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
+        
         <Static>
             <![CDATA[
                 <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)}) <span class='clicktooltip' title='The Presentations section lists any presentations given by the user during the reporting year.<br />

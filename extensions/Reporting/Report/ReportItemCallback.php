@@ -1211,7 +1211,7 @@ class ReportItemCallback {
                 break;
             case "Not Refereed":
                 $category = "Publication";
-                $type = "Journal Paper|Conference Paper|Proceedings Paper|Workshop Paper|Book Chapter";
+                $type = "*";
                 $histories = array();
                 break;
             case "Journal":
@@ -1228,7 +1228,7 @@ class ReportItemCallback {
                 break;
             case "Publication":
                 $category = "Publication";
-                $type = "Journal Paper|Conference Paper|Proceedings Paper|Workshop Paper|Book Chapter";
+                $type = "*";
                 $histories = $person->getProductHistories($year, "Refereed");
                 break;
             case "Book":
