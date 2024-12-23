@@ -144,14 +144,14 @@ class IndexTable {
         $idsHeader = "";
         $contactHeader = "";
         $subRoleHeader = "";
-        $universityHeader = "";
         $ldapHeader = "";
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>
                          <th style='white-space: nowrap;'>Employee Id</th>";
         }
         if($me->isRoleAtLeast(DEAN)){
-            $idsHeader = "<th style='white-space: nowrap;'>Google Scholar</th>
+            $idsHeader = "<th style='white-space: nowrap;'>OpenAlex</th>
+                          <th style='white-space: nowrap;'>Google Scholar</th>
                           <th style='white-space: nowrap;'>Sciverse</th>
                           <th style='white-space: nowrap;'>ORCID</th>
                           <th style='white-space: nowrap;'>WoS</th>";
@@ -162,18 +162,12 @@ class IndexTable {
         if($table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
         }
-        if(!$config->getValue('singleUniversity')){
-            $universityHeader = "<th style='white-space: nowrap;'>University</th>";
-        }
-        else{
-            $ldapHeader = "<th style='white-space: nowrap; '>LDAP</th>";
-        }
+        $ldapHeader = "<th style='white-space: nowrap; '>LDAP</th>";
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
                                     <th style='white-space: nowrap;'>Name</th>
                                     {$subRoleHeader}
-                                    {$universityHeader}
                                     <th style='white-space: nowrap;'>Department</th>
                                     <th style='white-space: nowrap;'>Title</th>
                                     {$ldapHeader}
@@ -192,18 +186,13 @@ class IndexTable {
                 $wgOut->addHTML("<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>");
             }
             $university = $person->getUniversity();
-            if(!$config->getValue('singleUniversity')){
-                $wgOut->addHTML("<td align='left'>{$university['university']}</td>");
-            }
             $wgOut->addHTML("<td align='left'>{$university['department']}</td>");
             $wgOut->addHTML("<td align='left'>{$university['position']}</td>");
-            if($config->getValue('singleUniversity')){
-                $wgOut->addHTML("<td align='left'>");
-                if($person->getLdap() != ""){
-                    $wgOut->addHTML("<a href='{$person->getLdap()}' target='_blank'>LDAP</a>");
-                }
-                $wgOut->addHTML("</td>");
+            $wgOut->addHTML("<td align='left'>");
+            if($person->getLdap() != ""){
+                $wgOut->addHTML("<a href='{$person->getLdap()}' target='_blank'>LDAP</a>");
             }
+            $wgOut->addHTML("</td>");
             if($contactHeader != ''){
                 $wgOut->addHTML("<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>");
             }
@@ -216,6 +205,7 @@ class IndexTable {
                 $wgOut->addHTML("<td>{$person->getSciverseId()}</td>");
                 $wgOut->addHTML("<td>{$person->getOrcId()}</td>");
                 $wgOut->addHTML("<td>{$person->getWOS()}</td>");
+                $wgOut->addHTML("<td>{$person->getAlexId()}</td>");
             }
             $wgOut->addHTML("</tr>");
         }

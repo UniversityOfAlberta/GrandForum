@@ -123,6 +123,7 @@ Person = Backbone.Model.extend({
         sciverseId: '',
         orcId: '',
         wos: '',
+        alexId: '',
         university: '',
         position: '',
         start: '',

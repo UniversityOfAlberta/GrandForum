@@ -222,6 +222,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->sciverseId = @$_POST['sciverseId'];
             $this->person->orcId = @$_POST['orcId'];
             $this->person->wos = @$_POST['wos'];
+            $this->person->alexId = @$_POST['alexId'];
             $this->person->publicProfile = @$_POST['public_profile'];
             $this->person->privateProfile = @$_POST['private_profile'];
             $this->person->update();
@@ -507,27 +508,29 @@ EOF;
                             </tr>";
         if($person instanceof FullPerson){
             $this->html .= "<tr>
-                                <td align='right'><b>Website URL:</b></td>
-                                <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
-                            </tr>";
-            if($config->getValue('singleUniversity')){
-                    $this->html .= "<tr>
-                                    <td align='right'><b>Google Scholar URL:</b></td>
-                                    <td><input type='text' size='30' name='googleScholarUrl' placeholder='https://scholar.google.ca/citations?user=XXXXXXXXX' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
-                                </tr>";
-                    $this->html .= "<tr>
-                                    <td align='right'><b>Sciverse Id:</b></td>
-                                    <td><input type='text' size='30' name='sciverseId' placeholder='0000000000' value='".str_replace("'", "&#39;", $person->getSciverseId())."' /></td>
-                                </tr>";
-                    $this->html .= "<tr>
-                                    <td align='right'><b>ORCID:</b></td>
-                                    <td><input type='text' size='30' name='orcId' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcId())."' /></td>
-                                </tr>";
-                    $this->html .= "<tr>
-                                    <td align='right'><b>ResearcherID:</b></td>
-                                    <td><input type='text' size='30' name='wos' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getWOS())."' /></td>
-                                </tr>";
-            }
+                        <td align='right'><b>Website URL:</b></td>
+                        <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
+                    </tr>";
+            $this->html .= "<tr>
+                            <td align='right'><b>OpenAlex Id:</b></td>
+                            <td><input type='text' size='30' name='alexId' placeholder='A0123456789' value='".str_replace("'", "&#39;", $person->getAlexId())."' /></td>
+                        </tr>";
+            $this->html .= "<tr>
+                            <td align='right'><b>Google Scholar URL:</b></td>
+                            <td><input type='text' size='30' name='googleScholarUrl' placeholder='https://scholar.google.ca/citations?user=XXXXXXXXX' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
+                        </tr>";
+            $this->html .= "<tr>
+                            <td align='right'><b>Sciverse Id:</b></td>
+                            <td><input type='text' size='30' name='sciverseId' placeholder='0000000000' value='".str_replace("'", "&#39;", $person->getSciverseId())."' /></td>
+                        </tr>";
+            $this->html .= "<tr>
+                            <td align='right'><b>ORCID:</b></td>
+                            <td><input type='text' size='30' name='orcId' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcId())."' /></td>
+                        </tr>";
+            $this->html .= "<tr>
+                            <td align='right'><b>ResearcherID:</b></td>
+                            <td><input type='text' size='30' name='wos' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getWOS())."' /></td>
+                        </tr>";
             $this->html .=  "<tr>
                                     <td align='right'><b>Twitter Account:</b></td>
                                     <td><input type='text' name='twitter' placeholder='@twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>

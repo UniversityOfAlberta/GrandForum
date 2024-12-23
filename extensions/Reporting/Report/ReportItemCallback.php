@@ -27,6 +27,7 @@ class ReportItemCallback {
             "start_date" => "getStartDate",
             "end_date" => "getEndDate",
             // Courses
+            "getCourseCount" => "getCourseCount",
             "course_term" => "getCourseTerm",
             "course_start" => "getCourseStart",
             "course_end" => "getCourseEnd",
@@ -362,6 +363,37 @@ class ReportItemCallback {
             }
             return $status;
         }
+    }
+    
+    // Essentially a copy of PersonCoursesReportItemSet
+    function getCourseCount($term="", $unique=true, $exclude13Week=false){
+        $data = array();
+        $person = Person::newFromId($this->reportItem->personId);
+        $component = '';
+        if($term == ''){
+            $courses = $person->getCourses($start, $end);
+        }
+        else{
+            $courses = $person->getCourses();
+        }
+        $alreadyDone = array();
+        $count = 0;
+        if(is_array($courses)){
+            foreach($courses as $course){
+                if(($term == '' || strstr($term, $course->term_string) !== false) &&
+                   ($component == '' || $component == $course->component)){
+                    if($unique && isset($alreadyDone[$course->subject.$course->catalog])){
+                        continue;
+                    }
+                    if($exclude13Week && strstr($course->term_string, "Spring") !== false && strstr($course->catalog, "A") !== false){
+                        continue;
+                    }
+                    $count++;
+                    $alreadyDone[$course->subject.$course->catalog] = $tuple;
+                }
+            }
+        }
+        return $count;
     }
 
     function getCourseTerm(){

@@ -18,7 +18,7 @@
                     <td style="color:#333333;"><a href="<%= website %>" target="_blank"><%= parseUrl(website).hostname %></a></td>
                 </tr>
             <% } %>
-            <% if(ldap != "" && ldap != "http://" && singleUniversity){ %>
+            <% if(ldap != "" && ldap != "http://"){ %>
                 <tr>
                     <td width="100">LDAP&nbsp;</td>
                     <td style="color:#333333;"><a href="<%= ldap %>" target="_blank"><%= parseUrl(ldap).hostname %></a></td>
@@ -32,6 +32,12 @@
             <% } %>
             
             <!-- IDs -->
+            <% if(alexId != ""){ %>
+                <tr>
+                    <td width="100">OpenAlex&nbsp;</td>
+                    <td style="color:#333333;"><a href="https://openalex.org/authors/<%= alexId %>" target="_blank"><%= alexId %></a></td>
+                </tr>
+            <% } %>
             <% if(googleScholarId != "" && googleScholarId != "http://" && googleScholarId.indexOf('user=') !== -1){ %>
                 <tr>
                     <td width="100">Google Scholar&nbsp;</td>

@@ -143,9 +143,9 @@
                 <div style='display:inline-block;width:40%;vertical-align:top;'>
                     <table class='wikitable'>
                         {if("{$user_phd_year}" != "", <tr><td><b>Year of PhD:&nbsp;</b></td><td>{$user_phd_year}</td></tr>)}
-                        {if("{$user_appointment_year}" != "", <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$user_appointment_year}</td></tr>)}
                         {if("{getFecPersonalInfo(dateOfAssistant)}" != "", <tr><td><b>Date of Assistant:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfAssistant)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateOfAssociate)}" != "", <tr><td><b>Date of Associate:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfAssociate)}</td></tr>)}
+                        {if("{getFecPersonalInfo(dateOfTenure)}" != "", <tr><td><b>Date of Tenure:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfTenure)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateOfProfessor)}" != "", <tr><td><b>Date of Professor:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfProfessor)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateFso2)}" != "", <tr><td><b>Date of FSO II:&nbsp;</b></td><td>{getFecPersonalInfo(dateFso2)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateFso3)}" != "", <tr><td><b>Date of FSO III:&nbsp;</b></td><td>{getFecPersonalInfo(dateFso3)}</td></tr>)}
@@ -155,10 +155,7 @@
                         {if("{getFecPersonalInfo(dateAtsec3)}" != "", <tr><td><b>Date of ATS III:&nbsp;</b></td><td>{getFecPersonalInfo(dateAtsec3)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateOfProbation1)}" != "", <tr><td><b>Date of Probation 1:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfProbation1)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateOfProbation2)}" != "", <tr><td><b>Date of Probation 2:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfProbation2)}</td></tr>)}
-                        {if("{getFecPersonalInfo(dateOfTenure)}" != "", <tr><td><b>Date of Tenure:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfTenure)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateOfRetirement)}" != "", <tr><td><b>Date of Retirement:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfRetirement)}</td></tr>)}
-                        {if("{getFecPersonalInfo(dateOfLastDegree)}" != "", <tr><td><b>Date of Last Degree:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfLastDegree)}</td></tr>)}
-                        {if("{getFecPersonalInfo(lastDegree)}" != "", <tr><td><b>Last Degree:&nbsp;</b></td><td>{getFecPersonalInfo(lastDegree, false)}</td></tr>)}
                     </table>
                 </div>
                 
@@ -412,11 +409,21 @@
                             <td rowspan='2'>{$user_name}<br /><i>{getExtra(role)}</i></td>
                     ]]>
                 </Static>
-                
+                <Static>
+                    <![CDATA[
+                        {set(style, 
+                            {if("{getExtra(start_date)}" < "{getExtra(start)}" || 
+                                "{getExtra(start_date)}" == "0000-00-00" || 
+                                "{getExtra(start)}" == "0000-00-00", 
+                                    style='background:#FF6600;'
+                            )}
+                        )}
+                    ]]>
+                </Static>
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}">
                     <![CDATA[
-                            <td align='center'>{time2date({getExtra(start)}, M Y)}</td>
-                            <td align='center'>{time2date({getExtra(start_date)}, M Y)}</td>
+                            <td align='center' {get(style)}>{time2date({getExtra(start)}, M Y)}</td>
+                            <td align='center' {get(style)}>{time2date({getExtra(start_date)}, M Y)}</td>
                             <td>{getExtra(position)}</td>
                             <td align='center'>{time2date({getExtra(finish)}, M Y)}</td>
                             <td>{$user_cosupervisors}</td>
@@ -951,7 +958,7 @@
                     {set(term, {getExtra()})}
                 ]]>
             </Static>
-            <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" unique="true" exclude13Week="true">
+            <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" unique="true">
                 <ReportItemSet type="CourseSections">
                     <If if="{!=({course_eval(false)}, )}">
                         <![CDATA[

@@ -416,6 +416,7 @@ class Person extends BackboneModel {
                                                    'sciverse_id',
                                                    'orcid',
                                                    'wos',
+                                                   'alex_id',
                                                    'user_public_profile',
                                                    'profile_start_date',
                                                    'profile_end_date',
@@ -431,6 +432,7 @@ class Person extends BackboneModel {
                     unset($row['sciverse_id']);
                     unset($row['orcid']);
                     unset($row['wos']);
+                    unset($row['alex_id']);
                     unset($row['user_public_profile']);
                     unset($row['profile_start_date']);
                     unset($row['profile_end_date']);
@@ -3369,6 +3371,8 @@ class Person extends BackboneModel {
     function getOrcId(){ return ""; }
     
     function getWOS(){ return ""; }
+    
+    function getAlexId(){ return ""; }
 
     function getProfile($private=false){ return ""; }
 
@@ -3445,6 +3449,7 @@ class FullPerson extends Person {
     var $sciverseId;
     var $orcId;
     var $wos;
+    var $alexId;
     var $publicProfile;
     var $profileStartDate;
     var $profileEndDate;
@@ -3488,6 +3493,7 @@ class FullPerson extends Person {
             $this->sciverseId = @$data[0]['sciverse_id'];
             $this->orcId = @$data[0]['orcid'];
             $this->wos = @$data[0]['wos'];
+            $this->alexId = @$data[0]['alex_id'];
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->profileStartDate = @$data[0]['profile_start_date'];
             $this->profileEndDate = @$data[0]['profile_end_date'];
@@ -3568,6 +3574,10 @@ class FullPerson extends Person {
     
     function getWOS(){
         return $this->wos;
+    }
+    
+    function getAlexId(){
+        return $this->alexId;
     }
     
     // Returns the user's profile.
@@ -4396,6 +4406,7 @@ class FullPerson extends Person {
                                           'sciverse_id' => $this->getSciverseId(),
                                           'orcid' => $this->getOrcId(),
                                           'wos' => $this->getWOS(),
+                                          'alex_id' => $this->getAlexId(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'profile_start_date' => $this->getProfileStartDate(),
                                           'profile_end_date' => $this->getProfileEndDate(),
@@ -4426,6 +4437,7 @@ class FullPerson extends Person {
                                                 'sciverse_id' => $this->getSciverseId(),
                                                 'orcid' => $this->getOrcId(),
                                                 'wos' => $this->getWOS(),
+                                                'alex_id' => $this->getAlexId(),
                                                 'user_public_profile' => $this->getProfile(false)),
                                           array('user_id' => EQ($this->getId())));
             if(!$wgImpersonating && !$wgDelegating){
@@ -4459,6 +4471,7 @@ class FullPerson extends Person {
         $json['sciverseId'] = $this->getSciverseId();
         $json['orcId'] = $this->getOrcId();
         $json['wos'] = $this->getWOS();
+        $json['alexId'] = $this->getAlexId();
         $json['profile_start_date'] = $this->getProfileStartDate();
         $json['profile_end_date'] = $this->getProfileEndDate();
         $json['publicProfile'] = $this->getProfile(false);
