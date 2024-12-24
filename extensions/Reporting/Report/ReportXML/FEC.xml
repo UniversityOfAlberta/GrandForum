@@ -290,8 +290,16 @@
         </Static>
         <ReportItemSet type="String" array="Summer {$last_year}|Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
             <Static>
+                {set(nStudents, 0)}
+            </Static>
+            <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" unique="true">
+                <Static>
+                    {set(nStudents, {add({get(nStudents)}, {getCourseAllLectureEnroll()})})}
+                </Static>
+            </ReportItemSet>
+            <Static>
                 <![CDATA[
-                    <h3>{getExtra()}</h3>
+                    <h3>{getExtra()} ({get(nStudents)} students)</h3>
                 ]]>
             </Static>
             <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" unique="true">
@@ -465,7 +473,8 @@
         <!-- HQP Publications -->
         <Static>
             <![CDATA[
-                <h2>HQP Publications <span class='clicktooltip' title='The publications should have your HQP listed as an author, but cannot include yourself as an author.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
+                <h2>HQP Activities</h2>
+                <h3>Publications <span class='clicktooltip' title='The publications should have your HQP listed as an author, but cannot include yourself as an author.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h3>
                 <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
                 <table class='wikitable' style='width:100%'>
                     <thead>
@@ -497,7 +506,7 @@
         </Static>
         <Static>
             <![CDATA[
-                <h2>HQP Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
+                <h3>Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h3>
                 <small></small>
                 <table class ='wikitable' style='width:100%'>
                     <thead>
@@ -506,11 +515,10 @@
                         <th>Type</th>
                         <th>HQP/Contributors</th>
                         <th>Invited</th>
-                        <th>Event Title</th>
-                        <th>Organization</th>
+                        <th>Event/Organization</th>
                         <th>Location</th>
-                        <th>Date</th>
-                        <th>Length (minutes)</th>
+                        <th style='width:1%;'>Date</th>
+                        <th style='width:1%;'>Length (minutes)</th>
                         <th>Footnote</th>
                     </tr>
                     </thead>
@@ -520,12 +528,11 @@
         <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td align='center'>{$presentation_title}</td>
+                    <tr><td align='left'>{$presentation_title}</td>
                         <td align='center'>{$presentation_type}</td>
                         <td>{$product_authors}{if("{$product_contributors}" != "", <hr />{$product_contributors})}</td>
                         <td align='center'>{$presentation_invited}</td>
-                        <td>{getProductData(event_title)}</td>
-                        <td>{$presentation_organization}</td>
+                        <td>{if("{getProductData(event_title)}" != "", {getProductData(event_title)}<br />)}{$presentation_organization}</td>
                         <td align='center'>{$presentation_country}</td>
                         <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
                         <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
@@ -559,10 +566,17 @@
         <Static>
             <![CDATA[
                 <h2 style='margin-top:-5px;padding-top:0;'>Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)}) <span class='clicktooltip' style='font-weight:normal;' title='(Do not include publications that are in preparation. The names of your Highly Qualified Personnel (HQP) are bolded.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
-                <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
             ]]>
         </Static>
-        
+        <ReportItem id="reflections" type="Textarea" blobItem="REFLECTIONS" rich="true" limit="100">
+            <![CDATA[
+                <h3>Reflections on Publications</h3>
+                Please reflect on the importance and impact of your most significant publications.
+                {$item}<br /><br />
+                
+                <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
+            ]]>
+        </ReportItem>
         <!-- Refereed Publications -->
         <Static>
             <![CDATA[
@@ -648,12 +662,11 @@
                     <tr>
                         <th>Title</th>
                         <th>Type</th>
-                        <th>Invited</th>
-                        <th>Event Title</th>
-                        <th>Organization</th>
+                        <th style='width:1%;'>Invited</th>
+                        <th>Event/Organization</th>
                         <th>Location</th>
-                        <th>Date</th>
-                        <th>Length (minutes)</th>
+                        <th style='width:1%;'>Date</th>
+                        <th style='width:1%;'>Length (minutes)</th>
                         <th>Footnote</th>
                     </tr>
                     </thead>
@@ -663,11 +676,10 @@
         <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td align='center'>{$presentation_title}</td>
+                    <tr><td align='left'>{$presentation_title}</td>
                         <td align='center'>{$presentation_type}</td>
                         <td align='center'>{$presentation_invited}</td>
-                        <td>{getProductData(event_title)}</td>
-                        <td>{$presentation_organization}</td>
+                        <td>{if("{getProductData(event_title)}" != "", {getProductData(event_title)}<br />)}{$presentation_organization}</td>
                         <td align='center'>{$presentation_country}</td>
                         <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
                         <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
@@ -723,7 +735,7 @@
         </Instructions>
         <Static>
             <![CDATA[
-                <h2 style='margin-top:-5px;padding-top:0;'>Awards Received ({getUserPublicationCount(CYCLE_START, CYCLE_END, Award)}) <span class='clicktooltip' style='font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
+                <h2 style='margin-top:-5px;padding-top:0;'>Awards ({getUserPublicationCount(CYCLE_START, CYCLE_END, Award)}) <span class='clicktooltip' style='font-weight:normal;' title='(Do not include awards given to students.)'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Award">Manage Awards</a></h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
@@ -801,15 +813,18 @@
         </Static>
     </ReportSection>
     <ReportSection id="services" name="Service" tooltip="Service/Committees/Outreach" title="Service Activities &lt;span class='clicktooltip' title='Provide information for any of the subsections below.&lt;br />
+&lt;b>Scientific&lt;/b>: Enter any relevant information for this subsection.&lt;br />
 &lt;b>Departmental&lt;/b> (Excluding Graduate Student Committees): Enter any relevant information for this subsection.&lt;br />
 &lt;b>Faculty&lt;/b>: Enter any relevant information for this subsection.&lt;br />
 &lt;b>University&lt;/b>: Enter any relevant information for this subsection.&lt;br />
-&lt;b>Scientific&lt;/b>: Enter any relevant information for this subsection.&lt;br />
 &lt;b>Community Outreach&lt;/b> (Including academic service to the general public): Enter any relevant information for this subsection.&lt;br />
 &lt;b>Other&lt;/b>: Enter any other relevant information.'>&#9432;&lt;/span>" type="ReportSection">
         <Instructions>
             <![CDATA[
                 <p>Provide information for any of the subsections below.</p>
+                <h3>Scientific</h3>
+                <p>Enter any relevant information for this subsection.</p>
+                
                 <h3>Departmental</h3>
                 <p>(Excluding Graduate Student Committees)<br />Enter any relevant information for this subsection.</p>
                 
@@ -817,9 +832,6 @@
                 <p>Enter any relevant information for this subsection.</p>
 
                 <h3>University</h3>
-                <p>Enter any relevant information for this subsection.</p>
-                
-                <h3>Scientific</h3>
                 <p>Enter any relevant information for this subsection.</p>
                 
                 <h3>Community Outreach</h3>
@@ -835,7 +847,7 @@
             ]]>
         </Static>
         
-        <ReportItemSet type="String" array="Departmental|Faculty|University|Scientific|Community Outreach|Other">
+        <ReportItemSet type="String" array="Scientific|Departmental|Faculty|University|Community Outreach|Other">
             <ReportItem id="bookmark" type="SubBookmarkReportItem" title="{getExtra()}">
                 <![CDATA[
                     <h3>{getExtra()} ({getUserServiceCount(CYCLE_START, CYCLE_END, {getExtra()})})</h3>

@@ -146,8 +146,16 @@
         <ReportItemSet type="String" array="Summer {$last_year}|Fall {$last_year}|Winter {$this_year}|Spring {$this_year}">
             <If if="{>({getCourseCount({removeSpaces({getExtra()})})}, 0)}">
                 <Static>
+                    {set(nStudents, 0)}
+                </Static>
+                <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" unique="true">
+                    <Static>
+                        {set(nStudents, {add({get(nStudents)}, {getCourseAllLectureEnroll()})})}
+                    </Static>
+                </ReportItemSet>
+                <Static>
                     <![CDATA[
-                        <h3>{getExtra()}</h3>
+                        <h3>{getExtra()} ({get(nStudents)} students)</h3>
                     ]]>
                 </Static>
                 <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" unique="true">
@@ -314,6 +322,13 @@
                 <h2>Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)})</h2>
             ]]>
         </ReportItem>
+        <ReportItem id="reflections" type="Textarea" blobSection="FEC_PRODUCTS" blobItem="REFLECTIONS" rich="true" limit="100">
+            <![CDATA[
+                <h3>Reflections on Publications</h3>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
         <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)}, 0)}">
             <Static>
                 <![CDATA[
@@ -337,7 +352,7 @@
                         <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                             <![CDATA[
                                 <tr><td>
-                                    {$item} 
+                                    {$item}
                             ]]>
                         </ReportItem>
                         <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
@@ -449,14 +464,13 @@
                     <table class='wikitable' frame='box' rules='all' width='100%'>
                         <thead>
                             <tr>
-                                <th>Title</th>
+                                <th style='width:30%;'>Title</th>
                                 <th>Type</th>
-                                <th>Invited</th>
-                                <th>Event Title</th>
-                                <th>Organization</th>
+                                <th style='width:1%;'>Invited</th>
+                                <th>Event/Organization</th>
                                 <th>Location</th>
-                                <th>Date</th>
-                                <th>Length (minutes)</th>
+                                <th style='width:1%;'>Date</th>
+                                <th style='width:1%;'>Length (minutes)</th>
                             </tr>
                         </thead>
                 ]]>
@@ -464,11 +478,10 @@
             <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
                     <![CDATA[
-                        <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
+                        <tr><td align='left'>{$presentation_title} <sup>{$item}</sup></td>
                             <td align='center'>{$presentation_type}</td>
                             <td align='center'>{$presentation_invited}</td>
-                            <td>{getProductData(event_title)}</td>
-                            <td>{$presentation_organization}</td>
+                            <td>{if("{getProductData(event_title)}" != "", {getProductData(event_title)}<br />)}{$presentation_organization}</td>
                             <td align='center'>{$presentation_country}</td>
                             <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
                             <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
@@ -556,10 +569,10 @@
             </Static>
         </If>
         
-        <!-- Awards Received -->
-        <ReportItem id="awardsbookmark" type="BookmarkReportItem" title="Awards Received">
+        <!-- Awards -->
+        <ReportItem id="awardsbookmark" type="BookmarkReportItem" title="Awards">
             <![CDATA[
-                <h2>Awards Received ({getUserPublicationCount(CYCLE_START, CYCLE_END, Award)})</h2>
+                <h2>Awards ({getUserPublicationCount(CYCLE_START, CYCLE_END, Award)})</h2>
             ]]>
         </ReportItem>
         <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Award)}, 0)}">
@@ -686,7 +699,7 @@
                 <h2>Service Activities</h2>
             ]]>
         </ReportItem>
-        <ReportItemSet type="String" array="Departmental|Faculty|University|Scientific|Community Outreach|Other">
+        <ReportItemSet type="String" array="Scientific|Departmental|Faculty|University|Community Outreach|Other">
             <If if="{>({getUserServiceCount(CYCLE_START, CYCLE_END, {getExtra()})}, 0)}">
                 <ReportItem id="bookmark" type="SubBookmarkReportItem" title="{getExtra()}">
                     <![CDATA[
@@ -796,15 +809,16 @@
         <ReportItem id="sabbatical" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SABBATICAL" blobSection="FEC_ADDITIONAL_INFO" />
         
         <!-- HQP Publications -->
-        <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="HQP Publications">
+        <ReportItem id="hqpactivitiesbookmark" type="BookmarkReportItem" title="HQP Activities">
             <![CDATA[
-                <h2>HQP Publications</h2>
+                <h2>HQP Activities</h2>
             ]]>
         </ReportItem>
         <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
             <ReportItemSet type="First">
                 <Static>
                     <![CDATA[
+                        <h3>Publications</h3>
                         <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>
                         <ul>
                     ]]>
@@ -853,27 +867,22 @@
         </Static>
         
         <!-- HQP Presentations -->
-        <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="HQP Presentations">
-            <![CDATA[
-                <h2>HQP Presentations</h2>
-            ]]>
-        </ReportItem>
         <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
             <ReportItemSet type="First">
                 <Static>
                     <![CDATA[
+                        <h3>Presentations</h3>
                         <table class='wikitable' frame='box' rules='all' width='100%'>
                             <thead>
                                 <tr>
-                                    <th>Title</th>
+                                    <th style='width:30%;'>Title</th>
                                     <th>Type</th>
                                     <th>HQP/Contributors</th>
-                                    <th>Invited</th>
-                                    <th>Event Title</th>
-                                    <th>Organization</th>
+                                    <th style='width:1%;'>Invited</th>
+                                    <th>Event/Organization</th>
                                     <th>Location</th>
-                                    <th>Date</th>
-                                    <th>Length (minutes)</th>
+                                    <th style='width:1%;'>Date</th>
+                                    <th style='width:1%;'>Length (minutes)</th>
                                 </tr>
                             </thead>
                     ]]>
@@ -881,12 +890,11 @@
             </ReportItemSet>
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_STUDENTS">
                 <![CDATA[
-                    <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
+                    <tr><td align='left'>{$presentation_title} <sup>{$item}</sup></td>
                         <td align='center'>{$presentation_type}</td>
                         <td>{$product_authors}{if("{$product_contributors}" != "", <hr />{$product_contributors})}</td>
                         <td align='center'>{$presentation_invited}</td>
-                        <td>{getProductData(event_title)}</td>
-                        <td>{$presentation_organization}</td>
+                        <td>{if("{getProductData(event_title)}" != "", {getProductData(event_title)}<br />)}{$presentation_organization}</td>
                         <td align='center'>{$presentation_country}</td>
                         <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
                         <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>

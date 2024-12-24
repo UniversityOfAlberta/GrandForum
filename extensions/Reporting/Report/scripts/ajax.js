@@ -200,7 +200,7 @@ $(document).ready(function(){
                     else{
                         $("#reportMain > div").animate({
                                                     'height' : height + paddingHeight + 'px'
-                                                 }, animationTime, animationEasingIn);
+                                                 }, animationTime, animationEasingIn, initResizeEvent);
                         _.defer(initResizeEvent);
                     }
                     timeout = setTimeout(function(){findAutosaves(updateProgress);}, animationTime); // Make sure that there was enough time to complete the animation, then find the new autosaves
