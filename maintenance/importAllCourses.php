@@ -88,6 +88,8 @@
         else if ($term == "Winter2024"){ $startEndDate["start"] = 45298; $startEndDate["end"]  = 45393;} //Winter2024: Jan 8, 2024 - Apr 12, 2024
         else if ($term == "Spring2024"){ $startEndDate["start"] = 45417; $startEndDate["end"]  = 45454;} //Spring2024: May 6, 2024 - June 12, 2024
         else if ($term == "Summer2024"){ $startEndDate["start"] = 45480; $startEndDate["end"]  = 45517;} //Summer2024: Jul 8, 2024 - Aug 14, 2024
+        
+        else if ($term == "Fall2024"){ $startEndDate["start"] = 45537; $startEndDate["end"]  = 45634;}   //Fall2024:   Sep 3, 2024 - Dec 9, 2024
                     
         return $startEndDate; 
     }
@@ -96,8 +98,8 @@
     $start = microtime(true);
     
     // clean DB
-    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 38542", true);
-    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 38545", true);  
+    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 68709", true);
+    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 46542", true);  
     
     $dataDir = "csv/";
     $courseDescrFile = "allCoursesDescription.csv";
