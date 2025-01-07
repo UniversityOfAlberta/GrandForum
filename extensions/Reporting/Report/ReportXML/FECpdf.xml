@@ -637,6 +637,7 @@
         <If if="{>({$user_grant_count}, 0)}">
             <Static>
                 <![CDATA[
+                    <h3>New Grants</h3>
                     <table class='wikitable' frame='box' rules='all' width='100%'>
                         <thead>
                             <tr>
@@ -644,13 +645,13 @@
                                 <th>Sponsor</th>
                                 <th>Starts</th>
                                 <th>Ends</th>
-                                <th>$Total</th>
+                                <th>$Total /<br />My Portion</th>
                             </tr>
                         </thead>
                         <tbody>
                 ]]>
             </Static>
-            <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+            <ReportItemSet id="grants" type="PersonNewGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" blobSection="FEC_GRANTS">
                     <![CDATA[
                         <tr>
@@ -660,7 +661,7 @@
                             <td align='left'>{$grant_sponsor}</td>
                             <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
                             <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
-                            <td align='right'>${$grant_total}</td>
+                            <td align='right'>${$grant_total}{if("{$grant_my_portion}" != "0", <br />${$grant_my_portion})}</td>
                         </tr>
                     ]]>
                 </ReportItem>
@@ -677,7 +678,65 @@
                     <ul>
                 ]]>
             </Static>
-            <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+            <ReportItemSet id="grants" type="PersonNewGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" isTopAnchor="false" blobSection="FEC_GRANTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+            
+            <Static>
+                <![CDATA[
+                    <h3>Continuing Grants</h3>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Sponsor</th>
+                                <th>Starts</th>
+                                <th>Ends</th>
+                                <th>$Total /<br />My Portion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </Static>
+            <ReportItemSet id="grants" type="PersonContinuingGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" blobSection="FEC_GRANTS">
+                    <![CDATA[
+                        <tr>
+                            <td align='left'>{$grant_project_id} <sup>{$item}</sup><br />
+                                {$grant_scientific_title}
+                            </td>
+                            <td align='left'>{$grant_sponsor}</td>
+                            <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                            <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                            <td align='right'>${$grant_total}{if("{$grant_my_portion}" != "0", <br />${$grant_my_portion})}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </tbody></table><br />
+                ]]>
+            </Static>
+            
+            <!-- Grants Footnotes -->
+            <Static>
+                <![CDATA[
+                    <ul>
+                ]]>
+            </Static>
+            <ReportItemSet id="grants" type="PersonContinuingGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}" isTopAnchor="false" blobSection="FEC_GRANTS">
                     <![CDATA[
                         <li style="page-break-inside: avoid;">

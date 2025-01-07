@@ -69,6 +69,7 @@ class ReportItemCallback {
             "grant_start_date" => "getGrantStartDate",
             "grant_end_date" => "getGrantEndDate",
             "grant_total" => "getGrantTotal",
+            "grant_my_portion" => "getGrantMyPortion",
             "grant_average" => "getGrantAverage",
             "grant_is_pi" => "isGrantPI",
             "grant_people" => "getGrantPeople",
@@ -841,6 +842,11 @@ class ReportItemCallback {
     function getGrantTotal(){
         $grant = Grant::newFromId($this->reportItem->productId);
         return number_format($grant->getTotal());
+    }
+    
+    function getGrantMyPortion(){
+        $grant = Grant::newFromId($this->reportItem->productId);
+        return number_format($grant->getMyPortion());
     }
     
     function getGrantAverage(){

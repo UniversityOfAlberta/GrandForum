@@ -776,6 +776,7 @@
         <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
             <![CDATA[
                 <a class="button" style="position:absolute; top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
+                <h3>New Grants</h3>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
@@ -783,14 +784,14 @@
                             <th>Sponsor</th>
                             <th>Starts</th>
                             <th>Ends</th>
-                            <th>$Total</th>
+                            <th>$Total /<br />My Portion</th>
                             <th>Footnotes</th>
                         </tr>
                     </thead>
                     <tbody>
             ]]>
         </ReportItem> 
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="grants" type="PersonNewGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
                 <![CDATA[
                     <tr>
@@ -800,7 +801,41 @@
                         <td align='left'>{$grant_sponsor}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
-                        <td align='right'>${$grant_total}</td>
+                        <td align='right'>${$grant_total}{if("{$grant_my_portion}" != "0", <br />${$grant_my_portion})}</td>
+                        <td align='center' style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table>
+                <h3>Continuing Grants</h3>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Sponsor</th>
+                            <th>Starts</th>
+                            <th>Ends</th>
+                            <th>$Total /<br />My Portion</th>
+                            <th>Footnotes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static> 
+        <ReportItemSet id="grants" type="PersonContinuingGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
+                <![CDATA[
+                    <tr>
+                        <td align='left'>{$grant_project_id}<br />
+                            {$grant_scientific_title}
+                        </td>
+                        <td align='left'>{$grant_sponsor}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                        <td align='right'>${$grant_total}{if("{$grant_my_portion}" != "0", <br />${$grant_my_portion})}</td>
                         <td align='center' style='white-space:nowrap;'>{$item}</td>
                     </tr>
                 ]]>
