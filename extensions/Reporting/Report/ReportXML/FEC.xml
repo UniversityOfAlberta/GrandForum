@@ -785,6 +785,8 @@
                             <th>Starts</th>
                             <th>Ends</th>
                             <th>$Total /<br />My Portion</th>
+                            <th>P.I.<br />(y/n)</th>
+                            <th>Joint With</th>
                             <th>Footnotes</th>
                         </tr>
                     </thead>
@@ -802,6 +804,8 @@
                         <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
                         <td align='right'>${$grant_total}{if("{$grant_my_portion}" != "0", <br />${$grant_my_portion})}</td>
+                        <td align='center'>{$grant_is_pi}</td>
+                        <td>{$grant_people}</td>
                         <td align='center' style='white-space:nowrap;'>{$item}</td>
                     </tr>
                 ]]>
@@ -819,6 +823,8 @@
                             <th>Starts</th>
                             <th>Ends</th>
                             <th>$Total /<br />My Portion</th>
+                            <th>P.I.<br />(y/n)</th>
+                            <th>Joint With</th>
                             <th>Footnotes</th>
                         </tr>
                     </thead>
@@ -836,6 +842,8 @@
                         <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
                         <td align='right'>${$grant_total}{if("{$grant_my_portion}" != "0", <br />${$grant_my_portion})}</td>
+                        <td align='center'>{$grant_is_pi}</td>
+                        <td>{$grant_people}</td>
                         <td align='center' style='white-space:nowrap;'>{$item}</td>
                     </tr>
                 ]]>

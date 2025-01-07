@@ -149,8 +149,8 @@ class PersonFECTab extends AbstractEditableTab {
             $this->html .= "<tr><td align='right' valign='top' style='white-space:nowrap;'><b>Sabbaticals:</b></td><td>".implode("<br />", $sabbs)."</td></tr>";
         }
         $this->html .= ($this->person->dateOfRetirement != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of Retirement:</b></td><td>".substr($this->person->dateOfRetirement, 0, 10)."</td></tr>" : "";
-        $this->html .= ($this->person->dateOfLastDegree != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of Last Degree:</b></td><td>".substr($this->person->dateOfLastDegree, 0, 10)."</td></tr>" : "";
-        $this->html .= ($this->person->lastDegree != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Last Degree:</b></td><td>".$this->person->lastDegree."</td></tr>" : "";
+        //$this->html .= ($this->person->dateOfLastDegree != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Date of Last Degree:</b></td><td>".substr($this->person->dateOfLastDegree, 0, 10)."</td></tr>" : "";
+        //$this->html .= ($this->person->lastDegree != "") ? "<tr><td align='right' style='white-space:nowrap;'><b>Last Degree:</b></td><td>".$this->person->lastDegree."</td></tr>" : "";
         $this->html .= "</table>";
     }
     
@@ -201,8 +201,8 @@ class PersonFECTab extends AbstractEditableTab {
             $this->html .= "<tr><td align='right'><b>Date of Tenure:</b></td><td><input type='text' name='dateOfTenure' class='calendar' style='display:none;' value='".substr($this->person->dateOfTenure, 0, 10)."' /></td></tr>";
             $this->html .= "<tr><td align='right' class='label'><b>Sabbaticals:</b></td><td><div id='sabbaticals'>".implode("<hr />", $sabbaticalsHTML)."</div><button id='minus' type='button'>-</button><button id='plus' type='button'>+</button></td></tr>";
             $this->html .= "<tr><td align='right'><b>Date of Retirement:</b></td><td><input type='text' name='dateOfRetirement' class='calendar' style='display:none;' value='".substr($this->person->dateOfRetirement, 0, 10)."' /></td></tr>";
-            $this->html .= "<tr><td align='right'><b>Date of Last Degree:</b></td><td><input type='text' name='dateOfLastDegree' class='calendar' style='display:none;' value='".substr($this->person->dateOfLastDegree, 0, 10)."' /></td></tr>";
-            $this->html .= "<tr><td align='right'><b>Last Degree:</b></td><td><input type='text' name='lastDegree' value='".$this->person->lastDegree."' /></td></tr>";
+            $this->html .= "<tr style='display:none;'><td align='right'><b>Date of Last Degree:</b></td><td><input type='text' name='dateOfLastDegree' class='calendar' style='display:none;' value='".substr($this->person->dateOfLastDegree, 0, 10)."' /></td></tr>";
+            $this->html .= "<tr style='display:none;'><td align='right'><b>Last Degree:</b></td><td><input type='text' name='lastDegree' value='".$this->person->lastDegree."' /></td></tr>";
         }
         $this->html .= "</table>";
         
