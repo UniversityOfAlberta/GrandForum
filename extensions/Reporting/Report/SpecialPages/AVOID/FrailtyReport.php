@@ -325,7 +325,7 @@ class FrailtyReport extends SpecialPage {
         return $person->isLoggedIn();
     }
     
-    function drawRow($comp, $topics, $scores){
+    function drawRow($comp, $topics, $scores, $person){
         global $wgServer, $wgScriptPath, $wgLang, $config;
         $subTopics = array();
         $education = array();
@@ -374,10 +374,30 @@ class FrailtyReport extends SpecialPage {
                     }
                 }
                 foreach($topic['community'] as $k => $p){
-                    if(strstr($k, "Free and Subsidized Food") !== false && $scores["DietEnd"] == 0){ continue; }
-                    $k = preg_replace("/(.*(^|→|↴))(?!.*(→|↴))(.*)/", "$1<a style='vertical-align:top;' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$p}'>$4</a>", $k);
-                    $k = str_replace("→", "</span>→<span class='cb'>", $k);
-                    $k = str_replace("↴", "</span>↴<span class='cb' style='width: 100%; text-align: right;'>", $k);
+                    if(is_numeric($k)){
+                        $k = $p;
+                    }
+                    else{
+                        $url = (strstr($p, "http") !== false) ? $p : "{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$p}";
+                        if(strstr($k, "Better Health Coaching Service") !== false){
+                            $blob = new ReportBlob(BLOB_TEXT, YEAR, $person->getId(), 0);
+                            $blob_address = ReportBlob::create_address("RP_AVOID", "AVOID_Questions_tab0", "avoid_age", 0);
+                            $blob->load($blob_address);
+                            $age = $blob->getData();
+        
+                            $blob = new ReportBlob(BLOB_TEXT, YEAR, $person->getId(), 0);
+                            $blob_address = ReportBlob::create_address("RP_AVOID", "AVOID_Questions_tab0", "bmi", 0);
+                            $blob->load($blob_address);
+                            $bmi = $blob->getData();
+                            if(!($age >= 60 && $age <= 74 && $bmi >= 27)){
+                                continue;
+                            }
+                        }
+                        if(strstr($k, "Free and Subsidized Food") !== false && $scores["DietEnd"] == 0){ continue; }
+                        $k = preg_replace("/(.*(^|→|↴))(?!.*(→|↴))(.*)/", "$1<a style='vertical-align:top;' target='_blank' href='{$url}'>$4</a>", $k);
+                        $k = str_replace("→", "</span>→<span class='cb'>", $k);
+                        $k = str_replace("↴", "</span>↴<span class='cb' style='width: 100%; text-align: right;'>", $k);
+                    }
                     $community[$key][] = "<p>{$k}</p>";
                 }
             }
@@ -825,7 +845,7 @@ class FrailtyReport extends SpecialPage {
                                 }
         $html .= "          </tr>";
         foreach(self::$rows as $comp => $topics){
-            $html .= $this->drawRow($comp, $topics, $scores);
+            $html .= $this->drawRow($comp, $topics, $scores, $person);
         }
         
         $html .= "</table>";
@@ -980,6 +1000,10 @@ behaviour. They are not clinical recommendations, for which you should seek advi
         
     }
     
+}
+
+if($config->getValue('networkFullName') == "AVOID Australia"){
+    require_once("australiaReport.php");
 }
 
 ?>

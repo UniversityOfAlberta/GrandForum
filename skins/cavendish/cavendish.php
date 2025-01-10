@@ -1205,7 +1205,7 @@ class CavendishTemplate extends QuickTemplate {
 		        $wgMessage->addError("You have not yet verified this account by email");
 		        redirect("$wgServer$wgScriptPath");
 		    }
-		    if(isset($_GET['returnto'])){
+		    if(count($_POST) > 0 && isset($_GET['returnto'])){
 		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
 		    }
 		    
