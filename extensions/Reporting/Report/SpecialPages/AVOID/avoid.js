@@ -1,9 +1,25 @@
 $(document).ready(function(){
 
     if(networkFullName == "AVOID Australia"){
+        // Adding Change Password button
+        var selector = (showSideBar) ? "div#side" : "#header ul";
+
+        $(selector).append("<div id='changePassword'><button>Change Password</button><span class='throbber' style='display:none;'></span></div>");
+        
+        if(!showSideBar){
+            $("#changePassword").css("display", "inline-block")
+                                .css("margin-right", "8px")
+                                .css("margin-top", "13px")
+                                .css("float", "right");
+        }
+        $("#changePassword").click(function(){
+            document.location = wgServer + wgScriptPath + '/index.php/Special:ChangeCredentials/MediaWiki%5CAuth%5CPasswordAuthenticationRequest';
+        });
+        
         $("form[name=userlogin]").attr("action", $("form[name=userlogin]").attr("action") + "?returnto=Special:AvoidDashboard");
     }
 
+    // Program Buttons
     $('#bodyContent').append("<div id='avoidButtons' class='program-body'></div>");
     
     if($("h1").text() == "Please Login" || $("h1").text() == "Login required"){
