@@ -853,11 +853,13 @@ class FrailtyReport extends SpecialPage {
         $otherHTML = "";
         foreach(self::$otherRows as $key => $row){
             if(@$scores[$key] > 0 || @$scores["Behavioral"][$key] > 0){
+                $commmunity = @array_values($row['community'])[0];
+                $url = (strstr($commmunity, "http") !== false) ? $commmunity : "{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$commmunity}";
                 $otherHTML .= "<div style='display:inline-block; width: 50%; margin-bottom: 0.25em;'>
                                  <img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$row['img']}' style='width:1.25em; vertical-align: middle;' />
                                  <span style='vertical-align:middle;'>";
                 $otherHTML .= (count($row['community'])) 
-                            ? "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/".array_values($row['community'])[0]."'>{$row['text']}</a>"
+                            ? "<a target='_blank' href='{$url}'>{$row['text']}</a>"
                             : $row['text'];
                 $otherHTML .= "  </span>
                                </div>";

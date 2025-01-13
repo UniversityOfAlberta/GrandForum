@@ -218,6 +218,54 @@
         )
     );
     
-    FrailtyReport::$otherRows = array();
+    FrailtyReport::$otherRows = array(
+        "Pain" => array(
+            "img" => "back.png",
+            "text" => "Pain",
+            "no" => "Keep up the good work!",
+            "education" => array(
+            
+            ),
+            "programs" => array(),
+            "community" => array(
+                "https://healthyagingcentres.ca/australia/index.php/Special:EducationResources?topic=Pain"
+            )
+        ),
+        "Urinary Continence" => array(
+            "img" => "urinary-tract.png",
+            "text" => "Urinary Continence",
+            "no" => "Keep up the good work!",
+            "education" => array(
+            
+            ),
+            "programs" => array(),
+            "community" => array(
+                "https://healthyagingcentres.ca/australia/index.php/Special:EducationResources?topic=UrinaryIncontinence"
+            )
+        ),
+        "Memory" => array(
+            "img" => "memory.png",
+            "text" => "Memory",
+            "no" => "Keep up the good work!",
+            "education" => array(
+            
+            ),
+            "programs" => array(),
+            "community" => array(
+                "https://healthyagingcentres.ca/australia/index.php/Special:EducationResources?topic=Memory"
+            )
+        ),
+        "Health Conditions" => array(
+            "img" => "medical-chechup.png",
+            "text" => "Health Conditions",
+            "no" => "Keep up the good work!",
+            "education" => array(
+            
+            ),
+            "programs" => array(),
+            "community" => array(
+                "https://healthyagingcentres.ca/australia/index.php/Special:EducationResources?topic=ChronicDiseases"
+            )
+        ));
 
 ?>
