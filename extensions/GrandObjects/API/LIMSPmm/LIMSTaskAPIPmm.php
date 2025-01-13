@@ -1,6 +1,6 @@
 <?php
 
-class LIMSTaskAPI extends RESTAPI {
+class LIMSTaskAPIPmm extends RESTAPI {
     
     function doGET(){
         if($this->getParam('id') != ""){
