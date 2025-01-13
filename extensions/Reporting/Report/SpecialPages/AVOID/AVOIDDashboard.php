@@ -319,9 +319,78 @@ class AVOIDDashboard extends SpecialPage {
         if($membersOnly == ""){
             // Member Frailty Status
             $facebookLink = ($config->getValue('networkFullName') != "AVOID Australia") 
-                          ? "<img src='{$wgServer}{$wgScriptPath}/skins/icons/avoid/glyphicons_social_30_facebook.png' />
-                             <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Join the discussion in the <a target='_blank' href='https://www.facebook.com/groups/1751174705081179/'>member's only facebook group</a></span>" 
+                          ? "<div class='module-2cols-outer'><img src='{$wgServer}{$wgScriptPath}/skins/icons/avoid/glyphicons_social_30_facebook.png' />
+                             <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Join the discussion in the <a target='_blank' href='https://www.facebook.com/groups/1751174705081179/'>member's only facebook group</a></span></div>" 
                           : "";
+            if($config->getValue("networkFullName") == "AVOID KFLA"){
+                $gamificationText = "<a href='https://healthyagingcentres.ca/awards/'>Healthy Lifestyle Rewards</a><br />
+                                     <span>Earn points with a team, for using the program. Compete for prizes and bragging rights!</span>";
+            }
+            else {
+                $gamificationText = "<b>Healthy Lifestyle Rewards</b><br />
+                    <a href='#' onClick=\"$('#gamificationDialog').dialog({width: 400});\">How to Earn Points</a><br />
+                    <div id='gamificationDialog' title='How to Earn Points' style='display: none; width: 400px;'>
+                        <table style='width:100%;' class='wikitable'>
+                            <tr>
+                                <th>TASK</th>
+                                <th>POINTS</th>
+                            </tr>
+                            <tr>
+                                <td>HEALTH ASSESSMENT</td>
+                                <td>20</td>
+                            </tr>
+                            <tr>
+                                <td>REVIEW YOUR REPORT</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>LISTEN TO AN EDUCATION MODULE</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>CLICK ON AN EDUCATIONAL RESOURCE</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>SUBMIT AN ACTION PLAN</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>MEET YOUR ACTION PLAN GOAL</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>10 WEEKS STRAIGHT OF ACTION PLANS</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>CREATE A CLIPBOARD OF COMMUNITY PROGRAMS</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>CREATE AN ACTION PLAN</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>LOG IN 5 TIMES/WEEK</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>REGISTER FOR ASK AN EXPERT</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>CLICK ON 5 COMMUNITY PROGRAMS</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>SUBMIT TO COMMUNITY PROGRAMS</td>
+                                <td>5</td>
+                            </tr>
+                        </table>
+                    </div>";
+            }
+            
             $gamificationLink = ($config->getValue('gamificationEnabled')) 
                               ? "<img src='{$wgServer}{$wgScriptPath}/skins/goldstar.png' style='height:24px;' />
                                  <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>
@@ -329,9 +398,7 @@ class AVOIDDashboard extends SpecialPage {
                                         <span style='font-weight: bold;'>My Points<br /></span>
                                         <span style='font-size: 3em; line-height: 1em;'>".Gamification::calculatePoints($me)."</span>
                                     </span>
-                                    <a href='https://healthyagingcentres.ca/awards/'>Healthy Lifestyle Rewards</a><br />
-                                    
-                                    <span>Earn points with a team, for using the program. Compete for prizes and bragging rights!</span>
+                                    {$gamificationText}
                                  </span>"
                               : "";
             $wgOut->addHTML("<div class='$membersOnly modules module-2cols-outer'>
@@ -376,7 +443,7 @@ class AVOIDDashboard extends SpecialPage {
             $wgOut->addHTML("       <div>
                                         <en>
                                             <div class='modules' style='margin-top: 0.5em;'>
-                                                <div class='module-2cols-outer'>{$facebookLink}</div>
+                                                {$facebookLink}
                                                 <div class='module-2cols-outer' style='width:50%;'>{$gamificationLink}</div>
                                             </div>
                                         </en>
@@ -452,7 +519,7 @@ class AVOIDDashboard extends SpecialPage {
                                 <en>
                                     Action plans are small steps towards larger health goals.<br />
                                     <a class='viewActionPlanOverview' href='#'>Overview</a><br />
-                                    Looking for motivation? Review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a>.
+                                    Looking for motivation? Review the <a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a>.
                                 </en>
                                 <fr>
                                     Les plans d’action représentent de petits pas vers des objectifs de santé plus larges. Avant de vous lancer, veuillez lire l’<a class='viewActionPlanOverview' href='#'>aperçu</a> du plan d’action et passer en revue le <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChangeFR'>module « Pour un changement réussi »</a> afin d’augmenter vos chances de réussite.
