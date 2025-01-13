@@ -4,7 +4,7 @@
  * @package GrandObjects
  */
 
-class LIMSContact extends BackboneModel {
+class LIMSContactPmm extends BackboneModel {
 
     static $cache = array();
 
@@ -19,7 +19,7 @@ class LIMSContact extends BackboneModel {
 	        $data = DBFunctions::select(array('grand_lims_contact'),
 	                                    array('*'),
 	                                    array('id' => $id));
-	        self::$cache[$id] = new LIMSContact($data);
+	        self::$cache[$id] = new LIMSContactPmm($data);
 	    }
 	    return self::$cache[$id];
 	}
@@ -41,7 +41,7 @@ class LIMSContact extends BackboneModel {
 	    }
 	    $contacts = array();
 	    foreach($data as $row){
-	        $contact = LIMSContact::newFromId($row['id']);
+	        $contact = LIMSContactPmm::newFromId($row['id']);
 	        if($contact->isAllowedToView()){
 	            $contacts[] = $contact;
 	        }

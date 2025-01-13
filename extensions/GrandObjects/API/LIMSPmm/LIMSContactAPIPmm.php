@@ -4,19 +4,19 @@ class LIMSContactAPI extends RESTAPI {
     
     function doGET(){
         if($this->getParam('id') != ""){
-            $contact = LIMSContact::newFromId($this->getParam('id'));
+            $contact = LIMSContactPmm::newFromId($this->getParam('id'));
             return $contact->toJSON();
         }
         else{
-            $contacts = new Collection(LIMSContact::getAllContacts());
+            $contacts = new Collection(LIMSContactPmm::getAllContacts());
             return $contacts->toJSON();
         }
     }
     
     function doPOST(){
         $me = Person::newFromWgUser();
-        if(LIMSContact::isAllowedToCreate()){
-            $contact = new LIMSContact(array());
+        if(LIMSContactPmm::isAllowedToCreate()){
+            $contact = new LIMSContactPmm(array());
             $contact->title = $this->POST('title');
             $contact->owner = $me->getId();
             $contact->details = $this->POST('details');
@@ -40,7 +40,7 @@ class LIMSContactAPI extends RESTAPI {
     }
     
     function doPUT(){
-        $contact = LIMSContact::newFromId($this->getParam('id'));
+        $contact = LIMSContactPmm::newFromId($this->getParam('id'));
         if($contact->isAllowedToEdit()){
             $contact->title = $this->POST('title');
             $contact->details = $this->POST('details');
@@ -64,7 +64,7 @@ class LIMSContactAPI extends RESTAPI {
     }
     
     function doDELETE(){
-        $contact = LIMSContact::newFromId($this->getParam('id'));
+        $contact = LIMSContactPmm::newFromId($this->getParam('id'));
         if($contact->isAllowedToEdit()){
             $contact->delete();
             return $contact->toJSON();

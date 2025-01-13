@@ -38,7 +38,7 @@ pageRouter.on('route:showLIMSContactsTable', function(){
     main.set('title', "Manage LIMS");
     $.when(allPeopleXHR).done(function(){
         // Get All LIMSContacts
-        var contacts = new LIMSContacts();
+        var contacts = new LIMSContactsPmm();
         this.closeCurrentView();
         this.currentView = new LIMSContactsTableViewPmm({el: $("#currentView"), model: contacts});
     }.bind(this));
@@ -52,7 +52,7 @@ pageRouter.on('route:newLIMSContact', function(){
     }
     else{
         $.when(allPeopleXHR).done(function(){
-            var contact = new LIMSContact();
+            var contact = new LIMSContactPmm();
             this.closeCurrentView();
             this.currentView = new LIMSContactEditViewPmm({el: $("#currentView"), model: contact});
             _.defer(this.currentView.render);
@@ -63,7 +63,7 @@ pageRouter.on('route:newLIMSContact', function(){
 pageRouter.on('route:showLIMSContact', function(id){
     $.when(allPeopleXHR).done(function(){
         // Show a single LIMSContact
-        var contact = new LIMSContact({id: id});
+        var contact = new LIMSContactPmm({id: id});
         this.closeCurrentView();
         this.currentView = new LIMSContactViewPmm({el: $("#currentView"), model: contact});
     }.bind(this));
@@ -77,7 +77,7 @@ pageRouter.on('route:editLIMSContact', function (id) {
     }
     else{
         $.when(allPeopleXHR).done(function(){
-            var contact = new LIMSContact({id: id});
+            var contact = new LIMSContactPmm({id: id});
             this.closeCurrentView();
             this.currentView = new LIMSContactEditViewPmm({el: $("#currentView"), model: contact});
         }.bind(this));

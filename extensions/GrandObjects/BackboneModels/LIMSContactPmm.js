@@ -1,4 +1,4 @@
-LIMSContact = Backbone.Model.extend({
+LIMSContactPmm = Backbone.Model.extend({
 
     toDelete: false,
 
@@ -51,8 +51,8 @@ LIMSContact = Backbone.Model.extend({
 /**
  * LIMSContacts Collection
  */
-LIMSContacts = Backbone.Collection.extend({
-    model: LIMSContact,
+LIMSContactsPmm = Backbone.Collection.extend({
+    model: LIMSContactPmm,
     
     url: function(){
         return 'index.php?action=api.limscontact';

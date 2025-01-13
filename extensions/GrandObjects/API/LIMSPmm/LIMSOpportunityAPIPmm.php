@@ -20,7 +20,7 @@ class LIMSOpportunityAPI extends RESTAPI {
             return $opportunity->toJSON();
         }
         else{
-            $contact = LIMSContact::newFromId($this->getParam('contact_id'));
+            $contact = LIMSContactPmm::newFromId($this->getParam('contact_id'));
             $opportunities = new Collection($contact->getOpportunities());
             return $opportunities->toJSON();
         }

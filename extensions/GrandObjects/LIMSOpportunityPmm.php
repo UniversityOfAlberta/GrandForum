@@ -115,7 +115,7 @@ class LIMSOpportunity extends BackboneModel {
     }
 
     function getContact(){
-        return LIMSContact::newFromId($this->contact);
+        return LIMSContactPmm::newFromId($this->contact);
     }
 
     function getPerson(){
@@ -198,7 +198,7 @@ class LIMSOpportunity extends BackboneModel {
     }
     
     static function isAllowedToCreate(){
-        return LIMSContact::isAllowedToCreate();
+        return LIMSContactPmm::isAllowedToCreate();
     }
 
     function toArray(){
