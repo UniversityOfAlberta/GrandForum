@@ -1,6 +1,5 @@
 <?php
 
-require_once("KPISummaryPmm.php");
 
 BackbonePage::register('LIMSPmm', 'LIMSPmm', 'network-tools', dirname(__FILE__));
 
