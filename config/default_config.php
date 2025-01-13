@@ -88,6 +88,9 @@
     // Network Website
     $config->setValue("networkSite", "");
     
+    // The link that clicking the logo goes to
+    $config->setValue("logoUrl", "");
+    
     // Shibboleth Logout URL
     $config->setValue("shibLogoutUrl", "");
     

@@ -823,7 +823,8 @@ class CavendishTemplate extends QuickTemplate {
                     call_user_func($function);
                 }
             }
-            echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' alt='{$wgSitename}' /></a></div>";
+            $logoUrl = ($config->getValue('logoUrl') != "") ? $config->getValue('logoUrl') : $this->data['nav_urls']['mainpage']['href'];
+            echo "<div class='smallLogo'><a href='{$logoUrl}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' alt='{$wgSitename}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>
                     <span id='fontSizeContainer'>
