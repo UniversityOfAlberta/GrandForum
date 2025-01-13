@@ -57,6 +57,10 @@
         require_once("CRM/CRM.php");
         require_once("LIMS/LIMS.php");
     }
+
+    if(isExtensionEnabled("PMM")){
+        require_once("LIMSPmm/LIMSPmm.php");
+    }
     //require_once("AddMultimediaPage.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';

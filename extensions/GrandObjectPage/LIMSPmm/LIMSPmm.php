@@ -2,11 +2,11 @@
 
 require_once("KPISummaryPmm.php");
 
-BackbonePage::register('LIMSPMM', 'LIMSPMM', 'network-tools', dirname(__FILE__));
+BackbonePage::register('LIMSPmm', 'LIMSPmm', 'network-tools', dirname(__FILE__));
 
-$wgHooks['ToolboxLinks'][] = 'LIMS::createSideBarLink';
+$wgHooks['ToolboxLinks'][] = 'LIMSPmm::createSideBarLink';
 
-class LIMS extends BackbonePage {
+class LIMSPmm extends BackbonePage {
     
     function userCanExecute($user){
         $me = Person::newFromUser($user);
@@ -26,13 +26,13 @@ class LIMS extends BackbonePage {
     
     function getViews(){
         return array('Backbone/*',
-                     'LIMSContactsTableView',
-                     'LIMSContactView',
-                     'LIMSContactEditView',
-                     'LIMSOpportunityView',
-                     'LIMSOpportunityEditView',
-                     'LIMSTaskView',
-                     'LIMSTaskEditView');
+                     'LIMSContactsTableViewPmm',
+                     'LIMSContactViewPmm',
+                     'LIMSContactEditViewPmm',
+                     'LIMSOpportunityViewPmm',
+                     'LIMSOpportunityEditViewPmm',
+                     'LIMSTaskViewPmm',
+                     'LIMSTaskEditViewPmm');
     }
     
     function getModels(){
@@ -42,7 +42,7 @@ class LIMS extends BackbonePage {
     static function createSideBarLink(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
         if((new self)->userCanExecute($wgUser)){
-            $link = TabUtils::createToolboxLink("LIMS", "$wgServer$wgScriptPath/index.php/Special:LIMS");
+            $link = TabUtils::createToolboxLink("LIMS", "$wgServer$wgScriptPath/index.php/Special:LIMSPmm");
             $toolbox['Other']['links'][] = $link;
         }
         return true;

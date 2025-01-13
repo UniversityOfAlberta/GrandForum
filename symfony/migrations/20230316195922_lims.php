@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class Lims extends AbstractMigration
+class LIMSPmm extends AbstractMigration
 {
     /**
      * Change Method.

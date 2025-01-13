@@ -1,0 +1,81 @@
+<span id="deleteOpportunity" class="delete-icon" style="float: right; margin-top: 5px;" title="Delete Opportunity"></span>
+<table style="margin-bottom:13px;margin-right:32px;margin-top:-4px;">
+    <tr>
+        <td align="right"><b>Category:</b></td>
+        <td style="padding-right:30px;">
+            <%= HTML.Select(this, 'category', {style: 'vertical-align:middle;', value: category, options: ['Synthesis',
+                                                                                                           'Glycan-Analysis',
+                                                                                                           'Glycan-Ligand screening',
+                                                                                                           'Glycan-Ligand discovery',
+                                                                                                           'Glyco-engineering',
+                                                                                                           'Molecular biology',
+                                                                                                           'Other']}) %>
+        </td>
+        
+        <td align="right"><b>Owner:</b></td>
+        <td style="padding-right:30px;">
+            <%= HTML.Select(this, 'owner.id', {style: 'width:200px;vertical-align:middle;', options: _.union([{option: owner.name, value: owner.id}], _.filter(_.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != owner.id; }))}) %>
+        </td>
+        
+        <td align="right"><b>User Type:</b></td>
+        <td style="padding-right:30px;"><%= HTML.Select(this, 'userType', {style: 'width:140px;vertical-align:middle;', options: ['On site', 'Remote', 'Data']}) %></td>
+        
+        <td colspan="2"><%= date %></td>
+    </tr>
+    <tr>
+        <td align="right"><b>Surveyed:</b></td>
+        <td><%= HTML.Select(this, 'surveyed', {style: 'vertical-align:middle;', options: ['Yes', 'No']}) %></td>
+        
+        <td align="right"><b>Project:</b></td>
+        <td><%= HTML.Select(this, 'project.id', {style: 'vertical-align:middle;', options: _.map(this.allProjects.toJSON(), function(p){ return {option: p.name, value: p.id}; } )}) %></td>
+        
+        <td align="right"><b>Status:</b></td>
+        <td><%= HTML.Select(this, 'status', {style: 'vertical-align:middle;', options: ['', 'Open', 'Closed']}) %></td>
+        
+        <td align="right"><b>Request Id:</b></td>
+        <td><%= requestId %></td>
+    </tr>
+</table>
+<%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:100%; margin-left:0;margin-right:0;'}) %>
+<h4>Tasks</h4>
+<table id="tasks" class="wikitable" style="width:100%;">
+    <thead>
+        <tr>
+            <th style="width:25px;"></th>
+            <th>Task</th>
+            <th style="width:200px;">Assignee</th>
+            <th style="width:100px;">Due&nbsp;Date</th>
+            <th style="width:100px;">Status</th>
+            <th style="width:230px;">Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+    
+    </tbody>
+</table>
+<button id="addTask" style="margin-top:15px;">Add Task</button>
+<h4>Documents (Quote, PO, Reports, Invoices)</h4>
+<table id="files" class="wikitable">
+    <tr><th>File</th><th>Delete?</th></tr>
+    <% _.each(files, function(file, i){ %>
+        <% if(file.id != null){ %>
+            <tr>
+                <td><a href="<%= file.url %>" target="_blank"><%= file.filename %></a></td>
+                <td align="center"><%= HTML.CheckBox(this, 'files.' + i + '.delete', {value: 1}) %></td>
+            </tr>
+        <% } %>
+    <% }.bind(this)) %>
+</table>
+<button id="addDocument">Add Document</button>
+<h4>Products</h4>
+<table id="products" class="wikitable" width="100%">
+    <tr><th style="width:0;">Type</th><th>Details</th><th style="width:0;"></th></tr>
+    <% _.each(products, function(product, i){ %>
+        <tr>
+            <td><%= HTML.Select(this, 'products.' + i + ".type", {options: LIMSProductTypes, style: 'width:300px;'}) %></a></td>
+            <td><%= HTML.TextBox(this, 'products.' + i + ".text", {style: "width: 100%; box-sizing: border-box;"}) %></a></td>
+            <td align="center"><span data-id="<%= i %>" class="delete-icon" style="margin-left:7px;margin-right:7px;" title="Delete Product"></span></td>
+        </tr>
+    <% }.bind(this)) %>
+</table>
+<button id="addProduct">Add Product</button>

@@ -96,7 +96,7 @@ class LIMSContact extends BackboneModel {
 	
 	function getUrl(){
 	    global $wgServer, $wgScriptPath;
-	    return "{$wgServer}{$wgScriptPath}/index.php/Special:LIMS#/{$this->getId()}";
+	    return "{$wgServer}{$wgScriptPath}/index.php/Special:LIMSPmm#/{$this->getId()}";
 	}
 	
 	function getOpportunities(){

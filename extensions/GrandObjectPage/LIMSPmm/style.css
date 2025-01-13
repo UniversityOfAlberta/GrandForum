@@ -1,0 +1,40 @@
+/* Any custom styles should go here */
+
+#backbone_main {
+    position: relative;
+}
+
+.backButton {
+    position: absolute !important;
+    top: 0;
+    right: 0;
+}
+
+#opportunities {
+    margin-bottom: 1em;
+}
+
+.opportunity {
+    background: #F8F8F8;
+    border: 1px solid #dfdfdf;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+#tasks {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#transactions {
+    width: 100%;
+}
+
+#transactions > div {
+    padding: 2px 0;
+}
+
+#transactions td {
+    width: 50%;
+}
