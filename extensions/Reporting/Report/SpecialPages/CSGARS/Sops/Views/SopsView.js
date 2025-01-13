@@ -486,7 +486,7 @@ SopsView = Backbone.View.extend({
         var studentsupervisors = unaccentChars(data[COL_SUPERVISORS]).trim();
         if (!_.isEmpty(filtersupervisors)) {
             for (var i = 0; i < filtersupervisors.length; ++i) {
-                var sup = unaccentChars(filtersupervisors[i]);
+                var sup = unaccentChars(filtersupervisors[i]) + " ";
                 if(studentsupervisors.trim().indexOf(sup) != -1){
                     return true;
                 }
