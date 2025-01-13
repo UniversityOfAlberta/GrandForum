@@ -4,7 +4,7 @@
  * @package GrandObjects
  */
 
-class LIMSTask extends BackboneModel {
+class LIMSTaskPmm extends BackboneModel {
 
     var $id;
     var $opportunity;
@@ -19,7 +19,7 @@ class LIMSTask extends BackboneModel {
 	    $data = DBFunctions::select(array('grand_lims_task'),
 	                                array('*'),
 	                                array('id' => $id));
-	    $opportunity = new LIMSTask($data);
+	    $opportunity = new LIMSTaskPmm($data);
 	    return $opportunity;
 	}
 	
@@ -29,7 +29,7 @@ class LIMSTask extends BackboneModel {
 	                                array('opportunity' => $opportunity_id));
 	    $tasks = array();
 	    foreach($data as $row){
-	        $task = new LIMSTask(array($row));
+	        $task = new LIMSTaskPmm(array($row));
 	        if($task->isAllowedToView()){
 	            $tasks[] = $task;
 	        }

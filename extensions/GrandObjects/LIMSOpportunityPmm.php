@@ -167,7 +167,7 @@ class LIMSOpportunityPmm extends BackboneModel {
     }
 
     function getTasks(){
-        return LIMSTask::getTasks($this->getId());
+        return LIMSTaskPmm::getTasks($this->getId());
     }
     
     function getProducts(){

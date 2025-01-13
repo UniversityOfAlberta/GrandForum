@@ -3,7 +3,7 @@ LIMSContactPmm = Backbone.Model.extend({
     toDelete: false,
 
     initialize: function(){
-        this.opportunities = new LIMSOpportunities();
+        this.opportunities = new LIMSOpportunitiesPmm();
         this.opportunities.contact = this;
         if(!this.isNew()){
             this.once("sync", function(){

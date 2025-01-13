@@ -1,4 +1,4 @@
-LIMSTask = Backbone.Model.extend({
+LIMSTaskPmm = Backbone.Model.extend({
 
     toDelete: false,
     opportunity: null, // Parent obj
@@ -32,8 +32,8 @@ LIMSTask = Backbone.Model.extend({
 /**
  * LIMSTasks Collection
  */
-LIMSTasks = Backbone.Collection.extend({
-    model: LIMSTask,
+LIMSTasksPmm = Backbone.Collection.extend({
+    model: LIMSTaskPmm,
     
     opportunity: null,
     

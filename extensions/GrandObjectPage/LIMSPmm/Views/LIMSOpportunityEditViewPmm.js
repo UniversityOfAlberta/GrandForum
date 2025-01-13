@@ -26,7 +26,7 @@ LIMSOpportunityEditViewPmm = Backbone.View.extend({
     },
     
     addTask: function(){
-        this.model.tasks.add(new LIMSTask({opportunity: this.model.get('id')}));
+        this.model.tasks.add(new LIMSTaskPmm({opportunity: this.model.get('id')}));
     },
     
     deleteOpportunity: function(){

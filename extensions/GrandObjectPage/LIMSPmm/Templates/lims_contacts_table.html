@@ -36,7 +36,7 @@
             }
             _.each(contact.get('opportunities'), function(opportunity){
                 if(opportunity.tasks == undefined || opportunity.tasks.length == 0){
-                    opportunity.tasks = [new LIMSTask().toJSON()];
+                    opportunity.tasks = [new LIMSTaskPmm().toJSON()];
                 }
                 _.each(opportunity.tasks, function(task){ %>
                     <tr>

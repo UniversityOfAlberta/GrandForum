@@ -12,7 +12,7 @@ LIMSOpportunityViewPmm = Backbone.View.extend({
         }
         this.$("#tasks > tbody").empty();
         this.model.tasks.each(function(model){
-            var view = new LIMSTaskView({model: model});
+            var view = new LIMSTaskViewPmm({model: model});
             this.$("#tasks > tbody").append(view.render());
         }.bind(this));
     },
