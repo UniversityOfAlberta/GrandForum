@@ -1,6 +1,6 @@
 <?php
 
-class LIMSContactAPI extends RESTAPI {
+class LIMSContactAPIPmm extends RESTAPI {
     
     function doGET(){
         if($this->getParam('id') != ""){

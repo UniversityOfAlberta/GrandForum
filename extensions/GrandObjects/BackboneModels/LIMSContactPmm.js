@@ -28,7 +28,7 @@ LIMSContactPmm = Backbone.Model.extend({
     },
 
     urlRoot: function(){
-        return 'index.php?action=api.limscontact';
+        return 'index.php?action=api.limscontactpmm';
     },
 
     defaults: function() {
@@ -55,6 +55,6 @@ LIMSContactsPmm = Backbone.Collection.extend({
     model: LIMSContactPmm,
     
     url: function(){
-        return 'index.php?action=api.limscontact';
+        return 'index.php?action=api.limscontactpmm';
     }
 });
