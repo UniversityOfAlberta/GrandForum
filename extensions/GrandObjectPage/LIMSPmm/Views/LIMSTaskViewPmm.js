@@ -1,4 +1,4 @@
-LIMSTaskView = Backbone.View.extend({
+LIMSTaskViewPmm = Backbone.View.extend({
 
     tagName: "tr",
 

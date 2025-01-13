@@ -1,4 +1,4 @@
-LIMSContactEditView = Backbone.View.extend({
+LIMSContactEditViewPmm = Backbone.View.extend({
 
     isDialog: false,
     subViews: [],
@@ -194,7 +194,7 @@ LIMSContactEditView = Backbone.View.extend({
     },
         
     renderOpportunities: function(model){
-        var view = new LIMSOpportunityEditView({model: model, allProjects: this.allProjects});
+        var view = new LIMSOpportunityEditViewPmm({model: model, allProjects: this.allProjects});
         this.$("#opportunities").append(view.render());
         this.subViews.push(view);
     },

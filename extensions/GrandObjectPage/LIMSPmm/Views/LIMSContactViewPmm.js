@@ -1,4 +1,4 @@
-LIMSContactView = Backbone.View.extend({
+LIMSContactViewPmm = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch();
@@ -18,7 +18,7 @@ LIMSContactView = Backbone.View.extend({
     renderOpportunities: function(){
         this.$("#opportunities").empty();
         this.model.opportunities.each(function(model){
-            var view = new LIMSOpportunityView({model: model});
+            var view = new LIMSOpportunityViewPmm({model: model});
             this.$("#opportunities").append(view.render());
         }.bind(this));
     },

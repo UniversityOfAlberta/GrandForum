@@ -1,4 +1,4 @@
-LIMSContactsTableView = Backbone.View.extend({
+LIMSContactsTableViewPmm = Backbone.View.extend({
 
     table: null,
     editDialog: null,
@@ -21,7 +21,7 @@ LIMSContactsTableView = Backbone.View.extend({
     },
     
     addContact: function(e){
-        var view = new LIMSContactEditView({el: this.editDialog, model: new LIMSContact(), isDialog: true});
+        var view = new LIMSContactEditViewPmm({el: this.editDialog, model: new LIMSContact(), isDialog: true});
         view.render();
         this.editDialog.view = view;
         this.editDialog.dialog({
@@ -33,7 +33,7 @@ LIMSContactsTableView = Backbone.View.extend({
     
     editContact: function(e){
         var id = $(e.currentTarget).attr("data-id");
-        var view = new LIMSContactEditView({el: this.editDialog, model: new LIMSContact({id: id}), isDialog: true});
+        var view = new LIMSContactEditViewPmm({el: this.editDialog, model: new LIMSContact({id: id}), isDialog: true});
         this.editDialog.view = view;
         this.editDialog.dialog({
             height: $(window).height()*0.75, 

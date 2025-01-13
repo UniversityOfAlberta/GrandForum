@@ -1,4 +1,4 @@
-LIMSOpportunityEditView = Backbone.View.extend({
+LIMSOpportunityEditViewPmm = Backbone.View.extend({
 
     subViews: [],
     saving: false,
@@ -88,7 +88,7 @@ LIMSOpportunityEditView = Backbone.View.extend({
     },
     
     renderTasks: function(model){
-        var view = new LIMSTaskEditView({model: model});
+        var view = new LIMSTaskEditViewPmm({model: model});
         this.$("#tasks > tbody").append(view.render());
         this.subViews.push(view);
     },

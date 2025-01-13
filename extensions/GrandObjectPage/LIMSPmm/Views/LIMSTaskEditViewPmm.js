@@ -1,4 +1,4 @@
-LIMSTaskEditView = Backbone.View.extend({
+LIMSTaskEditViewPmm = Backbone.View.extend({
 
     tagName: "tr",
     
