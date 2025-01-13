@@ -1,6 +1,6 @@
 <?php
 
-class LIMSOpportunityAPI extends RESTAPI {
+class LIMSOpportunityAPIPmm extends RESTAPI {
     
     function doGET(){
         $files = ($this->getParam('files') != "");

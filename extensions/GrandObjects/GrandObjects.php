@@ -230,10 +230,10 @@ $apiRequest->addAction('Hidden','limstask/:id', 'LIMSTaskAPI');
 // LIMSPmm
 $apiRequest->addAction('Hidden','limscontactpmm', 'LIMSContactAPIPmm');
 $apiRequest->addAction('Hidden','limscontactpmm/:id', 'LIMSContactAPIPmm');
-// $apiRequest->addAction('Hidden','limscontact/:contact_id/limsopportunities', 'LIMSOpportunityAPI');
-// $apiRequest->addAction('Hidden','limsopportunity', 'LIMSOpportunityAPI');
-// $apiRequest->addAction('Hidden','limsopportunity/:id', 'LIMSOpportunityAPI');
-// $apiRequest->addAction('Hidden','limsopportunity/:id/files/:file_id', 'LIMSOpportunityAPI');
+$apiRequest->addAction('Hidden','limscontactpmm/:contact_id/limsopportunitiespmm', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm/:id', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm/:id/files/:file_id', 'LIMSOpportunityAPIPmm');
 // $apiRequest->addAction('Hidden','limsopportunity/:opportunity_id/tasks', 'LIMSTaskAPI');
 // $apiRequest->addAction('Hidden','limstask', 'LIMSTaskAPI');
 // $apiRequest->addAction('Hidden','limstask/:id', 'LIMSTaskAPI');
