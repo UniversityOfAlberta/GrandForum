@@ -55,7 +55,7 @@ class LIMSTask extends BackboneModel {
 	}
 	
 	function getOpportunity(){
-	    return LIMSOpportunity::newFromId($this->opportunity);
+	    return LIMSOpportunityPmm::newFromId($this->opportunity);
 	}
 	
 	function getAssignee(){
@@ -95,7 +95,7 @@ class LIMSTask extends BackboneModel {
     }
     
     static function isAllowedToCreate(){
-        return LIMSOpportunity::isAllowedToCreate();
+        return LIMSOpportunityPmm::isAllowedToCreate();
     }
     
     /**

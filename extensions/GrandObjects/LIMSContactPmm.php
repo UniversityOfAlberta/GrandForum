@@ -100,7 +100,7 @@ class LIMSContactPmm extends BackboneModel {
 	}
 	
 	function getOpportunities(){
-	    return LIMSOpportunity::getOpportunities($this->getId());
+	    return LIMSOpportunityPmm::getOpportunities($this->getId());
 	}
 	
 	function isAllowedToEdit(){

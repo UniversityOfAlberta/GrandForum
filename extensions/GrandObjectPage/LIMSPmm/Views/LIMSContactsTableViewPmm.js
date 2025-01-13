@@ -52,7 +52,7 @@ LIMSContactsTableViewPmm = Backbone.View.extend({
         $(e.currentTarget).prop('disabled', true);
         var id = $(e.currentTarget).attr("data-id");
         var status = $("option:selected", e.currentTarget).val();
-        var model = new LIMSOpportunity({id: id});
+        var model = new LIMSOpportunityPmm({id: id});
         model.fetch().then(function(){
             model.set('status', status);
             model.save().then(function(){

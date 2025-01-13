@@ -1,4 +1,4 @@
-LIMSOpportunity = Backbone.Model.extend({
+LIMSOpportunityPmm = Backbone.Model.extend({
 
     toDelete: false,
     contact: null, // Parent obj
@@ -54,7 +54,7 @@ LIMSOpportunity = Backbone.Model.extend({
  * LIMSOpportunities Collection
  */
 LIMSOpportunities = Backbone.Collection.extend({
-    model: LIMSOpportunity,
+    model: LIMSOpportunityPmm,
     
     contact: null,
     

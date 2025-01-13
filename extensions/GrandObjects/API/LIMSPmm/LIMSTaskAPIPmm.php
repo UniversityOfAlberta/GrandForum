@@ -8,7 +8,7 @@ class LIMSTaskAPI extends RESTAPI {
             return $task->toJSON();
         }
         else{
-            $opportunity = LIMSOpportunity::newFromId($this->getParam('opportunity_id'));
+            $opportunity = LIMSOpportunityPmm::newFromId($this->getParam('opportunity_id'));
             $tasks = new Collection($opportunity->getTasks());
             return $tasks->toJSON();
         }

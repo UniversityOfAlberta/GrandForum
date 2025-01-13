@@ -4,7 +4,7 @@
  * @package GrandObjects
  */
 
-class LIMSOpportunity extends BackboneModel {
+class LIMSOpportunityPmm extends BackboneModel {
 
     static $requestIds = null;
 
@@ -48,7 +48,7 @@ class LIMSOpportunity extends BackboneModel {
         $data = DBFunctions::select(array('grand_lims_opportunity'),
                                     array('*'),
                                     array('id' => $id));
-        $opportunity = new LIMSOpportunity($data);
+        $opportunity = new LIMSOpportunityPmm($data);
         return $opportunity;
     }
     
@@ -58,7 +58,7 @@ class LIMSOpportunity extends BackboneModel {
                                     array('project' => $id));
         $opportunities = array();
         foreach($data as $row){
-            $opportunity = new LIMSOpportunity(array($row));
+            $opportunity = new LIMSOpportunityPmm(array($row));
             if($opportunity->isAllowedToView()){
                 if($opportunity->getDate() >= $start_date &&
                    $opportunity->getDate() <= $end_date){
@@ -75,7 +75,7 @@ class LIMSOpportunity extends BackboneModel {
                                     array('contact' => $contact_id));
         $opportunities = array();
         foreach($data as $row){
-            $opportunity = new LIMSOpportunity(array($row));
+            $opportunity = new LIMSOpportunityPmm(array($row));
             if($opportunity->isAllowedToView()){
                 $opportunities[] = $opportunity;
             }

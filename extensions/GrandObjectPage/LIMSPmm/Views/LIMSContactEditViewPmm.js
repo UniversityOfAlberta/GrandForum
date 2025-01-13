@@ -65,7 +65,7 @@ LIMSContactEditViewPmm = Backbone.View.extend({
     },
     
     addOpportunity: function(){
-        this.model.opportunities.add(new LIMSOpportunity({contact: this.model.get('id')}));
+        this.model.opportunities.add(new LIMSOpportunityPmm({contact: this.model.get('id')}));
     },
     
     save: function(){

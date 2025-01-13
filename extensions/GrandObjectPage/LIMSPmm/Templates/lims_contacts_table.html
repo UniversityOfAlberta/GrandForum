@@ -32,7 +32,7 @@
     <tbody>
         <% this.model.each(function(contact){
             if(contact.get('opportunities').length == 0){
-                contact.get('opportunities').push(new LIMSOpportunity().toJSON());
+                contact.get('opportunities').push(new LIMSOpportunityPmm().toJSON());
             }
             _.each(contact.get('opportunities'), function(opportunity){
                 if(opportunity.tasks == undefined || opportunity.tasks.length == 0){

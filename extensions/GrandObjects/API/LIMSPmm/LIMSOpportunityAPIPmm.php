@@ -6,7 +6,7 @@ class LIMSOpportunityAPI extends RESTAPI {
         $files = ($this->getParam('files') != "");
         $file_id = $this->getParam('file_id');
         if($this->getParam('id') != ""){
-            $opportunity = LIMSOpportunity::newFromId($this->getParam('id'));
+            $opportunity = LIMSOpportunityPmm::newFromId($this->getParam('id'));
             if($files && $file_id != ""){
                 $file = $opportunity->getFile($file_id);
                 if(isset($file['data']) && isset($file['type']) && isset($file['filename'])){
@@ -28,8 +28,8 @@ class LIMSOpportunityAPI extends RESTAPI {
     
     function doPOST(){
         $me = Person::newFromWgUser();
-        if(LIMSOpportunity::isAllowedToCreate()){
-            $opportunity = new LIMSOpportunity(array());
+        if(LIMSOpportunityPmm::isAllowedToCreate()){
+            $opportunity = new LIMSOpportunityPmm(array());
             $opportunity->contact = $this->POST('contact');
             $opportunity->owner = $this->POST('owner')->id;
             $opportunity->project = $this->POST('project')->id;
@@ -51,7 +51,7 @@ class LIMSOpportunityAPI extends RESTAPI {
     }
     
     function doPUT(){
-        $opportunity = LIMSOpportunity::newFromId($this->getParam('id'));
+        $opportunity = LIMSOpportunityPmm::newFromId($this->getParam('id'));
         if($opportunity->isAllowedToEdit()){
             $opportunity->owner = $this->POST('owner')->id;
             $opportunity->project = $this->POST('project')->id;
@@ -73,7 +73,7 @@ class LIMSOpportunityAPI extends RESTAPI {
     }
     
     function doDELETE(){
-        $opportunity = LIMSOpportunity::newFromId($this->getParam('id'));
+        $opportunity = LIMSOpportunityPmm::newFromId($this->getParam('id'));
         if($opportunity->isAllowedToEdit()){
             $opportunity->delete();
             return $opportunity->toJSON();
