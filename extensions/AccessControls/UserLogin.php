@@ -18,6 +18,7 @@ function disableLoginForm($template){
 function redirectTo($user, $html){
     global $wgServer, $wgScriptPath;
     $returnto = @urldecode($_GET['returnto']);
+    $returnto = str_replace("\\", "%5C", $returnto); // Only encode the backslash '\' in the url
     redirect("$wgServer$wgScriptPath/index.php/$returnto");
 }
 
