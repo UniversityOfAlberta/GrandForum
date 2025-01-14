@@ -446,14 +446,13 @@ class AVOIDDashboard extends SpecialPage {
                                         <fr>Étape 3. Utilisez les modules d’éducation, les programmes et les ressources pour soutenir vos objectifs de vieillissement sain.</fr>
                                     </p>");
                                     
-            if($config->getValue('networkFullName') == "AVOID Australia"){
-                $wgOut->addHTML("   <p><b>EVERY STEP YOU TAKE MATTERS</b><br /><a style='cursor:pointer;' onClick=\"window.open('https://www.youtube.com/embed/agGYvoLL_vo?si=tenudfwvUulgjopM', 'video', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=854,height=480');\"><img src='{$wgServer}{$wgScriptPath}/EducationModules/poster2.png' style='height:8.25em;' /></a></p>");
-            }
+            $ausVideo = ($config->getValue('networkFullName') == "AVOID Australia") ? "<div class='module-2cols-outer'><b>EVERY STEP YOU TAKE MATTERS</b><br /><a style='cursor:pointer;' onClick=\"window.open('https://www.youtube.com/embed/agGYvoLL_vo?si=tenudfwvUulgjopM', 'video', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=854,height=480');\"><img src='{$wgServer}{$wgScriptPath}/EducationModules/poster2.png' style='max-height: 8.25em;width: 100%;object-fit: contain;object-position: left top;' /></a></div>" : "";
             $wgOut->addHTML("       <div>
                                         <en>
                                             <div class='modules' style='margin-top: 0.5em;'>
                                                 {$facebookLink}
-                                                <div class='module-2cols-outer' style='width:50%;'>{$gamificationLink}</div>
+                                                {$ausVideo}
+                                                <div class='module-2cols-outer'>{$gamificationLink}</div>
                                             </div>
                                         </en>
                                     </div>
