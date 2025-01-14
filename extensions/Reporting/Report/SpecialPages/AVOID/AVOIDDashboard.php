@@ -40,7 +40,7 @@ class AVOIDDashboard extends SpecialPage {
 	    }
         if($config->getValue('networkFullName') == "AVOID Australia" &&
             !($me->isRoleAtLeast(STAFF) ||
-              $me->isRole("GroupA") && !$me->isRoleOn("GroupA", date('Y-m-d', time() - 86400*30*6)) // Allow A until 6 months
+              $me->isRole("GroupA") && !$me->isRoleOn("GroupA", date('Y-m-d', time() - 86400*30.5*6)) // Allow A until 6 months
             )){
             return false;
         }
