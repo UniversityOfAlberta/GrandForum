@@ -31,13 +31,22 @@ class AVOIDDashboard extends SpecialPage {
         }
         permissionError();
     }
-    
-    function userCanExecute($user){
-	    if(!$user->isLoggedIn()){
+	
+	function userCanExecute($user){
+        global $config;
+        $me = Person::newFromUser($user);
+        if(!$user->isLoggedIn()){
 	        AVOIDDashboard::permissionError();
 	    }
+        if($config->getValue('networkFullName') == "AVOID Australia" &&
+            !($me->isRoleAtLeast(STAFF) ||
+              $me->isRole("GroupA") && !$me->isRoleOn("GroupA", date('Y-m-d', time() - 86400*30*6)) // Allow A until 6 months
+            )){
+            return false;
+        }
         return true;
-	}
+    }
+	
     
     function compareTags($tags1, $tags2){
         $found = 0;
@@ -1080,9 +1089,10 @@ class AVOIDDashboard extends SpecialPage {
                     $GLOBALS['tabs']['Home'] = TabUtils::createTab("Home", "{$wgServer}{$wgScriptPath}/index.php/Main_Page", $selected);
                     $GLOBALS['tabs'] = array_reverse($GLOBALS['tabs'], true);
                 }
-            
-                $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
-                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("<en>My Profile</en><fr>Mon Profil</fr>", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
+                if((new self())->userCanExecute($wgUser)){
+                    $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
+                    $GLOBALS['tabs']['Profile'] = TabUtils::createTab("<en>My Profile</en><fr>Mon Profil</fr>", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
+                }
             }
         }
         return true;

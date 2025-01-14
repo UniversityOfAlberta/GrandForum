@@ -16,11 +16,22 @@ class EducationResources extends SpecialPage {
 	}
 	
 	function userCanExecute($user){
-	    if(!$user->isLoggedIn()){
+        global $config;
+        $me = Person::newFromUser($user);
+        if(!$user->isLoggedIn()){
 	        AVOIDDashboard::permissionError();
 	    }
+        if($config->getValue('networkFullName') == "AVOID Australia" &&
+            !($me->isRoleAtLeast(STAFF) ||
+              $me->isRole("GroupA") && !$me->isRoleOn("GroupA", date('Y-m-d', time() - 86400*30*6)) || // Allow A until 6 months
+              $me->isRole("GroupB") && $me->isRoleOn("GroupB", date('Y-m-d', time() - 86400*30*6)) && !$me->isRoleOn("GroupB", date('Y-m-d', time() - 86400*30*12)) || // Allow B between 6 and 12 months
+              $me->isRole("GroupC") && !$me->isRoleOn("GroupC", date('Y-m-d', time() - 86400*30*6)) || // Allow C until 6 months
+              $me->isRole("GroupD") && !$me->isRoleOn("GroupD", date('Y-m-d', time() - 86400*30*6)) // Allow D until 6 months
+            )){
+            return false;
+        }
         return true;
-	}
+    }
 	
 	static function JSON(){
 	    global $config;
@@ -224,7 +235,7 @@ class EducationResources extends SpecialPage {
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-        if(AVOIDDashboard::checkAllSubmissions($wgUser->getId())){
+        if(AVOIDDashboard::checkAllSubmissions($wgUser->getId()) && (new self())->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "EducationResources" || ($wgTitle->getText() == "Report" && (strstr($_GET['report'], "EducationModules/") !== false))) ? "selected" : false;
             $tabs["EducationResources"] = TabUtils::createTab("<en>Education</en>
                                                                <fr>Éducation</fr>", "{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources", $selected);

@@ -12,6 +12,15 @@ class PharmacyMap extends BackbonePage {
     }
     
     function userCanExecute($user){
+        global $config;
+        $me = Person::newFromUser($user);
+        if($config->getValue('networkFullName') == "AVOID Australia" &&
+            !($me->isRoleAtLeast(STAFF) ||
+              $me->isRole("GroupA") && !$me->isRoleOn("GroupA", date('Y-m-d', time() - 86400*30*6)) || // Allow A until 6 months
+              $me->isRole("GroupD") && !$me->isRoleOn("GroupD", date('Y-m-d', time() - 86400*30*6)) // Allow D until 6 months
+            )){
+            return false;
+        }
         return true;
     }
     
@@ -119,7 +128,7 @@ class PharmacyMap extends BackbonePage {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         if($wgUser->isLoggedIn()){
-            if(AVOIDDashboard::checkAllSubmissions($wgUser->getId())){
+            if(AVOIDDashboard::checkAllSubmissions($wgUser->getId()) && (new self())->userCanExecute($wgUser)){
                 $selected = @($wgTitle->getText() == "PharmacyMap") ? "selected" : false;
                 $tabs["Map"]['subtabs'][] = TabUtils::createSubTab("Community Programs", "{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap", $selected);
             }
