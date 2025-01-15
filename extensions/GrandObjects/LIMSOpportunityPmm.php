@@ -104,7 +104,7 @@ class LIMSOpportunityPmm extends BackboneModel {
                                          array('opportunity_id' => $this->id));
             foreach($files as $file){
                 $file['data'] = '';
-                $file['url'] = "{$wgServer}{$wgScriptPath}/index.php?action=api.limsopportunity/{$this->id}/files/{$file['id']}";
+                $file['url'] = "{$wgServer}{$wgScriptPath}/index.php?action=api.limsopportunitypmm/{$this->id}/files/{$file['id']}";
                 $this->files[] = $file;
             }
         }

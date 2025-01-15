@@ -8,7 +8,7 @@ LIMSTaskPmm = Backbone.Model.extend({
     },
 
     urlRoot: function(){
-        return 'index.php?action=api.limstask';
+        return 'index.php?action=api.limstaskpmm';
     },
 
     defaults: function() {
@@ -38,6 +38,6 @@ LIMSTasksPmm = Backbone.Collection.extend({
     opportunity: null,
     
     url: function(){
-        return 'index.php?action=api.limsopportunity/' + this.opportunity.get('id') + '/tasks';
+        return 'index.php?action=api.limsopportunitypmm/' + this.opportunity.get('id') + '/tasks';
     }
 });

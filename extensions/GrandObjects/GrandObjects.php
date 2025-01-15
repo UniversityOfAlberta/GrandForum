@@ -300,7 +300,6 @@ function createModels(){
     addScript("AvoidResource");
     addScript("AskAnExpertEvent");
     addScript("ActionPlan");
-    addScript("LIMSContact");
     addScript("LIMSOpportunity");
     addScript("LIMSTask");
     addScript("LIMSContact");
