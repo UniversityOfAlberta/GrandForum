@@ -286,8 +286,8 @@ class CavendishTemplate extends QuickTemplate {
 		    isAllowedToCreateEventPostings = <?php echo json_encode(EventPosting::isAllowedToCreate()); ?>;
 		    isAllowedToCreateBSIPostings = <?php echo json_encode(BSIPosting::isAllowedToCreate()); ?>;
 		    isAllowedToCreateCRMContacts = <?php echo json_encode(CRMContact::isAllowedToCreate()); ?>;
-		    isAllowedToCreateLIMSContacts = <?php echo json_encode(LIMSContact::isAllowedToCreate()); ?>;
-			isAllowedToCreateLIMSContacts = <?php echo json_encode(LIMSContactPmm::isAllowedToCreate()); ?>;
+		    isAllowedToCreateLIMSPmmContacts = <?php echo json_encode(LIMSContact::isAllowedToCreate()); ?>;
+			isAllowedToCreateLIMSPmmContacts = <?php echo json_encode(LIMSContactPmm::isAllowedToCreate()); ?>;
 
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    roleDefs = <?php echo json_encode($config->getValue('roleDefs')); ?>;

@@ -3,13 +3,13 @@
     <p>Are you sure you want to delete this customer/user (this will also delete the related requests and tasks)?</p>
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
-<% if(isAllowedToCreateLIMSContacts){ %>
+<% if(isAllowedToCreateLIMSPmmContacts){ %>
     <button id="addContact">Add Customer/User</button>
 <% } %>
 <table id="contacts" frame="box" rules="all">
     <thead>
         <tr>
-            <% if(isAllowedToCreateLIMSContacts){ %>
+            <% if(isAllowedToCreateLIMSPmmContacts){ %>
                 <th width="1%">Edit</th>
             <% } %>
             <th>Customer/User</th>
@@ -40,7 +40,7 @@
                 }
                 _.each(opportunity.tasks, function(task){ %>
                     <tr>
-                        <% if(isAllowedToCreateLIMSContacts){ %>
+                        <% if(isAllowedToCreateLIMSPmmContacts){ %>
                             <td align="center" style="white-space:nowrap;">
                                 <span class="edit-icon" data-id="<%= contact.get('id') %>"></span>
                                 <span class="delete-icon" data-id="<%= contact.get('id') %>"></span>

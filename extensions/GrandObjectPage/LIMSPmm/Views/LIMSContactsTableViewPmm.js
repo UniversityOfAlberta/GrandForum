@@ -70,7 +70,7 @@ LIMSContactsTableViewPmm = Backbone.View.extend({
             searchStr = this.table.search();
         }
         var rowsGroup = [1,0,2,3,4,5,6,7,8,9];
-        if(isAllowedToCreateLIMSContacts){
+        if(isAllowedToCreateLIMSPmmContacts){
             rowsGroup = [1,0,2,3,4,5,6,7,8,9,10];
         }
         if(this.groupBy != null){
