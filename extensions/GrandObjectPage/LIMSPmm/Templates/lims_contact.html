@@ -1,0 +1,50 @@
+<a class="button backButton" href="#">Back to Contacts</a>
+<!-- <b>Owner:</b> <a href="<%= owner.url %>"><%= owner.name %></a> -->
+<div style="display:flex;">
+    <div style="width:50%;">
+        <h3>Contact Details</h3>
+        <table>
+            <tr>
+                <td class="label left-align">First Name:</td>
+                <td><%= details.firstName %></td>
+            </tr>
+            <tr>
+                <td class="label left-align">Last Name:</td>
+                <td><%= details.lastName %></td>
+            </tr>
+            <tr>
+                <td class="label left-align">Email:</td>
+                <td><%= details.email %></td>
+            </tr>
+            <tr>
+                <td class="label left-align">Sector:</td>
+                <td><%= details.sector %></td>
+            </tr>
+            <tr>
+                <td class="label left-align">Institution/Company:</td>
+                <td><%= details.institution %></td>
+            </tr>
+            <tr>
+                <td class="label left-align">Geographic:</td>
+                <td><%= details.geographic %></td>
+            </tr>
+        </table>
+    </div>
+    <div style="width:50%;">
+        <% if(projects.length > 0){ %>
+            <h3>Related Projects</h3>
+            <ul>
+                <% _.each(projects, function(project){ %>
+                    <li><a href="<%= project.url %>"><%= project.name %></a></li>
+                <% }) %>
+            </ul>
+        <% } %>
+    </div>
+</div>
+<h3>Opportunities</h3>
+<div id="opportunities"></div>
+
+<% if(isAllowedToEdit){ %>
+    <br />
+    <button id='edit'>Edit Contact</button>
+<% } %>

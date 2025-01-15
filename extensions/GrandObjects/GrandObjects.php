@@ -40,6 +40,8 @@ autoload_register('GrandObjects/API/AskAnExpertEvent');
 autoload_register('GrandObjects/API/ActionPlan');
 autoload_register('GrandObjects/API/Gamification');
 autoload_register('GrandObjects/API/LIMS');
+autoload_register('GrandObjects/API/LIMSPmm');
+
 
 global $apiRequest;
 // Person
@@ -225,6 +227,17 @@ $apiRequest->addAction('Hidden','limsopportunity/:opportunity_id/tasks', 'LIMSTa
 $apiRequest->addAction('Hidden','limstask', 'LIMSTaskAPI');
 $apiRequest->addAction('Hidden','limstask/:id', 'LIMSTaskAPI');
 
+// LIMSPmm
+$apiRequest->addAction('Hidden','limscontactpmm', 'LIMSContactAPIPmm');
+$apiRequest->addAction('Hidden','limscontactpmm/:id', 'LIMSContactAPIPmm');
+$apiRequest->addAction('Hidden','limscontactpmm/:contact_id/limsopportunitiespmm', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm/:id', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm/:id/files/:file_id', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm/:opportunity_id/tasks', 'LIMSTaskAPIPmm');
+$apiRequest->addAction('Hidden','limstaskpmm', 'LIMSTaskAPIPmm');
+$apiRequest->addAction('Hidden','limstaskpmm/:id', 'LIMSTaskAPIPmm');
+
 // DataCollection
 $apiRequest->addAction('Hidden','datacollection', 'DataCollectionAPI');
 $apiRequest->addAction('Hidden','datacollection/:id', 'DataCollectionAPI');
@@ -287,9 +300,12 @@ function createModels(){
     addScript("AvoidResource");
     addScript("AskAnExpertEvent");
     addScript("ActionPlan");
-    addScript("LIMSContact");
     addScript("LIMSOpportunity");
     addScript("LIMSTask");
+    addScript("LIMSContact");
+    addScript("LIMSContactPmm");
+    addScript("LIMSOpportunityPmm");
+    addScript("LIMSTaskPmm");
     return true;
 }
 ?>
