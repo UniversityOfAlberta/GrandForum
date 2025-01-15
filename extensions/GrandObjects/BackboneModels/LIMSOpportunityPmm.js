@@ -59,6 +59,6 @@ LIMSOpportunitiesPmm = Backbone.Collection.extend({
     contact: null,
     
     url: function(){
-        return 'index.php?action=api.limscontactpmm/' + this.contact.get('id') + '/limsopportunities';
+        return 'index.php?action=api.limscontactpmm/' + this.contact.get('id') + '/limsopportunitiespmm';
     }
 });
