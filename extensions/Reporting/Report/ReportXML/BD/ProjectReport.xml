@@ -152,7 +152,7 @@
                 <h3>Project Summary <small style='font-weight: normal; font-size: 0.695em'>(From <a href='{$project_url}' target='_blank'>Project Profile</a>)</small></h3>
                 {project_description(summary)}
                 <h3>1. Description of work and next steps</h3>
-                <p>General description of the activities performed in the past 3 months in relation to the overall goals, objectives, and timelines of the project, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
+                <p>General description of the activities performed in the past 4 months in relation to the overall goals, objectives, and timelines of the project, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -173,7 +173,7 @@
         <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
             <![CDATA[
                 <h3>4. Milestones adjustments</h3>
-                <p>Have you modified your project milestones because of activities/ challenges you’ve encountered in the past 3 months? If so, provide a brief description of the changes and the rationale that supports them.</p>
+                <p>Have you modified your project milestones because of activities/ challenges you’ve encountered in the past 4 months? If so, provide a brief description of the changes and the rationale that supports them.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -188,6 +188,13 @@
             <![CDATA[
                 <h3>6. Changes in the research team</h3>
                 <p>Have there been any changes to the research team in the past 4 months? This includes new HQP or affiliated researchers, extension or termination of contracts etc. For new team members, please add them as members on the Forum including their first and last names, roles, institutions, contract start and end dates, and position.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="findings" type="Textarea" blobItem="FINDINGS" rich="true">
+            <![CDATA[
+                <h3>7. Preliminary findings or results</h3>
+                <p>Have there been any significant preliminary findings or results from your research in the past 4 months? Please provide a brief summary of key insights, trends, or outcomes observed so far, including any potential implications for the research direction or next steps.</p>
                 {$item}
             ]]>
         </ReportItem>

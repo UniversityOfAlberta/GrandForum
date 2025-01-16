@@ -79,11 +79,5 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="changes" type="Textarea" blobItem="CHANGES" rich="true">
-            <![CDATA[
-                <h3>6. Changes in the research team</h3>
-                {$item}
-            ]]>
-        </ReportItem>
     </ReportSection>
 </Report>

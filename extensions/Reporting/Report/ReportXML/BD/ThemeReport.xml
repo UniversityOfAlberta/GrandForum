@@ -222,7 +222,7 @@
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
             <![CDATA[
                 <h3>1. Description of work and next steps</h3>
-                <p>Summarize and highlight relevant activities performed in the past 3 months in relation to the overall goals, objectives, and timelines of the theme, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
+                <p>Summarize and highlight relevant activities performed in the past 4 months in relation to the overall goals, objectives, and timelines of the theme, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -247,7 +247,7 @@
         <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
             <![CDATA[
                 <h3>4. Milestones adjustments</h3>
-                <p>Have project milestones been modified because of activities or challenges encountered in the past 3 months? If so, provide a brief overview of the changes and the rationale that supports them.</p>
+                <p>Have project milestones been modified because of activities or challenges encountered in the past 4 months? If so, provide a brief overview of the changes and the rationale that supports them.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -255,13 +255,6 @@
             <![CDATA[
                 <h3>5. Knowledge mobilization and community engagement</h3>
                 <p>Have there been any updates regarding knowledge mobilization or community engagement in the past 4 months? Please provide a brief description of activities to include the type of organization or sector (public, private, not-for-profit), location or country (Canadian, international) and type of engagement (data collection, event). Please specify if you have engaged with a Canadian Indigenous Organization.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="changes" type="Textarea" blobItem="CHANGES" rich="true">
-            <![CDATA[
-                <h3>6. Changes in the research team</h3>
-                <p>Have there been any changes to the research team in the past 4 months? This includes new HQP or affiliated researchers, extension or termination of contracts etc. For new team members, please add them as members on the Forum including their first and last names, roles, institutions, contract start and end dates, and position.</p>
                 {$item}
             ]]>
         </ReportItem>
