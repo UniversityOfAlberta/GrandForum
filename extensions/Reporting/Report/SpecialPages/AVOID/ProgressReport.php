@@ -51,6 +51,20 @@ class ProgressReport extends SpecialPage {
                               $this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID_NINEMO', BLOB_TEXT),
                               $this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID_TWELVEMO', BLOB_TEXT));
         
+        $logosImg = ($config->getValue('networkFullName') == "AVOID Australia") ? 
+            ".logos img {
+                max-height: 54px;
+                margin-left: 1%;
+                margin-right: 1%;
+                vertical-align: middle;
+            }" : 
+            ".logos img {
+                max-height: 65px;
+                margin-left: 3%;
+                margin-right: 3%;
+                vertical-align: middle;
+            }";
+        
         $html = "<html>
                     <head>
                         <script language='javascript' type='text/javascript' src='{$wgServer}{$wgScriptPath}/scripts/jquery.min.js?version=3.4.1'></script>
@@ -93,12 +107,7 @@ class ProgressReport extends SpecialPage {
                                 text-align: center;
                             }
                             
-                            .logos img {
-                                max-height: 65px;
-                                margin-left: 3%;
-                                margin-right: 3%;
-                                vertical-align: middle;
-                            }
+                            $logosImg
                             
                             $pdfNoDisplay
                             
@@ -211,6 +220,7 @@ class ProgressReport extends SpecialPage {
                         <div class='body'>
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_top.png' style='z-index: -2; position: absolute; top:0; left: 0; right:0; width: 216mm;' />
                         <div class='logos'>
+                            <img src='{$wgServer}{$wgScriptPath}/skins/logo4.png' />
                             <img src='{$wgServer}{$wgScriptPath}/skins/logo3.png' />
                             <img style='max-height: 100px;' src='{$wgServer}{$wgScriptPath}/skins/logo2.png' />
                             <en><img src='{$wgServer}{$wgScriptPath}/skins/logo1.png' /></en><fr><img src='{$wgServer}{$wgScriptPath}/skins/logo1fr.png' /></fr>
