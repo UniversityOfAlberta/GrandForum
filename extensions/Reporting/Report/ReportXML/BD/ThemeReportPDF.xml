@@ -79,5 +79,11 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="findings" type="Textarea" blobItem="FINDINGS" rich="true">
+            <![CDATA[
+                <h3>6. Preliminary findings</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>

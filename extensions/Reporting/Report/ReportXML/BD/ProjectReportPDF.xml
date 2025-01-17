@@ -50,7 +50,7 @@
         </ReportItem>
         <ReportItem id="findings" type="Textarea" blobItem="FINDINGS" rich="true">
             <![CDATA[
-                <h3>7. Preliminary findings or results</h3>
+                <h3>7. Preliminary findings</h3>
                 {$item}
             ]]>
         </ReportItem>

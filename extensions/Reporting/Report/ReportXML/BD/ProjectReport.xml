@@ -193,8 +193,8 @@
         </ReportItem>
         <ReportItem id="findings" type="Textarea" blobItem="FINDINGS" rich="true">
             <![CDATA[
-                <h3>7. Preliminary findings or results</h3>
-                <p>Have there been any significant preliminary findings or results from your research in the past 4 months? Please provide a brief summary of key insights, trends, or outcomes observed so far, including any potential implications for the research direction or next steps.</p>
+                <h3>7. Preliminary findings</h3>
+                <p>Have there been any significant preliminary findings or results from your research in the past 4 months? Please provide a brief summary of key insights, trends, or outcomes observed so far.</p>
                 {$item}
             ]]>
         </ReportItem>
