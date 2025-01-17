@@ -11,17 +11,8 @@ class LIMSOpportunityPmm extends BackboneModel {
     var $id;
     var $contact;
     var $owner;
-    var $project;
-    var $userType;
     var $description;
-    var $category;
-    var $surveyed;
-    var $responded;
-    var $satisfaction;
-    var $status;
-    var $date;
     var $files = array();
-    var $products = array();
     
     static function generateRequestId(){
         if(self::$requestIds == null){
@@ -59,12 +50,6 @@ class LIMSOpportunityPmm extends BackboneModel {
         $opportunities = array();
         foreach($data as $row){
             $opportunity = new LIMSOpportunityPmm(array($row));
-            if($opportunity->isAllowedToView()){
-                if($opportunity->getDate() >= $start_date &&
-                   $opportunity->getDate() <= $end_date){
-                    $opportunities[] = $opportunity;
-                }
-            }
         }
         return $opportunities;
     }
@@ -89,16 +74,7 @@ class LIMSOpportunityPmm extends BackboneModel {
             $this->id = $data[0]['id'];
             $this->contact = $data[0]['contact'];
             $this->owner = $data[0]['owner'];
-            $this->project = $data[0]['project'];
-            $this->userType = $data[0]['user_type'];
             $this->description = $data[0]['description'];
-            $this->category = $data[0]['category'];
-            $this->surveyed = $data[0]['surveyed'];
-            $this->responded = $data[0]['responded'];
-            $this->satisfaction = $data[0]['satisfaction'];
-            $this->status = $data[0]['status'];
-            $this->date = $data[0]['date'];
-            $this->products = json_decode($data[0]['products']);
             $files = DBFunctions::select(array('grand_lims_files'),
                                          array('id', 'filename', 'type'),
                                          array('opportunity_id' => $this->id));
@@ -126,67 +102,13 @@ class LIMSOpportunityPmm extends BackboneModel {
         return $this->owner;
     }
     
-    function getProject(){
-        return Project::newFromId($this->project);
-    }
-    
-    function getProjectId(){
-        return $this->project;
-    }
-
-    function getUserType(){
-        return $this->userType;
-    }
 
     function getDescription(){
         return $this->description;
     }
 
-    function getCategory(){
-        return $this->category;
-    }
-    
-    function getSurveyed(){
-        return $this->surveyed;
-    }
-    
-    function getResponded(){
-        return $this->responded;
-    }
-    
-    function getSatisfaction(){
-        return $this->satisfaction;
-    }
-    
-    function getStatus(){
-        return $this->status;
-    }
-
-    function getDate(){
-        return $this->date;
-    }
-
     function getTasks(){
         return LIMSTaskPmm::getTasks($this->getId());
-    }
-    
-    function getProducts(){
-        return $this->products;
-    }
-
-    function getFiles(){
-        return $this->files;
-    }
-
-    function getFile($id){
-        if($this->isAllowedToView()){
-            $file = DBFunctions::select(array('grand_lims_files'),
-                                        array('*'),
-                                        array('id' => $id,
-                                              'opportunity_id' => $this->id));
-            return @$file[0];
-        }
-        return "";
     }
 
     function isAllowedToEdit(){
@@ -205,31 +127,14 @@ class LIMSOpportunityPmm extends BackboneModel {
         if($this->isAllowedToView()){
             self::generateRequestId();
             $person = $this->getPerson();
-            $proj = $this->getProject();
             $owner = array('id' => $person->getId(),
                            'name' => $person->getNameForForms(),
                            'url' => $person->getUrl());
-            $project = array('id' => '', 'name' => '', 'url' => '');
-            if($proj != null){
-                $project = array('id' => $proj->getId(),
-                                 'name' => $proj->getName(),
-                                 'url' => $proj->getUrl());
-            }
             $json = array('id' => $this->getId(),
                           'requestId' => self::$requestIds[$this->getId()],
                           'contact' => $this->getContact()->getId(),
                           'owner' => $owner,
-                          'project' => $project,
-                          'userType' => $this->getUserType(),
                           'description' => $this->getDescription(),
-                          'category' => $this->getCategory(),
-                          'surveyed' => $this->getSurveyed(),
-                          'responded' => $this->getResponded(),
-                          'satisfaction' => $this->getSatisfaction(),
-                          'status' => $this->getStatus(),
-                          'products' => $this->getProducts(),
-                          'files' => $this->getFiles(),
-                          'date' => $this->getDate(),
                           'isAllowedToEdit' => $this->isAllowedToEdit());
             return $json;
         }
@@ -241,16 +146,7 @@ class LIMSOpportunityPmm extends BackboneModel {
             DBFunctions::insert('grand_lims_opportunity',
                                 array('contact' => $this->contact,
                                       'owner' => $this->owner,
-                                      'project' => $this->project,
-                                      'user_type' => $this->userType,
-                                      'description' => $this->description,
-                                      'category' => $this->category,
-                                      'surveyed' => $this->surveyed,
-                                      'responded' => $this->responded,
-                                      'satisfaction' => $this->satisfaction,
-                                      'status' => $this->status,
-                                      'products' => json_encode($this->products),
-                                      'date' => COL('CURRENT_TIMESTAMP')));
+                                      'description' => $this->description));
             $this->id = DBFunctions::insertId();
             $this->uploadFiles();
             self::$requestIds = null;
@@ -260,24 +156,10 @@ class LIMSOpportunityPmm extends BackboneModel {
     function update(){
         if($this->isAllowedToEdit()){
             $newProducts = array();
-            foreach($this->products as $product){
-                if(!(isset($product->delete) && $product->delete == true)){
-                    $newProducts[] = $product;
-                }
-            }
-            $this->products = $newProducts;
             DBFunctions::update('grand_lims_opportunity',
                                 array('contact' => $this->contact,
                                       'owner' => $this->owner,
-                                      'project' => $this->project,
-                                      'user_type' => $this->userType,
-                                      'description' => $this->description,
-                                      'category' => $this->category,
-                                      'surveyed' => $this->surveyed,
-                                      'responded' => $this->responded,
-                                      'satisfaction' => $this->satisfaction,
-                                      'status' => $this->status,
-                                      'products' => json_encode($this->products)),
+                                      'description' => $this->description),
                                 array('id' => $this->id));
             $this->uploadFiles();
             self::$requestIds = null;
