@@ -11,6 +11,7 @@ class LIMSContactPmm extends BackboneModel {
     var $id;
     var $title;
     var $owner;
+	var $projectId;
     var $details = array();
     var $projects = null;
 	
@@ -54,6 +55,7 @@ class LIMSContactPmm extends BackboneModel {
 		    $this->id = $data[0]['id'];
 		    $this->title = $data[0]['title'];
 		    $this->owner = $data[0]['owner'];
+			$this->projectId= $data[0]['project_id'];
 		    $this->details = json_decode($data[0]['details']);
 		    if($this->details == null){
 		        $this->details = array();
@@ -75,6 +77,10 @@ class LIMSContactPmm extends BackboneModel {
 	
 	function getOwner(){
 	    return $this->owner;
+	}
+
+	function getProjectId(){
+	    return $this->projectId;
 	}
 	
 	function getDetails(){
@@ -145,6 +151,7 @@ class LIMSContactPmm extends BackboneModel {
 	                       'url' => $person->getUrl());
 	        $opportunities = array();
 	        $projects = array();
+			$project_id = array();
 	        if(is_array($this->getProjects())){
                 foreach($this->getProjects() as $project){
                     $url = "";
@@ -169,6 +176,7 @@ class LIMSContactPmm extends BackboneModel {
 	        $json = array('id' => $this->getId(),
 	                      'title' => $this->getTitle(),
 	                      'owner' => $owner,
+						  'projectId' => $this->getProjectId(),
 	                      'details' => $this->getDetails(),
 	                      'url' => $this->getUrl(),
 	                      'projects' => $projects,
@@ -186,6 +194,7 @@ class LIMSContactPmm extends BackboneModel {
 	        DBFunctions::insert('grand_lims_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
+									  'project_id' => $this->projectId,
 	                                  'details' => json_encode($this->details)));
 	        $this->id = DBFunctions::insertId();
 	        // Now add projects
@@ -207,6 +216,7 @@ class LIMSContactPmm extends BackboneModel {
 	        DBFunctions::update('grand_lims_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
+									  'project_id' => $this->projectId,
 	                                  'details' => json_encode($this->details)),
 	                            array('id' => $this->id));
 	        // Now add projects
