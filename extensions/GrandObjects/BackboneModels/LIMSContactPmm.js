@@ -36,6 +36,7 @@ LIMSContactPmm = Backbone.Model.extend({
             id: null,
             title: "",
             owner: "",
+            projectId: "",
             details: {firstName: "",
                       lastName: "",
                       email: "",
