@@ -55,7 +55,7 @@ class LIMSContactPmm extends BackboneModel {
 		    $this->id = $data[0]['id'];
 		    $this->title = $data[0]['title'];
 		    $this->owner = $data[0]['owner'];
-			$this->projectId= $data[0]['project_id'];
+                $this->projectId= $data[0]['project_id'];
 		    $this->details = json_decode($data[0]['details']);
 		    if($this->details == null){
 		        $this->details = array();
