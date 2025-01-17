@@ -37,8 +37,8 @@
         require_once("Projections.php");
         require_once("CRDCCodes.php");
     }
-    if($config->getValue("productsEnabled")){
-        //require_once("Bibliography/Bibliography.php");
+    if($config->getValue("productsEnabled") && isExtensionEnabled('Bibliography')){
+        require_once("Bibliography/Bibliography.php");
     }
     if(isExtensionEnabled("Postings")){
         require_once("NewsPosting/NewsPostingPage.php");

@@ -37,7 +37,7 @@ if($pid != ""){
     sleep(1);
 }
 exec(sprintf("%s > %s 2>&1 &", 
-             "PATH=bin/firefox/:bin/:\$PATH xvfb-run java -jar bin/selenium.jar", 
+             "PATH=bin/firefox/:bin/:\$PATH MOZ_HEADLESS=1 java -jar bin/selenium.jar", 
              "selenium.log"));
 
 use Behat\Behat\Context\ClosuredContextInterface,
@@ -139,7 +139,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         global $currentSession;
         // Delay the session so that it doesn't process futher while the page is still loading
         try{
-            $currentSession->getSession()->wait(5);
+            $currentSession->getSession()->wait(20);
         }
         catch(Exception $e){
             
@@ -409,7 +409,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function fillInTinyMCEWith($id, $text){
         $text = addslashes($text);
-        $script = "$('textarea[name=$id]').tinymce().setContent('$text'); " .
+        $script = "_.defer(function(){ $('textarea[name=$id]').tinymce().setContent('$text'); });" .
                   "_.defer(function(){ $('textarea[name=$id]').tinymce().fire('keyup'); });";
         $this->getSession()->getDriver()->executeScript($script);
     }

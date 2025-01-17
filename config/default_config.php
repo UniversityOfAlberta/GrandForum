@@ -294,6 +294,7 @@
         'UI',
         'Notification',
         'GrandObjectPage',
+        'Bibliography',
         //'Twitter',
         'MailingList',
         'AddMember',
