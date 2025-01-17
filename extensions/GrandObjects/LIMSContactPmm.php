@@ -11,7 +11,7 @@ class LIMSContactPmm extends BackboneModel {
     var $id;
     var $title;
     var $owner;
-	var $projectId;
+    var $projectId;
     var $details = array();
     var $projects = null;
 	
