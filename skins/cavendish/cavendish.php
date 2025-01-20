@@ -934,7 +934,7 @@ class CavendishTemplate extends QuickTemplate {
                 $branch = @$output[1];
                 $revIdFull = "<a title='{$output[0]}' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/commit/{$output[0]}'>$revId</a>";
                 $branchFull = "<a title='$branch' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/tree/$branch'>$branch</a>";
-                $docs = "<a title='docs' target='_blank' href='https://grand-forum.readthedocs.io/en/latest/'>Docs</a>";
+                $docs = "<a title='docs' target='_blank' href='https://grand.cs.ualberta.ca/~dwt/glyconet_test/docs/_build/html/'>Docs</a>";
                 
                 if(strstr($wgScriptPath, "staging") !== false){
                     echo "<div style='position:absolute;top:15px;left:620px;'>

@@ -1,5 +1,15 @@
 .. index:: single: Installation
 
+Pre-Requisites
+==============
+
+Make sure that Apache, PHP and MySQL/MariaDB are installed.  For mysql, you will likely need
+to add the following to your my.cnf file
+
+.. code-block:: bash
+
+    sql_mode = STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+
 Installation
 ============
 
