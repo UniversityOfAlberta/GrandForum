@@ -201,11 +201,11 @@ class IndexTable {
                 $wgOut->addHTML("<td>{$person->getEmployeeId()}</td>");
             }
             if($idsHeader != ''){
+                $wgOut->addHTML("<td>{$person->getAlexId()}</td>");
                 $wgOut->addHTML("<td>{$person->getGoogleScholar()}</td>");
                 $wgOut->addHTML("<td>{$person->getSciverseId()}</td>");
                 $wgOut->addHTML("<td>{$person->getOrcId()}</td>");
                 $wgOut->addHTML("<td>{$person->getWOS()}</td>");
-                $wgOut->addHTML("<td>{$person->getAlexId()}</td>");
             }
             $wgOut->addHTML("</tr>");
         }
