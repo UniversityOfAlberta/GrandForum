@@ -320,15 +320,18 @@ function large_json_encode($data){
     }
     $first = true;
     foreach($data as $key => $item){
-	    if ($first) {
-		    $first = false;
-	    } else {
-		    $string .= ",";
+        $encoded = json_encode($item);
+        if($encoded !== false){
+	        if ($first) {
+		        $first = false;
+	        } else {
+		        $string .= ",";
+	        }
+	        if(is_object($data)){
+                $string .= "$key:";
+            }
+	        $string .= $encoded;
 	    }
-	    if(is_object($data)){
-            $string .= "$key:";
-        }
-	    $string .= json_encode($item);
     }
     if(is_object($data)){
         $string .= "}";
