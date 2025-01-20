@@ -11,7 +11,7 @@
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Research Pipeline Grant" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
-                <p>In this Request for Proposals, we are seeking to fund early and mid-stage projects the successful completion of which would provide preliminary data to support other funding applications either to GlycoNet, or other funding sources. This opportunity is open <b>only</b> to individuals who do not currently hold GlycoNet funding.</p>
+                <p>In this Request for Proposals, we are seeking to fund early and mid-stage projects the successful completion of which would provide preliminary data to support other funding applications either to GlycoNet, or other funding sources. This opportunity is open <b>only to individuals who do not currently hold GlycoNet funding.</b></p>
 
                 <h3>Requirements</h3>
                 Projects should:
@@ -30,7 +30,7 @@
                 <p><b>Matching contributions are required at a minimum of 1:1, with at least 50% in cash contributions ($37,500 in cash minimum and $37,500 in in-kind minimum). Larger matching contributions are encouraged (please see Appendix A for in-kind contributions calculation).</b></p>
                 
                 <h3>Funding Available</h3>
-                <p>Proposals may request up to $75,000 in funding. All projects should be completed within 12 – 18 months.</p>
+                <p>Proposals may request up to $75,000 in funding. All projects should be completed within 12 months with the possibility of extension.</p>
                 
                 <h3>Eligibility</h3>
                 This opportunity is open only to individuals who:
@@ -78,7 +78,7 @@
                     <li><b>Partner Letters of Support</b> (as separate PDF files)</li>
                     <li><b>CCV</b> (CIHR/NSERC Academic Format) for each Network Investigator (as separate PDF files)</li>
                 </ol>
-                <p><b>Deadline: 23:59 PDT on February 20, 2025.</b></p>
+                <p><b>Deadline: 23:59 PST on February 20, 2025.</b></p>
             ]]>
         </Static>
     </ReportSection>
@@ -161,26 +161,25 @@
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
         <Static>
             <![CDATA[
-                <p>The front page in the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. <b><i>The project leader is responsible for combining all of the NI budgets into a single Excel file.</i></b> Failure to report on milestones will lead to loss of funding.</p>
+                <p>The front page in the Excel file is the total project budget. The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. <b><i>The project leader is responsible for combining all of the NI budgets into a single Excel file. Failure to report on milestones will lead to loss of funding.</i></b></p>
                 
                 <b>Budget Guidelines:</b>
                 <ul>
                     <li>Projects can request maximum of $75,000 from GlycoNet. Project can also request less than $75,000.</li>
-                    <li>Projects require a 10% budget match which need not be cash. Matching funds cannot be from Canadian Federal funding sources (i.e. CIHR, NSERC, SSHRC, and CFI), as these are ineligible for matching.
-                        <ul><li>Projects with a higher level of matching funds will be viewed more favorably.</li></ul>
-                    </li>
-                    <li>The project budget should clearly show the co-contribution of partner funds in alignment with SSF and eligible project expenses.</li>
+                    <li>Projects require a 1:1 match with Partner funding; at least 50% of the matching funds must be cash. <b>Partner funding cannot come from Canadian Federal funding sources</b> (i.e., CIHR, NSERC, SSHRC, and CFI) as these are ineligible for matching. Larger matching contributions are encouraged</li>
+                    <li>The project budget should clearly show the co-contribution of partner funds in alignment with SSF and eligible project expenses (Refer to <a href='https://drive.google.com/file/d/1rSRuurBSOkgnt3wqWEigrFoHNrHrN5dW/view' target='_blank'>Eligible Costs and Activities</a>).</li>
                     <li>The maximum salary for Graduate Students is $30,000/year and for Postdoctoral Fellows is $55,000/year.</li>
                     <li>Trainee support should be limited to co-op students and should be listed in the technician line item.</li>
                     <li>Equipment is capped at $5,000/year/project.</li>
                     <li>Travel
                         <ul>
-                            <li>Conference travel is capped at $3,000/year/NI/project. Note: Travel to the Annual General Meeting/Symposium is compulsory and will NOT be fully funded centrally through GlycoNet, as such, some travel funds should be kept for this purpose.</li>
+                            <li>Conference travel is capped at $3,000/year/NI/project. Note: Travel to the Annual General Meeting/Symposium is compulsory and will NOT be fully funded centrally through GlycoNet, as such, <b>the travel funds should be kept for this purpose.</b></li>
                             <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li>
                         </ul>
                     </li>
-                    <li>Work with <b><a href='https://canadianglycomics.ca/integrated-services/' target='_blank'>GlycoNet Integrated Services</a></b>. Network investigators will receive a 20% discount on requested services. A quote can be provided upon request by <a href='mailto:coreservices@glyconet.ca'>coreservices@glyconet.ca</a></li>
-                    <li>All partner contributions need to be supported by a letter from the partner institution (see below)
+                    <li>Work with <b>GlycoNet Integrated Services</b>. A quote can be provided upon request by <a href='mailto:coreservices@glyconet.ca'>coreservices@glyconet.ca</a>.</li>
+                    <li>
+                        All partner contributions need to be supported by a letter from the partner institution (see below)
                         <ul>
                             <li>Based on federal funding guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from federal sources cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
                         </ul>
@@ -190,7 +189,7 @@
                 <p>Questions on eligibility of matching can be directed to GlycoNet Administrative Centre (<a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> cc: <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>).</p>
             ]]>
         </Static>
-        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="" template="GlycoNet Budget Template.xlsx">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="" template="GlycoNet Budget Template (RPG).xlsx">
             <![CDATA[
                 {$item}
             ]]>
@@ -273,6 +272,41 @@
         <ReportItem id="upload10" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD10" mimeType="application/pdf">
             <![CDATA[
                 {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="security" name="Research Security" blobSection="CAT_SECURITY" tooltip="Research Security" type="EditableReportSection">
+        <ReportItem id="attestation" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <a href='https://www.nserc-crsng.gc.ca/InterAgency-Interorganismes/RS-SR/_doc/Attestation_e.pdf' target='_blank'>Attestation Form</a>. <b>Fill in and upload the Attestation Form for each project member</b> (The research team includes researchers with named roles in the grant applications, as well as any other researchers involved in activities supported by the grant, such as highly qualified personnel (HQP), co-authors, or informal collaborators who may or may not be identified in the grant application. HQP can include undergraduate and graduate students, post-doctoral researchers, as well as research staff).
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="private" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SECURITY_PRIVATE" options="Yes|No">
+            <![CDATA[
+                <div id='private' style='margin-top: 1em;'>
+                    Will the research involve a private sector partner organization?  (Partner organizations from a private sector (those that are not owned or operated by any order of government and include all for-profit organizations), including industrial associations and producer groups (since their member organizations are principally from the private sector)
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="risk" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <div id='risk' style='display:none; margin-top: 1em;'>
+                    <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'>Risk Assessment Form</a>. In case of involvement of a private sector partner in the project, fill in the Risk Assessment Form and upload it to the Forum. In case risks are identified in the Risk Assessment Form, develop a risk mitigation plan with the institution and must be submitted to GlycoNet.  One Risk Assessment Form is needed per project, developed with the Project Leader’s institution. It is also recommended to utilize existing government resources, such as <a href='https://science.gc.ca/site/science/en/safeguarding-your-research' target='_blank'>Safeguarding Your Research</a> portal and particularly <a href='https://science.gc.ca/site/science/en/safeguarding-your-research/guidelines-and-tools-implement-research-security/mitigating-your-research-security-risks/what-steps-can-you-take-protect-your-research' target='_blank'>Mitigating Your Research Security Risks</a> page.
+                    {$item}
+                </div>
+                <script type='text/javascript'>
+                    $('#private input').change(function(){
+                        var privateValue = $('#private input:checked').val();
+                        if(privateValue == "Yes"){
+                            $('#risk').show();
+                        }
+                        else{
+                            $('#risk').hide();
+                        }
+                    }).change();
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
