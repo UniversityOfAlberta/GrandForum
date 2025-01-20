@@ -32,15 +32,7 @@ class LIMSOpportunityAPIPmm extends RESTAPI {
             $opportunity = new LIMSOpportunityPmm(array());
             $opportunity->contact = $this->POST('contact');
             $opportunity->owner = $this->POST('owner')->id;
-            $opportunity->project = $this->POST('project')->id;
-            $opportunity->userType = $this->POST('userType');
-            $opportunity->category = $this->POST('category');
-            $opportunity->surveyed = $this->POST('surveyed');
-            $opportunity->responded = $this->POST('responded');
-            $opportunity->satisfaction = $this->POST('satisfaction');
-            $opportunity->status = $this->POST('status');
             $opportunity->description = $this->POST('description');
-            $opportunity->products = $this->POST('products');
             $opportunity->files = $this->POST('files');
             $opportunity->create();
             return $opportunity->toJSON();
@@ -54,15 +46,7 @@ class LIMSOpportunityAPIPmm extends RESTAPI {
         $opportunity = LIMSOpportunityPmm::newFromId($this->getParam('id'));
         if($opportunity->isAllowedToEdit()){
             $opportunity->owner = $this->POST('owner')->id;
-            $opportunity->project = $this->POST('project')->id;
-            $opportunity->userType = $this->POST('userType');
-            $opportunity->category = $this->POST('category');
-            $opportunity->surveyed = $this->POST('surveyed');
-            $opportunity->responded = $this->POST('responded');
-            $opportunity->satisfaction = $this->POST('satisfaction');
-            $opportunity->status = $this->POST('status');
             $opportunity->description = $this->POST('description');
-            $opportunity->products = $this->POST('products');
             $opportunity->files = $this->POST('files');
             $opportunity->update();
             return $opportunity->toJSON();
