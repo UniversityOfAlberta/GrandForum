@@ -350,17 +350,25 @@
         <ReportItem id="risk" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <div id='risk' style='display:none; margin-top: 1em;'>
-                    <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'>Risk Assessment Form</a>. In case of involvement of a private sector partner in the project, fill in the Risk Assessment Form and upload it to the Forum. In case risks are identified in the Risk Assessment Form, develop a risk mitigation plan with the institution and must be submitted to GlycoNet.  One Risk Assessment Form is needed per project, developed with the Project Leader’s institution. It is also recommended to utilize existing government resources, such as <a href='https://science.gc.ca/site/science/en/safeguarding-your-research' target='_blank'>Safeguarding Your Research</a> portal and particularly <a href='https://science.gc.ca/site/science/en/safeguarding-your-research/guidelines-and-tools-implement-research-security/mitigating-your-research-security-risks/what-steps-can-you-take-protect-your-research' target='_blank'>Mitigating Your Research Security Risks</a> page.
+                    In case of involvement of a private sector partner in the project, fill in the <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'>Risk Assessment Form</a> and upload it to the Forum. <br />
+                    In case risks are identified in the Risk Assessment Form, develop a risk mitigation plan with the institution and must be submitted to GlycoNet.  One Risk Assessment Form is needed per project, developed with the Project Leader’s institution. It is also recommended to utilize existing government resources, such as <a href='https://science.gc.ca/site/science/en/safeguarding-your-research' target='_blank'>Safeguarding Your Research</a> portal and particularly <a href='https://science.gc.ca/site/science/en/safeguarding-your-research/guidelines-and-tools-implement-research-security/mitigating-your-research-security-risks/what-steps-can-you-take-protect-your-research' target='_blank'>Mitigating Your Research Security Risks</a> page.
                     {$item}
                 </div>
+                <div id='risk_no' style='display:none; margin-top: 1em;'>No further requirements</div>
                 <script type='text/javascript'>
                     $('#private input').change(function(){
                         var privateValue = $('#private input:checked').val();
                         if(privateValue == "Yes"){
                             $('#risk').show();
+                            $('#risk_no').hide();
+                        }
+                        else if(privateValue == "No"){
+                            $('#risk').hide();
+                            $('#risk_no').show();
                         }
                         else{
                             $('#risk').hide();
+                            $('#risk_no').hide();
                         }
                     }).change();
                 </script>
