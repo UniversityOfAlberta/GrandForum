@@ -292,10 +292,51 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="security" name="Research Security" blobSection="CAT_SECURITY" tooltip="Research Security" type="EditableReportSection">
-        <ReportItem id="attestation" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION" mimeType="application/pdf" fileSize="5">
+        <ReportItem id="attestation1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION1" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <a href='https://www.nserc-crsng.gc.ca/InterAgency-Interorganismes/RS-SR/_doc/Attestation_e.pdf' target='_blank'>Attestation Form</a>. <b>Fill in and upload the Attestation Form for each project member</b> (The research team includes researchers with named roles in the grant applications, as well as any other researchers involved in activities supported by the grant, such as highly qualified personnel (HQP), co-authors, or informal collaborators who may or may not be identified in the grant application. HQP can include undergraduate and graduate students, post-doctoral researchers, as well as research staff).
-                {$item}
+                <div style='display:flex; width: 100%;'>
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION3" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION4" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION5" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION6" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation7" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION7" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation8" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION8" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+                </div>
             ]]>
         </ReportItem>
         <ReportItem id="private" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SECURITY_PRIVATE" options="Yes|No">
@@ -306,7 +347,7 @@
                 </div>
             ]]>
         </ReportItem>
-        <ReportItem id="risk" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" fileSize="5">
+        <ReportItem id="risk" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <div id='risk' style='display:none; margin-top: 1em;'>
                     <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'>Risk Assessment Form</a>. In case of involvement of a private sector partner in the project, fill in the Risk Assessment Form and upload it to the Forum. In case risks are identified in the Risk Assessment Form, develop a risk mitigation plan with the institution and must be submitted to GlycoNet.  One Risk Assessment Form is needed per project, developed with the Project Leader’s institution. It is also recommended to utilize existing government resources, such as <a href='https://science.gc.ca/site/science/en/safeguarding-your-research' target='_blank'>Safeguarding Your Research</a> portal and particularly <a href='https://science.gc.ca/site/science/en/safeguarding-your-research/guidelines-and-tools-implement-research-security/mitigating-your-research-security-risks/what-steps-can-you-take-protect-your-research' target='_blank'>Mitigating Your Research Security Risks</a> page.
