@@ -429,6 +429,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},vsharko@glyconet.ca" />
+        <If if="{==({getText(RP_RPG,CAT_SECURITY,CAT_SECURITY_PRIVATE,0,{$user_id},{$project_id})},)}">
+            <![CDATA[
+                You must answer the risk assessment question on the "Research Security" section.
+            ]]>
+        </If>
+        <Else>
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},vsharko@glyconet.ca" />
+        </Else>
     </ReportSection>
 </Report>
