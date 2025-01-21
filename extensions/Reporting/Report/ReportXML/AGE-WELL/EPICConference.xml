@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC Conference (2024)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="true" year="2024">
+<Report name="EPIC Conference (2025)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2025">
     <Permissions>
         <Role role="HQP+">
             <SectionPermission id="instructions" permissions="rw" />
@@ -16,27 +16,31 @@
         <Role subType="EPIC AT" />
         <Role subType="ECR Applicant" />
     </Permissions>
-    <ReportSection id="instructions" tooltip="Instructions" name="Instructions" title="EPIC Conference (2024)" type="ReportSection">
+    <ReportSection id="instructions" tooltip="Instructions" name="Instructions" title="EPIC Conference (2025)" type="ReportSection">
         <Static>
             <![CDATA[
-                <p>AGE-WELL, Canada’s AgeTech network, is dedicated to the creation of technologies and services that benefit older adults and caregivers. Our aim is to help older Canadians maintain their independence, health and quality of life through technologies, programs and services that increase their safety, support their independent living, and enhance their social participation.</p>
+                <p>AGE-WELL, Canada’s AgeTech network, is dedicated to the creation of technologies and services that benefit older adults and caregivers. Our mission is to help older Canadians maintain their independence, health and quality of life through technologies, programs and services that increase their safety, support their independent living, and enhance their social participation.</p>
                 
-                <p>AGE-WELL has identified <a href="https://agewell-nce.ca/challenge-areas" target="_blank">8 Challenge Areas</a> – difficult and complex problem areas found through extensive public consultation – that demand innovation and deployment of real-world solutions. EPIC Conference (2024) is an opportunity for AGE-WELL and EPIC-AT students, postdoctoral fellows, research staff and ECRs to present their research alongside their stakeholder partners, highlight its potential impact, and connect with colleagues from around the world.  Each session will also feature a new segment called Moving the Dial that highlights how AGE-WELL partners and supported startups are improving quality of life for Canada’s older adults and caregivers.</p>
+                <p>AGE-WELL has identified <a href="https://agewell-nce.ca/challenge-areas" target="_blank">8 Challenge Areas</a> – difficult and complex problem areas found through extensive public consultation – that demand innovation and deployment of real-world solutions. EPIC Conference (2025) provides a unique platform for AGE-WELL and EPIC-AT students, postdoctoral fellows, research staff and ECRs to present their research alongside their stakeholder partners.  It is an opportunity to showcase  thepotential impact of this work while connecting with colleagues from around the world.  Each session will also feature a segment called Moving the Dial that highlights how AGE-WELL partners and supported startups are improving quality of life for older adults and caregivers across Canada.</p>
 
-                <p>Interested AGE-WELL HQP and EPIC-AT Fellows are asked to submit an application that includes a presentation abstract and the details of a co-presenter who is an older adult, caregiver, community, or industry partner in their research. Applications that include a stakeholder co-presenter will be given preference over those that do not.</p>
+                Interested AGE-WELL HQP and EPIC-AT Fellows are asked to submit an application that includes:
+                <ul>
+                    <li>a presentation abstract</li>
+                    <li>a co-presenter who is an older adult, caregiver, community, or industry partner in their research. Only applications that include a stakeholder co-presenter will be considered.</li>
+                </ul>
                 
                 <p><b>HQP/EPIC-AT Fellow Presentation</b><br />
-                All sessions will be hosted on Zoom and comprise of an introduction to the Challenge Area by the session Chair, live presentations from researchers and their stakeholder partners, and a Moving the Dial presentation. Q&A will follow the each of the presentations.</p>
+                All sessions will be hosted on Zoom and comprise of an introduction to the Challenge Area by the session Chair, live presentations from researchers and their stakeholder partners, and a Moving the Dial presentation that features an AGE-WELL start-up or partner. Q&A will follow the each of the presentations.</p>
                 
-                <p>Presenters are required to accompany their 10-minute talks with a presentation of 10 slides maximum (inclusive of title slide and bibliography). They are also strongly encouraged to co-present alongside a stakeholder in their research. For example, this stakeholder may be an older adult or caregiver with lived experience, an industry or community partner, or government decision-maker.</p>
+                <p>Presenters are required to accompany their 10-minute talks with a presentation of 10 slides maximum (inclusive of title slide and bibliography). They are also required to co-present alongside a stakeholder in their research. For example, this stakeholder may be an older adult or caregiver with lived experience, an industry or community partner, or government decision-maker.</p>
                 
-                <p>Check out the EPIC Conference 2023 presentations and workshops <a href='https://agewell-nce.ca/epic-conference-2023' target='_blank'>here</a>.</p>
+                <p>Check out the EPIC Conference 2024 presentations and workshops <a href='https://agewell-nce.ca/event/epic-conference-2024-supportive-homes-communities' target='_blank'>here</a>.</p>
                 
                 <p><b>Call for Abstracts</b><br />
                     Presentation proposals are invited from <b>all AGE-WELL HQP and EPIC-AT Fellows including alumni</b>. Applicants are encouraged to review the full challenge area booklet <a href='https://agewell-nce.ca/wp-content/uploads/2018/05/Booklet_8_Challenges_English_2019oct2_digital.pdf' target='_blank'>here</a> and ensure they are available for their sessions on the dates below. Applicants may also wish to review <a href='https://blog.prezi.com/co-presenting-tips/' target="_blank">Co-presenting tips: How to deliver an engaging and cohesive presentation</a>
                 </p>
                 
-                <p>Applications will be open in Forum from March 1 to April 8, 2024.</p>
+                <p>Applications will be open in Forum from March 1 to April 8, 2025.</p>
                 <table class='wikitable'>
                     <tr>
                         <th>Challenge Area Sessions</th>
@@ -45,50 +49,50 @@
                     </tr>
                     <tr>
                         <td>Supportive Homes & Communities</td>
-                        <td>May 21, 2024</td>
-                        <td style="white-space:nowrap;">12:00-1:00 pm ET</td>
+                        <td>May 20, 2025</td>
+                        <td style="white-space:nowrap;">1:00-2:10 pm ET</td>
                     </tr>
                     <tr>
                         <td>Health Care & Health Service Delivery</td>
-                        <td>May 22, 2024</td>
-                        <td style="white-space:nowrap;">12:00-1:00 pm ET</td>
+                        <td>May 21, 2025</td>
+                        <td style="white-space:nowrap;">1:00-2:00 pm ET</td>
                     </tr>
                     <tr>
                         <td>Autonomy & Independence</td>
-                        <td>May 23, 2024</td>
-                        <td style="white-space:nowrap;">12:00-1:00 pm ET</td>
+                        <td>May 22, 2025</td>
+                        <td style="white-space:nowrap;">1:00-2:00 pm ET</td>
                     </tr>
                     <tr>
                         <td>Cognitive Health & Dementia</td>
-                        <td>May 24, 2024</td>
-                        <td style="white-space:nowrap;">12:00-1:00 pm ET</td>
+                        <td>May 23, 2025</td>
+                        <td style="white-space:nowrap;">1:00-2:00 pm ET</td>
                     </tr>
                     <tr>
                         <td>Mobility & Transportation</td>
-                        <td>May 27, 2024</td>
-                        <td style="white-space:nowrap;">12:00-1:00 pm ET</td>
+                        <td>May 27, 2025</td>
+                        <td style="white-space:nowrap;">1:00-2:00 pm ET</td>
                     </tr>
                     <tr>
                         <td>Healthy Lifestyles & Wellness</td>
-                        <td>May 28, 2024</td>
-                        <td style="white-space:nowrap;">12:00-1:00 pm ET</td>
+                        <td>May 28, 2025</td>
+                        <td style="white-space:nowrap;">1:00-2:00 pm ET</td>
                     </tr>
                     <tr>
                         <td>Staying Connected</td>
-                        <td>May 29, 2024</td>
-                        <td style="white-space:nowrap;">12:00-1:00 pm ET</td>
+                        <td>May 29, 2025</td>
+                        <td style="white-space:nowrap;">1:00-2:00 pm ET</td>
                     </tr>
                     <tr>
                         <td>Financial Wellness & Employment</td>
-                        <td>May 30, 2024</td>
-                        <td style="white-space:nowrap;">12:00-1:00 pm ET</td>
+                        <td>May 30, 2025</td>
+                        <td style="white-space:nowrap;">1:00-2:00 pm ET</td>
                     </tr>
                 </table>
             ]]>
         </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Application" name="Application" type="EditableReportSection" blobSection="APPLICATION">
-        <Static>
+        <ReportItem id="social_media" type="Text" blobItem="SOCIAL_MEDIA">
             <![CDATA[
                 <table>
                     <tr>
@@ -100,8 +104,8 @@
                         <td class='value'>{$user_email}</td>
                     </tr>
                     <tr>
-                        <td class='label'>Twitter handle:</td>
-                        <td class='value'>{$user_twitter}</td>
+                        <td class='label'>Social media handle:<br /><small>(if applicable)</small></td>
+                        <td class='value'>{$item}</td>
                     </tr>
                     <tr>
                         <td class='label'>Academic Status:</td>
@@ -114,7 +118,7 @@
                 </table>
                 <small>If any of the above are missing or incorrect, they can be updated on your <a href='{$user_url}' target='_blank'>profile</a>.</small>
             ]]>
-        </Static>
+        </ReportItem>
         <ReportItem id="challenge" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGE" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" limit="2">
             <![CDATA[
                 <h3>AGE-WELL Challenge area best fit (maximum of 2):</h3>

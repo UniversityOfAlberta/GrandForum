@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC Conference (2024)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2024">
+<Report name="EPIC Conference (2025)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2025">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>EPIC Conference (2024)</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>EPIC Conference (2025)</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -13,7 +13,7 @@
         </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Application" name="Application" type="HeaderReportSection" blobSection="APPLICATION" pagebreak="false">
-        <Static>
+        <ReportItem id="social_media" type="Text" blobItem="SOCIAL_MEDIA">
             <![CDATA[
                 <table>
                     <tr>
@@ -23,7 +23,7 @@
                         <td><b>Email:</b></td><td>{$user_email}</td>
                     </tr>
                     <tr>
-                        <td><b>Twitter handle:</b></td><td>{$user_twitter}</td>
+                        <td><b>Social media handle:</b></td><td>{$item}</td>
                     </tr>
                     <tr>
                         <td><b>Academic Status:</b></td><td>{$user_level}</td>
@@ -33,7 +33,7 @@
                     </tr>
                 </table>
             ]]>
-        </Static>
+        </ReportItem>
         <ReportItem id="challenge" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGE" delimiter="&lt;br />" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" limit="2">
             <![CDATA[
                 <h3>AGE-WELL Challenge area best fit (Max 2):</h3>
