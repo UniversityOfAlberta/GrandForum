@@ -302,7 +302,7 @@
                             <th>Recommended Increment</th>
                             <th>Revised Increment</th>
                             <th>Increment Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
-                            <th>Tenure Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
+                            <th>Continuing Appointment Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
                             <th>Promotion Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
                             <th>Comments <span class='tooltip' title='Comments will be visible to the FEC Chair'>&#9432;</span></th>
                         </tr>
@@ -637,7 +637,7 @@
                             <th rowspan='2'>Recommended Increment</th>
                             <th rowspan='2'>Revised Increment</th>
                             <th colspan='4'>Increment Votes</th>
-                            <th colspan='4'>Tenure Votes</th>
+                            <th colspan='4'>Continuing Appointment Votes</th>
                             <th colspan='4'>Promotion Votes</th>
                             <th rowspan='2'>HR Comments</th>
                         </tr>
