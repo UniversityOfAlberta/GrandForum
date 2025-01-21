@@ -14,6 +14,8 @@ class TextareaReportItem extends AbstractReportItem {
                 $mentionSource[] = array("name" => $mention);
             }
         }
+        $toolbar = $this->getAttr('toolbar', "['undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify']");
+        $statusbar = $this->getAttr('statusbar', 'true');
         $recommended = strtolower($this->getAttr('recommended', 'false'));
         return"<script type='text/javascript'>
                 if($('#tinyMCEUpload').length == 0){
@@ -42,9 +44,8 @@ class TextareaReportItem extends AbstractReportItem {
                         readonly: readOnly,
                         menubar: false,
                         plugins: 'link image charmap lists table paste wordcount advlist $mentionPlugin',
-                        toolbar: [
-                            'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
-                        ],
+                        toolbar: {$toolbar},
+                        statusbar: {$statusbar},
                         file_browser_callback: function(field_name, url, type, win) {
                             if(type=='image') $('#tinyMCEUploadForm input').click();
                         },

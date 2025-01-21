@@ -13,7 +13,8 @@ class VoteResultsReportItem extends SelectReportItem {
             $data = $blob->getData();
             
             if($data != "i recommend that an appointment with tenure be offered" &&
-               $data != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
+               $data != "i recommend tenure as per clause 12.17 (special recommendation for tenure)" &&
+               $data != "i recommend that continuing appointment be offered"){
                 $wgOut->addHTML("<td></td>
                                  <td></td>
                                  <td></td>

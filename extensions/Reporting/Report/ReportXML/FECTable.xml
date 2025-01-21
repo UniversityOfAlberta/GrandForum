@@ -494,7 +494,8 @@
                     <script type='text/javascript'>
                         var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
                         if(tenure != "i recommend that an appointment with tenure be offered" &&
-                           tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
+                           tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)" &&
+                           tenure != "i recommend that continuing appointment be offered"){
                             $("#t_vote_{$user_id}").remove();
                         }
                         else if(tenure != ""){

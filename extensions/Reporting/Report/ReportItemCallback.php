@@ -1875,24 +1875,32 @@ class ReportItemCallback {
         $args = func_get_args();
         $sum = 0;
         foreach($args as $arg){
+            $arg = str_replace("&#44;", "", $arg);
             $sum += $arg;
         }
         return $sum;
     }
     
     function subtract($val1, $val2){
+        $val1 = str_replace("&#44;", "", $val1);
+        $val2 = str_replace("&#44;", "", $val2);
         return $val1 - $val2;
     }
     
     function multiply($val1, $val2){
+        $val1 = str_replace("&#44;", "", $val1);
+        $val2 = str_replace("&#44;", "", $val2);
         return $val1*$val2;
     }
     
     function divide($val1, $val2){
+        $val1 = str_replace("&#44;", "", $val1);
+        $val2 = str_replace("&#44;", "", $val2);
         return $val1/max(1, $val2);
     }
     
     function round($val, $dec=0){
+        $val = str_replace("&#44;", "", $val);
         return number_format(round($val, $dec), $dec, ".", "");
     }
     

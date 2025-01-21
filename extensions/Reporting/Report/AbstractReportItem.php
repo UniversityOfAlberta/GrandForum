@@ -254,10 +254,10 @@ abstract class AbstractReportItem {
     // be overridden to do some proccessing before hand, or handle uploads etc.
     function save(){
         if(isset($_POST[$this->getPostId()])){
-            if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
+            /*if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
                $_POST[$this->getPostId().'_ignoreConflict'] != "true"){
                 $default = $this->getAttr('default', '');
-                if(isset($_POST['oldData'][$this->getPostId()]) && $default != '' && $_POST['oldData'][$this->getPostId()] == $default){
+                if(isset($_POST['oldData'][$this->getPostId()]) && $default != '' && ($_POST['oldData'][$this->getPostId()] == $default){
                     // Default value, save the changed version
                     $this->setBlobValue($_POST[$this->getPostId()]);
                     return array();
@@ -284,7 +284,7 @@ abstract class AbstractReportItem {
                                            'diff' => @htmlDiffNL(str_replace("\n", "\n ", $this->getBlobValue()), str_replace("\n", "\n ", $_POST[$this->getPostId()]))));
                     }
                 }
-            }
+            }*/
             $this->setBlobValue($_POST[$this->getPostId()]);
         }
         return array();

@@ -178,13 +178,13 @@
                                 </table><br />
                         ]]>
                     </Static>
-                    <ReportItem id="teaching_methods1" type="Textarea" blobItem="TEACHING_METHODS1" blobSection="FEC_COURSES" height="150px">
+                    <ReportItem id="teaching_methods1" type="Textarea" blobItem="TEACHING_METHODS1" blobSection="FEC_COURSES" height="150px" rich="true" limit="100">
                         <![CDATA[
                                 <b>(i) Course Design</b><br />
                                 {$item}<br /><br />
                         ]]>
                     </ReportItem>
-                    <ReportItem id="teaching_methods2" type="Textarea" blobItem="TEACHING_METHODS2" blobSection="FEC_COURSES" height="150px">
+                    <ReportItem id="teaching_methods2" type="Textarea" blobItem="TEACHING_METHODS2" blobSection="FEC_COURSES" height="150px" rich="true" limit="100">
                         <![CDATA[
                                 <b>(ii) Instructional Practices</b><br />
                                 {$item}<br />
@@ -225,7 +225,7 @@
         
         <ReportItem id="reflection" type="Textarea" blobItem="FEC_COURSES_REFLECTION" blobSection="FEC_COURSES" rich="true" height="150px">
             <![CDATA[
-                <h3>Overall Reflection on Teaching</h3>
+                <h3>Additional Information on Teaching</h3>
                 {$item}<br />
             ]]>
         </ReportItem>
@@ -236,20 +236,17 @@
                 <h2>HQP Supervision</h2>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|visiting|tech|other|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Visiting Students|Research/Technical Assistants|Other|Student Committee Responsibilities">
+        <ReportItemSet id="hqps" type="String" array="phd|msc-thesis|msc-course|ugrad|pdf|visiting|tech|other|committee" labels="Doctoral Students|Master's Students - Thesis|Master's Students - Course|Undergraduates|Post-doctoral Fellows and Research Associates|Visiting Students|Research/Technical Assistants|Other|Student Committee Responsibilities">
             <If if="{>({getHQPCount({getExtra(value)})}, 0)}">
                 <Static>
                     <![CDATA[
                         <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>
                         <table class='wikitable' frame='box' rules='all' width='100%'>
                             <tr>
-                                <th style='width: 20%;'>Student</th>
-                                <th style='width: 1%; white-space:nowrap;'>FT / PT</th>
-                                <th style='width: 8%; white-space:nowrap;'>Date<br />Admitted</th>
-                                <th style='width: 8%; white-space:nowrap;'>Date<br />Interaction<br />Started</th>
-                                <th style='width: 30%;'>Degree<br />Sought</th>
-                                <th style='width: 8%; white-space:nowrap;'>Date Degree<br />Expected or<br />Completed</th>
-                                <th style='width: 25%;'>Co-Supervisors</th>
+                                <th style='width: 40%;'>Student</th>
+                                <th style='width: 20%; white-space:nowrap;'>Date<br />Admitted</th>
+                                <th style='width: 20%; white-space:nowrap;'>Date<br />Interaction<br />Started</th>
+                                <th style='width: 20%; white-space:nowrap;'>Status</th>
                             </tr>
                     ]]>
                 </Static>
@@ -257,34 +254,40 @@
                     <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS">
                         <![CDATA[
                             <tr>
-                                <td rowspan='2'>{$item}{$user_name}<br /><i>{getExtra(role)}</i></td>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}" options="FT|PT" width="3.5em">
-                        <![CDATA[
-                            <td align='center'>{$item}</td>
+                                <td valign='top'>
+                                    {$item}{$user_name}<br />
+                                    <i>{replace(Co-Supervisor, Co-Supervised with, {getExtra(role)})} <span style='{if("{getExtra(role)}" != "Co-Supervisor", display:none;)}'>{getText(RP_FEC, FEC_STUDENTS, COSUPERVISORS, {$user_id}, {$my_id}, 0)}</span></i>
+                                </td>
                         ]]>
                     </ReportItem>
                     <Static>
                         <![CDATA[
-                                <td align='center'>{time2date({getExtra(start)}, M Y)}</td>
-                                <td align='center'>{time2date({getExtra(start_date)}, M Y)}</td>
-                                <td>{getExtra(position)}</td>
-                                <td align='center'>{time2date({getExtra(finish)}, M Y)}</td>
-                                <td>{$user_cosupervisors}</td>
-                        ]]>
-                    </Static>
-                    <Static>
-                        <![CDATA[
-                            </tr>
+                                <td colspan='3' style='padding: 0;' valign='top'>
+                                    <table style='width: 100%;' cellspacing='0'>
+                                        <tr>
+                                            <td style='width: 33.3%; border-right: 1px solid black; border-bottom: 1px solid black; background: transparent;' align='center'>
+                                                {time2date({getExtra(start)}, M Y)}
+                                            </td>
+                                            <td style='width: 33.3%; border-right: 1px solid black; border-bottom: 1px solid black; background: transparent;' align='center'>
+                                                {time2date({getExtra(start_date)}, M Y)}
+                                            </td>
+                                            <td style='width: 33.3%; border-bottom: 1px solid black; background: transparent;' align='center'>
+                                                {getExtra(status)}<br />
+                                                {if("{getExtra(status)}" == "Completed" || "{getExtra(status)}" == "Withdrew", {time2date({getExtra(finish)}, M Y)})}
+                                                {if("{getExtra(status)}" == "Changed Supervisor", {time2date({getExtra(end_date)}, M Y)})}
+                                            </td>
+                                        </tr>
+                                        <tr>
                         ]]>
                     </Static>
                     <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS" height="48px">
                         <![CDATA[
-                            <tr><td colspan='6'>
-                                Name of Scholarships, if any<br />
-                                {$item}
-                            </td></tr>
+                                
+                                            <td colspan='3' style='background: transparent;'>{$item}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
@@ -322,7 +325,7 @@
                 <h2>Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)})</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="reflections" type="Textarea" blobSection="FEC_PRODUCTS" blobItem="REFLECTIONS" rich="true" limit="100">
+        <ReportItem id="reflections" type="Textarea" blobSection="FEC_PRODUCTS" blobItem="REFLECTIONS" rich="true" limit="200">
             <![CDATA[
                 <h3>Reflections on Publications</h3>
                 {$item}<br /><br />
@@ -641,13 +644,13 @@
                     <table class='wikitable' frame='box' rules='all' width='100%'>
                         <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Sponsor</th>
-                                <th style='width:1%;'>Starts</th>
-                                <th style='width:1%;'>Ends</th>
-                                <th>$Total /<br />My Portion</th>
-                                <th style='width:1%; white-space:nowrap;'>P.I.<br />(y/n)</th>
-                                <th>Joint With</th>
+                                <th style='width:30%;'>Title</th>
+                                <th style='width:20%;'>Sponsor</th>
+                                <th style='width:5%;'>Starts</th>
+                                <th style='width:5%;'>Ends</th>
+                                <th colspan='2' style='width:10%;white-space:nowrap;'>&nbsp;$Total /<br />My Portion (%)&nbsp;</th>
+                                <th style='width:5%; white-space:nowrap;'>P.I.<br />(y/n)</th>
+                                <th style='width: 25%;'>Joint With</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -664,6 +667,7 @@
                             <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
                             <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
                             <td align='right'>${$grant_total}{if("{$grant_my_portion}" != "0", <br />${$grant_my_portion})}</td>
+                            <td align='left'>&nbsp;<br />{if("{$grant_my_portion}" != "0", {round({multiply({divide({$grant_my_portion},{$grant_total})},100)})}%)}</td>
                             <td align='center'>{$grant_is_pi}</td>
                             <td>{$grant_people}</td>
                         </tr>
@@ -703,13 +707,13 @@
                     <table class='wikitable' frame='box' rules='all' width='100%'>
                         <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Sponsor</th>
-                                <th style='width:1%;'>Starts</th>
-                                <th style='width:1%;'>Ends</th>
-                                <th>$Total /<br />My Portion</th>
-                                <th style='width:1%; white-space:nowrap;'>P.I.<br />(y/n)</th>
-                                <th>Joint With</th>
+                                <th style='width:30%;'>Title</th>
+                                <th style='width:20%;'>Sponsor</th>
+                                <th style='width:5%;'>Starts</th>
+                                <th style='width:5%;'>Ends</th>
+                                <th colspan='2' style='width:10%;white-space:nowrap;'>&nbsp;$Total /<br />My Portion (%)&nbsp;</th>
+                                <th style='width:5%; white-space:nowrap;'>P.I.<br />(y/n)</th>
+                                <th style='width: 25%;'>Joint With</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -726,6 +730,7 @@
                             <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
                             <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
                             <td align='right'>${$grant_total}{if("{$grant_my_portion}" != "0", <br />${$grant_my_portion})}</td>
+                            <td align='left'>&nbsp;<br />{if("{$grant_my_portion}" != "0", {round({multiply({divide({$grant_my_portion},{$grant_total})},100)})}%)}</td>
                             <td align='center'>{$grant_is_pi}</td>
                             <td>{$grant_people}</td>
                         </tr>
