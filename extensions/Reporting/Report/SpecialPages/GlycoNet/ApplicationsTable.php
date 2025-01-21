@@ -52,6 +52,7 @@ class ApplicationsTable extends SpecialPage{
         </style>");
         
         $links = array();
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=rpg'>Research Pipeline</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
@@ -126,6 +127,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "alberta" && $me->isRoleAtLeast(SD)){
             $this->generateAlberta();
+        }
+        else if($program == "rpg" && $me->isRoleAtLeast(SD)){
+            $this->generateRPG();
         }
         else if($program == "strat" && $me->isRoleAtLeast(SD)){
             $this->generateStrat();
@@ -356,6 +360,13 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setId("reviewers");
         $tabbedPage->addTab(new ApplicationTab('RP_LEGACY_APPLICATION', null, 2021, "2021", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_LEGACY', null, 2021, "2021 LOI", array($reviewers)));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateRPG(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_RPG', null, 2025, "2025", array(), true));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

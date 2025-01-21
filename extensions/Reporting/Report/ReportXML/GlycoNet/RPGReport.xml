@@ -198,7 +198,8 @@
             <![CDATA[
                 <h3>Budget Justification</h3>
                 <ul>
-                    <li>Provide concise, but sufficient, justification for expenses. Benefit rates for employees should be clearly stipulated.</li>
+                    <li>Provide concise, but sufficient, justification for expenses (<b>in accordance with the submitted budget</b>). Benefit rates for employees should be clearly stipulated. The budget justification should be detailed enough to clearly explain why and for what each expense is needed, but concise enough not to overwhelm with unnecessary information.</li>
+                    <li><b>Justify expenses listed in the budget spreadsheet. The justifications must correspond to the budget line items in the spreadsheet.</b></li>
                     <li>The project leader is responsible for generating a single budget justification document containing information from all NI groups.</li>
                 </ul>
                 {$item}
@@ -210,7 +211,7 @@
             <![CDATA[
                 <b>Provide as a single Excel file, uploaded to Forum, use the template</b>
                 <ul>
-                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template.xlsx"><b>Milestone Template</b></a> from the Forum </li>
+                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template.xlsx"><b>Milestones Template</b></a> from the Forum </li>
                     <li><b>Indicate milestones containing clear go/no-go decision points</b></li>
                     <li>Quarterly milestones should be provided and should contain sufficient detail that progress toward them can be clearly monitored. Progress toward stated milestones will be a significant component of evaluation for continued project funding</li>
                     <li>Add an “X” to the shaded boxes</li>
@@ -225,7 +226,22 @@
     <ReportSection id="letters" name="Partner Letters" title="Partner Letters of Support" blobSection="CAT_SUPPORT" tooltip="Partner Letters of Support" type="ReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
             <![CDATA[
-                <p>You can upload up to 10 Partner Support Letters</p>
+                <p>Letters from partners are required, indicating the nature of their involvement in the project and their anticipated contribution, both cash and in-kind. <b>These amounts should match those listed in the budget</b>. Partnerships and potential for leveraged funding (in-kind and/or cash) will increase suitability of the project for the GlycoNet renewal application.</p>
+                
+                Partner letters must use the following format: 
+                <ul>
+                    <li>Name of the Partner (e.g. company, foundation, institution, etc.) on letterhead.</li>
+                    <li>Contact name and contact information.</li>
+                    <li><b>Amount (cash and in-kind), nature, and area of anticipated support.</b></li>
+                    <li>Letters must:
+                        <ul>
+                            <li>Come from a senior executive with signing authority for the contributions being committed.</li>
+                            <li>Indicate the amount, duration, and nature (cash and/or in-kind) of support for the project.</li>
+                            <li>Be on partner letterhead, be dated and signed.</li>
+                        </ul>
+                    </li>
+                    <li>Please take into account University overhead for sponsored research when discussing funding with partners. This amount cannot be counted as matching.</li>
+                </ul><br />
                 {$item}
             ]]>
         </ReportItem>
@@ -276,34 +292,86 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="security" name="Research Security" blobSection="CAT_SECURITY" tooltip="Research Security" type="EditableReportSection">
-        <ReportItem id="attestation" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION" mimeType="application/pdf" fileSize="5">
+        <ReportItem id="attestation1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION1" mimeType="application/pdf" fileSize="2">
             <![CDATA[
-                <a href='https://www.nserc-crsng.gc.ca/InterAgency-Interorganismes/RS-SR/_doc/Attestation_e.pdf' target='_blank'>Attestation Form</a>. <b>Fill in and upload the Attestation Form for each project member</b> (The research team includes researchers with named roles in the grant applications, as well as any other researchers involved in activities supported by the grant, such as highly qualified personnel (HQP), co-authors, or informal collaborators who may or may not be identified in the grant application. HQP can include undergraduate and graduate students, post-doctoral researchers, as well as research staff).
-                {$item}
+                <ol>
+                <li>
+                    <b>Fill in and upload the <a href='https://www.nserc-crsng.gc.ca/InterAgency-Interorganismes/RS-SR/_doc/Attestation_e.pdf' target='_blank'>Attestation Form</a> for each project member</b> (The research team includes researchers with named roles in the grant applications, as well as any other researchers involved in activities supported by the grant, such as highly qualified personnel (HQP), co-authors, or informal collaborators who may or may not be identified in the grant application. HQP can include undergraduate and graduate students, post-doctoral researchers, as well as research staff).
+                    <div style='display:flex; width: 100%; margin-top: 1em;'>
+                        <div style='width: 50%; min-width: 500px;'>
+                            {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION3" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION4" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION5" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION6" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation7" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION7" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation8" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION8" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+                </div></li>
             ]]>
         </ReportItem>
         <ReportItem id="private" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SECURITY_PRIVATE" options="Yes|No">
             <![CDATA[
-                <div id='private' style='margin-top: 1em;'>
+                <li id='private'>
                     Will the research involve a private sector partner organization?  (Partner organizations from a private sector (those that are not owned or operated by any order of government and include all for-profit organizations), including industrial associations and producer groups (since their member organizations are principally from the private sector)
                     {$item}
-                </div>
+                </li>
             ]]>
         </ReportItem>
-        <ReportItem id="risk" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" fileSize="5">
+        <ReportItem id="risk" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" fileSize="2">
             <![CDATA[
-                <div id='risk' style='display:none; margin-top: 1em;'>
-                    <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'>Risk Assessment Form</a>. In case of involvement of a private sector partner in the project, fill in the Risk Assessment Form and upload it to the Forum. In case risks are identified in the Risk Assessment Form, develop a risk mitigation plan with the institution and must be submitted to GlycoNet.  One Risk Assessment Form is needed per project, developed with the Project Leader’s institution. It is also recommended to utilize existing government resources, such as <a href='https://science.gc.ca/site/science/en/safeguarding-your-research' target='_blank'>Safeguarding Your Research</a> portal and particularly <a href='https://science.gc.ca/site/science/en/safeguarding-your-research/guidelines-and-tools-implement-research-security/mitigating-your-research-security-risks/what-steps-can-you-take-protect-your-research' target='_blank'>Mitigating Your Research Security Risks</a> page.
+                    <li id='risk' style='display:none;'>
+                        In case of involvement of a private sector partner in the project, fill in the <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'><b>Risk Assessment Form</b></a> and upload it to the Forum. <br />
+                        In case risks are identified in the Risk Assessment Form, develop a risk mitigation plan with the institution and must be submitted to GlycoNet.  One Risk Assessment Form is needed per project, developed with the Project Leader’s institution. It is also recommended to utilize existing government resources, such as <a href='https://science.gc.ca/site/science/en/safeguarding-your-research' target='_blank'>Safeguarding Your Research</a> portal and particularly <a href='https://science.gc.ca/site/science/en/safeguarding-your-research/guidelines-and-tools-implement-research-security/mitigating-your-research-security-risks/what-steps-can-you-take-protect-your-research' target='_blank'>Mitigating Your Research Security Risks</a> page.
                     {$item}
-                </div>
+                    </li>
+                </ol>
+                <div id='risk_no' style='display:none; margin-top: 1em;'>No further requirements</div>
                 <script type='text/javascript'>
                     $('#private input').change(function(){
                         var privateValue = $('#private input:checked').val();
                         if(privateValue == "Yes"){
                             $('#risk').show();
+                            $('#risk_no').hide();
+                        }
+                        else if(privateValue == "No"){
+                            $('#risk').hide();
+                            $('#risk_no').show();
                         }
                         else{
                             $('#risk').hide();
+                            $('#risk_no').hide();
                         }
                     }).change();
                 </script>
@@ -313,7 +381,7 @@
     <ReportSection id="ccv" name="NI CCVs" blobSection="CAT_CCV" tooltip="Common CV" type="ReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD1" mimeType="application/pdf">
             <![CDATA[
-                <p>You can upload up to 10 CCVs</p>
+                <p>Please upload <b>CCV (CIHR/NSERC academic format)</b> for each Network Investigator</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -364,6 +432,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},vsharko@glyconet.ca" />
+        <If if="{==({getText(RP_RPG,CAT_SECURITY,CAT_SECURITY_PRIVATE,0,{$user_id},{$project_id})},)}">
+            <![CDATA[
+                You must answer the risk assessment question on the "Research Security" section.
+            ]]>
+        </If>
+        <Else>
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},vsharko@glyconet.ca" />
+        </Else>
     </ReportSection>
 </Report>
