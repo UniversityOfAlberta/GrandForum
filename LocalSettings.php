@@ -14,7 +14,6 @@
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
 if(PHP_SAPI != 'cli'){
-    session_start();
     if(phpversion() < 5.4){
         error_reporting(E_ALL);
     }
@@ -51,13 +50,14 @@ if(!defined('TESTING')){
 $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 
-@require_once( "$IP/includes/DefaultSettings.php" );
 require_once( "$IP/config/Config.php" );
 require_once( "$IP/Classes/Inflect/Inflect.php" );
 
 ## Path settings
 $wgSitename         = $config->getValue("siteName");
+$wgServer           = $config->getValue("server");
 $wgScriptPath       = $config->getValue("path");
+$wgArticlePath      = "{$wgScriptPath}/index.php/$1";
 
 ## Database settings
 $wgDBtype           = $config->getValue("dbType");
@@ -227,10 +227,6 @@ $wgEditPageFrameOptions = 'SAMEORIGIN';
 $wgImpersonating = false;
 $wgDelegating = false;
 $wgRealUser;
-
-if (($key = array_search('application/zip', $wgMimeTypeBlacklist)) !== false) {
-    unset($wgMimeTypeBlacklist[$key]);
-}
 
 // Whether or not to show custom deprication notices
 define("DEBUG", true);

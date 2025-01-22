@@ -114,7 +114,7 @@ function addNewNamespace($nsName, $user = null) {
   if ($egNamespaceAllowUsersWithoutNamespaces && trim($nsName) == "")
     return false;
   
-  $dbw =& wfGetDB( DB_MASTER );
+  $dbw = wfGetDB( DB_PRIMARY );
   $result = $dbw->selectRow("${egAnnokiTablePrefix}extranamespaces", "MAX(nsId) AS maxId", "");
   $nsId = (int) $result->maxId;
   
@@ -146,7 +146,7 @@ function renameNamespace($nsName, $newNsName)  {
 	if ($nsId == -1) {
 		return;
 	}
-	$dbw =& wfGetDB( DB_MASTER );
+	$dbw = wfGetDB( DB_PRIMARY );
 	$dbw->update("${egAnnokiTablePrefix}extranamespaces", array("nsName" => $newNsName), array("nsId" => $nsId));
 	$this->registerExtraNamespaces();
 }
@@ -158,7 +158,7 @@ function renameNamespace($nsName, $newNsName)  {
  */
 function retrieveAllExtraNamespaces() {
   global $egAnnokiTablePrefix;
-	$dbr =& wfGetDB( DB_READ );
+	$dbr = wfGetDB( DB_REPLICA );
 	$extraNSTable = $dbr->tableName("${egAnnokiTablePrefix}extranamespaces");
 	$userTable = $dbr->tableName("user");
 	$sql = "SELECT nsId, nsName, nsUser, user_name from $extraNSTable LEFT JOIN $userTable ON nsUser = user_id ORDER BY nsName";
@@ -174,7 +174,7 @@ function retrieveAllExtraNamespaces() {
 function getAllPagesInNS($nsName, $includeRedir = true) {
 	$pages = array();
 	$nsId = $this->getNsId($nsName);
-	$dbr =& wfGetDB( DB_READ );
+	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("page", array("page_title", "page_is_redirect"), array("page_namespace" => $nsId) );
 	if ($nsName == "Main") {
 		$nsName = "";
@@ -193,7 +193,7 @@ function getAllPagesInNS($nsName, $includeRedir = true) {
 
 function getAllPages($includeTalk = false) {
 	global $wgExtraNamespaces;
-	$dbr =& wfGetDB( DB_READ );
+	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("page", array("page_title", "page_namespace", "page_is_redirect") );
 
 	while ($row = $dbr->fetchRow($result)) {
@@ -215,7 +215,7 @@ function getAllPages($includeTalk = false) {
 function getAllUsersInNS($nsName) {
   //$nsId = $this->getNsId($nsName); //BT
   $nsName = $this->getCleanNsName($nsName);
-  $dbr =& wfGetDB( DB_READ );
+  $dbr = wfGetDB( DB_REPLICA );
 	$userGroupsTable = $dbr->tableName("user_groups");
 	$userTable = $dbr->tableName("user");
 	$users = array();
@@ -318,7 +318,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    
    $publicNS = array();
 
-   $dbr =& wfGetDB( DB_READ );
+   $dbr = wfGetDB( DB_REPLICA );
    $result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", 'nsName', array('public' => 1) );
 
    while ($row = $dbr->fetchRow($result)){
@@ -353,7 +353,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
  static function getUserNSforUser($user){
    global $egAnnokiTablePrefix;
 
-   $dbr =& wfGetDB( DB_READ );
+   $dbr = wfGetDB( DB_REPLICA );
    $result = $dbr->selectField("${egAnnokiTablePrefix}extranamespaces", 'nsName', array('nsUser' => $user->getId()));
 
    if (!$result)

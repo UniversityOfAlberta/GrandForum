@@ -124,7 +124,7 @@ class CustomProtectionForm extends ProtectionForm {
 	    return;
 	  }
 
-	  $dbw =& wfGetDB( DB_MASTER );
+	  $dbw = wfGetDB( DB_MASTER );
 	  if ($newValue == 1)
 	    $dbw->insert("${egAnnokiTablePrefix}pagepermissions", array('page_id' => $pageId, 'group_id' => -1));
 	  else

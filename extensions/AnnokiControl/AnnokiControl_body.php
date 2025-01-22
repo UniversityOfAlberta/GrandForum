@@ -16,10 +16,6 @@ class AnnokiControl extends SpecialPage {
     global $wgScriptPath;
     //  $out->addScript("\n" . '<link rel="stylesheet" type="text/css" href="' .
     //                 $wgScriptPath . '/extensions/AnnokiControl/AnnokiCSS.css"' . " />");
-    $out->addScript("\n         <script type='text/javascript' src='" .
-		    $wgScriptPath . '/extensions/AnnokiControl/AnnokiJS.js' . "'></script>");
-    $out->addScript("\n         <script type='text/javascript' src='" .
-                    $wgScriptPath . '/extensions/AnnokiControl/common/Annoki.js' . "'></script>");
     return true;
   }
 

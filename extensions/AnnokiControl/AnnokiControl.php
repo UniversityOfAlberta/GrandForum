@@ -8,10 +8,6 @@ define('ANNOKI', true);
 
 require_once("DBFunctions.php");
 require_once('AnnokiConfig.php');
-require_once($egAnnokiCommonPath.'/AnnokiArticleEditor.php');
-require_once($egAnnokiCommonPath.'/AnnokiDatabaseFunctions.php');
-require_once($egAnnokiCommonPath.'/AnnokiHTMLUtils.php');
-require_once($egAnnokiCommonPath.'/AnnokiUtils.php');
 
 /** Enumerate Annoki-based extensions.  Add new ones in a similar fashion. Example:
 $egAnnokiExtensions['MyAnnokiExtension'] = array( 'name' => 'My Annoki Extension', //This show up in the Annoki extension list
@@ -142,7 +138,7 @@ $wgExtensionCredits['specialpage'][] = array(
                          );
                          
 function getTableName($baseName) {
-    $dbr = wfGetDB(DB_READ);
+    $dbr = wfGetDB(DB_REPLICA);
     $tblName = $dbr->tableName("$baseName");
     $tblName = str_replace("`", "", "$tblName");
     return $tblName;

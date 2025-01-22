@@ -4,8 +4,8 @@ class UIElementArray extends UIElement {
     
     var $elements;
     
-    function UIElementArray($id){
-        parent::UIElement($id, $id, "", VALIDATE_NOTHING);
+    function __construct($id){
+        parent::__construct($id, $id, "", VALIDATE_NOTHING);
         $this->id = $id;
         $this->elements = array();
     }
@@ -60,7 +60,7 @@ class UIElementArray extends UIElement {
      * @param string $beforeId The id of the UIElement to add before
      * @return UIElementArray this UIElementArray
      */
-    function insertBefore($element, $beforeId){
+    function insertBefore($element, $beforeId=0){
         $newElements = array();
         foreach($this->elements as $el){
             if($el->id == $beforeId){
@@ -79,7 +79,7 @@ class UIElementArray extends UIElement {
      * @param string $beforeId The id of the UIElement to add after
      * @return UIElementArray this UIElementArray
      */
-    function insertAfter($element, $afterId){
+    function insertAfter($element, $afterId=0){
         $newElements = array();
         foreach($this->elements as $el){
             $newElements[] = $el;
@@ -148,7 +148,7 @@ class UIElementArray extends UIElement {
         }
     }
     
-    function validate(){
+    function validate($value=false){
         $result = true;
         foreach($this->elements as $element){
             $result = ($element->validate()) && $result;

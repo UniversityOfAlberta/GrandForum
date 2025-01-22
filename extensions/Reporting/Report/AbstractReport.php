@@ -186,7 +186,7 @@ abstract class AbstractReport extends SpecialPage {
         }
     }
     
-    function execute(){
+    function execute($par){
         global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser;
         if($this->name != ""){
             if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){

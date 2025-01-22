@@ -27,7 +27,7 @@ class ReportArchive extends SpecialPage {
         return false;
     }
     
-    function execute(){
+    function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
         ReportArchive::generateReportArchivedReportsHTML();
     }
