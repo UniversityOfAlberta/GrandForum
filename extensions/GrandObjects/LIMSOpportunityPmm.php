@@ -111,6 +111,20 @@ class LIMSOpportunityPmm extends BackboneModel {
         return LIMSTaskPmm::getTasks($this->getId());
     }
 
+    function getFiles(){
+        return $this->files;
+    }
+    function getFile($id){
+        if($this->isAllowedToView()){
+            $file = DBFunctions::select(array('grand_lims_files'),
+                                        array('*'),
+                                        array('id' => $id,
+                                              'opportunity_id' => $this->id));
+            return @$file[0];
+        }
+        return "";
+    }
+
     function isAllowedToEdit(){
         return ($this->getContact()->isAllowedToEdit() || $this->getPerson()->isMe());
     }
@@ -135,6 +149,7 @@ class LIMSOpportunityPmm extends BackboneModel {
                           'contact' => $this->getContact()->getId(),
                           'owner' => $owner,
                           'description' => $this->getDescription(),
+                          'files' => $this->getFiles(),
                           'isAllowedToEdit' => $this->isAllowedToEdit());
             return $json;
         }

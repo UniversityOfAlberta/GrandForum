@@ -32,6 +32,7 @@ LIMSOpportunityPmm = Backbone.Model.extend({
                     name: "",
                     url: ""},
             description: "",
+            files: [],
             isAllowedToEdit: true
         };
     }
