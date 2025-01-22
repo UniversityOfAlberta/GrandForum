@@ -1,16 +1,11 @@
 <?php
 
+require "SpecialSideUserLogin.php";
 require "Management.php";
-//require "NamespaceManager.php";
 require "AnnokiNamespaces.php";
-require "UserNamespaces.php";
 require "AccessControls.body.php";
-//require "CustomSpecialUserRights.php";
-require "ProtectableArticle.php";
 require "CustomSpecialSearch.php";
 require "ProtectedChangesList.php";
-require "ProtectedRSSFeed.php";
-require "ProtectedAtomFeed.php";
 require "CustomSearchEngine.php";
 require "EditPermissions.php";
 require "GrandAccess.php";

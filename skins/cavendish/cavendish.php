@@ -24,7 +24,7 @@ if( !defined( 'MEDIAWIKI' ) )
  */
 class SkinCavendish extends SkinTemplate {
 	/** Using cavendish. */
-	function initPage( &$out ) {
+	function initPage( $out ) {
 		SkinTemplate::initPage($out);
 		$this->skinname  = 'cavendish';
 		$this->stylename = 'cavendish';
