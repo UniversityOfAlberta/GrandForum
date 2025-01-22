@@ -2,8 +2,6 @@
 /**
  * API for MediaWiki 1.17+
  *
- * Created on May 14, 2010
- *
  * Copyright © 2010 Sam Reed
  * Copyright © 2006 Yuri Astrakhan "<Firstname><Lastname>@gmail.com"
  *
@@ -25,6 +23,9 @@
  * @file
  */
 
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * A query module to list all interwiki links on a page
  *
@@ -32,36 +33,51 @@
  */
 class ApiQueryIWLinks extends ApiQueryBase {
 
-	public function __construct( $query, $moduleName ) {
+	public function __construct( ApiQuery $query, $moduleName ) {
 		parent::__construct( $query, $moduleName, 'iw' );
 	}
 
 	public function execute() {
-		if ( $this->getPageSet()->getGoodTitleCount() == 0 ) {
+		$pages = $this->getPageSet()->getGoodPages();
+		if ( $pages === [] ) {
 			return;
 		}
 
 		$params = $this->extractRequestParams();
+		$prop = array_fill_keys( (array)$params['prop'], true );
 
 		if ( isset( $params['title'] ) && !isset( $params['prefix'] ) ) {
-			$this->dieUsageMsg( array( 'missingparam', 'prefix' ) );
+			$this->dieWithError(
+				[
+					'apierror-invalidparammix-mustusewith',
+					$this->encodeParamName( 'title' ),
+					$this->encodeParamName( 'prefix' ),
+				],
+				'invalidparammix'
+			);
 		}
 
-		$this->addFields( array(
+		// Handle deprecated param
+		$this->requireMaxOneParameter( $params, 'url', 'prop' );
+		if ( $params['url'] ) {
+			$prop = [ 'url' => 1 ];
+		}
+
+		$this->addFields( [
 			'iwl_from',
 			'iwl_prefix',
 			'iwl_title'
-		) );
+		] );
 
 		$this->addTables( 'iwlinks' );
-		$this->addWhereFld( 'iwl_from', array_keys( $this->getPageSet()->getGoodTitles() ) );
+		$this->addWhereFld( 'iwl_from', array_keys( $pages ) );
 
-		if ( !is_null( $params['continue'] ) ) {
+		if ( $params['continue'] !== null ) {
 			$cont = explode( '|', $params['continue'] );
 			$this->dieContinueUsageIf( count( $cont ) != 3 );
 			$op = $params['dir'] == 'descending' ? '<' : '>';
 			$db = $this->getDB();
-			$iwlfrom = intval( $cont[0] );
+			$iwlfrom = (int)$cont[0];
 			$iwlprefix = $db->addQuotes( $cont[1] );
 			$iwltitle = $db->addQuotes( $cont[2] );
 			$this->addWhere(
@@ -80,21 +96,21 @@ class ApiQueryIWLinks extends ApiQueryBase {
 				$this->addWhereFld( 'iwl_title', $params['title'] );
 				$this->addOption( 'ORDER BY', 'iwl_from' . $sort );
 			} else {
-				$this->addOption( 'ORDER BY', array(
+				$this->addOption( 'ORDER BY', [
 					'iwl_from' . $sort,
 					'iwl_title' . $sort
-				) );
+				] );
 			}
 		} else {
 			// Don't order by iwl_from if it's constant in the WHERE clause
-			if ( count( $this->getPageSet()->getGoodTitles() ) == 1 ) {
+			if ( count( $pages ) === 1 ) {
 				$this->addOption( 'ORDER BY', 'iwl_prefix' . $sort );
 			} else {
-				$this->addOption( 'ORDER BY', array(
+				$this->addOption( 'ORDER BY', [
 					'iwl_from' . $sort,
 					'iwl_prefix' . $sort,
 					'iwl_title' . $sort
-				) );
+				] );
 			}
 		}
 
@@ -112,16 +128,16 @@ class ApiQueryIWLinks extends ApiQueryBase {
 				);
 				break;
 			}
-			$entry = array( 'prefix' => $row->iwl_prefix );
+			$entry = [ 'prefix' => $row->iwl_prefix ];
 
-			if ( $params['url'] ) {
+			if ( isset( $prop['url'] ) ) {
 				$title = Title::newFromText( "{$row->iwl_prefix}:{$row->iwl_title}" );
 				if ( $title ) {
 					$entry['url'] = wfExpandUrl( $title->getFullURL(), PROTO_CURRENT );
 				}
 			}
 
-			ApiResult::setContent( $entry, $row->iwl_title );
+			ApiResult::setContentValue( $entry, 'title', $row->iwl_title );
 			$fit = $this->addPageSubItem( $row->iwl_from, $entry );
 			if ( !$fit ) {
 				$this->setContinueEnumParameter(
@@ -138,70 +154,51 @@ class ApiQueryIWLinks extends ApiQueryBase {
 	}
 
 	public function getAllowedParams() {
-		return array(
-			'url' => false,
-			'limit' => array(
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
-			),
-			'continue' => null,
+		return [
+			'prop' => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => [
+					'url',
+				],
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
+			],
 			'prefix' => null,
 			'title' => null,
-			'dir' => array(
-				ApiBase::PARAM_DFLT => 'ascending',
-				ApiBase::PARAM_TYPE => array(
+			'dir' => [
+				ParamValidator::PARAM_DEFAULT => 'ascending',
+				ParamValidator::PARAM_TYPE => [
 					'ascending',
 					'descending'
-				)
-			),
-		);
+				]
+			],
+			'limit' => [
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+			],
+			'continue' => [
+				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
+			],
+			'url' => [
+				ParamValidator::PARAM_DEFAULT => false,
+				ParamValidator::PARAM_DEPRECATED => true,
+			],
+		];
 	}
 
-	public function getParamDescription() {
-		return array(
-			'url' => 'Whether to get the full URL',
-			'limit' => 'How many interwiki links to return',
-			'continue' => 'When more results are available, use this to continue',
-			'prefix' => 'Prefix for the interwiki',
-			'title' => "Interwiki link to search for. Must be used with {$this->getModulePrefix()}prefix",
-			'dir' => 'The direction in which to list',
-		);
-	}
+	protected function getExamplesMessages() {
+		$title = Title::newMainPage()->getPrefixedText();
+		$mp = rawurlencode( $title );
 
-	public function getResultProperties() {
-		return array(
-			'' => array(
-				'prefix' => 'string',
-				'url' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'*' => 'string'
-			)
-		);
-	}
-
-	public function getDescription() {
-		return 'Returns all interwiki links from the given page(s).';
-	}
-
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-			array( 'missingparam', 'prefix' ),
-		) );
-	}
-
-	public function getExamples() {
-		return array(
-			'api.php?action=query&prop=iwlinks&titles=Main%20Page'
-				=> 'Get interwiki links from the [[Main Page]]',
-		);
+		return [
+			"action=query&prop=iwlinks&titles={$mp}"
+				=> 'apihelp-query+iwlinks-example-simple',
+		];
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/API:Iwlinks';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Iwlinks';
 	}
 }

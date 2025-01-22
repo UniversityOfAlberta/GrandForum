@@ -1,7 +1,5 @@
 <?php
 /**
- * File without associated database record.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,12 +16,15 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup FileAbstraction
  */
 
+use MediaWiki\MediaWikiServices;
+
 /**
- * A file object referring to either a standalone local file, or a file in a
- * local repository with no database, for example an FileRepo repository.
+ * File without associated database record.
+ *
+ * Represents a standalone local file, or a file in a local repository
+ * with no database, for example a FileRepo repository.
  *
  * Read-only.
  *
@@ -43,11 +44,11 @@ class UnregisteredLocalFile extends File {
 	/** @var bool|string */
 	protected $mime;
 
-	/** @var array Dimension data */
-	protected $dims;
+	/** @var array[]|bool[] Dimension data */
+	protected $pageDims;
 
-	/** @var bool|string Handler-specific metadata which will be saved in the img_metadata field */
-	protected $metadata;
+	/** @var array|null */
+	protected $sizeAndMetadata;
 
 	/** @var MediaHandler */
 	public $handler;
@@ -55,19 +56,19 @@ class UnregisteredLocalFile extends File {
 	/**
 	 * @param string $path Storage path
 	 * @param string $mime
-	 * @return UnregisteredLocalFile
+	 * @return static
 	 */
-	static function newFromPath( $path, $mime ) {
-		return new self( false, false, $path, $mime );
+	public static function newFromPath( $path, $mime ) {
+		return new static( false, false, $path, $mime );
 	}
 
 	/**
 	 * @param Title $title
 	 * @param FileRepo $repo
-	 * @return UnregisteredLocalFile
+	 * @return static
 	 */
-	static function newFromTitle( $title, $repo ) {
-		return new self( $title, $repo, false, false );
+	public static function newFromTitle( $title, $repo ) {
+		return new static( $title, $repo, false, false );
 	}
 
 	/**
@@ -80,7 +81,7 @@ class UnregisteredLocalFile extends File {
 	 * @param string|bool $path
 	 * @param string|bool $mime
 	 */
-	function __construct( $title = false, $repo = false, $path = false, $mime = false ) {
+	public function __construct( $title = false, $repo = false, $path = false, $mime = false ) {
 		if ( !( $title && $repo ) && !$path ) {
 			throw new MWException( __METHOD__ .
 				': not enough parameters, must specify title and repo, or a full path' );
@@ -103,87 +104,112 @@ class UnregisteredLocalFile extends File {
 		if ( $mime ) {
 			$this->mime = $mime;
 		}
-		$this->dims = array();
+		$this->pageDims = [];
 	}
 
 	/**
 	 * @param int $page
-	 * @return bool
+	 * @return array|bool
 	 */
 	private function cachePageDimensions( $page = 1 ) {
-		if ( !isset( $this->dims[$page] ) ) {
+		$page = (int)$page;
+		if ( $page < 1 ) {
+			$page = 1;
+		}
+
+		if ( !isset( $this->pageDims[$page] ) ) {
 			if ( !$this->getHandler() ) {
 				return false;
 			}
-			$this->dims[$page] = $this->handler->getPageDimensions( $this, $page );
+			if ( $this->getHandler()->isMultiPage( $this ) ) {
+				$this->pageDims[$page] = $this->handler->getPageDimensions( $this, $page );
+			} else {
+				$info = $this->getSizeAndMetadata();
+				return [
+					'width' => $info['width'],
+					'height' => $info['height']
+				];
+			}
 		}
 
-		return $this->dims[$page];
+		return $this->pageDims[$page];
 	}
 
 	/**
 	 * @param int $page
 	 * @return int
 	 */
-	function getWidth( $page = 1 ) {
+	public function getWidth( $page = 1 ) {
 		$dim = $this->cachePageDimensions( $page );
 
-		return $dim['width'];
+		return $dim['width'] ?? 0;
 	}
 
 	/**
 	 * @param int $page
 	 * @return int
 	 */
-	function getHeight( $page = 1 ) {
+	public function getHeight( $page = 1 ) {
 		$dim = $this->cachePageDimensions( $page );
 
-		return $dim['height'];
+		return $dim['height'] ?? 0;
 	}
 
 	/**
 	 * @return bool|string
 	 */
-	function getMimeType() {
+	public function getMimeType() {
 		if ( !isset( $this->mime ) ) {
-			$magic = MimeMagic::singleton();
-			$this->mime = $magic->guessMimeType( $this->getLocalRefPath() );
+			$refPath = $this->getLocalRefPath();
+			if ( $refPath !== false ) {
+				$magic = MediaWikiServices::getInstance()->getMimeAnalyzer();
+				$this->mime = $magic->guessMimeType( $refPath );
+			} else {
+				$this->mime = false;
+			}
 		}
 
 		return $this->mime;
 	}
 
 	/**
-	 * @param string $filename
-	 * @return array|bool
+	 * @return int
 	 */
-	function getImageSize( $filename ) {
-		if ( !$this->getHandler() ) {
-			return false;
-		}
-
-		return $this->handler->getImageSize( $this, $this->getLocalRefPath() );
+	public function getBitDepth() {
+		$info = $this->getSizeAndMetadata();
+		return $info['bits'] ?? 0;
 	}
 
 	/**
-	 * @return bool
+	 * @return string|false
 	 */
-	function getMetadata() {
-		if ( !isset( $this->metadata ) ) {
+	public function getMetadata() {
+		$info = $this->getSizeAndMetadata();
+		return $info['metadata'] ? serialize( $info['metadata'] ) : false;
+	}
+
+	public function getMetadataArray(): array {
+		$info = $this->getSizeAndMetadata();
+		return $info['metadata'];
+	}
+
+	private function getSizeAndMetadata() {
+		if ( $this->sizeAndMetadata === null ) {
 			if ( !$this->getHandler() ) {
-				$this->metadata = false;
+				$this->sizeAndMetadata = [ 'width' => 0, 'height' => 0, 'metadata' => [] ];
 			} else {
-				$this->metadata = $this->handler->getMetadata( $this, $this->getLocalRefPath() );
+				$this->sizeAndMetadata = $this->getHandler()->getSizeAndMetadataWithFallback(
+					$this, $this->getLocalRefPath() );
 			}
 		}
 
-		return $this->metadata;
+		return $this->sizeAndMetadata;
 	}
 
 	/**
 	 * @return bool|string
 	 */
-	function getURL() {
+	public function getURL() {
 		if ( $this->repo ) {
 			return $this->repo->getZoneUrl( 'public' ) . '/' .
 				$this->repo->getHashPath( $this->name ) . rawurlencode( $this->name );
@@ -193,9 +219,9 @@ class UnregisteredLocalFile extends File {
 	}
 
 	/**
-	 * @return bool|int
+	 * @return false|int
 	 */
-	function getSize() {
+	public function getSize() {
 		$this->assertRepoDefined();
 
 		return $this->repo->getFileSize( $this->path );

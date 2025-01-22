@@ -27,22 +27,21 @@
 
 require_once __DIR__ . '/Maintenance.php';
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\SlotRecord;
+use Wikimedia\Rdbms\DatabaseSqlite;
+
 /**
  * Maintenance script that rebuilds search index table from scratch.
  *
  * @ingroup Maintenance
  */
 class RebuildTextIndex extends Maintenance {
-	const RTI_CHUNK_SIZE = 500;
-
-	/**
-	 * @var DatabaseBase
-	 */
-	private $db;
+	private const RTI_CHUNK_SIZE = 500;
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Rebuild search index table from scratch";
+		$this->addDescription( 'Rebuild search index table from scratch' );
 	}
 
 	public function getDbType() {
@@ -51,23 +50,21 @@ class RebuildTextIndex extends Maintenance {
 
 	public function execute() {
 		// Shouldn't be needed for Postgres
-		$this->db = wfGetDB( DB_MASTER );
-		if ( $this->db->getType() == 'postgres' ) {
-			$this->error( "This script is not needed when using Postgres.\n", true );
+		$dbw = $this->getDB( DB_PRIMARY );
+		if ( $dbw->getType() == 'postgres' ) {
+			$this->fatalError( "This script is not needed when using Postgres.\n" );
 		}
 
-		$this->db = wfGetDB( DB_MASTER );
-		if ( $this->db->getType() == 'sqlite' ) {
+		if ( $dbw->getType() == 'sqlite' ) {
 			if ( !DatabaseSqlite::getFulltextSearchModule() ) {
-				$this->error( "Your version of SQLite module for PHP doesn't support full-text search (FTS3).\n", true );
-			}
-			if ( !$this->db->checkForEnabledSearch() ) {
-				$this->error( "Your database schema is not configured for full-text search support. Run update.php.\n", true );
+				$this->fatalError( "Your version of SQLite module for PHP doesn't "
+					. "support full-text search (FTS3).\n" );
 			}
 		}
 
-		if ( $this->db->getType() == 'mysql' ) {
+		if ( $dbw->getType() == 'mysql' ) {
 			$this->dropMysqlTextIndex();
+			$this->clearSearchIndex();
 			$this->populateSearchIndex();
 			$this->createMysqlTextIndex();
 		} else {
@@ -82,17 +79,15 @@ class RebuildTextIndex extends Maintenance {
 	 * Populates the search index with content from all pages
 	 */
 	protected function populateSearchIndex() {
-		$res = $this->db->select( 'page', 'MAX(page_id) AS count' );
-		$s = $this->db->fetchObject( $res );
+		$dbw = $this->getDB( DB_PRIMARY );
+		$res = $dbw->select( 'page', 'MAX(page_id) AS count', [], __METHOD__ );
+		$s = $res->fetchObject();
 		$count = $s->count;
 		$this->output( "Rebuilding index fields for {$count} pages...\n" );
 		$n = 0;
 
-		$fields = array_merge(
-			Revision::selectPageFields(),
-			Revision::selectFields(),
-			Revision::selectTextFields()
-		);
+		$revStore = MediaWikiServices::getInstance()->getRevisionStore();
+		$revQuery = $revStore->getQueryInfo( [ 'page' ] );
 
 		while ( $n < $count ) {
 			if ( $n ) {
@@ -100,17 +95,26 @@ class RebuildTextIndex extends Maintenance {
 			}
 			$end = $n + self::RTI_CHUNK_SIZE - 1;
 
-			$res = $this->db->select( array( 'page', 'revision', 'text' ), $fields,
-				array( "page_id BETWEEN $n AND $end", 'page_latest = rev_id', 'rev_text_id = old_id' ),
-				__METHOD__
+			$res = $dbw->select(
+				$revQuery['tables'],
+				$revQuery['fields'],
+				[ "page_id BETWEEN $n AND $end", 'page_latest = rev_id' ],
+				__METHOD__,
+				[],
+				$revQuery['joins']
 			);
 
 			foreach ( $res as $s ) {
-				try {
-					$title = Title::makeTitle( $s->page_namespace, $s->page_title );
 
-					$rev = new Revision( $s );
-					$content = $rev->getContent();
+				// T268673 Prevent failure of WikiPage.php: Invalid or virtual namespace -1 given
+				if ( $s->page_namespace < 0 ) {
+					continue;
+				}
+
+				$title = Title::makeTitle( $s->page_namespace, $s->page_title );
+				try {
+					$revRecord = $revStore->newRevisionFromRow( $s );
+					$content = $revRecord->getContent( SlotRecord::MAIN );
 
 					$u = new SearchUpdate( $s->page_id, $title, $content );
 					$u->doUpdate();
@@ -127,11 +131,12 @@ class RebuildTextIndex extends Maintenance {
 	 * (MySQL only) Drops fulltext index before populating the table.
 	 */
 	private function dropMysqlTextIndex() {
-		$searchindex = $this->db->tableName( 'searchindex' );
-		if ( $this->db->indexExists( 'searchindex', 'si_title', __METHOD__ ) ) {
+		$dbw = $this->getDB( DB_PRIMARY );
+		$searchindex = $dbw->tableName( 'searchindex' );
+		if ( $dbw->indexExists( 'searchindex', 'si_title', __METHOD__ ) ) {
 			$this->output( "Dropping index...\n" );
 			$sql = "ALTER TABLE $searchindex DROP INDEX si_title, DROP INDEX si_text";
-			$this->db->query( $sql, __METHOD__ );
+			$dbw->query( $sql, __METHOD__ );
 		}
 	}
 
@@ -139,22 +144,25 @@ class RebuildTextIndex extends Maintenance {
 	 * (MySQL only) Adds back fulltext index after populating the table.
 	 */
 	private function createMysqlTextIndex() {
-		$searchindex = $this->db->tableName( 'searchindex' );
+		$dbw = $this->getDB( DB_PRIMARY );
+		$searchindex = $dbw->tableName( 'searchindex' );
 		$this->output( "\nRebuild the index...\n" );
-		$sql = "ALTER TABLE $searchindex ADD FULLTEXT si_title (si_title), " .
-			"ADD FULLTEXT si_text (si_text)";
-		$this->db->query( $sql, __METHOD__ );
+		foreach ( [ 'si_title', 'si_text' ] as $field ) {
+			$sql = "ALTER TABLE $searchindex ADD FULLTEXT $field ($field)";
+			$dbw->query( $sql, __METHOD__ );
+		}
 	}
 
 	/**
 	 * Deletes everything from search index.
 	 */
 	private function clearSearchIndex() {
+		$dbw = $this->getDB( DB_PRIMARY );
 		$this->output( 'Clearing searchindex table...' );
-		$this->db->delete( 'searchindex', '*', __METHOD__ );
+		$dbw->delete( 'searchindex', '*', __METHOD__ );
 		$this->output( "Done\n" );
 	}
 }
 
-$maintClass = "RebuildTextIndex";
+$maintClass = RebuildTextIndex::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

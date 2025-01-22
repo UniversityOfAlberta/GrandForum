@@ -1,55 +1,44 @@
 /*
  * Javascript for module editWarning
  */
-( function ( mw, $ ) {
+( function () {
+	'use strict';
+
 	$( function () {
+		var allowCloseWindow,
+			$textBox = $( '#wpTextbox1' ),
+			$summary = $( '#wpSummary' ),
+			$both = $textBox.add( $summary );
+
 		// Check if EditWarning is enabled and if we need it
-		if ( $( '#wpTextbox1' ).length === 0 ) {
+		if ( !mw.user.options.get( 'useeditwarning' ) ) {
 			return true;
 		}
-		// Get the original values of some form elements
-		$( '#wpTextbox1, #wpSummary' ).each( function () {
-			$( this ).data( 'origtext', $( this ).val() );
+
+		// Save the original value of the text fields
+		$both.each( function ( index, element ) {
+			var $element = $( element );
+			$element.data( 'origtext', $element.textSelection( 'getContents' ) );
 		} );
-		var savedWindowOnBeforeUnload;
-		$( window )
-			.on( 'beforeunload.editwarning', function () {
-				var retval;
 
-				// Check if the current values of some form elements are the same as
-				// the original values
-				if (
-					mw.config.get( 'wgAction' ) === 'submit' ||
-						$( '#wpTextbox1' ).data( 'origtext' ) !== $( '#wpTextbox1' ).val() ||
-						$( '#wpSummary' ).data( 'origtext' ) !== $( '#wpSummary' ).val()
-				) {
-					// Return our message
-					retval = mw.msg( 'editwarning-warning' );
-				}
+		// This registers an event with the name "beforeunload.editwarning", which allows others to
+		// turn the confirmation off with `$( window ).off( 'beforeunload.editwarning' );`.
+		allowCloseWindow = mw.confirmCloseWindow( {
+			test: function () {
+				// When the action is submit we're solving a conflict. Everything is a pending change there.
+				return mw.config.get( 'wgAction' ) === 'submit' ||
+					// We use .textSelection, because editors might not have updated the form yet.
+					$textBox.data( 'origtext' ) !== $textBox.textSelection( 'getContents' ) ||
+					$summary.data( 'origtext' ) !== $summary.textSelection( 'getContents' );
+			},
 
-				// Unset the onbeforeunload handler so we don't break page caching in Firefox
-				savedWindowOnBeforeUnload = window.onbeforeunload;
-				window.onbeforeunload = null;
-				if ( retval !== undefined ) {
-					// ...but if the user chooses not to leave the page, we need to rebind it
-					setTimeout( function () {
-						window.onbeforeunload = savedWindowOnBeforeUnload;
-					}, 1 );
-					return retval;
-				}
-			} )
-			.on( 'pageshow.editwarning', function () {
-				// Re-add onbeforeunload handler
-				if ( !window.onbeforeunload ) {
-					window.onbeforeunload = savedWindowOnBeforeUnload;
-				}
-			} );
+			namespace: 'editwarning'
+		} );
 
 		// Add form submission handler
-		$( '#editform' ).submit( function () {
-			// Unbind our handlers
-			$( window ).off( '.editwarning' );
+		$( '#editform' ).on( 'submit', function () {
+			allowCloseWindow.release();
 		} );
 	} );
 
-}( mediaWiki, jQuery ) );
+}() );

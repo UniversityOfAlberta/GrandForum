@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +19,7 @@
  */
 
 /**
- * Emit a recent change notification via Redis Pub/Sub
+ * Send recent change to a Redis Pub/Sub channel.
  *
  * If the feed URI contains a path component, it will be used to generate a
  * channel name by stripping the leading slash and replacing any remaining
@@ -28,23 +27,34 @@
  * 'rc'. If the URI contains a query string, its parameters will be parsed
  * as RedisConnectionPool options.
  *
- * @example
- * $wgRCFeeds['redis'] = array(
- *      'formatter' => 'JSONRCFeedFormatter',
- *      'uri'       => "redis://127.0.0.1:6379/rc.$wgDBname",
- * );
+ * Parameters:
+ * - `formatter`: (Required) Which RCFeedFormatter class to use.
+ * - `uri`: (Required) Where to send the messages.
  *
+ * @par Example:
+ * @code
+ * $wgRCFeeds['rc-to-redis'] = [
+ *      'class' => 'RedisPubSubFeedEngine',
+ *      'formatter' => 'JSONRCFeedFormatter',
+ *      'uri' => "redis://127.0.0.1:6379/rc.$wgDBname",
+ * ];
+ * @endcode
+ *
+ * @see $wgRCFeeds
  * @since 1.22
  */
-class RedisPubSubFeedEngine implements RCFeedEngine {
+class RedisPubSubFeedEngine extends FormattedRCFeed {
 
 	/**
-	 * @see RCFeedEngine::send
+	 * @see FormattedRCFeed::send
+	 * @param array $feed
+	 * @param string $line
+	 * @return bool
 	 */
 	public function send( array $feed, $line ) {
 		$parsed = wfParseUrl( $feed['uri'] );
 		$server = $parsed['host'];
-		$options = array( 'serializer' => 'none' );
+		$options = [ 'serializer' => 'none' ];
 		$channel = 'rc';
 
 		if ( isset( $parsed['port'] ) ) {
@@ -64,8 +74,8 @@ class RedisPubSubFeedEngine implements RCFeedEngine {
 		if ( $conn !== false ) {
 			$conn->publish( $channel, $line );
 			return true;
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 }

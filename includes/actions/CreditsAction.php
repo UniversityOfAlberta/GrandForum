@@ -23,10 +23,38 @@
  * @author <evan@wikitravel.org>
  */
 
+use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\MainConfigNames;
+use MediaWiki\User\UserFactory;
+use MediaWiki\User\UserRigorOptions;
+
 /**
  * @ingroup Actions
  */
 class CreditsAction extends FormlessAction {
+
+	/** @var LinkRenderer */
+	private $linkRenderer;
+
+	/** @var UserFactory */
+	private $userFactory;
+
+	/**
+	 * @param Page $page
+	 * @param IContextSource $context
+	 * @param LinkRenderer $linkRenderer
+	 * @param UserFactory $userFactory
+	 */
+	public function __construct(
+		Page $page,
+		IContextSource $context,
+		LinkRenderer $linkRenderer,
+		UserFactory $userFactory
+	) {
+		parent::__construct( $page, $context );
+		$this->linkRenderer = $linkRenderer;
+		$this->userFactory = $userFactory;
+	}
 
 	public function getName() {
 		return 'credits';
@@ -42,17 +70,17 @@ class CreditsAction extends FormlessAction {
 	 * @return string HTML
 	 */
 	public function onView() {
-		wfProfileIn( __METHOD__ );
+		$this->getOutput()->addModuleStyles( [
+			'mediawiki.action.styles',
+		] );
 
-		if ( $this->page->getID() == 0 ) {
+		if ( $this->getWikiPage()->getId() === 0 ) {
 			$s = $this->msg( 'nocredits' )->parse();
 		} else {
 			$s = $this->getCredits( -1 );
 		}
 
-		wfProfileOut( __METHOD__ );
-
-		return Html::rawElement( 'div', array( 'id' => 'mw-credits' ), $s );
+		return Html::rawElement( 'div', [ 'id' => 'mw-credits' ], $s );
 	}
 
 	/**
@@ -60,31 +88,29 @@ class CreditsAction extends FormlessAction {
 	 *
 	 * @param int $cnt Maximum list of contributors to show
 	 * @param bool $showIfMax Whether to contributors if there more than $cnt
-	 * @return string html
+	 * @return string Html
 	 */
 	public function getCredits( $cnt, $showIfMax = true ) {
-		wfProfileIn( __METHOD__ );
 		$s = '';
 
-		if ( $cnt != 0 ) {
-			$s = $this->getAuthor( $this->page );
+		if ( $cnt !== 0 ) {
+			$s = $this->getAuthor();
 			if ( $cnt > 1 || $cnt < 0 ) {
 				$s .= ' ' . $this->getContributors( $cnt - 1, $showIfMax );
 			}
 		}
-
-		wfProfileOut( __METHOD__ );
 
 		return $s;
 	}
 
 	/**
 	 * Get the last author with the last modification time
-	 * @param Page $page
+	 *
 	 * @return string HTML
 	 */
-	protected function getAuthor( Page $page ) {
-		$user = User::newFromName( $page->getUserText(), false );
+	private function getAuthor() {
+		$page = $this->getWikiPage();
+		$user = $this->userFactory->newFromName( $page->getUserText(), UserRigorOptions::RIGOR_NONE );
 
 		$timestamp = $page->getTimestamp();
 		if ( $timestamp ) {
@@ -97,19 +123,29 @@ class CreditsAction extends FormlessAction {
 		}
 
 		return $this->msg( 'lastmodifiedatby', $d, $t )->rawParams(
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable RIGOR_NONE never returns null
 			$this->userLink( $user ) )->params( $user->getName() )->escaped();
+	}
+
+	/**
+	 * Whether we can display the user's real name (not a hidden pref)
+	 *
+	 * @since 1.24
+	 * @return bool
+	 */
+	protected function canShowRealUserName() {
+		$hiddenPrefs = $this->context->getConfig()->get( MainConfigNames::HiddenPrefs );
+		return !in_array( 'realname', $hiddenPrefs );
 	}
 
 	/**
 	 * Get a list of contributors of $article
 	 * @param int $cnt Maximum list of contributors to show
 	 * @param bool $showIfMax Whether to contributors if there more than $cnt
-	 * @return string html
+	 * @return string Html
 	 */
 	protected function getContributors( $cnt, $showIfMax ) {
-		global $wgHiddenPrefs;
-
-		$contributors = $this->page->getContributors();
+		$contributors = $this->getWikiPage()->getContributors();
 
 		$others_link = false;
 
@@ -122,17 +158,17 @@ class CreditsAction extends FormlessAction {
 			}
 		}
 
-		$real_names = array();
-		$user_names = array();
-		$anon_ips = array();
+		$real_names = [];
+		$user_names = [];
+		$anon_ips = [];
 
 		# Sift for real versus user names
-		/** @var $user User */
+		/** @var User $user */
 		foreach ( $contributors as $user ) {
 			$cnt--;
-			if ( $user->isLoggedIn() ) {
+			if ( $user->isRegistered() ) {
 				$link = $this->link( $user );
-				if ( !in_array( 'realname', $wgHiddenPrefs ) && $user->getRealName() ) {
+				if ( $this->canShowRealUserName() && $user->getRealName() ) {
 					$real_names[] = $link;
 				} else {
 					$user_names[] = $link;
@@ -141,7 +177,7 @@ class CreditsAction extends FormlessAction {
 				$anon_ips[] = $this->link( $user );
 			}
 
-			if ( $cnt == 0 ) {
+			if ( $cnt === 0 ) {
 				break;
 			}
 		}
@@ -170,19 +206,19 @@ class CreditsAction extends FormlessAction {
 		}
 
 		# This is the big list, all mooshed together. We sift for blank strings
-		$fulllist = array();
-		foreach ( array( $real, $user, $anon, $others_link ) as $s ) {
+		$fullList = [];
+		foreach ( [ $real, $user, $anon, $others_link ] as $s ) {
 			if ( $s !== false ) {
-				array_push( $fulllist, $s );
+				$fullList[] = $s;
 			}
 		}
 
-		$count = count( $fulllist );
+		$count = count( $fullList );
 
 		# "Based on work by ..."
 		return $count
 			? $this->msg( 'othercontribs' )->rawParams(
-				$lang->listToText( $fulllist ) )->params( $count )->escaped()
+				$lang->listToText( $fullList ) )->params( $count )->escaped()
 			: '';
 	}
 
@@ -192,18 +228,16 @@ class CreditsAction extends FormlessAction {
 	 * @return string Html
 	 */
 	protected function link( User $user ) {
-		global $wgHiddenPrefs;
-		if ( !in_array( 'realname', $wgHiddenPrefs ) && !$user->isAnon() ) {
+		if ( $this->canShowRealUserName() && !$user->isAnon() ) {
 			$real = $user->getRealName();
+			if ( $real === '' ) {
+				$real = $user->getName();
+			}
 		} else {
-			$real = false;
+			$real = $user->getName();
 		}
 
-		$page = $user->isAnon()
-			? SpecialPage::getTitleFor( 'Contributions', $user->getName() )
-			: $user->getUserPage();
-
-		return Linker::link( $page, htmlspecialchars( $real ? $real : $user->getName() ) );
+		return Linker::userLink( $user->getId(), $user->getName(), $real );
 	}
 
 	/**
@@ -215,13 +249,10 @@ class CreditsAction extends FormlessAction {
 		$link = $this->link( $user );
 		if ( $user->isAnon() ) {
 			return $this->msg( 'anonuser' )->rawParams( $link )->parse();
+		} elseif ( $this->canShowRealUserName() && $user->getRealName() ) {
+			return $link;
 		} else {
-			global $wgHiddenPrefs;
-			if ( !in_array( 'realname', $wgHiddenPrefs ) && $user->getRealName() ) {
-				return $link;
-			} else {
-				return $this->msg( 'siteuser' )->rawParams( $link )->params( $user->getName() )->escaped();
-			}
+			return $this->msg( 'siteuser' )->rawParams( $link )->params( $user->getName() )->escaped();
 		}
 	}
 
@@ -230,11 +261,11 @@ class CreditsAction extends FormlessAction {
 	 * @return string HTML link
 	 */
 	protected function othersLink() {
-		return Linker::linkKnown(
+		return $this->linkRenderer->makeKnownLink(
 			$this->getTitle(),
-			$this->msg( 'others' )->escaped(),
-			array(),
-			array( 'action' => 'credits' )
+			$this->msg( 'others' )->text(),
+			[],
+			[ 'action' => 'credits' ]
 		);
 	}
 }

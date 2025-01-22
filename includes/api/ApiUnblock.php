@@ -1,9 +1,5 @@
 <?php
 /**
- *
- *
- * Created on Sep 7, 2007
- *
  * Copyright © 2007 Roan Kattouw "<Firstname>.<Lastname>@gmail.com"
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +20,13 @@
  * @file
  */
 
+use MediaWiki\Block\BlockPermissionCheckerFactory;
+use MediaWiki\Block\DatabaseBlock;
+use MediaWiki\Block\UnblockUserFactory;
+use MediaWiki\ParamValidator\TypeDef\UserDef;
+use MediaWiki\User\UserIdentityLookup;
+use Wikimedia\ParamValidator\ParamValidator;
+
 /**
  * API module that facilitates the unblocking of users. Requires API write mode
  * to be enabled.
@@ -32,46 +35,89 @@
  */
 class ApiUnblock extends ApiBase {
 
+	use ApiBlockInfoTrait;
+
+	/** @var BlockPermissionCheckerFactory */
+	private $permissionCheckerFactory;
+
+	/** @var UnblockUserFactory */
+	private $unblockUserFactory;
+
+	/** @var UserIdentityLookup */
+	private $userIdentityLookup;
+
+	public function __construct(
+		ApiMain $main,
+		$action,
+		BlockPermissionCheckerFactory $permissionCheckerFactory,
+		UnblockUserFactory $unblockUserFactory,
+		UserIdentityLookup $userIdentityLookup
+	) {
+		parent::__construct( $main, $action );
+
+		$this->permissionCheckerFactory = $permissionCheckerFactory;
+		$this->unblockUserFactory = $unblockUserFactory;
+		$this->userIdentityLookup = $userIdentityLookup;
+	}
+
 	/**
 	 * Unblocks the specified user or provides the reason the unblock failed.
 	 */
 	public function execute() {
-		$user = $this->getUser();
+		$performer = $this->getUser();
 		$params = $this->extractRequestParams();
 
-		if ( is_null( $params['id'] ) && is_null( $params['user'] ) ) {
-			$this->dieUsageMsg( 'unblock-notarget' );
-		}
-		if ( !is_null( $params['id'] ) && !is_null( $params['user'] ) ) {
-			$this->dieUsageMsg( 'unblock-idanduser' );
+		$this->requireOnlyOneParameter( $params, 'id', 'user', 'userid' );
+
+		if ( !$this->getAuthority()->isAllowed( 'block' ) ) {
+			$this->dieWithError( 'apierror-permissiondenied-unblock', 'permissiondenied' );
 		}
 
-		if ( !$user->isAllowed( 'block' ) ) {
-			$this->dieUsageMsg( 'cantunblock' );
-		}
-		# bug 15810: blocked admins should have limited access here
-		if ( $user->isBlocked() ) {
-			$status = SpecialBlock::checkUnblockSelf( $params['user'], $user );
-			if ( $status !== true ) {
-				$this->dieUsageMsg( $status );
+		if ( $params['userid'] !== null ) {
+			$identity = $this->userIdentityLookup->getUserIdentityByUserId( $params['userid'] );
+			if ( !$identity ) {
+				$this->dieWithError( [ 'apierror-nosuchuserid', $params['userid'] ], 'nosuchuserid' );
 			}
+			$params['user'] = $identity->getName();
 		}
 
-		$data = array(
-			'Target' => is_null( $params['id'] ) ? $params['user'] : "#{$params['id']}",
-			'Reason' => $params['reason']
-		);
-		$block = Block::newFromTarget( $data['Target'] );
-		$retval = SpecialUnblock::processUnblock( $data, $this->getContext() );
-		if ( $retval !== true ) {
-			$this->dieUsageMsg( $retval[0] );
+		$target = $params['id'] === null ? $params['user'] : "#{$params['id']}";
+
+		# T17810: blocked admins should have limited access here
+		$status = $this->permissionCheckerFactory
+			->newBlockPermissionChecker(
+				$target,
+				$this->getAuthority()
+			)->checkBlockPermissions();
+		if ( $status !== true ) {
+			$this->dieWithError(
+				$status,
+				null,
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable Block is checked and not null
+				[ 'blockinfo' => $this->getBlockDetails( $performer->getBlock() ) ]
+			);
 		}
 
-		$res['id'] = $block->getId();
-		$target = $block->getType() == Block::TYPE_AUTO ? '' : $block->getTarget();
-		$res['user'] = $target instanceof User ? $target->getName() : $target;
-		$res['userid'] = $target instanceof User ? $target->getId() : 0;
-		$res['reason'] = $params['reason'];
+		$status = $this->unblockUserFactory->newUnblockUser(
+			$target,
+			$this->getAuthority(),
+			$params['reason'],
+			$params['tags'] ?? []
+		)->unblock();
+
+		if ( !$status->isOK() ) {
+			$this->dieStatus( $status );
+		}
+
+		$block = $status->getValue();
+		$targetName = $block->getType() === DatabaseBlock::TYPE_AUTO ? '' : $block->getTargetName();
+		$targetUserId = $block->getTargetUserIdentity() ? $block->getTargetUserIdentity()->getId() : 0;
+		$res = [
+			'id' => $block->getId(),
+			'user' => $targetName,
+			'userid' => $targetUserId,
+			'reason' => $params['reason']
+		];
 		$this->getResult()->addValue( null, $this->getModuleName(), $res );
 	}
 
@@ -84,82 +130,40 @@ class ApiUnblock extends ApiBase {
 	}
 
 	public function getAllowedParams() {
-		return array(
-			'id' => array(
-				ApiBase::PARAM_TYPE => 'integer',
-			),
-			'user' => null,
-			'token' => null,
+		return [
+			'id' => [
+				ParamValidator::PARAM_TYPE => 'integer',
+			],
+			'user' => [
+				ParamValidator::PARAM_TYPE => 'user',
+				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name', 'ip', 'cidr', 'id' ],
+			],
+			'userid' => [
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_DEPRECATED => true,
+			],
 			'reason' => '',
-		);
-	}
-
-	public function getParamDescription() {
-		$p = $this->getModulePrefix();
-
-		return array(
-			'id' => "ID of the block you want to unblock (obtained through list=blocks). " .
-				"Cannot be used together with {$p}user",
-			'user' => "Username, IP address or IP range you want to unblock. " .
-				"Cannot be used together with {$p}id",
-			'token' => "An unblock token previously obtained through prop=info",
-			'reason' => 'Reason for unblock',
-		);
-	}
-
-	public function getResultProperties() {
-		return array(
-			'' => array(
-				'id' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'user' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'userid' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'reason' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				)
-			)
-		);
-	}
-
-	public function getDescription() {
-		return 'Unblock a user.';
-	}
-
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-			array( 'unblock-notarget' ),
-			array( 'unblock-idanduser' ),
-			array( 'cantunblock' ),
-			array( 'ipbblocked' ),
-			array( 'ipbnounblockself' ),
-		) );
+			'tags' => [
+				ParamValidator::PARAM_TYPE => 'tags',
+				ParamValidator::PARAM_ISMULTI => true,
+			],
+		];
 	}
 
 	public function needsToken() {
-		return true;
+		return 'csrf';
 	}
 
-	public function getTokenSalt() {
-		return '';
-	}
-
-	public function getExamples() {
-		return array(
-			'api.php?action=unblock&id=105',
-			'api.php?action=unblock&user=Bob&reason=Sorry%20Bob'
-		);
+	protected function getExamplesMessages() {
+		return [
+			'action=unblock&id=105'
+				=> 'apihelp-unblock-example-id',
+			'action=unblock&user=Bob&reason=Sorry%20Bob'
+				=> 'apihelp-unblock-example-user',
+		];
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/API:Block';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Block';
 	}
 }

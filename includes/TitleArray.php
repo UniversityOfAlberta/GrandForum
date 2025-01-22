@@ -24,34 +24,36 @@
  * @file
  */
 
+use Wikimedia\Rdbms\IResultWrapper;
+
 /**
  * The TitleArray class only exists to provide the newFromResult method at pre-
  * sent.
+ * The documentation of the return types for the abstract current/key functions
+ * helps static code analyzer to treat this as Iterator<Title>
+ *
+ * @method int count()
  */
 abstract class TitleArray implements Iterator {
 	/**
-	 * @param ResultWrapper $res A SQL result including at least page_namespace and
+	 * @param IResultWrapper $res A SQL result including at least page_namespace and
 	 *   page_title -- also can have page_id, page_len, page_is_redirect,
 	 *   page_latest (if those will be used).  See Title::newFromRow.
 	 * @return TitleArrayFromResult
 	 */
-	static function newFromResult( $res ) {
-		$array = null;
-		if ( !wfRunHooks( 'TitleArrayFromResult', array( &$array, $res ) ) ) {
-			return null;
-		}
-		if ( $array === null ) {
-			$array = self::newFromResult_internal( $res );
-		}
-		return $array;
+	public static function newFromResult( $res ) {
+		// TODO consider merging this class with TitleArrayFromResult now that the
+		// TitleArrayFromResult hook has been removed
+		return new TitleArrayFromResult( $res );
 	}
 
 	/**
-	 * @param ResultWrapper $res
-	 * @return TitleArrayFromResult
+	 * @return Title
 	 */
-	protected static function newFromResult_internal( $res ) {
-		$array = new TitleArrayFromResult( $res );
-		return $array;
-	}
+	abstract public function current(): Title;
+
+	/**
+	 * @return int
+	 */
+	abstract public function key(): int;
 }

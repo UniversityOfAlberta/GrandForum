@@ -21,6 +21,8 @@
  * @ingroup SpecialPage
  */
 
+use MediaWiki\Cache\LinkBatchFactory;
+
 /**
  * A special page that displays list of tracking categories
  * Tracking categories allow pages with certain characteristics to be tracked.
@@ -32,20 +34,39 @@
  */
 
 class SpecialTrackingCategories extends SpecialPage {
-	function __construct() {
+
+	/** @var LinkBatchFactory */
+	private $linkBatchFactory;
+
+	/** @var TrackingCategories */
+	private $trackingCategories;
+
+	/**
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param TrackingCategories $trackingCategories
+	 */
+	public function __construct(
+		LinkBatchFactory $linkBatchFactory,
+		TrackingCategories $trackingCategories
+	) {
 		parent::__construct( 'TrackingCategories' );
+		$this->linkBatchFactory = $linkBatchFactory;
+		$this->trackingCategories = $trackingCategories;
 	}
 
-	function execute( $par ) {
-		// Global array containing names of tracking categories
-		global $wgTrackingCategories;
-
+	public function execute( $par ) {
 		$this->setHeaders();
 		$this->outputHeader();
-		$this->getOutput()->allowClickjacking();
+		$this->addHelpLink( 'Help:Categories' );
+		$this->getOutput()->setPreventClickjacking( false );
+		$this->getOutput()->addModuleStyles( [
+			'jquery.tablesorter.styles',
+			'mediawiki.pager.styles'
+		] );
+		$this->getOutput()->addModules( 'jquery.tablesorter' );
 		$this->getOutput()->addHTML(
-			Html::openElement( 'table', array( 'class' => 'mw-datatable TablePager',
-				'id' => 'mw-trackingcategories-table' ) ) . "\n" .
+			Html::openElement( 'table', [ 'class' => 'mw-datatable sortable',
+				'id' => 'mw-trackingcategories-table' ] ) . "\n" .
 			"<thead><tr>
 			<th>" .
 				$this->msg( 'trackingcategories-msg' )->escaped() . "
@@ -59,48 +80,45 @@ class SpecialTrackingCategories extends SpecialPage {
 			</tr></thead>"
 		);
 
-		foreach( $wgTrackingCategories as $catMsg ) {
-			/*
-			 * Check if the tracking category varies by namespace
-			 * Otherwise only pages in the current namespace will be displayed
-			 * If it does vary, show pages considering all namespaces
-			 */
-			$msgObj = $this->msg( $catMsg )->inContentLanguage();
-			$allMsgs = array();
+		$categoryList = $this->trackingCategories->getTrackingCategories();
+
+		$batch = $this->linkBatchFactory->newLinkBatch();
+		foreach ( $categoryList as $catMsg => $data ) {
+			$batch->addObj( $data['msg'] );
+			foreach ( $data['cats'] as $catTitle ) {
+				$batch->addObj( $catTitle );
+			}
+		}
+		$batch->execute();
+
+		$this->getHookRunner()->onSpecialTrackingCategories__preprocess( $this, $categoryList );
+
+		$linkRenderer = $this->getLinkRenderer();
+
+		foreach ( $categoryList as $catMsg => $data ) {
+			$allMsgs = [];
 			$catDesc = $catMsg . '-desc';
-			$catMsgTitle = Title::makeTitleSafe( NS_MEDIAWIKI, $catMsg );
-			$catMsgTitleText = Linker::link(
-				$catMsgTitle,
-				htmlspecialchars( $catMsg )
+
+			$catMsgTitleText = $linkRenderer->makeLink(
+				$data['msg'],
+				$catMsg
 			);
 
-			if ( strpos( $msgObj->plain(), '{{NAMESPACE}}' ) !== false ) {
-				$ns = MWNamespace::getValidNamespaces();
-				foreach ( $ns as $namesp ) {
-					$tempTitle = Title::makeTitleSafe( $namesp, $catMsg );
-					$catName = $msgObj->title( $tempTitle )->text();
-					if ( !$msgObj->isDisabled() ) {
-						$catTitle = Title::makeTitleSafe( NS_CATEGORY, $catName );
-						$catTitleText = Linker::link(
-							$catTitle,
-							htmlspecialchars( $catName )
-						);
-						$allMsgs[] = $catTitleText;
-					}
-				}
-			} else {
-				$catName = $msgObj->text();
-				if ( !$msgObj->isDisabled() ) {
-					$catTitle = Title::makeTitleSafe( NS_CATEGORY, $catName );
-					$catTitleText = Linker::link(
-						$catTitle,
-						htmlspecialchars( $catName )
-					);
-					$classes = array();
-				} else {
-					$catTitleText = $this->msg( 'trackingcategories-disabled' )->parse();
-				}
-				$allMsgs[] = $catTitleText;
+			foreach ( $data['cats'] as $catTitle ) {
+				$html = $linkRenderer->makeLink(
+					$catTitle,
+					$catTitle->getText()
+				);
+
+				$this->getHookRunner()->onSpecialTrackingCategories__generateCatLink(
+					$this, $catTitle, $html );
+
+				$allMsgs[] = $html;
+			}
+
+			# Extra message, when no category was found
+			if ( $allMsgs === [] ) {
+				$allMsgs[] = $this->msg( 'trackingcategories-disabled' )->parse();
 			}
 
 			/*
@@ -114,13 +132,13 @@ class SpecialTrackingCategories extends SpecialPage {
 
 			$this->getOutput()->addHTML(
 				Html::openElement( 'tr' ) .
-				Html::openElement( 'td', array( 'class' => 'mw-trackingcategories-name' ) ) .
+				Html::openElement( 'td', [ 'class' => 'mw-trackingcategories-name' ] ) .
 					$this->getLanguage()->commaList( array_unique( $allMsgs ) ) .
 				Html::closeElement( 'td' ) .
-				Html::openElement( 'td', array( 'class' => 'mw-trackingcategories-msg' ) ) .
+				Html::openElement( 'td', [ 'class' => 'mw-trackingcategories-msg' ] ) .
 					$catMsgTitleText .
 				Html::closeElement( 'td' ) .
-				Html::openElement( 'td', array( 'class' => 'mw-trackingcategories-desc' ) ) .
+				Html::openElement( 'td', [ 'class' => 'mw-trackingcategories-desc' ] ) .
 					$descMsg->parse() .
 				Html::closeElement( 'td' ) .
 				Html::closeElement( 'tr' )

@@ -21,14 +21,40 @@
  * @ingroup SpecialPage
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Preferences\PreferencesFactory;
+use MediaWiki\User\UserOptionsManager;
+
 /**
  * A special page that allows users to change their preferences
  *
  * @ingroup SpecialPage
  */
 class SpecialPreferences extends SpecialPage {
-	function __construct() {
+
+	/** @var PreferencesFactory */
+	private $preferencesFactory;
+
+	/** @var UserOptionsManager */
+	private $userOptionsManager;
+
+	/**
+	 * @param PreferencesFactory|null $preferencesFactory
+	 * @param UserOptionsManager|null $userOptionsManager
+	 */
+	public function __construct(
+		PreferencesFactory $preferencesFactory = null,
+		UserOptionsManager $userOptionsManager = null
+	) {
 		parent::__construct( 'Preferences' );
+		// This class is extended and therefore falls back to global state - T265924
+		$services = MediaWikiServices::getInstance();
+		$this->preferencesFactory = $preferencesFactory ?? $services->getPreferencesFactory();
+		$this->userOptionsManager = $userOptionsManager ?? $services->getUserOptionsManager();
+	}
+
+	public function doesWrites() {
+		return true;
 	}
 
 	public function execute( $par ) {
@@ -37,7 +63,7 @@ class SpecialPreferences extends SpecialPage {
 		$out = $this->getOutput();
 		$out->disallowUserJs(); # Prevent hijacked user scripts from sniffing passwords etc.
 
-		$this->requireLogin( 'prefsnologintext2' );
+		$this->requireNamedUser( 'prefsnologintext2' );
 		$this->checkReadOnly();
 
 		if ( $par == 'reset' ) {
@@ -46,50 +72,105 @@ class SpecialPreferences extends SpecialPage {
 			return;
 		}
 
-		$out->addModules( 'mediawiki.special.preferences' );
+		$out->addModules( 'mediawiki.special.preferences.ooui' );
+		$out->addModuleStyles( [
+			'mediawiki.special.preferences.styles.ooui',
+			'mediawiki.widgets.TagMultiselectWidget.styles',
+		] );
+		$out->addModuleStyles( 'oojs-ui-widgets.styles' );
 
-		if ( $this->getRequest()->getCheck( 'success' ) ) {
-			$out->wrapWikiMsg(
-				"<div class=\"successbox\">\n$1\n</div>",
-				'savedprefs'
+		$session = $this->getRequest()->getSession();
+		if ( $session->get( 'specialPreferencesSaveSuccess' ) ) {
+			// Remove session data for the success message
+			$session->remove( 'specialPreferencesSaveSuccess' );
+			$out->addModuleStyles( 'mediawiki.notification.convertmessagebox.styles' );
+
+			$out->addHTML(
+				Html::successBox(
+					Html::element(
+						'p',
+						[],
+						$this->msg( 'savedprefs' )->text()
+					),
+					'mw-preferences-messagebox mw-notify-success'
+				)
 			);
 		}
 
-		$htmlForm = Preferences::getFormObject( $this->getUser(), $this->getContext() );
-		$htmlForm->setSubmitCallback( array( 'Preferences', 'tryUISubmit' ) );
+		$this->addHelpLink( 'Help:Preferences' );
+
+		// Load the user from the primary DB to reduce CAS errors on double post (T95839)
+		if ( $this->getRequest()->wasPosted() ) {
+			$user = $this->getUser()->getInstanceForUpdate() ?: $this->getUser();
+		} else {
+			$user = $this->getUser();
+		}
+
+		$htmlForm = $this->getFormObject( $user, $this->getContext() );
+		$sectionTitles = $htmlForm->getPreferenceSections();
+
+		$prefTabs = [];
+		foreach ( $sectionTitles as $key ) {
+			$prefTabs[] = [
+				'name' => $key,
+				'label' => $htmlForm->getLegend( $key ),
+			];
+		}
+		$out->addJsConfigVars( 'wgPreferencesTabs', $prefTabs );
 
 		$htmlForm->show();
 	}
 
-	private function showResetForm() {
-		if ( !$this->getUser()->isAllowed( 'editmyoptions' ) ) {
+	/**
+	 * Get the preferences form to use.
+	 * @param User $user
+	 * @param IContextSource $context
+	 * @return PreferencesFormOOUI|HTMLForm
+	 */
+	protected function getFormObject( $user, IContextSource $context ) {
+		$form = $this->preferencesFactory->getForm( $user, $context, PreferencesFormOOUI::class );
+		return $form;
+	}
+
+	protected function showResetForm() {
+		if ( !$this->getAuthority()->isAllowed( 'editmyoptions' ) ) {
 			throw new PermissionsError( 'editmyoptions' );
 		}
 
 		$this->getOutput()->addWikiMsg( 'prefs-reset-intro' );
 
-		$context = new DerivativeContext( $this->getContext() );
-		$context->setTitle( $this->getPageTitle( 'reset' ) ); // Reset subpage
-		$htmlForm = new HTMLForm( array(), $context, 'prefs-restore' );
-
-		$htmlForm->setSubmitTextMsg( 'restoreprefs' );
-		$htmlForm->setSubmitCallback( array( $this, 'submitReset' ) );
-		$htmlForm->suppressReset();
-
-		$htmlForm->show();
+		$desc = [
+			'confirm' => [
+				'type' => 'check',
+				'label-message' => 'prefs-reset-confirm',
+				'required' => true,
+			],
+		];
+		// TODO: disable the submit button if the checkbox is not checked
+		HTMLForm::factory( 'ooui', $desc, $this->getContext(), 'prefs-restore' )
+			->setTitle( $this->getPageTitle( 'reset' ) ) // Reset subpage
+			->setSubmitTextMsg( 'restoreprefs' )
+			->setSubmitDestructive()
+			->setSubmitCallback( [ $this, 'submitReset' ] )
+			->suppressReset()
+			->showCancel()
+			->setCancelTarget( $this->getPageTitle() )
+			->show();
 	}
 
 	public function submitReset( $formData ) {
-		if ( !$this->getUser()->isAllowed( 'editmyoptions' ) ) {
+		if ( !$this->getAuthority()->isAllowed( 'editmyoptions' ) ) {
 			throw new PermissionsError( 'editmyoptions' );
 		}
 
-		$user = $this->getUser();
-		$user->resetOptions( 'all', $this->getContext() );
+		$user = $this->getUser()->getInstanceForUpdate();
+		$this->userOptionsManager->resetOptions( $user, $this->getContext(), 'all' );
 		$user->saveSettings();
 
-		$url = $this->getPageTitle()->getFullURL( 'success' );
+		// Set session data for the success message
+		$this->getRequest()->getSession()->set( 'specialPreferencesSaveSuccess', 1 );
 
+		$url = $this->getPageTitle()->getFullUrlForRedirect();
 		$this->getOutput()->redirect( $url );
 
 		return true;

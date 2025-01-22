@@ -1,15 +1,13 @@
 <?php
 /** Manx (Gaelg)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Meanyn',
 	NS_SPECIAL          => 'Er_lheh',
 	NS_TALK             => 'Resooney',
@@ -26,5 +24,4 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Resooney_cooney',
 	NS_CATEGORY         => 'Ronney',
 	NS_CATEGORY_TALK    => 'Resooney_ronney',
-);
-
+];

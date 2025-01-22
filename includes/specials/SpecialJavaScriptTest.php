@@ -21,254 +21,170 @@
  * @ingroup SpecialPage
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\ResourceLoader as RL;
+use MediaWiki\ResourceLoader\ResourceLoader;
+
 /**
  * @ingroup SpecialPage
  */
 class SpecialJavaScriptTest extends SpecialPage {
-
-	/**
-	* @var array Supported frameworks.
-	 */
-	private static $frameworks = array(
-		'qunit',
-	);
 
 	public function __construct() {
 		parent::__construct( 'JavaScriptTest' );
 	}
 
 	public function execute( $par ) {
+		$this->getOutput()->disable();
+
+		if ( $par === 'qunit/export' ) {
+			// Send the JavaScript payload.
+			$this->exportJS();
+		} elseif ( $par === null || $par === '' || $par === 'qunit' || $par === 'qunit/plain' ) {
+			// Render the page
+			// (Support "/qunit" and "/qunit/plain" for backwards-compatibility)
+			$this->renderPage();
+		} else {
+			wfHttpError( 404, 'Unknown action', "Unknown action \"$par\"." );
+		}
+	}
+
+	/**
+	 * Send the standalone JavaScript payload.
+	 *
+	 * Loaded by the GUI (on Special:JavaScriptTest), and by the CLI (via grunt-karma).
+	 */
+	private function exportJS() {
 		$out = $this->getOutput();
+		$rl = $out->getResourceLoader();
 
-		$this->setHeaders();
-		$out->disallowUserJs();
+		// Allow framing (disabling wgBreakFrames). Otherwise, mediawiki.page.ready
+		// will close this tab when running from CLI using karma-qunit.
+		$out->setPreventClickjacking( false );
 
-		if ( $par === null ) {
-			// No framework specified
-			$out->setStatusCode( 404 );
-			$out->setPageTitle( $this->msg( 'javascripttest' ) );
-			$out->addHTML(
-				$this->msg( 'javascripttest-pagetext-noframework' )->parseAsBlock()
-				. $this->getFrameworkListHtml()
-			);
-			return;
-		}
+		$query = [
+			'lang' => 'qqx',
+			'skin' => 'fallback',
+			'debug' => (string)ResourceLoader::inDebugMode(),
+			'target' => 'test',
+		];
+		$embedContext = new RL\Context( $rl, new FauxRequest( $query ) );
+		$query['only'] = 'scripts';
+		$startupContext = new RL\Context( $rl, new FauxRequest( $query ) );
 
-		// Determine framework and mode
-		$pars = explode( '/', $par, 2 );
-
-		$framework = $pars[0];
-		if ( !in_array( $framework, self::$frameworks ) ) {
-			// Framework not found
-			$out->setStatusCode( 404 );
-			$out->addHTML(
-				'<div class="error">'
-				. $this->msg( 'javascripttest-pagetext-unknownframework' )
-					->plaintextParams( $par )->parseAsBlock()
-				. '</div>'
-				. $this->getFrameworkListHtml()
-			);
-			return;
-		}
-
-		// This special page is disabled by default ($wgEnableJavaScriptTest), and contains
-		// no sensitive data. In order to allow TestSwarm to embed it into a test client window,
-		// we need to allow iframing of this page.
-		$out->allowClickjacking();
-		$out->setSubtitle(
-			$this->msg( 'javascripttest-backlink' )
-				->rawParams( Linker::linkKnown( $this->getPageTitle() ) )
-		);
-
-		// Custom actions
-		if ( isset( $pars[1] ) ) {
-			$action = $pars[1];
-			if ( !in_array( $action, array( 'export', 'plain' ) ) ) {
-				$out->setStatusCode( 404 );
-				$out->addHTML(
-					'<div class="error">'
-					. $this->msg( 'javascripttest-pagetext-unknownaction' )
-						->plaintextParams( $action )->parseAsBlock()
-					. '</div>'
+		$modules = $rl->getTestSuiteModuleNames();
+		$component = $this->getContext()->getRequest()->getVal( 'component' );
+		if ( $component ) {
+			$module = 'test.' . $component;
+			if ( !in_array( 'test.' . $component, $modules ) ) {
+				wfHttpError(
+					404,
+					'Unknown test module',
+					"'$module' is not a defined test module. "
+						. 'Register one via the QUnitTestModules attribute in extension.json.'
 				);
 				return;
 			}
-			$method = $action . ucfirst( $framework );
-			$this->$method();
-			return;
+			$modules = [ 'test.' . $component ];
 		}
 
-		$out->addModules( 'mediawiki.special.javaScriptTest' );
+		// Disable module storage.
+		// The unit test for mw.loader.store will enable it (with a mock timers).
+		$config = new MultiConfig( [
+			new HashConfig( [ MainConfigNames::ResourceLoaderStorageEnabled => false ] ),
+			$rl->getConfig(),
+		] );
 
-		$method = 'view' . ucfirst( $framework );
-		$this->$method();
-		$out->setPageTitle( $this->msg(
-			'javascripttest-title',
-			// Messages: javascripttest-qunit-name
-			$this->msg( "javascripttest-$framework-name" )->plain()
-		) );
-	}
+		// Disable autostart because we load modules asynchronously. By default, QUnit would start
+		// at domready when there are no tests loaded and also fire 'QUnit.done' which then instructs
+		// Karma to exit the browser process before the tests even finished loading.
+		$qunitConfig = 'QUnit.config.autostart = false;'
+			. 'if (window.__karma__) {'
+			// karma-qunit's use of autostart=false and QUnit.start conflicts with ours.
+			// Hack around this by replacing 'karma.loaded' with a no-op and perform its duty of calling
+			// `__karma__.start()` ourselves. See <https://github.com/karma-runner/karma-qunit/issues/27>.
+			. 'window.__karma__.loaded = function () {};'
+			. '}';
 
-	/**
-	 * Get a list of frameworks (including introduction paragraph and links
-	 * to the framework run pages)
-	 *
-	 * @return string HTML
-	 */
-	private function getFrameworkListHtml() {
-		$list = '<ul>';
-		foreach ( self::$frameworks as $framework ) {
-			$list .= Html::rawElement(
-				'li',
-				array(),
-				Linker::link(
-					$this->getPageTitle( $framework ),
-					// Message: javascripttest-qunit-name
-					$this->msg( "javascripttest-$framework-name" )->escaped()
-				)
-			);
-		}
-		$list .= '</ul>';
-
-		return $this->msg( 'javascripttest-pagetext-frameworks' )->rawParams( $list )
-			->parseAsBlock();
-	}
-
-	/**
-	 * Wrap HTML contents in a summary container.
-	 *
-	 * @param string $html HTML contents to be wrapped
-	 * @return string HTML
-	 */
-	private function wrapSummaryHtml( $html ) {
-		return "<div id=\"mw-javascripttest-summary\">$html</div>";
-	}
-
-	/**
-	 * Run the test suite on the Special page.
-	 *
-	 * Rendered by OutputPage and Skin.
-	 */
-	private function viewQUnit() {
-		global $wgJavaScriptTestConfig;
-
-		$out = $this->getOutput();
-		$testConfig = $wgJavaScriptTestConfig;
-
-		$modules = $out->getResourceLoader()->getTestModuleNames( 'qunit' );
-
-		$summary = $this->msg( 'javascripttest-qunit-intro' )
-			->params( $wgJavaScriptTestConfig['qunit']['documentation'] )
-			->parseAsBlock();
-
-		$baseHtml = <<<HTML
-<div class="mw-content-ltr">
-<div id="qunit"></div>
-</div>
-HTML;
-
-		// Used in ./tests/qunit/data/testrunner.js, see also documentation of
-		// $wgJavaScriptTestConfig in DefaultSettings.php
-		$out->addJsConfigVars(
-			'QUnitTestSwarmInjectJSPath',
-			$testConfig['qunit']['testswarm-injectjs']
+		// The below is essentially a pure-javascript version of OutputPage::headElement().
+		$startupModule = $rl->getModule( 'startup' );
+		$startupModule->setConfig( $config );
+		$code = $rl->makeModuleResponse( $startupContext, [ 'startup' => $startupModule ] );
+		// The following has to be deferred via RLQ because the startup module is asynchronous.
+		$code .= ResourceLoader::makeLoaderConditionalScript(
+			// Embed page-specific mw.config variables.
+			//
+			// For compatibility with older tests, these will come from the user
+			// action "viewing Special:JavaScripTest".
+			//
+			// This is deprecated since MediaWiki 1.25 and slowly being phased out in favour of:
+			// 1. tests explicitly mocking the configuration they depend on.
+			// 2. tests explicitly skipping or not loading code that is only meant
+			//    for real page views (e.g. not loading as dependency, or using a QUnit
+			//    conditional).
+			//
+			// See https://phabricator.wikimedia.org/T89434.
+			// Keep a select few that are commonly referenced.
+			ResourceLoader::makeConfigSetScript( [
+				// used by mediawiki.util
+				'wgPageName' => 'Special:Badtitle/JavaScriptTest',
+				// used as input for mw.Title
+				'wgRelevantPageName' => 'Special:Badtitle/JavaScriptTest',
+			] )
+			// Embed private modules as they're not allowed to be loaded dynamically
+			. $rl->makeModuleResponse( $embedContext, [
+				'user.options' => $rl->getModule( 'user.options' ),
+			] )
+			// Load all the test modules
+			. Xml::encodeJsCall( 'mw.loader.load', [ $modules ] )
 		);
-
-		$out->addHtml( $this->wrapSummaryHtml( $summary ) . $baseHtml );
-
-		// The testrunner configures QUnit and essentially depends on it. However, test suites
-		// are reusable in environments that preload QUnit (or a compatibility interface to
-		// another framework). Therefore we have to load it ourselves.
-		$out->addHtml( Html::inlineScript(
-			ResourceLoader::makeLoaderConditionalScript(
-				Xml::encodeJsCall( 'mw.loader.using', array(
-					array( 'jquery.qunit', 'jquery.qunit.completenessTest' ),
-					new XmlJsCode(
-						'function () {' . Xml::encodeJsCall( 'mw.loader.load', array( $modules ) ) . '}'
-					)
-				) )
-			)
-		) );
-	}
-
-	/**
-	 * Generate self-sufficient JavaScript payload to run the tests elsewhere.
-	 *
-	 * Includes startup module to request modules from ResourceLoader.
-	 *
-	 * Note: This modifies the registry to replace 'jquery.qunit' with an
-	 * empty module to allow external environment to preload QUnit with any
-	 * neccecary framework adapters (e.g. Karma). Loading it again would
-	 * re-define QUnit and dereference event handlers from Karma.
-	 */
-	private function exportQUnit() {
-		$out = $this->getOutput();
-
-		$out->disable();
-
-		$rl = $out->getResourceLoader();
-
-		$query = array(
-			'lang' => $this->getLanguage()->getCode(),
-			'skin' => $this->getSkin()->getSkinName(),
-			'debug' => ResourceLoader::inDebugMode() ? 'true' : 'false',
-		);
-		$embedContext = new ResourceLoaderContext( $rl, new FauxRequest( $query ) );
-		$query['only'] = 'scripts';
-		$startupContext = new ResourceLoaderContext( $rl, new FauxRequest( $query ) );
-
-		$modules = $rl->getTestModuleNames( 'qunit' );
-
-		// The below is essentially a pure-javascript version of OutputPage::getHeadScripts.
-		$startup = $rl->makeModuleResponse( $startupContext, array(
-			'startup' => $rl->getModule( 'startup' ),
-		) );
-		// Embed page-specific mw.config variables.
-		// The current Special page shouldn't be relevant to tests, but various modules (which
-		// are loaded before the test suites), reference mw.config while initialising.
-		$code = ResourceLoader::makeConfigSetScript( $out->getJSVars() );
-		// Embed private modules as they're not allowed to be loaded dynamically
-		$code .= $rl->makeModuleResponse( $embedContext, array(
-			'user.options' => $rl->getModule( 'user.options' ),
-			'user.tokens' => $rl->getModule( 'user.tokens' ),
-		) );
-		$code .= Xml::encodeJsCall( 'mw.loader.load', array( $modules ) );
+		$encModules = Xml::encodeJsVar( $modules );
+		$code .= ResourceLoader::makeInlineCodeWithModule( 'mediawiki.base', <<<JAVASCRIPT
+	var start = window.__karma__ ? window.__karma__.start : QUnit.start;
+	mw.loader.using( $encModules ).always( start );
+	mw.trackSubscribe( 'resourceloader.exception', function ( topic, err ) {
+		// Things like "dependency missing" or "unknown module".
+		// Re-throw so that they are reported as global exceptions by QUnit and Karma.
+		setTimeout( function () {
+			throw err;
+		} );
+	} );
+JAVASCRIPT
+	);
 
 		header( 'Content-Type: text/javascript; charset=utf-8' );
 		header( 'Cache-Control: private, no-cache, must-revalidate' );
 		header( 'Pragma: no-cache' );
-		echo $startup;
-		echo "\n";
-		// Note: The following has to be wrapped in a script tag because the startup module also
-		// writes a script tag (the one loading mediawiki.js). Script tags are synchronous, block
-		// each other, and run in order. But they don't nest. The code appended after the startup
-		// module runs before the added script tag is parsed and executed.
-		echo Xml::encodeJsCall( 'document.write', array( Html::inlineScript( $code  ) ) );
+		echo $qunitConfig;
+		echo $code;
 	}
 
-	private function plainQUnit() {
-		$out = $this->getOutput();
-		$out->disable();
+	private function renderPage() {
+		$basePath = $this->getConfig()->get( MainConfigNames::ResourceBasePath );
+		$headHtml = implode( "\n", [
+			Html::linkedScript( "$basePath/resources/lib/qunitjs/qunit.js" ),
+			Html::linkedStyle( "$basePath/resources/lib/qunitjs/qunit.css" ),
+			Html::linkedStyle( "$basePath/resources/src/qunitjs/qunit-local.css" ),
+		] );
 
-		$url = $this->getPageTitle( 'qunit/export' )->getFullURL( array(
-			'debug' => ResourceLoader::inDebugMode() ? 'true' : 'false',
-		) );
+		$introHtml = $this->msg( 'javascripttest-qunit-intro' )
+			->params( 'https://www.mediawiki.org/wiki/Manual:JavaScript_unit_testing' )
+			->parseAsBlock();
 
-		$styles = $out->makeResourceLoaderLink( 'jquery.qunit', ResourceLoaderModule::TYPE_STYLES, false );
-		// Use 'raw' since this is a plain HTML page without ResourceLoader
-		$scripts = $out->makeResourceLoaderLink( 'jquery.qunit', ResourceLoaderModule::TYPE_SCRIPTS, false, array( 'raw' => 'true' ) );
-
-		$head = trim( $styles['html'] . $scripts['html'] );
-		$html = <<<HTML
-<!DOCTYPE html>
-<title>QUnit</title>
-$head
-<div id="qunit"></div>
-HTML;
-		$html .= "\n" . Html::linkedScript( $url );
+		$scriptUrl = $this->getPageTitle( 'qunit/export' )->getFullURL( [
+			'debug' => (string)ResourceLoader::inDebugMode(),
+		] );
+		$script = Html::linkedScript( $scriptUrl );
 
 		header( 'Content-Type: text/html; charset=utf-8' );
-		echo $html;
+		echo <<<HTML
+<!DOCTYPE html>
+<title>QUnit</title>
+$headHtml
+$introHtml
+<div id="qunit"></div>
+$script
+HTML;
 	}
 
 	protected function getGroupName() {

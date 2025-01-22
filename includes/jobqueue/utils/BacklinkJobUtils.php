@@ -19,11 +19,34 @@
  *
  * @file
  * @ingroup JobQueue
- * @author Aaron Schulz
  */
+
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\PageIdentity;
 
 /**
  * Class with Backlink related Job helper methods
+ *
+ * When an asset changes, a base job can be inserted to update all assets that depend on it.
+ * The base job splits into per-title "leaf" jobs and a "remnant" job to handle the remaining
+ * range of backlinks. This recurs until the remnant job's backlink range is small enough that
+ * only leaf jobs are created from it.
+ *
+ * For example, if templates A and B are edited (at the same time) the queue will have:
+ *     (A base, B base)
+ * When these jobs run, the queue will have per-title and remnant partition jobs:
+ *     (titleX,titleY,titleZ,...,A remnant,titleM,titleN,titleO,...,B remnant)
+ *
+ * This works best when the queue is FIFO, for several reasons:
+ *   - a) Since the remnant jobs are enqueued after the leaf jobs, the slower leaf jobs have to
+ *        get popped prior to the fast remnant jobs. This avoids flooding the queue with leaf jobs
+ *        for every single backlink of widely used assets (which can be millions).
+ *   - b) Other jobs going in the queue still get a chance to run after a widely used asset changes.
+ *        This is due to the large remnant job pushing to the end of the queue with each division.
+ *
+ * The size of the queues used in this manner depend on the number of assets changes and the
+ * number of workers. Also, with FIFO-per-partition queues, the queue size can be somewhat larger,
+ * depending on the number of queue partitions.
  *
  * @ingroup JobQueue
  * @since 1.23
@@ -62,15 +85,19 @@ class BacklinkJobUtils {
 	 * @param int $bSize BacklinkCache partition size; usually $wgUpdateRowsPerJob
 	 * @param int $cSize Max titles per leaf job; Usually 1 or a modest value
 	 * @param array $opts Optional parameter map
-	 * @return Job[] List of Job objects
+	 * @return Job[]
 	 */
-	public static function partitionBacklinkJob( Job $job, $bSize, $cSize, $opts = array() ) {
+	public static function partitionBacklinkJob( Job $job, $bSize, $cSize, $opts = [] ) {
 		$class = get_class( $job );
 		$title = $job->getTitle();
 		$params = $job->getParams();
 
+		$backlinkCache = MediaWikiServices::getInstance()->getBacklinkCacheFactory()
+			->getBacklinkCache( $title );
 		if ( isset( $params['pages'] ) || empty( $params['recursive'] ) ) {
-			$ranges = array(); // sanity; this is a leaf node
+			// this is a leaf node
+			$ranges = [];
+			$realBSize = 0;
 			wfWarn( __METHOD__ . " called on {$job->getType()} leaf job (explosive recursion)." );
 		} elseif ( isset( $params['range'] ) ) {
 			// This is a range job to trigger the insertion of partitioned/title jobs...
@@ -78,25 +105,28 @@ class BacklinkJobUtils {
 			$realBSize = $params['range']['batchSize'];
 		} else {
 			// This is a base job to trigger the insertion of partitioned jobs...
-			$ranges = $title->getBacklinkCache()->partition( $params['table'], $bSize );
+			$ranges = $backlinkCache->partition( $params['table'], $bSize );
 			$realBSize = $bSize;
 		}
 
-		$extraParams = isset( $opts['params'] ) ? $opts['params'] : array();
+		$extraParams = $opts['params'] ?? [];
 
-		$jobs = array();
+		$jobs = [];
 		// Combine the first range (of size $bSize) backlinks into leaf jobs
 		if ( isset( $ranges[0] ) ) {
 			list( $start, $end ) = $ranges[0];
-			$titles = $title->getBacklinkCache()->getLinks( $params['table'], $start, $end );
-			foreach ( array_chunk( iterator_to_array( $titles ), $cSize ) as $titleBatch ) {
-				$pages = array();
-				foreach ( $titleBatch as $tl ) {
-					$pages[$tl->getArticleId()] = array( $tl->getNamespace(), $tl->getDBKey() );
+
+			$iter = $backlinkCache->getLinkPages( $params['table'], $start, $end );
+			$pageSources = iterator_to_array( $iter );
+			/** @var PageIdentity[] $pageBatch */
+			foreach ( array_chunk( $pageSources, $cSize ) as $pageBatch ) {
+				$pages = [];
+				foreach ( $pageBatch as $page ) {
+					$pages[$page->getId()] = [ $page->getNamespace(), $page->getDBkey() ];
 				}
 				$jobs[] = new $class(
 					$title, // maintain parent job title
-					array( 'pages' => $pages ) + $extraParams
+					[ 'pages' => $pages ] + $extraParams
 				);
 			}
 		}
@@ -104,16 +134,20 @@ class BacklinkJobUtils {
 		if ( isset( $ranges[1] ) ) {
 			$jobs[] = new $class(
 				$title, // maintain parent job title
-				array(
+				[
 					'recursive'     => true,
 					'table'         => $params['table'],
-					'range'         => array(
+					'range'         => [
 						'start'     => $ranges[1][0],
-						'end'	    => $ranges[count( $ranges ) - 1][1],
+						'end'       => $ranges[count( $ranges ) - 1][1],
 						'batchSize' => $realBSize,
 						'subranges' => array_slice( $ranges, 1 )
-					),
-				) + $extraParams
+					],
+					// Track how many times the base job divided for debugging
+					'division'      => isset( $params['division'] )
+						? ( $params['division'] + 1 )
+						: 1
+				] + $extraParams
 			);
 		}
 

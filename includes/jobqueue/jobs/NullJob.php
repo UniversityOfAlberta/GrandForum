@@ -18,8 +18,10 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Cache
+ * @ingroup JobQueue
  */
+
+use MediaWiki\MediaWikiServices;
 
 /**
  * Degenerate job that does nothing, but can optionally replace itself
@@ -30,8 +32,8 @@
  * Inserting a null job in the configured job queue:
  * @code
  * $ php maintenance/eval.php
- * > $queue = JobQueueGroup::singleton();
- * > $job = new NullJob( Title::newMainPage(), array( 'lives' => 10 ) );
+ * > $queue = MediaWikiServices::getInstance()->getJobQueueGroup();
+ * > $job = new NullJob( [ 'lives' => 10 ] );
  * > $queue->push( $job );
  * @endcode
  * You can then confirm the job has been enqueued by using the showJobs.php
@@ -44,13 +46,12 @@
  *
  * @ingroup JobQueue
  */
-class NullJob extends Job {
+class NullJob extends Job implements GenericParameterJob {
 	/**
-	 * @param Title $title
-	 * @param array $params job parameters (lives, usleep)
+	 * @param array $params Job parameters (lives, usleep)
 	 */
-	function __construct( $title, $params ) {
-		parent::__construct( 'null', $title, $params );
+	public function __construct( array $params ) {
+		parent::__construct( 'null', $params );
 		if ( !isset( $this->params['lives'] ) ) {
 			$this->params['lives'] = 1;
 		}
@@ -67,8 +68,8 @@ class NullJob extends Job {
 		if ( $this->params['lives'] > 1 ) {
 			$params = $this->params;
 			$params['lives']--;
-			$job = new self( $this->title, $params );
-			JobQueueGroup::singleton()->push( $job );
+			$job = new self( $params );
+			MediaWikiServices::getInstance()->getJobQueueGroup()->push( $job );
 		}
 
 		return true;

@@ -37,13 +37,17 @@
  * @since 1.23
  */
 class SpecialDiff extends RedirectSpecialPage {
-	function __construct() {
+	public function __construct() {
 		parent::__construct( 'Diff' );
-		$this->mAllowedRedirectParams = array();
+		$this->mAllowedRedirectParams = [];
 	}
 
-	function getRedirect( $subpage ) {
-		$parts = explode( '/', $subpage );
+	/**
+	 * @param string|null $subpage
+	 * @return Title|bool
+	 */
+	public function getRedirect( $subpage ) {
+		$parts = $subpage !== null ? explode( '/', $subpage ) : [];
 
 		// Try to parse the values given, generating somewhat pretty URLs if possible
 		if ( count( $parts ) === 1 && $parts[0] !== '' ) {
@@ -52,10 +56,82 @@ class SpecialDiff extends RedirectSpecialPage {
 			$this->mAddedRedirectParams['oldid'] = $parts[0];
 			$this->mAddedRedirectParams['diff'] = $parts[1];
 		} else {
-			// Wrong number of parameters, bail out
-			throw new ErrorPageError( 'nopagetitle', 'nopagetext' );
+			return false;
 		}
 
 		return true;
+	}
+
+	protected function showNoRedirectPage() {
+		$this->addHelpLink( 'Help:Diff' );
+		$this->setHeaders();
+		$this->outputHeader();
+		$this->showForm();
+	}
+
+	private function showForm() {
+		$form = HTMLForm::factory( 'ooui', [
+			'oldid' => [
+				'name' => 'oldid',
+				'type' => 'int',
+				'label-message' => 'diff-form-oldid',
+			],
+			'diff' => [
+				'name' => 'diff',
+				// FIXME Set the type for the other field to int - T256425
+				'type' => 'selectorother',
+				'options-messages' => [
+					'diff-form-other-revid' => 'other',
+					'last' => 'prev',
+					'cur' => 'cur',
+					'next' => 'next',
+				],
+				'label-message' => 'diff-form-revid',
+				// Remove validation callback when using int type - T256425
+				'validation-callback' => function ( $value ) {
+					$value = trim( $value ?? '' );
+					if ( preg_match( '/^\d*$/', $value )
+						|| in_array( $value, [ 'prev', 'cur', 'next' ], true )
+					) {
+						return true;
+					}
+					return $this->msg( 'diff-form-error-revid' );
+				},
+			],
+		], $this->getContext(), 'diff-form' );
+		$form->setSubmitTextMsg( 'diff-form-submit' );
+		$form->setSubmitCallback( [ $this, 'onFormSubmit' ] );
+		$form->show();
+	}
+
+	public function onFormSubmit( $formData ) {
+		$params = [];
+		if ( $formData['oldid'] ) {
+			$params[] = $formData['oldid'];
+		}
+		if ( $formData['diff'] ) {
+			// Remove trim when using int type - T256425
+			$params[] = trim( $formData['diff'] );
+		}
+		$title = $this->getPageTitle( $params ? implode( '/', $params ) : null );
+		$url = $title->getFullUrlForRedirect();
+		$this->getOutput()->redirect( $url );
+	}
+
+	public function getDescription() {
+		// 'diff' message is in lowercase, using own message
+		return $this->msg( 'diff-form' )->text();
+	}
+
+	public function getName() {
+		return 'diff-form';
+	}
+
+	public function isListed() {
+		return true;
+	}
+
+	protected function getGroupName() {
+		return 'redirects';
 	}
 }

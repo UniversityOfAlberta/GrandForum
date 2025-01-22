@@ -1,6 +1,6 @@
 <?php
 /**
- * A title formatter service for %MediaWiki.
+ * A title formatter service for MediaWiki.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,10 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @license GPL 2+
  * @author Daniel Kinzler
  */
+use MediaWiki\Linker\LinkTarget;
+use MediaWiki\Page\PageReference;
 
 /**
  * A title formatter service for MediaWiki.
@@ -29,9 +30,9 @@
  * forms to be used in the database, in urls, in wikitext, etc.
  *
  * @see https://www.mediawiki.org/wiki/Requests_for_comment/TitleValue
+ * @since 1.23
  */
 interface TitleFormatter {
-
 	/**
 	 * Returns the title formatted for display.
 	 * Per default, this includes the namespace but not the fragment.
@@ -41,39 +42,50 @@ interface TitleFormatter {
 	 * @param int|bool $namespace The namespace ID (or false, if the namespace should be ignored)
 	 * @param string $text The page title
 	 * @param string $fragment The fragment name (may be empty).
+	 * @param string $interwiki The interwiki prefix (may be empty).
 	 *
 	 * @return string
 	 */
-	public function formatTitle( $namespace, $text, $fragment = '' );
+	public function formatTitle( $namespace, $text, $fragment = '', $interwiki = '' );
 
 	/**
-	 * Returns the title text formatted for display, without namespace of fragment.
+	 * Returns the title text formatted for display, without namespace or fragment.
 	 *
-	 * @note: Only minimal normalization is applied. Consider using TitleValue::getText() directly.
-	 *
-	 * @param TitleValue $title the title to format
+	 * @param LinkTarget|PageReference $title The title to format
 	 *
 	 * @return string
 	 */
-	public function getText( TitleValue $title );
+	public function getText( $title );
 
 	/**
 	 * Returns the title formatted for display, including the namespace name.
 	 *
-	 * @param TitleValue $title the title to format
+	 * @param LinkTarget|PageReference $title The title to format
 	 *
 	 * @return string
 	 */
-	public function getPrefixedText( TitleValue $title );
+	public function getPrefixedText( $title );
+
+	/**
+	 * Return the title in prefixed database key form, with interwiki
+	 * and namespace.
+	 *
+	 * @since 1.27
+	 *
+	 * @param LinkTarget|PageReference $target
+	 *
+	 * @return string
+	 */
+	public function getPrefixedDBkey( $target );
 
 	/**
 	 * Returns the title formatted for display, with namespace and fragment.
 	 *
-	 * @param TitleValue $title the title to format
+	 * @param LinkTarget|PageReference $title The title to format
 	 *
 	 * @return string
 	 */
-	public function getFullText( TitleValue $title );
+	public function getFullText( $title );
 
 	/**
 	 * Returns the name of the namespace for the given title.
@@ -85,7 +97,7 @@ interface TitleFormatter {
 	 * @param string $text
 	 *
 	 * @throws InvalidArgumentException
-	 * @return String
+	 * @return string Namespace name with underscores (not spaces), e.g. 'User_talk'
 	 */
 	public function getNamespaceName( $namespace, $text );
 }

@@ -18,41 +18,71 @@
  * @file
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Permissions\PermissionStatus;
+
 /**
  * Show an error when a user tries to do something they do not have the necessary
  * permissions for.
  *
+ * @newable
  * @since 1.18
  * @ingroup Exception
  */
 class PermissionsError extends ErrorPageError {
 	public $permission, $errors;
 
-	public function __construct( $permission, $errors = array() ) {
+	/**
+	 * @stable to call
+	 *
+	 * @param string|null $permission A permission name or null if unknown
+	 * @param array|PermissionStatus $errors Error message keys or [key, param...] arrays or
+	 * PermissionStatus containing an array of errors; must not be empty if $permission is null
+	 * @throws \InvalidArgumentException
+	 */
+	public function __construct( $permission, $errors = [] ) {
 		global $wgLang;
+
+		if ( $errors instanceof PermissionStatus ) {
+			$errors = $errors->toLegacyErrorArray();
+		}
+
+		if ( $permission === null && !$errors ) {
+			throw new \InvalidArgumentException( __METHOD__ .
+				': $permission and $errors cannot both be empty' );
+		}
 
 		$this->permission = $permission;
 
 		if ( !count( $errors ) ) {
-			$groups = array_map(
-				array( 'User', 'makeGroupLinkWiki' ),
-				User::getGroupsWithPermission( $this->permission )
-			);
+			$groups = [];
+			foreach ( MediaWikiServices::getInstance()
+				->getGroupPermissionsLookup()
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable Null on permission is check when used here
+				->getGroupsWithPermission( $this->permission ) as $group
+			) {
+				$groups[] = UserGroupMembership::getLink( $group, RequestContext::getMain(), 'wiki' );
+			}
 
 			if ( $groups ) {
-				$errors[] = array( 'badaccess-groups', $wgLang->commaList( $groups ), count( $groups ) );
+				$errors[] = [ 'badaccess-groups', $wgLang->commaList( $groups ), count( $groups ) ];
 			} else {
-				$errors[] = array( 'badaccess-group0' );
+				$errors[] = [ 'badaccess-group0' ];
 			}
 		}
 
 		$this->errors = $errors;
+
+		// Give the parent class something to work with
+		parent::__construct( 'permissionserrors', Message::newFromSpecifier( $errors[0] ) );
 	}
 
-	public function report() {
+	public function report( $action = self::SEND_OUTPUT ) {
 		global $wgOut;
 
 		$wgOut->showPermissionsErrorPage( $this->errors, $this->permission );
-		$wgOut->output();
+		if ( $action === self::SEND_OUTPUT ) {
+			$wgOut->output();
+		}
 	}
 }

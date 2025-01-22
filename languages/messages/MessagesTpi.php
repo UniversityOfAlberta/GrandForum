@@ -1,11 +1,10 @@
 <?php
 /** Tok Pisin (Tok Pisin)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author BarkingFish
  * @author Caffelice (on tpi.wikipedia.org)
@@ -15,7 +14,7 @@
  * @author לערי ריינהארט
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_SPECIAL          => 'Sipesol',
 	NS_TALK             => 'Toktok',
 	NS_USER             => 'Yusa',
@@ -31,21 +30,21 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Toktok_bilong_halivim',
 	NS_CATEGORY         => 'Grup',
 	NS_CATEGORY_TALK    => 'Toktok_bilong_grup',
-);
+];
 
-$specialPageAliases = array(
-	'Confirmemail'              => array( 'Orait long imel' ),
-	'Contributions'             => array( 'Ol senis bilong yusa' ),
-	'CreateAccount'             => array( 'Mekim nupela login' ),
-	'Emailuser'                 => array( 'Imel yusa' ),
-	'Preferences'               => array( 'Ol laik bilong mi' ),
-	'Randompage'                => array( 'Soim wanpela pes' ),
-	'Recentchanges'             => array( 'Nupela senis' ),
-	'Specialpages'              => array( 'Sipesol pes' ),
-	'Upload'                    => array( 'Salim media fail' ),
-	'Userlogin'                 => array( 'Yusa login' ),
-	'Userlogout'                => array( 'Yusa logaut' ),
-	'Watchlist'                 => array( 'Lukautbuk' ),
-	'Whatlinkshere'             => array( 'Ol link ikam long hia' ),
-);
-
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'Confirmemail'              => [ 'Orait_long_imel' ],
+	'Contributions'             => [ 'Ol_senis_bilong_yusa' ],
+	'CreateAccount'             => [ 'Mekim_nupela_login' ],
+	'Emailuser'                 => [ 'Imel_yusa' ],
+	'Preferences'               => [ 'Ol_laik_bilong_mi' ],
+	'Randompage'                => [ 'Soim_wanpela_pes' ],
+	'Recentchanges'             => [ 'Nupela_senis' ],
+	'Specialpages'              => [ 'Sipesol_pes' ],
+	'Upload'                    => [ 'Salim_media_fail' ],
+	'Userlogin'                 => [ 'Yusa_login' ],
+	'Userlogout'                => [ 'Yusa_logaut' ],
+	'Watchlist'                 => [ 'Lukautbuk' ],
+	'Whatlinkshere'             => [ 'Ol_link_ikam_long_hia' ],
+];

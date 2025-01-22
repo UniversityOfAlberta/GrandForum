@@ -21,50 +21,77 @@
  * @ingroup Cache
  */
 
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\MediaWikiServices;
+use Psr\Log\LoggerInterface;
+use Wikimedia\Rdbms\ILoadBalancer;
+
 /**
  * @since 1.20
  */
 class UserCache {
-	protected $cache = array(); // (uid => property => value)
-	protected $typesCached = array(); // (uid => cache type => 1)
+	protected $cache = []; // (uid => property => value)
+	protected $typesCached = []; // (uid => cache type => 1)
+
+	/** @var LoggerInterface */
+	private $logger;
+
+	/** @var LinkBatchFactory */
+	private $linkBatchFactory;
+
+	/** @var ILoadBalancer */
+	private $loadBalancer;
 
 	/**
 	 * @return UserCache
 	 */
 	public static function singleton() {
-		static $instance = null;
-		if ( $instance === null ) {
-			$instance = new self();
-		}
-
-		return $instance;
+		return MediaWikiServices::getInstance()->getUserCache();
 	}
 
-	protected function __construct() {
+	/**
+	 * Uses dependency injection since 1.36
+	 *
+	 * @param LoggerInterface $logger
+	 * @param ILoadBalancer $loadBalancer
+	 * @param LinkBatchFactory $linkBatchFactory
+	 */
+	public function __construct(
+		LoggerInterface $logger,
+		ILoadBalancer $loadBalancer,
+		LinkBatchFactory $linkBatchFactory
+	) {
+		$this->logger = $logger;
+		$this->loadBalancer = $loadBalancer;
+		$this->linkBatchFactory = $linkBatchFactory;
 	}
 
 	/**
 	 * Get a property of a user based on their user ID
 	 *
-	 * @param $userId integer User ID
+	 * @param int $userId
 	 * @param string $prop User property
-	 * @return mixed The property or false if the user does not exist
+	 * @return mixed|bool The property or false if the user does not exist
 	 */
 	public function getProp( $userId, $prop ) {
 		if ( !isset( $this->cache[$userId][$prop] ) ) {
-			wfDebug( __METHOD__ . ": querying DB for prop '$prop' for user ID '$userId'.\n" );
-			$this->doQuery( array( $userId ) ); // cache miss
+			$this->logger->debug(
+				'Querying DB for prop {prop} for user ID {userId}',
+				[
+					'prop' => $prop,
+					'userId' => $userId,
+				]
+			);
+			$this->doQuery( [ $userId ] ); // cache miss
 		}
 
-		return isset( $this->cache[$userId][$prop] )
-			? $this->cache[$userId][$prop]
-			: false; // user does not exist?
+		return $this->cache[$userId][$prop] ?? false; // user does not exist?
 	}
 
 	/**
 	 * Get the name of a user or return $ip if the user ID is 0
 	 *
-	 * @param integer $userId
+	 * @param int $userId
 	 * @param string $ip
 	 * @return string
 	 * @since 1.22
@@ -77,13 +104,11 @@ class UserCache {
 	 * Preloads user names for given list of users.
 	 * @param array $userIds List of user IDs
 	 * @param array $options Option flags; include 'userpage' and 'usertalk'
-	 * @param string $caller the calling method
+	 * @param string $caller The calling method
 	 */
-	public function doQuery( array $userIds, $options = array(), $caller = '' ) {
-		wfProfileIn( __METHOD__ );
-
-		$usersToCheck = array();
-		$usersToQuery = array();
+	public function doQuery( array $userIds, $options = [], $caller = '' ) {
+		$usersToCheck = [];
+		$usersToQuery = [];
 
 		$userIds = array_unique( $userIds );
 
@@ -101,46 +126,48 @@ class UserCache {
 
 		// Lookup basic info for users not yet loaded...
 		if ( count( $usersToQuery ) ) {
-			$dbr = wfGetDB( DB_SLAVE );
-			$table = array( 'user' );
-			$conds = array( 'user_id' => $usersToQuery );
-			$fields = array( 'user_name', 'user_real_name', 'user_registration', 'user_id' );
+			$dbr = $this->loadBalancer->getConnectionRef( DB_REPLICA );
+			$tables = [ 'user', 'actor' ];
+			$conds = [ 'user_id' => $usersToQuery ];
+			$fields = [ 'user_name', 'user_real_name', 'user_registration', 'user_id', 'actor_id' ];
+			$joinConds = [
+				'actor' => [ 'JOIN', 'actor_user = user_id' ],
+			];
 
 			$comment = __METHOD__;
 			if ( strval( $caller ) !== '' ) {
 				$comment .= "/$caller";
 			}
 
-			$res = $dbr->select( $table, $fields, $conds, $comment );
+			$res = $dbr->select( $tables, $fields, $conds, $comment, [], $joinConds );
 			foreach ( $res as $row ) { // load each user into cache
 				$userId = (int)$row->user_id;
 				$this->cache[$userId]['name'] = $row->user_name;
 				$this->cache[$userId]['real_name'] = $row->user_real_name;
 				$this->cache[$userId]['registration'] = $row->user_registration;
+				$this->cache[$userId]['actor'] = $row->actor_id;
 				$usersToCheck[$userId] = $row->user_name;
 			}
 		}
 
-		$lb = new LinkBatch();
+		$lb = $this->linkBatchFactory->newLinkBatch();
 		foreach ( $usersToCheck as $userId => $name ) {
 			if ( $this->queryNeeded( $userId, 'userpage', $options ) ) {
-				$lb->add( NS_USER, str_replace( ' ', '_', $row->user_name ) );
+				$lb->add( NS_USER, $name );
 				$this->typesCached[$userId]['userpage'] = 1;
 			}
 			if ( $this->queryNeeded( $userId, 'usertalk', $options ) ) {
-				$lb->add( NS_USER_TALK, str_replace( ' ', '_', $row->user_name ) );
+				$lb->add( NS_USER_TALK, $name );
 				$this->typesCached[$userId]['usertalk'] = 1;
 			}
 		}
 		$lb->execute();
-
-		wfProfileOut( __METHOD__ );
 	}
 
 	/**
 	 * Check if a cache type is in $options and was not loaded for this user
 	 *
-	 * @param $uid integer user ID
+	 * @param int $uid User ID
 	 * @param string $type Cache type
 	 * @param array $options Requested cache types
 	 * @return bool

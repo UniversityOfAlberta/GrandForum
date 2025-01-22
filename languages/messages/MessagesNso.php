@@ -1,18 +1,17 @@
 <?php
 /** Northern Sotho (Sesotho sa Leboa)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Kaganer
  * @author Mohau
  * @author Urhixidur
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Media',
 	NS_SPECIAL          => 'Special',
 	NS_TALK             => 'Bolediša',
@@ -29,16 +28,18 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Poledišano_ya_Thušo',
 	NS_CATEGORY         => 'Setensele',
 	NS_CATEGORY_TALK    => 'Poledišano_ya_Setensele',
-);
+];
 
-$magicWords = array(
-	'currentmonth'              => array( '1', 'KGWEDI_BJALE', 'CURRENTMONTH', 'CURRENTMONTH2' ),
-	'currentmonthname'          => array( '1', 'LEINA_KGWEDI_BJALE', 'CURRENTMONTHNAME' ),
-	'currentday'                => array( '1', 'LEHONO_LETSATSI', 'CURRENTDAY' ),
-	'currentday2'               => array( '1', 'LEHONO_LETSATSI2', 'CURRENTDAY2' ),
-	'currentdayname'            => array( '1', 'LEHONO_LETSATSILEINA', 'CURRENTDAYNAME' ),
-	'currentyear'               => array( '1', 'NGWAGA_BJALE', 'CURRENTYEAR' ),
-	'currenttime'               => array( '1', 'NAKO_BJALE', 'CURRENTTIME' ),
-	'currenthour'               => array( '1', 'IRI_BJALE', 'CURRENTHOUR' ),
-);
+/** @phpcs-require-sorted-array */
+$magicWords = [
+	'currentday'                => [ '1', 'LEHONO_LETSATSI', 'CURRENTDAY' ],
+	'currentday2'               => [ '1', 'LEHONO_LETSATSI2', 'CURRENTDAY2' ],
+	'currentdayname'            => [ '1', 'LEHONO_LETSATSILEINA', 'CURRENTDAYNAME' ],
+	'currenthour'               => [ '1', 'IRI_BJALE', 'CURRENTHOUR' ],
+	'currentmonth'              => [ '1', 'KGWEDI_BJALE', 'CURRENTMONTH', 'CURRENTMONTH2' ],
+	'currentmonthname'          => [ '1', 'LEINA_KGWEDI_BJALE', 'CURRENTMONTHNAME' ],
+	'currenttime'               => [ '1', 'NAKO_BJALE', 'CURRENTTIME' ],
+	'currentyear'               => [ '1', 'NGWAGA_BJALE', 'CURRENTYEAR' ],
+];
 
+$linkTrail = '/^([A-Za-zŠÔÊšôê]+)(.*)$/sDu';

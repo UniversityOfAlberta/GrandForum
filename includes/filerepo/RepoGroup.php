@@ -1,7 +1,5 @@
 <?php
 /**
- * Prioritized list of file repositories.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,11 +16,13 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup FileRepo
  */
 
+use MediaWiki\Linker\LinkTarget;
+use MediaWiki\Page\PageIdentity;
+
 /**
- * Prioritized list of file repositories
+ * Prioritized list of file repositories.
  *
  * @ingroup FileRepo
  */
@@ -33,6 +33,9 @@ class RepoGroup {
 	/** @var FileRepo[] */
 	protected $foreignRepos;
 
+	/** @var WANObjectCache */
+	protected $wanCache;
+
 	/** @var bool */
 	protected $reposInitialised = false;
 
@@ -42,103 +45,90 @@ class RepoGroup {
 	/** @var array */
 	protected $foreignInfo;
 
-	/** @var ProcessCacheLRU */
+	/** @var MapCacheLRU */
 	protected $cache;
 
-	/** @var RepoGroup */
-	protected static $instance;
-
 	/** Maximum number of cache items */
-	const MAX_CACHE_SIZE = 500;
+	private const MAX_CACHE_SIZE = 500;
+
+	/** @var MimeAnalyzer */
+	private $mimeAnalyzer;
 
 	/**
-	 * Get a RepoGroup instance. At present only one instance of RepoGroup is
-	 * needed in a MediaWiki invocation, this may change in the future.
-	 * @return RepoGroup
-	 */
-	static function singleton() {
-		if ( self::$instance ) {
-			return self::$instance;
-		}
-		global $wgLocalFileRepo, $wgForeignFileRepos;
-		self::$instance = new RepoGroup( $wgLocalFileRepo, $wgForeignFileRepos );
-
-		return self::$instance;
-	}
-
-	/**
-	 * Destroy the singleton instance, so that a new one will be created next
-	 * time singleton() is called.
-	 */
-	static function destroySingleton() {
-		self::$instance = null;
-	}
-
-	/**
-	 * Set the singleton instance to a given object
-	 * Used by extensions which hook into the Repo chain.
-	 * It's not enough to just create a superclass ... you have
-	 * to get people to call into it even though all they know is RepoGroup::singleton()
-	 *
-	 * @param RepoGroup $instance
-	 */
-	static function setSingleton( $instance ) {
-		self::$instance = $instance;
-	}
-
-	/**
-	 * Construct a group of file repositories.
+	 * Construct a group of file repositories. Do not call this -- use
+	 * MediaWikiServices::getRepoGroup.
 	 *
 	 * @param array $localInfo Associative array for local repo's info
-	 * @param array $foreignInfo of repository info arrays.
+	 * @param array $foreignInfo Array of repository info arrays.
 	 *   Each info array is an associative array with the 'class' member
 	 *   giving the class name. The entire array is passed to the repository
 	 *   constructor as the first parameter.
+	 * @param WANObjectCache $wanCache
+	 * @param MimeAnalyzer $mimeAnalyzer
 	 */
-	function __construct( $localInfo, $foreignInfo ) {
+	public function __construct(
+		$localInfo,
+		$foreignInfo,
+		WANObjectCache $wanCache,
+		MimeAnalyzer $mimeAnalyzer
+	) {
 		$this->localInfo = $localInfo;
 		$this->foreignInfo = $foreignInfo;
-		$this->cache = new ProcessCacheLRU( self::MAX_CACHE_SIZE );
+		$this->cache = new MapCacheLRU( self::MAX_CACHE_SIZE );
+		$this->wanCache = $wanCache;
+		$this->mimeAnalyzer = $mimeAnalyzer;
 	}
 
 	/**
 	 * Search repositories for an image.
-	 * You can also use wfFindFile() to do this.
 	 *
-	 * @param $title Title|string Title object or string
+	 * @param PageIdentity|LinkTarget|string $title The file to find
 	 * @param array $options Associative array of options:
 	 *   time:           requested time for an archived image, or false for the
 	 *                   current version. An image object will be returned which was
 	 *                   created at the specified time.
 	 *   ignoreRedirect: If true, do not follow file redirects
-	 *   private:        If true, return restricted (deleted) files if the current
-	 *                   user is allowed to view them. Otherwise, such files will not
-	 *                   be found.
-	 *   bypassCache:    If true, do not use the process-local cache of File objects
-	 * @return File|bool False if title is not found
+	 *   private:        If Authority object, return restricted (deleted) files if the
+	 *                   performer is allowed to view them. Otherwise, such files will not
+	 *                   be found. Authority is only accepted since 1.37, User was required
+	 *                   before.
+	 *   latest:         If true, load from the latest available data into File objects
+	 * @phpcs:ignore Generic.Files.LineLength
+	 * @phan-param array{time?:mixed,ignoreRedirect?:bool,private?:bool|MediaWiki\Permissions\Authority,latest?:bool} $options
+	 * @return File|false False if title is not found
 	 */
-	function findFile( $title, $options = array() ) {
+	public function findFile( $title, $options = [] ) {
 		if ( !is_array( $options ) ) {
 			// MW 1.15 compat
-			$options = array( 'time' => $options );
+			$options = [ 'time' => $options ];
 		}
+		if ( isset( $options['bypassCache'] ) ) {
+			$options['latest'] = $options['bypassCache']; // b/c
+		}
+		if ( isset( $options['time'] ) && $options['time'] !== false ) {
+			$options['time'] = wfTimestamp( TS_MW, $options['time'] );
+		} else {
+			$options['time'] = false;
+		}
+
 		if ( !$this->reposInitialised ) {
 			$this->initialiseRepos();
 		}
+
 		$title = File::normalizeTitle( $title );
 		if ( !$title ) {
 			return false;
 		}
 
 		# Check the cache
+		$dbkey = $title->getDBkey();
+		$timeKey = is_string( $options['time'] ) ? $options['time'] : '';
 		if ( empty( $options['ignoreRedirect'] )
 			&& empty( $options['private'] )
-			&& empty( $options['bypassCache'] )
+			&& empty( $options['latest'] )
 		) {
-			$time = isset( $options['time'] ) ? $options['time'] : '';
-			$dbkey = $title->getDBkey();
-			if ( $this->cache->has( $dbkey, $time, 60 ) ) {
-				return $this->cache->get( $dbkey, $time );
+			if ( $this->cache->hasField( $dbkey, $timeKey, 60 ) ) {
+				return $this->cache->getField( $dbkey, $timeKey );
 			}
 			$useCache = true;
 		} else {
@@ -158,10 +148,10 @@ class RepoGroup {
 			}
 		}
 
-		$image = $image ? $image : false; // type sanity
+		$image = $image instanceof File ? $image : false; // type check
 		# Cache file existence or non-existence
 		if ( $useCache && ( !$image || $image->isCacheable() ) ) {
-			$this->cache->set( $dbkey, $time, $image );
+			$this->cache->setField( $dbkey, $timeKey, $image );
 		}
 
 		return $image;
@@ -170,11 +160,11 @@ class RepoGroup {
 	/**
 	 * Search repositories for many files at once.
 	 *
-	 * @param array $items An array of titles, or an array of findFile() options with
+	 * @param array $inputItems An array of titles, or an array of findFile() options with
 	 *    the "title" option giving the title. Example:
 	 *
-	 *     $findItem = array( 'title' => $title, 'private' => true );
-	 *     $findBatch = array( $findItem );
+	 *     $findItem = [ 'title' => $title, 'private' => true ];
+	 *     $findBatch = [ $findItem ];
 	 *     $repo->findFiles( $findBatch );
 	 *
 	 *    No title should appear in $items twice, as the result use titles as keys
@@ -182,21 +172,17 @@ class RepoGroup {
 	 *     - FileRepo::NAME_AND_TIME_ONLY : return a (search title => (title,timestamp)) map.
 	 *       The search title uses the input titles; the other is the final post-redirect title.
 	 *       All titles are returned as string DB keys and the inner array is associative.
-	 * @return array Map of (file name => File objects) for matches
-	 *
-	 * @param array $inputItems
-	 * @param integer $flags
-	 * @return array
+	 * @return array Map of (file name => File objects) for matches or (search title => (title,timestamp))
 	 */
-	function findFiles( array $inputItems, $flags = 0 ) {
+	public function findFiles( array $inputItems, $flags = 0 ) {
 		if ( !$this->reposInitialised ) {
 			$this->initialiseRepos();
 		}
 
-		$items = array();
+		$items = [];
 		foreach ( $inputItems as $item ) {
 			if ( !is_array( $item ) ) {
-				$item = array( 'title' => $item );
+				$item = [ 'title' => $item ];
 			}
 			$item['title'] = File::normalizeTitle( $item['title'] );
 			if ( $item['title'] ) {
@@ -220,13 +206,15 @@ class RepoGroup {
 
 	/**
 	 * Interface for FileRepo::checkRedirect()
-	 * @param $title Title
-	 * @return bool
+	 * @param PageIdentity|LinkTarget|string $title
+	 * @return Title|false
 	 */
-	function checkRedirect( Title $title ) {
+	public function checkRedirect( $title ) {
 		if ( !$this->reposInitialised ) {
 			$this->initialiseRepos();
 		}
+
+		$title = File::normalizeTitle( $title );
 
 		$redir = $this->localRepo->checkRedirect( $title );
 		if ( $redir ) {
@@ -247,11 +235,11 @@ class RepoGroup {
 	 * Find an instance of the file with this key, created at the specified time
 	 * Returns false if the file does not exist.
 	 *
-	 * @param string $hash base 36 SHA-1 hash
+	 * @param string $hash Base 36 SHA-1 hash
 	 * @param array $options Option array, same as findFile()
-	 * @return File object or false if it is not found
+	 * @return File|false File object or false if it is not found
 	 */
-	function findFileFromKey( $hash, $options = array() ) {
+	public function findFileFromKey( $hash, $options = [] ) {
 		if ( !$this->reposInitialised ) {
 			$this->initialiseRepos();
 		}
@@ -272,10 +260,10 @@ class RepoGroup {
 	/**
 	 * Find all instances of files with this key
 	 *
-	 * @param string $hash base 36 SHA-1 hash
-	 * @return Array of File objects
+	 * @param string $hash Base 36 SHA-1 hash
+	 * @return File[]
 	 */
-	function findBySha1( $hash ) {
+	public function findBySha1( $hash ) {
 		if ( !$this->reposInitialised ) {
 			$this->initialiseRepos();
 		}
@@ -284,7 +272,7 @@ class RepoGroup {
 		foreach ( $this->foreignRepos as $repo ) {
 			$result = array_merge( $result, $repo->findBySha1( $hash ) );
 		}
-		usort( $result, 'File::compare' );
+		usort( $result, [ File::class, 'compare' ] );
 
 		return $result;
 	}
@@ -292,10 +280,10 @@ class RepoGroup {
 	/**
 	 * Find all instances of files with this keys
 	 *
-	 * @param array $hashes base 36 SHA-1 hashes
-	 * @return array of array of File objects
+	 * @param string[] $hashes Base 36 SHA-1 hashes
+	 * @return File[][]
 	 */
-	function findBySha1s( array $hashes ) {
+	public function findBySha1s( array $hashes ) {
 		if ( !$this->reposInitialised ) {
 			$this->initialiseRepos();
 		}
@@ -304,9 +292,9 @@ class RepoGroup {
 		foreach ( $this->foreignRepos as $repo ) {
 			$result = array_merge_recursive( $result, $repo->findBySha1s( $hashes ) );
 		}
-		//sort the merged (and presorted) sublist of each hash
+		// sort the merged (and presorted) sublist of each hash
 		foreach ( $result as $hash => $files ) {
-			usort( $result[$hash], 'File::compare' );
+			usort( $result[$hash], [ File::class, 'compare' ] );
 		}
 
 		return $result;
@@ -315,27 +303,24 @@ class RepoGroup {
 	/**
 	 * Get the repo instance with a given key.
 	 * @param string|int $index
-	 * @return bool|LocalRepo
+	 * @return FileRepo|false
 	 */
-	function getRepo( $index ) {
+	public function getRepo( $index ) {
 		if ( !$this->reposInitialised ) {
 			$this->initialiseRepos();
 		}
 		if ( $index === 'local' ) {
 			return $this->localRepo;
-		} elseif ( isset( $this->foreignRepos[$index] ) ) {
-			return $this->foreignRepos[$index];
-		} else {
-			return false;
 		}
+		return $this->foreignRepos[$index] ?? false;
 	}
 
 	/**
 	 * Get the repo instance by its name
 	 * @param string $name
-	 * @return bool
+	 * @return FileRepo|false
 	 */
-	function getRepoByName( $name ) {
+	public function getRepoByName( $name ) {
 		if ( !$this->reposInitialised ) {
 			$this->initialiseRepos();
 		}
@@ -354,7 +339,8 @@ class RepoGroup {
 	 *
 	 * @return LocalRepo
 	 */
-	function getLocalRepo() {
+	public function getLocalRepo() {
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
 		return $this->getRepo( 'local' );
 	}
 
@@ -366,10 +352,12 @@ class RepoGroup {
 	 * @param array $params Optional additional parameters to pass to the function
 	 * @return bool
 	 */
-	function forEachForeignRepo( $callback, $params = array() ) {
+	public function forEachForeignRepo( $callback, $params = [] ) {
+		if ( !$this->reposInitialised ) {
+			$this->initialiseRepos();
+		}
 		foreach ( $this->foreignRepos as $repo ) {
-			$args = array_merge( array( $repo ), $params );
-			if ( call_user_func_array( $callback, $args ) ) {
+			if ( $callback( $repo, ...$params ) ) {
 				return true;
 			}
 		}
@@ -381,31 +369,49 @@ class RepoGroup {
 	 * Does the installation have any foreign repos set up?
 	 * @return bool
 	 */
-	function hasForeignRepos() {
+	public function hasForeignRepos() {
+		if ( !$this->reposInitialised ) {
+			$this->initialiseRepos();
+		}
 		return (bool)$this->foreignRepos;
 	}
 
 	/**
 	 * Initialise the $repos array
 	 */
-	function initialiseRepos() {
+	public function initialiseRepos() {
 		if ( $this->reposInitialised ) {
 			return;
 		}
 		$this->reposInitialised = true;
 
 		$this->localRepo = $this->newRepo( $this->localInfo );
-		$this->foreignRepos = array();
+		$this->foreignRepos = [];
 		foreach ( $this->foreignInfo as $key => $info ) {
 			$this->foreignRepos[$key] = $this->newRepo( $info );
 		}
 	}
 
 	/**
+	 * Create a local repo with the specified option overrides.
+	 *
+	 * @param array $info
+	 * @return LocalRepo
+	 */
+	public function newCustomLocalRepo( $info = [] ) {
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
+		return $this->newRepo( $info + $this->localInfo );
+	}
+
+	/**
 	 * Create a repo class based on an info structure
+	 * @param array $info
+	 * @return FileRepo
 	 */
 	protected function newRepo( $info ) {
 		$class = $info['class'];
+
+		$info['wanCache'] = $this->wanCache;
 
 		return new $class( $info );
 	}
@@ -414,9 +420,9 @@ class RepoGroup {
 	 * Split a virtual URL into repo, zone and rel parts
 	 * @param string $url
 	 * @throws MWException
-	 * @return array containing repo, zone and rel
+	 * @return string[] Containing repo, zone and rel
 	 */
-	function splitVirtualUrl( $url ) {
+	private function splitVirtualUrl( $url ) {
 		if ( substr( $url, 0, 9 ) != 'mwrepo://' ) {
 			throw new MWException( __METHOD__ . ': unknown protocol' );
 		}
@@ -433,7 +439,7 @@ class RepoGroup {
 	 * @param string $fileName
 	 * @return array
 	 */
-	function getFileProps( $fileName ) {
+	public function getFileProps( $fileName ) {
 		if ( FileRepo::isVirtualUrl( $fileName ) ) {
 			list( $repoName, /* $zone */, /* $rel */ ) = $this->splitVirtualUrl( $fileName );
 			if ( $repoName === '' ) {
@@ -443,17 +449,21 @@ class RepoGroup {
 
 			return $repo->getFileProps( $fileName );
 		} else {
-			return FSFile::getPropsFromPath( $fileName );
+			$mwProps = new MWFileProps( $this->mimeAnalyzer );
+
+			return $mwProps->getPropsFromPath( $fileName, true );
 		}
 	}
 
 	/**
 	 * Clear RepoGroup process cache used for finding a file
-	 * @param Title|null $title Title of the file or null to clear all files
+	 * @param PageIdentity|string|null $title File page or file name, or null to clear all files
 	 */
-	public function clearCache( Title $title = null ) {
+	public function clearCache( $title = null ) {
 		if ( $title == null ) {
 			$this->cache->clear();
+		} elseif ( is_string( $title ) ) {
+			$this->cache->clear( $title );
 		} else {
 			$this->cache->clear( $title->getDBkey() );
 		}

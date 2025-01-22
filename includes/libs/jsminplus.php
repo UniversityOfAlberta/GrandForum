@@ -1,13 +1,14 @@
 <?php
+// phpcs:ignoreFile -- File external to MediaWiki. Ignore coding conventions checks.
 /**
  * JSMinPlus version 1.4
  *
  * Minifies a javascript file using a javascript parser
  *
  * This implements a PHP port of Brendan Eich's Narcissus open source javascript engine (in javascript)
- * References: http://en.wikipedia.org/wiki/Narcissus_(JavaScript_engine)
- * Narcissus sourcecode: http://mxr.mozilla.org/mozilla/source/js/narcissus/
- * JSMinPlus weblog: http://crisp.tweakblogs.net/blog/cat/716
+ * References: https://en.wikipedia.org/wiki/Narcissus_(JavaScript_engine)
+ * Narcissus sourcecode: https://mxr.mozilla.org/mozilla/source/js/narcissus/
+ * JSMinPlus weblog: https://crisp.tweakblogs.net/blog/cat/716
  *
  * Tino Zijdel <crisp@tweakers.net>
  *
@@ -908,7 +909,7 @@ class JSParser
 				}
 				else
 				{
-					$n->setup = $n2 ? $n2 : null;
+					$n->setup = $n2 ?: null;
 					$this->t->mustMatch(OP_SEMICOLON);
 					$n->condition = $this->t->peek() == OP_SEMICOLON ? null : $this->Expression($x);
 					$this->t->mustMatch(OP_SEMICOLON);
@@ -920,10 +921,10 @@ class JSParser
 			return $n;
 
 			case KEYWORD_WHILE:
-			        $n = new JSNode($this->t);
-			        $n->isLoop = true;
-			        $n->condition = $this->ParenExpression($x);
-			        $n->body = $this->nest($x, $n);
+				$n = new JSNode($this->t);
+				$n->isLoop = true;
+				$n->condition = $this->ParenExpression($x);
+				$n->body = $this->nest($x, $n);
 			return $n;
 
 			case KEYWORD_DO:
@@ -935,7 +936,7 @@ class JSParser
 				{
 					// <script language="JavaScript"> (without version hints) may need
 					// automatic semicolon insertion without a newline after do-while.
-					// See http://bugzilla.mozilla.org/show_bug.cgi?id=238945.
+					// See https://bugzilla.mozilla.org/show_bug.cgi?id=238945.
 					$this->t->match(OP_SEMICOLON);
 					return $n;
 				}
@@ -972,8 +973,6 @@ class JSParser
 					}
 					while (!$ss[$i]->isLoop && ($tt != KEYWORD_BREAK || $ss[$i]->type != KEYWORD_SWITCH));
 				}
-
-				$n->target = $ss[$i];
 			break;
 
 			case KEYWORD_TRY:
@@ -1016,7 +1015,7 @@ class JSParser
 
 			case KEYWORD_CATCH:
 			case KEYWORD_FINALLY:
-				throw $this->t->newSyntaxError($tt + ' without preceding try');
+				throw $this->t->newSyntaxError($tt . ' without preceding try');
 
 			case KEYWORD_THROW:
 				$n = new JSNode($this->t);
@@ -1043,7 +1042,7 @@ class JSParser
 
 			case KEYWORD_VAR:
 			case KEYWORD_CONST:
-			        $n = $this->Variables($x);
+				$n = $this->Variables($x);
 			break;
 
 			case TOKEN_CONDCOMMENT_START:
@@ -1058,7 +1057,6 @@ class JSParser
 			case TOKEN_NEWLINE:
 			case OP_SEMICOLON:
 				$n = new JSNode($this->t, OP_SEMICOLON);
-				$n->expression = null;
 			return $n;
 
 			default:
@@ -1293,7 +1291,10 @@ class JSParser
 
 					if ($tt == OP_DOT)
 					{
-						$this->t->mustMatch(TOKEN_IDENTIFIER);
+						$tt = $this->t->get();
+						if (!$this->isKeyword($tt) && $tt !== TOKEN_IDENTIFIER)
+							throw $this->t->newSyntaxError("Unexpected token; token identifier or keyword expected.");
+
 						array_push($operands, new JSNode($this->t, OP_DOT, array_pop($operands), new JSNode($this->t)));
 					}
 					else
@@ -1428,6 +1429,11 @@ class JSParser
 							}
 							else
 							{
+								// Accept keywords as property names by treating
+								// them similarly with identifiers
+								if ($this->isKeyword($tt))
+									$tt = TOKEN_IDENTIFIER;
+
 								switch ($tt)
 								{
 									case TOKEN_IDENTIFIER:
@@ -1574,7 +1580,7 @@ class JSParser
 	private function nest($x, $node, $end = false)
 	{
 		array_push($x->stmtStack, $node);
-		$n = $this->statement($x);
+		$n = $this->Statement($x);
 		array_pop($x->stmtStack);
 
 		if ($end)
@@ -1619,6 +1625,46 @@ class JSParser
 
 		return $n;
 	}
+
+	private function isKeyword($tt)
+	{
+		switch ($tt) {
+			case KEYWORD_BREAK:
+			case KEYWORD_CASE:
+			case KEYWORD_CATCH:
+			case KEYWORD_CONST:
+			case KEYWORD_CONTINUE:
+			case KEYWORD_DEBUGGER:
+			case KEYWORD_DEFAULT:
+			case KEYWORD_DELETE:
+			case KEYWORD_DO:
+			case KEYWORD_ELSE:
+			case KEYWORD_ENUM:
+			case KEYWORD_FALSE:
+			case KEYWORD_FINALLY:
+			case KEYWORD_FOR:
+			case KEYWORD_FUNCTION:
+			case KEYWORD_IF:
+			case KEYWORD_IN:
+			case KEYWORD_INSTANCEOF:
+			case KEYWORD_NEW:
+			case KEYWORD_NULL:
+			case KEYWORD_RETURN:
+			case KEYWORD_SWITCH:
+			case KEYWORD_THIS:
+			case KEYWORD_THROW:
+			case KEYWORD_TRUE:
+			case KEYWORD_TRY:
+			case KEYWORD_TYPEOF:
+			case KEYWORD_VAR:
+			case KEYWORD_VOID:
+			case KEYWORD_WHILE:
+			case KEYWORD_WITH:
+				return true;
+			default:
+				return false;
+		}
+	}
 }
 
 class JSCompilerContext
@@ -1652,12 +1698,13 @@ class JSNode
 	public $treeNodes = array();
 	public $funDecls = array();
 	public $varDecls = array();
+	public $expression = null;
 
-	public function __construct($t, $type=0)
+	public function __construct($t, $type=0, ...$nodes)
 	{
 		if ($token = $t->currentToken())
 		{
-			$this->type = $type ? $type : $token->type;
+			$this->type = $type ?: $token->type;
 			$this->value = $token->value;
 			$this->lineno = $token->lineno;
 			$this->start = $token->start;
@@ -1669,11 +1716,9 @@ class JSNode
 			$this->lineno = $t->lineno;
 		}
 
-		if (($numargs = func_num_args()) > 2)
+		foreach($nodes as $node)
 		{
-			$args = func_get_args();
-			for ($i = 2; $i < $numargs; $i++)
-				$this->addNode($args[$i]);
+			$this->addNode($node);
 		}
 	}
 
@@ -1753,7 +1798,7 @@ class JSTokenizer
 	public function init($source, $filename = '', $lineno = 1)
 	{
 		$this->source = $source;
-		$this->filename = $filename ? $filename : '[inline]';
+		$this->filename = $filename ?: '[inline]';
 		$this->lineno = $lineno;
 
 		$this->cursor = 0;
@@ -1784,7 +1829,7 @@ class JSTokenizer
 
 	public function mustMatch($tt)
 	{
-	        if (!$this->match($tt))
+		if (!$this->match($tt))
 			throw $this->newSyntaxError('Unexpected token; token ' . $tt . ' expected');
 
 		return $this->currentToken();
@@ -1915,7 +1960,7 @@ class JSTokenizer
 				break;
 
 				case "'":
-					if (preg_match('/^\'(?:[^\\\\\'\r\n]++|\\\\(?:.|\r?\n))*\'/', $input, $match))
+					if (preg_match('/^\'(?:[^\\\\\'\r\n]++|\\\\(?:.|\r?\n))*+\'/', $input, $match))
 					{
 						$tt = TOKEN_STRING;
 					}
@@ -1929,7 +1974,7 @@ class JSTokenizer
 				break;
 
 				case '"':
-					if (preg_match('/^"(?:[^\\\\"\r\n]++|\\\\(?:.|\r?\n))*"/', $input, $match))
+					if (preg_match('/^"(?:[^\\\\"\r\n]++|\\\\(?:.|\r?\n))*+"/', $input, $match))
 					{
 						$tt = TOKEN_STRING;
 					}
@@ -1943,7 +1988,7 @@ class JSTokenizer
 				break;
 
 				case '/':
-					if ($this->scanOperand && preg_match('/^\/((?:\\\\.|\[(?:\\\\.|[^\]])*\]|[^\/])+)\/([gimy]*)/', $input, $match))
+					if ($this->scanOperand && preg_match('/^\/((?:\\\\.|\[(?:\\\\.|[^\]])*\]|[^\/])++)\/([gimy]*)/', $input, $match))
 					{
 						$tt = TOKEN_REGEXP;
 						break;
@@ -2037,18 +2082,21 @@ class JSTokenizer
 						// Character classes per ECMA-262 edition 5.1 section 7.6
 						// Per spec, must accept Unicode 3.0, *may* accept later versions.
 						// We'll take whatever PCRE understands, which should be more recent.
-						$identifierStartChars = "\\p{L}\\p{Nl}" .  # UnicodeLetter
-						                        "\$" .
-						                        "_";
-						$identifierPartChars  = $identifierStartChars .
-						                        "\\p{Mn}\\p{Mc}" . # UnicodeCombiningMark
-						                        "\\p{Nd}" .        # UnicodeDigit
-						                        "\\p{Pc}";         # UnicodeConnectorPunctuation
+						$identifierStartChars =
+							"\\p{L}\\p{Nl}" .  # UnicodeLetter
+							"\$" .
+							"_";
+						$identifierPartChars  =
+							$identifierStartChars .
+							"\\p{Mn}\\p{Mc}" . # UnicodeCombiningMark
+							"\\p{Nd}" .        # UnicodeDigit
+							"\\p{Pc}";         # UnicodeConnectorPunctuation
 						$unicodeEscape = "\\\\u[0-9A-F-a-f]{4}";
-						$identifierRegex = "/^" .
-						                   "(?:[$identifierStartChars]|$unicodeEscape)" .
-						                   "(?:[$identifierPartChars]|$unicodeEscape)*" .
-						                   "/uS";
+						$identifierRegex =
+							"/^" .
+							"(?:[$identifierStartChars]|$unicodeEscape)" .
+							"(?:[$identifierPartChars]|$unicodeEscape)*" .
+							"/uS";
 						if (preg_match($identifierRegex, $input, $match))
 						{
 							if (strpos($match[0], '\\') !== false) {

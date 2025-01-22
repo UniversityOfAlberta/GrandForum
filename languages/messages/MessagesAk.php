@@ -1,15 +1,13 @@
 <?php
 /** Akan (Akan)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Media',
 	NS_SPECIAL          => 'Soronko',
 	NS_TALK             => 'Nkɔmmɔ',
@@ -26,5 +24,4 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Mmoa_nkɔmmɔbea',
 	NS_CATEGORY         => 'Nkyekyem',
 	NS_CATEGORY_TALK    => 'Nkyekyem_nkɔmmɔbea',
-);
-
+];

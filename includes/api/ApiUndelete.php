@@ -1,9 +1,5 @@
 <?php
 /**
- *
- *
- * Created on Jul 3, 2007
- *
  * Copyright © 2007 Roan Kattouw "<Firstname>.<Lastname>@gmail.com"
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,61 +20,126 @@
  * @file
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\Page\UndeletePage;
+use MediaWiki\Page\UndeletePageFactory;
+use MediaWiki\Page\WikiPageFactory;
+use MediaWiki\Permissions\Authority;
+use MediaWiki\User\UserOptionsLookup;
+use MediaWiki\Watchlist\WatchlistManager;
+use Wikimedia\ParamValidator\ParamValidator;
+
 /**
  * @ingroup API
  */
 class ApiUndelete extends ApiBase {
 
+	use ApiWatchlistTrait;
+
+	/** @var UndeletePageFactory */
+	private $undeletePageFactory;
+
+	/** @var WikiPageFactory */
+	private $wikiPageFactory;
+
+	/**
+	 * @param ApiMain $mainModule
+	 * @param string $moduleName
+	 * @param WatchlistManager $watchlistManager
+	 * @param UserOptionsLookup $userOptionsLookup
+	 * @param UndeletePageFactory $undeletePageFactory
+	 * @param WikiPageFactory $wikiPageFactory
+	 */
+	public function __construct(
+		ApiMain $mainModule,
+		$moduleName,
+		WatchlistManager $watchlistManager,
+		UserOptionsLookup $userOptionsLookup,
+		UndeletePageFactory $undeletePageFactory,
+		WikiPageFactory $wikiPageFactory
+	) {
+		parent::__construct( $mainModule, $moduleName );
+
+		// Variables needed in ApiWatchlistTrait trait
+		$this->watchlistExpiryEnabled = $this->getConfig()->get( MainConfigNames::WatchlistExpiry );
+		$this->watchlistMaxDuration =
+			$this->getConfig()->get( MainConfigNames::WatchlistExpiryMaxDuration );
+		$this->watchlistManager = $watchlistManager;
+		$this->userOptionsLookup = $userOptionsLookup;
+		$this->undeletePageFactory = $undeletePageFactory;
+		$this->wikiPageFactory = $wikiPageFactory;
+	}
+
 	public function execute() {
+		$this->useTransactionalTimeLimit();
+
 		$params = $this->extractRequestParams();
 
-		if ( !$this->getUser()->isAllowed( 'undelete' ) ) {
-			$this->dieUsageMsg( 'permdenied-undelete' );
-		}
-
-		if ( $this->getUser()->isBlocked() ) {
-			$this->dieUsageMsg( 'blockedtext' );
+		$user = $this->getUser();
+		$block = $user->getBlock( Authority::READ_LATEST );
+		if ( $block && $block->isSitewide() ) {
+			$this->dieBlocked( $block );
 		}
 
 		$titleObj = Title::newFromText( $params['title'] );
 		if ( !$titleObj || $titleObj->isExternal() ) {
-			$this->dieUsageMsg( array( 'invalidtitle', $params['title'] ) );
+			$this->dieWithError( [ 'apierror-invalidtitle', wfEscapeWikiText( $params['title'] ) ] );
 		}
 
 		// Convert timestamps
 		if ( !isset( $params['timestamps'] ) ) {
-			$params['timestamps'] = array();
+			$params['timestamps'] = [];
 		}
 		if ( !is_array( $params['timestamps'] ) ) {
-			$params['timestamps'] = array( $params['timestamps'] );
+			$params['timestamps'] = [ $params['timestamps'] ];
 		}
 		foreach ( $params['timestamps'] as $i => $ts ) {
 			$params['timestamps'][$i] = wfTimestamp( TS_MW, $ts );
 		}
 
-		$pa = new PageArchive( $titleObj );
-		$retval = $pa->undelete(
-			( isset( $params['timestamps'] ) ? $params['timestamps'] : array() ),
-			$params['reason'],
-			array(),
-			false,
-			$this->getUser()
-		);
-		if ( !is_array( $retval ) ) {
-			$this->dieUsageMsg( 'cannotundelete' );
+		$undeletePage = $this->undeletePageFactory->newUndeletePage(
+				$this->wikiPageFactory->newFromTitle( $titleObj ),
+				$this->getAuthority()
+			)
+			->setUndeleteOnlyTimestamps( $params['timestamps'] ?? [] )
+			->setUndeleteOnlyFileVersions( $params['fileids'] ?: [] )
+			->setTags( $params['tags'] ?: [] );
+
+		if ( $params['undeletetalk'] ) {
+			$undeletePage->setUndeleteAssociatedTalk( true );
 		}
 
-		if ( $retval[1] ) {
-			wfRunHooks( 'FileUndeleteComplete',
-				array( $titleObj, array(), $this->getUser(), $params['reason'] ) );
+		$status = $undeletePage->undeleteIfAllowed( $params['reason'] );
+		if ( $status->isOK() ) {
+			// in case there are warnings
+			$this->addMessagesFromStatus( $status );
+		} else {
+			$this->dieStatus( $status );
 		}
 
-		$this->setWatch( $params['watchlist'], $titleObj );
+		$restoredRevs = $status->getValue()[UndeletePage::REVISIONS_RESTORED];
+		$restoredFiles = $status->getValue()[UndeletePage::FILES_RESTORED];
 
-		$info['title'] = $titleObj->getPrefixedText();
-		$info['revisions'] = intval( $retval[0] );
-		$info['fileversions'] = intval( $retval[1] );
-		$info['reason'] = $retval[2];
+		if ( $restoredRevs === 0 && $restoredFiles === 0 ) {
+			// BC for code that predates UndeletePage
+			$this->dieWithError( 'apierror-cantundelete' );
+		}
+
+		if ( $restoredFiles ) {
+			$this->getHookRunner()->onFileUndeleteComplete(
+				$titleObj, $params['fileids'],
+				$this->getUser(), $params['reason'] );
+		}
+
+		$watchlistExpiry = $this->getExpiryFromParams( $params );
+		$this->setWatch( $params['watchlist'], $titleObj, $user, null, $watchlistExpiry );
+
+		$info = [
+			'title' => $titleObj->getPrefixedText(),
+			'revisions' => $restoredRevs,
+			'fileversions' => $restoredFiles,
+			'reason' => $params['reason']
+		];
 		$this->getResult()->addValue( null, $this->getModuleName(), $info );
 	}
 
@@ -91,87 +152,46 @@ class ApiUndelete extends ApiBase {
 	}
 
 	public function getAllowedParams() {
-		return array(
-			'title' => array(
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true
-			),
-			'token' => array(
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true
-			),
+		return [
+			'title' => [
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => true
+			],
 			'reason' => '',
-			'timestamps' => array(
-				ApiBase::PARAM_TYPE => 'timestamp',
-				ApiBase::PARAM_ISMULTI => true,
-			),
-			'watchlist' => array(
-				ApiBase::PARAM_DFLT => 'preferences',
-				ApiBase::PARAM_TYPE => array(
-					'watch',
-					'unwatch',
-					'preferences',
-					'nochange'
-				),
-			),
-		);
-	}
-
-	public function getParamDescription() {
-		return array(
-			'title' => 'Title of the page you want to restore',
-			'token' => 'An undelete token previously retrieved through list=deletedrevs',
-			'reason' => 'Reason for restoring',
-			'timestamps' => 'Timestamps of the revisions to restore. If not set, all ' .
-				'revisions will be restored.',
-			'watchlist' => 'Unconditionally add or remove the page from your ' .
-				'watchlist, use preferences or do not change watch',
-		);
-	}
-
-	public function getResultProperties() {
-		return array(
-			'' => array(
-				'title' => 'string',
-				'revisions' => 'integer',
-				'filerevisions' => 'integer',
-				'reason' => 'string'
-			)
-		);
-	}
-
-	public function getDescription() {
-		return array(
-			'Restore certain revisions of a deleted page. A list of deleted revisions ',
-			'(including timestamps) can be retrieved through list=deletedrevs.'
-		);
-	}
-
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-			array( 'permdenied-undelete' ),
-			array( 'blockedtext' ),
-			array( 'invalidtitle', 'title' ),
-			array( 'cannotundelete' ),
-		) );
+			'tags' => [
+				ParamValidator::PARAM_TYPE => 'tags',
+				ParamValidator::PARAM_ISMULTI => true,
+			],
+			'timestamps' => [
+				ParamValidator::PARAM_TYPE => 'timestamp',
+				ParamValidator::PARAM_ISMULTI => true,
+			],
+			'fileids' => [
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_ISMULTI => true,
+			],
+			'undeletetalk' => false,
+		] + $this->getWatchlistParams();
 	}
 
 	public function needsToken() {
-		return true;
+		return 'csrf';
 	}
 
-	public function getTokenSalt() {
-		return '';
-	}
+	protected function getExamplesMessages() {
+		$title = Title::newMainPage()->getPrefixedText();
+		$mp = rawurlencode( $title );
 
-	public function getExamples() {
-		return array(
-			'api.php?action=undelete&title=Main%20Page&token=123ABC&reason=Restoring%20main%20page',
-			'api.php?action=undelete&title=Main%20Page&token=123ABC&timestamps=20070703220045|20070702194856'
-		);
+		return [
+			"action=undelete&title={$mp}&token=123ABC&reason=Restoring%20{$mp}"
+				=> 'apihelp-undelete-example-page',
+			"action=undelete&title={$mp}&token=123ABC" .
+				'&timestamps=2007-07-03T22:00:45Z|2007-07-02T19:48:56Z'
+				=> 'apihelp-undelete-example-revisions',
+		];
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/API:Undelete';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Undelete';
 	}
 }

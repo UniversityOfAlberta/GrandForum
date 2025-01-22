@@ -1,11 +1,10 @@
 <?php
 /** Moldavian (молдовеняскэ)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Comp1089
  * @author Node ue
@@ -14,9 +13,9 @@
 
 $fallback = 'ro';
 
-$specialPageAliases = array(
-	'CreateAccount'             => array( 'КреареКонт' ),
-	'Preferences'               => array( 'Преферинце' ),
-	'Recentchanges'             => array( 'Модификэрьреченте' ),
-);
-
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'CreateAccount'             => [ 'КреареКонт' ],
+	'Preferences'               => [ 'Преферинце' ],
+	'Recentchanges'             => [ 'Модификэрьреченте' ],
+];

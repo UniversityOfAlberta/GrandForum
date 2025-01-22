@@ -21,10 +21,12 @@
  * @ingroup Maintenance
  */
 
+use Wikimedia\AtEase\AtEase;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
- * Maintenance script to do test JavaScript validity parses using jsmin+'s parser
+ * Maintenance script to test JavaScript validity using JsMinPlus' parser
  *
  * @ingroup Maintenance
  */
@@ -33,23 +35,21 @@ class JSParseHelper extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Runs parsing/syntax checks on JavaScript files";
+		$this->addDescription( 'Runs parsing/syntax checks on JavaScript files' );
 		$this->addArg( 'file(s)', 'JavaScript file to test', false );
 	}
 
 	public function execute() {
-		if ( $this->hasArg() ) {
-			$files = $this->mArgs;
-		} else {
-			$this->maybeHelp( true ); // @todo fixme this is a lame API :)
-			exit( 1 ); // it should exit from the above first...
+		if ( !$this->hasArg( 0 ) ) {
+			$this->maybeHelp( true );
 		}
+		$files = $this->mArgs;
 
 		$parser = new JSParser();
 		foreach ( $files as $filename ) {
-			wfSuppressWarnings();
+			AtEase::suppressWarnings();
 			$js = file_get_contents( $filename );
-			wfRestoreWarnings();
+			AtEase::restoreWarnings();
 			if ( $js === false ) {
 				$this->output( "$filename ERROR: could not read file\n" );
 				$this->errs++;
@@ -68,10 +68,10 @@ class JSParseHelper extends Maintenance {
 		}
 
 		if ( $this->errs > 0 ) {
-			exit( 1 );
+			$this->fatalError( 'Failed.' );
 		}
 	}
 }
 
-$maintClass = "JSParseHelper";
+$maintClass = JSParseHelper::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

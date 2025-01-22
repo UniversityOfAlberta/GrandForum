@@ -21,6 +21,9 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\SlotRecord;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -31,26 +34,29 @@ require_once __DIR__ . '/Maintenance.php';
 class CheckBadRedirects extends Maintenance {
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Check for bad redirects";
+		$this->addDescription( 'Check for bad redirects' );
 	}
 
 	public function execute() {
 		$this->output( "Fetching redirects...\n" );
-		$dbr = wfGetDB( DB_SLAVE );
-		$result = $dbr->select(
-			array( 'page' ),
-			array( 'page_namespace', 'page_title', 'page_latest' ),
-			array( 'page_is_redirect' => 1 ) );
+		$dbr = $this->getDB( DB_REPLICA );
+		$result = $dbr->newSelectQueryBuilder()
+			->select( [ 'page_namespace', 'page_title', 'page_latest' ] )
+			->from( 'page' )
+			->where( [ 'page_is_redirect' => 1 ] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$count = $result->numRows();
 		$this->output( "Found $count redirects.\n" .
-						"Checking for bad redirects:\n\n" );
+			"Checking for bad redirects:\n\n" );
 
+		$revLookup = MediaWikiServices::getInstance()->getRevisionLookup();
 		foreach ( $result as $row ) {
 			$title = Title::makeTitle( $row->page_namespace, $row->page_title );
-			$rev = Revision::newFromId( $row->page_latest );
-			if ( $rev ) {
-				$target = $rev->getContent()->getRedirectTarget();
+			$revRecord = $revLookup->getRevisionById( $row->page_latest );
+			if ( $revRecord ) {
+				$target = $revRecord->getContent( SlotRecord::MAIN )->getRedirectTarget();
 				if ( !$target ) {
 					$this->output( $title->getPrefixedText() . "\n" );
 				}
@@ -60,5 +66,5 @@ class CheckBadRedirects extends Maintenance {
 	}
 }
 
-$maintClass = "CheckBadRedirects";
+$maintClass = CheckBadRedirects::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

@@ -1,9 +1,5 @@
 <?php
 /**
- *
- *
- * Created on Sep 4, 2007
- *
  * Copyright © 2007 Roan Kattouw "<Firstname>.<Lastname>@gmail.com"
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +20,25 @@
  * @file
  */
 
+use MediaWiki\Block\AbstractBlock;
+use MediaWiki\Block\BlockActionInfo;
+use MediaWiki\Block\BlockPermissionCheckerFactory;
+use MediaWiki\Block\BlockUserFactory;
+use MediaWiki\Block\BlockUtils;
+use MediaWiki\Block\DatabaseBlock;
+use MediaWiki\Block\Restriction\ActionRestriction;
+use MediaWiki\Block\Restriction\NamespaceRestriction;
+use MediaWiki\Block\Restriction\PageRestriction;
+use MediaWiki\MainConfigNames;
+use MediaWiki\ParamValidator\TypeDef\TitleDef;
+use MediaWiki\ParamValidator\TypeDef\UserDef;
+use MediaWiki\User\UserIdentity;
+use MediaWiki\User\UserIdentityLookup;
+use MediaWiki\User\UserOptionsLookup;
+use MediaWiki\Watchlist\WatchlistManager;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\ExpiryDef;
+
 /**
  * API module that facilitates the blocking of users. Requires API write mode
  * to be enabled.
@@ -32,6 +47,74 @@
  */
 class ApiBlock extends ApiBase {
 
+	use ApiBlockInfoTrait;
+	use ApiWatchlistTrait;
+
+	/** @var BlockPermissionCheckerFactory */
+	private $blockPermissionCheckerFactory;
+
+	/** @var BlockUserFactory */
+	private $blockUserFactory;
+
+	/** @var TitleFactory */
+	private $titleFactory;
+
+	/** @var UserIdentityLookup */
+	private $userIdentityLookup;
+
+	/** @var WatchedItemStoreInterface */
+	private $watchedItemStore;
+
+	/** @var BlockUtils */
+	private $blockUtils;
+
+	/** @var BlockActionInfo */
+	private $blockActionInfo;
+
+	/**
+	 * @param ApiMain $main
+	 * @param string $action
+	 * @param BlockPermissionCheckerFactory $blockPermissionCheckerFactory
+	 * @param BlockUserFactory $blockUserFactory
+	 * @param TitleFactory $titleFactory
+	 * @param UserIdentityLookup $userIdentityLookup
+	 * @param WatchedItemStoreInterface $watchedItemStore
+	 * @param BlockUtils $blockUtils
+	 * @param BlockActionInfo $blockActionInfo
+	 * @param WatchlistManager $watchlistManager
+	 * @param UserOptionsLookup $userOptionsLookup
+	 */
+	public function __construct(
+		ApiMain $main,
+		$action,
+		BlockPermissionCheckerFactory $blockPermissionCheckerFactory,
+		BlockUserFactory $blockUserFactory,
+		TitleFactory $titleFactory,
+		UserIdentityLookup $userIdentityLookup,
+		WatchedItemStoreInterface $watchedItemStore,
+		BlockUtils $blockUtils,
+		BlockActionInfo $blockActionInfo,
+		WatchlistManager $watchlistManager,
+		UserOptionsLookup $userOptionsLookup
+	) {
+		parent::__construct( $main, $action );
+
+		$this->blockPermissionCheckerFactory = $blockPermissionCheckerFactory;
+		$this->blockUserFactory = $blockUserFactory;
+		$this->titleFactory = $titleFactory;
+		$this->userIdentityLookup = $userIdentityLookup;
+		$this->watchedItemStore = $watchedItemStore;
+		$this->blockUtils = $blockUtils;
+		$this->blockActionInfo = $blockActionInfo;
+
+		// Variables needed in ApiWatchlistTrait trait
+		$this->watchlistExpiryEnabled = $this->getConfig()->get( MainConfigNames::WatchlistExpiry );
+		$this->watchlistMaxDuration =
+			$this->getConfig()->get( MainConfigNames::WatchlistExpiryMaxDuration );
+		$this->watchlistManager = $watchlistManager;
+		$this->userOptionsLookup = $userOptionsLookup;
+	}
+
 	/**
 	 * Blocks the user specified in the parameters for the given expiry, with the
 	 * given reason, and with all other settings provided in the params. If the block
@@ -39,100 +122,119 @@ class ApiBlock extends ApiBase {
 	 * of success. If it fails, the result will specify the nature of the error.
 	 */
 	public function execute() {
-		$user = $this->getUser();
+		$this->checkUserRightsAny( 'block' );
 		$params = $this->extractRequestParams();
+		$this->requireOnlyOneParameter( $params, 'user', 'userid' );
 
-		if ( !$user->isAllowed( 'block' ) ) {
-			$this->dieUsageMsg( 'cantblock' );
+		// Make sure $target contains a parsed target
+		if ( $params['user'] !== null ) {
+			$target = $params['user'];
+		} else {
+			$target = $this->userIdentityLookup->getUserIdentityByUserId( $params['userid'] );
+			if ( !$target ) {
+				$this->dieWithError( [ 'apierror-nosuchuserid', $params['userid'] ], 'nosuchuserid' );
+			}
+		}
+		list( $target, $targetType ) = $this->blockUtils->parseBlockTarget( $target );
+
+		if (
+			$params['noemail'] &&
+			!$this->blockPermissionCheckerFactory
+				->newBlockPermissionChecker(
+					$target,
+					$this->getAuthority()
+				)
+				->checkEmailPermissions()
+		) {
+			$this->dieWithError( 'apierror-cantblock-email' );
 		}
 
-		# bug 15810: blocked admins should have limited access here
-		if ( $user->isBlocked() ) {
-			$status = SpecialBlock::checkUnblockSelf( $params['user'], $user );
-			if ( $status !== true ) {
-				$this->dieUsageMsg( array( $status ) );
+		$restrictions = [];
+		if ( $params['partial'] ) {
+			$pageRestrictions = array_map(
+				[ PageRestriction::class, 'newFromTitle' ],
+				(array)$params['pagerestrictions']
+			);
+
+			$namespaceRestrictions = array_map( static function ( $id ) {
+				return new NamespaceRestriction( 0, $id );
+			}, (array)$params['namespacerestrictions'] );
+			$restrictions = array_merge( $pageRestrictions, $namespaceRestrictions );
+
+			if ( $this->getConfig()->get( MainConfigNames::EnablePartialActionBlocks ) ) {
+				$actionRestrictions = array_map( function ( $action ) {
+					return new ActionRestriction( 0, $this->blockActionInfo->getIdFromAction( $action ) );
+				}, (array)$params['actionrestrictions'] );
+				$restrictions = array_merge( $restrictions, $actionRestrictions );
 			}
 		}
 
-		$target = User::newFromName( $params['user'] );
-		// Bug 38633 - if the target is a user (not an IP address), but it
-		// doesn't exist or is unusable, error.
-		if ( $target instanceof User &&
-			( $target->isAnon() /* doesn't exist */ || !User::isUsableName( $target->getName() ) )
-		) {
-			$this->dieUsageMsg( array( 'nosuchuser', $params['user'] ) );
+		$status = $this->blockUserFactory->newBlockUser(
+			$target,
+			$this->getAuthority(),
+			$params['expiry'],
+			$params['reason'],
+			[
+				'isCreateAccountBlocked' => $params['nocreate'],
+				'isEmailBlocked' => $params['noemail'],
+				'isHardBlock' => !$params['anononly'],
+				'isAutoblocking' => $params['autoblock'],
+				'isUserTalkEditBlocked' => !$params['allowusertalk'],
+				'isHideUser' => $params['hidename'],
+				'isPartial' => $params['partial'],
+			],
+			$restrictions,
+			$params['tags']
+		)->placeBlock( $params['reblock'] );
+
+		if ( !$status->isOK() ) {
+			$this->dieStatus( $status );
 		}
 
-		if ( $params['hidename'] && !$user->isAllowed( 'hideuser' ) ) {
-			$this->dieUsageMsg( 'canthide' );
-		}
-		if ( $params['noemail'] && !SpecialBlock::canBlockEmail( $user ) ) {
-			$this->dieUsageMsg( 'cantblock-email' );
-		}
+		$block = $status->value;
 
-		$data = array(
-			'PreviousTarget' => $params['user'],
-			'Target' => $params['user'],
-			'Reason' => array(
-				$params['reason'],
-				'other',
-				$params['reason']
-			),
-			'Expiry' => $params['expiry'] == 'never' ? 'infinite' : $params['expiry'],
-			'HardBlock' => !$params['anononly'],
-			'CreateAccount' => $params['nocreate'],
-			'AutoBlock' => $params['autoblock'],
-			'DisableEmail' => $params['noemail'],
-			'HideUser' => $params['hidename'],
-			'DisableUTEdit' => !$params['allowusertalk'],
-			'Reblock' => $params['reblock'],
-			'Watch' => $params['watchuser'],
-			'Confirm' => true,
-		);
+		$watchlistExpiry = $this->getExpiryFromParams( $params );
+		$userPage = Title::makeTitle( NS_USER, $block->getTargetName() );
 
-		$retval = SpecialBlock::processForm( $data, $this->getContext() );
-		if ( $retval !== true ) {
-			// We don't care about multiple errors, just report one of them
-			$this->dieUsageMsg( $retval );
+		if ( $params['watchuser'] && $targetType !== AbstractBlock::TYPE_RANGE ) {
+			$this->setWatch( 'watch', $userPage, $this->getUser(), null, $watchlistExpiry );
 		}
 
-		list( $target, /*...*/ ) = SpecialBlock::getTargetAndType( $params['user'] );
-		$res['user'] = $params['user'];
-		$res['userID'] = $target instanceof User ? $target->getId() : 0;
+		$res = [];
 
-		$block = Block::newFromTarget( $target );
-		if ( $block instanceof Block ) {
-			$res['expiry'] = $block->mExpiry == $this->getDB()->getInfinity()
-				? 'infinite'
-				: wfTimestamp( TS_ISO_8601, $block->mExpiry );
+		$res['user'] = $block->getTargetName();
+		$res['userID'] = $target instanceof UserIdentity ? $target->getId() : 0;
+
+		if ( $block instanceof DatabaseBlock ) {
+			$res['expiry'] = ApiResult::formatExpiry( $block->getExpiry(), 'infinite' );
 			$res['id'] = $block->getId();
 		} else {
 			# should be unreachable
-			$res['expiry'] = '';
-			$res['id'] = '';
+			$res['expiry'] = ''; // @codeCoverageIgnore
+			$res['id'] = ''; // @codeCoverageIgnore
 		}
 
 		$res['reason'] = $params['reason'];
-		if ( $params['anononly'] ) {
-			$res['anononly'] = '';
+		$res['anononly'] = $params['anononly'];
+		$res['nocreate'] = $params['nocreate'];
+		$res['autoblock'] = $params['autoblock'];
+		$res['noemail'] = $params['noemail'];
+		$res['hidename'] = $params['hidename'];
+		$res['allowusertalk'] = $params['allowusertalk'];
+		$res['watchuser'] = $params['watchuser'];
+		if ( $watchlistExpiry ) {
+			$expiry = $this->getWatchlistExpiry(
+				$this->watchedItemStore,
+				$userPage,
+				$this->getUser()
+			);
+			$res['watchlistexpiry'] = $expiry;
 		}
-		if ( $params['nocreate'] ) {
-			$res['nocreate'] = '';
-		}
-		if ( $params['autoblock'] ) {
-			$res['autoblock'] = '';
-		}
-		if ( $params['noemail'] ) {
-			$res['noemail'] = '';
-		}
-		if ( $params['hidename'] ) {
-			$res['hidename'] = '';
-		}
-		if ( $params['allowusertalk'] ) {
-			$res['allowusertalk'] = '';
-		}
-		if ( $params['watchuser'] ) {
-			$res['watchuser'] = '';
+		$res['partial'] = $params['partial'];
+		$res['pagerestrictions'] = $params['pagerestrictions'];
+		$res['namespacerestrictions'] = $params['namespacerestrictions'];
+		if ( $this->getConfig()->get( MainConfigNames::EnablePartialActionBlocks ) ) {
+			$res['actionrestrictions'] = $params['actionrestrictions'];
 		}
 
 		$this->getResult()->addValue( null, $this->getModuleName(), $res );
@@ -147,12 +249,15 @@ class ApiBlock extends ApiBase {
 	}
 
 	public function getAllowedParams() {
-		return array(
-			'user' => array(
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true
-			),
-			'token' => null,
+		$params = [
+			'user' => [
+				ParamValidator::PARAM_TYPE => 'user',
+				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name', 'ip', 'cidr', 'id' ],
+			],
+			'userid' => [
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_DEPRECATED => true,
+			],
 			'expiry' => 'never',
 			'reason' => '',
 			'anononly' => false,
@@ -163,94 +268,77 @@ class ApiBlock extends ApiBase {
 			'allowusertalk' => false,
 			'reblock' => false,
 			'watchuser' => false,
-		);
-	}
+		];
 
-	public function getParamDescription() {
-		return array(
-			'user' => 'Username, IP address or IP range you want to block',
-			'token' => 'A block token previously obtained through prop=info',
-			'expiry' => 'Relative expiry time, e.g. \'5 months\' or \'2 weeks\'. ' .
-				'If set to \'infinite\', \'indefinite\' or \'never\', the block will never expire.',
-			'reason' => 'Reason for block',
-			'anononly' => 'Block anonymous users only (i.e. disable anonymous edits for this IP)',
-			'nocreate' => 'Prevent account creation',
-			'autoblock' => 'Automatically block the last used IP address, and ' .
-				'any subsequent IP addresses they try to login from',
-			'noemail'
-				=> 'Prevent user from sending email through the wiki. (Requires the "blockemail" right.)',
-			'hidename' => 'Hide the username from the block log. (Requires the "hideuser" right.)',
-			'allowusertalk'
-				=> 'Allow the user to edit their own talk page (depends on $wgBlockAllowsUTEdit)',
-			'reblock' => 'If the user is already blocked, overwrite the existing block',
-			'watchuser' => 'Watch the user/IP\'s user and talk pages',
-		);
-	}
+		// Params appear in the docs in the order they are defined,
+		// which is why this is here and not at the bottom.
+		// @todo Find better way to support insertion at arbitrary position
+		if ( $this->watchlistExpiryEnabled ) {
+			$params += [
+				'watchlistexpiry' => [
+					ParamValidator::PARAM_TYPE => 'expiry',
+					ExpiryDef::PARAM_MAX => $this->watchlistMaxDuration,
+					ExpiryDef::PARAM_USE_MAX => true,
+				]
+			];
+		}
 
-	public function getResultProperties() {
-		return array(
-			'' => array(
-				'user' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'userID' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'expiry' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'id' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'reason' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'anononly' => 'boolean',
-				'nocreate' => 'boolean',
-				'autoblock' => 'boolean',
-				'noemail' => 'boolean',
-				'hidename' => 'boolean',
-				'allowusertalk' => 'boolean',
-				'watchuser' => 'boolean'
-			)
-		);
-	}
+		$params += [
+			'tags' => [
+				ParamValidator::PARAM_TYPE => 'tags',
+				ParamValidator::PARAM_ISMULTI => true,
+			],
+			'partial' => false,
+			'pagerestrictions' => [
+				ParamValidator::PARAM_TYPE => 'title',
+				TitleDef::PARAM_MUST_EXIST => true,
 
-	public function getDescription() {
-		return 'Block a user.';
-	}
+				// TODO: TitleDef returns instances of TitleValue when PARAM_RETURN_OBJECT is
+				// truthy. At the time of writing,
+				// MediaWiki\Block\Restriction\PageRestriction::newFromTitle accepts either
+				// string or instance of Title.
+				//TitleDef::PARAM_RETURN_OBJECT => true,
 
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-			array( 'cantblock' ),
-			array( 'canthide' ),
-			array( 'cantblock-email' ),
-			array( 'ipbblocked' ),
-			array( 'ipbnounblockself' ),
-		) );
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ISMULTI_LIMIT1 => 10,
+				ParamValidator::PARAM_ISMULTI_LIMIT2 => 10,
+			],
+			'namespacerestrictions' => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'namespace',
+			],
+		];
+
+		if ( $this->getConfig()->get( MainConfigNames::EnablePartialActionBlocks ) ) {
+			$params += [
+				'actionrestrictions' => [
+					ParamValidator::PARAM_ISMULTI => true,
+					ParamValidator::PARAM_TYPE => array_keys(
+						$this->blockActionInfo->getAllBlockActions()
+					),
+				],
+			];
+		}
+
+		return $params;
 	}
 
 	public function needsToken() {
-		return true;
+		return 'csrf';
 	}
 
-	public function getTokenSalt() {
-		return '';
-	}
-
-	public function getExamples() {
-		return array(
-			'api.php?action=block&user=123.5.5.12&expiry=3%20days&reason=First%20strike',
-			'api.php?action=block&user=Vandal&expiry=never&reason=Vandalism&nocreate=&autoblock=&noemail='
-		);
+	protected function getExamplesMessages() {
+		// phpcs:disable Generic.Files.LineLength
+		return [
+			'action=block&user=192.0.2.5&expiry=3%20days&reason=First%20strike&token=123ABC'
+				=> 'apihelp-block-example-ip-simple',
+			'action=block&user=Vandal&expiry=never&reason=Vandalism&nocreate=&autoblock=&noemail=&token=123ABC'
+				=> 'apihelp-block-example-user-complex',
+		];
+		// phpcs:enable
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/API:Block';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Block';
 	}
 }

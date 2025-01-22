@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +24,27 @@
  * @ingroup API
  */
 class ApiQueryPrefixSearch extends ApiQueryGeneratorBase {
-	public function __construct( $query, $moduleName ) {
+	use SearchApi;
+
+	/** @var array list of api allowed params */
+	private $allowedParams;
+
+	/**
+	 * @param ApiQuery $query
+	 * @param string $moduleName
+	 * @param SearchEngineConfig $searchEngineConfig
+	 * @param SearchEngineFactory $searchEngineFactory
+	 */
+	public function __construct(
+		ApiQuery $query,
+		$moduleName,
+		SearchEngineConfig $searchEngineConfig,
+		SearchEngineFactory $searchEngineFactory
+	) {
 		parent::__construct( $query, $moduleName, 'ps' );
+		// Services needed in SearchApi trait
+		$this->searchEngineConfig = $searchEngineConfig;
+		$this->searchEngineFactory = $searchEngineFactory;
 	}
 
 	public function execute() {
@@ -36,40 +56,55 @@ class ApiQueryPrefixSearch extends ApiQueryGeneratorBase {
 	}
 
 	/**
-	 * @param $resultPageSet ApiPageSet
+	 * @param ApiPageSet|null $resultPageSet
 	 */
 	private function run( $resultPageSet = null ) {
 		$params = $this->extractRequestParams();
 		$search = $params['search'];
 		$limit = $params['limit'];
-		$namespaces = $params['namespace'];
+		$offset = $params['offset'];
 
-		$searcher = new TitlePrefixSearch;
-		$titles = $searcher->searchWithVariants( $search, $limit, $namespaces );
+		$searchEngine = $this->buildSearchEngine( $params );
+		$suggestions = $searchEngine->completionSearchWithVariants( $search );
+		$titles = $searchEngine->extractTitles( $suggestions );
+
+		if ( $suggestions->hasMoreResults() ) {
+			$this->setContinueEnumParameter( 'offset', $offset + $limit );
+		}
+
 		if ( $resultPageSet ) {
+			$resultPageSet->setRedirectMergePolicy( static function ( array $current, array $new ) {
+				if ( !isset( $current['index'] ) || $new['index'] < $current['index'] ) {
+					$current['index'] = $new['index'];
+				}
+				return $current;
+			} );
 			$resultPageSet->populateFromTitles( $titles );
+			foreach ( $titles as $index => $title ) {
+				$resultPageSet->setGeneratorData( $title, [ 'index' => $index + $offset + 1 ] );
+			}
 		} else {
 			$result = $this->getResult();
+			$count = 0;
 			foreach ( $titles as $title ) {
-				if ( !$limit-- ) {
-					break;
-				}
-				$vals = array(
-					'ns' => intval( $title->getNamespace() ),
+				$vals = [
+					'ns' => $title->getNamespace(),
 					'title' => $title->getPrefixedText(),
-				);
+				];
 				if ( $title->isSpecialPage() ) {
-					$vals['special'] = '';
+					$vals['special'] = true;
 				} else {
-					$vals['pageid'] = intval( $title->getArticleId() );
+					$vals['pageid'] = (int)$title->getArticleID();
 				}
-				$fit = $result->addValue( array( 'query', $this->getModuleName() ), null, $vals );
+				$fit = $result->addValue( [ 'query', $this->getModuleName() ], null, $vals );
+				++$count;
 				if ( !$fit ) {
+					$this->setContinueEnumParameter( 'offset', $offset + $count );
 					break;
 				}
 			}
-			$result->setIndexedTagName_internal(
-				array( 'query', $this->getModuleName() ), $this->getModulePrefix()
+			$result->addIndexedTagName(
+				[ 'query', $this->getModuleName() ], $this->getModulePrefix()
 			);
 		}
 	}
@@ -79,46 +114,31 @@ class ApiQueryPrefixSearch extends ApiQueryGeneratorBase {
 	}
 
 	public function getAllowedParams() {
-			return array(
-				'search' => array(
-					ApiBase::PARAM_TYPE => 'string',
-					ApiBase::PARAM_REQUIRED => true,
-				),
-				'namespace' => array(
-					ApiBase::PARAM_DFLT => NS_MAIN,
-					ApiBase::PARAM_TYPE => 'namespace',
-					ApiBase::PARAM_ISMULTI => true,
-				),
-				'limit' => array(
-					ApiBase::PARAM_DFLT => 10,
-					ApiBase::PARAM_TYPE => 'limit',
-					ApiBase::PARAM_MIN => 1,
-					ApiBase::PARAM_MAX => 100, // Non-standard value for compatibility
-					                           // with action=opensearch
-					ApiBase::PARAM_MAX2 => 200,
-				),
-			);
+		if ( $this->allowedParams !== null ) {
+			return $this->allowedParams;
+		}
+		$this->allowedParams = $this->buildCommonApiParams();
+
+		return $this->allowedParams;
 	}
 
-	public function getParamDescription() {
-		return array(
-			'search' => 'Search string',
-			'limit' => 'Maximum amount of results to return',
-			'namespace' => 'Namespaces to search',
-		);
+	public function getSearchProfileParams() {
+		return [
+			'profile' => [
+				'profile-type' => SearchEngine::COMPLETION_PROFILE_TYPE,
+				'help-message' => 'apihelp-query+prefixsearch-param-profile',
+			],
+		];
 	}
 
-	public function getDescription() {
-		return 'Perform a prefix search for page titles';
-	}
-
-	public function getExamples() {
-		return array(
-			'api.php?action=query&list=prefixsearch&pssearch=meaning',
-		);
+	protected function getExamplesMessages() {
+		return [
+			'action=query&list=prefixsearch&pssearch=meaning'
+				=> 'apihelp-query+prefixsearch-example-simple',
+		];
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/API:Prefixsearch';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Prefixsearch';
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 /**
- * This file is the entry point for the resource loader.
+ * The web entry point for @ref ResourceLoader, which serves static CSS/JavaScript
+ * via @ref MediaWiki\ResourceLoader\Module Module subclasses.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,34 +19,44 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
+ * @ingroup entrypoint
+ * @ingroup ResourceLoader
  * @author Roan Kattouw
  * @author Trevor Parscal
  */
 
-// Bail if PHP is too low
-if ( !function_exists( 'version_compare' ) || version_compare( phpversion(), '5.3.2' ) < 0 ) {
-	// We need to use dirname( __FILE__ ) here cause __DIR__ is PHP5.3+
-	require dirname( __FILE__ ) . '/includes/PHPVersionError.php';
-	wfPHPVersionError( 'load.php' );
-}
+use MediaWiki\MediaWikiServices;
+use MediaWiki\ResourceLoader\Context;
+
+// This endpoint is supposed to be independent of request cookies and other
+// details of the session. Enforce this constraint with respect to session use.
+define( 'MW_NO_SESSION', 1 );
+
+define( 'MW_ENTRY_POINT', 'load' );
 
 require __DIR__ . '/includes/WebStart.php';
 
-wfProfileIn( 'load.php' );
+wfLoadMain();
 
-// URL safety checks
-if ( !$wgRequest->checkUrlExtension() ) {
-	return;
+function wfLoadMain() {
+	global $wgRequest;
+
+	$services = MediaWikiServices::getInstance();
+	// Disable ChronologyProtector so that we don't wait for unrelated MediaWiki
+	// writes when getting database connections for ResourceLoader. (T192611)
+	$services->getDBLoadBalancerFactory()->disableChronologyProtection();
+
+	$resourceLoader = $services->getResourceLoader();
+	$context = new Context( $resourceLoader, $wgRequest );
+
+	// Respond to ResourceLoader request
+	$resourceLoader->respond( $context );
+
+	// Append any visible profiling data in a manner appropriate for the Content-Type
+	$profiler = Profiler::instance();
+	$profiler->setAllowOutput();
+	$profiler->logDataPageOutputOnly();
+
+	$mediawiki = new MediaWiki();
+	$mediawiki->doPostOutputShutdown();
 }
-
-// Respond to resource loading request
-$resourceLoader = new ResourceLoader();
-$resourceLoader->respond( new ResourceLoaderContext( $resourceLoader, $wgRequest ) );
-
-wfProfileOut( 'load.php' );
-wfLogProfilingData();
-
-// Shut down the database.  foo()->bar() syntax is not supported in PHP4, and this file
-// needs to *parse* in PHP4, although we'll never get down here to worry about = vs =&
-$lb = wfGetLBFactory();
-$lb->shutdown();

@@ -21,6 +21,8 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MainConfigNames;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -32,27 +34,51 @@ require_once __DIR__ . '/Maintenance.php';
 class DeleteSelfExternals extends Maintenance {
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = 'Delete self-references to $wgServer from externallinks';
-		$this->mBatchSize = 1000;
+		$this->addDescription( 'Delete self-references to $wgServer from externallinks' );
+		$this->setBatchSize( 1000 );
 	}
 
 	public function execute() {
-		global $wgServer;
-		$this->output( "Deleting self externals from $wgServer\n" );
-		$db = wfGetDB( DB_MASTER );
-		while ( 1 ) {
-			wfWaitForSlaves();
-			$db->commit( __METHOD__ );
-			$q = $db->limitResult( "DELETE /* deleteSelfExternals */ FROM externallinks WHERE el_to"
-				. $db->buildLike( $wgServer . '/', $db->anyString() ), $this->mBatchSize );
-			$this->output( "Deleting a batch\n" );
-			$db->query( $q );
-			if ( !$db->affectedRows() ) {
-				return;
+		// Extract the host and scheme from $wgServer
+		$server = $this->getConfig()->get( MainConfigNames::Server );
+		$bits = wfParseUrl( $server );
+		if ( !$bits ) {
+			$this->fatalError( 'Could not parse $wgServer' );
+		}
+
+		$this->output( "Deleting self externals from $server\n" );
+		$db = $this->getDB( DB_PRIMARY );
+
+		// If it's protocol-relative, we need to do both http and https.
+		// Otherwise, just do the specified scheme.
+		$host = $bits['host'];
+		if ( isset( $bits['port'] ) ) {
+			$host .= ':' . $bits['port'];
+		}
+		if ( $bits['scheme'] != '' ) {
+			$conds = [ LinkFilter::getQueryConditions( $host, [ 'protocol' => $bits['scheme'] . '://' ] ) ];
+		} else {
+			$conds = [
+				LinkFilter::getQueryConditions( $host, [ 'protocol' => 'http://' ] ),
+				LinkFilter::getQueryConditions( $host, [ 'protocol' => 'https://' ] ),
+			];
+		}
+
+		foreach ( $conds as $cond ) {
+			if ( !$cond ) {
+				continue;
 			}
+			$cond = $db->makeList( $cond, LIST_AND );
+			do {
+				$this->commitTransaction( $db, __METHOD__ );
+				$q = $db->limitResult( "DELETE /* deleteSelfExternals */ FROM externallinks WHERE $cond",
+					$this->mBatchSize );
+				$this->output( "Deleting a batch\n" );
+				$db->query( $q, __METHOD__ );
+			} while ( $db->affectedRows() );
 		}
 	}
 }
 
-$maintClass = "DeleteSelfExternals";
+$maintClass = DeleteSelfExternals::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

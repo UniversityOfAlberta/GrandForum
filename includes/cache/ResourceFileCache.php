@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Resource loader request result caching in the file system.
+ * ResourceLoader request result caching in the file system.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +22,12 @@
  * @ingroup Cache
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\ResourceLoader as RL;
+
 /**
- * Resource loader request result caching in the file system.
+ * ResourceLoader request result caching in the file system.
  *
  * @ingroup Cache
  */
@@ -30,17 +35,19 @@ class ResourceFileCache extends FileCacheBase {
 	protected $mCacheWorthy;
 
 	/* @todo configurable? */
-	const MISS_THRESHOLD = 360; // 6/min * 60 min
+	private const MISS_THRESHOLD = 360; // 6/min * 60 min
 
 	/**
 	 * Construct an ResourceFileCache from a context
-	 * @param $context ResourceLoaderContext
+	 * @param RL\Context $context
 	 * @return ResourceFileCache
 	 */
-	public static function newFromContext( ResourceLoaderContext $context ) {
+	public static function newFromContext( RL\Context $context ) {
 		$cache = new self();
 
-		if ( $context->getOnly() === 'styles' ) {
+		if ( $context->getImage() ) {
+			$cache->mType = 'image';
+		} elseif ( $context->getOnly() === 'styles' ) {
 			$cache->mType = 'css';
 		} else {
 			$cache->mType = 'js';
@@ -58,26 +65,32 @@ class ResourceFileCache extends FileCacheBase {
 	/**
 	 * Check if an RL request can be cached.
 	 * Caller is responsible for checking if any modules are private.
-	 * @param $context ResourceLoaderContext
+	 * @param RL\Context $context
 	 * @return bool
 	 */
-	public static function useFileCache( ResourceLoaderContext $context ) {
-		global $wgUseFileCache, $wgDefaultSkin, $wgLanguageCode;
-		if ( !$wgUseFileCache ) {
+	public static function useFileCache( RL\Context $context ) {
+		$mainConfig = MediaWikiServices::getInstance()->getMainConfig();
+		$useFileCache = $mainConfig->get( MainConfigNames::UseFileCache );
+		$defaultSkin = $mainConfig->get( MainConfigNames::DefaultSkin );
+		$languageCode = $mainConfig->get( MainConfigNames::LanguageCode );
+		if ( !$useFileCache ) {
 			return false;
 		}
 		// Get all query values
 		$queryVals = $context->getRequest()->getValues();
 		foreach ( $queryVals as $query => $val ) {
-			if ( $query === 'modules' || $query === 'version' || $query === '*' ) {
-				continue; // note: &* added as IE fix
-			} elseif ( $query === 'skin' && $val === $wgDefaultSkin ) {
+			if ( in_array( $query, [ 'modules', 'image', 'variant', 'version' ] ) ) {
+				// Use file cache regardless of the value of this parameter
 				continue;
-			} elseif ( $query === 'lang' && $val === $wgLanguageCode ) {
+			} elseif ( $query === 'skin' && $val === $defaultSkin ) {
 				continue;
-			} elseif ( $query === 'only' && in_array( $val, array( 'styles', 'scripts' ) ) ) {
+			} elseif ( $query === 'lang' && $val === $languageCode ) {
+				continue;
+			} elseif ( $query === 'only' && in_array( $val, [ 'styles', 'scripts' ] ) ) {
 				continue;
 			} elseif ( $query === 'debug' && $val === 'false' ) {
+				continue;
+			} elseif ( $query === 'format' && $val === 'rasterized' ) {
 				continue;
 			}
 

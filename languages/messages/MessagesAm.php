@@ -1,15 +1,13 @@
 <?php
 /** Amharic (አማርኛ)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'ፋይል',
 	NS_SPECIAL          => 'ልዩ',
 	NS_TALK             => 'ውይይት',
@@ -26,16 +24,16 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'እርዳታ_ውይይት',
 	NS_CATEGORY         => 'መደብ',
 	NS_CATEGORY_TALK    => 'መደብ_ውይይት',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	'መልጠፊያ' => NS_TEMPLATE,
 	'መልጠፊያ_ውይይት' => NS_TEMPLATE_TALK,
-);
+];
 
-$specialPageAliases = array(
-	'Longpages'                 => array( 'ረጃጅም_ገጾች' ),
-	'Newpages'                  => array( 'አዳዲስ_ገጾች' ),
-	'Shortpages'                => array( 'አጫጭር_ገጾች' ),
-);
-
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'Longpages'                 => [ 'ረጃጅም_ገጾች' ],
+	'Newpages'                  => [ 'አዳዲስ_ገጾች' ],
+	'Shortpages'                => [ 'አጫጭር_ገጾች' ],
+];

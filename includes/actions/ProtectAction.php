@@ -1,9 +1,5 @@
 <?php
 /**
- * action=protect handler
- *
- * Copyright © 2012 Timo Tijhof
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -20,11 +16,12 @@
  *
  * @file
  * @ingroup Actions
- * @author Timo Tijhof
  */
 
+use MediaWiki\MainConfigNames;
+
 /**
- * Handle page protection
+ * Handle page protection (action=protect)
  *
  * This is a wrapper that will call Article::protect().
  *
@@ -41,26 +38,18 @@ class ProtectAction extends FormlessAction {
 	}
 
 	public function show() {
+		if ( $this->getContext()->getConfig()->get( MainConfigNames::UseMediaWikiUIEverywhere ) ) {
+			$out = $this->getOutput();
+			$out->addModuleStyles( [
+				'mediawiki.ui.input',
+				'mediawiki.ui.checkbox',
+			] );
+		}
 
-		$this->page->protect();
-	}
-}
-
-/**
- * Handle page unprotection
- *
- * This is a wrapper that will call Article::unprotect().
- *
- * @ingroup Actions
- */
-class UnprotectAction extends ProtectAction {
-
-	public function getName() {
-		return 'unprotect';
+		$this->getArticle()->protect();
 	}
 
-	public function show() {
-
-		$this->page->unprotect();
+	public function doesWrites() {
+		return true;
 	}
 }

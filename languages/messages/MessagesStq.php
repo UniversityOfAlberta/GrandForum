@@ -1,11 +1,10 @@
 <?php
 /** Seeltersk (Seeltersk)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Kaganer
  * @author Kghbln
@@ -19,7 +18,7 @@
 
 $fallback = 'de';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Media',
 	NS_SPECIAL          => 'Spezial',
 	NS_TALK             => 'Diskussion',
@@ -36,10 +35,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Hälpe_Diskussion',
 	NS_CATEGORY         => 'Kategorie',
 	NS_CATEGORY_TALK    => 'Kategorie_Diskussion',
-);
+];
 
-$namespaceGenderAliases = array(
-	NS_USER => array( 'male' => 'Benutser', 'female' => 'Benutserske' ),
-	NS_USER_TALK => array( 'male' => 'Benutser_Diskussion', 'female' => 'Benutserske_Diskussion' ),
-);
-
+$namespaceGenderAliases = [
+	NS_USER => [ 'male' => 'Benutser', 'female' => 'Benutserske' ],
+	NS_USER_TALK => [ 'male' => 'Benutser_Diskussion', 'female' => 'Benutserske_Diskussion' ],
+];

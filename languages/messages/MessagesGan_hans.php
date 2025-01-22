@@ -1,17 +1,15 @@
 <?php
-/** Simplified Gan script (赣语（简体）‎)
+/** Simplified Gan script (赣语（简体）)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
-$fallback = 'zh-hans';
+$fallback = 'gan, gan-hant, zh-hans, zh, zh-hant';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_TALK             => '谈詑',
 	NS_USER_TALK        => '用户谈詑',
 	NS_PROJECT_TALK     => '$1谈詑',
@@ -20,5 +18,4 @@ $namespaceNames = array(
 	NS_TEMPLATE_TALK    => '模板谈詑',
 	NS_HELP_TALK        => '帮助谈詑',
 	NS_CATEGORY_TALK    => '分类谈詑',
-);
-
+];

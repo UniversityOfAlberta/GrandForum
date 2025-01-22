@@ -18,65 +18,23 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup JobQueue
  */
 
-/**
- * Job queue task description interface
- *
- * @ingroup JobQueue
- * @since 1.23
- */
-interface IJobSpecification {
-	/**
-	 * @return string Job type
-	 */
-	public function getType();
-
-	/**
-	 * @return array
-	 */
-	public function getParams();
-
-	/**
-	 * @return int|null UNIX timestamp to delay running this job until, otherwise null
-	 */
-	public function getReleaseTimestamp();
-
-	/**
-	 * @return bool Whether only one of each identical set of jobs should be run
-	 */
-	public function ignoreDuplicates();
-
-	/**
-	 * Subclasses may need to override this to make duplication detection work.
-	 * The resulting map conveys everything that makes the job unique. This is
-	 * only checked if ignoreDuplicates() returns true, meaning that duplicate
-	 * jobs are supposed to be ignored.
-	 *
-	 * @return array Map of key/values
-	 */
-	public function getDeduplicationInfo();
-
-	/**
-	 * @return Title Descriptive title (this can simply be informative)
-	 */
-	public function getTitle();
-}
+use MediaWiki\Page\PageReference;
+use MediaWiki\Page\PageReferenceValue;
 
 /**
  * Job queue task description base code
  *
  * Example usage:
- * <code>
+ * @code
  * $job = new JobSpecification(
  *		'null',
- *		array( 'lives' => 1, 'usleep' => 100, 'pi' => 3.141569 ),
- *		array( 'removeDuplicates' => 1 ),
- *		Title::makeTitle( NS_SPECIAL, 'nullity' )
+ *		[ 'lives' => 1, 'usleep' => 100, 'pi' => 3.141569 ],
+ *		[ 'removeDuplicates' => 1 ]
  * );
- * JobQueueGroup::singleton()->push( $job )
- * </code>
+ * MediaWikiServices::getInstance()->getJobQueueGroup()->push( $job )
+ * @endcode
  *
  * @ingroup JobQueue
  * @since 1.23
@@ -88,27 +46,43 @@ class JobSpecification implements IJobSpecification {
 	/** @var array Array of job parameters or false if none */
 	protected $params;
 
-	/** @var Title */
-	protected $title;
+	/** @var PageReference */
+	protected $page;
 
-	/** @var bool Expensive jobs may set this to true */
-	protected $ignoreDuplicates;
+	/** @var array */
+	protected $opts;
 
 	/**
 	 * @param string $type
 	 * @param array $params Map of key/values
 	 * @param array $opts Map of key/values
-	 * @param Title $title Optional descriptive title
+	 *   'removeDuplicates' key - whether to remove duplicate jobs
+	 *   'removeDuplicatesIgnoreParams' key - array with parameters to ignore for deduplication
+	 * @param PageReference|null $page
 	 */
 	public function __construct(
-		$type, array $params, array $opts = array(), Title $title = null
+		$type, array $params, array $opts = [], PageReference $page = null
 	) {
 		$this->validateParams( $params );
+		$this->validateParams( $opts );
 
 		$this->type = $type;
+		if ( $page ) {
+			// Make sure JobQueue classes can pull the title from parameters alone
+			if ( $page->getDBkey() !== '' ) {
+				$params += [
+					'namespace' => $page->getNamespace(),
+					'title' => $page->getDBkey()
+				];
+			}
+		} else {
+			// We aim to remove the page from job specification and all we need
+			// is namespace/dbkey, so use LOCAL no matter what.
+			$page = PageReferenceValue::localReference( NS_SPECIAL, 'Badtitle/' . __CLASS__ );
+		}
 		$this->params = $params;
-		$this->title = $title ?: Title::newMainPage();
-		$this->ignoreDuplicates = !empty( $opts['removeDuplicates'] );
+		$this->page = $page;
+		$this->opts = $opts;
 	}
 
 	/**
@@ -124,66 +98,97 @@ class JobSpecification implements IJobSpecification {
 		}
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getType() {
 		return $this->type;
 	}
 
 	/**
-	 * @return Title
+	 * @deprecated since 1.37.
+	 * @return Title|null
 	 */
 	public function getTitle() {
-		return $this->title;
+		wfDeprecated( __METHOD__, '1.37' );
+		return Title::castFromPageReference( $this->page );
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getParams() {
 		return $this->params;
 	}
 
-	/**
-	 * @return int|null UNIX timestamp to delay running this job until, otherwise null
-	 */
 	public function getReleaseTimestamp() {
 		return isset( $this->params['jobReleaseTimestamp'] )
 			? wfTimestampOrNull( TS_UNIX, $this->params['jobReleaseTimestamp'] )
 			: null;
 	}
 
-	/**
-	 * @return bool Whether only one of each identical set of jobs should be run
-	 */
 	public function ignoreDuplicates() {
-		return $this->ignoreDuplicates;
+		return !empty( $this->opts['removeDuplicates'] );
 	}
 
-	/**
-	 * Subclasses may need to override this to make duplication detection work.
-	 * The resulting map conveys everything that makes the job unique. This is
-	 * only checked if ignoreDuplicates() returns true, meaning that duplicate
-	 * jobs are supposed to be ignored.
-	 *
-	 * @return array Map of key/values
-	 */
 	public function getDeduplicationInfo() {
-		$info = array(
+		$info = [
 			'type' => $this->getType(),
-			'namespace' => $this->getTitle()->getNamespace(),
-			'title' => $this->getTitle()->getDBkey(),
 			'params' => $this->getParams()
-		);
+		];
 		if ( is_array( $info['params'] ) ) {
 			// Identical jobs with different "root" jobs should count as duplicates
 			unset( $info['params']['rootJobSignature'] );
 			unset( $info['params']['rootJobTimestamp'] );
 			// Likewise for jobs with different delay times
 			unset( $info['params']['jobReleaseTimestamp'] );
+			if ( isset( $this->opts['removeDuplicatesIgnoreParams'] ) ) {
+				foreach ( $this->opts['removeDuplicatesIgnoreParams'] as $field ) {
+					unset( $info['params'][$field] );
+				}
+			}
 		}
 
 		return $info;
+	}
+
+	public function getRootJobParams() {
+		return [
+			'rootJobSignature' => $this->params['rootJobSignature'] ?? null,
+			'rootJobTimestamp' => $this->params['rootJobTimestamp'] ?? null
+		];
+	}
+
+	public function hasRootJobParams() {
+		return isset( $this->params['rootJobSignature'] )
+			&& isset( $this->params['rootJobTimestamp'] );
+	}
+
+	public function isRootJob() {
+		return $this->hasRootJobParams() && !empty( $this->params['rootJobIsSelf'] );
+	}
+
+	/**
+	 * @return array Field/value map that can immediately be serialized
+	 * @since 1.25
+	 */
+	public function toSerializableArray() {
+		return [
+			'type'   => $this->type,
+			'params' => $this->params,
+			'opts'   => $this->opts,
+			'title'  => [
+				'ns'  => $this->page->getNamespace(),
+				'key' => $this->page->getDBkey()
+			]
+		];
+	}
+
+	/**
+	 * @param array $map Field/value map
+	 * @return JobSpecification
+	 * @since 1.25
+	 */
+	public static function newFromArray( array $map ) {
+		return new self(
+			$map['type'],
+			$map['params'],
+			$map['opts'],
+			PageReferenceValue::localReference( $map['title']['ns'], $map['title']['key'] )
+		);
 	}
 }

@@ -21,6 +21,8 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MediaWikiServices;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -29,11 +31,14 @@ require_once __DIR__ . '/Maintenance.php';
  *
  * @ingroup Maintenance
  */
-class UploadDumper extends Maintenance {
+class DumpUploads extends Maintenance {
+	/** @var string */
+	private $mBasePath;
+
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Generates list of uploaded files which can be fed to tar or similar.
-By default, outputs relative paths against the parent directory of \$wgUploadDirectory.";
+		$this->addDescription( 'Generates list of uploaded files which can be fed to tar or similar.
+By default, outputs relative paths against the parent directory of $wgUploadDirectory.' );
 		$this->addOption( 'base', 'Set base relative path instead of wiki include root', false, true );
 		$this->addOption( 'local', 'List all local files, used or not. No shared files included' );
 		$this->addOption( 'used', 'Skip local images that are not used' );
@@ -42,30 +47,29 @@ By default, outputs relative paths against the parent directory of \$wgUploadDir
 
 	public function execute() {
 		global $IP;
-		$this->mAction = 'fetchLocal';
 		$this->mBasePath = $this->getOption( 'base', $IP );
-		$this->mShared = false;
-		$this->mSharedSupplement = false;
-
-		if ( $this->hasOption( 'local' ) ) {
-			$this->mAction = 'fetchLocal';
-		}
-
-		if ( $this->hasOption( 'used' ) ) {
-			$this->mAction = 'fetchUsed';
-		}
+		$shared = false;
+		$sharedSupplement = false;
 
 		if ( $this->hasOption( 'shared' ) ) {
 			if ( $this->hasOption( 'used' ) ) {
 				// Include shared-repo files in the used check
-				$this->mShared = true;
+				$shared = true;
 			} else {
 				// Grab all local *plus* used shared
-				$this->mSharedSupplement = true;
+				$sharedSupplement = true;
 			}
 		}
-		$this->{ $this->mAction } ( $this->mShared );
-		if ( $this->mSharedSupplement ) {
+
+		if ( $this->hasOption( 'local' ) ) {
+			$this->fetchLocal( $shared );
+		} elseif ( $this->hasOption( 'used' ) ) {
+			$this->fetchUsed( $shared );
+		} else {
+			$this->fetchLocal( $shared );
+		}
+
+		if ( $sharedSupplement ) {
 			$this->fetchUsed( true );
 		}
 	}
@@ -73,18 +77,18 @@ By default, outputs relative paths against the parent directory of \$wgUploadDir
 	/**
 	 * Fetch a list of used images from a particular image source.
 	 *
-	 * @param $shared Boolean: true to pass shared-dir settings to hash func
+	 * @param bool $shared True to pass shared-dir settings to hash func
 	 */
-	function fetchUsed( $shared ) {
-		$dbr = wfGetDB( DB_SLAVE );
-		$image = $dbr->tableName( 'image' );
-		$imagelinks = $dbr->tableName( 'imagelinks' );
+	private function fetchUsed( $shared ) {
+		$dbr = $this->getDB( DB_REPLICA );
 
-		$sql = "SELECT DISTINCT il_to, img_name
-			FROM $imagelinks
-			LEFT OUTER JOIN $image
-			ON il_to=img_name";
-		$result = $dbr->query( $sql );
+		$result = $dbr->newSelectQueryBuilder()
+			->select( [ 'il_to', 'img_name' ] )
+			->distinct()
+			->from( 'imagelinks' )
+			->leftJoin( 'image', null, 'il_to=img_name' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $result as $row ) {
 			$this->outputItem( $row->il_to, $shared );
@@ -94,35 +98,36 @@ By default, outputs relative paths against the parent directory of \$wgUploadDir
 	/**
 	 * Fetch a list of all images from a particular image source.
 	 *
-	 * @param $shared Boolean: true to pass shared-dir settings to hash func
+	 * @param bool $shared True to pass shared-dir settings to hash func
 	 */
-	function fetchLocal( $shared ) {
-		$dbr = wfGetDB( DB_SLAVE );
-		$result = $dbr->select( 'image',
-			array( 'img_name' ),
-			'',
-			__METHOD__ );
+	private function fetchLocal( $shared ) {
+		$dbr = $this->getDB( DB_REPLICA );
+		$result = $dbr->newSelectQueryBuilder()
+			->select( 'img_name' )
+			->from( 'image' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $result as $row ) {
 			$this->outputItem( $row->img_name, $shared );
 		}
 	}
 
-	function outputItem( $name, $shared ) {
-		$file = wfFindFile( $name );
+	private function outputItem( $name, $shared ) {
+		$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $name );
 		if ( $file && $this->filterItem( $file, $shared ) ) {
-			$filename = $file->getPath();
+			$filename = $file->getLocalRefPath();
 			$rel = wfRelativePath( $filename, $this->mBasePath );
 			$this->output( "$rel\n" );
 		} else {
-			wfDebug( __METHOD__ . ": base file? $name\n" );
+			wfDebug( __METHOD__ . ": base file? $name" );
 		}
 	}
 
-	function filterItem( $file, $shared ) {
+	private function filterItem( $file, $shared ) {
 		return $shared || $file->isLocal();
 	}
 }
 
-$maintClass = "UploadDumper";
+$maintClass = DumpUploads::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

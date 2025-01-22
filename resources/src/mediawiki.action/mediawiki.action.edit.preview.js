@@ -1,134 +1,121 @@
-/**
+/*!
  * Live edit preview.
  */
-( function ( mw, $ ) {
+( function () {
+
+	var parsedMessages = require( './mediawiki.action.edit.preview.parsedMessages.json' ),
+		api = new mw.Api();
 
 	/**
+	 * Parse preview response
+	 *
+	 * @ignore
+	 * @param {Object} response Response data
+	 */
+	function showPreviewNotes( response ) {
+		var arrow, $previewHeader, $editform;
+
+		$editform = $( '#editform' );
+
+		arrow = $( document.body ).css( 'direction' ) === 'rtl' ? '←' : '→';
+		$previewHeader = $( '<div>' )
+			.addClass( 'previewnote' )
+			.append( $( '<h2>' )
+				.attr( 'id', 'mw-previewheader' )
+				.text( mw.msg( 'preview' ) )
+			)
+			.append( $( '<div>' )
+				.addClass( 'mw-message-box-warning mw-message-box' )
+				.html( parsedMessages.previewnote )
+				.append( ' ' )
+				.append( $( '<span>' )
+					.addClass( 'mw-continue-editing' )
+					.append( $( '<a>' )
+						.attr( 'href', '#' + $editform.attr( 'id' ) )
+						.text( arrow + ' ' + mw.msg( 'continue-editing' ) )
+					)
+				)
+			);
+		response.parse.parsewarningshtml.forEach( function ( warning ) {
+			$previewHeader.find( '.mw-message-box-warning' ).append( $( '<p>' ).append( warning ) );
+		} );
+
+		$( '#wikiPreview' ).prepend( $previewHeader );
+	}
+
+	/**
+	 * @ignore
 	 * @param {jQuery.Event} e
 	 */
 	function doLivePreview( e ) {
-		var $wikiPreview, $editform, copySelectors, $copyElements, $spinner,
-			targetUrl, postData, $previewDataHolder;
+		var isDiff, section, $editform, $textbox, preview, $wikiPreview;
+
+		preview = require( 'mediawiki.page.preview' );
+		isDiff = ( e.target.name === 'wpDiff' );
+		$wikiPreview = $( '#wikiPreview' );
+		$editform = $( '#editform' );
+		$textbox = $editform.find( '#wpTextbox1' );
+
+		section = $editform.find( '[name="wpSection"]' ).val();
+
+		if ( $textbox.length === 0 ) {
+			return;
+		}
+		// Show changes for a new section is not yet supported
+		if ( isDiff && section === 'new' ) {
+			return;
+		}
 
 		e.preventDefault();
 
-		// Deprecated: Use mw.hook instead
-		$( mw ).trigger( 'LivePreviewPrepare' );
+		// Not shown during normal preview, to be removed if present
+		$( '.mw-newarticletext, .mw-message-box-error' ).remove();
 
-		$wikiPreview = $( '#wikiPreview' );
-		$editform = $( '#editform' );
-
-		// Show #wikiPreview if it's hidden to be able to scroll to it
-		// (if it is hidden, it's also empty, so nothing changes in the rendering)
+		// Show #wikiPreview if it's hidden to be able to scroll to it.
+		// (If it is hidden, it's also empty, so nothing changes in the rendering.)
 		$wikiPreview.show();
 
 		// Jump to where the preview will appear
-		$wikiPreview[0].scrollIntoView();
+		$wikiPreview[ 0 ].scrollIntoView();
 
-		// List of selectors matching elements that we will
-		// update from from the ajax-loaded preview page.
-		copySelectors = [
-			// Main
-			'#firstHeading',
-			'#wikiPreview',
-			'#wikiDiff',
-			'#catlinks',
-			'.hiddencats',
-			'#p-lang',
-			// Editing-related
-			'.templatesUsed',
-			'.limitreport',
-			'.mw-summary-preview'
-		];
-		$copyElements = $( copySelectors.join( ',' ) );
+		var $spinner = $( '.mw-spinner-preview' );
+		if ( $spinner.length === 0 ) {
+			$spinner = $.createSpinner( {
+				size: 'large',
+				type: 'block'
+			} )
+				.addClass( 'mw-spinner-preview' )
+				.css( 'margin-top', '1em' );
+			$wikiPreview.before( $spinner );
+		}
 
-		// Not shown during normal preview, to be removed if present
-		$( '.mw-newarticletext' ).remove();
-
-		$spinner = $.createSpinner( {
-			size: 'large',
-			type: 'block'
-		} );
-		$wikiPreview.before( $spinner );
-		$spinner.css( {
-			marginTop: $spinner.height()
-		} );
-
-		// Can't use fadeTo because it calls show(), and we might want to keep some elements hidden
-		// (e.g. empty #catlinks)
-		$copyElements.animate( { opacity: 0.4 }, 'fast' );
-
-		$previewDataHolder = $( '<div>' );
-		targetUrl = $editform.attr( 'action' );
-		targetUrl += targetUrl.indexOf( '?' ) !== -1 ? '&' : '?';
-		targetUrl += $.param( {
-			debug: mw.config.get( 'debug' ),
-			uselang: mw.config.get( 'wgUserLanguage' ),
-			useskin: mw.config.get( 'skin' )
-		} );
-
-		// Gather all the data from the form
-		postData = $editform.formToArray();
-		postData.push( {
-			name: e.target.name,
-			value: ''
-		} );
-
-		// Load new preview data.
-		// TODO: This should use the action=parse API instead of loading the entire page,
-		// although that requires figuring out how to convert that raw data into proper HTML.
-		$previewDataHolder.load( targetUrl + ' ' + copySelectors.join( ',' ), postData, function () {
-			var i, $from, $next, $parent;
-
-			// Copy the contents of the specified elements from the loaded page to the real page.
-			// Also copy their class attributes.
-			for ( i = 0; i < copySelectors.length; i++ ) {
-				$from = $previewDataHolder.find( copySelectors[i] );
-
-				if ( copySelectors[i] === '#wikiPreview' ) {
-					$next = $wikiPreview.next();
-					// If there is no next node, use parent instead.
-					// Only query parent if needed, false otherwise.
-					$parent = !$next.length && $wikiPreview.parent();
-
-					$wikiPreview
-						.detach()
-						.empty()
-						.append( $from.contents() )
-						.attr( 'class', $from.attr( 'class' ) );
-
-					mw.hook( 'wikipage.content' ).fire( $wikiPreview );
-
-					// Reattach
-					if ( $parent ) {
-						$parent.append( $wikiPreview );
-					} else {
-						$next.before( $wikiPreview );
-					}
-
-				} else {
-					$( copySelectors[i] )
-						.empty()
-						.append( $from.contents() )
-						.attr( 'class', $from.attr( 'class' ) );
-				}
+		preview.doPreview( {
+			showDiff: isDiff,
+			spinnerNode: $spinner
+		} ).done( function ( response ) {
+			if ( !isDiff ) {
+				showPreviewNotes( response[ 0 ] );
 			}
-
-			// Deprecated: Use mw.hook instead
-			$( mw ).trigger( 'LivePreviewDone', [copySelectors] );
-
-			$spinner.remove();
-			$copyElements.animate( {
-				opacity: 1
-			}, 'fast' );
+		} ).fail( function ( code, result ) {
+			// This just shows the error for whatever request failed first
+			var $errorMsg = api.getErrorMessage( result ),
+				$errorBox = $( '<div>' )
+					.addClass( 'mw-message-box-error mw-message-box' )
+					.append( $( '<strong>' ).text( mw.msg( 'previewerrortext' ) ) )
+					.append( $errorMsg );
+			$wikiPreview.hide().before( $errorBox );
 		} );
 	}
 
 	$( function () {
-		// Do not enable on user .js/.css pages, as there's no sane way of "previewing"
-		// the scripts or styles without reloading the page.
-		if ( $( '#mw-userjsyoucanpreview' ).length || $( '#mw-usercssyoucanpreview' ).length ) {
-			return;
+		var selector;
+
+		// Enable only live diff on user .js/.css pages, as there's no sensible way of
+		// "previewing" the scripts or styles without reloading the page.
+		if ( $( '#mw-userjsyoucanpreview, #mw-usercssyoucanpreview, #mw-userjspreview, #mw-usercsspreview' ).length ) {
+			selector = '#wpDiff';
+		} else {
+			selector = '#wpPreview, #wpDiff';
 		}
 
 		// The following elements can change in a preview but are not output
@@ -136,29 +123,88 @@
 		// TODO: Make the server output these always (in a hidden state), so we don't
 		// have to fish and (hopefully) put them in the right place (since skins
 		// can change where they are output).
+		// FIXME: This is prone to breaking any time Vector's HTML for portals change.
 
-		if ( !document.getElementById( 'p-lang' ) && document.getElementById( 'p-tb' ) ) {
-			$( '#p-tb' ).after(
-				$( '<div>' ).attr( 'id', 'p-lang' )
+		if ( !document.getElementById( 'p-lang' ) && document.getElementById( 'p-tb' ) && ( mw.config.get( 'skin' ) === 'vector' || mw.config.get( 'skin' ) === 'vector-2022' ) ) {
+			$( '.portal' ).last().after(
+				$( '<nav>' )
+					.attr( {
+						class: 'mw-portlet mw-portlet-lang vector-menu vector-menu-portal portal',
+						id: 'p-lang',
+						role: 'navigation',
+						'aria-labelledby': 'p-lang-label'
+					} )
+					.append(
+						$( '<label>' )
+							.attr( {
+								id: 'p-lang-label',
+								class: 'vector-menu-heading'
+							} )
+							.append(
+								$( '<span>' )
+									.addClass( 'vector-menu-heading-label' )
+									.text( mw.msg( 'otherlanguages' ) )
+							)
+					)
+					.append(
+						$( '<div>' )
+							.addClass( 'body vector-menu-content' )
+							.append( $( '<ul>' ).addClass( 'vector-menu-content-list' ) )
+					)
 			);
 		}
 
 		if ( !$( '.mw-summary-preview' ).length ) {
-			$( '.editCheckboxes' ).before(
+			$( '#wpSummaryWidget' ).after(
 				$( '<div>' ).addClass( 'mw-summary-preview' )
 			);
 		}
 
 		if ( !document.getElementById( 'wikiDiff' ) && document.getElementById( 'wikiPreview' ) ) {
+			var alignStart, rtlDir;
+			rtlDir = $( '#wpTextbox1' ).attr( 'dir' ) === 'rtl';
+			alignStart = rtlDir ? 'right' : 'left';
 			$( '#wikiPreview' ).after(
-				$( '<div>' ).attr( 'id', 'wikiDiff' )
+				$( '<div>' )
+					.hide()
+					.attr( 'id', 'wikiDiff' )
+					// The following classes are used here:
+					// * diff-editfont-monospace
+					// * diff-editfont-sans-serif
+					// * diff-editfont-serif
+					.addClass( 'diff-editfont-' + mw.user.options.get( 'editfont' ) )
+					// The following classes are used here:
+					// * diff-contentalign-left
+					// * diff-contentalign-right
+					.addClass( 'diff-contentalign-' + alignStart )
+					.append(
+						$( '<table>' ).addClass( 'diff' ).append(
+							$( '<col>' ).addClass( 'diff-marker' ),
+							$( '<col>' ).addClass( 'diff-content' ),
+							$( '<col>' ).addClass( 'diff-marker' ),
+							$( '<col>' ).addClass( 'diff-content' ),
+							$( '<thead>' ).append(
+								$( '<tr>' ).addClass( 'diff-title' ).append(
+									$( '<td>' )
+										.attr( 'colspan', 2 )
+										.addClass( 'diff-otitle diff-side-deleted' )
+										.text( mw.msg( 'currentrev' ) ),
+									$( '<td>' )
+										.attr( 'colspan', 2 )
+										.addClass( 'diff-ntitle diff-side-added' )
+										.text( mw.msg( 'yourtext' ) )
+								)
+							),
+							$( '<tbody>' )
+						)
+					)
 			);
 		}
 
 		// This should be moved down to '#editform', but is kept on the body for now
 		// because the LiquidThreads extension is re-using this module with only half
-		// the EditPage (doesn't include #editform presumably, bug 55463).
-		$( document.body ).on( 'click', '#wpPreview, #wpDiff', doLivePreview );
+		// the EditPage (doesn't include #editform presumably, T57463).
+		$( document.body ).on( 'click', selector, doLivePreview );
 	} );
 
-}( mediaWiki, jQuery ) );
+}() );

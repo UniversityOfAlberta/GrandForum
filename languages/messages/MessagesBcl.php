@@ -1,15 +1,13 @@
 <?php
 /** Bikol Central (Bikol Central)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Medio',
 	NS_SPECIAL          => 'Espesyal',
 	NS_TALK             => 'Olay',
@@ -26,66 +24,67 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Olay_sa_tabang',
 	NS_CATEGORY         => 'Kategorya',
 	NS_CATEGORY_TALK    => 'Olay_sa_kategorya',
-);
+];
 
-$specialPageAliases = array(
-	'Search'                    => array( 'Hanapon' ),
-	'Upload'                    => array( 'Ikarga' ),
-);
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'Search'                    => [ 'Hanapon' ],
+	'Upload'                    => [ 'Ikarga' ],
+];
 
-$magicWords = array(
-	'currentmonth'              => array( '1', 'BULANNGONYAN', 'CURRENTMONTH', 'CURRENTMONTH2' ),
-	'currentmonthname'          => array( '1', 'NGARANBULANNGONYAN', 'CURRENTMONTHNAME' ),
-	'currentday'                => array( '1', 'ALDAWNGONYAN', 'CURRENTDAY' ),
-	'currentyear'               => array( '1', 'TAONNGONYAN', 'CURRENTYEAR' ),
-	'currenttime'               => array( '1', 'PANAHONNGONYAN', 'CURRENTTIME' ),
-	'currenthour'               => array( '1', 'ORASNGONYAN', 'CURRENTHOUR' ),
-	'localmonth'                => array( '1', 'LOKALBULAN', 'LOCALMONTH', 'LOCALMONTH2' ),
-	'localmonthname'            => array( '1', 'NGARANLOKALBULAN', 'LOCALMONTHNAME' ),
-	'localday'                  => array( '1', 'LOKALALDAW', 'LOCALDAY' ),
-	'localday2'                 => array( '1', 'LOKALALDAW2', 'LOCALDAY2' ),
-	'localdayname'              => array( '1', 'NGARANLOKALALDAW', 'LOCALDAYNAME' ),
-	'localyear'                 => array( '1', 'LOKALTAON', 'LOCALYEAR' ),
-	'localtime'                 => array( '1', 'LOKALPANAHON', 'LOCALTIME' ),
-	'localhour'                 => array( '1', 'LOKALORAS', 'LOCALHOUR' ),
-	'numberofpages'             => array( '1', 'NUMEROKANPAHINA', 'NUMBEROFPAGES' ),
-	'numberofarticles'          => array( '1', 'NUMEROKANARTIKULO', 'NUMBEROFARTICLES' ),
-	'numberoffiles'             => array( '1', 'NUMEROKANDOKUMENTO', 'NUMBEROFFILES' ),
-	'numberofusers'             => array( '1', 'NUMEROKANPARAGAMIT', 'NUMBEROFUSERS' ),
-	'numberofedits'             => array( '1', 'NUMEROKANLIGWAT', 'NUMBEROFEDITS' ),
-	'pagename'                  => array( '1', 'NGARANKANPAHINA', 'PAGENAME' ),
-	'pagenamee'                 => array( '1', 'KAGNGARANKANPAHINA', 'PAGENAMEE' ),
-	'namespace'                 => array( '1', 'NGARANESPASYO', 'NAMESPACE' ),
-	'namespacee'                => array( '1', 'KAGNGARANESPASYO', 'NAMESPACEE' ),
-	'talkspace'                 => array( '1', 'OLAYESPASYO', 'TALKSPACE' ),
-	'talkspacee'                => array( '1', 'KAGOLAYESPASYO', 'TALKSPACEE' ),
-	'fullpagename'              => array( '1', 'TODONGNGARANKANPAHINA', 'FULLPAGENAME' ),
-	'fullpagenamee'             => array( '1', 'KAGNGARANKANTODONGNGARANKANPAHINA', 'FULLPAGENAMEE' ),
-	'talkpagename'              => array( '1', 'NGARANKANPAHINANINOLAY', 'TALKPAGENAME' ),
-	'talkpagenamee'             => array( '1', 'KAGNGARANKANPAHINANINOLAY', 'TALKPAGENAMEE' ),
-	'msg'                       => array( '0', 'MSH', 'MSG:' ),
-	'img_right'                 => array( '1', 'too', 'right' ),
-	'img_left'                  => array( '1', 'wala', 'left' ),
-	'img_none'                  => array( '1', 'mayò', 'none' ),
-	'img_center'                => array( '1', 'sentro', 'tangâ', 'center', 'centre' ),
-	'img_framed'                => array( '1', 'nakakawadro', 'kwadro', 'framed', 'enframed', 'frame' ),
-	'img_frameless'             => array( '1', 'daing kwadro', 'frameless' ),
-	'img_page'                  => array( '1', 'pahina=$1', 'pahina $1', 'page=$1', 'page $1' ),
-	'localurl'                  => array( '0', 'LOKALURL', 'LOCALURL:' ),
-	'localurle'                 => array( '0', 'LOKALURLE', 'LOCALURLE:' ),
-	'currentweek'               => array( '1', 'SEMANANGONYAN', 'CURRENTWEEK' ),
-	'localweek'                 => array( '1', 'LOKALSEMANA', 'LOCALWEEK' ),
-	'plural'                    => array( '0', 'DAKOL:', 'PLURAL:' ),
-	'fullurl'                   => array( '0', 'TODONGURL:', 'FULLURL:' ),
-	'fullurle'                  => array( '0', 'TODONGURLE:', 'FULLURLE:' ),
-	'language'                  => array( '0', '#TATARAMON', '#LANGUAGE:' ),
-	'contentlanguage'           => array( '1', 'TATARAMONKANLAOG', 'TATARAMONLAOG', 'CONTENTLANGUAGE', 'CONTENTLANG' ),
-	'numberofadmins'            => array( '1', 'NUMEROKANTAGAMATO', 'NUMBEROFADMINS' ),
-	'padleft'                   => array( '0', 'PADWALA', 'PADLEFT' ),
-	'padright'                  => array( '0', 'PADTOO', 'PADRIGHT' ),
-	'filepath'                  => array( '0', 'FILEDALAN', 'FILEPATH:' ),
-	'hiddencat'                 => array( '1', '__NAKATAGONGKAT__', '__HIDDENCAT__' ),
-	'pagesincategory'           => array( '1', 'PAHINASAKATEGORYA', 'PAHINASAKAT', 'PAGESINCATEGORY', 'PAGESINCAT' ),
-	'pagesize'                  => array( '1', 'PAHINASOKOL', 'PAGESIZE' ),
-);
-
+/** @phpcs-require-sorted-array */
+$magicWords = [
+	'contentlanguage'           => [ '1', 'TATARAMONKANLAOG', 'TATARAMONLAOG', 'CONTENTLANGUAGE', 'CONTENTLANG' ],
+	'currentday'                => [ '1', 'ALDAWNGONYAN', 'CURRENTDAY' ],
+	'currenthour'               => [ '1', 'ORASNGONYAN', 'CURRENTHOUR' ],
+	'currentmonth'              => [ '1', 'BULANNGONYAN', 'CURRENTMONTH', 'CURRENTMONTH2' ],
+	'currentmonthname'          => [ '1', 'NGARANBULANNGONYAN', 'CURRENTMONTHNAME' ],
+	'currenttime'               => [ '1', 'PANAHONNGONYAN', 'CURRENTTIME' ],
+	'currentweek'               => [ '1', 'SEMANANGONYAN', 'CURRENTWEEK' ],
+	'currentyear'               => [ '1', 'TAONNGONYAN', 'CURRENTYEAR' ],
+	'filepath'                  => [ '0', 'FILEDALAN', 'FILEPATH:' ],
+	'fullpagename'              => [ '1', 'TODONGNGARANKANPAHINA', 'FULLPAGENAME' ],
+	'fullpagenamee'             => [ '1', 'KAGNGARANKANTODONGNGARANKANPAHINA', 'FULLPAGENAMEE' ],
+	'fullurl'                   => [ '0', 'TODONGURL:', 'FULLURL:' ],
+	'fullurle'                  => [ '0', 'TODONGURLE:', 'FULLURLE:' ],
+	'hiddencat'                 => [ '1', '__NAKATAGONGKAT__', '__HIDDENCAT__' ],
+	'img_center'                => [ '1', 'sentro', 'tangâ', 'center', 'centre' ],
+	'img_framed'                => [ '1', 'nakakawadro', 'kwadro', 'frame', 'framed', 'enframed' ],
+	'img_frameless'             => [ '1', 'daing kwadro', 'frameless' ],
+	'img_left'                  => [ '1', 'wala', 'left' ],
+	'img_none'                  => [ '1', 'mayò', 'none' ],
+	'img_page'                  => [ '1', 'pahina=$1', 'pahina $1', 'page=$1', 'page $1' ],
+	'img_right'                 => [ '1', 'too', 'right' ],
+	'language'                  => [ '0', '#TATARAMON', '#LANGUAGE:' ],
+	'localday'                  => [ '1', 'LOKALALDAW', 'LOCALDAY' ],
+	'localday2'                 => [ '1', 'LOKALALDAW2', 'LOCALDAY2' ],
+	'localdayname'              => [ '1', 'NGARANLOKALALDAW', 'LOCALDAYNAME' ],
+	'localhour'                 => [ '1', 'LOKALORAS', 'LOCALHOUR' ],
+	'localmonth'                => [ '1', 'LOKALBULAN', 'LOCALMONTH', 'LOCALMONTH2' ],
+	'localmonthname'            => [ '1', 'NGARANLOKALBULAN', 'LOCALMONTHNAME' ],
+	'localtime'                 => [ '1', 'LOKALPANAHON', 'LOCALTIME' ],
+	'localurl'                  => [ '0', 'LOKALURL', 'LOCALURL:' ],
+	'localurle'                 => [ '0', 'LOKALURLE', 'LOCALURLE:' ],
+	'localweek'                 => [ '1', 'LOKALSEMANA', 'LOCALWEEK' ],
+	'localyear'                 => [ '1', 'LOKALTAON', 'LOCALYEAR' ],
+	'msg'                       => [ '0', 'MSH', 'MSG:' ],
+	'namespace'                 => [ '1', 'NGARANESPASYO', 'NAMESPACE' ],
+	'namespacee'                => [ '1', 'KAGNGARANESPASYO', 'NAMESPACEE' ],
+	'numberofadmins'            => [ '1', 'NUMEROKANTAGAMATO', 'NUMBEROFADMINS' ],
+	'numberofarticles'          => [ '1', 'NUMEROKANARTIKULO', 'NUMBEROFARTICLES' ],
+	'numberofedits'             => [ '1', 'NUMEROKANLIGWAT', 'NUMBEROFEDITS' ],
+	'numberoffiles'             => [ '1', 'NUMEROKANDOKUMENTO', 'NUMBEROFFILES' ],
+	'numberofpages'             => [ '1', 'NUMEROKANPAHINA', 'NUMBEROFPAGES' ],
+	'numberofusers'             => [ '1', 'NUMEROKANPARAGAMIT', 'NUMBEROFUSERS' ],
+	'padleft'                   => [ '0', 'PADWALA', 'PADLEFT' ],
+	'padright'                  => [ '0', 'PADTOO', 'PADRIGHT' ],
+	'pagename'                  => [ '1', 'NGARANKANPAHINA', 'PAGENAME' ],
+	'pagenamee'                 => [ '1', 'KAGNGARANKANPAHINA', 'PAGENAMEE' ],
+	'pagesincategory'           => [ '1', 'PAHINASAKATEGORYA', 'PAHINASAKAT', 'PAGESINCATEGORY', 'PAGESINCAT' ],
+	'pagesize'                  => [ '1', 'PAHINASOKOL', 'PAGESIZE' ],
+	'plural'                    => [ '0', 'DAKOL:', 'PLURAL:' ],
+	'talkpagename'              => [ '1', 'NGARANKANPAHINANINOLAY', 'TALKPAGENAME' ],
+	'talkpagenamee'             => [ '1', 'KAGNGARANKANPAHINANINOLAY', 'TALKPAGENAMEE' ],
+	'talkspace'                 => [ '1', 'OLAYESPASYO', 'TALKSPACE' ],
+	'talkspacee'                => [ '1', 'KAGOLAYESPASYO', 'TALKSPACEE' ],
+];

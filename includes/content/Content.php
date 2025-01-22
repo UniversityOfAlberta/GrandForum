@@ -30,6 +30,7 @@
  * Base interface for content objects.
  *
  * @ingroup Content
+ * @unstable for implementation, extensions should extend AbstractContent instead.
  */
 interface Content {
 
@@ -48,7 +49,7 @@ interface Content {
 	/**
 	 * @since 1.21
 	 *
-	 * @return string|false The wikitext to include when another page includes this
+	 * @return string|bool The wikitext to include when another page includes this
 	 * content, or false if the content is not includable in a wikitext page.
 	 *
 	 * @todo Allow native handling, bypassing wikitext representation, like
@@ -65,7 +66,8 @@ interface Content {
 	 *
 	 * @since 1.21
 	 *
-	 * @param int $maxLength Maximum length of the summary text.
+	 * @param int $maxLength Maximum length of the summary text, in bytes.
+	 * Usually implemented using {@link Language::truncateForDatabase()}.
 	 *
 	 * @return string The summary text.
 	 */
@@ -77,6 +79,9 @@ interface Content {
 	 *
 	 * @since 1.21
 	 *
+	 * @deprecated since 1.33 use getText() for TextContent instances.
+	 *             For other content models, use specialized getters.
+	 *
 	 * @return mixed The native representation of the content. Could be a
 	 *    string, a nested array structure, an object, a binary blob...
 	 *    anything, really.
@@ -86,7 +91,7 @@ interface Content {
 	public function getNativeData();
 
 	/**
-	 * Returns the content's nominal size in bogo-bytes.
+	 * Returns the content's nominal size in "bogo-bytes".
 	 *
 	 * @return int
 	 */
@@ -162,7 +167,7 @@ interface Content {
 	 *
 	 * @since 1.21
 	 *
-	 * @param string $format The desired serialization format, or null for the default format.
+	 * @param string|null $format The desired serialization format, or null for the default format.
 	 *
 	 * @return string Serialized form of this Content object.
 	 */
@@ -199,9 +204,11 @@ interface Content {
 	 *
 	 * - Will return false if $that is null.
 	 * - Will return true if $that === $this.
-	 * - Will return false if $that->getModel() != $this->getModel().
-	 * - Will return false if $that->getNativeData() is not equal to $this->getNativeData(),
-	 *   where the meaning of "equal" depends on the actual data model.
+	 * - Will return false if $that->getModel() !== $this->getModel().
+	 * - Will return false if get_class( $that ) !== get_class( $this )
+	 * - Should return false if $that->getModel() == $this->getModel() and
+	 *     $that is not semantically equivalent to $this, according to
+	 *     the data model defined by $this->getModel().
 	 *
 	 * Implementations should be careful to make equals() transitive and reflexive:
 	 *
@@ -210,7 +217,7 @@ interface Content {
 	 *
 	 * @since 1.21
 	 *
-	 * @param Content $that The Content object to compare to.
+	 * @param Content|null $that The Content object to compare to.
 	 *
 	 * @return bool True if this Content object is equal to $that, false otherwise.
 	 */
@@ -241,9 +248,11 @@ interface Content {
 	 * that it's also in a countable location (e.g. a current revision in the
 	 * main namespace).
 	 *
+	 * @see SlotRoleHandler::supportsArticleCount
+	 *
 	 * @since 1.21
 	 *
-	 * @param bool $hasLinks If it is known whether this content contains
+	 * @param bool|null $hasLinks If it is known whether this content contains
 	 *    links, provide this information here, to avoid redundant parsing to
 	 *    find out.
 	 *
@@ -260,10 +269,12 @@ interface Content {
 	 * @note To control which options are used in the cache key for the
 	 *       generated parser output, implementations of this method
 	 *       may call ParserOutput::recordOption() on the output object.
-	 *
+	 * @deprecated since 1.38. Hard-deprecated since 1.38. Use ContentRenderer::getParserOutput
+	 * and override ContentHandler::fillParserOutput.
 	 * @param Title $title The page title to use as a context for rendering.
-	 * @param int $revId Optional revision ID being rendered.
-	 * @param ParserOptions $options Any parser options.
+	 * @param int|null $revId ID of the revision being rendered.
+	 *  See Parser::parse() for the ramifications. (default: null)
+	 * @param ParserOptions|null $options Any parser options.
 	 * @param bool $generateHtml Whether to generate HTML (default: true). If false,
 	 *        the result of calling getText() on the ParserOutput object returned by
 	 *        this method is undefined.
@@ -278,81 +289,20 @@ interface Content {
 	// TODO: make RenderOutput and RenderOptions base classes
 
 	/**
-	 * Returns a list of DataUpdate objects for recording information about this
-	 * Content in some secondary data store. If the optional second argument,
-	 * $old, is given, the updates may model only the changes that need to be
-	 * made to replace information about the old content with information about
-	 * the new content.
-	 *
-	 * This default implementation calls
-	 * $this->getParserOutput( $content, $title, null, null, false ),
-	 * and then calls getSecondaryDataUpdates( $title, $recursive ) on the
-	 * resulting ParserOutput object.
-	 *
-	 * Subclasses may implement this to determine the necessary updates more
-	 * efficiently, or make use of information about the old content.
-	 *
-	 * @param Title $title The context for determining the necessary updates
-	 * @param Content $old An optional Content object representing the
-	 *    previous content, i.e. the content being replaced by this Content
-	 *    object.
-	 * @param bool $recursive Whether to include recursive updates (default:
-	 *    false).
-	 * @param ParserOutput $parserOutput Optional ParserOutput object.
-	 *    Provide if you have one handy, to avoid re-parsing of the content.
-	 *
-	 * @return DataUpdate[] A list of DataUpdate objects for putting information
-	 *    about this content object somewhere.
-	 *
-	 * @since 1.21
-	 */
-	public function getSecondaryDataUpdates( Title $title, Content $old = null,
-		$recursive = true, ParserOutput $parserOutput = null );
-
-	/**
-	 * Construct the redirect destination from this content and return an
-	 * array of Titles, or null if this content doesn't represent a redirect.
-	 * The last element in the array is the final destination after all redirects
-	 * have been resolved (up to $wgMaxRedirects times).
-	 *
-	 * @since 1.21
-	 *
-	 * @return Title[]|null List of Titles, with the destination last.
-	 */
-	public function getRedirectChain();
-
-	/**
 	 * Construct the redirect destination from this content and return a Title,
 	 * or null if this content doesn't represent a redirect.
-	 * This will only return the immediate redirect target, useful for
-	 * the redirect table and other checks that don't need full recursion.
-	 *
-	 * @since 1.21
-	 *
-	 * @return Title|null The corresponding Title.
-	 */
-	public function getRedirectTarget();
-
-	/**
-	 * Construct the redirect destination from this content and return the
-	 * Title, or null if this content doesn't represent a redirect.
-	 *
-	 * This will recurse down $wgMaxRedirects times or until a non-redirect
-	 * target is hit in order to provide (hopefully) the Title of the final
-	 * destination instead of another redirect.
-	 *
-	 * There is usually no need to override the default behavior, subclasses that
-	 * want to implement redirects should override getRedirectTarget().
 	 *
 	 * @since 1.21
 	 *
 	 * @return Title|null
 	 */
-	public function getUltimateRedirectTarget();
+	public function getRedirectTarget();
 
 	/**
 	 * Returns whether this Content represents a redirect.
 	 * Shorthand for getRedirectTarget() !== null.
+	 *
+	 * @see SlotRoleHandler::supportsRedirects
 	 *
 	 * @since 1.21
 	 *
@@ -378,10 +328,9 @@ interface Content {
 	 *
 	 * @since 1.21
 	 *
-	 * @param string $sectionId The section's ID, given as a numeric string.
-	 *    The ID "0" retrieves the section before the first heading, "1" the
-	 *    text between the first heading (included) and the second heading
-	 *    (excluded), etc.
+	 * @param string|int $sectionId Section identifier as a number or string
+	 * (e.g. 0, 1 or 'T-1'). The ID "0" retrieves the section before the first heading, "1" the
+	 * text between the first heading (included) and the second heading (excluded), etc.
 	 *
 	 * @return Content|bool|null The section, or false if no such section
 	 *    exist, or null if sections are not supported.
@@ -394,20 +343,23 @@ interface Content {
 	 *
 	 * @since 1.21
 	 *
-	 * @param mixed $section Null/false or a section number (0, 1, 2, T1, T2...), or "new"
+	 * @param string|int|null|bool $sectionId Section identifier as a number or string
+	 * (e.g. 0, 1 or 'T-1'), null/false or an empty string for the whole page
+	 * or 'new' for a new section.
 	 * @param Content $with New content of the section
 	 * @param string $sectionTitle New section's subject, only if $section is 'new'
 	 *
-	 * @return string|null Complete article text, or null if error
+	 * @return Content|null New content of the entire page, or null if error
 	 */
-	public function replaceSection( $section, Content $with, $sectionTitle = '' );
+	public function replaceSection( $sectionId, Content $with, $sectionTitle = '' );
 
 	/**
 	 * Returns a Content object with pre-save transformations applied (or this
 	 * object if no transformations apply).
 	 *
 	 * @since 1.21
-	 *
+	 * @deprecated since 1.37. Hard-deprecated since 1.37. Use ContentTransformer::preSaveTransform
+	 * and override ContentHandler::preSaveTransform.
 	 * @param Title $title
 	 * @param User $user
 	 * @param ParserOptions $parserOptions
@@ -434,17 +386,18 @@ interface Content {
 	 * object if no transformations apply).
 	 *
 	 * @since 1.21
-	 *
+	 * @deprecated since 1.37. Hard-deprecated since 1.37. Use ContentTransformer::preloadTransform
+	 * and override ContentHandler::preloadTransform.
 	 * @param Title $title
 	 * @param ParserOptions $parserOptions
 	 * @param array $params
 	 *
 	 * @return Content
 	 */
-	public function preloadTransform( Title $title, ParserOptions $parserOptions, $params = array() );
+	public function preloadTransform( Title $title, ParserOptions $parserOptions, $params = [] );
 
 	/**
-	 * Prepare Content for saving. Called before Content is saved by WikiPage::doEditContent() and in
+	 * Prepare Content for saving. Called before Content is saved by WikiPage::doUserEditContent() and in
 	 * similar places.
 	 *
 	 * This may be used to check the content's consistency with global state. This function should
@@ -457,37 +410,20 @@ interface Content {
 	 * performed. This means that $page may not yet know a page ID.
 	 *
 	 * @since 1.21
+	 * @deprecated since 1.38. Hard-deprecated since 1.38. Use ContentHandler::validateSave instead.
 	 *
 	 * @param WikiPage $page The page to be saved.
-	 * @param int $flags Bitfield for use with EDIT_XXX constants, see WikiPage::doEditContent()
-	 * @param int $baseRevId The ID of the current revision
+	 * @param int $flags Bitfield for use with EDIT_XXX constants, see WikiPage::doUserEditContent()
+	 * @param int $parentRevId The ID of the current revision
 	 * @param User $user
 	 *
 	 * @return Status A status object indicating whether the content was
 	 *   successfully prepared for saving. If the returned status indicates
 	 *   an error, a rollback will be performed and the transaction aborted.
 	 *
-	 * @see WikiPage::doEditContent()
+	 * @see WikiPage::doUserEditContent()
 	 */
-	public function prepareSave( WikiPage $page, $flags, $baseRevId, User $user );
-
-	/**
-	 * Returns a list of updates to perform when this content is deleted.
-	 * The necessary updates may be taken from the Content object, or depend on
-	 * the current state of the database.
-	 *
-	 * @since 1.21
-	 *
-	 * @param WikiPage $page The deleted page
-	 * @param ParserOutput $parserOutput Optional parser output object
-	 *    for efficient access to meta-information about the content object.
-	 *    Provide if you have one handy.
-	 *
-	 * @return DataUpdate[] A list of DataUpdate instances that will clean up the
-	 *    database after deletion.
-	 */
-	public function getDeletionUpdates( WikiPage $page,
-		ParserOutput $parserOutput = null );
+	public function prepareSave( WikiPage $page, $flags, $parentRevId, User $user );
 
 	/**
 	 * Returns true if this Content object matches the given magic word.
@@ -513,8 +449,9 @@ interface Content {
 	 * that conversion is not supported.
 	 */
 	public function convert( $toModel, $lossy = '' );
+
 	// @todo ImagePage and CategoryPage interfere with per-content action handlers
-	// @todo nice&sane integration of GeSHi syntax highlighting
+	// @todo nice integration of GeSHi syntax highlighting
 	//   [11:59] <vvv> Hooks are ugly; make CodeHighlighter interface and a
 	//   config to set the class which handles syntax highlighting
 	//   [12:00] <vvv> And default it to a DummyHighlighter

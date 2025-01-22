@@ -4,25 +4,21 @@
  * Provides access to MediaWiki's version without requiring MediaWiki (or anything else)
  * being loaded first.
  *
- * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class MediaWikiVersionFetcher {
 
 	/**
-	 * Returns the MediaWiki version, in the format used by MediaWiki's wgVersion global.
+	 * Get the MediaWiki version, extracted from the PHP source file where it is defined.
 	 *
 	 * @return string
 	 * @throws RuntimeException
 	 */
 	public function fetchVersion() {
-		$defaultSettings = file_get_contents( __DIR__ . '/DefaultSettings.php' );
+		$code = file_get_contents( __DIR__ . '/Defines.php' );
 
-		$matches = array();
-		preg_match( "/wgVersion = '([-0-9a-zA-Z\.]+)';/", $defaultSettings, $matches );
-
-		if ( count( $matches ) !== 2 ) {
-			throw new RuntimeException( 'Could not extract the MediaWiki version from DefaultSettings.php' );
+		if ( !preg_match( "/define\( 'MW_VERSION', '([^']+)'/", $code, $matches ) ) {
+			throw new RuntimeException( 'Could not extract the MediaWiki version from Defines.php' );
 		}
 
 		return $matches[1];

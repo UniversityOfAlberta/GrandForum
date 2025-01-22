@@ -1,17 +1,15 @@
 <?php
-/** Abkhazian (Аҧсшәа)
+/** Abkhazian (аԥсшәа)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'ru';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Амедиа',
 	NS_SPECIAL          => 'Цастәи',
 	NS_TALK             => 'Ахцәажәара',
@@ -28,9 +26,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Ацхыраара_ахцәажәара',
 	NS_CATEGORY         => 'Акатегориа',
 	NS_CATEGORY_TALK    => 'Акатегориа_ахцәажәара',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	'Иалахә'             => NS_USER,
 
 	// Backward compat. Fallbacks from 'ru'.
@@ -50,28 +48,31 @@ $namespaceAliases = array(
 	'Обсуждение_справки'   => NS_HELP_TALK,
 	'Категория'            => NS_CATEGORY,
 	'Обсуждение_категории' => NS_CATEGORY_TALK
-);
+];
 
 // Remove Russian aliases
-$namespaceGenderAliases = array();
+$namespaceGenderAliases = [];
 
-$specialPageAliases = array(
-	'Categories'                => array( 'Акатегориақәа' ),
-	'Mycontributions'           => array( 'Архиарақәа' ),
-	'Mypage'                    => array( 'Садаҟьа' ),
-	'Mytalk'                    => array( 'Сахцәажәара' ),
-	'Newimages'                 => array( 'АфаилқәаҾыц' ),
-	'Newpages'                  => array( 'АдаҟьақәаҾыц' ),
-	'Randompage'                => array( 'Машәырлатәи' ),
-	'Recentchanges'             => array( 'АрҽеираҾыцқәа' ),
-	'Search'                    => array( 'Аҧшаара' ),
-	'Specialpages'              => array( 'ЦастәиАдаҟьақәа' ),
-	'Upload'                    => array( 'Аҭагалара' ),
-);
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'Categories'                => [ 'Акатегориақәа' ],
+	'Mycontributions'           => [ 'Архиарақәа' ],
+	'Mypage'                    => [ 'Садаҟьа' ],
+	'Mytalk'                    => [ 'Сахцәажәара' ],
+	'Newimages'                 => [ 'АфаилқәаҾыц' ],
+	'Newpages'                  => [ 'АдаҟьақәаҾыц' ],
+	'Randompage'                => [ 'Машәырлатәи' ],
+	'Recentchanges'             => [ 'АрҽеираҾыцқәа' ],
+	'Search'                    => [ 'Аԥшаара', 'Аҧшаара' ],
+	'Specialpages'              => [ 'ЦастәиАдаҟьақәа' ],
+	'Upload'                    => [ 'Аҭагалара' ],
+];
 
-$magicWords = array(
-	'language'                  => array( '0', '#АБЫЗШӘА:', '#ЯЗЫК:', '#LANGUAGE:' ),
-	'special'                   => array( '0', 'цастәи', 'служебная', 'special' ),
-	'index'                     => array( '1', '__АИНДЕКС__', '__ИНДЕКС__', '__INDEX__' ),
-);
+/** @phpcs-require-sorted-array */
+$magicWords = [
+	'index'                     => [ '1', '__АИНДЕКС__', '__ИНДЕКС__', '__INDEX__' ],
+	'language'                  => [ '0', '#АБЫЗШӘА:', '#ЯЗЫК:', '#LANGUAGE:' ],
+	'special'                   => [ '0', 'цастәи', 'служебная', 'special' ],
+];
 
+$linkTrail = '/^([a-zабвгӷҕдежзӡикқҟлмнопԥҧрстҭуфхҳцҵчҷҽҿшыҩџьә]+)(.*)$/sDu';

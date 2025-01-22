@@ -1,15 +1,13 @@
 <?php
 /** Kongo (Kongo)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_TALK             => 'Disolo',
 	NS_USER             => 'Kisadi',
 	NS_USER_TALK        => 'Disolo_kisadi',
@@ -20,5 +18,4 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Disolo_lusadisu',
 	NS_CATEGORY         => 'Kalasi',
 	NS_CATEGORY_TALK    => 'Disolo_kalasi',
-);
-
+];

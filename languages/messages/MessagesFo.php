@@ -1,15 +1,13 @@
 <?php
 /** Faroese (føroyskt)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Miðil',
 	NS_SPECIAL          => 'Serstakt',
 	NS_TALK             => 'Kjak',
@@ -26,9 +24,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Hjálparkjak',
 	NS_CATEGORY         => 'Bólkur',
 	NS_CATEGORY_TALK    => 'Bólkakjak',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	'Serstakur' => NS_SPECIAL,
 	'Brúkari_kjak' => NS_USER_TALK,
 	'$1_kjak' => NS_PROJECT_TALK,
@@ -38,66 +36,66 @@ $namespaceAliases = array(
 	'Fyrimynd_kjak' => NS_TEMPLATE_TALK,
 	'Hjálp_kjak' => NS_HELP_TALK,
 	'Bólkur_kjak' => NS_CATEGORY_TALK,
-);
+];
 
-$specialPageAliases = array(
-	'Allmessages'               => array( 'Øll kervisboð' ),
-	'Allpages'                  => array( 'Allar síður' ),
-	'Ancientpages'              => array( 'Elstu síður' ),
-	'Block'                     => array( 'Banna brúkara' ),
-	'Booksources'               => array( 'Bóka keldur' ),
-	'BrokenRedirects'           => array( 'Brotnar ávísingar' ),
-	'Categories'                => array( 'Bólkar' ),
-	'Contributions'             => array( 'Brúkaraíkast' ),
-	'Deadendpages'              => array( 'Gøtubotns síður' ),
-	'DoubleRedirects'           => array( 'Tvífaldað ávísing' ),
-	'Emailuser'                 => array( 'Send t-post til brúkara' ),
-	'Export'                    => array( 'Útflutningssíður' ),
-	'Fewestrevisions'           => array( 'Greinir við minst útgávum' ),
-	'BlockList'                 => array( 'Bannað brúkaranøvn og IP-adressur' ),
-	'Listfiles'                 => array( 'Myndalisti' ),
-	'Listusers'                 => array( 'Brúkaralisti' ),
-	'Lonelypages'               => array( 'Foreldraleysar síður' ),
-	'Longpages'                 => array( 'Langar síður' ),
-	'Mostcategories'            => array( 'Greinir við flest bólkum' ),
-	'Mostrevisions'             => array( 'Greinir við flest útgávum' ),
-	'Movepage'                  => array( 'Flyt síðu' ),
-	'Newimages'                 => array( 'Nýggjar myndir' ),
-	'Newpages'                  => array( 'Nýggjar síður' ),
-	'Preferences'               => array( 'Innstillingar' ),
-	'Randompage'                => array( 'Tilvildarlig síða' ),
-	'Recentchanges'             => array( 'Seinastu broytingar' ),
-	'Search'                    => array( 'Leita' ),
-	'Shortpages'                => array( 'Stuttar síður' ),
-	'Specialpages'              => array( 'Serligar síður' ),
-	'Statistics'                => array( 'Hagtøl' ),
-	'Uncategorizedcategories'   => array( 'Óbólkaðir bólkar' ),
-	'Uncategorizedimages'       => array( 'Óbólkaðar myndir' ),
-	'Uncategorizedpages'        => array( 'Óbólkaðar síður' ),
-	'Uncategorizedtemplates'    => array( 'Óbólkaðar fyrimyndir' ),
-	'Undelete'                  => array( 'Endurstovna strikaðar síður' ),
-	'Unusedcategories'          => array( 'Óbrúktir bólkar' ),
-	'Unusedimages'              => array( 'Óbrúktar myndir' ),
-	'Upload'                    => array( 'Legg fílu upp' ),
-	'Userlogin'                 => array( 'Stovna kontu ella rita inn' ),
-	'Userlogout'                => array( 'Rita út' ),
-	'Version'                   => array( 'Útgáva' ),
-	'Wantedpages'               => array( 'Ynsktar síður' ),
-	'Watchlist'                 => array( 'Mítt eftirlit' ),
-);
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'Allmessages'               => [ 'Øll_kervisboð' ],
+	'Allpages'                  => [ 'Allar_síður' ],
+	'Ancientpages'              => [ 'Elstu_síður' ],
+	'Block'                     => [ 'Banna_brúkara' ],
+	'BlockList'                 => [ 'Bannað_brúkaranøvn_og_IP-adressur' ],
+	'Booksources'               => [ 'Bóka_keldur' ],
+	'BrokenRedirects'           => [ 'Brotnar_ávísingar' ],
+	'Categories'                => [ 'Bólkar' ],
+	'Contributions'             => [ 'Brúkaraíkast' ],
+	'Deadendpages'              => [ 'Gøtubotns_síður' ],
+	'DoubleRedirects'           => [ 'Tvífaldað_ávísing' ],
+	'Emailuser'                 => [ 'Send_t-post_til_brúkara' ],
+	'Export'                    => [ 'Útflutningssíður' ],
+	'Fewestrevisions'           => [ 'Greinir_við_minst_útgávum' ],
+	'Listfiles'                 => [ 'Myndalisti' ],
+	'Listusers'                 => [ 'Brúkaralisti' ],
+	'Lonelypages'               => [ 'Foreldraleysar_síður' ],
+	'Longpages'                 => [ 'Langar_síður' ],
+	'Mostcategories'            => [ 'Greinir_við_flest_bólkum' ],
+	'Mostrevisions'             => [ 'Greinir_við_flest_útgávum' ],
+	'Movepage'                  => [ 'Flyt_síðu' ],
+	'Newimages'                 => [ 'Nýggjar_myndir' ],
+	'Newpages'                  => [ 'Nýggjar_síður' ],
+	'Preferences'               => [ 'Innstillingar' ],
+	'Randompage'                => [ 'Tilvildarlig_síða' ],
+	'Recentchanges'             => [ 'Seinastu_broytingar' ],
+	'Search'                    => [ 'Leita' ],
+	'Shortpages'                => [ 'Stuttar_síður' ],
+	'Specialpages'              => [ 'Serligar_síður' ],
+	'Statistics'                => [ 'Hagtøl' ],
+	'Uncategorizedcategories'   => [ 'Óbólkaðir_bólkar' ],
+	'Uncategorizedimages'       => [ 'Óbólkaðar_myndir' ],
+	'Uncategorizedpages'        => [ 'Óbólkaðar_síður' ],
+	'Uncategorizedtemplates'    => [ 'Óbólkaðar_fyrimyndir' ],
+	'Undelete'                  => [ 'Endurstovna_strikaðar_síður' ],
+	'Unusedcategories'          => [ 'Óbrúktir_bólkar' ],
+	'Unusedimages'              => [ 'Óbrúktar_myndir' ],
+	'Upload'                    => [ 'Legg_fílu_upp' ],
+	'Userlogin'                 => [ 'Stovna_kontu_ella_rita_inn' ],
+	'Userlogout'                => [ 'Rita_út' ],
+	'Version'                   => [ 'Útgáva' ],
+	'Wantedpages'               => [ 'Ynsktar_síður' ],
+	'Watchlist'                 => [ 'Mítt_eftirlit' ],
+];
 
 $datePreferences = false;
 $defaultDateFormat = 'dmy';
-$dateFormats = array(
+$dateFormats = [
 	'dmy time' => 'H:i',
 	'dmy date' => 'j. M Y',
 	'dmy both' => 'j. M Y "kl." H:i',
-);
+];
 
-$bookstoreList = array(
+$bookstoreList = [
 	'Bokasolan.fo' => 'http://www.bokasolan.fo/vleitari.asp?haattur=bok.alfa&Heiti=&Hovindur=&Forlag=&innbinding=Oell&bolkur=Allir&prisur=Allir&Aarstal=Oell&mal=Oell&status=Oell&ISBN=$1',
 	'inherit' => true,
-);
+];
 
 $linkTrail = '/^([áðíóúýæøa-z]+)(.*)$/sDu';
-

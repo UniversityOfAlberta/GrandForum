@@ -21,52 +21,73 @@
  * @ingroup Parser
  */
 
+use MediaWiki\Json\JsonUnserializable;
+use MediaWiki\Json\JsonUnserializableTrait;
+use MediaWiki\Json\JsonUnserializer;
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserCacheMetadata;
+use Wikimedia\Reflection\GhostFieldAccessTrait;
+
 /**
  * Parser cache specific expiry check.
  *
  * @ingroup Parser
  */
-class CacheTime {
-	/** @var array|bool ParserOptions which have been taken into account to
-	 * produce output or false if not available.
-	 */
-	public $mUsedOptions;
-
-	var	$mVersion = Parser::VERSION,  # Compatibility check
-		$mCacheTime = '',             # Time when this object was generated, or -1 for uncacheable. Used in ParserCache.
-		$mCacheExpiry = null,         # Seconds after which the object should expire, use 0 for uncachable. Used in ParserCache.
-		$mContainsOldMagic,           # Boolean variable indicating if the input contained variables like {{CURRENTDAY}}
-		$mCacheRevisionId = null;     # Revision ID that was parsed
+class CacheTime implements ParserCacheMetadata, JsonUnserializable {
+	use GhostFieldAccessTrait;
+	use JsonUnserializableTrait;
 
 	/**
-	 * @return string TS_MW timestamp
+	 * @var true[] ParserOptions which have been taken into account
+	 * to produce output, option names stored in array keys.
 	 */
-	function getCacheTime() {
-		return wfTimestamp( TS_MW, $this->mCacheTime );
-	}
+	protected $mParseUsedOptions = [];
 
 	/**
-	 * @return bool
+	 * @var string|int TS_MW timestamp when this object was generated, or -1 for not cacheable. Used
+	 * in ParserCache.
 	 */
-	function containsOldMagic() {
-		return $this->mContainsOldMagic;
-	}
+	protected $mCacheTime = '';
 
 	/**
-	 * @param $com bool
-	 * @return bool
+	 * @var int|null Seconds after which the object should expire, use 0 for not cacheable. Used in
+	 * ParserCache.
 	 */
-	function setContainsOldMagic( $com ) {
-		return wfSetVar( $this->mContainsOldMagic, $com );
+	protected $mCacheExpiry = null;
+
+	/**
+	 * @var int|null Revision ID that was parsed
+	 */
+	protected $mCacheRevisionId = null;
+
+	/**
+	 * @return string|int TS_MW timestamp
+	 */
+	public function getCacheTime() {
+		// NOTE: keep support for undocumented used of -1 to mean "not cacheable".
+		if ( $this->mCacheTime === '' ) {
+			$this->mCacheTime = MWTimestamp::now();
+		}
+		return $this->mCacheTime;
 	}
 
 	/**
 	 * setCacheTime() sets the timestamp expressing when the page has been rendered.
 	 * This does not control expiry, see updateCacheExpiry() for that!
-	 * @param $t string
+	 * @param string $t TS_MW timestamp
 	 * @return string
 	 */
-	function setCacheTime( $t ) {
+	public function setCacheTime( $t ) {
+		// NOTE: keep support for undocumented used of -1 to mean "not cacheable".
+		if ( is_string( $t ) && $t !== '-1' ) {
+			$t = MWTimestamp::convert( TS_MW, $t );
+		}
+
+		if ( $t === -1 || $t === '-1' ) {
+			wfDeprecatedMsg( __METHOD__ . ' called with -1 as an argument', '1.36' );
+		}
+
 		return wfSetVar( $this->mCacheTime, $t );
 	}
 
@@ -74,38 +95,40 @@ class CacheTime {
 	 * @since 1.23
 	 * @return int|null Revision id, if any was set
 	 */
-	function getCacheRevisionId() {
+	public function getCacheRevisionId(): ?int {
 		return $this->mCacheRevisionId;
 	}
 
 	/**
 	 * @since 1.23
-	 * @param $id int Revision id
+	 * @param int|null $id Revision ID
 	 */
-	function setCacheRevisionId( $id ) {
+	public function setCacheRevisionId( $id ) {
 		$this->mCacheRevisionId = $id;
 	}
 
 	/**
 	 * Sets the number of seconds after which this object should expire.
+	 *
 	 * This value is used with the ParserCache.
 	 * If called with a value greater than the value provided at any previous call,
 	 * the new call has no effect. The value returned by getCacheExpiry is smaller
 	 * or equal to the smallest number that was provided as an argument to
 	 * updateCacheExpiry().
 	 *
-	 * @param $seconds number
+	 * Avoid using 0 if at all possible. Consider JavaScript for highly dynamic content.
+	 *
+	 * NOTE: Beware that reducing the TTL for reasons that do not relate to "dynamic content",
+	 * may have the side-effect of incurring more RefreshLinksJob executions.
+	 * See also WikiPage::triggerOpportunisticLinksUpdate.
+	 *
+	 * @param int $seconds
 	 */
-	function updateCacheExpiry( $seconds ) {
+	public function updateCacheExpiry( $seconds ) {
 		$seconds = (int)$seconds;
 
 		if ( $this->mCacheExpiry === null || $this->mCacheExpiry > $seconds ) {
 			$this->mCacheExpiry = $seconds;
-		}
-
-		// hack: set old-style marker for uncacheable entries.
-		if ( $this->mCacheExpiry !== null && $this->mCacheExpiry <= 0 ) {
-			$this->mCacheTime = -1;
 		}
 	}
 
@@ -116,29 +139,27 @@ class CacheTime {
 	 * The value returned by getCacheExpiry is smaller or equal to the smallest number
 	 * that was provided to a call of updateCacheExpiry(), and smaller or equal to the
 	 * value of $wgParserCacheExpireTime.
-	 * @return int|mixed|null
+	 * @return int
 	 */
-	function getCacheExpiry() {
-		global $wgParserCacheExpireTime;
+	public function getCacheExpiry(): int {
+		$parserCacheExpireTime = MediaWikiServices::getInstance()->getMainConfig()
+			->get( MainConfigNames::ParserCacheExpireTime );
 
-		if ( $this->mCacheTime < 0 ) {
+		// NOTE: keep support for undocumented used of -1 to mean "not cacheable".
+		if ( $this->mCacheTime !== '' && $this->mCacheTime < 0 ) {
 			return 0;
-		} // old-style marker for "not cachable"
+		}
 
 		$expire = $this->mCacheExpiry;
 
 		if ( $expire === null ) {
-			$expire = $wgParserCacheExpireTime;
+			$expire = $parserCacheExpireTime;
 		} else {
-			$expire = min( $expire, $wgParserCacheExpireTime );
-		}
-
-		if ( $this->containsOldMagic() ) { //compatibility hack
-			$expire = min( $expire, 3600 ); # 1 hour
+			$expire = min( $expire, $parserCacheExpireTime );
 		}
 
 		if ( $expire <= 0 ) {
-			return 0; // not cachable
+			return 0; // not cacheable
 		} else {
 			return $expire;
 		}
@@ -147,7 +168,7 @@ class CacheTime {
 	/**
 	 * @return bool
 	 */
-	function isCacheable() {
+	public function isCacheable() {
 		return $this->getCacheExpiry() > 0;
 	}
 
@@ -156,17 +177,18 @@ class CacheTime {
 	 * per-article cache invalidation timestamps, or if it comes from
 	 * an incompatible older version.
 	 *
-	 * @param string $touched the affected article's last touched timestamp
-	 * @return Boolean
+	 * @param string $touched The affected article's last touched timestamp
+	 * @return bool
 	 */
 	public function expired( $touched ) {
-		global $wgCacheEpoch;
-		return !$this->isCacheable() || // parser says it's uncacheable
-			$this->getCacheTime() < $touched ||
-			$this->getCacheTime() <= $wgCacheEpoch ||
-			$this->getCacheTime() < wfTimestamp( TS_MW, time() - $this->getCacheExpiry() ) || // expiry period has passed
-			!isset( $this->mVersion ) ||
-			version_compare( $this->mVersion, Parser::VERSION, "lt" );
+		$cacheEpoch = MediaWikiServices::getInstance()->getMainConfig()->get( MainConfigNames::CacheEpoch );
+
+		$expiry = MWTimestamp::convert( TS_MW, MWTimestamp::time() - $this->getCacheExpiry() );
+
+		return !$this->isCacheable() // parser says it's not cacheable
+			|| $this->getCacheTime() < $touched
+			|| $this->getCacheTime() <= $cacheEpoch
+			|| $this->getCacheTime() < $expiry; // expiry period has passed
 	}
 
 	/**
@@ -178,11 +200,126 @@ class CacheTime {
 	 * deployed. Someday that should probably be changed.
 	 *
 	 * @since 1.23
-	 * @param int $id the affected article's current revision id
-	 * @return Boolean
+	 * @param int $id The affected article's current revision id
+	 * @return bool
 	 */
 	public function isDifferentRevision( $id ) {
 		$cached = $this->getCacheRevisionId();
 		return $cached !== null && $id !== $cached;
+	}
+
+	/**
+	 * Returns the options from its ParserOptions which have been taken
+	 * into account to produce the output.
+	 * @since 1.36
+	 * @return string[]
+	 */
+	public function getUsedOptions(): array {
+		return array_keys( $this->mParseUsedOptions );
+	}
+
+	/**
+	 * Tags a parser option for use in the cache key for this parser output.
+	 * Registered as a watcher at ParserOptions::registerWatcher() by Parser::clearState().
+	 * The information gathered here is available via getUsedOptions(),
+	 * and is used by ParserCache::save().
+	 *
+	 * @see ParserCache::getMetadata
+	 * @see ParserCache::save
+	 * @see ParserOptions::addExtraKey
+	 * @see ParserOptions::optionsHash
+	 * @param string $option
+	 */
+	public function recordOption( string $option ) {
+		$this->mParseUsedOptions[$option] = true;
+	}
+
+	/**
+	 * Tags a list of parser option names for use in the cache key for this parser output.
+	 *
+	 * @see recordOption()
+	 * @param string[] $options
+	 */
+	public function recordOptions( array $options ) {
+		$this->mParseUsedOptions = array_merge(
+			$this->mParseUsedOptions,
+			array_fill_keys( $options, true )
+		);
+	}
+
+	/**
+	 * Returns a JSON serializable structure representing this CacheTime instance.
+	 * @see newFromJson()
+	 *
+	 * @return array
+	 */
+	protected function toJsonArray(): array {
+		return [
+			'ParseUsedOptions' => $this->mParseUsedOptions,
+			'CacheExpiry' => $this->mCacheExpiry,
+			'CacheTime' => $this->mCacheTime,
+			'CacheRevisionId' => $this->mCacheRevisionId,
+		];
+	}
+
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+		$cacheTime = new CacheTime();
+		$cacheTime->initFromJson( $unserializer, $json );
+		return $cacheTime;
+	}
+
+	/**
+	 * Initialize member fields from an array returned by jsonSerialize().
+	 * @param JsonUnserializer $unserializer
+	 * @param array $jsonData
+	 */
+	protected function initFromJson( JsonUnserializer $unserializer, array $jsonData ) {
+		if ( array_key_exists( 'AccessedOptions', $jsonData ) ) {
+			// Backwards compatibility for ParserOutput
+			$this->mParseUsedOptions = $jsonData['AccessedOptions'] ?: [];
+		} elseif ( array_key_exists( 'UsedOptions', $jsonData ) ) {
+			// Backwards compatibility
+			$this->recordOptions( $jsonData['UsedOptions'] ?: [] );
+		} else {
+			$this->mParseUsedOptions = $jsonData['ParseUsedOptions'] ?: [];
+		}
+		$this->mCacheExpiry = $jsonData['CacheExpiry'];
+		$this->mCacheTime = $jsonData['CacheTime'];
+		$this->mCacheRevisionId = $jsonData['CacheRevisionId'];
+	}
+
+	public function __wakeup() {
+		// Backwards compatibility, pre 1.36
+		$priorOptions = $this->getGhostFieldValue( 'mUsedOptions' );
+		if ( $priorOptions ) {
+			$this->recordOptions( $priorOptions );
+		}
+	}
+
+	public function __get( $name ) {
+		if ( property_exists( get_called_class(), $name ) ) {
+			// Direct access to a public property, deprecated.
+			wfDeprecatedMsg( "CacheTime::{$name} public read access deprecated", '1.38' );
+			return $this->$name;
+		} elseif ( property_exists( $this, $name ) ) {
+			// Dynamic property access, deprecated.
+			wfDeprecatedMsg( "CacheTime::{$name} dynamic property read access deprecated", '1.38' );
+			return $this->$name;
+		} else {
+			trigger_error( "Inaccessible property via __set(): $name" );
+			return null;
+		}
+	}
+
+	public function __set( $name, $value ) {
+		if ( property_exists( get_called_class(), $name ) ) {
+			// Direct access to a public property, deprecated.
+			wfDeprecatedMsg( "CacheTime::$name public write access deprecated", '1.38' );
+			$this->$name = $value;
+		} else {
+			// Dynamic property access, deprecated.
+			wfDeprecatedMsg( "CacheTime::$name dynamic property write access deprecated", '1.38' );
+			$this->$name = $value;
+		}
 	}
 }

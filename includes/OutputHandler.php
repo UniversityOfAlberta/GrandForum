@@ -20,216 +20,187 @@
  * @file
  */
 
-/**
- * Standard output handler for use with ob_start
- *
- * @param $s string
- *
- * @return string
- */
-function wfOutputHandler( $s ) {
-	global $wgDisableOutputCompression, $wgValidateAllHtml, $wgMangleFlashPolicy;
-	if ( $wgMangleFlashPolicy ) {
-		$s = wfMangleFlashPolicy( $s );
-	}
-	if ( $wgValidateAllHtml ) {
-		$headers = headers_list();
-		$isHTML = false;
-		foreach ( $headers as $header ) {
-			$parts = explode( ':', $header, 2 );
-			if ( count( $parts ) !== 2 ) {
-				continue;
-			}
-			$name = strtolower( trim( $parts[0] ) );
-			$value = trim( $parts[1] );
-			if ( $name == 'content-type' && ( strpos( $value, 'text/html' ) === 0
-				|| strpos( $value, 'application/xhtml+xml' ) === 0 )
-			) {
-				$isHTML = true;
-				break;
-			}
-		}
-		if ( $isHTML ) {
-			$s = wfHtmlValidationHandler( $s );
-		}
-	}
-	if ( !$wgDisableOutputCompression && !ini_get( 'zlib.output_compression' ) ) {
-		if ( !defined( 'MW_NO_OUTPUT_COMPRESSION' ) ) {
-			$s = wfGzipHandler( $s );
-		}
-		if ( !ini_get( 'output_handler' ) ) {
-			wfDoContentLength( strlen( $s ) );
-		}
-	}
-	return $s;
-}
+namespace MediaWiki;
+
+use MediaWiki\Logger\LoggerFactory;
 
 /**
- * Get the "file extension" that some client apps will estimate from
- * the currently-requested URL.
- * This isn't on WebRequest because we need it when things aren't initialized
- * @private
- *
- * @return string
+ * @since 1.31
  */
-function wfRequestExtension() {
-	/// @todo FIXME: this sort of dupes some code in WebRequest::getRequestUrl()
-	if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-		// Strip the query string...
-		list( $path ) = explode( '?', $_SERVER['REQUEST_URI'], 2 );
-	} elseif ( isset( $_SERVER['SCRIPT_NAME'] ) ) {
-		// Probably IIS. QUERY_STRING appears separately.
-		$path = $_SERVER['SCRIPT_NAME'];
-	} else {
-		// Can't get the path from the server? :(
+class OutputHandler {
+	/**
+	 * Standard output handler for use with ob_start.
+	 *
+	 * Output buffers using this method should only be started from MW_SETUP_CALLBACK,
+	 * and only if there are no parent output buffers.
+	 *
+	 * @param string $s Web response output
+	 * @param int $phase Flags indicating the reason for the call
+	 * @return string
+	 */
+	public static function handle( $s, $phase ) {
+		$config = MediaWikiServices::getInstance()->getMainConfig();
+		$disableOutputCompression = $config->get( MainConfigNames::DisableOutputCompression );
+		// Don't send headers if output is being discarded (T278579)
+		if ( ( $phase & PHP_OUTPUT_HANDLER_CLEAN ) === PHP_OUTPUT_HANDLER_CLEAN ) {
+			$logger = LoggerFactory::getInstance( 'output' );
+			$logger->debug( __METHOD__ . " entrypoint={entry}; size={size}; phase=$phase", [
+				'entry' => MW_ENTRY_POINT,
+				'size' => strlen( $s ),
+			] );
+
+			return $s;
+		}
+
+		// Check if a compression output buffer is already enabled via php.ini. Such
+		// buffers exists at the start of the request and are reflected by ob_get_level().
+		$phpHandlesCompression = (
+			ini_get( 'output_handler' ) === 'ob_gzhandler' ||
+			ini_get( 'zlib.output_handler' ) === 'ob_gzhandler' ||
+			!in_array(
+				strtolower( ini_get( 'zlib.output_compression' ) ),
+				[ '', 'off', '0' ]
+			)
+		);
+
+		if (
+			// Compression is not already handled by an internal PHP buffer
+			!$phpHandlesCompression &&
+			// Compression is not disabled by the application entry point
+			!defined( 'MW_NO_OUTPUT_COMPRESSION' ) &&
+			// Compression is not disabled by site configuration
+			!$disableOutputCompression
+		) {
+			$s = self::handleGzip( $s );
+		}
+
+		if (
+			// Response body length does not depend on internal PHP compression buffer
+			!$phpHandlesCompression &&
+			// Response body length does not depend on mangling by a custom buffer
+			!ini_get( 'output_handler' ) &&
+			!ini_get( 'zlib.output_handler' )
+		) {
+			self::emitContentLength( strlen( $s ) );
+		}
+
+		return $s;
+	}
+
+	/**
+	 * Get the "file extension" that some client apps will estimate from
+	 * the currently-requested URL.
+	 *
+	 * This isn't a WebRequest method, because we need it before the class loads.
+	 * @todo As of 2018, this actually runs after autoloader in Setup.php, so
+	 * WebRequest seems like a good place for this.
+	 *
+	 * @return string
+	 */
+	private static function findUriExtension() {
+		// @todo FIXME: this sort of dupes some code in WebRequest::getRequestUrl()
+		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+			// Strip the query string...
+			$path = explode( '?', $_SERVER['REQUEST_URI'], 2 )[0];
+		} elseif ( isset( $_SERVER['SCRIPT_NAME'] ) ) {
+			// Probably IIS. QUERY_STRING appears separately.
+			$path = $_SERVER['SCRIPT_NAME'];
+		} else {
+			// Can't get the path from the server? :(
+			return '';
+		}
+
+		$period = strrpos( $path, '.' );
+		if ( $period !== false ) {
+			return strtolower( substr( $path, $period ) );
+		}
 		return '';
 	}
 
-	$period = strrpos( $path, '.' );
-	if ( $period !== false ) {
-		return strtolower( substr( $path, $period ) );
-	}
-	return '';
-}
+	/**
+	 * Handler that compresses data with gzip if allowed by the Accept header.
+	 *
+	 * Unlike ob_gzhandler, it works for HEAD requests too. This assumes that the application
+	 * processes them as normal GET request and that the webserver is tasked with stripping out
+	 * the response body before sending the response the client.
+	 *
+	 * @param string $s Web response output
+	 * @return string
+	 */
+	private static function handleGzip( $s ) {
+		if ( !function_exists( 'gzencode' ) ) {
+			wfDebug( __METHOD__ . "() skipping compression (gzencode unavailable)" );
+			return $s;
+		}
+		if ( headers_sent() ) {
+			wfDebug( __METHOD__ . "() skipping compression (headers already sent)" );
+			return $s;
+		}
 
-/**
- * Handler that compresses data with gzip if allowed by the Accept header.
- * Unlike ob_gzhandler, it works for HEAD requests too.
- *
- * @param $s string
- *
- * @return string
- */
-function wfGzipHandler( $s ) {
-	if ( !function_exists( 'gzencode' ) ) {
-		wfDebug( __FUNCTION__ . "() skipping compression (gzencode unavailable)\n" );
+		$ext = self::findUriExtension();
+		if ( $ext == '.gz' || $ext == '.tgz' ) {
+			// Don't do gzip compression if the URL path ends in .gz or .tgz
+			// This confuses Safari and triggers a download of the page,
+			// even though it's pretty clearly labeled as viewable HTML.
+			// Bad Safari! Bad!
+			return $s;
+		}
+
+		if ( $s === '' ) {
+			// Do not gzip empty HTTP responses since that would not only bloat the body
+			// length, but it would result in invalid HTTP responses when the HTTP status code
+			// is one that must not be accompanied by a body (e.g. "204 No Content").
+			return $s;
+		}
+
+		if ( wfClientAcceptsGzip() ) {
+			wfDebug( __METHOD__ . "() is compressing output" );
+			header( 'Content-Encoding: gzip' );
+			$s = gzencode( $s, 6 );
+		}
+
+		// Set vary header if it hasn't been set already
+		$headers = headers_list();
+		$foundVary = false;
+		foreach ( $headers as $header ) {
+			$headerName = strtolower( substr( $header, 0, 5 ) );
+			if ( $headerName == 'vary:' ) {
+				$foundVary = true;
+				break;
+			}
+		}
+		if ( !$foundVary ) {
+			header( 'Vary: Accept-Encoding' );
+		}
 		return $s;
 	}
-	if ( headers_sent() ) {
-		wfDebug( __FUNCTION__ . "() skipping compression (headers already sent)\n" );
-		return $s;
-	}
 
-	$ext = wfRequestExtension();
-	if ( $ext == '.gz' || $ext == '.tgz' ) {
-		// Don't do gzip compression if the URL path ends in .gz or .tgz
-		// This confuses Safari and triggers a download of the page,
-		// even though it's pretty clearly labeled as viewable HTML.
-		// Bad Safari! Bad!
-		return $s;
-	}
+	/**
+	 * Set the Content-Length header if possible
+	 *
+	 * This sets Content-Length for the following cases:
+	 *  - When the response body is meaningful (HTTP 200/404).
+	 *  - On any HTTP 1.0 request response. This improves cooperation with certain CDNs.
+	 *
+	 * This assumes that HEAD requests are processed as GET requests by MediaWiki and that
+	 * the webserver is tasked with stripping out the body.
+	 *
+	 * Setting Content-Length can prevent clients from getting stuck waiting on PHP to finish
+	 * while deferred updates are running.
+	 *
+	 * @param int $length
+	 */
+	private static function emitContentLength( $length ) {
+		if ( headers_sent() ) {
+			wfDebug( __METHOD__ . "() headers already sent" );
+			return;
+		}
 
-	if ( wfClientAcceptsGzip() ) {
-		wfDebug( __FUNCTION__ . "() is compressing output\n" );
-		header( 'Content-Encoding: gzip' );
-		$s = gzencode( $s, 6 );
-	}
-
-	// Set vary header if it hasn't been set already
-	$headers = headers_list();
-	$foundVary = false;
-	foreach ( $headers as $header ) {
-		if ( substr( $header, 0, 5 ) == 'Vary:' ) {
-			$foundVary = true;
-			break;
+		if (
+			in_array( http_response_code(), [ 200, 404 ], true ) ||
+			( $_SERVER['SERVER_PROTOCOL'] ?? null ) === 'HTTP/1.0'
+		) {
+			header( "Content-Length: $length" );
 		}
 	}
-	if ( !$foundVary ) {
-		header( 'Vary: Accept-Encoding' );
-		global $wgUseXVO;
-		if ( $wgUseXVO ) {
-			header( 'X-Vary-Options: Accept-Encoding;list-contains=gzip' );
-		}
-	}
-	return $s;
-}
-
-/**
- * Mangle flash policy tags which open up the site to XSS attacks.
- *
- * @param $s string
- *
- * @return string
- */
-function wfMangleFlashPolicy( $s ) {
-	# Avoid weird excessive memory usage in PCRE on big articles
-	if ( preg_match( '/\<\s*cross-domain-policy\s*\>/i', $s ) ) {
-		return preg_replace( '/\<\s*cross-domain-policy\s*\>/i', '<NOT-cross-domain-policy>', $s );
-	} else {
-		return $s;
-	}
-}
-
-/**
- * Add a Content-Length header if possible. This makes it cooperate with squid better.
- *
- * @param $length int
- */
-function wfDoContentLength( $length ) {
-	if ( !headers_sent() && isset( $_SERVER['SERVER_PROTOCOL'] ) && $_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0' ) {
-		header( "Content-Length: $length" );
-	}
-}
-
-/**
- * Replace the output with an error if the HTML is not valid
- *
- * @param $s string
- *
- * @return string
- */
-function wfHtmlValidationHandler( $s ) {
-
-	$errors = '';
-	if ( MWTidy::checkErrors( $s, $errors ) ) {
-		return $s;
-	}
-
-	header( 'Cache-Control: no-cache' );
-
-	$out = Html::element( 'h1', null, 'HTML validation error' );
-	$out .= Html::openElement( 'ul' );
-
-	$error = strtok( $errors, "\n" );
-	$badLines = array();
-	while ( $error !== false ) {
-		if ( preg_match( '/^line (\d+)/', $error, $m ) ) {
-			$lineNum = intval( $m[1] );
-			$badLines[$lineNum] = true;
-			$out .= Html::rawElement( 'li', null,
-				Html::element( 'a', array( 'href' => "#line-{$lineNum}" ), $error ) ) . "\n";
-		}
-		$error = strtok( "\n" );
-	}
-
-	$out .= Html::closeElement( 'ul' );
-	$out .= Html::element( 'pre', null, $errors );
-	$out .= Html::openElement( 'ol' ) . "\n";
-	$line = strtok( $s, "\n" );
-	$i = 1;
-	while ( $line !== false ) {
-		$attrs = array();
-		if ( isset( $badLines[$i] ) ) {
-			$attrs['class'] = 'highlight';
-			$attrs['id'] = "line-$i";
-		}
-		$out .= Html::element( 'li', $attrs, $line ) . "\n";
-		$line = strtok( "\n" );
-		$i++;
-	}
-	$out .= Html::closeElement( 'ol' );
-
-	$style = <<<CSS
-.highlight { background-color: #ffc }
-li { white-space: pre }
-CSS;
-
-	$out = Html::htmlHeader( array( 'lang' => 'en', 'dir' => 'ltr' ) ) .
-		Html::rawElement( 'head', null,
-			Html::element( 'title', null, 'HTML validation error' ) .
-			Html::inlineStyle( $style ) ) .
-		Html::rawElement( 'body', null, $out ) .
-		Html::closeElement( 'html' );
-
-	return $out;
 }

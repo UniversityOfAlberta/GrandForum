@@ -23,6 +23,8 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MainConfigNames;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -42,37 +44,37 @@ class RenameDbPrefix extends Maintenance {
 	}
 
 	public function execute() {
-		global $wgDBname;
+		$dbName = $this->getConfig()->get( MainConfigNames::DBname );
 
 		// Allow for no old prefix
 		if ( $this->getOption( 'old', 0 ) === '0' ) {
 			$old = '';
 		} else {
-			// Use nice safe, sane, prefixes
+			// Use nice safe, sensible, prefixes
 			preg_match( '/^[a-zA-Z]+_$/', $this->getOption( 'old' ), $m );
-			$old = isset( $m[0] ) ? $m[0] : false;
+			$old = $m[0] ?? false;
 		}
 		// Allow for no new prefix
 		if ( $this->getOption( 'new', 0 ) === '0' ) {
 			$new = '';
 		} else {
-			// Use nice safe, sane, prefixes
+			// Use nice safe, sensible, prefixes
 			preg_match( '/^[a-zA-Z]+_$/', $this->getOption( 'new' ), $m );
-			$new = isset( $m[0] ) ? $m[0] : false;
+			$new = $m[0] ?? false;
 		}
 
 		if ( $old === false || $new === false ) {
-			$this->error( "Invalid prefix!", true );
+			$this->fatalError( "Invalid prefix!" );
 		}
 		if ( $old === $new ) {
 			$this->output( "Same prefix. Nothing to rename!\n", true );
 		}
 
-		$this->output( "Renaming DB prefix for tables of $wgDBname from '$old' to '$new'\n" );
+		$this->output( "Renaming DB prefix for tables of $dbName from '$old' to '$new'\n" );
 		$count = 0;
 
-		$dbw = wfGetDB( DB_MASTER );
-		$res = $dbw->query( "SHOW TABLES " . $dbw->buildLike( $old, $dbw->anyString() ) );
+		$dbw = $this->getDB( DB_PRIMARY );
+		$res = $dbw->query( "SHOW TABLES " . $dbw->buildLike( $old, $dbw->anyString() ), __METHOD__ );
 		foreach ( $res as $row ) {
 			// XXX: odd syntax. MySQL outputs an oddly cased "Tables of X"
 			// sort of message. Best not to try $row->x stuff...
@@ -82,7 +84,9 @@ class RenameDbPrefix extends Maintenance {
 				// $old should be regexp safe ([a-zA-Z_])
 				$newTable = preg_replace( '/^' . $old . '/', $new, $table );
 				$this->output( "Renaming table $table to $newTable\n" );
-				$dbw->query( "RENAME TABLE $table TO $newTable" );
+				$oldTableEnc = $dbw->addIdentifierQuotes( $table );
+				$newTableEnc = $dbw->addIdentifierQuotes( $newTable );
+				$dbw->query( "RENAME TABLE $oldTableEnc TO $newTableEnc", __METHOD__ );
 			}
 			$count++;
 		}
@@ -90,5 +94,5 @@ class RenameDbPrefix extends Maintenance {
 	}
 }
 
-$maintClass = "RenameDbPrefix";
+$maintClass = RenameDbPrefix::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

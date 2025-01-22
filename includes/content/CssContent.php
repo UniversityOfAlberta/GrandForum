@@ -28,49 +28,62 @@
 /**
  * Content object for CSS pages.
  *
+ * @newable
  * @ingroup Content
  */
 class CssContent extends TextContent {
 
 	/**
+	 * @var bool|Title|null
+	 */
+	private $redirectTarget = false;
+
+	/**
+	 * @stable to call
 	 * @param string $text CSS code.
+	 * @param string $modelId the content content model
 	 */
-	public function __construct( $text ) {
-		parent::__construct( $text, CONTENT_MODEL_CSS );
+	public function __construct( $text, $modelId = CONTENT_MODEL_CSS ) {
+		parent::__construct( $text, $modelId );
 	}
 
 	/**
-	 * Returns a Content object with pre-save transformations applied using
-	 * Parser::preSaveTransform().
-	 *
-	 * @param Title $title
-	 * @param User $user
-	 * @param ParserOptions $popts
-	 *
+	 * @param Title $target
 	 * @return CssContent
-	 *
-	 * @see TextContent::preSaveTransform
 	 */
-	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
-		global $wgParser;
-		// @todo Make pre-save transformation optional for script pages
+	public function updateRedirect( Title $target ) {
+		if ( !$this->isRedirect() ) {
+			return $this;
+		}
 
-		$text = $this->getNativeData();
-		$pst = $wgParser->preSaveTransform( $text, $title, $user, $popts );
-
-		return new CssContent( $pst );
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType False positive
+		return $this->getContentHandler()->makeRedirectContent( $target );
 	}
 
 	/**
-	 * @return string CSS wrapped in a <pre> tag.
+	 * @return Title|null
 	 */
-	protected function getHtml() {
-		$html = "";
-		$html .= "<pre class=\"mw-code mw-css\" dir=\"ltr\">\n";
-		$html .= $this->getHighlightHtml();
-		$html .= "\n</pre>\n";
+	public function getRedirectTarget() {
+		if ( $this->redirectTarget !== false ) {
+			return $this->redirectTarget;
+		}
+		$this->redirectTarget = null;
+		$text = $this->getText();
+		if ( strpos( $text, '/* #REDIRECT */' ) === 0 ) {
+			// Extract the title from the url
+			if ( preg_match( '/title=(.*?)&action=raw/', $text, $matches ) ) {
+				$title = Title::newFromText( urldecode( $matches[1] ) );
+				if ( $title ) {
+					// Have a title, check that the current content equals what
+					// the redirect content should be
+					if ( $this->equals( $this->getContentHandler()->makeRedirectContent( $title ) ) ) {
+						$this->redirectTarget = $title;
+					}
+				}
+			}
+		}
 
-		return $html;
+		return $this->redirectTarget;
 	}
 
 }

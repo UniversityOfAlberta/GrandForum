@@ -28,48 +28,65 @@
 /**
  * Content for JavaScript pages.
  *
+ * @newable
  * @ingroup Content
  */
 class JavaScriptContent extends TextContent {
 
 	/**
-	 * @param string $text JavaScript code.
+	 * @var bool|Title|null
 	 */
-	public function __construct( $text ) {
-		parent::__construct( $text, CONTENT_MODEL_JAVASCRIPT );
+	private $redirectTarget = false;
+
+	/**
+	 * @stable to call
+	 * @param string $text JavaScript code.
+	 * @param string $modelId the content model name
+	 */
+	public function __construct( $text, $modelId = CONTENT_MODEL_JAVASCRIPT ) {
+		parent::__construct( $text, $modelId );
 	}
 
 	/**
-	 * Returns a Content object with pre-save transformations applied using
-	 * Parser::preSaveTransform().
+	 * If this page is a redirect, return the content
+	 * if it should redirect to $target instead
 	 *
-	 * @param Title $title
-	 * @param User $user
-	 * @param ParserOptions $popts
-	 *
+	 * @param Title $target
 	 * @return JavaScriptContent
 	 */
-	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
-		global $wgParser;
-		// @todo Make pre-save transformation optional for script pages
-		// See bug #32858
+	public function updateRedirect( Title $target ) {
+		if ( !$this->isRedirect() ) {
+			return $this;
+		}
 
-		$text = $this->getNativeData();
-		$pst = $wgParser->preSaveTransform( $text, $title, $user, $popts );
-
-		return new JavaScriptContent( $pst );
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType False positive
+		return $this->getContentHandler()->makeRedirectContent( $target );
 	}
 
 	/**
-	 * @return string JavaScript wrapped in a <pre> tag.
+	 * @return Title|null
 	 */
-	protected function getHtml() {
-		$html = "";
-		$html .= "<pre class=\"mw-code mw-js\" dir=\"ltr\">\n";
-		$html .= $this->getHighlightHtml();
-		$html .= "\n</pre>\n";
+	public function getRedirectTarget() {
+		if ( $this->redirectTarget !== false ) {
+			return $this->redirectTarget;
+		}
+		$this->redirectTarget = null;
+		$text = $this->getText();
+		if ( strpos( $text, '/* #REDIRECT */' ) === 0 ) {
+			// Extract the title from the url
+			if ( preg_match( '/title=(.*?)\\\\u0026action=raw/', $text, $matches ) ) {
+				$title = Title::newFromText( urldecode( $matches[1] ) );
+				if ( $title ) {
+					// Have a title, check that the current content equals what
+					// the redirect content should be
+					if ( $this->equals( $this->getContentHandler()->makeRedirectContent( $title ) ) ) {
+						$this->redirectTarget = $title;
+					}
+				}
+			}
+		}
 
-		return $html;
+		return $this->redirectTarget;
 	}
 
 }

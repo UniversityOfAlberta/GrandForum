@@ -2,10 +2,6 @@
 /**
  * Clean up broken, unparseable upload filenames.
  *
- * Usage: php cleanupImages.php [--fix]
- * Options:
- *   --fix  Actually clean up titles; otherwise just checks for them
- *
  * Copyright © 2005-2006 Brion Vibber <brion@pobox.com>
  * https://www.mediawiki.org/
  *
@@ -29,33 +25,37 @@
  * @ingroup Maintenance
  */
 
-require_once __DIR__ . '/cleanupTable.inc';
+use MediaWiki\MediaWikiServices;
+
+require_once __DIR__ . '/TableCleanup.php';
 
 /**
  * Maintenance script to clean up broken, unparseable upload filenames.
  *
  * @ingroup Maintenance
  */
-class ImageCleanup extends TableCleanup {
-	protected $defaultParams = array(
+class CleanupImages extends TableCleanup {
+	protected $defaultParams = [
 		'table' => 'image',
-		'conds' => array(),
+		'conds' => [],
 		'index' => 'img_name',
 		'callback' => 'processRow',
-	);
+	];
+
+	/** @var LocalRepo|null */
+	private $repo;
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Script to clean up broken, unparseable upload filenames";
+		$this->addDescription( 'Script to clean up broken, unparseable upload filenames' );
 	}
 
 	protected function processRow( $row ) {
-		global $wgContLang;
-
 		$source = $row->img_name;
 		if ( $source == '' ) {
 			// Ye olde empty rows. Just kill them.
 			$this->killRow( $source );
+
 			return $this->progress( 1 );
 		}
 
@@ -67,21 +67,24 @@ class ImageCleanup extends TableCleanup {
 		// We also have some HTML entities there
 		$cleaned = Sanitizer::decodeCharReferences( $cleaned );
 
+		$contLang = MediaWikiServices::getInstance()->getContentLanguage();
+
 		// Some are old latin-1
-		$cleaned = $wgContLang->checkTitleEncoding( $cleaned );
+		$cleaned = $contLang->checkTitleEncoding( $cleaned );
 
 		// Many of remainder look like non-normalized unicode
-		$cleaned = $wgContLang->normalize( $cleaned );
+		$cleaned = $contLang->normalize( $cleaned );
 
 		$title = Title::makeTitleSafe( NS_FILE, $cleaned );
 
-		if ( is_null( $title ) ) {
+		if ( $title === null ) {
 			$this->output( "page $source ($cleaned) is illegal.\n" );
 			$safe = $this->buildSafeTitle( $cleaned );
 			if ( $safe === false ) {
 				return $this->progress( 0 );
 			}
 			$this->pokeFile( $source, $safe );
+
 			return $this->progress( 1 );
 		}
 
@@ -89,6 +92,7 @@ class ImageCleanup extends TableCleanup {
 			$munged = $title->getDBkey();
 			$this->output( "page $source ($munged) doesn't match self.\n" );
 			$this->pokeFile( $source, $munged );
+
 			return $this->progress( 1 );
 		}
 
@@ -96,33 +100,51 @@ class ImageCleanup extends TableCleanup {
 	}
 
 	/**
-	 * @param $name string
+	 * @param string $name
 	 */
 	private function killRow( $name ) {
 		if ( $this->dryrun ) {
 			$this->output( "DRY RUN: would delete bogus row '$name'\n" );
 		} else {
 			$this->output( "deleting bogus row '$name'\n" );
-			$db = wfGetDB( DB_MASTER );
+			$db = $this->getDB( DB_PRIMARY );
 			$db->delete( 'image',
-				array( 'img_name' => $name ),
+				[ 'img_name' => $name ],
 				__METHOD__ );
 		}
 	}
 
+	/**
+	 * @param string $name
+	 * @return string
+	 */
 	private function filePath( $name ) {
-		if ( !isset( $this->repo ) ) {
-			$this->repo = RepoGroup::singleton()->getLocalRepo();
+		if ( $this->repo === null ) {
+			$this->repo = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo();
 		}
+
 		return $this->repo->getRootDirectory() . '/' . $this->repo->getHashPath( $name ) . $name;
 	}
 
 	private function imageExists( $name, $db ) {
-		return $db->selectField( 'image', '1', array( 'img_name' => $name ), __METHOD__ );
+		return (bool)$db->newSelectQueryBuilder()
+			->select( '1' )
+			->from( 'image' )
+			->where( [ 'img_name' => $name ] )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
 	private function pageExists( $name, $db ) {
-		return $db->selectField( 'page', '1', array( 'page_namespace' => NS_FILE, 'page_title' => $name ), __METHOD__ );
+		return (bool)$db->newSelectQueryBuilder()
+			->select( '1' )
+			->from( 'page' )
+			->where( [
+				'page_namespace' => NS_FILE,
+				'page_title' => $name,
+			] )
+			->caller( __METHOD__ )
+			->fetchField();
 	}
 
 	private function pokeFile( $orig, $new ) {
@@ -130,22 +152,23 @@ class ImageCleanup extends TableCleanup {
 		if ( !file_exists( $path ) ) {
 			$this->output( "missing file: $path\n" );
 			$this->killRow( $orig );
+
 			return;
 		}
 
-		$db = wfGetDB( DB_MASTER );
+		$db = $this->getDB( DB_PRIMARY );
 
 		/*
 		 * To prevent key collisions in the update() statements below,
 		 * if the target title exists in the image table, or if both the
 		 * original and target titles exist in the page table, append
 		 * increasing version numbers until the target title exists in
-		 * neither.  (See also bug 16916.)
+		 * neither.  (See also T18916.)
 		 */
 		$version = 0;
 		$final = $new;
 		$conflict = ( $this->imageExists( $final, $db ) ||
-				( $this->pageExists( $orig, $db ) && $this->pageExists( $final, $db ) ) );
+			( $this->pageExists( $orig, $db ) && $this->pageExists( $final, $db ) ) );
 
 		while ( $conflict ) {
 			$this->output( "Rename conflicts with '$final'...\n" );
@@ -161,32 +184,33 @@ class ImageCleanup extends TableCleanup {
 		} else {
 			$this->output( "renaming $path to $finalPath\n" );
 			// @todo FIXME: Should this use File::move()?
-			$db->begin( __METHOD__ );
+			$this->beginTransaction( $db, __METHOD__ );
 			$db->update( 'image',
-				array( 'img_name' => $final ),
-				array( 'img_name' => $orig ),
+				[ 'img_name' => $final ],
+				[ 'img_name' => $orig ],
 				__METHOD__ );
 			$db->update( 'oldimage',
-				array( 'oi_name' => $final ),
-				array( 'oi_name' => $orig ),
+				[ 'oi_name' => $final ],
+				[ 'oi_name' => $orig ],
 				__METHOD__ );
 			$db->update( 'page',
-				array( 'page_title' => $final ),
-				array( 'page_title' => $orig, 'page_namespace' => NS_FILE ),
+				[ 'page_title' => $final ],
+				[ 'page_title' => $orig, 'page_namespace' => NS_FILE ],
 				__METHOD__ );
 			$dir = dirname( $finalPath );
 			if ( !file_exists( $dir ) ) {
 				if ( !wfMkdirParents( $dir, null, __METHOD__ ) ) {
 					$this->output( "RENAME FAILED, COULD NOT CREATE $dir" );
-					$db->rollback( __METHOD__ );
+					$this->rollbackTransaction( $db, __METHOD__ );
+
 					return;
 				}
 			}
 			if ( rename( $path, $finalPath ) ) {
-				$db->commit( __METHOD__ );
+				$this->commitTransaction( $db, __METHOD__ );
 			} else {
 				$this->error( "RENAME FAILED" );
-				$db->rollback( __METHOD__ );
+				$this->rollbackTransaction( $db, __METHOD__ );
 			}
 		}
 	}
@@ -199,12 +223,13 @@ class ImageCleanup extends TableCleanup {
 	private function buildSafeTitle( $name ) {
 		$x = preg_replace_callback(
 			'/([^' . Title::legalChars() . ']|~)/',
-			array( $this, 'hexChar' ),
+			[ $this, 'hexChar' ],
 			$name );
 
 		$test = Title::makeTitleSafe( NS_FILE, $x );
-		if ( is_null( $test ) || $test->getDBkey() !== $x ) {
+		if ( $test === null || $test->getDBkey() !== $x ) {
 			$this->error( "Unable to generate safe title from '$name', got '$x'" );
+
 			return false;
 		}
 
@@ -212,5 +237,5 @@ class ImageCleanup extends TableCleanup {
 	}
 }
 
-$maintClass = "ImageCleanup";
+$maintClass = CleanupImages::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

@@ -1,11 +1,10 @@
 <?php
-/** كوردي (عەرەبی)‏ (كوردي (عەرەبی)‏)
+/** كوردي (عەرەبی) (كوردي (عەرەبی))
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Arastein
  * @author Asoxor
@@ -15,22 +14,24 @@
  * @author Muhammed taha
  */
 
-$fallback = 'ckb';
+$fallback = 'ku, ckb';
 
 $rtl = true;
 
-$digitTransformTable = array(
-	'0' => '٠', # &#x0660;
-	'1' => '١', # &#x0661;
-	'2' => '٢', # &#x0662;
-	'3' => '٣', # &#x0663;
-	'4' => '٤', # &#x0664;
-	'5' => '٥', # &#x0665;
-	'6' => '٦', # &#x0666;
-	'7' => '٧', # &#x0667;
-	'8' => '٨', # &#x0668;
-	'9' => '٩', # &#x0669;
-	'.' => '٫', # &#x066b; wrong table ?
-	',' => '٬', # &#x066c;
-);
+$digitTransformTable = [
+	'0' => '٠', # U+0660
+	'1' => '١', # U+0661
+	'2' => '٢', # U+0662
+	'3' => '٣', # U+0663
+	'4' => '٤', # U+0664
+	'5' => '٥', # U+0665
+	'6' => '٦', # U+0666
+	'7' => '٧', # U+0667
+	'8' => '٨', # U+0668
+	'9' => '٩', # U+0669
+];
 
+$separatorTransformTable = [
+	'.' => '٫', # U+066B
+	',' => '٬', # U+066C
+];

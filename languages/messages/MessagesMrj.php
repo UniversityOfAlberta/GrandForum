@@ -1,19 +1,18 @@
 <?php
 /** Hill Mari (кырык мары)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Amdf
  * @author Andrijko Z.
  */
 
-$fallback = 'ru';
+$fallback = 'mhr, ru';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Медиа',
 	NS_SPECIAL          => 'Спецӹлӹштӓш',
 	NS_TALK             => 'Кӓнгӓшӹмӓш',
@@ -30,17 +29,16 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Палшыкым_кӓнгӓшӹмӓш',
 	NS_CATEGORY         => 'Категори',
 	NS_CATEGORY_TALK    => 'Категорим_кӓнгӓшӹмӓш',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	'Сирӹшӹн_кӓнгӓшӹмӓшӹжӹ' => NS_USER_TALK,
 	'Файл_кӓнгӓшӹмӓш'       => NS_FILE_TALK,
 	'MediaWiki_кӓнгӓшӹмӓш'  => NS_MEDIAWIKI_TALK,
 	'Шаблон_кӓнгӓшӹмӓш'     => NS_TEMPLATE_TALK,
 	'Палшыкын_кӓнгӓшӹмӓш'   => NS_HELP_TALK,
 	'Категори_кӓнгӓшӹмӓш'   => NS_CATEGORY_TALK,
-);
+];
 
 // Remove Russian aliases
-$namespaceGenderAliases = array();
-
+$namespaceGenderAliases = [];

@@ -1,11 +1,10 @@
 <?php
 /** Lezghian (лезги)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Amikeco
  * @author Andrijko Z.
@@ -22,11 +21,11 @@
  * @author Умар
  */
 
-$fallback = 'ru';
+$fallback = 'ru, az';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Медиа',
-	NS_TALK             => 'веревирд_авун',
+	NS_TALK             => 'Веревирд_авун',
 	NS_USER             => 'Уртах',
 	NS_USER_TALK        => 'Уртахдин_веревирд_авун',
 	NS_PROJECT_TALK     => '$1_веревирд_авун',
@@ -38,9 +37,9 @@ $namespaceNames = array(
 	NS_TEMPLATE_TALK    => 'Шаблон_веревирд_авун',
 	NS_CATEGORY         => 'Категория',
 	NS_CATEGORY_TALK    => 'Категория_веревирд_авун',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	# Russian namespaces
 	'Обсуждение'                         => NS_TALK,
 	'Участник'                           => NS_USER,
@@ -53,8 +52,9 @@ $namespaceAliases = array(
 	'Обсуждение_справки'                 => NS_HELP_TALK,
 	'Категория'                          => NS_CATEGORY,
 	'Обсуждение_категории'               => NS_CATEGORY_TALK,
-);
+];
 
 // Remove Russian gender aliases
-$namespaceGenderAliases = array();
+$namespaceGenderAliases = [];
 
+$linkTrail = '/^([a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюяӀ]+)(.*)$/sDu';

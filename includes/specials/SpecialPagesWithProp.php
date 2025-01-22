@@ -20,8 +20,9 @@
  * @since 1.21
  * @file
  * @ingroup SpecialPage
- * @author Brad Jorsch
  */
+
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * Special:PagesWithProp to search the page_props table
@@ -29,54 +30,97 @@
  * @since 1.21
  */
 class SpecialPagesWithProp extends QueryPage {
+
+	/**
+	 * @var string|null
+	 */
 	private $propName = null;
 
-	function __construct( $name = 'PagesWithProp' ) {
-		parent::__construct( $name );
+	/**
+	 * @var string[]|null
+	 */
+	private $existingPropNames = null;
+
+	/**
+	 * @var int|null
+	 */
+	private $ns;
+
+	/**
+	 * @var bool
+	 */
+	private $reverse = false;
+
+	/**
+	 * @var bool
+	 */
+	private $sortByValue = false;
+
+	/**
+	 * @param ILoadBalancer $loadBalancer
+	 */
+	public function __construct( ILoadBalancer $loadBalancer ) {
+		parent::__construct( 'PagesWithProp' );
+		$this->setDBLoadBalancer( $loadBalancer );
 	}
 
-	function isCacheable() {
+	public function isCacheable() {
 		return false;
 	}
 
-	function execute( $par ) {
+	public function execute( $par ) {
 		$this->setHeaders();
 		$this->outputHeader();
-		$this->getOutput()->addModuleStyles( 'mediawiki.special.pagesWithProp' );
+		$this->getOutput()->addModuleStyles( 'mediawiki.special' );
 
 		$request = $this->getRequest();
 		$propname = $request->getVal( 'propname', $par );
+		$this->ns = $request->getIntOrNull( 'namespace' );
+		$this->reverse = $request->getBool( 'reverse' );
+		$this->sortByValue = $request->getBool( 'sortbyvalue' );
 
-		$dbr = wfGetDB( DB_SLAVE );
-		$res = $dbr->select(
-			'page_props',
-			'pp_propname',
-			'',
-			__METHOD__,
-			array( 'DISTINCT', 'ORDER BY' => 'pp_propname' )
-		);
-		$propnames = array();
-		foreach ( $res as $row ) {
-			$propnames[$row->pp_propname] = $row->pp_propname;
-		}
+		$propnames = $this->getExistingPropNames();
 
-		$form = new HTMLForm( array(
-			'propname' => array(
-				'type' => 'selectorother',
+		$fields = [
+			'propname' => [
+				'type' => 'combobox',
 				'name' => 'propname',
 				'options' => $propnames,
 				'default' => $propname,
 				'label-message' => 'pageswithprop-prop',
 				'required' => true,
-			),
-		), $this->getContext() );
-		$form->setMethod( 'get' );
-		$form->setSubmitCallback( array( $this, 'onSubmit' ) );
-		$form->setWrapperLegendMsg( 'pageswithprop-legend' );
-		$form->addHeaderText( $this->msg( 'pageswithprop-text' )->parseAsBlock() );
-		$form->setSubmitTextMsg( 'pageswithprop-submit' );
+			],
+			'namespace' => [
+				'type' => 'namespaceselect',
+				'name' => 'namespace',
+				'label-message' => 'namespace',
+				'all' => '',
+				'default' => $this->ns,
+			],
+			'reverse' => [
+				'type' => 'check',
+				'name' => 'reverse',
+				'default' => $this->reverse,
+				'label-message' => 'pageswithprop-reverse',
+				'required' => false,
+			],
+			'sortbyvalue' => [
+				'type' => 'check',
+				'name' => 'sortbyvalue',
+				'default' => $this->sortByValue,
+				'label-message' => 'pageswithprop-sortbyvalue',
+				'required' => false,
+			]
+		];
 
-		$form->prepareForm();
+		$form = HTMLForm::factory( 'ooui', $fields, $this->getContext() )
+			->setMethod( 'get' )
+			->setTitle( $this->getPageTitle() ) // Remove subpage
+			->setSubmitCallback( [ $this, 'onSubmit' ] )
+			->setWrapperLegendMsg( 'pageswithprop-legend' )
+			->addHeaderText( $this->msg( 'pageswithprop-text' )->parseAsBlock() )
+			->setSubmitTextMsg( 'pageswithprop-submit' )
+			->prepareForm();
 		$form->displayForm( false );
 		if ( $propname !== '' && $propname !== null ) {
 			$form->trySubmit();
@@ -89,17 +133,45 @@ class SpecialPagesWithProp extends QueryPage {
 	}
 
 	/**
+	 * Return an array of subpages beginning with $search that this special page will accept.
+	 *
+	 * @param string $search Prefix to search for
+	 * @param int $limit Maximum number of results to return
+	 * @param int $offset Number of pages to skip
+	 * @return string[] Matching subpages
+	 */
+	public function prefixSearchSubpages( $search, $limit, $offset ) {
+		$subpages = array_keys( $this->queryExistingProps( $limit, $offset ) );
+		// We've already limited and offsetted, set to N and 0 respectively.
+		return self::prefixSearchArray( $search, count( $subpages ), $subpages, 0 );
+	}
+
+	/**
 	 * Disable RSS/Atom feeds
 	 * @return bool
 	 */
-	function isSyndicated() {
+	public function isSyndicated() {
 		return false;
 	}
 
-	function getQueryInfo() {
-		return array(
-			'tables' => array( 'page_props', 'page' ),
-			'fields' => array(
+	/**
+	 * @inheritDoc
+	 */
+	protected function linkParameters() {
+		$params = [
+			'reverse' => $this->reverse,
+			'sortbyvalue' => $this->sortByValue,
+		];
+		if ( $this->ns !== null ) {
+			$params['namespace'] = $this->ns;
+		}
+		return $params;
+	}
+
+	public function getQueryInfo() {
+		$query = [
+			'tables' => [ 'page_props', 'page' ],
+			'fields' => [
 				'page_id' => 'pp_page',
 				'page_namespace',
 				'page_title',
@@ -107,27 +179,46 @@ class SpecialPagesWithProp extends QueryPage {
 				'page_is_redirect',
 				'page_latest',
 				'pp_value',
-			),
-			'conds' => array(
-				'page_id = pp_page',
+			],
+			'conds' => [
 				'pp_propname' => $this->propName,
-			),
-			'options' => array()
-		);
+			],
+			'join_conds' => [
+				'page' => [ 'JOIN', 'page_id = pp_page' ]
+			],
+			'options' => []
+		];
+
+		if ( $this->ns !== null ) {
+			$query['conds']['page_namespace'] = $this->ns;
+		}
+
+		return $query;
 	}
 
-	function getOrderFields() {
-		return array( 'page_id' );
+	protected function getOrderFields() {
+		$sort = [ 'page_id' ];
+		if ( $this->sortByValue ) {
+			array_unshift( $sort, 'pp_sortkey' );
+		}
+		return $sort;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function sortDescending() {
+		return !$this->reverse;
 	}
 
 	/**
 	 * @param Skin $skin
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
-	function formatResult( $skin, $result ) {
+	public function formatResult( $skin, $result ) {
 		$title = Title::newFromRow( $result );
-		$ret = Linker::link( $title, null, array(), array(), array( 'known' ) );
+		$ret = $this->getLinkRenderer()->makeKnownLink( $title );
 		if ( $result->pp_value !== '' ) {
 			// Do not show very long or binary values on the special page
 			$valueLength = strlen( $result->pp_value );
@@ -137,17 +228,52 @@ class SpecialPagesWithProp extends QueryPage {
 			if ( $isBinary || $isTooLong ) {
 				$message = $this
 					->msg( $isBinary ? 'pageswithprop-prophidden-binary' : 'pageswithprop-prophidden-long' )
-					->params( $this->getLanguage()->formatSize( $valueLength ) );
+					->sizeParams( $valueLength );
 
-				$propValue = Html::element( 'span', array( 'class' => 'prop-value-hidden' ), $message->text() );
+				$propValue = Html::element( 'span', [ 'class' => 'prop-value-hidden' ], $message->text() );
 			} else {
-				$propValue = Html::element( 'span', array( 'class' => 'prop-value' ), $result->pp_value );
+				$propValue = Html::element( 'span', [ 'class' => 'prop-value' ], $result->pp_value );
 			}
 
 			$ret .= $this->msg( 'colon-separator' )->escaped() . $propValue;
 		}
 
 		return $ret;
+	}
+
+	public function getExistingPropNames() {
+		if ( $this->existingPropNames === null ) {
+			$this->existingPropNames = $this->queryExistingProps();
+		}
+		return $this->existingPropNames;
+	}
+
+	protected function queryExistingProps( $limit = null, $offset = 0 ) {
+		$opts = [
+			'DISTINCT', 'ORDER BY' => 'pp_propname'
+		];
+		if ( $limit ) {
+			$opts['LIMIT'] = $limit;
+		}
+		if ( $offset ) {
+			$opts['OFFSET'] = $offset;
+		}
+
+		$dbr = $this->getDBLoadBalancer()->getConnectionRef( ILoadBalancer::DB_REPLICA );
+		$res = $dbr->select(
+			'page_props',
+			'pp_propname',
+			'',
+			__METHOD__,
+			$opts
+		);
+
+		$propnames = [];
+		foreach ( $res as $row ) {
+			$propnames[$row->pp_propname] = $row->pp_propname;
+		}
+
+		return $propnames;
 	}
 
 	protected function getGroupName() {

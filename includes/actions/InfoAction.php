@@ -22,13 +22,136 @@
  * @ingroup Actions
  */
 
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\HookContainer\HookRunner;
+use MediaWiki\Languages\LanguageNameUtils;
+use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Linker\LinksMigration;
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\PageIdentity;
+use MediaWiki\Page\RedirectLookup;
+use MediaWiki\Permissions\RestrictionStore;
+use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Revision\RevisionRecord;
+use Wikimedia\Rdbms\Database;
+use Wikimedia\Rdbms\ILoadBalancer;
+
 /**
  * Displays information about a page.
  *
  * @ingroup Actions
  */
 class InfoAction extends FormlessAction {
-	const CACHE_VERSION = '2013-03-17';
+	private const VERSION = 1;
+
+	/** @var Language */
+	private $contentLanguage;
+
+	/** @var HookRunner */
+	private $hookRunner;
+
+	/** @var LanguageNameUtils */
+	private $languageNameUtils;
+
+	/** @var LinkBatchFactory */
+	private $linkBatchFactory;
+
+	/** @var LinkRenderer */
+	private $linkRenderer;
+
+	/** @var ILoadBalancer */
+	private $loadBalancer;
+
+	/** @var MagicWordFactory */
+	private $magicWordFactory;
+
+	/** @var NamespaceInfo */
+	private $namespaceInfo;
+
+	/** @var PageProps */
+	private $pageProps;
+
+	/** @var RepoGroup */
+	private $repoGroup;
+
+	/** @var RevisionLookup */
+	private $revisionLookup;
+
+	/** @var WANObjectCache */
+	private $wanObjectCache;
+
+	/** @var WatchedItemStoreInterface */
+	private $watchedItemStore;
+
+	/** @var RedirectLookup */
+	private $redirectLookup;
+
+	/** @var RestrictionStore */
+	private $restrictionStore;
+
+	/** @var LinksMigration */
+	private $linksMigration;
+
+	/**
+	 * @param Page $page
+	 * @param IContextSource $context
+	 * @param Language $contentLanguage
+	 * @param HookContainer $hookContainer
+	 * @param LanguageNameUtils $languageNameUtils
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param LinkRenderer $linkRenderer
+	 * @param ILoadBalancer $loadBalancer
+	 * @param MagicWordFactory $magicWordFactory
+	 * @param NamespaceInfo $namespaceInfo
+	 * @param PageProps $pageProps
+	 * @param RepoGroup $repoGroup
+	 * @param RevisionLookup $revisionLookup
+	 * @param WANObjectCache $wanObjectCache
+	 * @param WatchedItemStoreInterface $watchedItemStore
+	 * @param RedirectLookup $redirectLookup
+	 * @param RestrictionStore $restrictionStore
+	 * @param LinksMigration $linksMigration
+	 */
+	public function __construct(
+		Page $page,
+		IContextSource $context,
+		Language $contentLanguage,
+		HookContainer $hookContainer,
+		LanguageNameUtils $languageNameUtils,
+		LinkBatchFactory $linkBatchFactory,
+		LinkRenderer $linkRenderer,
+		ILoadBalancer $loadBalancer,
+		MagicWordFactory $magicWordFactory,
+		NamespaceInfo $namespaceInfo,
+		PageProps $pageProps,
+		RepoGroup $repoGroup,
+		RevisionLookup $revisionLookup,
+		WANObjectCache $wanObjectCache,
+		WatchedItemStoreInterface $watchedItemStore,
+		RedirectLookup $redirectLookup,
+		RestrictionStore $restrictionStore,
+		LinksMigration $linksMigration
+	) {
+		parent::__construct( $page, $context );
+		$this->contentLanguage = $contentLanguage;
+		$this->hookRunner = new HookRunner( $hookContainer );
+		$this->languageNameUtils = $languageNameUtils;
+		$this->linkBatchFactory = $linkBatchFactory;
+		$this->linkRenderer = $linkRenderer;
+		$this->loadBalancer = $loadBalancer;
+		$this->magicWordFactory = $magicWordFactory;
+		$this->namespaceInfo = $namespaceInfo;
+		$this->pageProps = $pageProps;
+		$this->repoGroup = $repoGroup;
+		$this->revisionLookup = $revisionLookup;
+		$this->wanObjectCache = $wanObjectCache;
+		$this->watchedItemStore = $watchedItemStore;
+		$this->redirectLookup = $redirectLookup;
+		$this->restrictionStore = $restrictionStore;
+		$this->linksMigration = $linksMigration;
+	}
 
 	/**
 	 * Returns the name of the action this object responds to.
@@ -61,15 +184,20 @@ class InfoAction extends FormlessAction {
 	 * Clear the info cache for a given Title.
 	 *
 	 * @since 1.22
-	 * @param Title $title Title to clear cache for
+	 * @param PageIdentity $page Title to clear cache for
+	 * @param int|null $revid Revision id to clear
 	 */
-	public static function invalidateCache( Title $title ) {
-		global $wgMemc;
-		// Clear page info.
-		$revision = WikiPage::factory( $title )->getRevision();
-		if ( $revision !== null ) {
-			$key = wfMemcKey( 'infoaction', sha1( $title->getPrefixedText() ), $revision->getId() );
-			$wgMemc->delete( $key );
+	public static function invalidateCache( PageIdentity $page, $revid = null ) {
+		$services = MediaWikiServices::getInstance();
+		if ( !$revid ) {
+			$revision = $services->getRevisionLookup()
+				->getRevisionByTitle( $page, 0, IDBAccessObject::READ_LATEST );
+			$revid = $revision ? $revision->getId() : null;
+		}
+		if ( $revid !== null ) {
+			$cache = $services->getMainWANObjectCache();
+			$key = self::getCacheKey( $cache, $page, $revid );
+			$cache->delete( $key );
 		}
 	}
 
@@ -79,68 +207,78 @@ class InfoAction extends FormlessAction {
 	 * @return string Page information that will be added to the output
 	 */
 	public function onView() {
-		$content = '';
+		$this->getOutput()->addModuleStyles( [
+			'mediawiki.interface.helpers.styles',
+			'mediawiki.action.styles',
+		] );
+
+		// "Help" button
+		$this->addHelpLink( 'Page information' );
 
 		// Validate revision
-		$oldid = $this->page->getOldID();
+		$oldid = $this->getArticle()->getOldID();
 		if ( $oldid ) {
-			$revision = $this->page->getRevisionFetched();
+			$revRecord = $this->getArticle()->fetchRevisionRecord();
 
 			// Revision is missing
-			if ( $revision === null ) {
+			if ( $revRecord === null ) {
 				return $this->msg( 'missing-revision', $oldid )->parse();
 			}
 
 			// Revision is not current
-			if ( !$revision->isCurrent() ) {
+			if ( !$revRecord->isCurrent() ) {
 				return $this->msg( 'pageinfo-not-current' )->plain();
 			}
 		}
+
+		$content = '';
 
 		// Page header
 		if ( !$this->msg( 'pageinfo-header' )->isDisabled() ) {
 			$content .= $this->msg( 'pageinfo-header' )->parse();
 		}
 
-		// Hide "This page is a member of # hidden categories" explanation
-		$content .= Html::element( 'style', array(),
-			'.mw-hiddenCategoriesExplanation { display: none; }' ) . "\n";
-
-		// Hide "Templates used on this page" explanation
-		$content .= Html::element( 'style', array(),
-			'.mw-templatesUsedExplanation { display: none; }' ) . "\n";
-
 		// Get page information
 		$pageInfo = $this->pageInfo();
 
 		// Allow extensions to add additional information
-		wfRunHooks( 'InfoAction', array( $this->getContext(), &$pageInfo ) );
+		$this->hookRunner->onInfoAction( $this->getContext(), $pageInfo );
 
 		// Render page information
 		foreach ( $pageInfo as $header => $infoTable ) {
 			// Messages:
 			// pageinfo-header-basic, pageinfo-header-edits, pageinfo-header-restrictions,
 			// pageinfo-header-properties, pageinfo-category-info
-			$content .= $this->makeHeader( $this->msg( "pageinfo-${header}" )->escaped() ) . "\n";
+			$content .= $this->makeHeader(
+				$this->msg( "pageinfo-$header" )->text(),
+				"mw-pageinfo-$header"
+			) . "\n";
 			$table = "\n";
+			$below = "";
 			foreach ( $infoTable as $infoRow ) {
+				if ( $infoRow[0] == "below" ) {
+					$below = $infoRow[1] . "\n";
+					continue;
+				}
 				$name = ( $infoRow[0] instanceof Message ) ? $infoRow[0]->escaped() : $infoRow[0];
+				// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
 				$value = ( $infoRow[1] instanceof Message ) ? $infoRow[1]->escaped() : $infoRow[1];
+				// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
 				$id = ( $infoRow[0] instanceof Message ) ? $infoRow[0]->getKey() : null;
 				$table = $this->addRow( $table, $name, $value, $id ) . "\n";
 			}
-			$content = $this->addTable( $content, $table ) . "\n";
+			if ( $table === "\n" ) {
+				// Don't add tables with no rows
+				$content .= "\n" . $below;
+			} else {
+				$content = $this->addTable( $content, $table ) . "\n" . $below;
+			}
 		}
 
 		// Page footer
 		if ( !$this->msg( 'pageinfo-footer' )->isDisabled() ) {
 			$content .= $this->msg( 'pageinfo-footer' )->parse();
 		}
-
-		// Page credits
-		/*if ( $this->page->exists() ) {
-			$content .= Html::rawElement( 'div', array( 'id' => 'mw-credits' ), $this->getContributors() );
-		}*/
 
 		return $content;
 	}
@@ -149,12 +287,22 @@ class InfoAction extends FormlessAction {
 	 * Creates a header that can be added to the output.
 	 *
 	 * @param string $header The header text.
+	 * @param string $canonicalId
 	 * @return string The HTML.
 	 */
-	protected function makeHeader( $header ) {
-		$spanAttribs = array( 'class' => 'mw-headline', 'id' => Sanitizer::escapeId( $header ) );
-
-		return Html::rawElement( 'h2', array(), Html::element( 'span', $spanAttribs, $header ) );
+	protected function makeHeader( $header, $canonicalId ) {
+		return Html::rawElement(
+			'h2',
+			[ 'id' => Sanitizer::escapeIdForAttribute( $canonicalId ) ],
+			Html::element(
+				'span',
+				[
+					'class' => 'mw-headline',
+					'id' => Sanitizer::escapeIdForAttribute( $header ),
+				],
+				$header
+			)
+		);
 	}
 
 	/**
@@ -163,296 +311,398 @@ class InfoAction extends FormlessAction {
 	 * @param string $table The table that will be added to the content
 	 * @param string $name The name of the row
 	 * @param string $value The value of the row
-	 * @param string $id The ID to use for the 'tr' element
+	 * @param string|null $id The ID to use for the 'tr' element
 	 * @return string The table with the row added
 	 */
 	protected function addRow( $table, $name, $value, $id ) {
-		return $table . Html::rawElement( 'tr', $id === null ? array() : array( 'id' => 'mw-' . $id ),
-			Html::rawElement( 'td', array( 'style' => 'vertical-align: top;' ), $name ) .
-			Html::rawElement( 'td', array(), $value )
-		);
+		return $table .
+			Html::rawElement(
+				'tr',
+				$id === null ? [] : [ 'id' => 'mw-' . $id ],
+				Html::rawElement( 'td', [ 'style' => 'vertical-align: top;' ], $name ) .
+					Html::rawElement( 'td', [], $value )
+			);
 	}
 
 	/**
 	 * Adds a table to the content that will be added to the output.
 	 *
 	 * @param string $content The content that will be added to the output
-	 * @param string $table The table
+	 * @param string $table
 	 * @return string The content with the table added
 	 */
 	protected function addTable( $content, $table ) {
-		return $content . Html::rawElement( 'table', array( 'class' => 'wikitable mw-page-info' ),
-			$table );
+		return $content .
+			Html::rawElement(
+				'table',
+				[ 'class' => 'wikitable mw-page-info' ],
+				$table
+			);
 	}
 
 	/**
-	 * Returns page information in an easily-manipulated format. Array keys are used so extensions
-	 * may add additional information in arbitrary positions. Array values are arrays with one
-	 * element to be rendered as a header, arrays with two elements to be rendered as a table row.
+	 * Returns an array of info groups (will be rendered as tables), keyed by group ID.
+	 * Group IDs are arbitrary and used so that extensions may add additional information in
+	 * arbitrary positions (and as message keys for section headers for the tables, prefixed
+	 * with 'pageinfo-').
+	 * Each info group is a non-associative array of info items (rendered as table rows).
+	 * Each info item is an array with two elements: the first describes the type of
+	 * information, the second the value for the current page. Both can be strings (will be
+	 * interpreted as raw HTML) or messages (will be interpreted as plain text and escaped).
 	 *
 	 * @return array
 	 */
 	protected function pageInfo() {
-		global $wgContLang, $wgRCMaxAge, $wgMemc, $wgMiserMode,
-			$wgUnwatchedPageThreshold, $wgPageInfoTransclusionLimit;
-
 		$user = $this->getUser();
 		$lang = $this->getLanguage();
 		$title = $this->getTitle();
 		$id = $title->getArticleID();
+		$config = $this->context->getConfig();
+		$linkRenderer = $this->linkRenderer;
 
-		$memcKey = wfMemcKey( 'infoaction',
-			sha1( $title->getPrefixedText() ), $this->page->getLatest() );
-		$pageCounts = $wgMemc->get( $memcKey );
-		$version = isset( $pageCounts['cacheversion'] ) ? $pageCounts['cacheversion'] : false;
-		if ( $pageCounts === false || $version !== self::CACHE_VERSION ) {
-			// Get page information that would be too "expensive" to retrieve by normal means
-			$pageCounts = self::pageCounts( $title );
-			$pageCounts['cacheversion'] = self::CACHE_VERSION;
+		$pageCounts = $this->pageCounts();
 
-			$wgMemc->set( $memcKey, $pageCounts );
-		}
-
-		// Get page properties
-		$dbr = wfGetDB( DB_SLAVE );
-		$result = $dbr->select(
-			'page_props',
-			array( 'pp_propname', 'pp_value' ),
-			array( 'pp_page' => $id ),
-			__METHOD__
-		);
-
-		$pageProperties = array();
-		foreach ( $result as $row ) {
-			$pageProperties[$row->pp_propname] = $row->pp_value;
-		}
+		$props = $this->pageProps->getAllProperties( $title );
+		$pageProperties = $props[$id] ?? [];
 
 		// Basic information
-		$pageInfo = array();
-		$pageInfo['header-basic'] = array();
+		$pageInfo = [];
+		$pageInfo['header-basic'] = [];
 
 		// Display title
-		$displayTitle = $title->getPrefixedText();
-		if ( !empty( $pageProperties['displaytitle'] ) ) {
-			$displayTitle = $pageProperties['displaytitle'];
-		}
+		$displayTitle = $pageProperties['displaytitle'] ??
+			htmlspecialchars( $title->getPrefixedText(), ENT_NOQUOTES );
 
-		$pageInfo['header-basic'][] = array(
-			$this->msg( 'pageinfo-display-title' ), $displayTitle
-		);
+		$pageInfo['header-basic'][] = [
+			$this->msg( 'pageinfo-display-title' ),
+			$displayTitle
+		];
 
 		// Is it a redirect? If so, where to?
-		if ( $title->isRedirect() ) {
-			$pageInfo['header-basic'][] = array(
+		$redirectTarget = $this->redirectLookup->getRedirectTarget( $this->getWikiPage() );
+		if ( $redirectTarget !== null ) {
+			$pageInfo['header-basic'][] = [
 				$this->msg( 'pageinfo-redirectsto' ),
-				Linker::link( $this->page->getRedirectTarget() ) .
-				$this->msg( 'word-separator' )->text() .
-				$this->msg( 'parentheses', Linker::link(
-					$this->page->getRedirectTarget(),
-					$this->msg( 'pageinfo-redirectsto-info' )->escaped(),
-					array(),
-					array( 'action' => 'info' )
-				) )->text()
-			);
+				$linkRenderer->makeLink( $redirectTarget ) .
+				$this->msg( 'word-separator' )->escaped() .
+				$this->msg( 'parentheses' )->rawParams( $linkRenderer->makeLink(
+					$redirectTarget,
+					$this->msg( 'pageinfo-redirectsto-info' )->text(),
+					[],
+					[ 'action' => 'info' ]
+				) )->escaped()
+			];
 		}
 
 		// Default sort key
-		$sortKey = $title->getCategorySortkey();
-		if ( !empty( $pageProperties['defaultsort'] ) ) {
-			$sortKey = $pageProperties['defaultsort'];
-		}
+		$sortKey = $pageProperties['defaultsort'] ?? $title->getCategorySortkey();
 
 		$sortKey = htmlspecialchars( $sortKey );
-		$pageInfo['header-basic'][] = array( $this->msg( 'pageinfo-default-sort' ), $sortKey );
+		$pageInfo['header-basic'][] = [ $this->msg( 'pageinfo-default-sort' ), $sortKey ];
 
 		// Page length (in bytes)
-		$pageInfo['header-basic'][] = array(
-			$this->msg( 'pageinfo-length' ), $lang->formatNum( $title->getLength() )
-		);
+		$pageInfo['header-basic'][] = [
+			$this->msg( 'pageinfo-length' ),
+			$lang->formatNum( $title->getLength() )
+		];
+
+		// Page namespace
+		$pageNamespace = $title->getNsText();
+		if ( $pageNamespace ) {
+			$pageInfo['header-basic'][] = [ $this->msg( 'pageinfo-namespace' ), $pageNamespace ];
+		}
 
 		// Page ID (number not localised, as it's a database ID)
-		$pageInfo['header-basic'][] = array( $this->msg( 'pageinfo-article-id' ), $id );
+		$pageInfo['header-basic'][] = [ $this->msg( 'pageinfo-article-id' ), $id ];
 
 		// Language in which the page content is (supposed to be) written
 		$pageLang = $title->getPageLanguage()->getCode();
-		$pageInfo['header-basic'][] = array( $this->msg( 'pageinfo-language' ),
-			Language::fetchLanguageName( $pageLang, $lang->getCode() )
-			. ' ' . $this->msg( 'parentheses', $pageLang ) );
+
+		$pageLangHtml = $pageLang . ' - ' .
+			$this->languageNameUtils->getLanguageName( $pageLang, $lang->getCode() );
+		// Link to Special:PageLanguage with pre-filled page title if user has permissions
+		if ( $config->get( MainConfigNames::PageLanguageUseDB )
+			&& $this->getAuthority()->probablyCan( 'pagelang', $title )
+		) {
+			$pageLangHtml .= ' ' . $this->msg( 'parentheses' )->rawParams( $linkRenderer->makeLink(
+				SpecialPage::getTitleValueFor( 'PageLanguage', $title->getPrefixedText() ),
+				$this->msg( 'pageinfo-language-change' )->text()
+			) )->escaped();
+		}
+
+		$pageInfo['header-basic'][] = [
+			$this->msg( 'pageinfo-language' )->escaped(),
+			$pageLangHtml
+		];
 
 		// Content model of the page
-		$pageInfo['header-basic'][] = array(
+		$modelHtml = htmlspecialchars( ContentHandler::getLocalizedName( $title->getContentModel() ) );
+		// If the user can change it, add a link to Special:ChangeContentModel
+		if ( $this->getAuthority()->probablyCan( 'editcontentmodel', $title ) ) {
+			$modelHtml .= ' ' . $this->msg( 'parentheses' )->rawParams( $linkRenderer->makeLink(
+				SpecialPage::getTitleValueFor( 'ChangeContentModel', $title->getPrefixedText() ),
+				$this->msg( 'pageinfo-content-model-change' )->text()
+			) )->escaped();
+		}
+
+		$pageInfo['header-basic'][] = [
 			$this->msg( 'pageinfo-content-model' ),
-			ContentHandler::getLocalizedName( $title->getContentModel() )
-		);
+			$modelHtml
+		];
+
+		if ( $title->inNamespace( NS_USER ) ) {
+			$pageUser = User::newFromName( $title->getRootText() );
+			if ( $pageUser && $pageUser->getId() && !$pageUser->isHidden() ) {
+				$pageInfo['header-basic'][] = [
+					$this->msg( 'pageinfo-user-id' ),
+					$pageUser->getId()
+				];
+			}
+		}
 
 		// Search engine status
-		$pOutput = new ParserOutput();
+		$parserOutput = new ParserOutput();
 		if ( isset( $pageProperties['noindex'] ) ) {
-			$pOutput->setIndexPolicy( 'noindex' );
+			$parserOutput->setIndexPolicy( 'noindex' );
 		}
 		if ( isset( $pageProperties['index'] ) ) {
-			$pOutput->setIndexPolicy( 'index' );
+			$parserOutput->setIndexPolicy( 'index' );
 		}
 
 		// Use robot policy logic
-		$policy = $this->page->getRobotPolicy( 'view', $pOutput );
-		$pageInfo['header-basic'][] = array(
+		$policy = $this->getArticle()->getRobotPolicy( 'view', $parserOutput );
+		$pageInfo['header-basic'][] = [
 			// Messages: pageinfo-robot-index, pageinfo-robot-noindex
-			$this->msg( 'pageinfo-robot-policy' ), $this->msg( "pageinfo-robot-${policy['index']}" )
-		);
+			$this->msg( 'pageinfo-robot-policy' ),
+			$this->msg( "pageinfo-robot-{$policy['index']}" )
+		];
 
-		if ( isset( $pageCounts['views'] ) ) {
-			// Number of views
-			$pageInfo['header-basic'][] = array(
-				$this->msg( 'pageinfo-views' ), $lang->formatNum( $pageCounts['views'] )
-			);
-		}
-
-		if (
-			$user->isAllowed( 'unwatchedpages' ) ||
-			( $wgUnwatchedPageThreshold !== false &&
-				$pageCounts['watchers'] >= $wgUnwatchedPageThreshold )
+		$unwatchedPageThreshold = $config->get( MainConfigNames::UnwatchedPageThreshold );
+		if ( $this->getAuthority()->isAllowed( 'unwatchedpages' ) ||
+			( $unwatchedPageThreshold !== false &&
+				$pageCounts['watchers'] >= $unwatchedPageThreshold )
 		) {
 			// Number of page watchers
-			$pageInfo['header-basic'][] = array(
-				$this->msg( 'pageinfo-watchers' ), $lang->formatNum( $pageCounts['watchers'] )
-			);
-		} elseif ( $wgUnwatchedPageThreshold !== false ) {
-			$pageInfo['header-basic'][] = array(
+			$pageInfo['header-basic'][] = [
 				$this->msg( 'pageinfo-watchers' ),
-				$this->msg( 'pageinfo-few-watchers' )->numParams( $wgUnwatchedPageThreshold )
-			);
+				$lang->formatNum( $pageCounts['watchers'] )
+			];
+			if (
+				$config->get( MainConfigNames::ShowUpdatedMarker ) &&
+				isset( $pageCounts['visitingWatchers'] )
+			) {
+				$minToDisclose = $config->get( MainConfigNames::UnwatchedPageSecret );
+				if ( $pageCounts['visitingWatchers'] > $minToDisclose ||
+					$this->getAuthority()->isAllowed( 'unwatchedpages' ) ) {
+					$pageInfo['header-basic'][] = [
+						$this->msg( 'pageinfo-visiting-watchers' ),
+						$lang->formatNum( $pageCounts['visitingWatchers'] )
+					];
+				} else {
+					$pageInfo['header-basic'][] = [
+						$this->msg( 'pageinfo-visiting-watchers' ),
+						$this->msg( 'pageinfo-few-visiting-watchers' )
+					];
+				}
+			}
+		} elseif ( $unwatchedPageThreshold !== false ) {
+			$pageInfo['header-basic'][] = [
+				$this->msg( 'pageinfo-watchers' ),
+				$this->msg( 'pageinfo-few-watchers' )->numParams( $unwatchedPageThreshold )
+			];
 		}
 
 		// Redirects to this page
 		$whatLinksHere = SpecialPage::getTitleFor( 'Whatlinkshere', $title->getPrefixedText() );
-		$pageInfo['header-basic'][] = array(
-			Linker::link(
+		$pageInfo['header-basic'][] = [
+			$linkRenderer->makeLink(
 				$whatLinksHere,
-				$this->msg( 'pageinfo-redirects-name' )->escaped(),
-				array(),
-				array( 'hidelinks' => 1, 'hidetrans' => 1 )
+				$this->msg( 'pageinfo-redirects-name' )->text(),
+				[],
+				[
+					'hidelinks' => 1,
+					'hidetrans' => 1,
+					'hideimages' => $title->getNamespace() === NS_FILE
+				]
 			),
 			$this->msg( 'pageinfo-redirects-value' )
 				->numParams( count( $title->getRedirectsHere() ) )
-		);
+		];
 
 		// Is it counted as a content page?
-		if ( $this->page->isCountable() ) {
-			$pageInfo['header-basic'][] = array(
+		if ( $this->getWikiPage()->isCountable() ) {
+			$pageInfo['header-basic'][] = [
 				$this->msg( 'pageinfo-contentpage' ),
 				$this->msg( 'pageinfo-contentpage-yes' )
-			);
+			];
 		}
 
 		// Subpages of this page, if subpages are enabled for the current NS
-		if ( MWNamespace::hasSubpages( $title->getNamespace() ) ) {
-			$prefixIndex = SpecialPage::getTitleFor( 'Prefixindex', $title->getPrefixedText() . '/' );
-			$pageInfo['header-basic'][] = array(
-				Linker::link( $prefixIndex, $this->msg( 'pageinfo-subpages-name' )->escaped() ),
+		if ( $this->namespaceInfo->hasSubpages( $title->getNamespace() ) ) {
+			$prefixIndex = SpecialPage::getTitleFor(
+				'Prefixindex',
+				$title->getPrefixedText() . '/'
+			);
+			$pageInfo['header-basic'][] = [
+				$linkRenderer->makeLink(
+					$prefixIndex,
+					$this->msg( 'pageinfo-subpages-name' )->text()
+				),
 				$this->msg( 'pageinfo-subpages-value' )
 					->numParams(
 						$pageCounts['subpages']['total'],
 						$pageCounts['subpages']['redirects'],
-						$pageCounts['subpages']['nonredirects'] )
-			);
+						$pageCounts['subpages']['nonredirects']
+					)
+			];
 		}
 
 		if ( $title->inNamespace( NS_CATEGORY ) ) {
 			$category = Category::newFromTitle( $title );
-			$pageInfo['category-info'] = array(
-				array(
+
+			$allCount = $category->getMemberCount();
+			$subcatCount = $category->getSubcatCount();
+			$fileCount = $category->getFileCount();
+			$pageCount = $category->getPageCount( Category::COUNT_CONTENT_PAGES );
+
+			$pageInfo['category-info'] = [
+				[
+					$this->msg( 'pageinfo-category-total' ),
+					$lang->formatNum( $allCount )
+				],
+				[
 					$this->msg( 'pageinfo-category-pages' ),
-					$lang->formatNum( $category->getPageCount() )
-				),
-				array(
+					$lang->formatNum( $pageCount )
+				],
+				[
 					$this->msg( 'pageinfo-category-subcats' ),
-					$lang->formatNum( $category->getSubcatCount() )
-				),
-				array(
+					$lang->formatNum( $subcatCount )
+				],
+				[
 					$this->msg( 'pageinfo-category-files' ),
-					$lang->formatNum( $category->getFileCount() )
-				)
-			);
+					$lang->formatNum( $fileCount )
+				]
+			];
+		}
+
+		// Display image SHA-1 value
+		if ( $title->inNamespace( NS_FILE ) ) {
+			$fileObj = $this->repoGroup->findFile( $title );
+			if ( $fileObj !== false ) {
+				// Convert the base-36 sha1 value obtained from database to base-16
+				$output = Wikimedia\base_convert( $fileObj->getSha1(), 36, 16, 40 );
+				$pageInfo['header-basic'][] = [
+					$this->msg( 'pageinfo-file-hash' ),
+					$output
+				];
+			}
 		}
 
 		// Page protection
-		$pageInfo['header-restrictions'] = array();
+		$pageInfo['header-restrictions'] = [];
 
-		// Is this page effected by the cascading protection of something which includes it?
-		if ( $title->isCascadeProtected() ) {
+		// Is this page affected by the cascading protection of something which includes it?
+		if ( $this->restrictionStore->isCascadeProtected( $title ) ) {
 			$cascadingFrom = '';
-			$sources = $title->getCascadeProtectionSources(); // Array deferencing is in PHP 5.4 :(
+			$sources = $this->restrictionStore->getCascadeProtectionSources( $title )[0];
 
-			foreach ( $sources[0] as $sourceTitle ) {
-				$cascadingFrom .= Html::rawElement( 'li', array(), Linker::linkKnown( $sourceTitle ) );
+			foreach ( $sources as $sourcePageIdentity ) {
+				$cascadingFrom .= Html::rawElement(
+					'li',
+					[],
+					$linkRenderer->makeKnownLink( $sourcePageIdentity )
+				);
 			}
 
-			$cascadingFrom = Html::rawElement( 'ul', array(), $cascadingFrom );
-			$pageInfo['header-restrictions'][] = array(
+			$cascadingFrom = Html::rawElement( 'ul', [], $cascadingFrom );
+			$pageInfo['header-restrictions'][] = [
 				$this->msg( 'pageinfo-protect-cascading-from' ),
 				$cascadingFrom
-			);
+			];
 		}
 
 		// Is out protection set to cascade to other pages?
-		if ( $title->areRestrictionsCascading() ) {
-			$pageInfo['header-restrictions'][] = array(
+		if ( $this->restrictionStore->areRestrictionsCascading( $title ) ) {
+			$pageInfo['header-restrictions'][] = [
 				$this->msg( 'pageinfo-protect-cascading' ),
 				$this->msg( 'pageinfo-protect-cascading-yes' )
-			);
+			];
 		}
 
 		// Page protection
-		foreach ( $title->getRestrictionTypes() as $restrictionType ) {
-			$protectionLevel = implode( ', ', $title->getRestrictions( $restrictionType ) );
+		foreach ( $this->restrictionStore->listApplicableRestrictionTypes( $title ) as $restrictionType ) {
+			$protections = $this->restrictionStore->getRestrictions( $title, $restrictionType );
 
-			if ( $protectionLevel == '' ) {
-				// Allow all users
-				$message = $this->msg( 'protect-default' )->escaped();
-			} else {
-				// Administrators only
-				// Messages: protect-level-autoconfirmed, protect-level-sysop
-				$message = $this->msg( "protect-level-$protectionLevel" );
-				if ( $message->isDisabled() ) {
+			switch ( count( $protections ) ) {
+				case 0:
+					$message = $this->getNamespaceProtectionMessage( $title );
+					if ( $message === null ) {
+						// Allow all users
+						$message = $this->msg( 'protect-default' )->escaped();
+					}
+					break;
+
+				case 1:
+					// Messages: protect-level-autoconfirmed, protect-level-sysop
+					$message = $this->msg( 'protect-level-' . $protections[0] );
+					if ( !$message->isDisabled() ) {
+						$message = $message->escaped();
+						break;
+					}
+					// Intentional fall-through if message is disabled (or non-existent)
+
+				default:
 					// Require "$1" permission
-					$message = $this->msg( "protect-fallback", $protectionLevel )->parse();
-				} else {
-					$message = $message->escaped();
-				}
+					$message = $this->msg( "protect-fallback", $lang->commaList( $protections ) )->parse();
+					break;
 			}
+			$expiry = $this->restrictionStore->getRestrictionExpiry( $title, $restrictionType );
+			$formattedexpiry = $expiry === null ? '' : $this->msg(
+				'parentheses',
+				$lang->formatExpiry( $expiry, true, 'infinity', $user )
+			)->escaped();
+			$message .= $this->msg( 'word-separator' )->escaped() . $formattedexpiry;
 
 			// Messages: restriction-edit, restriction-move, restriction-create,
 			// restriction-upload
-			$pageInfo['header-restrictions'][] = array(
+			$pageInfo['header-restrictions'][] = [
 				$this->msg( "restriction-$restrictionType" ), $message
-			);
+			];
 		}
+		$protectLog = SpecialPage::getTitleFor( 'Log' );
+		$pageInfo['header-restrictions'][] = [
+			'below',
+			$linkRenderer->makeKnownLink(
+				$protectLog,
+				$this->msg( 'pageinfo-view-protect-log' )->text(),
+				[],
+				[ 'type' => 'protect', 'page' => $title->getPrefixedText() ]
+			),
+		];
 
-		if ( !$this->page->exists() ) {
+		if ( !$this->getWikiPage()->exists() ) {
 			return $pageInfo;
 		}
 
 		// Edit history
-		$pageInfo['header-edits'] = array();
+		$pageInfo['header-edits'] = [];
 
-		$firstRev = $this->page->getOldestRevision();
-		$lastRev = $this->page->getRevision();
-		$batch = new LinkBatch;
-
+		$firstRev = $this->revisionLookup->getFirstRevision( $this->getTitle() );
+		$lastRev = $this->getWikiPage()->getRevisionRecord();
+		$batch = $this->linkBatchFactory->newLinkBatch();
 		if ( $firstRev ) {
-			$firstRevUser = $firstRev->getUserText( Revision::FOR_THIS_USER );
-			if ( $firstRevUser !== '' ) {
-				$batch->add( NS_USER, $firstRevUser );
-				$batch->add( NS_USER_TALK, $firstRevUser );
+			$firstRevUser = $firstRev->getUser( RevisionRecord::FOR_THIS_USER, $user );
+			if ( $firstRevUser ) {
+				$batch->add( NS_USER, $firstRevUser->getName() );
+				$batch->add( NS_USER_TALK, $firstRevUser->getName() );
 			}
 		}
 
 		if ( $lastRev ) {
-			$lastRevUser = $lastRev->getUserText( Revision::FOR_THIS_USER );
-			if ( $lastRevUser !== '' ) {
-				$batch->add( NS_USER, $lastRevUser );
-				$batch->add( NS_USER_TALK, $lastRevUser );
+			$lastRevUser = $lastRev->getUser( RevisionRecord::FOR_THIS_USER, $user );
+			if ( $lastRevUser ) {
+				$batch->add( NS_USER, $lastRevUser->getName() );
+				$batch->add( NS_USER_TALK, $lastRevUser->getName() );
 			}
 		}
 
@@ -460,81 +710,89 @@ class InfoAction extends FormlessAction {
 
 		if ( $firstRev ) {
 			// Page creator
-			$pageInfo['header-edits'][] = array(
+			$pageInfo['header-edits'][] = [
 				$this->msg( 'pageinfo-firstuser' ),
 				Linker::revUserTools( $firstRev )
-			);
+			];
 
 			// Date of page creation
-			$pageInfo['header-edits'][] = array(
+			$pageInfo['header-edits'][] = [
 				$this->msg( 'pageinfo-firsttime' ),
-				Linker::linkKnown(
+				$linkRenderer->makeKnownLink(
 					$title,
 					$lang->userTimeAndDate( $firstRev->getTimestamp(), $user ),
-					array(),
-					array( 'oldid' => $firstRev->getId() )
+					[],
+					[ 'oldid' => $firstRev->getId() ]
 				)
-			);
+			];
 		}
 
 		if ( $lastRev ) {
 			// Latest editor
-			$pageInfo['header-edits'][] = array(
+			$pageInfo['header-edits'][] = [
 				$this->msg( 'pageinfo-lastuser' ),
 				Linker::revUserTools( $lastRev )
-			);
+			];
 
 			// Date of latest edit
-			$pageInfo['header-edits'][] = array(
+			$pageInfo['header-edits'][] = [
 				$this->msg( 'pageinfo-lasttime' ),
-				Linker::linkKnown(
+				$linkRenderer->makeKnownLink(
 					$title,
-					$lang->userTimeAndDate( $this->page->getTimestamp(), $user ),
-					array(),
-					array( 'oldid' => $this->page->getLatest() )
+					$lang->userTimeAndDate( $this->getWikiPage()->getTimestamp(), $user ),
+					[],
+					[ 'oldid' => $this->getWikiPage()->getLatest() ]
 				)
-			);
+			];
 		}
 
 		// Total number of edits
-		$pageInfo['header-edits'][] = array(
-			$this->msg( 'pageinfo-edits' ), $lang->formatNum( $pageCounts['edits'] )
-		);
+		$pageInfo['header-edits'][] = [
+			$this->msg( 'pageinfo-edits' ),
+			$lang->formatNum( $pageCounts['edits'] )
+		];
 
 		// Total number of distinct authors
-		$pageInfo['header-edits'][] = array(
-			$this->msg( 'pageinfo-authors' ), $lang->formatNum( $pageCounts['authors'] )
-		);
+		if ( $pageCounts['authors'] > 0 ) {
+			$pageInfo['header-edits'][] = [
+				$this->msg( 'pageinfo-authors' ),
+				$lang->formatNum( $pageCounts['authors'] )
+			];
+		}
 
 		// Recent number of edits (within past 30 days)
-		$pageInfo['header-edits'][] = array(
-			$this->msg( 'pageinfo-recent-edits', $lang->formatDuration( $wgRCMaxAge ) ),
+		$pageInfo['header-edits'][] = [
+			$this->msg(
+				'pageinfo-recent-edits',
+				$lang->formatDuration( $config->get( MainConfigNames::RCMaxAge ) )
+			),
 			$lang->formatNum( $pageCounts['recent_edits'] )
-		);
+		];
 
 		// Recent number of distinct authors
-		$pageInfo['header-edits'][] = array(
-			$this->msg( 'pageinfo-recent-authors' ), $lang->formatNum( $pageCounts['recent_authors'] )
-		);
+		$pageInfo['header-edits'][] = [
+			$this->msg( 'pageinfo-recent-authors' ),
+			$lang->formatNum( $pageCounts['recent_authors'] )
+		];
 
 		// Array of MagicWord objects
-		$magicWords = MagicWord::getDoubleUnderscoreArray();
+		$magicWords = $this->magicWordFactory->getDoubleUnderscoreArray();
 
 		// Array of magic word IDs
 		$wordIDs = $magicWords->names;
 
 		// Array of IDs => localized magic words
-		$localizedWords = $wgContLang->getMagicWords();
+		$localizedWords = $this->contentLanguage->getMagicWords();
 
-		$listItems = array();
+		$listItems = [];
 		foreach ( $pageProperties as $property => $value ) {
 			if ( in_array( $property, $wordIDs ) ) {
-				$listItems[] = Html::element( 'li', array(), $localizedWords[$property][1] );
+				$listItems[] = Html::element( 'li', [], $localizedWords[$property][1] );
 			}
 		}
 
-		$localizedList = Html::rawElement( 'ul', array(), implode( '', $listItems ) );
-		$hiddenCategories = $this->page->getHiddenCategories();
+		$localizedList = Html::rawElement( 'ul', [], implode( '', $listItems ) );
+		$hiddenCategories = $this->getWikiPage()->getHiddenCategories();
 
 		if (
 			count( $listItems ) > 0 ||
@@ -542,32 +800,32 @@ class InfoAction extends FormlessAction {
 			$pageCounts['transclusion']['from'] > 0 ||
 			$pageCounts['transclusion']['to'] > 0
 		) {
-			$options = array( 'LIMIT' => $wgPageInfoTransclusionLimit );
+			$options = [ 'LIMIT' => $config->get( MainConfigNames::PageInfoTransclusionLimit ) ];
 			$transcludedTemplates = $title->getTemplateLinksFrom( $options );
-			if ( $wgMiserMode ) {
-				$transcludedTargets = array();
+			if ( $config->get( MainConfigNames::MiserMode ) ) {
+				$transcludedTargets = [];
 			} else {
 				$transcludedTargets = $title->getTemplateLinksTo( $options );
 			}
 
 			// Page properties
-			$pageInfo['header-properties'] = array();
+			$pageInfo['header-properties'] = [];
 
 			// Magic words
 			if ( count( $listItems ) > 0 ) {
-				$pageInfo['header-properties'][] = array(
+				$pageInfo['header-properties'][] = [
 					$this->msg( 'pageinfo-magic-words' )->numParams( count( $listItems ) ),
 					$localizedList
-				);
+				];
 			}
 
 			// Hidden categories
 			if ( count( $hiddenCategories ) > 0 ) {
-				$pageInfo['header-properties'][] = array(
+				$pageInfo['header-properties'][] = [
 					$this->msg( 'pageinfo-hidden-categories' )
 						->numParams( count( $hiddenCategories ) ),
 					Linker::formatHiddenCategories( $hiddenCategories )
-				);
+				];
 			}
 
 			// Transcluded templates
@@ -578,38 +836,44 @@ class InfoAction extends FormlessAction {
 					$more = null;
 				}
 
-				$pageInfo['header-properties'][] = array(
+				$templateListFormatter = new TemplatesOnThisPageFormatter(
+					$this->getContext(),
+					$linkRenderer,
+					$this->linkBatchFactory,
+					$this->restrictionStore
+				);
+
+				$pageInfo['header-properties'][] = [
 					$this->msg( 'pageinfo-templates' )
 						->numParams( $pageCounts['transclusion']['from'] ),
-					Linker::formatTemplates(
-						$transcludedTemplates,
-						false,
-						false,
-						$more )
-				);
+					$templateListFormatter->format( $transcludedTemplates, false, $more )
+				];
 			}
 
-			if ( !$wgMiserMode && $pageCounts['transclusion']['to'] > 0 ) {
+			if ( !$config->get( MainConfigNames::MiserMode ) && $pageCounts['transclusion']['to'] > 0 ) {
 				if ( $pageCounts['transclusion']['to'] > count( $transcludedTargets ) ) {
-					$more = Linker::link(
+					$more = $linkRenderer->makeLink(
 						$whatLinksHere,
-						$this->msg( 'moredotdotdot' )->escaped(),
-						array(),
-						array( 'hidelinks' => 1, 'hideredirs' => 1 )
+						$this->msg( 'moredotdotdot' )->text(),
+						[],
+						[ 'hidelinks' => 1, 'hideredirs' => 1 ]
 					);
 				} else {
 					$more = null;
 				}
 
-				$pageInfo['header-properties'][] = array(
+				$templateListFormatter = new TemplatesOnThisPageFormatter(
+					$this->getContext(),
+					$linkRenderer,
+					$this->linkBatchFactory,
+					$this->restrictionStore
+				);
+
+				$pageInfo['header-properties'][] = [
 					$this->msg( 'pageinfo-transclusions' )
 						->numParams( $pageCounts['transclusion']['to'] ),
-					Linker::formatTemplates(
-						$transcludedTargets,
-						false,
-						false,
-						$more )
-				);
+					$templateListFormatter->format( $transcludedTargets, false, $more )
+				];
 			}
 		}
 
@@ -617,140 +881,174 @@ class InfoAction extends FormlessAction {
 	}
 
 	/**
+	 * Get namespace protection message for title or null if no namespace protection
+	 * has been applied
+	 *
+	 * @param Title $title
+	 * @return ?string HTML
+	 */
+	protected function getNamespaceProtectionMessage( Title $title ): ?string {
+		$rights = [];
+		if ( $title->isRawHtmlMessage() ) {
+			$rights[] = 'editsitecss';
+			$rights[] = 'editsitejs';
+		} elseif ( $title->isSiteCssConfigPage() ) {
+			$rights[] = 'editsitecss';
+		} elseif ( $title->isSiteJsConfigPage() ) {
+			$rights[] = 'editsitejs';
+		} elseif ( $title->isSiteJsonConfigPage() ) {
+			$rights[] = 'editsitejson';
+		} elseif ( $title->isUserCssConfigPage() ) {
+			$rights[] = 'editusercss';
+		} elseif ( $title->isUserJsConfigPage() ) {
+			$rights[] = 'edituserjs';
+		} elseif ( $title->isUserJsonConfigPage() ) {
+			$rights[] = 'edituserjson';
+		} else {
+			$namespaceProtection = $this->context->getConfig()->get( MainConfigNames::NamespaceProtection );
+			$right = $namespaceProtection[$title->getNamespace()] ?? null;
+			if ( $right ) {
+				// a single string as the value is allowed as well as an array
+				$rights = (array)$right;
+			}
+		}
+		if ( $rights ) {
+			return $this->msg( 'protect-fallback', $this->getLanguage()->commaList( $rights ) )->parse();
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Returns page counts that would be too "expensive" to retrieve by normal means.
 	 *
-	 * @param Title $title Title to get counts for
 	 * @return array
 	 */
-	protected static function pageCounts( Title $title ) {
-		global $wgRCMaxAge, $wgDisableCounters, $wgMiserMode;
+	private function pageCounts() {
+		$page = $this->getWikiPage();
+		$fname = __METHOD__;
+		$config = $this->context->getConfig();
+		$cache = $this->wanObjectCache;
 
-		wfProfileIn( __METHOD__ );
-		$id = $title->getArticleID();
+		return $cache->getWithSetCallback(
+			self::getCacheKey( $cache, $page->getTitle(), $page->getLatest() ),
+			WANObjectCache::TTL_WEEK,
+			function ( $oldValue, &$ttl, &$setOpts ) use ( $page, $config, $fname ) {
+				$title = $page->getTitle();
+				$id = $title->getArticleID();
 
-		$dbr = wfGetDB( DB_SLAVE );
-		$result = array();
+				$dbr = $this->loadBalancer->getConnectionRef( DB_REPLICA );
+				$setOpts += Database::getCacheSetOptions( $dbr );
 
-		if ( !$wgDisableCounters ) {
-			// Number of views
-			$views = (int)$dbr->selectField(
-				'page',
-				'page_counter',
-				array( 'page_id' => $id ),
-				__METHOD__
-			);
-			$result['views'] = $views;
-		}
+				$field = 'rev_actor';
+				$pageField = 'rev_page';
 
-		// Number of page watchers
-		$watchers = (int)$dbr->selectField(
-			'watchlist',
-			'COUNT(*)',
-			array(
-				'wl_namespace' => $title->getNamespace(),
-				'wl_title' => $title->getDBkey(),
-			),
-			__METHOD__
+				$watchedItemStore = $this->watchedItemStore;
+
+				$result = [];
+				$result['watchers'] = $watchedItemStore->countWatchers( $title );
+
+				if ( $config->get( MainConfigNames::ShowUpdatedMarker ) ) {
+					$updated = (int)wfTimestamp( TS_UNIX, $page->getTimestamp() );
+					$result['visitingWatchers'] = $watchedItemStore->countVisitingWatchers(
+						$title,
+						$updated - $config->get( MainConfigNames::WatchersMaxAge )
+					);
+				}
+
+				// Total number of edits
+				$edits = (int)$dbr->newSelectQueryBuilder()
+					->select( 'COUNT(*)' )
+					->from( 'revision' )
+					->where( [ 'rev_page' => $id ] )
+					->caller( $fname )
+					->fetchField();
+				$result['edits'] = $edits;
+
+				// Total number of distinct authors
+				if ( $config->get( MainConfigNames::MiserMode ) ) {
+					$result['authors'] = 0;
+				} else {
+					$result['authors'] = (int)$dbr->newSelectQueryBuilder()
+						->select( "COUNT(DISTINCT $field)" )
+						->from( 'revision' )
+						->where( [ $pageField => $id ] )
+						->caller( $fname )
+						->fetchField();
+				}
+
+				// "Recent" threshold defined by RCMaxAge setting
+				$threshold = $dbr->timestamp( time() - $config->get( MainConfigNames::RCMaxAge ) );
+
+				// Recent number of edits
+				$edits = (int)$dbr->newSelectQueryBuilder()
+					->select( 'COUNT(rev_page)' )
+					->from( 'revision' )
+					->where( [ 'rev_page' => $id ] )
+					->andWhere( [ "rev_timestamp >= " . $dbr->addQuotes( $threshold ) ] )
+					->caller( $fname )
+					->fetchField();
+				$result['recent_edits'] = $edits;
+
+				// Recent number of distinct authors
+				$result['recent_authors'] = (int)$dbr->newSelectQueryBuilder()
+					->select( "COUNT(DISTINCT $field)" )
+					->from( 'revision' )
+					->where( [ $pageField => $id ] )
+					->andWhere( [ 'rev_timestamp >= ' . $dbr->addQuotes( $threshold ) ] )
+					->caller( $fname )
+					->fetchField();
+
+				// Subpages (if enabled)
+				if ( $this->namespaceInfo->hasSubpages( $title->getNamespace() ) ) {
+					$conds = [ 'page_namespace' => $title->getNamespace() ];
+					$conds[] = 'page_title ' .
+						$dbr->buildLike( $title->getDBkey() . '/', $dbr->anyString() );
+
+					// Subpages of this page (redirects)
+					$conds['page_is_redirect'] = 1;
+					$result['subpages']['redirects'] = (int)$dbr->newSelectQueryBuilder()
+						->select( 'COUNT(page_id)' )
+						->from( 'page' )
+						->where( $conds )
+						->caller( $fname )
+						->fetchField();
+					// Subpages of this page (non-redirects)
+					$conds['page_is_redirect'] = 0;
+					$result['subpages']['nonredirects'] = (int)$dbr->newSelectQueryBuilder()
+						->select( 'COUNT(page_id)' )
+						->from( 'page' )
+						->where( $conds )
+						->caller( $fname )
+						->fetchField();
+
+					// Subpages of this page (total)
+					$result['subpages']['total'] = $result['subpages']['redirects']
+						+ $result['subpages']['nonredirects'];
+				}
+
+				// Counts for the number of transclusion links (to/from)
+				if ( $config->get( MainConfigNames::MiserMode ) ) {
+					$result['transclusion']['to'] = 0;
+				} else {
+					$result['transclusion']['to'] = (int)$dbr->newSelectQueryBuilder()
+						->select( 'COUNT(tl_from)' )
+						->from( 'templatelinks' )
+						->where( $this->linksMigration->getLinksConditions( 'templatelinks', $title ) )
+						->caller( $fname )
+						->fetchField();
+				}
+
+				$result['transclusion']['from'] = (int)$dbr->newSelectQueryBuilder()
+					->select( 'COUNT(*)' )
+					->from( 'templatelinks' )
+					->where( [ 'tl_from' => $title->getArticleID() ] )
+					->caller( $fname )
+					->fetchField();
+
+				return $result;
+			}
 		);
-		$result['watchers'] = $watchers;
-
-		// Total number of edits
-		$edits = (int)$dbr->selectField(
-			'revision',
-			'COUNT(rev_page)',
-			array( 'rev_page' => $id ),
-			__METHOD__
-		);
-		$result['edits'] = $edits;
-
-		// Total number of distinct authors
-		$authors = (int)$dbr->selectField(
-			'revision',
-			'COUNT(DISTINCT rev_user_text)',
-			array( 'rev_page' => $id ),
-			__METHOD__
-		);
-		$result['authors'] = $authors;
-
-		// "Recent" threshold defined by $wgRCMaxAge
-		$threshold = $dbr->timestamp( time() - $wgRCMaxAge );
-
-		// Recent number of edits
-		$edits = (int)$dbr->selectField(
-			'revision',
-			'COUNT(rev_page)',
-			array(
-				'rev_page' => $id,
-				"rev_timestamp >= " . $dbr->addQuotes( $threshold )
-			),
-			__METHOD__
-		);
-		$result['recent_edits'] = $edits;
-
-		// Recent number of distinct authors
-		$authors = (int)$dbr->selectField(
-			'revision',
-			'COUNT(DISTINCT rev_user_text)',
-			array(
-				'rev_page' => $id,
-				"rev_timestamp >= " . $dbr->addQuotes( $threshold )
-			),
-			__METHOD__
-		);
-		$result['recent_authors'] = $authors;
-
-		// Subpages (if enabled)
-		if ( MWNamespace::hasSubpages( $title->getNamespace() ) ) {
-			$conds = array( 'page_namespace' => $title->getNamespace() );
-			$conds[] = 'page_title ' . $dbr->buildLike( $title->getDBkey() . '/', $dbr->anyString() );
-
-			// Subpages of this page (redirects)
-			$conds['page_is_redirect'] = 1;
-			$result['subpages']['redirects'] = (int)$dbr->selectField(
-				'page',
-				'COUNT(page_id)',
-				$conds,
-				__METHOD__ );
-
-			// Subpages of this page (non-redirects)
-			$conds['page_is_redirect'] = 0;
-			$result['subpages']['nonredirects'] = (int)$dbr->selectField(
-				'page',
-				'COUNT(page_id)',
-				$conds,
-				__METHOD__
-			);
-
-			// Subpages of this page (total)
-			$result['subpages']['total'] = $result['subpages']['redirects']
-				+ $result['subpages']['nonredirects'];
-		}
-
-		// Counts for the number of transclusion links (to/from)
-		if ( $wgMiserMode ) {
-			$result['transclusion']['to'] = 0;
-		} else {
-			$result['transclusion']['to'] = (int)$dbr->selectField(
-				'templatelinks',
-				'COUNT(tl_from)',
-				array(
-					'tl_namespace' => $title->getNamespace(),
-					'tl_title' => $title->getDBkey()
-				),
-				__METHOD__
-			);
-		}
-
-		$result['transclusion']['from'] = (int)$dbr->selectField(
-			'templatelinks',
-			'COUNT(*)',
-			array( 'tl_from' => $title->getArticleID() ),
-			__METHOD__
-		);
-
-		wfProfileOut( __METHOD__ );
-
-		return $result;
 	}
 
 	/**
@@ -763,75 +1061,21 @@ class InfoAction extends FormlessAction {
 	}
 
 	/**
-	 * Get a list of contributors of $article
-	 * @return string Html
-	 */
-	protected function getContributors() {
-		global $wgHiddenPrefs;
-
-		$contributors = $this->page->getContributors();
-		$real_names = array();
-		$user_names = array();
-		$anon_ips = array();
-
-		# Sift for real versus user names
-		/** @var $user User */
-		foreach ( $contributors as $user ) {
-			$page = $user->isAnon()
-				? SpecialPage::getTitleFor( 'Contributions', $user->getName() )
-				: $user->getUserPage();
-
-			if ( $user->getID() == 0 ) {
-				$anon_ips[] = Linker::link( $page, htmlspecialchars( $user->getName() ) );
-			} elseif ( !in_array( 'realname', $wgHiddenPrefs ) && $user->getRealName() ) {
-				$real_names[] = Linker::link( $page, htmlspecialchars( $user->getRealName() ) );
-			} else {
-				$user_names[] = Linker::link( $page, htmlspecialchars( $user->getName() ) );
-			}
-		}
-
-		$lang = $this->getLanguage();
-
-		$real = $lang->listToText( $real_names );
-
-		# "ThisSite user(s) A, B and C"
-		if ( count( $user_names ) ) {
-			$user = $this->msg( 'siteusers' )->rawParams( $lang->listToText( $user_names ) )->params(
-				count( $user_names ) )->escaped();
-		} else {
-			$user = false;
-		}
-
-		if ( count( $anon_ips ) ) {
-			$anon = $this->msg( 'anonusers' )->rawParams( $lang->listToText( $anon_ips ) )->params(
-				count( $anon_ips ) )->escaped();
-		} else {
-			$anon = false;
-		}
-
-		# This is the big list, all mooshed together. We sift for blank strings
-		$fulllist = array();
-		foreach ( array( $real, $user, $anon ) as $s ) {
-			if ( $s !== '' ) {
-				array_push( $fulllist, $s );
-			}
-		}
-
-		$count = count( $fulllist );
-
-		# "Based on work by ..."
-		return $count
-			? $this->msg( 'othercontribs' )->rawParams(
-				$lang->listToText( $fulllist ) )->params( $count )->escaped()
-			: '';
-	}
-
-	/**
 	 * Returns the description that goes below the "<h1>" tag.
 	 *
 	 * @return string
 	 */
 	protected function getDescription() {
 		return '';
+	}
+
+	/**
+	 * @param WANObjectCache $cache
+	 * @param PageIdentity $page
+	 * @param int $revId
+	 * @return string
+	 */
+	protected static function getCacheKey( WANObjectCache $cache, PageIdentity $page, $revId ) {
+		return $cache->makeKey( 'infoaction', md5( (string)$page ), $revId, self::VERSION );
 	}
 }

@@ -22,23 +22,24 @@
  * @ingroup Maintenance
  */
 
-/** */
-require_once __DIR__ . '/commandLine.inc';
-
-$options = getopt( '', array( 'debug', 'help', 'cache:' ) );
+$optionsWithArgs = [ 'cache' ];
+$optionsWithoutArgs = [
+	'debug', 'help'
+];
+require_once __DIR__ . '/CommandLineInc.php';
 
 $debug = isset( $options['debug'] );
 $help = isset( $options['help'] );
-$cache = isset( $options['cache'] ) ? $options['cache'] : null;
+$cache = $options['cache'] ?? null;
 
 if ( $help ) {
 	mccShowUsage();
 	exit( 0 );
 }
-$mcc = new MWMemcached( array(
+$mcc = new MemcachedClient( [
 	'persistent' => true,
 	'debug' => $debug,
-) );
+] );
 
 if ( $cache ) {
 	if ( !isset( $wgObjectCaches[$cache] ) ) {
@@ -81,7 +82,7 @@ EOF;
 
 function mccGetHelp( $command ) {
 	$output = '';
-	$commandList = array(
+	$commandList = [
 		'get' => 'grabs something',
 		'getsock' => 'lists sockets',
 		'set' => 'changes something',
@@ -92,7 +93,7 @@ function mccGetHelp( $command ) {
 		'exit' => 'exit mcc',
 		'quit' => 'exit mcc',
 		'help' => 'help about a command',
-	);
+	];
 	if ( !$command ) {
 		$command = 'fullhelp';
 	}
@@ -172,7 +173,7 @@ do {
 		case 'set':
 			$key = array_shift( $args );
 			if ( $args[0] == "#" && is_numeric( $args[1] ) ) {
-				$value = str_repeat( '*', $args[1] );
+				$value = str_repeat( '*', (int)$args[1] );
 			} else {
 				$value = implode( ' ', $args );
 			}
@@ -211,7 +212,7 @@ do {
 
 		default:
 			$bad = true;
-	} // switch() end
+	}
 
 	if ( $bad ) {
 		if ( $command ) {

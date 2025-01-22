@@ -1,7 +1,5 @@
 <?php
 /**
- * Foreign file with an accessible MediaWiki database.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,112 +16,155 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup FileAbstraction
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserIdentity;
+use Wikimedia\Rdbms\DBUnexpectedError;
+
 /**
- * Foreign file with an accessible MediaWiki database
+ * Foreign file from a reachable database in the same wiki farm.
  *
  * @ingroup FileAbstraction
  */
 class ForeignDBFile extends LocalFile {
-	/**
-	 * @param Title $title
-	 * @param FileRepo $repo
-	 * @param null $unused
-	 * @return ForeignDBFile
-	 */
-	static function newFromTitle( $title, $repo, $unused = null ) {
-		return new self( $title, $repo );
-	}
 
 	/**
-	 * Create a ForeignDBFile from a title
-	 * Do not call this except from inside a repo class.
-	 *
-	 * @param stdClass $row
-	 * @param FileRepo $repo
-	 * @return ForeignDBFile
+	 * @return ForeignDBRepo|bool
 	 */
-	static function newFromRow( $row, $repo ) {
-		$title = Title::makeTitle( NS_FILE, $row->img_name );
-		$file = new self( $title, $repo );
-		$file->loadFromRow( $row );
-
-		return $file;
+	public function getRepo() {
+		return $this->repo;
 	}
 
 	/**
 	 * @param string $srcPath
 	 * @param int $flags
 	 * @param array $options
-	 * @return FileRepoStatus
+	 * @return Status
 	 * @throws MWException
 	 */
-	function publish( $srcPath, $flags = 0, array $options = array() ) {
+	public function publish( $srcPath, $flags = 0, array $options = [] ) {
 		$this->readOnlyError();
 	}
 
 	/**
-	 * @param $oldver
-	 * @param $desc string
-	 * @param $license string
-	 * @param $copyStatus string
-	 * @param $source string
-	 * @param $watch bool
-	 * @param $timestamp bool|string
-	 * @param $user User object or null to use $wgUser
-	 * @return bool
-	 * @throws MWException
-	 */
-	function recordUpload( $oldver, $desc, $license = '', $copyStatus = '', $source = '',
-		$watch = false, $timestamp = false, User $user = null ) {
-		$this->readOnlyError();
-	}
-
-	/**
-	 * @param array $versions
+	 * @param int[] $versions
 	 * @param bool $unsuppress
-	 * @return FileRepoStatus
+	 * @return Status
 	 * @throws MWException
 	 */
-	function restore( $versions = array(), $unsuppress = false ) {
+	public function restore( $versions = [], $unsuppress = false ) {
 		$this->readOnlyError();
 	}
 
 	/**
 	 * @param string $reason
+	 * @param UserIdentity $user
 	 * @param bool $suppress
-	 * @return FileRepoStatus
+	 * @return Status
 	 * @throws MWException
 	 */
-	function delete( $reason, $suppress = false ) {
+	public function deleteFile( $reason, UserIdentity $user, $suppress = false ) {
 		$this->readOnlyError();
 	}
 
 	/**
 	 * @param Title $target
-	 * @return FileRepoStatus
+	 * @return Status
 	 * @throws MWException
 	 */
-	function move( $target ) {
+	public function move( $target ) {
 		$this->readOnlyError();
 	}
 
 	/**
 	 * @return string
 	 */
-	function getDescriptionUrl() {
+	public function getDescriptionUrl() {
 		// Restore remote behavior
 		return File::getDescriptionUrl();
 	}
 
 	/**
-	 * @param bool|Language $lang Optional language to fetch description in.
-	 * @return string
+	 * @param Language|null $lang Optional language to fetch description in.
+	 * @return string|false
 	 */
-	function getDescriptionText( $lang = false ) {
-		// Restore remote behavior
-		return File::getDescriptionText( $lang );
+	public function getDescriptionText( Language $lang = null ) {
+		global $wgLang;
+
+		if ( !$this->repo->fetchDescription ) {
+			return false;
+		}
+
+		$lang = $lang ?? $wgLang;
+		$renderUrl = $this->repo->getDescriptionRenderUrl( $this->getName(), $lang->getCode() );
+		if ( !$renderUrl ) {
+			return false;
+		}
+
+		$touched = $this->repo->getReplicaDB()->selectField(
+			'page',
+			'page_touched',
+			[
+				'page_namespace' => NS_FILE,
+				'page_title' => $this->title->getDBkey()
+			],
+			__METHOD__
+		);
+		if ( $touched === false ) {
+			return false; // no description page
+		}
+
+		$cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
+		$fname = __METHOD__;
+
+		return $cache->getWithSetCallback(
+			$this->repo->getLocalCacheKey(
+				'file-foreign-description',
+				$lang->getCode(),
+				md5( $this->getName() ),
+				$touched
+			),
+			$this->repo->descriptionCacheExpiry ?: $cache::TTL_UNCACHEABLE,
+			static function ( $oldValue, &$ttl, array &$setOpts ) use ( $renderUrl, $fname ) {
+				wfDebug( "Fetching shared description from $renderUrl" );
+				$res = MediaWikiServices::getInstance()->getHttpRequestFactory()->
+					get( $renderUrl, [], $fname );
+				if ( !$res ) {
+					$ttl = WANObjectCache::TTL_UNCACHEABLE;
+				}
+
+				return $res;
+			}
+		);
 	}
+
+	/**
+	 * Get short description URL for a file based on the page ID.
+	 *
+	 * @return string|null
+	 * @throws DBUnexpectedError
+	 * @since 1.27
+	 */
+	public function getDescriptionShortUrl() {
+		$dbr = $this->repo->getReplicaDB();
+		$pageId = $dbr->selectField(
+			'page',
+			'page_id',
+			[
+				'page_namespace' => NS_FILE,
+				'page_title' => $this->title->getDBkey()
+			],
+			__METHOD__
+		);
+
+		if ( $pageId !== false ) {
+			$url = $this->repo->makeUrl( [ 'curid' => $pageId ] );
+			if ( $url !== false ) {
+				return $url;
+			}
+		}
+		return null;
+	}
+
 }

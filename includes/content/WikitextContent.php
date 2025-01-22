@@ -25,39 +25,53 @@
  * @author Daniel Kinzler
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+
 /**
  * Content object for wiki text pages.
  *
+ * @newable
  * @ingroup Content
  */
 class WikitextContent extends TextContent {
+	private $redirectTargetAndText = null;
 
+	/**
+	 * @var string[] flags set by PST
+	 */
+	private $preSaveTransformFlags = [];
+
+	/**
+	 * @stable to call
+	 *
+	 * @param string $text
+	 */
 	public function __construct( $text ) {
 		parent::__construct( $text, CONTENT_MODEL_WIKITEXT );
 	}
 
 	/**
-	 * @param string $section
+	 * @param string|int $sectionId
 	 *
 	 * @return Content|bool|null
 	 *
 	 * @see Content::getSection()
 	 */
-	public function getSection( $section ) {
-		global $wgParser;
-
-		$text = $this->getNativeData();
-		$sect = $wgParser->getSection( $text, $section, false );
+	public function getSection( $sectionId ) {
+		$text = $this->getText();
+		$sect = MediaWikiServices::getInstance()->getParserFactory()->getInstance()
+			->getSection( $text, $sectionId, false );
 
 		if ( $sect === false ) {
 			return false;
 		} else {
-			return new WikitextContent( $sect );
+			return new static( $sect );
 		}
 	}
 
 	/**
-	 * @param string $section
+	 * @param string|int|null|bool $sectionId
 	 * @param Content $with
 	 * @param string $sectionTitle
 	 *
@@ -66,47 +80,42 @@ class WikitextContent extends TextContent {
 	 *
 	 * @see Content::replaceSection()
 	 */
-	public function replaceSection( $section, Content $with, $sectionTitle = '' ) {
-		wfProfileIn( __METHOD__ );
-
+	public function replaceSection( $sectionId, Content $with, $sectionTitle = '' ) {
+		// @phan-suppress-previous-line PhanParamSignatureMismatch False positive
 		$myModelId = $this->getModel();
 		$sectionModelId = $with->getModel();
 
 		if ( $sectionModelId != $myModelId ) {
-			wfProfileOut( __METHOD__ );
 			throw new MWException( "Incompatible content model for section: " .
 				"document uses $myModelId but " .
 				"section uses $sectionModelId." );
 		}
+		/** @var self $with $oldtext */
+		'@phan-var self $with';
 
-		$oldtext = $this->getNativeData();
-		$text = $with->getNativeData();
+		$oldtext = $this->getText();
+		$text = $with->getText();
 
-		if ( $section === '' ) {
-			wfProfileOut( __METHOD__ );
-
+		if ( strval( $sectionId ) === '' ) {
 			return $with; # XXX: copy first?
 		}
 
-		if ( $section == 'new' ) {
+		if ( $sectionId === 'new' ) {
 			# Inserting a new section
-			$subject = $sectionTitle ? wfMessage( 'newsectionheaderdefaultlevel' )
-					->rawParams( $sectionTitle )->inContentLanguage()->text() . "\n\n" : '';
-			if ( wfRunHooks( 'PlaceNewSection', array( $this, $oldtext, $subject, &$text ) ) ) {
+			$subject = strval( $sectionTitle ) !== '' ? wfMessage( 'newsectionheaderdefaultlevel' )
+					->plaintextParams( $sectionTitle )->inContentLanguage()->text() . "\n\n" : '';
+			if ( Hooks::runner()->onPlaceNewSection( $this, $oldtext, $subject, $text ) ) {
 				$text = strlen( trim( $oldtext ) ) > 0
 					? "{$oldtext}\n\n{$subject}{$text}"
 					: "{$subject}{$text}";
 			}
 		} else {
 			# Replacing an existing section; roll out the big guns
-			global $wgParser;
-
-			$text = $wgParser->replaceSection( $oldtext, $section, $text );
+			$text = MediaWikiServices::getInstance()->getParserFactory()->getInstance()
+				->replaceSection( $oldtext, $sectionId, $text );
 		}
 
-		$newContent = new WikitextContent( $text );
-
-		wfProfileOut( __METHOD__ );
+		$newContent = new static( $text );
 
 		return $newContent;
 	}
@@ -120,77 +129,35 @@ class WikitextContent extends TextContent {
 	 * @return Content
 	 */
 	public function addSectionHeader( $header ) {
-		$text = wfMessage( 'newsectionheaderdefaultlevel' )
-			->rawParams( $header )->inContentLanguage()->text();
-		$text .= "\n\n";
-		$text .= $this->getNativeData();
+		$text = strval( $header ) !== '' ? wfMessage( 'newsectionheaderdefaultlevel' )
+			->plaintextParams( $header )->inContentLanguage()->text() . "\n\n" : '';
+		$text .= $this->getText();
 
-		return new WikitextContent( $text );
+		return new static( $text );
 	}
 
 	/**
-	 * Returns a Content object with pre-save transformations applied using
-	 * Parser::preSaveTransform().
+	 * Extract the redirect target and the remaining text on the page.
 	 *
-	 * @param Title $title
-	 * @param User $user
-	 * @param ParserOptions $popts
+	 * @note migrated here from Title::newFromRedirectInternal()
 	 *
-	 * @return Content
+	 * @since 1.23
+	 *
+	 * @return array List of two elements: Title|null and string.
 	 */
-	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
-		global $wgParser;
-
-		$text = $this->getNativeData();
-		$pst = $wgParser->preSaveTransform( $text, $title, $user, $popts );
-		rtrim( $pst );
-
-		return ( $text === $pst ) ? $this : new WikitextContent( $pst );
-	}
-
-	/**
-	 * Returns a Content object with preload transformations applied (or this
-	 * object if no transformations apply).
-	 *
-	 * @param Title $title
-	 * @param ParserOptions $popts
-	 * @param array $params
-	 *
-	 * @return Content
-	 */
-	public function preloadTransform( Title $title, ParserOptions $popts, $params = array() ) {
-		global $wgParser;
-
-		$text = $this->getNativeData();
-		$plt = $wgParser->getPreloadText( $text, $title, $popts, $params );
-
-		return new WikitextContent( $plt );
-	}
-
-	/**
-	 * Implement redirect extraction for wikitext.
-	 *
-	 * @return null|Title
-	 *
-	 * @note: migrated here from Title::newFromRedirectInternal()
-	 *
-	 * @see Content::getRedirectTarget
-	 * @see AbstractContent::getRedirectTarget
-	 */
-	public function getRedirectTarget() {
-		global $wgMaxRedirects;
-		if ( $wgMaxRedirects < 1 ) {
-			// redirects are disabled, so quit early
-			return null;
+	public function getRedirectTargetAndText() {
+		if ( $this->redirectTargetAndText !== null ) {
+			return $this->redirectTargetAndText;
 		}
-		$redir = MagicWord::get( 'redirect' );
-		$text = trim( $this->getNativeData() );
+
+		$redir = MediaWikiServices::getInstance()->getMagicWordFactory()->get( 'redirect' );
+		$text = ltrim( $this->getText() );
 		if ( $redir->matchStartAndRemove( $text ) ) {
 			// Extract the first link and see if it's usable
 			// Ensure that it really does come directly after #REDIRECT
 			// Some older redirects included a colon, so don't freak about that!
-			$m = array();
-			if ( preg_match( '!^\s*:?\s*\[{2}(.*?)(?:\|.*?)?\]{2}!', $text, $m ) ) {
+			$m = [];
+			if ( preg_match( '!^\s*:?\s*\[{2}(.*?)(?:\|.*?)?\]{2}\s*!', $text, $m ) ) {
 				// Strip preceding colon used to "escape" categories, etc.
 				// and URL-decode links
 				if ( strpos( $m[1], '%' ) !== false ) {
@@ -200,14 +167,30 @@ class WikitextContent extends TextContent {
 				$title = Title::newFromText( $m[1] );
 				// If the title is a redirect to bad special pages or is invalid, return null
 				if ( !$title instanceof Title || !$title->isValidRedirectTarget() ) {
-					return null;
+					$this->redirectTargetAndText = [ null, $this->getText() ];
+					return $this->redirectTargetAndText;
 				}
 
-				return $title;
+				$this->redirectTargetAndText = [ $title, substr( $text, strlen( $m[0] ) ) ];
+				return $this->redirectTargetAndText;
 			}
 		}
 
-		return null;
+		$this->redirectTargetAndText = [ null, $this->getText() ];
+		return $this->redirectTargetAndText;
+	}
+
+	/**
+	 * Implement redirect extraction for wikitext.
+	 *
+	 * @return Title|null
+	 *
+	 * @see Content::getRedirectTarget
+	 */
+	public function getRedirectTarget() {
+		list( $title, ) = $this->getRedirectTargetAndText();
+
+		return $title;
 	}
 
 	/**
@@ -232,54 +215,48 @@ class WikitextContent extends TextContent {
 		# so the regex has to be fairly general
 		$newText = preg_replace( '/ \[ \[  [^\]]*  \] \] /x',
 			'[[' . $target->getFullText() . ']]',
-			$this->getNativeData(), 1 );
+			$this->getText(), 1 );
 
-		return new WikitextContent( $newText );
+		return new static( $newText );
 	}
 
 	/**
 	 * Returns true if this content is not a redirect, and this content's text
 	 * is countable according to the criteria defined by $wgArticleCountMethod.
 	 *
-	 * @param bool $hasLinks If it is known whether this content contains
+	 * @param bool|null $hasLinks If it is known whether this content contains
 	 *    links, provide this information here, to avoid redundant parsing to
 	 *    find out (default: null).
-	 * @param Title $title Optional title, defaults to the title from the current main request.
-	 *
-	 * @internal param \IContextSource $context context for parsing if necessary
+	 * @param Title|null $title Optional title, defaults to the title from the current main request.
 	 *
 	 * @return bool
 	 */
 	public function isCountable( $hasLinks = null, Title $title = null ) {
-		global $wgArticleCountMethod;
+		$articleCountMethod = MediaWikiServices::getInstance()->getMainConfig()
+			->get( MainConfigNames::ArticleCountMethod );
 
 		if ( $this->isRedirect() ) {
 			return false;
 		}
 
-		$text = $this->getNativeData();
-
-		switch ( $wgArticleCountMethod ) {
-			case 'any':
-				return true;
-			case 'comma':
-				return strpos( $text, ',' ) !== false;
-			case 'link':
-				if ( $hasLinks === null ) { # not known, find out
-					if ( !$title ) {
-						$context = RequestContext::getMain();
-						$title = $context->getTitle();
-					}
-
-					$po = $this->getParserOutput( $title, null, null, false );
-					$links = $po->getLinks();
-					$hasLinks = !empty( $links );
+		if ( $articleCountMethod === 'link' ) {
+			if ( $hasLinks === null ) { # not known, find out
+				// @TODO: require an injected title
+				if ( !$title ) {
+					$context = RequestContext::getMain();
+					$title = $context->getTitle();
 				}
+				$contentRenderer = MediaWikiServices::getInstance()->getContentRenderer();
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable getTitle does not return null here
+				$po = $contentRenderer->getParserOutput( $this, $title, null, null, false );
+				$links = $po->getLinks();
+				$hasLinks = !empty( $links );
+			}
 
-				return $hasLinks;
+			return $hasLinks;
 		}
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -298,43 +275,6 @@ class WikitextContent extends TextContent {
 	}
 
 	/**
-	 * Returns a ParserOutput object resulting from parsing the content's text
-	 * using $wgParser.
-	 *
-	 * @since 1.21
-	 *
-	 * @param Title $title * @param int $revId Revision to pass to the parser (default: null)
-	 * @param ParserOptions $options (default: null)
-	 * @param bool $generateHtml (default: false)
-	 * @internal param \IContextSource|null $context
-	 *
-	 * @return ParserOutput Representing the HTML form of the text
-	 */
-	public function getParserOutput( Title $title, $revId = null,
-		ParserOptions $options = null, $generateHtml = true ) {
-		global $wgParser;
-
-		if ( !$options ) {
-			//NOTE: use canonical options per default to produce cacheable output
-			$options = $this->getContentHandler()->makeParserOptions( 'canonical' );
-		}
-
-		$po = $wgParser->parse( $this->getNativeData(), $title, $options, true, true, $revId );
-
-		return $po;
-	}
-
-	/**
-	 * @throws MWException
-	 */
-	protected function getHtml() {
-		throw new MWException(
-			"getHtml() not implemented for wikitext. "
-				. "Use getParserOutput()->getText()."
-		);
-	}
-
-	/**
 	 * This implementation calls $word->match() on the this TextContent object's text.
 	 *
 	 * @param MagicWord $word
@@ -344,7 +284,24 @@ class WikitextContent extends TextContent {
 	 * @see Content::matchMagicWord()
 	 */
 	public function matchMagicWord( MagicWord $word ) {
-		return $word->match( $this->getNativeData() );
+		return $word->match( $this->getText() );
 	}
 
+	/**
+	 * Records flags set by preSaveTransform
+	 * @internal for use by WikitextContentHandler
+	 * @param string[] $flags
+	 */
+	public function setPreSaveTransformFlags( array $flags ) {
+		$this->preSaveTransformFlags = $flags;
+	}
+
+	/**
+	 * Records flags set by preSaveTransform
+	 * @internal for use by WikitextContentHandler
+	 * @return string[]
+	 */
+	public function getPreSaveTransformFlags() {
+		return $this->preSaveTransformFlags;
+	}
 }

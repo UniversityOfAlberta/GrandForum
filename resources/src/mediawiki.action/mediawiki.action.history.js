@@ -1,63 +1,66 @@
-/**
+/*!
  * JavaScript for History action
  */
-jQuery( function ( $ ) {
-	var	$historyCompareForm = $( '#mw-history-compare' ),
+$( function () {
+	var $historyCompareForm = $( '#mw-history-compare' ),
 		$historySubmitter,
-		$lis = $( '#pagehistory > li' );
+		$lis = $( '#pagehistory .mw-contributions-list > li' );
 
 	/**
-	 * @context {Element} input
-	 * @param e {jQuery.Event}
+	 * @ignore
+	 * @this {Element} input
+	 * @param {jQuery.Event} e
+	 * @return {boolean} False to cancel the default event
 	 */
 	function updateDiffRadios() {
-		var diffLi = false, // the li where the diff radio is checked
-			oldLi = false; // the li where the oldid radio is checked
+		var nextState = 'before',
+			$li,
+			$inputs,
+			$oldidRadio,
+			$diffRadio;
 
 		if ( !$lis.length ) {
 			return true;
 		}
 
-		$lis
-		.removeClass( 'selected' )
-		.each( function () {
-			var	$li = $( this ),
-				$inputs = $li.find( 'input[type="radio"]' ),
-				$oldidRadio = $inputs.filter( '[name="oldid"]' ).eq( 0 ),
-				$diffRadio = $inputs.filter( '[name="diff"]' ).eq( 0 );
+		$lis.each( function () {
+			$li = $( this );
+			$inputs = $li.find( 'input[type="radio"]' );
+			$oldidRadio = $inputs.filter( '[name="oldid"]' ).eq( 0 );
+			$diffRadio = $inputs.filter( '[name="diff"]' ).eq( 0 );
+
+			$li.removeClass( 'selected between before after' );
 
 			if ( !$oldidRadio.length || !$diffRadio.length ) {
 				return true;
 			}
 
 			if ( $oldidRadio.prop( 'checked' ) ) {
-				oldLi = true;
-				$li.addClass( 'selected' );
-				$oldidRadio.css( 'visibility', 'visible' );
-				$diffRadio.css( 'visibility', 'hidden' );
-
+				$li.addClass( 'selected after' );
+				nextState = 'after';
+				// Disable the hidden radio because it can still be selected with
+				// arrow keys on Firefox
+				$diffRadio.prop( 'disabled', true );
 			} else if ( $diffRadio.prop( 'checked' ) ) {
-				diffLi = true;
-				$li.addClass( 'selected' );
-				$oldidRadio.css( 'visibility', 'hidden' );
-				$diffRadio.css( 'visibility', 'visible' );
-
-			// This list item has neither checked
+				// The following classes are used here:
+				// * before
+				// * after
+				$li.addClass( 'selected ' + nextState );
+				nextState = 'between';
+				// Disable the hidden radio because it can still be selected with
+				// arrow keys on Firefox
+				$oldidRadio.prop( 'disabled', true );
 			} else {
-				// We're below the selected radios
-				if ( diffLi && oldLi ) {
-					$oldidRadio.css( 'visibility', 'visible' );
-					$diffRadio.css( 'visibility', 'hidden' );
-
-				// We're between the selected radios
-				} else if ( diffLi ) {
-					$diffRadio.css( 'visibility', 'visible' );
-					$oldidRadio.css( 'visibility', 'visible' );
-
-				// We're above the selected radios
-				} else {
-					$diffRadio.css( 'visibility', 'visible' );
-					$oldidRadio.css( 'visibility', 'hidden' );
+				// This list item has neither checked
+				// apply the appropriate class following the previous item.
+				// The following classes are used here:
+				// * before
+				// * after
+				$li.addClass( nextState );
+				// Disable or re-enable for Firefox, provided the revision is accessible
+				if ( $li.find( 'a.mw-changeslist-date' ).length ) {
+					$oldidRadio.prop( 'disabled', nextState === 'before' );
+					$diffRadio.prop( 'disabled', nextState === 'after' );
 				}
 			}
 		} );
@@ -65,7 +68,7 @@ jQuery( function ( $ ) {
 		return true;
 	}
 
-	$lis.find( 'input[name="diff"], input[name="oldid"]' ).click( updateDiffRadios );
+	$lis.find( 'input[name="diff"], input[name="oldid"]' ).on( 'click', updateDiffRadios );
 
 	// Set initial state
 	updateDiffRadios();
@@ -75,7 +78,7 @@ jQuery( function ( $ ) {
 
 	// Ideally we'd use e.target instead of $historySubmitter, but e.target points
 	// to the form element for submit actions, so.
-	$historyCompareForm.find( '.historysubmit' ).click( function () {
+	$historyCompareForm.find( '.historysubmit' ).on( 'click', function () {
 		$historySubmitter = $( this );
 	} );
 
@@ -85,35 +88,41 @@ jQuery( function ( $ ) {
 	// Without the cloning we'd be changing the real form, which is slower, could make
 	// the page look broken for a second in slow browsers and might show the form broken
 	// again when coming back from a "next" page.
-	$historyCompareForm.submit( function ( e ) {
-		var	$copyForm, $copyRadios, $copyAction;
+	$historyCompareForm.on( 'submit', function ( e ) {
+		var $copyForm, $copyRadios, $copyAction;
 
 		if ( $historySubmitter ) {
 			$copyForm = $historyCompareForm.clone();
-			$copyRadios = $copyForm.find( '#pagehistory > li' ).find( 'input[name="diff"], input[name="oldid"]' );
+			$copyRadios = $copyForm.find( '#pagehistory .mw-contributions-list > li' ).find( 'input[name="diff"], input[name="oldid"]' );
 			$copyAction = $copyForm.find( '> [name="action"]' );
 
 			// Remove action=historysubmit and ids[..]=..
+			// eslint-disable-next-line no-jquery/no-class-state
 			if ( $historySubmitter.hasClass( 'mw-history-compareselectedversions-button' ) ) {
 				$copyAction.remove();
 				$copyForm.find( 'input[name^="ids["]:checked' ).prop( 'checked', false );
 
 			// Remove diff=&oldid=, change action=historysubmit to revisiondelete, remove revisiondelete
-			} else if ( $historySubmitter.hasClass( 'mw-history-revisiondelete-button' ) ) {
+			} else if (
+				// eslint-disable-next-line no-jquery/no-class-state
+				$historySubmitter.hasClass( 'mw-history-revisiondelete-button' ) ||
+				// eslint-disable-next-line no-jquery/no-class-state
+				$historySubmitter.hasClass( 'mw-history-editchangetags-button' )
+			) {
 				$copyRadios.remove();
 				$copyAction.val( $historySubmitter.attr( 'name' ) );
+				// eslint-disable-next-line no-jquery/no-sizzle
 				$copyForm.find( ':submit' ).remove();
 			}
 
-			// IE7 doesn't do submission from an off-DOM clone, so insert hidden into document first
+			// Firefox requires the form to be attached, so insert hidden into document first
 			// Also remove potentially conflicting id attributes that we don't need anyway
 			$copyForm
 				.css( 'display', 'none' )
-				.find( '[id]' )
-					.removeAttr( 'id' )
+				.find( '[id]' ).removeAttr( 'id' )
 				.end()
 				.insertAfter( $historyCompareForm )
-				.submit();
+				.trigger( 'submit' );
 
 			e.preventDefault();
 			return false; // Because the submit is special, return false as well.

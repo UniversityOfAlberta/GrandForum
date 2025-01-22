@@ -1,9 +1,5 @@
 <?php
 /**
- *
- *
- * Created on Oct 22, 2006
- *
  * Copyright © 2006 Yuri Astrakhan "<Firstname><Lastname>@gmail.com"
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +20,8 @@
  * @file
  */
 
+use Wikimedia\ParamValidator\ParamValidator;
+
 /**
  * API Serialized PHP output formatter
  * @ingroup API
@@ -35,26 +33,40 @@ class ApiFormatPhp extends ApiFormatBase {
 	}
 
 	public function execute() {
-		$text = serialize( $this->getResultData() );
+		$params = $this->extractRequestParams();
 
-		// Bug 66776: wfMangleFlashPolicy() is needed to avoid a nasty bug in
-		// Flash, but what it does isn't friendly for the API. There's nothing
-		// we can do here that isn't actively broken in some manner, so let's
-		// just be broken in a useful manner.
-		if ( $this->getConfig()->get( 'MangleFlashPolicy' ) &&
-			in_array( 'wfOutputHandler', ob_list_handlers(), true ) &&
-			preg_match( '/\<\s*cross-domain-policy\s*\>/i', $text )
-		) {
-			$this->dieUsage(
-				'This response cannot be represented using format=php. See https://bugzilla.wikimedia.org/show_bug.cgi?id=66776',
-				'internalerror'
-			);
+		switch ( $params['formatversion'] ) {
+			case 1:
+				$transforms = [
+					'BC' => [],
+					'Types' => [],
+					'Strip' => 'all',
+				];
+				break;
+
+			case 2:
+			case 'latest':
+				$transforms = [
+					'Types' => [],
+					'Strip' => 'all',
+				];
+				break;
+
+			default:
+				// Should have been caught during parameter validation
+				self::dieDebug( __METHOD__, 'Unknown value for \'formatversion\'' );
 		}
-
-		$this->printText( $text );
+		$this->printText( serialize( $this->getResult()->getResultData( null, $transforms ) ) );
 	}
 
-	public function getDescription() {
-		return 'Output data in serialized PHP format' . parent::getDescription();
+	public function getAllowedParams() {
+		return parent::getAllowedParams() + [
+			'formatversion' => [
+				ParamValidator::PARAM_TYPE => [ '1', '2', 'latest' ],
+				ParamValidator::PARAM_DEFAULT => '1',
+				ApiBase::PARAM_HELP_MSG => 'apihelp-php-param-formatversion',
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
+			],
+		];
 	}
 }

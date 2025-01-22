@@ -1,11 +1,10 @@
 <?php
 /** Lingua Franca Nova (Lingua Franca Nova)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Cgboeree
  * @author Kaganer
@@ -14,7 +13,7 @@
  * @author Urhixidur
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_SPECIAL          => 'Spesial',
 	NS_TALK             => 'Discute',
 	NS_USER             => 'Usor',
@@ -28,10 +27,10 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Aida_Discute',
 	NS_CATEGORY         => 'Categoria',
 	NS_CATEGORY_TALK    => 'Categoria_Discute',
-);
+];
 
-$specialPageAliases = array(
-	'Newimages'                 => array( 'FixesNova' ),
-	'Newpages'                  => array( 'PajesNova' ),
-);
-
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'Newimages'                 => [ 'FixesNova' ],
+	'Newpages'                  => [ 'PajesNova' ],
+];

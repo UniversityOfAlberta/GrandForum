@@ -21,7 +21,8 @@
  * @ingroup Maintenance
  */
 
-error_reporting( E_ALL );
+use MediaWiki\MediaWikiServices;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -29,10 +30,10 @@ require_once __DIR__ . '/Maintenance.php';
  *
  * @ingroup Maintenance
  */
-class TestFileOpPerformance extends Maintenance {
+class FileOpPerfTest extends Maintenance {
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Test fileop performance";
+		$this->addDescription( 'Test fileop performance' );
 		$this->addOption( 'b1', 'Backend 1', true, true );
 		$this->addOption( 'b2', 'Backend 2', false, true );
 		$this->addOption( 'srcdir', 'File source directory', true, true );
@@ -42,29 +43,25 @@ class TestFileOpPerformance extends Maintenance {
 	}
 
 	public function execute() {
-		Profiler::setInstance( new ProfilerSimpleText( array() ) ); // clear
-
-		$backend = FileBackendGroup::singleton()->get( $this->getOption( 'b1' ) );
+		$backendGroup = MediaWikiServices::getInstance()->getFileBackendGroup();
+		$backend = $backendGroup->get( $this->getOption( 'b1' ) );
 		$this->doPerfTest( $backend );
 
 		if ( $this->getOption( 'b2' ) ) {
-			$backend = FileBackendGroup::singleton()->get( $this->getOption( 'b2' ) );
+			$backend = $backendGroup->get( $this->getOption( 'b2' ) );
 			$this->doPerfTest( $backend );
 		}
-
-		Profiler::instance()->setTemplated( true );
-		// NOTE: as of MW1.21, $profiler->logData() is called implicitly by doMaintenance.php.
 	}
 
 	protected function doPerfTest( FileBackend $backend ) {
-		$ops1 = array();
-		$ops2 = array();
-		$ops3 = array();
-		$ops4 = array();
-		$ops5 = array();
+		$ops1 = [];
+		$ops2 = [];
+		$ops3 = [];
+		$ops4 = [];
+		$ops5 = [];
 
 		$baseDir = 'mwstore://' . $backend->getName() . '/testing-cont1';
-		$backend->prepare( array( 'dir' => $baseDir ) );
+		$backend->prepare( [ 'dir' => $baseDir ] );
 
 		$dirname = $this->getOption( 'srcdir' );
 		$dir = opendir( $dirname );
@@ -72,21 +69,21 @@ class TestFileOpPerformance extends Maintenance {
 			return;
 		}
 
-		while ( $dir && ( $file = readdir( $dir ) ) !== false ) {
+		while ( ( $file = readdir( $dir ) ) !== false ) {
 			if ( $file[0] != '.' ) {
 				$this->output( "Using '$dirname/$file' in operations.\n" );
 				$dst = $baseDir . '/' . wfBaseName( $file );
-				$ops1[] = array( 'op' => 'store',
-					'src' => "$dirname/$file", 'dst' => $dst, 'overwrite' => 1 );
-				$ops2[] = array( 'op' => 'copy',
-					'src' => "$dst", 'dst' => "$dst-1", 'overwrite' => 1 );
-				$ops3[] = array( 'op' => 'move',
-					'src' => $dst, 'dst' => "$dst-2", 'overwrite' => 1 );
-				$ops4[] = array( 'op' => 'delete', 'src' => "$dst-1" );
-				$ops5[] = array( 'op' => 'delete', 'src' => "$dst-2" );
+				$ops1[] = [ 'op' => 'store',
+					'src' => "$dirname/$file", 'dst' => $dst, 'overwrite' => true ];
+				$ops2[] = [ 'op' => 'copy',
+					'src' => "$dst", 'dst' => "$dst-1", 'overwrite' => true ];
+				$ops3[] = [ 'op' => 'move',
+					'src' => $dst, 'dst' => "$dst-2", 'overwrite' => true ];
+				$ops4[] = [ 'op' => 'delete', 'src' => "$dst-1" ];
+				$ops5[] = [ 'op' => 'delete', 'src' => "$dst-2" ];
 			}
 			if ( count( $ops1 ) >= $this->getOption( 'maxfiles', 20 ) ) {
-				break; // enough
+				break;
 			}
 		}
 		closedir( $dir );
@@ -94,7 +91,7 @@ class TestFileOpPerformance extends Maintenance {
 
 		$method = $this->hasOption( 'quick' ) ? 'doQuickOperations' : 'doOperations';
 
-		$opts = array( 'force' => 1 );
+		$opts = [ 'force' => 1 ];
 		if ( $this->hasOption( 'parallelize' ) ) {
 			$opts['parallelize'] = ( $this->getOption( 'parallelize' ) === 'true' );
 		}
@@ -104,7 +101,7 @@ class TestFileOpPerformance extends Maintenance {
 		$e = ( microtime( true ) - $start ) * 1000;
 		if ( $status->getErrorsArray() ) {
 			print_r( $status->getErrorsArray() );
-			exit( 0 );
+			return;
 		}
 		$this->output( $backend->getName() . ": Stored " . count( $ops1 ) . " files in $e ms.\n" );
 
@@ -113,7 +110,7 @@ class TestFileOpPerformance extends Maintenance {
 		$e = ( microtime( true ) - $start ) * 1000;
 		if ( $status->getErrorsArray() ) {
 			print_r( $status->getErrorsArray() );
-			exit( 0 );
+			return;
 		}
 		$this->output( $backend->getName() . ": Copied " . count( $ops2 ) . " files in $e ms.\n" );
 
@@ -122,7 +119,7 @@ class TestFileOpPerformance extends Maintenance {
 		$e = ( microtime( true ) - $start ) * 1000;
 		if ( $status->getErrorsArray() ) {
 			print_r( $status->getErrorsArray() );
-			exit( 0 );
+			return;
 		}
 		$this->output( $backend->getName() . ": Moved " . count( $ops3 ) . " files in $e ms.\n" );
 
@@ -131,7 +128,7 @@ class TestFileOpPerformance extends Maintenance {
 		$e = ( microtime( true ) - $start ) * 1000;
 		if ( $status->getErrorsArray() ) {
 			print_r( $status->getErrorsArray() );
-			exit( 0 );
+			return;
 		}
 		$this->output( $backend->getName() . ": Deleted " . count( $ops4 ) . " files in $e ms.\n" );
 
@@ -140,11 +137,11 @@ class TestFileOpPerformance extends Maintenance {
 		$e = ( microtime( true ) - $start ) * 1000;
 		if ( $status->getErrorsArray() ) {
 			print_r( $status->getErrorsArray() );
-			exit( 0 );
+			return;
 		}
 		$this->output( $backend->getName() . ": Deleted " . count( $ops5 ) . " files in $e ms.\n" );
 	}
 }
 
-$maintClass = "TestFileOpPerformance";
+$maintClass = FileOpPerfTest::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

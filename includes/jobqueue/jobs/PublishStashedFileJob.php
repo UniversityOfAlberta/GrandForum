@@ -19,44 +19,41 @@
  *
  * @file
  * @ingroup Upload
+ * @ingroup JobQueue
  */
+use Wikimedia\ScopedCallback;
 
 /**
  * Upload a file from the upload stash into the local file repo.
  *
  * @ingroup Upload
+ * @ingroup JobQueue
  */
 class PublishStashedFileJob extends Job {
-	public function __construct( $title, $params ) {
+	public function __construct( Title $title, array $params ) {
 		parent::__construct( 'PublishStashedFile', $title, $params );
 		$this->removeDuplicates = true;
 	}
 
 	public function run() {
 		$scope = RequestContext::importScopedSession( $this->params['session'] );
+		$this->addTeardownCallback( static function () use ( &$scope ) {
+			ScopedCallback::consume( $scope ); // T126450
+		} );
+
 		$context = RequestContext::getMain();
+		$user = $context->getUser();
 		try {
-			$user = $context->getUser();
-			if ( !$user->isLoggedIn() ) {
+			if ( !$user->isRegistered() ) {
 				$this->setLastError( "Could not load the author user from session." );
 
 				return false;
 			}
 
-			if ( count( $_SESSION ) === 0 ) {
-				// Empty session probably indicates that we didn't associate
-				// with the session correctly. Note that being able to load
-				// the user does not necessarily mean the session was loaded.
-				// Most likely cause by suhosin.session.encrypt = On.
-				$this->setLastError( "Error associating with user session. " .
-					"Try setting suhosin.session.encrypt = Off" );
-
-				return false;
-			}
-
 			UploadBase::setSessionStatus(
+				$user,
 				$this->params['filekey'],
-				array( 'result' => 'Poll', 'stage' => 'publish', 'status' => Status::newGood() )
+				[ 'result' => 'Poll', 'stage' => 'publish', 'status' => Status::newGood() ]
 			);
 
 			$upload = new UploadFromStash( $user );
@@ -70,10 +67,11 @@ class PublishStashedFileJob extends Job {
 			$verification = $upload->verifyUpload();
 			if ( $verification['status'] !== UploadBase::OK ) {
 				$status = Status::newFatal( 'verification-error' );
-				$status->value = array( 'verification' => $verification );
+				$status->value = [ 'verification' => $verification ];
 				UploadBase::setSessionStatus(
+					$user,
 					$this->params['filekey'],
-					array( 'result' => 'Failure', 'stage' => 'publish', 'status' => $status )
+					[ 'result' => 'Failure', 'stage' => 'publish', 'status' => $status ]
 				);
 				$this->setLastError( "Could not verify upload." );
 
@@ -85,14 +83,17 @@ class PublishStashedFileJob extends Job {
 				$this->params['comment'],
 				$this->params['text'],
 				$this->params['watch'],
-				$user
+				$user,
+				$this->params['tags'] ?? [],
+				$this->params['watchlistexpiry'] ?? null
 			);
 			if ( !$status->isGood() ) {
 				UploadBase::setSessionStatus(
+					$user,
 					$this->params['filekey'],
-					array( 'result' => 'Failure', 'stage' => 'publish', 'status' => $status )
+					[ 'result' => 'Failure', 'stage' => 'publish', 'status' => $status ]
 				);
-				$this->setLastError( $status->getWikiText() );
+				$this->setLastError( $status->getWikiText( false, false, 'en' ) );
 
 				return false;
 			}
@@ -106,28 +107,30 @@ class PublishStashedFileJob extends Job {
 
 			// Cache the info so the user doesn't have to wait forever to get the final info
 			UploadBase::setSessionStatus(
+				$user,
 				$this->params['filekey'],
-				array(
+				[
 					'result' => 'Success',
 					'stage' => 'publish',
 					'filename' => $upload->getLocalFile()->getName(),
 					'imageinfo' => $imageInfo,
 					'status' => Status::newGood()
-				)
+				]
 			);
-		} catch ( MWException $e ) {
+		} catch ( Exception $e ) {
 			UploadBase::setSessionStatus(
+				$user,
 				$this->params['filekey'],
-				array(
+				[
 					'result' => 'Failure',
 					'stage' => 'publish',
 					'status' => Status::newFatal( 'api-error-publishfailed' )
-				)
+				]
 			);
-			$this->setLastError( get_class( $e ) . ": " . $e->getText() );
+			$this->setLastError( get_class( $e ) . ": " . $e->getMessage() );
 			// To prevent potential database referential integrity issues.
-			// See bug 32551.
-			MWExceptionHandler::rollbackMasterChangesAndLog( $e );
+			// See T34551.
+			MWExceptionHandler::rollbackPrimaryChangesAndLog( $e );
 
 			return false;
 		}
@@ -138,7 +141,7 @@ class PublishStashedFileJob extends Job {
 	public function getDeduplicationInfo() {
 		$info = parent::getDeduplicationInfo();
 		if ( is_array( $info['params'] ) ) {
-			$info['params'] = array( 'filekey' => $info['params']['filekey'] );
+			$info['params'] = [ 'filekey' => $info['params']['filekey'] ];
 		}
 
 		return $info;

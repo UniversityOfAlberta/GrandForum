@@ -39,19 +39,49 @@ require_once __DIR__ . '/dumpIterator.php';
 class CompareParsers extends DumpIterator {
 
 	private $count = 0;
+	/** @var string|false */
+	private $saveFailed = false;
+	/** @var bool */
+	private $stripParametersEnabled;
+	/** @var bool */
+	private $showParsedOutput;
+	/** @var bool */
+	private $showDiff;
+	/** @var ParserOptions */
+	private $options;
+	/** @var int */
+	private $failed;
 
 	public function __construct() {
 		parent::__construct();
-		$this->saveFailed = false;
-		$this->mDescription = "Run a file or dump with several parsers";
+		$this->addDescription( 'Run a file or dump with several parsers' );
 		$this->addOption( 'parser1', 'The first parser to compare.', true, true );
 		$this->addOption( 'parser2', 'The second parser to compare.', true, true );
-		$this->addOption( 'tidy', 'Run tidy on the articles.', false, false );
-		$this->addOption( 'save-failed', 'Folder in which articles which differ will be stored.', false, true );
+		$this->addOption(
+			'save-failed',
+			'Folder in which articles which differ will be stored.',
+			false,
+			true
+		);
 		$this->addOption( 'show-diff', 'Show a diff of the two renderings.', false, false );
-		$this->addOption( 'diff-bin', 'Binary to use for diffing (can also be provided by DIFF env var).', false, false );
-		$this->addOption( 'strip-parameters', 'Remove parameters of html tags to increase readability.', false, false );
-		$this->addOption( 'show-parsed-output', 'Show the parsed html if both Parsers give the same output.', false, false );
+		$this->addOption(
+			'diff-bin',
+			'Binary to use for diffing (can also be provided by DIFF env var).',
+			false,
+			false
+		);
+		$this->addOption(
+			'strip-parameters',
+			'Remove parameters of html tags to increase readability.',
+			false,
+			false
+		);
+		$this->addOption(
+			'show-parsed-output',
+			'Show the parsed html if both Parsers give the same output.',
+			false,
+			false
+		);
 	}
 
 	public function checkOptions() {
@@ -74,14 +104,6 @@ class CompareParsers extends DumpIterator {
 		$user = new User();
 		$this->options = ParserOptions::newFromUser( $user );
 
-		if ( $this->hasOption( 'tidy' ) ) {
-			global $wgUseTidy;
-			if ( !$wgUseTidy ) {
-				$this->error( 'Tidy was requested but $wgUseTidy is not set in LocalSettings.php', true );
-			}
-			$this->options->setTidy( true );
-		}
-
 		$this->failed = 0;
 	}
 
@@ -92,18 +114,19 @@ class CompareParsers extends DumpIterator {
 		}
 	}
 
-	function stripParameters( $text ) {
+	private function stripParameters( $text ) {
 		if ( !$this->stripParametersEnabled ) {
 			return $text;
 		}
+
 		return preg_replace( '/(<a) [^>]+>/', '$1>', $text );
 	}
 
 	/**
 	 * Callback function for each revision, parse with both parsers and compare
-	 * @param $rev Revision
+	 * @param WikiRevision $rev
 	 */
-	public function processRevision( $rev ) {
+	public function processRevision( WikiRevision $rev ) {
 		$title = $rev->getTitle();
 
 		$parser1Name = $this->getOption( 'parser1' );
@@ -118,11 +141,15 @@ class CompareParsers extends DumpIterator {
 		$content = $rev->getContent();
 
 		if ( $content->getModel() !== CONTENT_MODEL_WIKITEXT ) {
-			$this->error( "Page {$title->getPrefixedText()} does not contain wikitext but {$content->getModel()}\n" );
+			$this->error( "Page {$title->getPrefixedText()} does not contain wikitext "
+				. "but {$content->getModel()}\n" );
+
 			return;
 		}
 
-		$text = strval( $content->getNativeData() );
+		/** @var WikitextContent $content */
+		'@phan-var WikitextContent $content';
+		$text = strval( $content->getText() );
 
 		$output1 = $parser1->parse( $text, $title, $this->options );
 		$output2 = $parser2->parse( $text, $title, $this->options );
@@ -132,13 +159,24 @@ class CompareParsers extends DumpIterator {
 			$this->error( "Parsing for {$title->getPrefixedText()} differs\n" );
 
 			if ( $this->saveFailed ) {
-				file_put_contents( $this->saveFailed . '/' . rawurlencode( $title->getPrefixedText() ) . ".txt", $text );
+				file_put_contents(
+					$this->saveFailed . '/' . rawurlencode( $title->getPrefixedText() ) . ".txt",
+					$text
+				);
 			}
 			if ( $this->showDiff ) {
-				$this->output( wfDiff( $this->stripParameters( $output1->getText() ), $this->stripParameters( $output2->getText() ), '' ) );
+				$diffs = new Diff(
+					explode( "\n", $this->stripParameters( $output1->getText() ) ),
+					explode( "\n", $this->stripParameters( $output2->getText() ) )
+				);
+				$formatter = new UnifiedDiffFormatter();
+				$unifiedDiff = $formatter->format( $diffs );
+
+				$this->output( $unifiedDiff );
 			}
 		} else {
 			$this->output( $title->getPrefixedText() . "\tOK\n" );
+
 			if ( $this->showParsedOutput ) {
 				$this->output( $this->stripParameters( $output1->getText() ) );
 			}
@@ -146,14 +184,13 @@ class CompareParsers extends DumpIterator {
 	}
 
 	private static function checkParserLocally( $parserName ) {
-		/* Look for the parser in a file appropiately named in the current folder */
+		/* Look for the parser in a file appropriately named in the current folder */
 		if ( !class_exists( $parserName ) && file_exists( "$parserName.php" ) ) {
 			global $wgAutoloadClasses;
-			$wgAutoloadClasses[ $parserName ] = realpath( '.' ) . "/$parserName.php";
+			$wgAutoloadClasses[$parserName] = realpath( '.' ) . "/$parserName.php";
 		}
 	}
-
 }
 
-$maintClass = "CompareParsers";
+$maintClass = CompareParsers::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

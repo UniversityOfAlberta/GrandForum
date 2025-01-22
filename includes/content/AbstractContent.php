@@ -26,8 +26,17 @@
  * @author Daniel Kinzler
  */
 
+use MediaWiki\Content\IContentHandlerFactory;
+use MediaWiki\Content\Renderer\ContentParseParams;
+use MediaWiki\Content\Transform\PreloadTransformParamsValue;
+use MediaWiki\Content\Transform\PreSaveTransformParamsValue;
+use MediaWiki\Content\ValidationParams;
+use MediaWiki\MediaWikiServices;
+
 /**
  * Base implementation for content objects.
+ *
+ * @stable to extend
  *
  * @ingroup Content
  */
@@ -38,12 +47,14 @@ abstract class AbstractContent implements Content {
 	 *
 	 * @since 1.21
 	 *
-	 * @var string $model_id
+	 * @var string
 	 */
 	protected $model_id;
 
 	/**
-	 * @param string $modelId
+	 * @stable to call
+	 *
+	 * @param string|null $modelId
 	 *
 	 * @since 1.21
 	 */
@@ -55,6 +66,7 @@ abstract class AbstractContent implements Content {
 	 * @since 1.21
 	 *
 	 * @see Content::getModel
+	 * @return string
 	 */
 	public function getModel() {
 		return $this->model_id;
@@ -82,15 +94,24 @@ abstract class AbstractContent implements Content {
 	 * @since 1.21
 	 *
 	 * @see Content::getContentHandler
+	 * @return ContentHandler
 	 */
 	public function getContentHandler() {
-		return ContentHandler::getForContent( $this );
+		return $this->getContentHandlerFactory()->getContentHandler( $this->getModel() );
+	}
+
+	/**
+	 * @return IContentHandlerFactory
+	 */
+	protected function getContentHandlerFactory(): IContentHandlerFactory {
+		return MediaWikiServices::getInstance()->getContentHandlerFactory();
 	}
 
 	/**
 	 * @since 1.21
 	 *
 	 * @see Content::getDefaultFormat
+	 * @return string
 	 */
 	public function getDefaultFormat() {
 		return $this->getContentHandler()->getDefaultFormat();
@@ -100,6 +121,7 @@ abstract class AbstractContent implements Content {
 	 * @since 1.21
 	 *
 	 * @see Content::getSupportedFormats
+	 * @return string[]
 	 */
 	public function getSupportedFormats() {
 		return $this->getContentHandler()->getSupportedFormats();
@@ -139,9 +161,10 @@ abstract class AbstractContent implements Content {
 	}
 
 	/**
+	 * @stable to override
 	 * @since 1.21
 	 *
-	 * @param string $format
+	 * @param string|null $format
 	 *
 	 * @return string
 	 *
@@ -152,6 +175,28 @@ abstract class AbstractContent implements Content {
 	}
 
 	/**
+	 * Returns native representation of the data. Interpretation depends on
+	 * the data model used, as given by getDataModel().
+	 *
+	 * @stable to override
+	 * @since 1.21
+	 *
+	 * @deprecated since 1.33 use getText() for TextContent instances.
+	 *             For other content models, use specialized getters.
+	 *
+	 * @return mixed The native representation of the content. Could be a
+	 *    string, a nested array structure, an object, a binary blob...
+	 *    anything, really.
+	 * @throws LogicException
+	 *
+	 * @note Caller must be aware of content model!
+	 */
+	public function getNativeData() {
+		throw new LogicException( __METHOD__ . ': not implemented' );
+	}
+
+	/**
+	 * @stable to override
 	 * @since 1.21
 	 *
 	 * @return bool
@@ -165,6 +210,7 @@ abstract class AbstractContent implements Content {
 	/**
 	 * Subclasses may override this to implement (light weight) validation.
 	 *
+	 * @stable to override
 	 * @since 1.21
 	 *
 	 * @return bool Always true.
@@ -176,16 +222,28 @@ abstract class AbstractContent implements Content {
 	}
 
 	/**
+	 * Decides whether two Content objects are equal.
+	 * Two Content objects MUST not be considered equal if they do not share the same content model.
+	 * Two Content objects that are equal SHOULD have the same serialization.
+	 *
+	 * This default implementation relies on equalsInternal() to determine whether the
+	 * Content objects are logically equivalent. Subclasses that need to implement a custom
+	 * equality check should consider overriding equalsInternal(). Subclasses that override
+	 * equals() itself MUST make sure that the implementation returns false for $that === null,
+	 * and true for $that === this. It MUST also return false if $that does not have the same
+	 * content model.
+	 *
+	 * @stable to override
 	 * @since 1.21
 	 *
-	 * @param Content $that
+	 * @param Content|null $that
 	 *
 	 * @return bool
 	 *
 	 * @see Content::equals
 	 */
 	public function equals( Content $that = null ) {
-		if ( is_null( $that ) ) {
+		if ( $that === null ) {
 			return false;
 		}
 
@@ -197,84 +255,66 @@ abstract class AbstractContent implements Content {
 			return false;
 		}
 
-		return $this->getNativeData() === $that->getNativeData();
-	}
-
-	/**
-	 * Returns a list of DataUpdate objects for recording information about this
-	 * Content in some secondary data store.
-	 *
-	 * This default implementation calls
-	 * $this->getParserOutput( $content, $title, null, null, false ),
-	 * and then calls getSecondaryDataUpdates( $title, $recursive ) on the
-	 * resulting ParserOutput object.
-	 *
-	 * Subclasses may override this to determine the secondary data updates more
-	 * efficiently, preferably without the need to generate a parser output object.
-	 *
-	 * @since 1.21
-	 *
-	 * @param Title $title
-	 * @param Content $old
-	 * @param bool $recursive
-	 * @param ParserOutput $parserOutput
-	 *
-	 * @return DataUpdate[]
-	 *
-	 * @see Content::getSecondaryDataUpdates()
-	 */
-	public function getSecondaryDataUpdates( Title $title, Content $old = null,
-		$recursive = true, ParserOutput $parserOutput = null ) {
-		if ( $parserOutput === null ) {
-			$parserOutput = $this->getParserOutput( $title, null, null, false );
+		// For type safety. Needed for odd cases like MessageContent using CONTENT_MODEL_WIKITEXT
+		if ( get_class( $that ) !== get_class( $this ) ) {
+			return false;
 		}
 
-		return $parserOutput->getSecondaryDataUpdates( $title, $recursive );
+		return $this->equalsInternal( $that );
+	}
+
+	/**
+	 * Checks whether $that is logically equal to this Content object.
+	 *
+	 * This method can be overwritten by subclasses that need to implement custom
+	 * equality checks.
+	 *
+	 * This default implementation checks whether the serializations
+	 * of $this and $that are the same: $this->serialize() === $that->serialize()
+	 *
+	 * Implementors can assume that $that is an instance of the same class
+	 * as the present Content object, as long as equalsInternal() is only called
+	 * by the standard implementation of equals().
+	 *
+	 * @note Do not call this method directly, call equals() instead.
+	 *
+	 * @stable to override
+	 *
+	 * @param Content $that
+	 * @return bool
+	 */
+	protected function equalsInternal( Content $that ) {
+		return $this->serialize() === $that->serialize();
 	}
 
 	/**
 	 * @since 1.21
+	 * @deprecated since 1.38, use getRedirectTarget() instead.
+	 *   Emitting deprecation warnings since 1.39.
+	 *   Support for redirect chains has been removed.
 	 *
 	 * @return Title[]|null
 	 *
 	 * @see Content::getRedirectChain
 	 */
 	public function getRedirectChain() {
-		global $wgMaxRedirects;
-		$title = $this->getRedirectTarget();
-		if ( is_null( $title ) ) {
-			return null;
-		}
-		// recursive check to follow double redirects
-		$recurse = $wgMaxRedirects;
-		$titles = array( $title );
-		while ( --$recurse > 0 ) {
-			if ( $title->isRedirect() ) {
-				$page = WikiPage::factory( $title );
-				$newtitle = $page->getRedirectTarget();
-			} else {
-				break;
-			}
-			// Redirects to some special pages are not permitted
-			if ( $newtitle instanceof Title && $newtitle->isValidRedirectTarget() ) {
-				// The new title passes the checks, so make that our current
-				// title so that further recursion can be checked
-				$title = $newtitle;
-				$titles[] = $newtitle;
-			} else {
-				break;
-			}
-		}
+		wfDeprecated( __METHOD__, '1.38' );
 
-		return $titles;
+		$title = $this->getRedirectTarget();
+		if ( $title === null ) {
+			return null;
+		} else {
+			return [ $title ];
+		}
 	}
 
 	/**
 	 * Subclasses that implement redirects should override this.
 	 *
+	 * @stable to override
 	 * @since 1.21
 	 *
-	 * @return null
+	 * @return Title|null
 	 *
 	 * @see Content::getRedirectTarget
 	 */
@@ -286,15 +326,18 @@ abstract class AbstractContent implements Content {
 	 * @note Migrated here from Title::newFromRedirectRecurse.
 	 *
 	 * @since 1.21
+	 * @deprecated since 1.38, use getRedirectTarget() instead.
+	 *   Emitting deprecation warnings since 1.39.
+	 *   Support for redirect chains has been removed.
 	 *
 	 * @return Title|null
 	 *
 	 * @see Content::getUltimateRedirectTarget
 	 */
 	public function getUltimateRedirectTarget() {
-		$titles = $this->getRedirectChain();
+		wfDeprecated( __METHOD__, '1.38' );
 
-		return $titles ? array_pop( $titles ) : null;
+		return $this->getRedirectTarget();
 	}
 
 	/**
@@ -312,6 +355,7 @@ abstract class AbstractContent implements Content {
 	 * This default implementation always returns $this.
 	 * Subclasses that implement redirects should override this.
 	 *
+	 * @stable to override
 	 * @since 1.21
 	 *
 	 * @param Title $target
@@ -325,8 +369,10 @@ abstract class AbstractContent implements Content {
 	}
 
 	/**
+	 * @stable to override
 	 * @since 1.21
 	 *
+	 * @param string|int $sectionId
 	 * @return null
 	 *
 	 * @see Content::getSection
@@ -336,30 +382,47 @@ abstract class AbstractContent implements Content {
 	}
 
 	/**
+	 * @stable to override
 	 * @since 1.21
 	 *
+	 * @param string|int|null|bool $sectionId
+	 * @param Content $with
+	 * @param string $sectionTitle
 	 * @return null
 	 *
 	 * @see Content::replaceSection
 	 */
-	public function replaceSection( $section, Content $with, $sectionTitle = '' ) {
+	public function replaceSection( $sectionId, Content $with, $sectionTitle = '' ) {
 		return null;
 	}
 
 	/**
 	 * @since 1.21
+	 * @deprecated since 1.37. Hard-deprecated since 1.37.
+	 * Use ContentTransformer::preSaveTransform instead.
+	 * Extensions defining a content model should override ContentHandler::preSaveTransform.
 	 *
+	 * @param Title $title
+	 * @param User $user
+	 * @param ParserOptions $popts
 	 * @return Content $this
 	 *
 	 * @see Content::preSaveTransform
 	 */
 	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
-		return $this;
+		wfDeprecated( __METHOD__, '1.37' );
+		$pstParams = new PreSaveTransformParamsValue( $title, $user, $popts );
+		return $this->getContentHandler()->preSaveTransform(
+			$this,
+			$pstParams
+		);
 	}
 
 	/**
+	 * @stable to override
 	 * @since 1.21
 	 *
+	 * @param string $header
 	 * @return Content $this
 	 *
 	 * @see Content::addSectionHeader
@@ -370,50 +433,68 @@ abstract class AbstractContent implements Content {
 
 	/**
 	 * @since 1.21
-	 *
+	 * @deprecated since 1.37. Hard-deprecated since 1.37. Use ContentTransformer::preloadTransform instead.
+	 * Extensions defining a content model should override ContentHandler::preloadTransform.
+	 * @param Title $title
+	 * @param ParserOptions $popts
+	 * @param array $params
 	 * @return Content $this
 	 *
 	 * @see Content::preloadTransform
 	 */
-	public function preloadTransform( Title $title, ParserOptions $popts, $params = array() ) {
-		return $this;
+	public function preloadTransform( Title $title, ParserOptions $popts, $params = [] ) {
+		wfDeprecated( __METHOD__, '1.37' );
+		$pltParams = new PreloadTransformParamsValue( $title, $popts, $params );
+		return $this->getContentHandler()->preloadTransform(
+			$this,
+			$pltParams
+		);
 	}
 
 	/**
 	 * @since 1.21
+	 * @deprecated since 1.38. Hard-deprecated since 1.38.
+	 * Use ContentHandler::validateSave instead.
 	 *
+	 * @param WikiPage $page
+	 * @param int $flags
+	 * @param int $parentRevId
+	 * @param User $user
 	 * @return Status
 	 *
 	 * @see Content::prepareSave
 	 */
-	public function prepareSave( WikiPage $page, $flags, $baseRevId, User $user ) {
-		if ( $this->isValid() ) {
-			return Status::newGood();
-		} else {
-			return Status::newFatal( "invalid-content-data" );
-		}
-	}
-
-	/**
-	 * @since 1.21
-	 *
-	 * @param WikiPage $page
-	 * @param ParserOutput $parserOutput
-	 *
-	 * @return LinksDeletionUpdate[]
-	 *
-	 * @see Content::getDeletionUpdates
-	 */
-	public function getDeletionUpdates( WikiPage $page, ParserOutput $parserOutput = null ) {
-		return array(
-			new LinksDeletionUpdate( $page ),
+	public function prepareSave( WikiPage $page, $flags, $parentRevId, User $user ) {
+		wfDeprecated( __METHOD__, '1.38' );
+		$detectPSDeprecatedOverride = MWDebug::detectDeprecatedOverride(
+			$this,
+			self::class,
+			'prepareSave',
+			'1.38'
 		);
+
+		if ( $detectPSDeprecatedOverride ) {
+			if ( $this->isValid() ) {
+				return Status::newGood();
+			} else {
+				return Status::newFatal( "invalid-content-data" );
+			}
+		}
+
+		$validationParams = new ValidationParams( $page, $flags, $parentRevId );
+		$statusValue = $this->getContentHandler()->validateSave(
+			$this,
+			$validationParams
+		);
+
+		return Status::wrap( $statusValue );
 	}
 
 	/**
 	 * This default implementation always returns false. Subclasses may override
 	 * this to supply matching logic.
 	 *
+	 * @stable to override
 	 * @since 1.21
 	 *
 	 * @param MagicWord $word
@@ -430,6 +511,8 @@ abstract class AbstractContent implements Content {
 	 * This base implementation calls the hook ConvertContent to enable custom conversions.
 	 * Subclasses may override this to implement conversion for "their" content model.
 	 *
+	 * @stable to override
+	 *
 	 * @param string $toModel
 	 * @param string $lossy
 	 *
@@ -439,15 +522,114 @@ abstract class AbstractContent implements Content {
 	 */
 	public function convert( $toModel, $lossy = '' ) {
 		if ( $this->getModel() === $toModel ) {
-			//nothing to do, shorten out.
+			// nothing to do, shorten out.
 			return $this;
 		}
 
 		$lossy = ( $lossy === 'lossy' ); // string flag, convert to boolean for convenience
 		$result = false;
 
-		wfRunHooks( 'ConvertContent', array( $this, $toModel, $lossy, &$result ) );
+		Hooks::runner()->onConvertContent( $this, $toModel, $lossy, $result );
 
 		return $result;
+	}
+
+	/**
+	 * Returns a ParserOutput object containing information derived from this content.
+	 * Most importantly, unless $generateHtml was false, the return value contains an
+	 * HTML representation of the content.
+	 *
+	 * Subclasses that want to control the parser output may override this, but it is
+	 * preferred to override fillParserOutput() instead.
+	 *
+	 * Subclasses that override getParserOutput() itself should take care to call the
+	 * ContentGetParserOutput hook.
+	 *
+	 * @since 1.24
+	 * @deprecated since 1.38. Hard-deprecated since 1.38. Use ContentRenderer::getParserOutput instead.
+	 * Extensions defining a content model should override ContentHandler::fillParserOutput.
+	 * @param Title $title Context title for parsing
+	 * @param int|null $revId Revision ID being rendered
+	 * @param ParserOptions|null $options
+	 * @param bool $generateHtml Whether or not to generate HTML
+	 *
+	 * @return ParserOutput Containing information derived from this content.
+	 */
+	public function getParserOutput( Title $title, $revId = null,
+		ParserOptions $options = null, $generateHtml = true
+	) {
+		wfDeprecated( __METHOD__, '1.38' );
+		$detectGPODeprecatedOverride = MWDebug::detectDeprecatedOverride(
+			$this,
+			self::class,
+			'getParserOutput',
+			'1.38'
+		);
+		$detectFPODeprecatedOverride = MWDebug::detectDeprecatedOverride(
+			$this,
+			self::class,
+			'fillParserOutput',
+			'1.38'
+		);
+
+		if ( $detectGPODeprecatedOverride || $detectFPODeprecatedOverride ) {
+			if ( $options === null ) {
+				$options = ParserOptions::newFromAnon();
+			}
+
+			$po = new ParserOutput();
+			$options->registerWatcher( [ $po, 'recordOption' ] );
+
+			if ( Hooks::runner()->onContentGetParserOutput(
+				$this, $title, $revId, $options, $generateHtml, $po )
+			) {
+				// Save and restore the old value, just in case something is reusing
+				// the ParserOptions object in some weird way.
+				$oldRedir = $options->getRedirectTarget();
+				$options->setRedirectTarget( $this->getRedirectTarget() );
+				$this->fillParserOutput( $title, $revId, $options, $generateHtml, $po );
+				$options->setRedirectTarget( $oldRedir );
+			}
+
+			Hooks::runner()->onContentAlterParserOutput( $this, $title, $po );
+			$options->registerWatcher( null );
+
+			return $po;
+		}
+
+		$cpoParams = new ContentParseParams( $title, $revId, $options, $generateHtml );
+		return $this->getContentHandler()->getParserOutput(
+			$this,
+			$cpoParams
+		);
+	}
+
+	/**
+	 * Fills the provided ParserOutput with information derived from the content.
+	 * Unless $generateHtml was false, this includes an HTML representation of the content.
+	 *
+	 * This is called by getParserOutput() after consulting the ContentGetParserOutput hook.
+	 * Subclasses are expected to override this method (or getParserOutput(), if need be).
+	 * Subclasses of TextContent should generally override getHtml() instead.
+	 *
+	 * This placeholder implementation always throws an exception.
+	 *
+	 * @since 1.24
+	 * @deprecated since 1.38. Hard-deprecated since 1.38. Use ContentHandler::fillParserOutput instead.
+	 * @param Title $title Context title for parsing
+	 * @param int|null $revId ID of the revision being rendered.
+	 *  See Parser::parse() for the ramifications.
+	 * @param ParserOptions $options
+	 * @param bool $generateHtml Whether or not to generate HTML
+	 * @param ParserOutput &$output The output object to fill (reference).
+	 *
+	 * @throws MWException
+	 */
+	protected function fillParserOutput( Title $title, $revId,
+		ParserOptions $options, $generateHtml, ParserOutput &$output
+	) {
+		wfDeprecated( __METHOD__, '1.38' );
+		$cpoParams = new ContentParseParams( $title, $revId, $options, $generateHtml );
+		return $this->getContentHandler()->fillParserOutputInternal( $this, $cpoParams, $output );
 	}
 }

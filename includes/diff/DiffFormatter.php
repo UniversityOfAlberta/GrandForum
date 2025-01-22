@@ -49,19 +49,20 @@ abstract class DiffFormatter {
 	 */
 	protected $trailingContextLines = 0;
 
+	/** @var string The output buffer; holds the output while it is built. */
+	private $result = '';
+
 	/**
 	 * Format a diff.
 	 *
-	 * @param Diff $diff A Diff object.
+	 * @param Diff $diff
 	 *
 	 * @return string The formatted output.
 	 */
 	public function format( $diff ) {
-		wfProfileIn( __METHOD__ );
-
 		$xi = $yi = 1;
 		$block = false;
-		$context = array();
+		$context = [];
 
 		$nlead = $this->leadingContextLines;
 		$ntrail = $this->trailingContextLines;
@@ -92,7 +93,7 @@ abstract class DiffFormatter {
 					$context = array_slice( $context, count( $context ) - $nlead );
 					$x0 = $xi - count( $context );
 					$y0 = $yi - count( $context );
-					$block = array();
+					$block = [];
 					if ( $context ) {
 						$block[] = new DiffOpCopy( $context );
 					}
@@ -115,7 +116,6 @@ abstract class DiffFormatter {
 		}
 
 		$end = $this->endDiff();
-		wfProfileOut( __METHOD__ );
 
 		return $end;
 	}
@@ -125,12 +125,11 @@ abstract class DiffFormatter {
 	 * @param int $xlen
 	 * @param int $ybeg
 	 * @param int $ylen
-	 * @param $edits
+	 * @param array &$edits
 	 *
 	 * @throws MWException If the edit type is not known.
 	 */
 	protected function block( $xbeg, $xlen, $ybeg, $ylen, &$edits ) {
-		wfProfileIn( __METHOD__ );
 		$this->startBlock( $this->blockHeader( $xbeg, $xlen, $ybeg, $ylen ) );
 		foreach ( $edits as $edit ) {
 			if ( $edit->type == 'copy' ) {
@@ -146,19 +145,27 @@ abstract class DiffFormatter {
 			}
 		}
 		$this->endBlock();
-		wfProfileOut( __METHOD__ );
 	}
 
 	protected function startDiff() {
-		ob_start();
+		$this->result = '';
+	}
+
+	/**
+	 * Writes a string to the output buffer.
+	 *
+	 * @param string $text
+	 */
+	protected function writeOutput( $text ) {
+		$this->result .= $text;
 	}
 
 	/**
 	 * @return string
 	 */
 	protected function endDiff() {
-		$val = ob_get_contents();
-		ob_end_clean();
+		$val = $this->result;
+		$this->result = '';
 
 		return $val;
 	}
@@ -189,7 +196,7 @@ abstract class DiffFormatter {
 	 * @param string $header
 	 */
 	protected function startBlock( $header ) {
-		echo $header . "\n";
+		$this->writeOutput( $header . "\n" );
 	}
 
 	/**
@@ -207,7 +214,7 @@ abstract class DiffFormatter {
 	 */
 	protected function lines( $lines, $prefix = ' ' ) {
 		foreach ( $lines as $line ) {
-			echo "$prefix $line\n";
+			$this->writeOutput( "$prefix $line\n" );
 		}
 	}
 
@@ -240,7 +247,7 @@ abstract class DiffFormatter {
 	 */
 	protected function changed( $orig, $closing ) {
 		$this->deleted( $orig );
-		echo "---\n";
+		$this->writeOutput( "---\n" );
 		$this->added( $closing );
 	}
 

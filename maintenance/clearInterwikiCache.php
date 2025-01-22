@@ -21,6 +21,8 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MainConfigNames;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -32,27 +34,31 @@ class ClearInterwikiCache extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Clear all interwiki links for all languages from the cache";
+		$this->addDescription( 'Clear all interwiki links for all languages from the cache' );
 	}
 
 	public function execute() {
-		global $wgLocalDatabases, $wgMemc;
-		$dbr = wfGetDB( DB_SLAVE );
-		$res = $dbr->select( 'interwiki', array( 'iw_prefix' ), false );
-		$prefixes = array();
+		$dbr = $this->getDB( DB_REPLICA );
+		$cache = ObjectCache::getLocalClusterInstance();
+		$res = $dbr->newSelectQueryBuilder()
+			->select( 'iw_prefix' )
+			->from( 'interwiki' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
+		$prefixes = [];
 		foreach ( $res as $row ) {
 			$prefixes[] = $row->iw_prefix;
 		}
 
-		foreach ( $wgLocalDatabases as $db ) {
-			$this->output( "$db..." );
+		foreach ( $this->getConfig()->get( MainConfigNames::LocalDatabases ) as $wikiId ) {
+			$this->output( "$wikiId..." );
 			foreach ( $prefixes as $prefix ) {
-				$wgMemc->delete( "$db:interwiki:$prefix" );
+				$cache->delete( "$wikiId:interwiki:$prefix" );
 			}
 			$this->output( "done\n" );
 		}
 	}
 }
 
-$maintClass = "ClearInterwikiCache";
+$maintClass = ClearInterwikiCache::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

@@ -24,31 +24,38 @@
  * Class to allow throwing wfDeprecated warnings
  * when people use globals that we do not want them to.
  */
-
 class DeprecatedGlobal extends StubObject {
-	// The m's are to stay consistent with parent class.
-	protected $mRealValue, $mVersion;
+	protected $version;
 
-	function __construct( $name, $realValue, $version = false ) {
-		parent::__construct( $name );
-		$this->mRealValue = $realValue;
-		$this->mVersion = $version;
+	/**
+	 * @param string $name Global name
+	 * @param callable|string $callback Factory function or class name to construct
+	 * @param string|false $version Version global was deprecated in
+	 */
+	public function __construct( $name, $callback, $version = false ) {
+		parent::__construct( $name, $callback );
+		$this->version = $version;
 	}
 
-	function _newObject() {
-		/* Put the caller offset for wfDeprecated as 6, as
+	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+	public function _newObject() {
+		/*
+		 * Put the caller offset for wfDeprecated as 6, as
 		 * that gives the function that uses this object, since:
+		 *
 		 * 1 = this function ( _newObject )
 		 * 2 = StubObject::_unstub
 		 * 3 = StubObject::_call
 		 * 4 = StubObject::__call
 		 * 5 = DeprecatedGlobal::<method of global called>
 		 * 6 = Actual function using the global.
+		 * (the same applies to _get/__get or _set/__set instead of _call/__call)
+		 *
 		 * Of course its theoretically possible to have other call
 		 * sequences for this method, but that seems to be
 		 * rather unlikely.
 		 */
-		wfDeprecated( '$' . $this->mGlobal, $this->mVersion, false, 6 );
-		return $this->mRealValue;
+		wfDeprecated( '$' . $this->global, $this->version, false, 6 );
+		return parent::_newObject();
 	}
 }

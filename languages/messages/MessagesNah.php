@@ -1,11 +1,10 @@
 <?php
 /** Nāhuatl (Nāhuatl)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Fluence
  * @author Kaganer
@@ -18,7 +17,7 @@
 
 $fallback = 'es';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Mēdiatl',
 	NS_SPECIAL          => 'Nōncuahquīzqui',
 	NS_TALK             => 'Tēixnāmiquiliztli',
@@ -35,12 +34,12 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Tēpalēhuiliztli_tēixnāmiquiliztli',
 	NS_CATEGORY         => 'Neneuhcāyōtl',
 	NS_CATEGORY_TALK    => 'Neneuhcāyōtl_tēixnāmiquiliztli',
-);
+];
 
-// Remove Spanish gender aliases (bug 37090)
-$namespaceGenderAliases = array();
+// Remove Spanish gender aliases (T39090)
+$namespaceGenderAliases = [];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	'Media'		=> NS_MEDIA,
 	'Especial'	=> NS_SPECIAL,
 	'Discusión'	=> NS_TALK,
@@ -58,22 +57,22 @@ $namespaceAliases = array(
 	'Ayuda_Discusión'	=> NS_HELP_TALK,
 	'Categoría'	=> NS_CATEGORY,
 	'Categoría_Discusión'	=> NS_CATEGORY_TALK,
-);
+];
 
-$specialPageAliases = array(
-	'Allpages'                  => array( 'MochīntīnZāzaniltin', 'TodasPáginas' ),
-	'Ancientpages'              => array( 'HuēhuehZāzaniltin', 'PáginasViejas' ),
-	'Categories'                => array( 'Neneuhcāyōtl', 'Categorías' ),
-	'Emailuser'                 => array( 'EmailTlācatl', 'CorreoUsuario' ),
-	'Longpages'                 => array( 'HuēiyacZāzaniltin', 'PáginasLargas' ),
-	'Mycontributions'           => array( 'Notlahcuilōl', 'MisContribuciones' ),
-	'Mypage'                    => array( 'Nozāzanil', 'MiPágina' ),
-	'Mytalk'                    => array( 'Notēixnāmiquiliz', 'MiDiscusión' ),
-	'Newpages'                  => array( 'YancuīcZāzaniltin', 'PáginasNuevas' ),
-	'Search'                    => array( 'Tlatēmōz', 'Buscar' ),
-	'Shortpages'                => array( 'Zāzaniltōn', 'PáginasCortas' ),
-	'Specialpages'              => array( 'NōncuahquīzquiĀmatl', 'PáginasEspeciales' ),
-	'Upload'                    => array( 'Quetza', 'Subir' ),
-	'Userlogin'                 => array( 'Tlacalaquiliztli', 'Registrarse' ),
-);
-
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'Allpages'                  => [ 'MochīntīnZāzaniltin', 'TodasPáginas' ],
+	'Ancientpages'              => [ 'HuēhuehZāzaniltin', 'PáginasViejas' ],
+	'Categories'                => [ 'Neneuhcāyōtl', 'Categorías' ],
+	'Emailuser'                 => [ 'EmailTlācatl', 'CorreoUsuario' ],
+	'Longpages'                 => [ 'HuēiyacZāzaniltin', 'PáginasLargas' ],
+	'Mycontributions'           => [ 'Notlahcuilōl', 'MisContribuciones' ],
+	'Mypage'                    => [ 'Nozāzanil', 'MiPágina' ],
+	'Mytalk'                    => [ 'Notēixnāmiquiliz', 'MiDiscusión' ],
+	'Newpages'                  => [ 'YancuīcZāzaniltin', 'PáginasNuevas' ],
+	'Search'                    => [ 'Tlatēmōz', 'Buscar' ],
+	'Shortpages'                => [ 'Zāzaniltōn', 'PáginasCortas' ],
+	'Specialpages'              => [ 'NōncuahquīzquiĀmatl', 'PáginasEspeciales' ],
+	'Upload'                    => [ 'Quetza', 'Subir' ],
+	'Userlogin'                 => [ 'Tlacalaquiliztli', 'Registrarse' ],
+];

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,15 +19,35 @@
  */
 
 /**
- * Sends the notification to the specified host in a UDP packet.
+ * Send recent change notifications to a destination address over UDP.
+ *
+ * Parameters:
+ * - `formatter`: (Required) Which RCFeedFormatter class to use.
+ * - `uri`: (Required) Where to send the messages.
+ *
+ * @par Example:
+ * @code
+ * $wgRCFeeds['rc-to-udp'] = [
+ *      'class' => 'UDPRCFeedEngine',
+ *      'formatter' => 'JSONRCFeedFormatter',
+ *      'uri' => 'udp://localhost:1336',
+ * ];
+ * @endcode
+ *
+ * @see $wgRCFeeds
  * @since 1.22
  */
+class UDPRCFeedEngine extends FormattedRCFeed {
 
-class UDPRCFeedEngine implements RCFeedEngine {
 	/**
-	 * @see RCFeedEngine::send
+	 * @see FormattedRCFeed::send
+	 * @param array $feed
+	 * @param string $line
+	 * @return bool
 	 */
 	public function send( array $feed, $line ) {
-		wfErrorLog( $line, $feed['uri'] );
+		$transport = UDPTransport::newFromString( $feed['uri'] );
+		$transport->emit( $line );
+		return true;
 	}
 }

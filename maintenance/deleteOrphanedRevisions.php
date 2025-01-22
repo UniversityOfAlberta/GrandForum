@@ -26,6 +26,8 @@
 
 require_once __DIR__ . '/Maintenance.php';
 
+use Wikimedia\Rdbms\IDatabase;
+
 /**
  * Maintenance script that deletes revisions which refer to a nonexisting page.
  *
@@ -34,7 +36,8 @@ require_once __DIR__ . '/Maintenance.php';
 class DeleteOrphanedRevisions extends Maintenance {
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Maintenance script to delete revisions which refer to a nonexisting page";
+		$this->addDescription(
+			'Maintenance script to delete revisions which refer to a nonexisting page' );
 		$this->addOption( 'report', 'Prints out a count of affected revisions but doesn\'t delete them' );
 	}
 
@@ -43,17 +46,21 @@ class DeleteOrphanedRevisions extends Maintenance {
 
 		$report = $this->hasOption( 'report' );
 
-		$dbw = wfGetDB( DB_MASTER );
-		$dbw->begin( __METHOD__ );
-		list( $page, $revision ) = $dbw->tableNamesN( 'page', 'revision' );
+		$dbw = $this->getDB( DB_PRIMARY );
+		$this->beginTransaction( $dbw, __METHOD__ );
 
 		# Find all the orphaned revisions
 		$this->output( "Checking for orphaned revisions..." );
-		$sql = "SELECT rev_id FROM {$revision} LEFT JOIN {$page} ON rev_page = page_id WHERE page_namespace IS NULL";
-		$res = $dbw->query( $sql, 'deleteOrphanedRevisions' );
+		$res = $dbw->newSelectQueryBuilder()
+			->select( 'rev_id' )
+			->from( 'revision' )
+			->leftJoin( 'page', null, 'rev_page = page_id' )
+			->where( [ 'page_namespace' => null ] )
+			->caller( 'deleteOrphanedRevisions' )
+			->fetchResultSet();
 
 		# Stash 'em all up for deletion (if needed)
-		$revisions = array();
+		$revisions = [];
 		foreach ( $res as $row ) {
 			$revisions[] = $row->rev_id;
 		}
@@ -62,8 +69,8 @@ class DeleteOrphanedRevisions extends Maintenance {
 
 		# Nothing to do?
 		if ( $report || $count == 0 ) {
-			$dbw->commit( __METHOD__ );
-			exit( 0 );
+			$this->commitTransaction( $dbw, __METHOD__ );
+			return;
 		}
 
 		# Delete each revision
@@ -72,7 +79,7 @@ class DeleteOrphanedRevisions extends Maintenance {
 		$this->output( "done.\n" );
 
 		# Close the transaction and call the script to purge unused text records
-		$dbw->commit( __METHOD__ );
+		$this->commitTransaction( $dbw, __METHOD__ );
 		$this->purgeRedundantText( true );
 	}
 
@@ -80,16 +87,16 @@ class DeleteOrphanedRevisions extends Maintenance {
 	 * Delete one or more revisions from the database
 	 * Do this inside a transaction
 	 *
-	 * @param $id Array of revision id values
-	 * @param $dbw DatabaseBase class (needs to be a master)
+	 * @param int[] $id Array of revision id values
+	 * @param IDatabase $dbw Primary DB handle
 	 */
-	private function deleteRevs( $id, &$dbw ) {
-		if ( !is_array( $id ) ) {
-			$id = array( $id );
-		}
-		$dbw->delete( 'revision', array( 'rev_id' => $id ), __METHOD__ );
+	private function deleteRevs( array $id, $dbw ) {
+		$dbw->delete( 'revision', [ 'rev_id' => $id ], __METHOD__ );
+
+		// Delete from ip_changes should a record exist.
+		$dbw->delete( 'ip_changes', [ 'ipc_rev_id' => $id ], __METHOD__ );
 	}
 }
 
-$maintClass = "DeleteOrphanedRevisions";
+$maintClass = DeleteOrphanedRevisions::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

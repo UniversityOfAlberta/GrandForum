@@ -19,12 +19,36 @@
  * @since 1.23
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\SpecialPage\SpecialPageFactory;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * Recent changes feed.
  *
  * @ingroup API
  */
 class ApiFeedRecentChanges extends ApiBase {
+
+	private $params;
+
+	/** @var SpecialPageFactory */
+	private $specialPageFactory;
+
+	/**
+	 * @param ApiMain $mainModule
+	 * @param string $moduleName
+	 * @param SpecialPageFactory $specialPageFactory
+	 */
+	public function __construct(
+		ApiMain $mainModule,
+		string $moduleName,
+		SpecialPageFactory $specialPageFactory
+	) {
+		parent::__construct( $mainModule, $moduleName );
+		$this->specialPageFactory = $specialPageFactory;
+	}
 
 	/**
 	 * This module uses a custom feed wrapper printer.
@@ -40,37 +64,50 @@ class ApiFeedRecentChanges extends ApiBase {
 	 * as an RSS/Atom feed.
 	 */
 	public function execute() {
-		global $wgFeed, $wgFeedClasses;
+		$config = $this->getConfig();
 
 		$this->params = $this->extractRequestParams();
 
-		if ( !$wgFeed ) {
-			$this->dieUsage( 'Syndication feeds are not available', 'feed-unavailable' );
+		if ( !$config->get( MainConfigNames::Feed ) ) {
+			$this->dieWithError( 'feed-unavailable' );
 		}
 
-		if ( !isset( $wgFeedClasses[$this->params['feedformat']] ) ) {
-			$this->dieUsage( 'Invalid subscription feed type', 'feed-invalid' );
+		$feedClasses = $config->get( MainConfigNames::FeedClasses );
+		if ( !isset( $feedClasses[$this->params['feedformat']] ) ) {
+			$this->dieWithError( 'feed-invalid' );
 		}
 
 		$this->getMain()->setCacheMode( 'public' );
 		if ( !$this->getMain()->getParameter( 'smaxage' ) ) {
-			// bug 63249: This page gets hit a lot, cache at least 15 seconds.
+			// T65249: This page gets hit a lot, cache at least 15 seconds.
 			$this->getMain()->setCacheMaxAge( 15 );
 		}
 
 		$feedFormat = $this->params['feedformat'];
-		$specialClass = $this->params['target'] !== null
-			? 'SpecialRecentchangeslinked'
-			: 'SpecialRecentchanges';
+		$specialPageName = $this->params['target'] !== null
+			? 'Recentchangeslinked'
+			: 'Recentchanges';
 
-		$formatter = $this->getFeedObject( $feedFormat, $specialClass );
+		$formatter = $this->getFeedObject( $feedFormat, $specialPageName );
 
-		// Everything is passed implicitly via $wgRequest… :(
-		// The row-getting functionality should maybe be factored out of ChangesListSpecialPage too…
-		$rc = new $specialClass();
+		// Parameters are passed via the request in the context… :(
+		$context = new DerivativeContext( $this );
+		$context->setRequest( new DerivativeRequest(
+			$this->getRequest(),
+			$this->params,
+			$this->getRequest()->wasPosted()
+		) );
+
+		// The row-getting functionality should be factored out of ChangesListSpecialPage too…
+		$rc = $this->specialPageFactory->getPage( $specialPageName );
+		if ( $rc === null ) {
+			throw new RuntimeException( __METHOD__ . ' not able to instance special page ' . $specialPageName );
+		}
+		'@phan-var ChangesListSpecialPage $rc';
+		$rc->setContext( $context );
 		$rows = $rc->getRows();
 
-		$feedItems = $rows ? ChangesFeed::buildItems( $rows ) : array();
+		$feedItems = $rows ? ChangesFeed::buildItems( $rows ) : [];
 
 		ApiFormatFeedWrapper::setResult( $this->getResult(), $formatter, $feedItems );
 	}
@@ -79,18 +116,18 @@ class ApiFeedRecentChanges extends ApiBase {
 	 * Return a ChannelFeed object.
 	 *
 	 * @param string $feedFormat Feed's format (either 'rss' or 'atom')
-	 * @param string $specialClass Relevant special page name (either 'SpecialRecentchanges' or
-	 *     'SpecialRecentchangeslinked')
+	 * @param string $specialPageName Relevant special page name (either 'Recentchanges' or
+	 *     'Recentchangeslinked')
 	 * @return ChannelFeed
 	 */
-	public function getFeedObject( $feedFormat, $specialClass ) {
-		if ( $specialClass === 'SpecialRecentchangeslinked' ) {
+	private function getFeedObject( $feedFormat, $specialPageName ) {
+		if ( $specialPageName === 'Recentchangeslinked' ) {
 			$title = Title::newFromText( $this->params['target'] );
-			if ( !$title ) {
-				$this->dieUsageMsg( array( 'invalidtitle', $this->params['target'] ) );
+			if ( !$title || $title->isExternal() ) {
+				$this->dieWithError( [ 'apierror-invalidtitle', wfEscapeWikiText( $this->params['target'] ) ] );
 			}
 
-			$feed = new ChangesFeed( $feedFormat, false );
+			$feed = new ChangesFeed( $feedFormat );
 			$feedObj = $feed->getFeedObject(
 				$this->msg( 'recentchangeslinked-title', $title->getPrefixedText() )
 					->inContentLanguage()->text(),
@@ -98,7 +135,7 @@ class ApiFeedRecentChanges extends ApiBase {
 				SpecialPage::getTitleFor( 'Recentchangeslinked' )->getFullURL()
 			);
 		} else {
-			$feed = new ChangesFeed( $feedFormat, 'rcfeed' );
+			$feed = new ChangesFeed( $feedFormat );
 			$feedObj = $feed->getFeedObject(
 				$this->msg( 'recentchanges' )->inContentLanguage()->text(),
 				$this->msg( 'recentchanges-feed-description' )->inContentLanguage()->text(),
@@ -110,35 +147,35 @@ class ApiFeedRecentChanges extends ApiBase {
 	}
 
 	public function getAllowedParams() {
-		global $wgFeedClasses, $wgAllowCategorizedRecentChanges, $wgFeedLimit;
-		$feedFormatNames = array_keys( $wgFeedClasses );
+		$config = $this->getConfig();
+		$feedFormatNames = array_keys( $config->get( MainConfigNames::FeedClasses ) );
 
-		$ret = array(
-			'feedformat' => array(
-				ApiBase::PARAM_DFLT => 'rss',
-				ApiBase::PARAM_TYPE => $feedFormatNames,
-			),
+		return [
+			'feedformat' => [
+				ParamValidator::PARAM_DEFAULT => 'rss',
+				ParamValidator::PARAM_TYPE => $feedFormatNames,
+			],
 
-			'namespace' => array(
-				ApiBase::PARAM_TYPE => 'namespace',
-			),
+			'namespace' => [
+				ParamValidator::PARAM_TYPE => 'namespace',
+			],
 			'invert' => false,
 			'associated' => false,
 
-			'days' => array(
-				ApiBase::PARAM_DFLT => 7,
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_TYPE => 'integer',
-			),
-			'limit' => array(
-				ApiBase::PARAM_DFLT => 50,
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => $wgFeedLimit,
-				ApiBase::PARAM_TYPE => 'integer',
-			),
-			'from' => array(
-				ApiBase::PARAM_TYPE => 'timestamp',
-			),
+			'days' => [
+				ParamValidator::PARAM_DEFAULT => 7,
+				IntegerDef::PARAM_MIN => 1,
+				ParamValidator::PARAM_TYPE => 'integer',
+			],
+			'limit' => [
+				ParamValidator::PARAM_DEFAULT => 50,
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => $config->get( MainConfigNames::FeedLimit ),
+				ParamValidator::PARAM_TYPE => 'integer',
+			],
+			'from' => [
+				ParamValidator::PARAM_TYPE => 'timestamp',
+			],
 
 			'hideminor' => false,
 			'hidebots' => false,
@@ -146,68 +183,25 @@ class ApiFeedRecentChanges extends ApiBase {
 			'hideliu' => false,
 			'hidepatrolled' => false,
 			'hidemyself' => false,
+			'hidecategorization' => false,
 
-			'tagfilter' => array(
-				ApiBase::PARAM_TYPE => 'string',
-			),
+			'tagfilter' => [
+				ParamValidator::PARAM_TYPE => 'string',
+			],
 
-			'target' => array(
-				ApiBase::PARAM_TYPE => 'string',
-			),
+			'target' => [
+				ParamValidator::PARAM_TYPE => 'string',
+			],
 			'showlinkedto' => false,
-		);
-
-		if ( $wgAllowCategorizedRecentChanges ) {
-			$ret += array(
-				'categories' => array(
-					ApiBase::PARAM_TYPE => 'string',
-					ApiBase::PARAM_ISMULTI => true,
-				),
-				'categories_any' => false,
-			);
-		}
-
-		return $ret;
+		];
 	}
 
-	public function getParamDescription() {
-		return array(
-			'feedformat' => 'The format of the feed',
-			'namespace' => 'Namespace to limit the results to',
-			'invert' => 'All namespaces but the selected one',
-			'associated' => 'Include associated (talk or main) namespace',
-			'days' => 'Days to limit the results to',
-			'limit' => 'Maximum number of results to return',
-			'from' => 'Show changes since then',
-			'hideminor' => 'Hide minor changes',
-			'hidebots' => 'Hide changes made by bots',
-			'hideanons' => 'Hide changes made by anonymous users',
-			'hideliu' => 'Hide changes made by registered users',
-			'hidepatrolled' => 'Hide patrolled changes',
-			'hidemyself' => 'Hide changes made by yourself',
-			'tagfilter' => 'Filter by tag',
-			'target' => 'Show only changes on pages linked from this page',
-			'showlinkedto' => 'Show changes on pages linked to the selected page instead',
-			'categories' => 'Show only changes on pages in all of these categories',
-			'categories_any' => 'Show only changes on pages in any of the categories instead',
-		);
-	}
-
-	public function getDescription() {
-		return 'Returns a recent changes feed';
-	}
-
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-			array( 'code' => 'feed-unavailable', 'info' => 'Syndication feeds are not available' ),
-			array( 'code' => 'feed-invalid', 'info' => 'Invalid subscription feed type' ),
-		) );
-	}
-
-	public function getExamples() {
-		return array(
-			'api.php?action=feedrecentchanges',
-			'api.php?action=feedrecentchanges&days=30'
-		);
+	protected function getExamplesMessages() {
+		return [
+			'action=feedrecentchanges'
+				=> 'apihelp-feedrecentchanges-example-simple',
+			'action=feedrecentchanges&days=30'
+				=> 'apihelp-feedrecentchanges-example-30days',
+		];
 	}
 }

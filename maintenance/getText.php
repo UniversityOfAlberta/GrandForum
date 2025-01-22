@@ -23,6 +23,10 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\SlotRecord;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -33,33 +37,53 @@ require_once __DIR__ . '/Maintenance.php';
 class GetTextMaint extends Maintenance {
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = 'Outputs page text to stdout';
+		$this->addDescription( 'Outputs page text to stdout' );
 		$this->addOption( 'show-private', 'Show the text even if it\'s not available to the public' );
 		$this->addArg( 'title', 'Page title' );
+		$this->addOption( 'revision', 'Revision ID', false, true );
 	}
 
 	public function execute() {
-		$this->db = wfGetDB( DB_SLAVE );
-
 		$titleText = $this->getArg( 0 );
 		$title = Title::newFromText( $titleText );
 		if ( !$title ) {
-			$this->error( "$titleText is not a valid title.\n", true );
+			$this->fatalError( "$titleText is not a valid title.\n" );
 		}
 
-		$rev = Revision::newFromTitle( $title );
+		if ( !$title->exists() ) {
+			$titleText = $title->getPrefixedText();
+			$this->fatalError( "Page $titleText does not exist.\n" );
+		}
+
+		$revId = (int)$this->getOption( 'revision', $title->getLatestRevID() );
+
+		$rev = MediaWikiServices::getInstance()
+			->getRevisionLookup()
+			->getRevisionByTitle( $title, $revId );
+
 		if ( !$rev ) {
 			$titleText = $title->getPrefixedText();
-			$this->error( "Page $titleText does not exist.\n", true );
+			$this->fatalError( "Could not load revision $revId of $titleText.\n" );
 		}
-		$content = $rev->getContent( $this->hasOption( 'show-private' ) ? Revision::RAW : Revision::FOR_PUBLIC );
-		if ( $content === false ) {
+
+		$audience = $this->hasOption( 'show-private' ) ?
+			RevisionRecord::RAW :
+			RevisionRecord::FOR_PUBLIC;
+		$content = $rev->getContent( SlotRecord::MAIN, $audience );
+
+		if ( $content === null ) {
 			$titleText = $title->getPrefixedText();
-			$this->error( "Couldn't extract the text from $titleText.\n", true );
+			$this->fatalError( "Couldn't extract the text from $titleText.\n" );
 		}
 		$this->output( $content->serialize() );
+
+		if ( stream_isatty( STDOUT ) ) {
+			// When writing to a TTY, add a linebreak, to keep the terminal output tidy.
+			// Wikitext will generally not have a trailing newline.
+			$this->output( "\n" );
+		}
 	}
 }
 
-$maintClass = "GetTextMaint";
+$maintClass = GetTextMaint::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

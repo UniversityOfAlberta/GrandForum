@@ -1,6 +1,6 @@
 <?php
 /**
- * Send purge requests for listed pages to squid
+ * Send purge requests for listed pages to CDN
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,30 +21,58 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
- * Maintenance script that sends purge requests for listed pages to squid.
+ * Maintenance script that sends purge requests for listed pages to CDN.
  *
  * @ingroup Maintenance
  */
 class PurgeList extends Maintenance {
+	/** @var string|null */
+	private $namespaceId;
+	/** @var bool */
+	private $allNamespaces;
+	/** @var bool */
+	private $doDbTouch;
+	/** @var int */
+	private $delay;
+
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Send purge requests for listed pages to squid";
-		$this->addOption( 'purge', 'Whether to update page_touched.', false, false );
-		$this->addOption( 'namespace', 'Namespace number', false, true );
-		$this->addOption( 'all', 'Purge all pages', false, false );
+		$this->addDescription( "Send purge requests for listed pages to CDN.\n"
+			. "By default this expects a list of URLs or page names from STDIN. "
+			. "To query the database for input, use --namespace or --all-namespaces instead."
+		);
+		$this->addOption( 'namespace', 'Purge pages with this namespace number', false, true );
+		$this->addOption( 'all-namespaces', 'Purge pages in all namespaces', false, false );
+		$this->addOption( 'db-touch', 'Update the page.page_touched database field', false, false );
 		$this->addOption( 'delay', 'Number of seconds to delay between each purge', false, true );
 		$this->addOption( 'verbose', 'Show more output', false, false, 'v' );
 		$this->setBatchSize( 100 );
 	}
 
 	public function execute() {
-		if ( $this->hasOption( 'all' ) ) {
+		$this->namespaceId = $this->getOption( 'namespace' );
+		$this->allNamespaces = $this->hasOption( 'all-namespaces' );
+		$this->doDbTouch = $this->hasOption( 'db-touch' );
+		$this->delay = intval( $this->getOption( 'delay', '0' ) );
+
+		$conf = $this->getConfig();
+		if ( ( $this->namespaceId !== null || $this->allNamespaces )
+			&& $this->doDbTouch
+			&& $conf->get( MainConfigNames::MiserMode )
+		) {
+			$this->fatalError( 'Prevented mass db-invalidation (MiserMode is enabled).' );
+		}
+
+		if ( $this->allNamespaces ) {
 			$this->purgeNamespace( false );
-		} elseif ( $this->hasOption( 'namespace' ) ) {
-			$this->purgeNamespace( intval( $this->getOption( 'namespace' ) ) );
+		} elseif ( $this->namespaceId !== null ) {
+			$this->purgeNamespace( intval( $this->namespaceId ) );
 		} else {
 			$this->doPurge();
 		}
@@ -56,7 +84,8 @@ class PurgeList extends Maintenance {
 	 */
 	private function doPurge() {
 		$stdin = $this->getStdin();
-		$urls = array();
+		$urls = [];
+		$htmlCacheUpdater = MediaWikiServices::getInstance()->getHtmlCacheUpdater();
 
 		while ( !feof( $stdin ) ) {
 			$page = trim( fgets( $stdin ) );
@@ -65,10 +94,15 @@ class PurgeList extends Maintenance {
 			} elseif ( $page !== '' ) {
 				$title = Title::newFromText( $page );
 				if ( $title ) {
-					$url = $title->getInternalURL();
-					$this->output( "$url\n" );
-					$urls[] = $url;
-					if ( $this->getOption( 'purge' ) ) {
+					$newUrls = $htmlCacheUpdater->getUrls( $title );
+
+					foreach ( $newUrls as $url ) {
+						$this->output( "$url\n" );
+					}
+
+					$urls = array_merge( $urls, $newUrls );
+
+					if ( $this->doDbTouch ) {
 						$title->invalidateCache();
 					}
 				} else {
@@ -82,34 +116,36 @@ class PurgeList extends Maintenance {
 
 	/**
 	 * Purge a namespace or all pages
+	 *
+	 * @param int|bool $namespace
 	 */
 	private function purgeNamespace( $namespace = false ) {
-		$dbr = wfGetDB( DB_SLAVE );
+		$dbr = $this->getDB( DB_REPLICA );
+		$htmlCacheUpdater = MediaWikiServices::getInstance()->getHtmlCacheUpdater();
 		$startId = 0;
 		if ( $namespace === false ) {
-			$conds = array();
+			$conds = [];
 		} else {
-			$conds = array( 'page_namespace' => $namespace );
+			$conds = [ 'page_namespace' => $namespace ];
 		}
 		while ( true ) {
 			$res = $dbr->select( 'page',
-				array( 'page_id', 'page_namespace', 'page_title' ),
-				$conds + array( 'page_id > ' . $dbr->addQuotes( $startId ) ),
+				[ 'page_id', 'page_namespace', 'page_title' ],
+				$conds + [ 'page_id > ' . $dbr->addQuotes( $startId ) ],
 				__METHOD__,
-				array(
-					'LIMIT' => $this->mBatchSize,
+				[
+					'LIMIT' => $this->getBatchSize(),
 					'ORDER BY' => 'page_id'
 
-				)
+				]
 			);
 			if ( !$res->numRows() ) {
 				break;
 			}
-			$urls = array();
+			$urls = [];
 			foreach ( $res as $row ) {
 				$title = Title::makeTitle( $row->page_namespace, $row->page_title );
-				$url = $title->getInternalURL();
-				$urls[] = $url;
+				$urls = array_merge( $urls, $htmlCacheUpdater->getUrls( $title ) );
 				$startId = $row->page_id;
 			}
 			$this->sendPurgeRequest( $urls );
@@ -118,29 +154,26 @@ class PurgeList extends Maintenance {
 
 	/**
 	 * Helper to purge an array of $urls
-	 * @param $urls array List of URLS to purge from squids
+	 * @param array $urls List of URLS to purge from CDNs
 	 */
 	private function sendPurgeRequest( $urls ) {
-		if ( $this->hasOption( 'delay' ) ) {
-			$delay = floatval( $this->getOption( 'delay' ) );
+		$hcu = MediaWikiServices::getInstance()->getHtmlCacheUpdater();
+		if ( $this->delay > 0 ) {
 			foreach ( $urls as $url ) {
 				if ( $this->hasOption( 'verbose' ) ) {
 					$this->output( $url . "\n" );
 				}
-				$u = new SquidUpdate( array( $url ) );
-				$u->doUpdate();
-				usleep( $delay * 1e6 );
+				$hcu->purgeUrls( $url, $hcu::PURGE_NAIVE );
+				sleep( $this->delay );
 			}
 		} else {
 			if ( $this->hasOption( 'verbose' ) ) {
 				$this->output( implode( "\n", $urls ) . "\n" );
 			}
-			$u = new SquidUpdate( $urls );
-			$u->doUpdate();
+			$hcu->purgeUrls( $urls, $hcu::PURGE_NAIVE );
 		}
 	}
-
 }
 
-$maintClass = "PurgeList";
+$maintClass = PurgeList::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

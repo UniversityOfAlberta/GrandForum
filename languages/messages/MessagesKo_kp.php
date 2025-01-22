@@ -1,24 +1,22 @@
 <?php
-/** Korean (한국어(조선))
+/** Korean (Democratic People's Republic of Korea) (조선말)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'ko';
 
-$datePreferences = array(
+$datePreferences = [
 	'default',
 	'juche',
 	'juche bracket',
 	'ISO 8601',
-);
+];
 $defaultDateFormat = 'ko';
-$dateFormats = array(
+$dateFormats = [
 	'ko time'            => 'H:i',
 	'ko date'            => 'Y년 M월 j일 (D)',
 	'ko both'            => 'Y년 M월 j일 (D) H:i',
@@ -30,4 +28,4 @@ $dateFormats = array(
 	'juche bracket time' => 'H:i',
 	'juche bracket date' => '주체xoY년 (Y년) M월 j일 (D)',
 	'juche bracket both' => '주체xoY년 (Y년) M월 j일 (D) H:i',
-);
+];

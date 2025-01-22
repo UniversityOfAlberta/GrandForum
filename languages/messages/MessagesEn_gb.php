@@ -1,18 +1,18 @@
 <?php
 /** British English (British English)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
-$specialPageAliases = array(
-	'Uncategorizedcategories'   => array( 'UncategorisedCategories' ),
-	'Uncategorizedimages'       => array( 'UncategorisedFiles', 'UncategorisedImages' ),
-	'Uncategorizedpages'        => array( 'UncategorisedPages' ),
-	'Uncategorizedtemplates'    => array( 'UncategorisedTemplates' ),
-);
+$fallback = 'en';
 
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'Uncategorizedcategories'   => [ 'UncategorisedCategories' ],
+	'Uncategorizedimages'       => [ 'UncategorisedFiles', 'UncategorisedImages' ],
+	'Uncategorizedpages'        => [ 'UncategorisedPages' ],
+	'Uncategorizedtemplates'    => [ 'UncategorisedTemplates' ],
+];

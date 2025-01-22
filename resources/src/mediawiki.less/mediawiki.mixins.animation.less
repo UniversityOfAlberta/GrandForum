@@ -1,12 +1,14 @@
-.animation (...) {
-	-webkit-animation: @arguments;
-	-moz-animation: @arguments;
-	-o-animation: @arguments;
+// @deprecated since MW 1.39.0, use unprefixed `animation:` now.
+.animation( ... ) {
 	animation: @arguments;
 }
 
-.transform-rotate (@deg) {
-	-webkit-transform: rotate(@deg);
-	-moz-transform: rotate(@deg);
-	transform: rotate(@deg);
+// @deprecated since MW 1.39.0, use unprefixed `animation-delay:` now.
+.animation-delay( ... ) {
+	animation-delay: @arguments;
+}
+
+// @deprecated since MW 1.39.0, use unprefixed `transform: rotate( ... )` now.
+.transform-rotate( @deg ) {
+	transform: rotate( @deg );
 }

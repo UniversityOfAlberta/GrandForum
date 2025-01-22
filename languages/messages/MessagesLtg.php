@@ -1,11 +1,10 @@
 <?php
 /** Latgalian (latgaļu)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Dark Eagle
  * @author Gleb Borisov
@@ -13,7 +12,9 @@
  * @author Reedy
  */
 
-$namespaceNames = array(
+$fallback = 'lv';
+
+$namespaceNames = [
 	NS_MEDIA            => 'Medeja',
 	NS_SPECIAL          => 'Seviškuo',
 	NS_TALK             => 'Sprīža',
@@ -30,7 +31,4 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Sprīža_ap_paleigu',
 	NS_CATEGORY         => 'Kategoreja',
 	NS_CATEGORY_TALK    => 'Sprīža_ap_kategoreju',
-);
-
-$fallback = 'lv';
-
+];

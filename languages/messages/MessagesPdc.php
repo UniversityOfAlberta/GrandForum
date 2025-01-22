@@ -1,11 +1,10 @@
 <?php
 /** Deitsch (Deitsch)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Kaganer
  * @author Krinkle
@@ -16,7 +15,7 @@
 
 $fallback = 'de';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_TALK             => 'Dischbedutt',
 	NS_USER             => 'Yuuser',
 	NS_USER_TALK        => 'Yuuser_Dischbedutt',
@@ -30,9 +29,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Hilf_Dischbedutt',
 	NS_CATEGORY         => 'Abdeeling',
 	NS_CATEGORY_TALK    => 'Abdeeling_Dischbedutt',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	# German namespaces
 	'Medium'               => NS_MEDIA,
 	'Spezial'              => NS_SPECIAL,
@@ -49,11 +48,14 @@ $namespaceAliases = array(
 	'Hilfe_Diskussion'     => NS_HELP_TALK,
 	'Kategorie'            => NS_CATEGORY,
 	'Kategorie_Diskussion' => NS_CATEGORY_TALK,
-);
+];
 
-$specialPageAliases = array(
-	'Listadmins'                => array( 'Verwalter', 'Administratoren' ),
-	'Listbots'                  => array( 'Waddefresser', 'Bots' ),
-	'Search'                    => array( 'Uffgucke', 'Suche' ),
-);
+// Remove German aliases
+$namespaceGenderAliases = [];
 
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'Listadmins'                => [ 'Verwalter', 'Administratoren' ],
+	'Listbots'                  => [ 'Waddefresser', 'Bots' ],
+	'Search'                    => [ 'Uffgucke', 'Suche' ],
+];

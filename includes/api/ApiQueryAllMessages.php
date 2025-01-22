@@ -1,9 +1,5 @@
 <?php
 /**
- *
- *
- * Created on Dec 1, 2007
- *
  * Copyright © 2006 Yuri Astrakhan "<Firstname><Lastname>@gmail.com"
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +20,10 @@
  * @file
  */
 
+use MediaWiki\Languages\LanguageFactory;
+use MediaWiki\Languages\LanguageNameUtils;
+use Wikimedia\ParamValidator\ParamValidator;
+
 /**
  * A query action to return messages from site message cache
  *
@@ -31,46 +31,83 @@
  */
 class ApiQueryAllMessages extends ApiQueryBase {
 
-	public function __construct( $query, $moduleName ) {
+	/** @var Language */
+	private $contentLanguage;
+
+	/** @var LanguageFactory */
+	private $languageFactory;
+
+	/** @var LanguageNameUtils */
+	private $languageNameUtils;
+
+	/** @var LocalisationCache */
+	private $localisationCache;
+
+	/** @var MessageCache */
+	private $messageCache;
+
+	/**
+	 * @param ApiQuery $query
+	 * @param string $moduleName
+	 * @param Language $contentLanguage
+	 * @param LanguageFactory $languageFactory
+	 * @param LanguageNameUtils $languageNameUtils
+	 * @param LocalisationCache $localisationCache
+	 * @param MessageCache $messageCache
+	 */
+	public function __construct(
+		ApiQuery $query,
+		$moduleName,
+		Language $contentLanguage,
+		LanguageFactory $languageFactory,
+		LanguageNameUtils $languageNameUtils,
+		LocalisationCache $localisationCache,
+		MessageCache $messageCache
+	) {
 		parent::__construct( $query, $moduleName, 'am' );
+		$this->contentLanguage = $contentLanguage;
+		$this->languageFactory = $languageFactory;
+		$this->languageNameUtils = $languageNameUtils;
+		$this->localisationCache = $localisationCache;
+		$this->messageCache = $messageCache;
 	}
 
 	public function execute() {
 		$params = $this->extractRequestParams();
-
-		if ( is_null( $params['lang'] ) ) {
+		if ( $params['lang'] === null ) {
 			$langObj = $this->getLanguage();
-		} elseif ( !Language::isValidCode( $params['lang'] ) ) {
-			$this->dieUsage( 'Invalid language code for parameter lang', 'invalidlang' );
+		} elseif ( !$this->languageNameUtils->isValidCode( $params['lang'] ) ) {
+			$this->dieWithError(
+				[ 'apierror-invalidlang', $this->encodeParamName( 'lang' ) ], 'invalidlang'
+			);
 		} else {
-			$langObj = Language::factory( $params['lang'] );
+			$langObj = $this->languageFactory->getLanguage( $params['lang'] );
 		}
 
 		if ( $params['enableparser'] ) {
-			if ( !is_null( $params['title'] ) ) {
+			if ( $params['title'] !== null ) {
 				$title = Title::newFromText( $params['title'] );
 				if ( !$title || $title->isExternal() ) {
-					$this->dieUsageMsg( array( 'invalidtitle', $params['title'] ) );
+					$this->dieWithError( [ 'apierror-invalidtitle', wfEscapeWikiText( $params['title'] ) ] );
 				}
 			} else {
 				$title = Title::newFromText( 'API' );
 			}
 		}
 
-		$prop = array_flip( (array)$params['prop'] );
+		$prop = array_fill_keys( (array)$params['prop'], true );
 
 		// Determine which messages should we print
 		if ( in_array( '*', $params['messages'] ) ) {
-			$message_names = Language::getMessageKeysFor( $langObj->getCode() );
+			$message_names = $this->localisationCache->getSubitemList( $langObj->getCode(), 'messages' ) ?? [];
 			if ( $params['includelocal'] ) {
-				global $wgLanguageCode;
 				$message_names = array_unique( array_merge(
 					$message_names,
 					// Pass in the content language code so we get local messages that have a
 					// MediaWiki:msgkey page. We might theoretically miss messages that have no
 					// MediaWiki:msgkey page but do have a MediaWiki:msgkey/lang page, but that's
 					// just a stupid case.
-					MessageCache::singleton()->getAllMessageKeys( $wgLanguageCode )
+					$this->messageCache->getAllMessageKeys( $this->contentLanguage->getCode() )
 				) );
 			}
 			sort( $message_names );
@@ -83,7 +120,7 @@ class ApiQueryAllMessages extends ApiQueryBase {
 		// Because we sorted the message array earlier, they will appear in a clump:
 		if ( isset( $params['prefix'] ) ) {
 			$skip = false;
-			$messages_filtered = array();
+			$messages_filtered = [];
 			foreach ( $messages_target as $message ) {
 				// === 0: must be at beginning of string (position 0)
 				if ( strpos( $message, $params['prefix'] ) === 0 ) {
@@ -100,7 +137,7 @@ class ApiQueryAllMessages extends ApiQueryBase {
 
 		// Filter messages that contain specified string
 		if ( isset( $params['filter'] ) ) {
-			$messages_filtered = array();
+			$messages_filtered = [];
 			foreach ( $messages_target as $message ) {
 				// !== is used because filter can be at the beginning of the string
 				if ( strpos( $message, $params['filter'] ) !== false ) {
@@ -113,18 +150,22 @@ class ApiQueryAllMessages extends ApiQueryBase {
 		// Whether we have any sort of message customisation filtering
 		$customiseFilterEnabled = $params['customised'] !== 'all';
 		if ( $customiseFilterEnabled ) {
-			global $wgContLang;
-			$lang = $langObj->getCode();
-
-			$customisedMessages = AllmessagesTablePager::getCustomisedStatuses(
-				array_map( array( $langObj, 'ucfirst' ), $messages_target ), $lang, $lang != $wgContLang->getCode() );
+			$customisedMessages = AllMessagesTablePager::getCustomisedStatuses(
+				array_map(
+					[ $langObj, 'ucfirst' ],
+					$messages_target
+				),
+				$langObj->getCode(),
+				!$langObj->equals( $this->contentLanguage ),
+				$this->getDB()
+			);
 
 			$customised = $params['customised'] === 'modified';
 		}
 
 		// Get all requested messages and print the result
-		$skip = !is_null( $params['from'] );
-		$useto = !is_null( $params['to'] );
+		$skip = $params['from'] !== null;
+		$useto = $params['to'] !== null;
 		$result = $this->getResult();
 		foreach ( $messages_target as $message ) {
 			// Skip all messages up to $params['from']
@@ -137,58 +178,65 @@ class ApiQueryAllMessages extends ApiQueryBase {
 			}
 
 			if ( !$skip ) {
-				$a = array( 'name' => $message );
-				$args = array();
+				$a = [
+					'name' => $message,
+					'normalizedname' => MessageCache::normalizeKey( $message ),
+				];
+
+				$args = [];
 				if ( isset( $params['args'] ) && count( $params['args'] ) != 0 ) {
 					$args = $params['args'];
 				}
 
 				if ( $customiseFilterEnabled ) {
 					$messageIsCustomised = isset( $customisedMessages['pages'][$langObj->ucfirst( $message )] );
+					// @phan-suppress-next-line PhanPossiblyUndeclaredVariable customised is set when used
 					if ( $customised === $messageIsCustomised ) {
+						// @phan-suppress-next-line PhanPossiblyUndeclaredVariable customised is set when used
 						if ( $customised ) {
-							$a['customised'] = '';
+							$a['customised'] = true;
 						}
 					} else {
 						continue;
 					}
 				}
 
-				$msg = wfMessage( $message, $args )->inLanguage( $langObj );
+				$msg = $this->msg( $message, $args )->inLanguage( $langObj );
 
 				if ( !$msg->exists() ) {
-					$a['missing'] = '';
+					$a['missing'] = true;
 				} else {
 					// Check if the parser is enabled:
 					if ( $params['enableparser'] ) {
-						$msgString = $msg->title( $title )->text();
+						// @phan-suppress-next-line PhanPossiblyUndeclaredVariable title is set when used
+						$msgString = $msg->page( $title )->text();
 					} else {
 						$msgString = $msg->plain();
 					}
 					if ( !$params['nocontent'] ) {
-						ApiResult::setContent( $a, $msgString );
+						ApiResult::setContentValue( $a, 'content', $msgString );
 					}
 					if ( isset( $prop['default'] ) ) {
-						$default = wfMessage( $message )->inLanguage( $langObj )->useDatabase( false );
+						$default = $this->msg( $message )->inLanguage( $langObj )->useDatabase( false );
 						if ( !$default->exists() ) {
-							$a['defaultmissing'] = '';
+							$a['defaultmissing'] = true;
 						} elseif ( $default->plain() != $msgString ) {
 							$a['default'] = $default->plain();
 						}
 					}
 				}
-				$fit = $result->addValue( array( 'query', $this->getModuleName() ), null, $a );
+				$fit = $result->addValue( [ 'query', $this->getModuleName() ], null, $a );
 				if ( !$fit ) {
 					$this->setContinueEnumParameter( 'from', $message );
 					break;
 				}
 			}
 		}
-		$result->setIndexedTagName_internal( array( 'query', $this->getModuleName() ), 'message' );
+		$result->addIndexedTagName( [ 'query', $this->getModuleName() ], 'message' );
 	}
 
 	public function getCacheMode( $params ) {
-		if ( is_null( $params['lang'] ) ) {
+		if ( $params['lang'] === null ) {
 			// Language not specified, will be fetched from preferences
 			return 'anon-public-user-private';
 		} elseif ( $params['enableparser'] ) {
@@ -201,101 +249,51 @@ class ApiQueryAllMessages extends ApiQueryBase {
 	}
 
 	public function getAllowedParams() {
-		return array(
-			'messages' => array(
-				ApiBase::PARAM_DFLT => '*',
-				ApiBase::PARAM_ISMULTI => true,
-			),
-			'prop' => array(
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => array(
+		return [
+			'messages' => [
+				ParamValidator::PARAM_DEFAULT => '*',
+				ParamValidator::PARAM_ISMULTI => true,
+			],
+			'prop' => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => [
 					'default'
-				)
-			),
+				]
+			],
 			'enableparser' => false,
 			'nocontent' => false,
 			'includelocal' => false,
-			'args' => array(
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_ALLOW_DUPLICATES => true,
-			),
-			'filter' => array(),
-			'customised' => array(
-				ApiBase::PARAM_DFLT => 'all',
-				ApiBase::PARAM_TYPE => array(
+			'args' => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ALLOW_DUPLICATES => true,
+			],
+			'filter' => [],
+			'customised' => [
+				ParamValidator::PARAM_DEFAULT => 'all',
+				ParamValidator::PARAM_TYPE => [
 					'all',
 					'modified',
 					'unmodified'
-				)
-			),
+				]
+			],
 			'lang' => null,
 			'from' => null,
 			'to' => null,
 			'title' => null,
 			'prefix' => null,
-		);
+		];
 	}
 
-	public function getParamDescription() {
-		return array(
-			'messages' => 'Which messages to output. "*" (default) means all messages',
-			'prop' => 'Which properties to get',
-			'enableparser' => array( 'Set to enable parser, will preprocess the wikitext of message',
-				'Will substitute magic words, handle templates etc.' ),
-			'nocontent' => 'If set, do not include the content of the messages in the output.',
-			'includelocal' => array( "Also include local messages, i.e. messages that don't exist in the software but do exist as a MediaWiki: page.",
-				"This lists all MediaWiki: pages, so it will also list those that aren't 'really' messages such as Common.js",
-			),
-			'title' => 'Page name to use as context when parsing message (for enableparser option)',
-			'args' => 'Arguments to be substituted into message',
-			'prefix' => 'Return messages with this prefix',
-			'filter' => 'Return only messages with names that contain this string',
-			'customised' => 'Return only messages in this customisation state',
-			'lang' => 'Return messages in this language',
-			'from' => 'Return messages starting at this message',
-			'to' => 'Return messages ending at this message',
-		);
-	}
-
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-			array( 'code' => 'invalidlang', 'info' => 'Invalid language code for parameter lang' ),
-		) );
-	}
-
-	public function getResultProperties() {
-		return array(
-			'' => array(
-				'name' => 'string',
-				'customised' => 'boolean',
-				'missing' => 'boolean',
-				'*' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				)
-			),
-			'default' => array(
-				'defaultmissing' => 'boolean',
-				'default' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				)
-			)
-		);
-	}
-
-	public function getDescription() {
-		return 'Return messages from this site.';
-	}
-
-	public function getExamples() {
-		return array(
-			'api.php?action=query&meta=allmessages&amprefix=ipb-',
-			'api.php?action=query&meta=allmessages&ammessages=august|mainpage&amlang=de',
-		);
+	protected function getExamplesMessages() {
+		return [
+			'action=query&meta=allmessages&amprefix=ipb-'
+				=> 'apihelp-query+allmessages-example-ipb',
+			'action=query&meta=allmessages&ammessages=august|mainpage&amlang=de'
+				=> 'apihelp-query+allmessages-example-de',
+		];
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/API:Meta#allmessages_.2F_am';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Allmessages';
 	}
 }

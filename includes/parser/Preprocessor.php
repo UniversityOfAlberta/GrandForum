@@ -24,227 +24,123 @@
 /**
  * @ingroup Parser
  */
-interface Preprocessor {
+abstract class Preprocessor {
+	/** Transclusion mode flag for Preprocessor::preprocessToObj() */
+	public const DOM_FOR_INCLUSION = 1;
+	/** Language conversion construct omission flag for Preprocessor::preprocessToObj() */
+	public const DOM_LANG_CONVERSION_DISABLED = 2;
+	/** Preprocessor cache bypass flag for Preprocessor::preprocessToObj */
+	public const DOM_UNCACHED = 4;
+
+	/** @var Parser */
+	public $parser;
+
+	/** @var WANObjectCache */
+	protected $wanCache;
+
+	/** @var bool Whether language variant conversion is disabled */
+	protected $disableLangConversion;
+
+	/** @var array Brace matching rules */
+	protected $rules = [
+		'{' => [
+			'end' => '}',
+			'names' => [
+				2 => 'template',
+				3 => 'tplarg',
+			],
+			'min' => 2,
+			'max' => 3,
+		],
+		'[' => [
+			'end' => ']',
+			'names' => [ 2 => null ],
+			'min' => 2,
+			'max' => 2,
+		],
+		'-{' => [
+			'end' => '}-',
+			'names' => [ 2 => null ],
+			'min' => 2,
+			'max' => 2,
+		],
+	];
+
 	/**
-	 * Create a new preprocessor object based on an initialised Parser object
-	 *
-	 * @param $parser Parser
+	 * @param Parser $parser
+	 * @param WANObjectCache|null $wanCache
+	 * @param array $options Map of additional options, including:
+	 * 	 - disableLangConversion: disable language variant conversion. [Default: false]
 	 */
-	function __construct( $parser );
+	public function __construct(
+		Parser $parser,
+		WANObjectCache $wanCache = null,
+		array $options = []
+	) {
+		$this->parser = $parser;
+		$this->wanCache = $wanCache ?: WANObjectCache::newEmpty();
+		$this->disableLangConversion = !empty( $options['disableLangConversion'] );
+	}
+
+	/**
+	 * Allows resetting the internal Parser reference after Preprocessor is
+	 * cloned.
+	 *
+	 * Do not use this function in new code, since this method will be
+	 * moved once Parser cloning goes away (T250448)
+	 *
+	 * @param ?Parser $parser
+	 * @internal
+	 */
+	public function resetParser( ?Parser $parser ) {
+		// @phan-suppress-next-line PhanPossiblyNullTypeMismatchProperty For internal use only
+		$this->parser = $parser;
+	}
 
 	/**
 	 * Create a new top-level frame for expansion of a page
 	 *
 	 * @return PPFrame
 	 */
-	function newFrame();
+	abstract public function newFrame();
 
 	/**
-	 * Create a new custom frame for programmatic use of parameter replacement as used in some extensions
+	 * Create a new custom frame for programmatic use of parameter replacement
 	 *
-	 * @param $args array
-	 *
-	 * @return PPFrame
-	 */
-	function newCustomFrame( $args );
-
-	/**
-	 * Create a new custom node for programmatic use of parameter replacement as used in some extensions
-	 *
-	 * @param $values
-	 */
-	function newPartNodeArray( $values );
-
-	/**
-	 * Preprocess text to a PPNode
-	 *
-	 * @param $text
-	 * @param $flags
-	 *
-	 * @return PPNode
-	 */
-	function preprocessToObj( $text, $flags = 0 );
-}
-
-/**
- * @ingroup Parser
- */
-interface PPFrame {
-	const NO_ARGS = 1;
-	const NO_TEMPLATES = 2;
-	const STRIP_COMMENTS = 4;
-	const NO_IGNORE = 8;
-	const RECOVER_COMMENTS = 16;
-
-	const RECOVER_ORIG = 27; // = 1|2|8|16 no constant expression support in PHP yet
-
-	/** This constant exists when $indexOffset is supported in newChild() */
-	const SUPPORTS_INDEX_OFFSET = 1;
-
-	/**
-	 * Create a child frame
+	 * This is useful for certain types of extensions
 	 *
 	 * @param array $args
-	 * @param Title $title
-	 * @param int $indexOffset A number subtracted from the index attributes of the arguments
-	 *
 	 * @return PPFrame
 	 */
-	function newChild( $args = false, $title = false, $indexOffset = 0 );
+	abstract public function newCustomFrame( $args );
 
 	/**
-	 * Expand a document tree node
-	 */
-	function expand( $root, $flags = 0 );
-
-	/**
-	 * Implode with flags for expand()
-	 */
-	function implodeWithFlags( $sep, $flags /*, ... */ );
-
-	/**
-	 * Implode with no flags specified
-	 */
-	function implode( $sep /*, ... */ );
-
-	/**
-	 * Makes an object that, when expand()ed, will be the same as one obtained
-	 * with implode()
-	 */
-	function virtualImplode( $sep /*, ... */ );
-
-	/**
-	 * Virtual implode with brackets
-	 */
-	function virtualBracketedImplode( $start, $sep, $end /*, ... */ );
-
-	/**
-	 * Returns true if there are no arguments in this frame
+	 * Create a new custom node for programmatic use of parameter replacement
 	 *
-	 * @return bool
-	 */
-	function isEmpty();
-
-	/**
-	 * Returns all arguments of this frame
-	 */
-	function getArguments();
-
-	/**
-	 * Returns all numbered arguments of this frame
-	 */
-	function getNumberedArguments();
-
-	/**
-	 * Returns all named arguments of this frame
-	 */
-	function getNamedArguments();
-
-	/**
-	 * Get an argument to this frame by name
-	 */
-	function getArgument( $name );
-
-	/**
-	 * Returns true if the infinite loop check is OK, false if a loop is detected
+	 * This is useful for certain types of extensions
 	 *
-	 * @param $title
+	 * @param array $values
+	 */
+	abstract public function newPartNodeArray( $values );
+
+	/**
+	 * Get the document object model for the given wikitext
 	 *
-	 * @return bool
-	 */
-	function loopCheck( $title );
-
-	/**
-	 * Return true if the frame is a template frame
-	 */
-	function isTemplate();
-
-	/**
-	 * Get a title of frame
+	 * Any flag added to the $flags parameter here, or any other parameter liable to cause
+	 * a change in the DOM tree for the given wikitext, must be passed through the section
+	 * identifier in the section edit link and thus back to extractSections().
 	 *
-	 * @return Title
-	 */
-	function getTitle();
-}
-
-/**
- * There are three types of nodes:
- *     * Tree nodes, which have a name and contain other nodes as children
- *     * Array nodes, which also contain other nodes but aren't considered part of a tree
- *     * Leaf nodes, which contain the actual data
- *
- * This interface provides access to the tree structure and to the contents of array nodes,
- * but it does not provide access to the internal structure of leaf nodes. Access to leaf
- * data is provided via two means:
- *     * PPFrame::expand(), which provides expanded text
- *     * The PPNode::split*() functions, which provide metadata about certain types of tree node
- * @ingroup Parser
- */
-interface PPNode {
-	/**
-	 * Get an array-type node containing the children of this node.
-	 * Returns false if this is not a tree node.
-	 */
-	function getChildren();
-
-	/**
-	 * Get the first child of a tree node. False if there isn't one.
-	 *
+	 * @param string $text Wikitext
+	 * @param int $flags Bit field of Preprocessor::DOM_* flags:
+	 *   - Preprocessor::DOM_FOR_INCLUSION: treat the wikitext as transcluded content from
+	 *      a page rather than direct content of a page or message. By default, the text is
+	 *      assumed to be undergoing processing for use by direct page views. The use of this
+	 *      flag causes text within <noinclude> tags to be ignored, text within <includeonly>
+	 *      to be included, and text outside of <onlyinclude> to be ignored.
+	 *   - Preprocessor::DOM_NO_LANG_CONV: do not parse "-{ ... }-" constructs, which are
+	 *      involved in language variant conversion. (deprecated since 1.36)
+	 *   - Preprocessor::DOM_UNCACHED: disable use of the preprocessor cache.
 	 * @return PPNode
 	 */
-	function getFirstChild();
-
-	/**
-	 * Get the next sibling of any node. False if there isn't one
-	 */
-	function getNextSibling();
-
-	/**
-	 * Get all children of this tree node which have a given name.
-	 * Returns an array-type node, or false if this is not a tree node.
-	 */
-	function getChildrenOfType( $type );
-
-	/**
-	 * Returns the length of the array, or false if this is not an array-type node
-	 */
-	function getLength();
-
-	/**
-	 * Returns an item of an array-type node
-	 */
-	function item( $i );
-
-	/**
-	 * Get the name of this node. The following names are defined here:
-	 *
-	 *    h             A heading node.
-	 *    template      A double-brace node.
-	 *    tplarg        A triple-brace node.
-	 *    title         The first argument to a template or tplarg node.
-	 *    part          Subsequent arguments to a template or tplarg node.
-	 *    #nodelist     An array-type node
-	 *
-	 * The subclass may define various other names for tree and leaf nodes.
-	 */
-	function getName();
-
-	/**
-	 * Split a "<part>" node into an associative array containing:
-	 *    name          PPNode name
-	 *    index         String index
-	 *    value         PPNode value
-	 */
-	function splitArg();
-
-	/**
-	 * Split an "<ext>" node into an associative array containing name, attr, inner and close
-	 * All values in the resulting array are PPNodes. Inner and close are optional.
-	 */
-	function splitExt();
-
-	/**
-	 * Split an "<h>" node
-	 */
-	function splitHeading();
+	abstract public function preprocessToObj( $text, $flags = 0 );
 }

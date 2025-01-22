@@ -24,21 +24,36 @@
  * @author Brian Wolff
  */
 
+use MediaWiki\Cache\LinkBatchFactory;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\IResultWrapper;
+
 /**
  * Special:ListDuplicatedFiles Lists all files where the current version is
  *   a duplicate of the current version of some other file.
  * @ingroup SpecialPage
  */
-class ListDuplicatedFilesPage extends QueryPage {
-	function __construct( $name = 'ListDuplicatedFiles' ) {
-		parent::__construct( $name );
+class SpecialListDuplicatedFiles extends QueryPage {
+
+	/**
+	 * @param ILoadBalancer $loadBalancer
+	 * @param LinkBatchFactory $linkBatchFactory
+	 */
+	public function __construct(
+		ILoadBalancer $loadBalancer,
+		LinkBatchFactory $linkBatchFactory
+	) {
+		parent::__construct( 'ListDuplicatedFiles' );
+		$this->setDBLoadBalancer( $loadBalancer );
+		$this->setLinkBatchFactory( $linkBatchFactory );
 	}
 
-	function isExpensive() {
+	public function isExpensive() {
 		return true;
 	}
 
-	function isSyndicated() {
+	public function isSyndicated() {
 		return false;
 	}
 
@@ -51,59 +66,55 @@ class ListDuplicatedFilesPage extends QueryPage {
 	 * However this version should be no more expensive then
 	 * Special:MostLinked, which seems to get handled fine
 	 * with however we are doing cached special pages.
+	 * @return array
 	 */
-	function getQueryInfo() {
-		return array(
-			'tables' => array( 'image' ),
-			'fields' => array(
+	public function getQueryInfo() {
+		return [
+			'tables' => [ 'image' ],
+			'fields' => [
 				'namespace' => NS_FILE,
 				'title' => 'MIN(img_name)',
 				'value' => 'count(*)'
-			),
-			'options' => array(
+			],
+			'options' => [
 				'GROUP BY' => 'img_sha1',
 				'HAVING' => 'count(*) > 1',
-			),
-		);
+			],
+		];
 	}
 
 	/**
 	 * Pre-fill the link cache
 	 *
-	 * @param DatabaseBase $db
-	 * @param ResultWrapper $res
+	 * @param IDatabase $db
+	 * @param IResultWrapper $res
 	 */
-	function preprocessResults( $db, $res ) {
-		if ( $res->numRows() > 0 ) {
-			$linkBatch = new LinkBatch();
-
-			foreach ( $res as $row ) {
-				$linkBatch->add( $row->namespace, $row->title );
-			}
-
-			$res->seek( 0 );
-			$linkBatch->execute();
-		}
+	public function preprocessResults( $db, $res ) {
+		$this->executeLBFromResultWrapper( $res );
 	}
-
 
 	/**
 	 * @param Skin $skin
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
-	function formatResult( $skin, $result ) {
+	public function formatResult( $skin, $result ) {
 		// Future version might include a list of the first 5 duplicates
 		// perhaps separated by an "↔".
 		$image1 = Title::makeTitle( $result->namespace, $result->title );
-		$dupeSearch = SpecialPage::getTitleFor( 'FileDuplicateSearch', $image1->getDBKey() );
+		$dupeSearch = SpecialPage::getTitleFor( 'FileDuplicateSearch', $image1->getDBkey() );
 
 		$msg = $this->msg( 'listduplicatedfiles-entry' )
 			->params( $image1->getText() )
 			->numParams( $result->value - 1 )
-			->params( $dupeSearch->getPrefixedDBKey() );
+			->params( $dupeSearch->getPrefixedDBkey() );
 
 		return $msg->parse();
+	}
+
+	public function execute( $par ) {
+		$this->addHelpLink( 'Help:Managing_files' );
+		parent::execute( $par );
 	}
 
 	protected function getGroupName() {

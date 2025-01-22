@@ -1,16 +1,18 @@
-<?php
+<?php // For broken web servers: ><pre>
+
+// If you are reading this in your web browser, your server is probably
+// not configured correctly to run PHP applications!
+//
+// See the README, INSTALL, and UPGRADE files for basic setup instructions
+// and pointers to the online documentation.
+//
+// https://www.mediawiki.org/wiki/Special:MyLanguage/MediaWiki
+//
+// -------------------------------------------------
+
 /**
- * This is the main web entry point for MediaWiki.
- *
- * If you are reading this in your web browser, your server is probably
- * not configured correctly to run PHP applications!
- *
- * See the README, INSTALL, and UPGRADE files for basic setup instructions
- * and pointers to the online documentation.
- *
- * https://www.mediawiki.org/
- *
- * ----------
+ * The main web entry point for web browser navigations, usually via an
+ * Action or SpecialPage subclass.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,19 +30,22 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
+ * @ingroup entrypoint
  */
 
-# Bail on old versions of PHP.  Pretty much every other file in the codebase
-# has structures (try/catch, foo()->bar(), etc etc) which throw parse errors in
-# PHP 4. Setup.php and ObjectCache.php have structures invalid in PHP 5.0 and
-# 5.1, respectively.
-if ( !function_exists( 'version_compare' ) || version_compare( phpversion(), '5.3.2' ) < 0 ) {
-	// We need to use dirname( __FILE__ ) here cause __DIR__ is PHP5.3+
-	require dirname( __FILE__ ) . '/includes/PHPVersionError.php';
-	wfPHPVersionError( 'index.php' );
-}
+define( 'MW_ENTRY_POINT', 'index' );
+
+// Bail on old versions of PHP, or if composer has not been run yet to install
+// dependencies. Using dirname( __FILE__ ) here because __DIR__ is PHP5.3+.
+// phpcs:ignore MediaWiki.Usage.DirUsage.FunctionFound
+require_once dirname( __FILE__ ) . '/includes/PHPVersionCheck.php';
+wfEntryPointCheck( 'html', dirname( $_SERVER['SCRIPT_NAME'] ) );
 
 require __DIR__ . '/includes/WebStart.php';
 
-$mediaWiki = new MediaWiki();
-$mediaWiki->run();
+wfIndexMain();
+
+function wfIndexMain() {
+	$mediaWiki = new MediaWiki();
+	$mediaWiki->run();
+}

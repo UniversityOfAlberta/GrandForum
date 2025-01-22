@@ -1,17 +1,15 @@
 <?php
 /** буряад (буряад)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'ru';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Меди',
 	NS_SPECIAL          => 'Тусхай',
 	NS_TALK             => 'Хэлэлсэхэ',
@@ -27,9 +25,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Туһаламжа_хэлэлсэл',
 	NS_CATEGORY         => 'Категори',
 	NS_CATEGORY_TALK    => 'Категори_хэлэлсэхэ',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	# Russian namespaces
 	'Обсуждение'                         => NS_TALK,
 	'Участник'                           => NS_USER,
@@ -42,30 +40,30 @@ $namespaceAliases = array(
 	'Обсуждение_справки'                 => NS_HELP_TALK,
 	'Категория'                          => NS_CATEGORY,
 	'Обсуждение_категории'               => NS_CATEGORY_TALK,
-);
+];
 
 // Remove Russian gender aliases
-$namespaceGenderAliases = array();
+$namespaceGenderAliases = [];
 
-$specialPageAliases = array(
-	'Activeusers'               => array( 'Эдэбхитэй_хэрэглэгшэд' ),
-	'Allmessages'               => array( 'Бүхы_зурбас' ),
-	'Allpages'                  => array( 'Соохи_бүхы_хуудаһан' ),
-	'Ancientpages'              => array( 'Хуушарһан_хуудаһан' ),
-	'Categories'                => array( 'Категоринууд' ),
-	'ComparePages'              => array( 'Хуудаһа_харисуулха' ),
-	'Confirmemail'              => array( 'Сахим_хаяг_баталха' ),
-	'CreateAccount'             => array( 'Данса_үүсхэхэ' ),
-	'Mypage'                    => array( 'Минии_хуудаһан' ),
-	'Mytalk'                    => array( 'Минии_хэлэлсэл' ),
-	'Myuploads'                 => array( 'Минии_ашаалһан_зүйл' ),
-	'Newpages'                  => array( 'Шэнэ_хуудаһан' ),
-	'Popularpages'              => array( 'Оло_уншагдаһан_хуудаһан' ),
-	'Protectedpages'            => array( 'Хамгаалалтатай_хуудаһан' ),
-	'Protectedtitles'           => array( 'Хамгаалалтатай_гаршаг' ),
-	'Recentchanges'             => array( 'Сайтдахи_хубилалтанууд' ),
-	'Upload'                    => array( 'Ашаалха' ),
-	'Userlogin'                 => array( 'Нэбтэрхэ' ),
-	'Userlogout'                => array( 'Гараха' ),
-);
-
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'Activeusers'               => [ 'Эдэбхитэй_хэрэглэгшэд' ],
+	'Allmessages'               => [ 'Бүхы_зурбас' ],
+	'Allpages'                  => [ 'Соохи_бүхы_хуудаһан' ],
+	'Ancientpages'              => [ 'Хуушарһан_хуудаһан' ],
+	'Categories'                => [ 'Категоринууд' ],
+	'ComparePages'              => [ 'Хуудаһа_харисуулха' ],
+	'Confirmemail'              => [ 'Сахим_хаяг_баталха' ],
+	'CreateAccount'             => [ 'Данса_үүсхэхэ' ],
+	'MyLanguage'                => [ 'Минии_хэлэн' ],
+	'Mypage'                    => [ 'Минии_хуудаһан' ],
+	'Mytalk'                    => [ 'Минии_хэлэлсэл' ],
+	'Myuploads'                 => [ 'Минии_ашаалһан_зүйл' ],
+	'Newpages'                  => [ 'Шэнэ_хуудаһан' ],
+	'Protectedpages'            => [ 'Хамгаалалтатай_хуудаһан' ],
+	'Protectedtitles'           => [ 'Хамгаалалтатай_гаршаг' ],
+	'Recentchanges'             => [ 'Сайтдахи_хубилалтанууд' ],
+	'Upload'                    => [ 'Ашаалха' ],
+	'Userlogin'                 => [ 'Нэбтэрхэ' ],
+	'Userlogout'                => [ 'Гараха' ],
+];

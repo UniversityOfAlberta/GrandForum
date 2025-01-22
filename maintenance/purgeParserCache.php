@@ -22,7 +22,11 @@
  * @ingroup Maintenance
  */
 
-require __DIR__ . '/Maintenance.php';
+require_once __DIR__ . '/Maintenance.php';
+
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * Maintenance script to remove old objects from the parser cache.
@@ -30,55 +34,111 @@ require __DIR__ . '/Maintenance.php';
  * @ingroup Maintenance
  */
 class PurgeParserCache extends Maintenance {
-	public $lastProgress;
 
-	function __construct() {
+	/** @var null|string */
+	private $lastProgress;
+
+	/** @var null|float */
+	private $lastTimestamp;
+
+	private $tmpCount = 0;
+	private $usleep = 0;
+
+	public function __construct() {
 		parent::__construct();
 		$this->addDescription( "Remove old objects from the parser cache. " .
 			"This only works when the parser cache is in an SQL database." );
 		$this->addOption( 'expiredate', 'Delete objects expiring before this date.', false, true );
-		$this->addOption( 'age',
-			'Delete objects created more than this many seconds ago, assuming $wgParserCacheExpireTime ' .
-				'has been consistent.',
-			false, true );
+		$this->addOption(
+			'age',
+			'Delete objects created more than this many seconds ago, assuming ' .
+				'$wgParserCacheExpireTime has remained consistent.',
+			false,
+			true );
+		$this->addOption( 'dry-run', 'Perform a dry run, to verify age and date calculation.' );
+		$this->addOption( 'msleep', 'Milliseconds to sleep between purge chunks of $wgUpdateRowsPerQuery.',
+			false,
+			true );
+		$this->addOption(
+			'tag',
+			'Purge a single server only. This feature is designed for use by large wiki farms where ' .
+				'one has to purge multiple servers concurrently in order to keep up with new writes. ' .
+				'This requires using the SqlBagOStuff "servers" option in $wgObjectCaches.',
+			false,
+			true );
 	}
 
-	function execute() {
+	public function execute() {
 		$inputDate = $this->getOption( 'expiredate' );
 		$inputAge = $this->getOption( 'age' );
+
 		if ( $inputDate !== null ) {
-			$date = wfTimestamp( TS_MW, strtotime( $inputDate ) );
+			$timestamp = strtotime( $inputDate );
 		} elseif ( $inputAge !== null ) {
-			global $wgParserCacheExpireTime;
-			$date = wfTimestamp( TS_MW, time() + $wgParserCacheExpireTime - intval( $inputAge ) );
+			$expireTime = (int)$this->getConfig()->get( MainConfigNames::ParserCacheExpireTime );
+			$timestamp = time() + $expireTime - intval( $inputAge );
 		} else {
-			$this->error( "Must specify either --expiredate or --age", 1 );
+			$this->fatalError( "Must specify either --expiredate or --age" );
+		}
+		$this->usleep = 1e3 * $this->getOption( 'msleep', 0 );
+		$this->lastTimestamp = microtime( true );
+
+		$humanDate = ConvertibleTimestamp::convert( TS_RFC2822, $timestamp );
+		if ( $this->hasOption( 'dry-run' ) ) {
+			$this->fatalError( "\nDry run mode, would delete objects having an expiry before " . $humanDate . "\n" );
 		}
 
-		$english = Language::factory( 'en' );
-		$this->output( "Deleting objects expiring before " . $english->timeanddate( $date ) . "\n" );
+		$this->output( "Deleting objects expiring before " . $humanDate . "\n" );
 
-		$pc = wfGetParserCacheStorage();
-		$success = $pc->deleteObjectsExpiringBefore( $date, array( $this, 'showProgress' ) );
+		$pc = MediaWikiServices::getInstance()->getParserCache()->getCacheStorage();
+		$success = $pc->deleteObjectsExpiringBefore(
+			$timestamp,
+			[ $this, 'showProgressAndWait' ],
+			INF,
+			// Note that "0" can be a valid server tag, and must not be discarded or changed to null.
+			$this->getOption( 'tag', null )
+		);
 		if ( !$success ) {
-			$this->error( "\nCannot purge this kind of parser cache.", 1 );
+			$this->fatalError( "\nCannot purge this kind of parser cache." );
 		}
-		$this->showProgress( 100 );
+		$this->showProgressAndWait( 100 );
 		$this->output( "\nDone\n" );
 	}
 
-	function showProgress( $percent ) {
-		$percentString = sprintf( "%.2f", $percent );
+	public function showProgressAndWait( $percent ) {
+		// Parser caches involve mostly-unthrottled writes of large blobs. This is sometimes prone
+		// to replication lag. As such, while our purge queries are simple primary key deletes,
+		// we want to avoid adding significant load to the replication stream, by being
+		// proactively graceful with these sleeps between each batch.
+		// The reason we don't explicitly wait for replication is that that would require the script
+		// to be aware of cross-dc replicas, which we prefer not to, and waiting for replication
+		// and confirmation latency might actually be *too* graceful and take so long that the
+		// purge script would not be able to finish within 24 hours for large wiki farms.
+		// (T150124).
+		usleep( $this->usleep );
+		$this->tmpCount++;
+
+		$percentString = sprintf( "%.1f", $percent );
 		if ( $percentString === $this->lastProgress ) {
+			// Only print a line if we've progressed >= 0.1% since the last printed line.
+			// This does not mean every 0.1% step is printed since we only run this callback
+			// once after a deletion batch. How often and how many lines we print depends on the
+			// batch size (SqlBagOStuff::deleteObjectsExpiringBefore, $wgUpdateRowsPerQuery),
+			// and on how many table rows there are.
 			return;
 		}
+		$now = microtime( true );
+		$sec = sprintf( "%.1f", $now - $this->lastTimestamp );
+
+		// Give a sense of how much time is spent in the delete operations vs the sleep time,
+		// by recording the number of iterations we've completed since the last progress update.
+		$this->output( "... {$percentString}% done (+{$this->tmpCount} iterations in {$sec}s)\n" );
+
 		$this->lastProgress = $percentString;
-
-		$stars = floor( $percent / 2 );
-		$this->output( '[' . str_repeat( '*', $stars ) . str_repeat( '.', 50 - $stars ) . '] ' .
-			"$percentString%\r" );
-
+		$this->tmpCount = 0;
+		$this->lastTimestamp = $now;
 	}
 }
-$maintClass = 'PurgeParserCache';
+
+$maintClass = PurgeParserCache::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

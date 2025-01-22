@@ -1,11 +1,10 @@
 <?php
 /** Wolof (Wolof)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Ahloubadar
  * @author Ibou
@@ -17,7 +16,7 @@
 
 $fallback = 'fr';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Xibaarukaay',
 	NS_SPECIAL          => 'Jagleel',
 	NS_TALK             => 'Waxtaan',
@@ -34,9 +33,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Waxtaani_ndimbal',
 	NS_CATEGORY         => 'Wàll',
 	NS_CATEGORY_TALK    => 'Waxtaani_wàll',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	'Discuter' => NS_TALK,
 	'Utilisateur' => NS_USER,
 	'Discussion_Utilisateur' => NS_USER_TALK,
@@ -49,36 +48,36 @@ $namespaceAliases = array(
 	'Discussion_Aide' => NS_HELP_TALK,
 	'Catégorie' => NS_CATEGORY,
 	'Discussion_Catégorie' => NS_CATEGORY_TALK,
-);
+];
 
 // Remove French aliases
-$namespaceGenderAliases = array();
+$namespaceGenderAliases = [];
 
-$specialPageAliases = array(
-	'CreateAccount'             => array( 'Sos am sàq' ),
-	'Listfiles'                 => array( 'Limu nataal yi' ),
-	'Listgrouprights'           => array( 'Limu mboolooy jëfandikukat' ),
-	'Listusers'                 => array( 'Limu jëfandikukat yi' ),
-	'Lonelypages'               => array( 'Xëtu jirim' ),
-	'Mycontributions'           => array( 'Samay cëru' ),
-	'Mypage'                    => array( 'Sama xët' ),
-	'Mytalk'                    => array( 'Samay waxtaan' ),
-	'Newimages'                 => array( 'Nataal bu bees' ),
-	'Preferences'               => array( 'Tànneef' ),
-	'Randompage'                => array( 'Xët cig mbetteel' ),
-	'Recentchanges'             => array( 'Coppite yu mujj' ),
-	'Search'                    => array( 'Ceet' ),
-	'Uncategorizedcategories'   => array( 'Wàll yi amul wàll' ),
-	'Uncategorizedimages'       => array( 'Nataal yi amul wàll' ),
-	'Uncategorizedpages'        => array( 'Xët yi amul wàll' ),
-	'Uncategorizedtemplates'    => array( 'Royuwaay yi amul wàll' ),
-	'Unusedcategories'          => array( 'Royuwaay yiñ jëfandikuwul' ),
-	'Unusedimages'              => array( 'Nataal yiñ jëfandikuwul' ),
-	'Upload'                    => array( 'Yeb' ),
-	'Userlogin'                 => array( 'Lonku' ),
-	'Userlogout'                => array( 'Lonkiku' ),
-	'Wantedcategories'          => array( 'Wàll yiñ laaj' ),
-	'Wantedpages'               => array( 'Xët yiñ laaj' ),
-	'Watchlist'                 => array( 'Limu toppte' ),
-);
-
+/** @phpcs-require-sorted-array */
+$specialPageAliases = [
+	'CreateAccount'             => [ 'Sos_am_sàq' ],
+	'Listfiles'                 => [ 'Limu_nataal_yi' ],
+	'Listgrouprights'           => [ 'Limu_mboolooy_jëfandikukat' ],
+	'Listusers'                 => [ 'Limu_jëfandikukat_yi' ],
+	'Lonelypages'               => [ 'Xëtu_jirim' ],
+	'Mycontributions'           => [ 'Samay_cëru' ],
+	'Mypage'                    => [ 'Sama_xët' ],
+	'Mytalk'                    => [ 'Samay_waxtaan' ],
+	'Newimages'                 => [ 'Nataal_bu_bees' ],
+	'Preferences'               => [ 'Tànneef' ],
+	'Randompage'                => [ 'Xët_cig_mbetteel' ],
+	'Recentchanges'             => [ 'Coppite_yu_mujj' ],
+	'Search'                    => [ 'Ceet' ],
+	'Uncategorizedcategories'   => [ 'Wàll_yi_amul_wàll' ],
+	'Uncategorizedimages'       => [ 'Nataal_yi_amul_wàll' ],
+	'Uncategorizedpages'        => [ 'Xët_yi_amul_wàll' ],
+	'Uncategorizedtemplates'    => [ 'Royuwaay_yi_amul_wàll' ],
+	'Unusedcategories'          => [ 'Royuwaay_yiñ_jëfandikuwul' ],
+	'Unusedimages'              => [ 'Nataal_yiñ_jëfandikuwul' ],
+	'Upload'                    => [ 'Yeb' ],
+	'Userlogin'                 => [ 'Lonku' ],
+	'Userlogout'                => [ 'Lonkiku' ],
+	'Wantedcategories'          => [ 'Wàll_yiñ_laaj' ],
+	'Wantedpages'               => [ 'Xët_yiñ_laaj' ],
+	'Watchlist'                 => [ 'Limu_toppte' ],
+];

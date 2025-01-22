@@ -21,6 +21,8 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MediaWikiServices;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -32,21 +34,28 @@ require_once __DIR__ . '/Maintenance.php';
 class ImportSiteScripts extends Maintenance {
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = 'Import site scripts from a site';
+		$this->addDescription( 'Import site scripts from a site' );
 		$this->addArg( 'api', 'API base url' );
 		$this->addArg( 'index', 'index.php base url' );
 		$this->addOption( 'username', 'User name of the script importer' );
 	}
 
 	public function execute() {
-		global $wgUser;
-
-		$user = User::newFromName( $this->getOption( 'username', 'ScriptImporter' ) );
-		$wgUser = $user;
+		$username = $this->getOption( 'username', false );
+		if ( $username === false ) {
+			$user = User::newSystemUser( 'ScriptImporter', [ 'steal' => true ] );
+		} else {
+			$user = User::newFromName( $username );
+		}
+		'@phan-var User $user';
+		StubGlobalUser::setUser( $user );
 
 		$baseUrl = $this->getArg( 1 );
 		$pageList = $this->fetchScriptList();
 		$this->output( 'Importing ' . count( $pageList ) . " pages\n" );
+		$services = MediaWikiServices::getInstance();
+		$wikiPageFactory = $services->getWikiPageFactory();
+		$httpRequestFactory = $services->getHttpRequestFactory();
 
 		foreach ( $pageList as $page ) {
 			$title = Title::makeTitleSafe( NS_MEDIAWIKI, $page );
@@ -56,53 +65,59 @@ class ImportSiteScripts extends Maintenance {
 			}
 
 			$this->output( "Importing $page\n" );
-			$url = wfAppendQuery( $baseUrl, array(
+			$url = wfAppendQuery( $baseUrl, [
 				'action' => 'raw',
-				'title' => "MediaWiki:{$page}" ) );
-			$text = Http::get( $url );
+				'title' => "MediaWiki:{$page}" ] );
+			$text = $httpRequestFactory->get( $url, [], __METHOD__ );
 
-			$wikiPage = WikiPage::factory( $title );
+			$wikiPage = $wikiPageFactory->newFromTitle( $title );
 			$content = ContentHandler::makeContent( $text, $wikiPage->getTitle() );
-			$wikiPage->doEditContent( $content, "Importing from $url", 0, false, $user );
+			$wikiPage->doUserEditContent( $content, $user, "Importing from $url" );
 		}
-
 	}
 
 	protected function fetchScriptList() {
-		$data = array(
+		$data = [
 			'action' => 'query',
-			'format' => 'php',//'json',
+			'format' => 'json',
 			'list' => 'allpages',
 			'apnamespace' => '8',
 			'aplimit' => '500',
-		);
+			'continue' => '',
+		];
 		$baseUrl = $this->getArg( 0 );
-		$pages = array();
+		$pages = [];
 
-		do {
+		while ( true ) {
 			$url = wfAppendQuery( $baseUrl, $data );
-			$strResult = Http::get( $url );
-			//$result = FormatJson::decode( $strResult ); // Still broken
-			$result = unserialize( $strResult );
+			$strResult = MediaWikiServices::getInstance()->getHttpRequestFactory()->
+				get( $url, [], __METHOD__ );
+			$result = FormatJson::decode( $strResult, true );
 
-			if ( !empty( $result['query']['allpages'] ) ) {
-				foreach ( $result['query']['allpages'] as $page ) {
-					if ( substr( $page['title'], -3 ) === '.js' ) {
-						strtok( $page['title'], ':' );
-						$pages[] = strtok( '' );
-					}
+			$page = null;
+			foreach ( $result['query']['allpages'] as $page ) {
+				if ( substr( $page['title'], -3 ) === '.js' ) {
+					strtok( $page['title'], ':' );
+					$pages[] = strtok( '' );
 				}
 			}
-			if ( !empty( $result['query-continue'] ) ) {
-				$data['apfrom'] = $result['query-continue']['allpages']['apfrom'];
-				$this->output( "Fetching new batch from {$data['apfrom']}\n" );
+
+			if ( $page !== null ) {
+				$this->output( "Fetched list up to {$page['title']}\n" );
 			}
-		} while ( isset( $result['query-continue'] ) );
+
+			if ( isset( $result['continue'] ) ) { // >= 1.21
+				$data = array_replace( $data, $result['continue'] );
+			} elseif ( isset( $result['query-continue']['allpages'] ) ) { // <= 1.20
+				$data = array_replace( $data, $result['query-continue']['allpages'] );
+			} else {
+				break;
+			}
+		}
 
 		return $pages;
-
 	}
 }
 
-$maintClass = 'ImportSiteScripts';
+$maintClass = ImportSiteScripts::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

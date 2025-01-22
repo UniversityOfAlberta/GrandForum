@@ -31,35 +31,61 @@
 abstract class FormSpecialPage extends SpecialPage {
 	/**
 	 * The sub-page of the special page.
-	 * @var string
+	 * @var string|null
 	 */
 	protected $par = null;
 
 	/**
+	 * @var array|null POST data preserved across re-authentication
+	 * @since 1.32
+	 */
+	protected $reauthPostData = null;
+
+	/**
 	 * Get an HTMLForm descriptor array
-	 * @return Array
+	 * @return array
 	 */
 	abstract protected function getFormFields();
 
 	/**
+	 * Add pre-HTML to the form
+	 * @return string HTML which will be sent to $form->addPreHtml()
+	 * @since 1.38
+	 */
+	protected function preHtml() {
+		return '';
+	}
+
+	/**
+	 * Add post-HTML to the form
+	 * @return string HTML which will be sent to $form->addPostHtml()
+	 * @since 1.38
+	 */
+	protected function postHtml() {
+		return '';
+	}
+
+	/**
 	 * Add pre-text to the form
-	 * @return String HTML which will be sent to $form->addPreText()
+	 * @return string HTML which will be sent to $form->addPreText()
+	 * @deprecated since 1.38, use preHtml() instead
 	 */
 	protected function preText() {
-		return '';
+		return $this->preHtml();
 	}
 
 	/**
 	 * Add post-text to the form
-	 * @return String HTML which will be sent to $form->addPostText()
+	 * @return string HTML which will be sent to $form->addPostText()
+	 * @deprecated since 1.38, use postHtml() instead
 	 */
 	protected function postText() {
-		return '';
+		return $this->postHtml();
 	}
 
 	/**
 	 * Play with the HTMLForm if you need to more substantially
-	 * @param $form HTMLForm
+	 * @param HTMLForm $form
 	 */
 	protected function alterForm( HTMLForm $form ) {
 	}
@@ -75,19 +101,48 @@ abstract class FormSpecialPage extends SpecialPage {
 	}
 
 	/**
+	 * Get display format for the form. See HTMLForm documentation for available values.
+	 *
+	 * @since 1.25
+	 * @return string
+	 */
+	protected function getDisplayFormat() {
+		return 'table';
+	}
+
+	/**
 	 * Get the HTMLForm to control behavior
 	 * @return HTMLForm|null
 	 */
 	protected function getForm() {
-		$this->fields = $this->getFormFields();
+		$context = $this->getContext();
+		$onSubmit = [ $this, 'onSubmit' ];
 
-		$form = new HTMLForm( $this->fields, $this->getContext(), $this->getMessagePrefix() );
-		$form->setSubmitCallback( array( $this, 'onSubmit' ) );
-		// If the form is a compact vertical form, then don't output this ugly
-		// fieldset surrounding it.
-		// XXX Special pages can setDisplayFormat to 'vform' in alterForm(), but that
-		// is called after this.
-		if ( !$form->isVForm() ) {
+		if ( $this->reauthPostData ) {
+			// Restore POST data
+			$context = new DerivativeContext( $context );
+			$oldRequest = $this->getRequest();
+			$context->setRequest( new DerivativeRequest(
+				$oldRequest, $this->reauthPostData + $oldRequest->getQueryValues(), true
+			) );
+
+			// But don't treat it as a "real" submission just in case of some
+			// crazy kind of CSRF.
+			$onSubmit = static function () {
+				return false;
+			};
+		}
+
+		$form = HTMLForm::factory(
+			$this->getDisplayFormat(),
+			$this->getFormFields(),
+			$context,
+			$this->getMessagePrefix()
+		);
+		$form->setSubmitCallback( $onSubmit );
+		if ( $this->getDisplayFormat() !== 'ooui' ) {
+			// No legend and wrapper by default in OOUI forms, but can be set manually
+			// from alterForm()
 			$form->setWrapperLegendMsg( $this->getMessagePrefix() . '-legend' );
 		}
 
@@ -96,27 +151,34 @@ abstract class FormSpecialPage extends SpecialPage {
 			$form->addHeaderText( $headerMsg->parseAsBlock() );
 		}
 
-		// Retain query parameters (uselang etc)
-		$params = array_diff_key(
-			$this->getRequest()->getQueryValues(), array( 'title' => null ) );
-		$form->addHiddenField( 'redirectparams', wfArrayToCgi( $params ) );
-
+		// preText / postText are deprecated, but we need to keep calling them until the end of
+		// the deprecation process so a subclass overriding *Text and *Html both work
 		$form->addPreText( $this->preText() );
 		$form->addPostText( $this->postText() );
 		$this->alterForm( $form );
+		if ( $form->getMethod() == 'post' ) {
+			// Retain query parameters (uselang etc) on POST requests
+			$params = array_diff_key(
+				$this->getRequest()->getQueryValues(), [ 'title' => null ] );
+			$form->addHiddenField( 'redirectparams', wfArrayToCgi( $params ) );
+		}
 
 		// Give hooks a chance to alter the form, adding extra fields or text etc
-		wfRunHooks( "Special{$this->getName()}BeforeFormDisplay", array( &$form ) );
+		$this->getHookRunner()->onSpecialPageBeforeFormDisplay( $this->getName(), $form );
 
 		return $form;
 	}
 
 	/**
 	 * Process the form on POST submission.
-	 * @param $data Array
-	 * @return Bool|Array true for success, false for didn't-try, array of errors on failure
+	 * @phpcs:disable MediaWiki.Commenting.FunctionComment.ExtraParamComment
+	 * @param array $data
+	 * @param HTMLForm|null $form
+	 * @suppress PhanCommentParamWithoutRealParam Many implementations don't have $form
+	 * @return bool|string|array|Status As documented for HTMLForm::trySubmit.
+	 * @phpcs:enable MediaWiki.Commenting.FunctionComment.ExtraParamComment
 	 */
-	abstract public function onSubmit( array $data );
+	abstract public function onSubmit( array $data /* HTMLForm $form = null */ );
 
 	/**
 	 * Do something exciting on successful processing of the form, most likely to show a
@@ -129,7 +191,7 @@ abstract class FormSpecialPage extends SpecialPage {
 	/**
 	 * Basic SpecialPage workflow: get a form, send it to the user; get some data back,
 	 *
-	 * @param string $par Subpage string if one was specified
+	 * @param string|null $par Subpage string if one was specified
 	 */
 	public function execute( $par ) {
 		$this->setParameter( $par );
@@ -137,6 +199,11 @@ abstract class FormSpecialPage extends SpecialPage {
 
 		// This will throw exceptions if there's a problem
 		$this->checkExecutePermissions( $this->getUser() );
+
+		$securityLevel = $this->getLoginSecurityLevel();
+		if ( $securityLevel !== false && !$this->checkLoginSecurityLevel( $securityLevel ) ) {
+			return;
+		}
 
 		$form = $this->getForm();
 		if ( $form->show() ) {
@@ -146,7 +213,7 @@ abstract class FormSpecialPage extends SpecialPage {
 
 	/**
 	 * Maybe do something interesting with the subpage parameter
-	 * @param string $par
+	 * @param string|null $par
 	 */
 	protected function setParameter( $par ) {
 		$this->par = $par;
@@ -155,28 +222,32 @@ abstract class FormSpecialPage extends SpecialPage {
 	/**
 	 * Called from execute() to check if the given user can perform this action.
 	 * Failures here must throw subclasses of ErrorPageError.
-	 * @param $user User
+	 * @param User $user
 	 * @throws UserBlockedError
-	 * @return Bool true
 	 */
 	protected function checkExecutePermissions( User $user ) {
 		$this->checkPermissions();
 
-		if ( $this->requiresUnblock() && $user->isBlocked() ) {
+		if ( $this->requiresUnblock() ) {
 			$block = $user->getBlock();
-			throw new UserBlockedError( $block );
+			if ( $block && $block->isSitewide() ) {
+				throw new UserBlockedError(
+					$block,
+					$user,
+					$this->getLanguage(),
+					$this->getRequest()->getIP()
+				);
+			}
 		}
 
 		if ( $this->requiresWrite() ) {
 			$this->checkReadOnly();
 		}
-
-		return true;
 	}
 
 	/**
 	 * Whether this action requires the wiki not to be locked
-	 * @return Bool
+	 * @return bool
 	 */
 	public function requiresWrite() {
 		return true;
@@ -184,9 +255,19 @@ abstract class FormSpecialPage extends SpecialPage {
 
 	/**
 	 * Whether this action cannot be executed by a blocked user
-	 * @return Bool
+	 * @return bool
 	 */
 	public function requiresUnblock() {
 		return true;
+	}
+
+	/**
+	 * Preserve POST data across reauthentication
+	 *
+	 * @since 1.32
+	 * @param array $data
+	 */
+	protected function setReauthPostData( array $data ) {
+		$this->reauthPostData = $data;
 	}
 }

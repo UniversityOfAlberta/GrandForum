@@ -1,11 +1,10 @@
 <?php
 /** Runa shimi (Runa shimi)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author AlimanRuna
  * @author Ebe123
@@ -14,7 +13,7 @@
 
 $fallback = 'qu, es';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Midya',
 	NS_SPECIAL          => 'Sapak',
 	NS_TALK             => 'Rimanakuy',
@@ -31,8 +30,7 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Yanapapak_rimanakuy',
 	NS_CATEGORY         => 'Samiyachiy',
 	NS_CATEGORY_TALK    => 'Samiyachiy_rimanakuy',
-);
+];
 
-// Remove Spanish gender aliases (bug 37090)
-$namespaceGenderAliases = array();
-
+// Remove Spanish gender aliases (T39090)
+$namespaceGenderAliases = [];

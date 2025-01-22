@@ -21,6 +21,10 @@
  * @ingroup Upload
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Permissions\Authority;
+
 /**
  * Implements uploading from a HTTP resource.
  *
@@ -29,27 +33,28 @@
  * @author Michael Dale
  */
 class UploadFromUrl extends UploadBase {
-	protected $mAsync, $mUrl;
-	protected $mIgnoreWarnings = true;
+	protected $mUrl;
 
 	protected $mTempPath, $mTmpHandle;
 
-	protected static $allowedUrls = array();
+	protected static $allowedUrls = [];
 
 	/**
 	 * Checks if the user is allowed to use the upload-by-URL feature. If the
 	 * user is not allowed, return the name of the user right as a string. If
 	 * the user is allowed, have the parent do further permissions checking.
 	 *
-	 * @param $user User
+	 * @param Authority $performer
 	 *
 	 * @return bool|string
 	 */
-	public static function isAllowed( $user ) {
-		if ( !$user->isAllowed( 'upload_by_url' ) ) {
+	public static function isAllowed( Authority $performer ) {
+		if ( !$performer->isAllowed( 'upload_by_url' )
+		) {
 			return 'upload_by_url';
 		}
-		return parent::isAllowed( $user );
+
+		return parent::isAllowed( $performer );
 	}
 
 	/**
@@ -57,21 +62,22 @@ class UploadFromUrl extends UploadBase {
 	 * @return bool
 	 */
 	public static function isEnabled() {
-		global $wgAllowCopyUploads;
-		return $wgAllowCopyUploads && parent::isEnabled();
+		$allowCopyUploads = MediaWikiServices::getInstance()->getMainConfig()->get( MainConfigNames::AllowCopyUploads );
+
+		return $allowCopyUploads && parent::isEnabled();
 	}
 
 	/**
 	 * Checks whether the URL is for an allowed host
-	 * The domains in the whitelist can include wildcard characters (*) in place
+	 * The domains in the allowlist can include wildcard characters (*) in place
 	 * of any of the domain levels, e.g. '*.flickr.com' or 'upload.*.gov.uk'.
 	 *
-	 * @param $url string
+	 * @param string $url
 	 * @return bool
 	 */
 	public static function isAllowedHost( $url ) {
-		global $wgCopyUploadsDomains;
-		if ( !count( $wgCopyUploadsDomains ) ) {
+		$domains = self::getAllowedHosts();
+		if ( !count( $domains ) ) {
 			return true;
 		}
 		$parsedUrl = wfParseUrl( $url );
@@ -79,14 +85,14 @@ class UploadFromUrl extends UploadBase {
 			return false;
 		}
 		$valid = false;
-		foreach ( $wgCopyUploadsDomains as $domain ) {
-			// See if the domain for the upload matches this whitelisted domain
-			$whitelistedDomainPieces = explode( '.', $domain );
+		foreach ( $domains as $domain ) {
+			// See if the domain for the upload matches this allowed domain
+			$domainPieces = explode( '.', $domain );
 			$uploadDomainPieces = explode( '.', $parsedUrl['host'] );
-			if ( count( $whitelistedDomainPieces ) === count( $uploadDomainPieces ) ) {
+			if ( count( $domainPieces ) === count( $uploadDomainPieces ) ) {
 				$valid = true;
 				// See if all the pieces match or not (excluding wildcards)
-				foreach ( $whitelistedDomainPieces as $index => $piece ) {
+				foreach ( $domainPieces as $index => $piece ) {
 					if ( $piece !== '*' && $piece !== $uploadDomainPieces[$index] ) {
 						$valid = false;
 					}
@@ -103,51 +109,69 @@ class UploadFromUrl extends UploadBase {
 			}
 			*/
 		}
+
 		return $valid;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	private static function getAllowedHosts(): array {
+		$config = MediaWikiServices::getInstance()->getMainConfig();
+		$domains = $config->get( MainConfigNames::CopyUploadsDomains );
+
+		if ( $config->get( MainConfigNames::CopyUploadAllowOnWikiDomainConfig ) ) {
+			$page = wfMessage( 'copyupload-allowed-domains' )->inContentLanguage()->plain();
+
+			foreach ( explode( "\n", $page ) as $line ) {
+				// Strip comments
+				$line = preg_replace( "/^\\s*([^#]*)\\s*((.*)?)$/", "\\1", $line );
+				// Trim whitespace
+				$line = trim( $line );
+
+				if ( $line !== '' ) {
+					$domains[] = $line;
+				}
+			}
+		}
+
+		return $domains;
 	}
 
 	/**
 	 * Checks whether the URL is not allowed.
 	 *
-	 * @param $url string
+	 * @param string $url
 	 * @return bool
 	 */
 	public static function isAllowedUrl( $url ) {
 		if ( !isset( self::$allowedUrls[$url] ) ) {
 			$allowed = true;
-			wfRunHooks( 'IsUploadAllowedFromUrl', array( $url, &$allowed ) );
+			Hooks::runner()->onIsUploadAllowedFromUrl( $url, $allowed );
 			self::$allowedUrls[$url] = $allowed;
 		}
+
 		return self::$allowedUrls[$url];
 	}
 
 	/**
 	 * Entry point for API upload
 	 *
-	 * @param $name string
-	 * @param $url string
-	 * @param $async mixed Whether the download should be performed
-	 * asynchronous. False for synchronous, async or async-leavemessage for
-	 * asynchronous download.
+	 * @param string $name
+	 * @param string $url
 	 * @throws MWException
 	 */
-	public function initialize( $name, $url, $async = false ) {
-		global $wgAllowAsyncCopyUploads;
-
+	public function initialize( $name, $url ) {
 		$this->mUrl = $url;
-		$this->mAsync = $wgAllowAsyncCopyUploads ? $async : false;
-		if ( $async ) {
-			throw new MWException( 'Asynchronous copy uploads are no longer possible as of r81612.' );
-		}
 
-		$tempPath = $this->mAsync ? null : $this->makeTemporaryFile();
+		$tempPath = $this->makeTemporaryFile();
 		# File size and removeTempFile will be filled in later
 		$this->initializePathInfo( $name, $tempPath, 0, false );
 	}
 
 	/**
 	 * Entry point for SpecialUpload
-	 * @param $request WebRequest object
+	 * @param WebRequest &$request
 	 */
 	public function initializeFromRequest( &$request ) {
 		$desiredDestName = $request->getText( 'wpDestFile' );
@@ -156,22 +180,23 @@ class UploadFromUrl extends UploadBase {
 		}
 		$this->initialize(
 			$desiredDestName,
-			trim( $request->getVal( 'wpUploadFileURL' ) ),
-			false
+			trim( $request->getVal( 'wpUploadFileURL' ) )
 		);
 	}
 
 	/**
-	 * @param $request WebRequest object
+	 * @param WebRequest $request
 	 * @return bool
 	 */
 	public static function isValidRequest( $request ) {
-		global $wgUser;
+		$user = RequestContext::getMain()->getUser();
 
 		$url = $request->getVal( 'wpUploadFileURL' );
+
 		return !empty( $url )
-			&& Http::isValidURI( $url )
-			&& $wgUser->isAllowed( 'upload_by_url' );
+			&& MediaWikiServices::getInstance()
+				->getPermissionManager()
+				->userHasRight( $user, 'upload_by_url' );
 	}
 
 	/**
@@ -182,15 +207,15 @@ class UploadFromUrl extends UploadBase {
 	}
 
 	/**
-	 * Download the file (if not async)
+	 * Download the file
 	 *
-	 * @param Array $httpOptions Array of options for MWHttpRequest. Ignored if async.
+	 * @param array $httpOptions Array of options for MWHttpRequest.
 	 *   This could be used to override the timeout on the http request.
 	 * @return Status
 	 */
-	public function fetchFile( $httpOptions = array() ) {
-		if ( !Http::isValidURI( $this->mUrl ) ) {
-			return Status::newFatal( 'http-invalid-url' );
+	public function fetchFile( $httpOptions = [] ) {
+		if ( !MWHttpRequest::isValidURI( $this->mUrl ) ) {
+			return Status::newFatal( 'http-invalid-url', $this->mUrl );
 		}
 
 		if ( !self::isAllowedHost( $this->mUrl ) ) {
@@ -199,10 +224,7 @@ class UploadFromUrl extends UploadBase {
 		if ( !self::isAllowedUrl( $this->mUrl ) ) {
 			return Status::newFatal( 'upload-copy-upload-invalid-url' );
 		}
-		if ( !$this->mAsync ) {
-			return $this->reallyFetchFile( $httpOptions );
-		}
-		return Status::newGood();
+		return $this->reallyFetchFile( $httpOptions );
 	}
 
 	/**
@@ -211,25 +233,33 @@ class UploadFromUrl extends UploadBase {
 	 * @return string Path to the file
 	 */
 	protected function makeTemporaryFile() {
-		$tmpFile = TempFSFile::factory( 'URL' );
+		$tmpFile = MediaWikiServices::getInstance()->getTempFSFileFactory()
+			->newTempFSFile( 'URL', 'urlupload_' );
 		$tmpFile->bind( $this );
+
 		return $tmpFile->getPath();
 	}
 
 	/**
 	 * Callback: save a chunk of the result of a HTTP request to the temporary file
 	 *
-	 * @param $req mixed
-	 * @param $buffer string
-	 * @return int number of bytes handled
+	 * @param mixed $req
+	 * @param string $buffer
+	 * @return int Number of bytes handled
 	 */
 	public function saveTempFileChunk( $req, $buffer ) {
+		wfDebugLog( 'fileupload', 'Received chunk of ' . strlen( $buffer ) . ' bytes' );
 		$nbytes = fwrite( $this->mTmpHandle, $buffer );
 
 		if ( $nbytes == strlen( $buffer ) ) {
 			$this->mFileSize += $nbytes;
 		} else {
 			// Well... that's not good!
+			wfDebugLog(
+				'fileupload',
+				'Short write ' . $nbytes . '/' . strlen( $buffer ) .
+					' bytes, aborting with ' . $this->mFileSize . ' uploaded so far'
+			);
 			fclose( $this->mTmpHandle );
 			$this->mTmpHandle = false;
 		}
@@ -241,11 +271,13 @@ class UploadFromUrl extends UploadBase {
 	 * Download the file, save it to the temporary file and update the file
 	 * size and set $mRemoveTempFile to true.
 	 *
-	 * @param Array $httpOptions Array of options for MWHttpRequest
+	 * @param array $httpOptions Array of options for MWHttpRequest
 	 * @return Status
 	 */
-	protected function reallyFetchFile( $httpOptions = array() ) {
-		global $wgCopyUploadProxy, $wgCopyUploadTimeout;
+	protected function reallyFetchFile( $httpOptions = [] ) {
+		$copyUploadProxy = MediaWikiServices::getInstance()->getMainConfig()->get( MainConfigNames::CopyUploadProxy );
+		$copyUploadTimeout = MediaWikiServices::getInstance()->getMainConfig()
+			->get( MainConfigNames::CopyUploadTimeout );
 		if ( $this->mTempPath === false ) {
 			return Status::newFatal( 'tmp-create-error' );
 		}
@@ -255,22 +287,48 @@ class UploadFromUrl extends UploadBase {
 		if ( !$this->mTmpHandle ) {
 			return Status::newFatal( 'tmp-create-error' );
 		}
+		wfDebugLog( 'fileupload', 'Temporary file created "' . $this->mTempPath . '"' );
 
 		$this->mRemoveTempFile = true;
 		$this->mFileSize = 0;
 
-		$options = $httpOptions + array(
-			'followRedirects' => true,
+		$options = $httpOptions + [ 'followRedirects' => false ];
+
+		if ( $copyUploadProxy !== false ) {
+			$options['proxy'] = $copyUploadProxy;
+		}
+
+		if ( $copyUploadTimeout && !isset( $options['timeout'] ) ) {
+			$options['timeout'] = $copyUploadTimeout;
+		}
+		wfDebugLog(
+			'fileupload',
+			'Starting download from "' . $this->mUrl . '" ' .
+				'<' . implode( ',', array_keys( array_filter( $options ) ) ) . '>'
 		);
-		if ( $wgCopyUploadProxy !== false ) {
-			$options['proxy'] = $wgCopyUploadProxy;
+
+		// Manually follow any redirects up to the limit and reset the output file before each new request to prevent
+		// capturing the redirect response as part of the file.
+		$attemptsLeft = $options['maxRedirects'] ?? 5;
+		$targetUrl = $this->mUrl;
+		$requestFactory = MediaWikiServices::getInstance()->getHttpRequestFactory();
+		while ( $attemptsLeft > 0 ) {
+			$req = $requestFactory->create( $targetUrl, $options, __METHOD__ );
+			$req->setCallback( [ $this, 'saveTempFileChunk' ] );
+			$status = $req->execute();
+			if ( !$req->isRedirect() ) {
+				break;
+			}
+			$targetUrl = $req->getFinalUrl();
+			// Remove redirect response content from file.
+			ftruncate( $this->mTmpHandle, 0 );
+			rewind( $this->mTmpHandle );
+			$attemptsLeft--;
 		}
-		if ( $wgCopyUploadTimeout && !isset( $options['timeout'] ) ) {
-			$options['timeout'] = $wgCopyUploadTimeout;
+
+		if ( $attemptsLeft == 0 ) {
+			return Status::newFatal( 'upload-too-many-redirects' );
 		}
-		$req = MWHttpRequest::factory( $this->mUrl, $options );
-		$req->setCallback( array( $this, 'saveTempFileChunk' ) );
-		$status = $req->execute();
 
 		if ( $this->mTmpHandle ) {
 			// File got written ok...
@@ -281,93 +339,20 @@ class UploadFromUrl extends UploadBase {
 			return Status::newFatal( 'tmp-write-error' );
 		}
 
-		if ( !$status->isOk() ) {
-			return $status;
+		// @phan-suppress-next-line PhanPossiblyUndeclaredVariable Always set after loop
+		if ( $status->isOK() ) {
+			wfDebugLog( 'fileupload', 'Download by URL completed successfully.' );
+		} else {
+			// @phan-suppress-next-line PhanPossiblyUndeclaredVariable Always set after loop
+			wfDebugLog( 'fileupload', $status->getWikitext( false, false, 'en' ) );
+			wfDebugLog(
+				'fileupload',
+				// @phan-suppress-next-line PhanPossiblyUndeclaredVariable Always set after loop
+				'Download by URL completed with HTTP status ' . $req->getStatus()
+			);
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchReturnNullable,PhanPossiblyUndeclaredVariable Always set after loop
 		return $status;
 	}
-
-	/**
-	 * Wrapper around the parent function in order to defer verifying the
-	 * upload until the file really has been fetched.
-	 * @return array|mixed
-	 */
-	public function verifyUpload() {
-		if ( $this->mAsync ) {
-			return array( 'status' => UploadBase::OK );
-		}
-		return parent::verifyUpload();
-	}
-
-	/**
-	 * Wrapper around the parent function in order to defer checking warnings
-	 * until the file really has been fetched.
-	 * @return Array
-	 */
-	public function checkWarnings() {
-		if ( $this->mAsync ) {
-			$this->mIgnoreWarnings = false;
-			return array();
-		}
-		return parent::checkWarnings();
-	}
-
-	/**
-	 * Wrapper around the parent function in order to defer checking protection
-	 * until we are sure that the file can actually be uploaded
-	 * @param $user User
-	 * @return bool|mixed
-	 */
-	public function verifyTitlePermissions( $user ) {
-		if ( $this->mAsync ) {
-			return true;
-		}
-		return parent::verifyTitlePermissions( $user );
-	}
-
-	/**
-	 * Wrapper around the parent function in order to defer uploading to the
-	 * job queue for asynchronous uploads
-	 * @param $comment string
-	 * @param $pageText string
-	 * @param $watch bool
-	 * @param $user User
-	 * @return Status
-	 */
-	public function performUpload( $comment, $pageText, $watch, $user ) {
-		if ( $this->mAsync ) {
-			$sessionKey = $this->insertJob( $comment, $pageText, $watch, $user );
-
-			return Status::newFatal( 'async', $sessionKey );
-		}
-
-		return parent::performUpload( $comment, $pageText, $watch, $user );
-	}
-
-	/**
-	 * @param $comment
-	 * @param $pageText
-	 * @param $watch
-	 * @param $user User
-	 * @return String
-	 */
-	protected function insertJob( $comment, $pageText, $watch, $user ) {
-		$sessionKey = $this->stashSession();
-		$job = new UploadFromUrlJob( $this->getTitle(), array(
-			'url' => $this->mUrl,
-			'comment' => $comment,
-			'pageText' => $pageText,
-			'watch' => $watch,
-			'userName' => $user->getName(),
-			'leaveMessage' => $this->mAsync == 'async-leavemessage',
-			'ignoreWarnings' => $this->mIgnoreWarnings,
-			'sessionId' => session_id(),
-			'sessionKey' => $sessionKey,
-		) );
-		$job->initializeSessionData();
-		JobQueueGroup::singleton()->push( $job );
-		return $sessionKey;
-	}
-
 }

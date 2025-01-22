@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Functions related to the output of file content.
  *
@@ -20,12 +21,19 @@
  * @file
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+
 /**
  * Functions related to the output of file content
  */
 class StreamFile {
-	const READY_STREAM = 1;
-	const NOT_MODIFIED = 2;
+	// Do not send any HTTP headers unless requested by caller (e.g. body only)
+	/** @deprecated since 1.34 */
+	public const STREAM_HEADLESS = HTTPFileStreamer::STREAM_HEADLESS;
+	// Do not try to tear down any PHP output buffers
+	/** @deprecated since 1.34 */
+	public const STREAM_ALLOW_OB = HTTPFileStreamer::STREAM_ALLOW_OB;
 
 	/**
 	 * Stream a file to the browser, adding all the headings and fun stuff.
@@ -33,163 +41,89 @@ class StreamFile {
 	 * and Content-Disposition.
 	 *
 	 * @param string $fname Full name and path of the file to stream
-	 * @param array $headers Any additional headers to send
+	 * @param array $headers Any additional headers to send if the file exists
 	 * @param bool $sendErrors Send error messages if errors occur (like 404)
+	 * @param array $optHeaders HTTP request header map (e.g. "range") (use lowercase keys)
+	 * @param int $flags Bitfield of STREAM_* constants
 	 * @throws MWException
 	 * @return bool Success
 	 */
-	public static function stream( $fname, $headers = array(), $sendErrors = true ) {
-		wfProfileIn( __METHOD__ );
-
-		if ( FileBackend::isStoragePath( $fname ) ) { // sanity
-			wfProfileOut( __METHOD__ );
-			throw new MWException( __FUNCTION__ . " given storage path '$fname'." );
-		}
-
-		wfSuppressWarnings();
-		$stat = stat( $fname );
-		wfRestoreWarnings();
-
-		$res = self::prepareForStream( $fname, $stat, $headers, $sendErrors );
-		if ( $res == self::NOT_MODIFIED ) {
-			$ok = true; // use client cache
-		} elseif ( $res == self::READY_STREAM ) {
-			wfProfileIn( __METHOD__ . '-send' );
-			$ok = readfile( $fname );
-			wfProfileOut( __METHOD__ . '-send' );
-		} else {
-			$ok = false; // failed
-		}
-
-		wfProfileOut( __METHOD__ );
-		return $ok;
-	}
-
-	/**
-	 * Call this function used in preparation before streaming a file.
-	 * This function does the following:
-	 * (a) sends Last-Modified, Content-type, and Content-Disposition headers
-	 * (b) cancels any PHP output buffering and automatic gzipping of output
-	 * (c) sends Content-Length header based on HTTP_IF_MODIFIED_SINCE check
-	 *
-	 * @param string $path Storage path or file system path
-	 * @param array|bool $info File stat info with 'mtime' and 'size' fields
-	 * @param array $headers Additional headers to send
-	 * @param bool $sendErrors Send error messages if errors occur (like 404)
-	 * @return int|bool READY_STREAM, NOT_MODIFIED, or false on failure
-	 */
-	public static function prepareForStream(
-		$path, $info, $headers = array(), $sendErrors = true
+	public static function stream(
+		$fname, $headers = [], $sendErrors = true, $optHeaders = [], $flags = 0
 	) {
-		if ( !is_array( $info ) ) {
-			if ( $sendErrors ) {
-				header( 'HTTP/1.0 404 Not Found' );
-				header( 'Cache-Control: no-cache' );
-				header( 'Content-Type: text/html; charset=utf-8' );
-				$encFile = htmlspecialchars( $path );
-				$encScript = htmlspecialchars( $_SERVER['SCRIPT_NAME'] );
-				echo "<html><body>
-					<h1>File not found</h1>
-					<p>Although this PHP script ($encScript) exists, the file requested for output
-					($encFile) does not.</p>
-					</body></html>
-					";
-			}
-			return false;
+		if ( FileBackend::isStoragePath( $fname ) ) {
+			throw new InvalidArgumentException( __FUNCTION__ . " given storage path '$fname'." );
 		}
 
-		// Sent Last-Modified HTTP header for client-side caching
-		header( 'Last-Modified: ' . wfTimestamp( TS_RFC2822, $info['mtime'] ) );
+		$streamer = new HTTPFileStreamer(
+			$fname,
+			[
+				'obResetFunc' => 'wfResetOutputBuffers',
+				'streamMimeFunc' => [ __CLASS__, 'contentTypeFromPath' ]
+			]
+		);
 
-		// Cancel output buffering and gzipping if set
-		wfResetOutputBuffers();
-
-		$type = self::contentTypeFromPath( $path );
-		if ( $type && $type != 'unknown/unknown' ) {
-			header( "Content-type: $type" );
-		} else {
-			// Send a content type which is not known to Internet Explorer, to
-			// avoid triggering IE's content type detection. Sending a standard
-			// unknown content type here essentially gives IE license to apply
-			// whatever content type it likes.
-			header( 'Content-type: application/x-wiki' );
-		}
-
-		// Don't stream it out as text/html if there was a PHP error
-		if ( headers_sent() ) {
-			echo "Headers already sent, terminating.\n";
-			return false;
-		}
-
-		// Send additional headers
-		foreach ( $headers as $header ) {
-			header( $header );
-		}
-
-		// Don't send if client has up to date cache
-		if ( !empty( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) ) {
-			$modsince = preg_replace( '/;.*$/', '', $_SERVER['HTTP_IF_MODIFIED_SINCE'] );
-			if ( wfTimestamp( TS_UNIX, $info['mtime'] ) <= strtotime( $modsince ) ) {
-				ini_set( 'zlib.output_compression', 0 );
-				header( "HTTP/1.0 304 Not Modified" );
-				return self::NOT_MODIFIED; // ok
-			}
-		}
-
-		header( 'Content-Length: ' . $info['size'] );
-
-		return self::READY_STREAM; // ok
+		return $streamer->stream( $headers, $sendErrors, $optHeaders, $flags );
 	}
 
 	/**
 	 * Determine the file type of a file based on the path
 	 *
 	 * @param string $filename Storage path or file system path
-	 * @param bool $safe Whether to do retroactive upload blacklist checks
+	 * @param bool $safe Whether to do retroactive upload prevention checks
 	 * @return null|string
 	 */
 	public static function contentTypeFromPath( $filename, $safe = true ) {
-		global $wgTrivialMimeDetection;
+		$trivialMimeDetection = MediaWikiServices::getInstance()->getMainConfig()
+			->get( MainConfigNames::TrivialMimeDetection );
 
 		$ext = strrchr( $filename, '.' );
-		$ext = $ext === false ? '' : strtolower( substr( $ext, 1 ) );
+		$ext = $ext ? strtolower( substr( $ext, 1 ) ) : '';
 
 		# trivial detection by file extension,
 		# used for thumbnails (thumb.php)
-		if ( $wgTrivialMimeDetection ) {
+		if ( $trivialMimeDetection ) {
 			switch ( $ext ) {
-				case 'gif': return 'image/gif';
-				case 'png': return 'image/png';
-				case 'jpg': return 'image/jpeg';
-				case 'jpeg': return 'image/jpeg';
+				case 'gif':
+					return 'image/gif';
+				case 'png':
+					return 'image/png';
+				case 'jpg':
+				case 'jpeg':
+					return 'image/jpeg';
 			}
 
 			return 'unknown/unknown';
 		}
 
-		$magic = MimeMagic::singleton();
+		$magic = MediaWikiServices::getInstance()->getMimeAnalyzer();
 		// Use the extension only, rather than magic numbers, to avoid opening
 		// up vulnerabilities due to uploads of files with allowed extensions
 		// but disallowed types.
-		$type = $magic->guessTypesForExtension( $ext );
+		$type = $magic->getMimeTypeFromExtensionOrNull( $ext );
 
 		/**
 		 * Double-check some security settings that were done on upload but might
 		 * have changed since.
 		 */
 		if ( $safe ) {
-			global $wgFileBlacklist, $wgCheckFileExtensions, $wgStrictFileExtensions,
-				$wgFileExtensions, $wgVerifyMimeType, $wgMimeTypeBlacklist;
-			list( , $extList ) = UploadBase::splitExtensions( $filename );
-			if ( UploadBase::checkFileExtensionList( $extList, $wgFileBlacklist ) ) {
+			$mainConfig = MediaWikiServices::getInstance()->getMainConfig();
+			$prohibitedFileExtensions = $mainConfig->get( MainConfigNames::ProhibitedFileExtensions );
+			$checkFileExtensions = $mainConfig->get( MainConfigNames::CheckFileExtensions );
+			$strictFileExtensions = $mainConfig->get( MainConfigNames::StrictFileExtensions );
+			$fileExtensions = $mainConfig->get( MainConfigNames::FileExtensions );
+			$verifyMimeType = $mainConfig->get( MainConfigNames::VerifyMimeType );
+			$mimeTypeExclusions = $mainConfig->get( MainConfigNames::MimeTypeExclusions );
+			[ , $extList ] = UploadBase::splitExtensions( $filename );
+			if ( UploadBase::checkFileExtensionList( $extList, $prohibitedFileExtensions ) ) {
 				return 'unknown/unknown';
 			}
-			if ( $wgCheckFileExtensions && $wgStrictFileExtensions
-				&& !UploadBase::checkFileExtensionList( $extList, $wgFileExtensions )
+			if ( $checkFileExtensions && $strictFileExtensions
+				&& !UploadBase::checkFileExtensionList( $extList, $fileExtensions )
 			) {
 				return 'unknown/unknown';
 			}
-			if ( $wgVerifyMimeType && in_array( strtolower( $type ), $wgMimeTypeBlacklist ) ) {
+			if ( $verifyMimeType && $type !== null && in_array( strtolower( $type ), $mimeTypeExclusions ) ) {
 				return 'unknown/unknown';
 			}
 		}

@@ -20,32 +20,45 @@
 
 /**
  * Show an error page on a badtitle.
- * Similar to ErrorPage, but emit a 400 HTTP error code to let mobile
- * browser it is not really a valid content.
  *
+ * We always emit a HTTP 404 error code since pages with an invalid title will
+ * never have any content. In the past this emitted a 400 error code to ensure
+ * caching proxies and mobile browsers don't cache it as valid content (T35646),
+ * but that had the disadvantage of telling caches in front of MediaWiki
+ * (Varnish, etc.), not to cache it either.
+ *
+ * @newable
  * @since 1.19
  * @ingroup Exception
  */
 class BadTitleError extends ErrorPageError {
 	/**
-	 * @param string|Message $msg A message key (default: 'badtitletext')
-	 * @param array $params parameter to wfMessage()
+	 * @stable to call
+	 *
+	 * @param string|Message|MalformedTitleException $msg A message key (default: 'badtitletext'), or
+	 *     a MalformedTitleException to figure out things from
+	 * @param array $params Parameter to wfMessage()
 	 */
-	public function __construct( $msg = 'badtitletext', $params = array() ) {
-		parent::__construct( 'badtitle', $msg, $params );
+	public function __construct( $msg = 'badtitletext', $params = [] ) {
+		if ( $msg instanceof MalformedTitleException ) {
+			$errorMessage = $msg->getErrorMessage();
+			if ( !$errorMessage ) {
+				parent::__construct( 'badtitle', 'badtitletext', [] );
+			} else {
+				$errorMessageParams = $msg->getErrorMessageParameters();
+				parent::__construct( 'badtitle', $errorMessage, $errorMessageParams );
+			}
+		} else {
+			parent::__construct( 'badtitle', $msg, $params );
+		}
 	}
 
 	/**
-	 * Just like ErrorPageError::report() but additionally set
-	 * a 400 HTTP status code (bug 33646).
+	 * @inheritDoc
 	 */
-	public function report() {
+	public function report( $action = self::SEND_OUTPUT ) {
 		global $wgOut;
-
-		// bug 33646: a badtitle error page need to return an error code
-		// to let mobile browser now that it is not a normal page.
-		$wgOut->setStatusCode( 400 );
-		parent::report();
+		$wgOut->setStatusCode( 404 );
+		parent::report( $action );
 	}
-
 }

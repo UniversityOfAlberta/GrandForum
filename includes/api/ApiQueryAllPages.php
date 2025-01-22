@@ -1,9 +1,5 @@
 <?php
 /**
- *
- *
- * Created on Sep 25, 2006
- *
  * Copyright © 2006 Yuri Astrakhan "<Firstname><Lastname>@gmail.com"
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +20,11 @@
  * @file
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\Permissions\RestrictionStore;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * Query module to enumerate all available pages.
  *
@@ -31,8 +32,33 @@
  */
 class ApiQueryAllPages extends ApiQueryGeneratorBase {
 
-	public function __construct( $query, $moduleName ) {
+	/** @var NamespaceInfo */
+	private $namespaceInfo;
+
+	/** @var GenderCache */
+	private $genderCache;
+
+	/** @var RestrictionStore */
+	private $restrictionStore;
+
+	/**
+	 * @param ApiQuery $query
+	 * @param string $moduleName
+	 * @param NamespaceInfo $namespaceInfo
+	 * @param GenderCache $genderCache
+	 * @param RestrictionStore $restrictionStore
+	 */
+	public function __construct(
+		ApiQuery $query,
+		$moduleName,
+		NamespaceInfo $namespaceInfo,
+		GenderCache $genderCache,
+		RestrictionStore $restrictionStore
+	) {
 		parent::__construct( $query, $moduleName, 'ap' );
+		$this->namespaceInfo = $namespaceInfo;
+		$this->genderCache = $genderCache;
+		$this->restrictionStore = $restrictionStore;
 	}
 
 	public function execute() {
@@ -44,23 +70,19 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 	}
 
 	/**
-	 * @param $resultPageSet ApiPageSet
+	 * @param ApiPageSet $resultPageSet
 	 * @return void
 	 */
 	public function executeGenerator( $resultPageSet ) {
 		if ( $resultPageSet->isResolvingRedirects() ) {
-			$this->dieUsage(
-				'Use "gapfilterredir=nonredirects" option instead of "redirects" ' .
-					'when using allpages as a generator',
-				'params'
-			);
+			$this->dieWithError( 'apierror-allpages-generator-redirects', 'params' );
 		}
 
 		$this->run( $resultPageSet );
 	}
 
 	/**
-	 * @param $resultPageSet ApiPageSet
+	 * @param ApiPageSet|null $resultPageSet
 	 * @return void
 	 */
 	private function run( $resultPageSet = null ) {
@@ -71,7 +93,7 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 		// Page filters
 		$this->addTables( 'page' );
 
-		if ( !is_null( $params['continue'] ) ) {
+		if ( $params['continue'] !== null ) {
 			$cont = explode( '|', $params['continue'] );
 			$this->dieContinueUsageIf( count( $cont ) != 1 );
 			$op = $params['dir'] == 'descending' ? '<' : '>';
@@ -79,10 +101,13 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 			$this->addWhere( "page_title $op= $cont_from" );
 		}
 
-		if ( $params['filterredir'] == 'redirects' ) {
-			$this->addWhereFld( 'page_is_redirect', 1 );
-		} elseif ( $params['filterredir'] == 'nonredirects' ) {
-			$this->addWhereFld( 'page_is_redirect', 0 );
+		$miserMode = $this->getConfig()->get( MainConfigNames::MiserMode );
+		if ( !$miserMode ) {
+			if ( $params['filterredir'] == 'redirects' ) {
+				$this->addWhereFld( 'page_is_redirect', 1 );
+			} elseif ( $params['filterredir'] == 'nonredirects' ) {
+				$this->addWhereFld( 'page_is_redirect', 0 );
+			}
 		}
 
 		$this->addWhereFld( 'page_namespace', $params['namespace'] );
@@ -101,40 +126,52 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 				$db->anyString() ) );
 		}
 
-		if ( is_null( $resultPageSet ) ) {
-			$selectFields = array(
+		if ( $resultPageSet === null ) {
+			$selectFields = [
 				'page_namespace',
 				'page_title',
 				'page_id'
-			);
+			];
 		} else {
 			$selectFields = $resultPageSet->getPageTableFields();
+		}
+
+		$miserModeFilterRedirValue = null;
+		$miserModeFilterRedir = $miserMode && $params['filterredir'] !== 'all';
+		if ( $miserModeFilterRedir ) {
+			$selectFields[] = 'page_is_redirect';
+
+			if ( $params['filterredir'] == 'redirects' ) {
+				$miserModeFilterRedirValue = 1;
+			} elseif ( $params['filterredir'] == 'nonredirects' ) {
+				$miserModeFilterRedirValue = 0;
+			}
 		}
 
 		$this->addFields( $selectFields );
 		$forceNameTitleIndex = true;
 		if ( isset( $params['minsize'] ) ) {
-			$this->addWhere( 'page_len>=' . intval( $params['minsize'] ) );
+			$this->addWhere( 'page_len>=' . (int)$params['minsize'] );
 			$forceNameTitleIndex = false;
 		}
 
 		if ( isset( $params['maxsize'] ) ) {
-			$this->addWhere( 'page_len<=' . intval( $params['maxsize'] ) );
+			$this->addWhere( 'page_len<=' . (int)$params['maxsize'] );
 			$forceNameTitleIndex = false;
 		}
 
 		// Page protection filtering
-		if ( count( $params['prtype'] ) || $params['prexpiry'] != 'all' ) {
+		if ( $params['prtype'] || $params['prexpiry'] != 'all' ) {
 			$this->addTables( 'page_restrictions' );
 			$this->addWhere( 'page_id=pr_page' );
 			$this->addWhere( "pr_expiry > {$db->addQuotes( $db->timestamp() )} OR pr_expiry IS NULL" );
 
-			if ( count( $params['prtype'] ) ) {
+			if ( $params['prtype'] ) {
 				$this->addWhereFld( 'pr_type', $params['prtype'] );
 
 				if ( isset( $params['prlevel'] ) ) {
 					// Remove the empty string and '*' from the prlevel array
-					$prlevel = array_diff( $params['prlevel'], array( '', '*' ) );
+					$prlevel = array_diff( $params['prlevel'], [ '', '*' ] );
 
 					if ( count( $prlevel ) ) {
 						$this->addWhereFld( 'pr_level', $prlevel );
@@ -156,40 +193,60 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 
 			$this->addOption( 'DISTINCT' );
 		} elseif ( isset( $params['prlevel'] ) ) {
-			$this->dieUsage( 'prlevel may not be used without prtype', 'params' );
+			$this->dieWithError(
+				[ 'apierror-invalidparammix-mustusewith', 'prlevel', 'prtype' ], 'invalidparammix'
+			);
 		}
 
 		if ( $params['filterlanglinks'] == 'withoutlanglinks' ) {
 			$this->addTables( 'langlinks' );
-			$this->addJoinConds( array( 'langlinks' => array( 'LEFT JOIN', 'page_id=ll_from' ) ) );
+			$this->addJoinConds( [ 'langlinks' => [ 'LEFT JOIN', 'page_id=ll_from' ] ] );
 			$this->addWhere( 'll_from IS NULL' );
 			$forceNameTitleIndex = false;
 		} elseif ( $params['filterlanglinks'] == 'withlanglinks' ) {
 			$this->addTables( 'langlinks' );
 			$this->addWhere( 'page_id=ll_from' );
 			$this->addOption( 'STRAIGHT_JOIN' );
-			// We have to GROUP BY all selected fields to stop
-			// PostgreSQL from whining
-			$this->addOption( 'GROUP BY', $selectFields );
+
+			// MySQL filesorts if we use a GROUP BY that works with the rules
+			// in the 1992 SQL standard (it doesn't like having the
+			// constant-in-WHERE page_namespace column in there). Using the
+			// 1999 rules works fine, but that breaks other DBs. Sigh.
+			// @todo Once we drop support for 1992-rule DBs, we can simplify this.
+			$dbType = $db->getType();
+			if ( $dbType === 'mysql' || $dbType === 'sqlite' ) {
+				// Ignore the rules, or 1999 rules if you count unique keys
+				// over non-NULL columns as satisfying the requirement for
+				// "functional dependency" and don't require including
+				// constant-in-WHERE columns in the GROUP BY.
+				$this->addOption( 'GROUP BY', [ 'page_title' ] );
+			} elseif ( $dbType === 'postgres' && $db->getServerVersion() >= 9.1 ) {
+				// 1999 rules only counting primary keys
+				$this->addOption( 'GROUP BY', [ 'page_title', 'page_id' ] );
+			} else {
+				// 1992 rules
+				$this->addOption( 'GROUP BY', $selectFields );
+			}
+
 			$forceNameTitleIndex = false;
 		}
 
 		if ( $forceNameTitleIndex ) {
-			$this->addOption( 'USE INDEX', 'name_title' );
+			$this->addOption( 'USE INDEX', 'page_name_title' );
 		}
 
 		$limit = $params['limit'];
 		$this->addOption( 'LIMIT', $limit + 1 );
 		$res = $this->select( __METHOD__ );
 
-		//Get gender information
-		if ( MWNamespace::hasGenderDistinction( $params['namespace'] ) ) {
-			$users = array();
+		// Get gender information
+		if ( $this->namespaceInfo->hasGenderDistinction( $params['namespace'] ) ) {
+			$users = [];
 			foreach ( $res as $row ) {
 				$users[] = $row->page_title;
 			}
-			GenderCache::singleton()->doQuery( $users, __METHOD__ );
-			$res->rewind(); //reset
+			$this->genderCache->doQuery( $users, __METHOD__ );
+			$res->rewind(); // reset
 		}
 
 		$count = 0;
@@ -202,14 +259,19 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 				break;
 			}
 
-			if ( is_null( $resultPageSet ) ) {
+			if ( $miserModeFilterRedir && (int)$row->page_is_redirect !== $miserModeFilterRedirValue ) {
+				// Filter implemented in PHP due to being in Miser Mode
+				continue;
+			}
+
+			if ( $resultPageSet === null ) {
 				$title = Title::makeTitle( $row->page_namespace, $row->page_title );
-				$vals = array(
-					'pageid' => intval( $row->page_id ),
-					'ns' => intval( $title->getNamespace() ),
+				$vals = [
+					'pageid' => (int)$row->page_id,
+					'ns' => $title->getNamespace(),
 					'title' => $title->getPrefixedText()
-				);
-				$fit = $result->addValue( array( 'query', $this->getModuleName() ), null, $vals );
+				];
+				$fit = $result->addValue( [ 'query', $this->getModuleName() ], null, $vals );
 				if ( !$fit ) {
 					$this->setContinueEnumParameter( 'continue', $row->page_title );
 					break;
@@ -219,159 +281,107 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 			}
 		}
 
-		if ( is_null( $resultPageSet ) ) {
-			$result->setIndexedTagName_internal( array( 'query', $this->getModuleName() ), 'p' );
+		if ( $resultPageSet === null ) {
+			$result->addIndexedTagName( [ 'query', $this->getModuleName() ], 'p' );
 		}
 	}
 
 	public function getAllowedParams() {
-		global $wgRestrictionLevels;
-
-		return array(
+		$ret = [
 			'from' => null,
-			'continue' => null,
+			'continue' => [
+				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
+			],
 			'to' => null,
 			'prefix' => null,
-			'namespace' => array(
-				ApiBase::PARAM_DFLT => NS_MAIN,
-				ApiBase::PARAM_TYPE => 'namespace',
-			),
-			'filterredir' => array(
-				ApiBase::PARAM_DFLT => 'all',
-				ApiBase::PARAM_TYPE => array(
+			'namespace' => [
+				ParamValidator::PARAM_DEFAULT => NS_MAIN,
+				ParamValidator::PARAM_TYPE => 'namespace',
+			],
+			'filterredir' => [
+				ParamValidator::PARAM_DEFAULT => 'all',
+				ParamValidator::PARAM_TYPE => [
 					'all',
 					'redirects',
 					'nonredirects'
-				)
-			),
-			'minsize' => array(
-				ApiBase::PARAM_TYPE => 'integer',
-			),
-			'maxsize' => array(
-				ApiBase::PARAM_TYPE => 'integer',
-			),
-			'prtype' => array(
-				ApiBase::PARAM_TYPE => Title::getFilteredRestrictionTypes( true ),
-				ApiBase::PARAM_ISMULTI => true
-			),
-			'prlevel' => array(
-				ApiBase::PARAM_TYPE => $wgRestrictionLevels,
-				ApiBase::PARAM_ISMULTI => true
-			),
-			'prfiltercascade' => array(
-				ApiBase::PARAM_DFLT => 'all',
-				ApiBase::PARAM_TYPE => array(
+				]
+			],
+			'minsize' => [
+				ParamValidator::PARAM_TYPE => 'integer',
+			],
+			'maxsize' => [
+				ParamValidator::PARAM_TYPE => 'integer',
+			],
+			'prtype' => [
+				ParamValidator::PARAM_TYPE => $this->restrictionStore->listAllRestrictionTypes( true ),
+				ParamValidator::PARAM_ISMULTI => true
+			],
+			'prlevel' => [
+				ParamValidator::PARAM_TYPE =>
+					$this->getConfig()->get( MainConfigNames::RestrictionLevels ),
+				ParamValidator::PARAM_ISMULTI => true
+			],
+			'prfiltercascade' => [
+				ParamValidator::PARAM_DEFAULT => 'all',
+				ParamValidator::PARAM_TYPE => [
 					'cascading',
 					'noncascading',
 					'all'
-				),
-			),
-			'limit' => array(
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
-			),
-			'dir' => array(
-				ApiBase::PARAM_DFLT => 'ascending',
-				ApiBase::PARAM_TYPE => array(
+				],
+			],
+			'limit' => [
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+			],
+			'dir' => [
+				ParamValidator::PARAM_DEFAULT => 'ascending',
+				ParamValidator::PARAM_TYPE => [
 					'ascending',
 					'descending'
-				)
-			),
-			'filterlanglinks' => array(
-				ApiBase::PARAM_TYPE => array(
+				]
+			],
+			'filterlanglinks' => [
+				ParamValidator::PARAM_TYPE => [
 					'withlanglinks',
 					'withoutlanglinks',
 					'all'
-				),
-				ApiBase::PARAM_DFLT => 'all'
-			),
-			'prexpiry' => array(
-				ApiBase::PARAM_TYPE => array(
+				],
+				ParamValidator::PARAM_DEFAULT => 'all'
+			],
+			'prexpiry' => [
+				ParamValidator::PARAM_TYPE => [
 					'indefinite',
 					'definite',
 					'all'
-				),
-				ApiBase::PARAM_DFLT => 'all'
-			),
-		);
+				],
+				ParamValidator::PARAM_DEFAULT => 'all',
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
+			],
+		];
+
+		if ( $this->getConfig()->get( MainConfigNames::MiserMode ) ) {
+			$ret['filterredir'][ApiBase::PARAM_HELP_MSG_APPEND] = [ 'api-help-param-limited-in-miser-mode' ];
+		}
+
+		return $ret;
 	}
 
-	public function getParamDescription() {
-		$p = $this->getModulePrefix();
-
-		return array(
-			'from' => 'The page title to start enumerating from',
-			'continue' => 'When more results are available, use this to continue',
-			'to' => 'The page title to stop enumerating at',
-			'prefix' => 'Search for all page titles that begin with this value',
-			'namespace' => 'The namespace to enumerate',
-			'filterredir' => 'Which pages to list',
-			'dir' => 'The direction in which to list',
-			'minsize' => 'Limit to pages with at least this many bytes',
-			'maxsize' => 'Limit to pages with at most this many bytes',
-			'prtype' => 'Limit to protected pages only',
-			'prlevel' => "The protection level (must be used with {$p}prtype= parameter)",
-			'prfiltercascade'
-				=> "Filter protections based on cascadingness (ignored when {$p}prtype isn't set)",
-			'filterlanglinks' => array(
-				'Filter based on whether a page has langlinks',
-				'Note that this may not consider langlinks added by extensions.',
-			),
-			'limit' => 'How many total pages to return.',
-			'prexpiry' => array(
-				'Which protection expiry to filter the page on',
-				' indefinite - Get only pages with indefinite protection expiry',
-				' definite - Get only pages with a definite (specific) protection expiry',
-				' all - Get pages with any protections expiry'
-			),
-		);
-	}
-
-	public function getResultProperties() {
-		return array(
-			'' => array(
-				'pageid' => 'integer',
-				'ns' => 'namespace',
-				'title' => 'string'
-			)
-		);
-	}
-
-	public function getDescription() {
-		return 'Enumerate all pages sequentially in a given namespace.';
-	}
-
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-			array(
-				'code' => 'params',
-				'info' => 'Use "gapfilterredir=nonredirects" option instead of ' .
-					'"redirects" when using allpages as a generator'
-			),
-			array( 'code' => 'params', 'info' => 'prlevel may not be used without prtype' ),
-		) );
-	}
-
-	public function getExamples() {
-		return array(
-			'api.php?action=query&list=allpages&apfrom=B' => array(
-				'Simple Use',
-				'Show a list of pages starting at the letter "B"',
-			),
-			'api.php?action=query&generator=allpages&gaplimit=4&gapfrom=T&prop=info' => array(
-				'Using as Generator',
-				'Show info about 4 pages starting at the letter "T"',
-			),
-			'api.php?action=query&generator=allpages&gaplimit=2&' .
+	protected function getExamplesMessages() {
+		return [
+			'action=query&list=allpages&apfrom=B'
+				=> 'apihelp-query+allpages-example-b',
+			'action=query&generator=allpages&gaplimit=4&gapfrom=T&prop=info'
+				=> 'apihelp-query+allpages-example-generator',
+			'action=query&generator=allpages&gaplimit=2&' .
 				'gapfilterredir=nonredirects&gapfrom=Re&prop=revisions&rvprop=content'
-				=> array( 'Show content of first 2 non-redirect pages beginning at "Re"' )
-		);
+				=> 'apihelp-query+allpages-example-generator-revisions',
+		];
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/API:Allpages';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Allpages';
 	}
 }

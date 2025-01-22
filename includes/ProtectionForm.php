@@ -23,57 +23,124 @@
  * @file
  */
 
+use MediaWiki\HookContainer\HookRunner;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Permissions\Authority;
+use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\Permissions\PermissionStatus;
+use MediaWiki\Permissions\RestrictionStore;
+use MediaWiki\Watchlist\WatchlistManager;
+
 /**
  * Handles the page protection UI and backend
  */
 class ProtectionForm {
-	/** A map of action to restriction level, from request or default */
-	var $mRestrictions = array();
+	/** @var array A map of action to restriction level, from request or default */
+	protected $mRestrictions = [];
 
-	/** The custom/additional protection reason */
-	var $mReason = '';
+	/** @var string The custom/additional protection reason */
+	protected $mReason = '';
 
-	/** The reason selected from the list, blank for other/additional */
-	var $mReasonSelection = '';
+	/** @var string The reason selected from the list, blank for other/additional */
+	protected $mReasonSelection = '';
 
-	/** True if the restrictions are cascading, from request or existing protection */
-	var $mCascade = false;
+	/** @var bool True if the restrictions are cascading, from request or existing protection */
+	protected $mCascade = false;
 
-	/** Map of action to "other" expiry time. Used in preference to mExpirySelection. */
-	var $mExpiry = array();
+	/** @var array Map of action to "other" expiry time. Used in preference to mExpirySelection. */
+	protected $mExpiry = [];
 
 	/**
-	 * Map of action to value selected in expiry drop-down list.
+	 * @var array Map of action to value selected in expiry drop-down list.
 	 * Will be set to 'othertime' whenever mExpiry is set.
 	 */
-	var $mExpirySelection = array();
+	protected $mExpirySelection = [];
 
-	/** Permissions errors for the protect action */
-	var $mPermErrors = array();
+	/** @var PermissionStatus Permissions errors for the protect action */
+	protected $mPermStatus;
 
-	/** Types (i.e. actions) for which levels can be selected */
-	var $mApplicableTypes = array();
+	/** @var array Types (i.e. actions) for which levels can be selected */
+	protected $mApplicableTypes = [];
 
-	/** Map of action to the expiry time of the existing protection */
-	var $mExistingExpiry = array();
+	/** @var array Map of action to the expiry time of the existing protection */
+	protected $mExistingExpiry = [];
 
-	function __construct( Page $article ) {
-		global $wgUser;
+	/** @var Article */
+	protected $mArticle;
+
+	/** @var Title */
+	protected $mTitle;
+
+	/** @var bool */
+	protected $disabled;
+
+	/** @var array */
+	protected $disabledAttrib;
+
+	/** @var IContextSource */
+	private $mContext;
+
+	/** @var WebRequest */
+	private $mRequest;
+
+	/** @var Authority */
+	private $mPerformer;
+
+	/** @var Language */
+	private $mLang;
+
+	/** @var OutputPage */
+	private $mOut;
+
+	/** @var PermissionManager */
+	private $permManager;
+
+	/**
+	 * @var WatchlistManager
+	 */
+	private $watchlistManager;
+
+	/** @var HookRunner */
+	private $hookRunner;
+
+	/** @var RestrictionStore */
+	private $restrictionStore;
+
+	/** @var TitleFormatter */
+	private $titleFormatter;
+
+	public function __construct( Article $article ) {
 		// Set instance variables.
 		$this->mArticle = $article;
 		$this->mTitle = $article->getTitle();
-		$this->mApplicableTypes = $this->mTitle->getRestrictionTypes();
+		$this->mContext = $article->getContext();
+		$this->mRequest = $this->mContext->getRequest();
+		$this->mPerformer = $this->mContext->getAuthority();
+		$this->mOut = $this->mContext->getOutput();
+		$this->mLang = $this->mContext->getLanguage();
+
+		$services = MediaWikiServices::getInstance();
+		$this->permManager = $services->getPermissionManager();
+		$this->hookRunner = new HookRunner( $services->getHookContainer() );
+		$this->watchlistManager = $services->getWatchlistManager();
+		$this->titleFormatter = $services->getTitleFormatter();
+		$this->restrictionStore = $services->getRestrictionStore();
+		$this->mApplicableTypes = $this->restrictionStore->listApplicableRestrictionTypes( $this->mTitle );
 
 		// Check if the form should be disabled.
 		// If it is, the form will be available in read-only to show levels.
-		$this->mPermErrors = $this->mTitle->getUserPermissionsErrors( 'protect', $wgUser );
-		if ( wfReadOnly() ) {
-			$this->mPermErrors[] = array( 'readonlytext', wfReadOnlyReason() );
+		$this->mPermStatus = PermissionStatus::newEmpty();
+		if ( $this->mRequest->wasPosted() ) {
+			$this->mPerformer->authorizeWrite( 'protect', $this->mTitle, $this->mPermStatus );
+		} else {
+			$this->mPerformer->authorizeRead( 'protect', $this->mTitle, $this->mPermStatus );
 		}
-		$this->disabled = $this->mPermErrors != array();
-		$this->disabledAttrib = $this->disabled
-			? array( 'disabled' => 'disabled' )
-			: array();
+		$readOnlyMode = $services->getReadOnlyMode();
+		if ( $readOnlyMode->isReadOnly() ) {
+			$this->mPermStatus->fatal( 'readonlytext', $readOnlyMode->getReason() );
+		}
+		$this->disabled = !$this->mPermStatus->isGood();
+		$this->disabledAttrib = $this->disabled ? [ 'disabled' => 'disabled' ] : [];
 
 		$this->loadData();
 	}
@@ -81,33 +148,34 @@ class ProtectionForm {
 	/**
 	 * Loads the current state of protection into the object.
 	 */
-	function loadData() {
-		global $wgRequest, $wgUser;
+	private function loadData() {
+		$levels = $this->permManager->getNamespaceRestrictionLevels(
+			$this->mTitle->getNamespace(), $this->mPerformer->getUser()
+		);
 
-		$levels = MWNamespace::getRestrictionLevels( $this->mTitle->getNamespace(), $wgUser );
-		$this->mCascade = $this->mTitle->areRestrictionsCascading();
-
-		$this->mReason = $wgRequest->getText( 'mwProtect-reason' );
-		$this->mReasonSelection = $wgRequest->getText( 'wpProtectReasonSelection' );
-		$this->mCascade = $wgRequest->getBool( 'mwProtect-cascade', $this->mCascade );
+		$this->mCascade = $this->restrictionStore->areRestrictionsCascading( $this->mTitle );
+		$this->mReason = $this->mRequest->getText( 'mwProtect-reason' );
+		$this->mReasonSelection = $this->mRequest->getText( 'wpProtectReasonSelection' );
+		$this->mCascade = $this->mRequest->getBool( 'mwProtect-cascade', $this->mCascade );
 
 		foreach ( $this->mApplicableTypes as $action ) {
 			// @todo FIXME: This form currently requires individual selections,
 			// but the db allows multiples separated by commas.
 
 			// Pull the actual restriction from the DB
-			$this->mRestrictions[$action] = implode( '', $this->mTitle->getRestrictions( $action ) );
+			$this->mRestrictions[$action] = implode( '',
+				$this->restrictionStore->getRestrictions( $this->mTitle, $action ) );
 
 			if ( !$this->mRestrictions[$action] ) {
 				// No existing expiry
 				$existingExpiry = '';
 			} else {
-				$existingExpiry = $this->mTitle->getRestrictionExpiry( $action );
+				$existingExpiry = $this->restrictionStore->getRestrictionExpiry( $this->mTitle, $action );
 			}
 			$this->mExistingExpiry[$action] = $existingExpiry;
 
-			$requestExpiry = $wgRequest->getText( "mwProtect-expiry-$action" );
-			$requestExpirySelection = $wgRequest->getVal( "wpProtectExpirySelection-$action" );
+			$requestExpiry = $this->mRequest->getText( "mwProtect-expiry-$action" );
+			$requestExpirySelection = $this->mRequest->getVal( "wpProtectExpirySelection-$action" );
 
 			if ( $requestExpiry ) {
 				// Custom expiry takes precedence
@@ -117,21 +185,18 @@ class ProtectionForm {
 				// Expiry selected from list
 				$this->mExpiry[$action] = '';
 				$this->mExpirySelection[$action] = $requestExpirySelection;
-			} elseif ( $existingExpiry == 'infinity' ) {
-				// Existing expiry is infinite, use "infinite" in drop-down
-				$this->mExpiry[$action] = '';
-				$this->mExpirySelection[$action] = 'infinite';
 			} elseif ( $existingExpiry ) {
 				// Use existing expiry in its own list item
 				$this->mExpiry[$action] = '';
 				$this->mExpirySelection[$action] = $existingExpiry;
 			} else {
+				// Catches 'infinity' - Existing expiry is infinite, use "infinite" in drop-down
 				// Final default: infinite
 				$this->mExpiry[$action] = '';
 				$this->mExpirySelection[$action] = 'infinite';
 			}
 
-			$val = $wgRequest->getVal( "mwProtect-level-$action" );
+			$val = $this->mRequest->getVal( "mwProtect-level-$action" );
 			if ( isset( $val ) && in_array( $val, $levels ) ) {
 				$this->mRestrictions[$action] = $val;
 			}
@@ -141,11 +206,11 @@ class ProtectionForm {
 	/**
 	 * Get the expiry time for a given action, by combining the relevant inputs.
 	 *
-	 * @param $action string
+	 * @param string $action
 	 *
-	 * @return string 14-char timestamp or "infinity", or false if the input was invalid
+	 * @return string|false 14-char timestamp or "infinity", or false if the input was invalid
 	 */
-	function getExpiry( $action ) {
+	private function getExpiry( $action ) {
 		if ( $this->mExpirySelection[$action] == 'existing' ) {
 			return $this->mExistingExpiry[$action];
 		} elseif ( $this->mExpirySelection[$action] == 'othertime' ) {
@@ -153,8 +218,8 @@ class ProtectionForm {
 		} else {
 			$value = $this->mExpirySelection[$action];
 		}
-		if ( $value == 'infinite' || $value == 'indefinite' || $value == 'infinity' ) {
-			$time = wfGetDB( DB_SLAVE )->getInfinity();
+		if ( wfIsInfinity( $value ) ) {
+			$time = 'infinity';
 		} else {
 			$unix = strtotime( $value );
 
@@ -172,17 +237,19 @@ class ProtectionForm {
 	/**
 	 * Main entry point for action=protect and action=unprotect
 	 */
-	function execute() {
-		global $wgRequest, $wgOut;
-
-		if ( MWNamespace::getRestrictionLevels( $this->mTitle->getNamespace() ) === array( '' ) ) {
+	public function execute() {
+		if (
+			$this->permManager->getNamespaceRestrictionLevels(
+				$this->mTitle->getNamespace()
+			) === [ '' ]
+		) {
 			throw new ErrorPageError( 'protect-badnamespace-title', 'protect-badnamespace-text' );
 		}
 
-		if ( $wgRequest->wasPosted() ) {
+		if ( $this->mRequest->wasPosted() ) {
 			if ( $this->save() ) {
-				$q = $this->mArticle->isRedirect() ? 'redirect=no' : '';
-				$wgOut->redirect( $this->mTitle->getFullURL( $q ) );
+				$q = $this->mArticle->getPage()->isRedirect() ? 'redirect=no' : '';
+				$this->mOut->redirect( $this->mTitle->getFullURL( $q ) );
 			}
 		} else {
 			$this->show();
@@ -192,75 +259,93 @@ class ProtectionForm {
 	/**
 	 * Show the input form with optional error message
 	 *
-	 * @param string $err error message or null if there's no error
+	 * @param string|string[]|null $err Error message or null if there's no error
+	 * @phan-param string|non-empty-array|null $err
 	 */
-	function show( $err = null ) {
-		global $wgOut;
-
-		$wgOut->setRobotPolicy( 'noindex,nofollow' );
-		$wgOut->addBacklinkSubtitle( $this->mTitle );
+	private function show( $err = null ) {
+		$out = $this->mOut;
+		$out->setRobotPolicy( 'noindex,nofollow' );
+		$out->addBacklinkSubtitle( $this->mTitle );
 
 		if ( is_array( $err ) ) {
-			$wgOut->wrapWikiMsg( "<p class='error'>\n$1\n</p>\n", $err );
+			$out->addHTML( Html::errorBox( $out->msg( ...$err )->parse() ) );
 		} elseif ( is_string( $err ) ) {
-			$wgOut->addHTML( "<p class='error'>{$err}</p>\n" );
+			$out->addHTML( Html::errorBox( $err ) );
 		}
 
-		if ( $this->mTitle->getRestrictionTypes() === array() ) {
+		if ( $this->mApplicableTypes === [] ) {
 			// No restriction types available for the current title
 			// this might happen if an extension alters the available types
-			$wgOut->setPageTitle( wfMessage( 'protect-norestrictiontypes-title', $this->mTitle->getPrefixedText() ) );
-			$wgOut->addWikiText( wfMessage( 'protect-norestrictiontypes-text' )->text() );
+			$out->setPageTitle( $this->mContext->msg(
+				'protect-norestrictiontypes-title',
+				$this->mTitle->getPrefixedText()
+			) );
+			$out->addWikiTextAsInterface(
+				$this->mContext->msg( 'protect-norestrictiontypes-text' )->plain()
+			);
 
 			// Show the log in case protection was possible once
-			$this->showLogExtract( $wgOut );
+			$this->showLogExtract();
 			// return as there isn't anything else we can do
 			return;
 		}
 
-		list( $cascadeSources, /* $restrictions */ ) = $this->mTitle->getCascadeProtectionSources();
-		if ( $cascadeSources && count( $cascadeSources ) > 0 ) {
+		list( $cascadeSources, /* $restrictions */ ) =
+			$this->restrictionStore->getCascadeProtectionSources( $this->mTitle );
+		if ( count( $cascadeSources ) > 0 ) {
 			$titles = '';
 
-			foreach ( $cascadeSources as $title ) {
-				$titles .= '* [[:' . $title->getPrefixedText() . "]]\n";
+			foreach ( $cascadeSources as $pageIdentity ) {
+				$titles .= '* [[:' . $this->titleFormatter->getPrefixedText( $pageIdentity ) . "]]\n";
 			}
 
-			$wgOut->wrapWikiMsg( "<div id=\"mw-protect-cascadeon\">\n$1\n" . $titles . "</div>", array( 'protect-cascadeon', count( $cascadeSources ) ) );
+			/** @todo FIXME: i18n issue, should use formatted number. */
+			$out->wrapWikiMsg(
+				"<div id=\"mw-protect-cascadeon\">\n$1\n" . $titles . "</div>",
+				[ 'protect-cascadeon', count( $cascadeSources ) ]
+			);
 		}
 
 		# Show an appropriate message if the user isn't allowed or able to change
 		# the protection settings at this time
 		if ( $this->disabled ) {
-			$wgOut->setPageTitle( wfMessage( 'protect-title-notallowed', $this->mTitle->getPrefixedText() ) );
-			$wgOut->addWikiText( $wgOut->formatPermissionsErrorMessage( $this->mPermErrors, 'protect' ) );
+			$out->setPageTitle(
+				$this->mContext->msg( 'protect-title-notallowed',
+					$this->mTitle->getPrefixedText() )
+			);
+			$out->addWikiTextAsInterface(
+				$out->formatPermissionStatus( $this->mPermStatus, 'protect' )
+			);
 		} else {
-			$wgOut->setPageTitle( wfMessage( 'protect-title', $this->mTitle->getPrefixedText() ) );
-			$wgOut->addWikiMsg( 'protect-text',
+			$out->setPageTitle(
+				$this->mContext->msg( 'protect-title', $this->mTitle->getPrefixedText() )
+			);
+			$out->addWikiMsg( 'protect-text',
 				wfEscapeWikiText( $this->mTitle->getPrefixedText() ) );
 		}
 
-		$wgOut->addHTML( $this->buildForm() );
-		$this->showLogExtract( $wgOut );
+		$out->addHTML( $this->buildForm() );
+		$this->showLogExtract();
 	}
 
 	/**
 	 * Save submitted protection form
 	 *
-	 * @return Boolean: success
+	 * @return bool Success
 	 */
-	function save() {
-		global $wgRequest, $wgUser, $wgOut;
-
+	private function save() {
 		# Permission check!
 		if ( $this->disabled ) {
 			$this->show();
 			return false;
 		}
 
-		$token = $wgRequest->getVal( 'wpEditToken' );
-		if ( !$wgUser->matchEditToken( $token, array( 'protect', $this->mTitle->getPrefixedDBkey() ) ) ) {
-			$this->show( array( 'sessionfailure' ) );
+		$token = $this->mRequest->getVal( 'wpEditToken' );
+		$legacyUser = MediaWikiServices::getInstance()
+			->getUserFactory()
+			->newFromAuthority( $this->mPerformer );
+		if ( !$legacyUser->matchEditToken( $token, [ 'protect', $this->mTitle->getPrefixedDBkey() ] ) ) {
+			$this->show( [ 'sessionfailure' ] );
 			return false;
 		}
 
@@ -268,32 +353,42 @@ class ProtectionForm {
 		$reasonstr = $this->mReasonSelection;
 		if ( $reasonstr != 'other' && $this->mReason != '' ) {
 			// Entry from drop down menu + additional comment
-			$reasonstr .= wfMessage( 'colon-separator' )->text() . $this->mReason;
+			$reasonstr .= $this->mContext->msg( 'colon-separator' )->text() . $this->mReason;
 		} elseif ( $reasonstr == 'other' ) {
 			$reasonstr = $this->mReason;
 		}
-		$expiry = array();
+
+		$expiry = [];
 		foreach ( $this->mApplicableTypes as $action ) {
 			$expiry[$action] = $this->getExpiry( $action );
 			if ( empty( $this->mRestrictions[$action] ) ) {
-				continue; // unprotected
+				// unprotected
+				continue;
 			}
 			if ( !$expiry[$action] ) {
-				$this->show( array( 'protect_expiry_invalid' ) );
+				$this->show( [ 'protect_expiry_invalid' ] );
 				return false;
 			}
 			if ( $expiry[$action] < wfTimestampNow() ) {
-				$this->show( array( 'protect_expiry_old' ) );
+				$this->show( [ 'protect_expiry_old' ] );
 				return false;
 			}
 		}
 
-		$this->mCascade = $wgRequest->getBool( 'mwProtect-cascade' );
+		$this->mCascade = $this->mRequest->getBool( 'mwProtect-cascade' );
 
-		$status = $this->mArticle->doUpdateRestrictions( $this->mRestrictions, $expiry, $this->mCascade, $reasonstr, $wgUser );
+		$status = $this->mArticle->getPage()->doUpdateRestrictions(
+			$this->mRestrictions,
+			$expiry,
+			$this->mCascade,
+			$reasonstr,
+			$this->mPerformer->getUser()
+		);
 
 		if ( !$status->isOK() ) {
-			$this->show( $wgOut->parseInline( $status->getWikiText() ) );
+			$this->show( $this->mOut->parseInlineAsInterface(
+				$status->getWikiText( false, false, $this->mLang )
+			) );
 			return false;
 		}
 
@@ -304,9 +399,9 @@ class ProtectionForm {
 		 *             you can also return an array of message name and its parameters
 		 */
 		$errorMsg = '';
-		if ( !wfRunHooks( 'ProtectionForm::save', array( $this->mArticle, &$errorMsg, $reasonstr ) ) ) {
+		if ( !$this->hookRunner->onProtectionForm__save( $this->mArticle, $errorMsg, $reasonstr ) ) {
 			if ( $errorMsg == '' ) {
-				$errorMsg = array( 'hookaborted' );
+				$errorMsg = [ 'hookaborted' ];
 			}
 		}
 		if ( $errorMsg != '' ) {
@@ -314,7 +409,11 @@ class ProtectionForm {
 			return false;
 		}
 
-		WatchAction::doWatchOrUnwatch( $wgRequest->getCheck( 'mwProtectWatch' ), $this->mTitle, $wgUser );
+		$this->watchlistManager->setWatch(
+			$this->mRequest->getCheck( 'mwProtectWatch' ),
+			$this->mPerformer,
+			$this->mTitle
+		);
 
 		return true;
 	}
@@ -322,297 +421,227 @@ class ProtectionForm {
 	/**
 	 * Build the input form
 	 *
-	 * @return String: HTML form
+	 * @return string HTML form
 	 */
-	function buildForm() {
-		global $wgUser, $wgLang, $wgOut;
-
-		$mProtectreasonother = Xml::label(
-			wfMessage( 'protectcomment' )->text(),
-			'wpProtectReasonSelection'
-		);
-		$mProtectreason = Xml::label(
-			wfMessage( 'protect-otherreason' )->text(),
-			'mwProtect-reason'
-		);
-
+	private function buildForm() {
+		$this->mOut->enableOOUI();
 		$out = '';
+		$fields = [];
 		if ( !$this->disabled ) {
-			$wgOut->addModules( 'mediawiki.legacy.protect' );
-			$out .= Xml::openElement( 'form', array( 'method' => 'post',
-				'action' => $this->mTitle->getLocalURL( 'action=protect' ),
-				'id' => 'mw-Protect-Form', 'onsubmit' => 'ProtectionForm.enableUnchainedInputs(true)' ) );
+			$this->mOut->addModules( 'mediawiki.action.protect' );
+			$this->mOut->addModuleStyles( 'mediawiki.action.styles' );
 		}
-
-		$out .= Xml::openElement( 'fieldset' ) .
-			Xml::element( 'legend', null, wfMessage( 'protect-legend' )->text() ) .
-			Xml::openElement( 'table', array( 'id' => 'mwProtectSet' ) ) .
-			Xml::openElement( 'tbody' );
+		$scExpiryOptions = $this->mContext->msg( 'protect-expiry-options' )->inContentLanguage()->text();
+		$levels = $this->permManager->getNamespaceRestrictionLevels(
+			$this->mTitle->getNamespace(),
+			$this->disabled ? null : $this->mPerformer->getUser()
+		);
 
 		// Not all languages have V_x <-> N_x relation
 		foreach ( $this->mRestrictions as $action => $selected ) {
 			// Messages:
 			// restriction-edit, restriction-move, restriction-create, restriction-upload
-			$msg = wfMessage( 'restriction-' . $action );
-			$out .= "<tr><td>" .
-			Xml::openElement( 'fieldset' ) .
-			Xml::element( 'legend', null, $msg->exists() ? $msg->text() : $action ) .
-			Xml::openElement( 'table', array( 'id' => "mw-protect-table-$action" ) ) .
-				"<tr><td>" . $this->buildSelector( $action, $selected ) . "</td></tr><tr><td>";
-
-			$reasonDropDown = Xml::listDropDown( 'wpProtectReasonSelection',
-				wfMessage( 'protect-dropdown' )->inContentLanguage()->text(),
-				wfMessage( 'protect-otherreason-op' )->inContentLanguage()->text(),
-				$this->mReasonSelection,
-				'mwProtect-reason', 4 );
-			$scExpiryOptions = wfMessage( 'protect-expiry-options' )->inContentLanguage()->text();
-
-			$showProtectOptions = $scExpiryOptions !== '-' && !$this->disabled;
-
-			$mProtectexpiry = Xml::label(
-				wfMessage( 'protectexpiry' )->text(),
-				"mwProtectExpirySelection-$action"
-			);
-			$mProtectother = Xml::label(
-				wfMessage( 'protect-othertime' )->text(),
-				"mwProtect-$action-expires"
-			);
-
-			$expiryFormOptions = '';
-			if ( $this->mExistingExpiry[$action] && $this->mExistingExpiry[$action] != 'infinity' ) {
-				$timestamp = $wgLang->timeanddate( $this->mExistingExpiry[$action], true );
-				$d = $wgLang->date( $this->mExistingExpiry[$action], true );
-				$t = $wgLang->time( $this->mExistingExpiry[$action], true );
-				$expiryFormOptions .=
-					Xml::option(
-						wfMessage( 'protect-existing-expiry', $timestamp, $d, $t )->text(),
-						'existing',
-						$this->mExpirySelection[$action] == 'existing'
-					) . "\n";
+			$section = 'restriction-' . $action;
+			$id = 'mwProtect-level-' . $action;
+			$options = [];
+			foreach ( $levels as $key ) {
+				$options[$this->getOptionLabel( $key )] = $key;
 			}
 
-			$expiryFormOptions .= Xml::option(
-				wfMessage( 'protect-othertime-op' )->text(),
-				"othertime"
-			) . "\n";
-			foreach ( explode( ',', $scExpiryOptions ) as $option ) {
-				if ( strpos( $option, ":" ) === false ) {
-					$show = $value = $option;
+			$fields[$id] = [
+				'type' => 'select',
+				'name' => $id,
+				'default' => $selected,
+				'id' => $id,
+				'size' => count( $levels ),
+				'options' => $options,
+				'disabled' => $this->disabled,
+				'section' => $section,
+			];
+
+			$expiryOptions = [];
+
+			if ( $this->mExistingExpiry[$action] ) {
+				if ( $this->mExistingExpiry[$action] == 'infinity' ) {
+					$existingExpiryMessage = $this->mContext->msg( 'protect-existing-expiry-infinity' );
 				} else {
-					list( $show, $value ) = explode( ":", $option );
+					$existingExpiryMessage = $this->mContext->msg( 'protect-existing-expiry' )
+						->dateTimeParams( $this->mExistingExpiry[$action] )
+						->dateParams( $this->mExistingExpiry[$action] )
+						->timeParams( $this->mExistingExpiry[$action] );
 				}
-				$show = htmlspecialchars( $show );
-				$value = htmlspecialchars( $value );
-				$expiryFormOptions .= Xml::option( $show, $value, $this->mExpirySelection[$action] === $value ) . "\n";
+				$expiryOptions[$existingExpiryMessage->text()] = 'existing';
 			}
+
+			$expiryOptions[$this->mContext->msg( 'protect-othertime-op' )->text()] = 'othertime';
+
+			$expiryOptions = array_merge( $expiryOptions, XmlSelect::parseOptionsMessage( $scExpiryOptions ) );
+
 			# Add expiry dropdown
-			if ( $showProtectOptions && !$this->disabled ) {
-				$out .= "
-					<table><tr>
-						<td class='mw-label'>
-							{$mProtectexpiry}
-						</td>
-						<td class='mw-input'>" .
-							Xml::tags( 'select',
-								array(
-									'id' => "mwProtectExpirySelection-$action",
-									'name' => "wpProtectExpirySelection-$action",
-									'onchange' => "ProtectionForm.updateExpiryList(this)",
-									'tabindex' => '2' ) + $this->disabledAttrib,
-								$expiryFormOptions ) .
-						"</td>
-					</tr></table>";
-			}
+			$fields["wpProtectExpirySelection-$action"] = [
+				'type' => 'select',
+				'name' => "wpProtectExpirySelection-$action",
+				'id' => "mwProtectExpirySelection-$action",
+				'tabindex' => '2',
+				'disabled' => $this->disabled,
+				'label' => $this->mContext->msg( 'protectexpiry' )->text(),
+				'options' => $expiryOptions,
+				'default' => $this->mExpirySelection[$action],
+				'section' => $section,
+			];
+
 			# Add custom expiry field
-			$attribs = array( 'id' => "mwProtect-$action-expires",
-				'onkeyup' => 'ProtectionForm.updateExpiry(this)',
-				'onchange' => 'ProtectionForm.updateExpiry(this)' ) + $this->disabledAttrib;
-			$out .= "<table><tr>
-					<td class='mw-label'>" .
-						$mProtectother .
-					'</td>
-					<td class="mw-input">' .
-						Xml::input( "mwProtect-expiry-$action", 50, $this->mExpiry[$action], $attribs ) .
-					'</td>
-				</tr></table>';
-			$out .= "</td></tr>" .
-			Xml::closeElement( 'table' ) .
-			Xml::closeElement( 'fieldset' ) .
-			"</td></tr>";
+			if ( !$this->disabled ) {
+				$fields["mwProtect-expiry-$action"] = [
+					'type' => 'text',
+					'label' => $this->mContext->msg( 'protect-othertime' )->text(),
+					'name' => "mwProtect-expiry-$action",
+					'id' => "mwProtect-$action-expires",
+					'size' => 50,
+					'default' => $this->mExpiry[$action],
+					'disabled' => $this->disabled,
+					'section' => $section,
+				];
+			}
 		}
+
 		# Give extensions a chance to add items to the form
-		wfRunHooks( 'ProtectionForm::buildForm', array( $this->mArticle, &$out ) );
+		$hookFormRaw = '';
+		$hookFormOptions = [];
 
-		$out .= Xml::closeElement( 'tbody' ) . Xml::closeElement( 'table' );
+		$this->hookRunner->onProtectionForm__buildForm( $this->mArticle, $hookFormRaw );
+		$this->hookRunner->onProtectionFormAddFormFields( $this->mArticle, $hookFormOptions );
 
-		// JavaScript will add another row with a value-chaining checkbox
+		# Merge forms added from addFormFields
+		$fields = array_merge( $fields, $hookFormOptions );
+
+		# Add raw sections added in buildForm
+		if ( $hookFormRaw ) {
+			$fields['rawinfo'] = [
+				'type' => 'info',
+				'default' => $hookFormRaw,
+				'raw' => true,
+				'section' => 'restriction-blank'
+			];
+		}
+
+		# JavaScript will add another row with a value-chaining checkbox
 		if ( $this->mTitle->exists() ) {
-			$out .= Xml::openElement( 'table', array( 'id' => 'mw-protect-table2' ) ) .
-				Xml::openElement( 'tbody' );
-			$out .= '<tr>
-					<td></td>
-					<td class="mw-input">' .
-						Xml::checkLabel(
-							wfMessage( 'protect-cascade' )->text(),
-							'mwProtect-cascade',
-							'mwProtect-cascade',
-							$this->mCascade, $this->disabledAttrib
-						) .
-					"</td>
-				</tr>\n";
-			$out .= Xml::closeElement( 'tbody' ) . Xml::closeElement( 'table' );
+			$fields['mwProtect-cascade'] = [
+				'type' => 'check',
+				'label' => $this->mContext->msg( 'protect-cascade' )->text(),
+				'id' => 'mwProtect-cascade',
+				'name' => 'mwProtect-cascade',
+				'default' => $this->mCascade,
+				'disabled' => $this->disabled,
+			];
 		}
 
 		# Add manual and custom reason field/selects as well as submit
 		if ( !$this->disabled ) {
-			$out .= Xml::openElement( 'table', array( 'id' => 'mw-protect-table3' ) ) .
-				Xml::openElement( 'tbody' );
-			$out .= "
-				<tr>
-					<td class='mw-label'>
-						{$mProtectreasonother}
-					</td>
-					<td class='mw-input'>
-						{$reasonDropDown}
-					</td>
-				</tr>
-				<tr>
-					<td class='mw-label'>
-						{$mProtectreason}
-					</td>
-					<td class='mw-input'>" .
-						Xml::input( 'mwProtect-reason', 60, $this->mReason, array( 'type' => 'text',
-							'id' => 'mwProtect-reason', 'maxlength' => 180 ) ) .
-							// Limited maxlength as the database trims at 255 bytes and other texts
-							// chosen by dropdown menus on this page are also included in this database field.
-							// The byte limit of 180 bytes is enforced in javascript
-					"</td>
-				</tr>";
-			# Disallow watching is user is not logged in
-			if ( $wgUser->isLoggedIn() ) {
-				$out .= "
-				<tr>
-					<td></td>
-					<td class='mw-input'>" .
-						Xml::checkLabel( wfMessage( 'watchthis' )->text(),
-							'mwProtectWatch', 'mwProtectWatch',
-							$wgUser->isWatched( $this->mTitle ) || $wgUser->getOption( 'watchdefault' ) ) .
-					"</td>
-				</tr>";
+			// HTML maxlength uses "UTF-16 code units", which means that characters outside BMP
+			// (e.g. emojis) count for two each. This limit is overridden in JS to instead count
+			// Unicode codepoints.
+			// Subtract arbitrary 75 to leave some space for the autogenerated null edit's summary
+			// and other texts chosen by dropdown menus on this page.
+			$maxlength = CommentStore::COMMENT_CHARACTER_LIMIT - 75;
+			$fields['wpProtectReasonSelection'] = [
+				'type' => 'select',
+				'cssclass' => 'mwProtect-reason',
+				'label' => $this->mContext->msg( 'protectcomment' )->text(),
+				'tabindex' => 4,
+				'id' => 'wpProtectReasonSelection',
+				'name' => 'wpProtectReasonSelection',
+				'flatlist' => true,
+				'options' => Xml::listDropDownOptions(
+					$this->mContext->msg( 'protect-dropdown' )->inContentLanguage()->text(),
+					[ 'other' => $this->mContext->msg( 'protect-otherreason-op' )->inContentLanguage()->text() ]
+				),
+				'default' => $this->mReasonSelection,
+			];
+			$fields['mwProtect-reason'] = [
+				'type' => 'text',
+				'id' => 'mwProtect-reason',
+				'label' => $this->mContext->msg( 'protect-otherreason' )->text(),
+				'name' => 'mwProtect-reason',
+				'size' => 60,
+				'maxlength' => $maxlength,
+				'default' => $this->mReason,
+			];
+			# Disallow watching if user is not logged in
+			if ( $this->mPerformer->getUser()->isRegistered() ) {
+				$fields['mwProtectWatch'] = [
+					'type' => 'check',
+					'id' => 'mwProtectWatch',
+					'label' => $this->mContext->msg( 'watchthis' )->text(),
+					'name' => 'mwProtectWatch',
+					'default' => (
+						$this->watchlistManager->isWatched( $this->mPerformer, $this->mTitle )
+						|| MediaWikiServices::getInstance()->getUserOptionsLookup()->getOption(
+							$this->mPerformer->getUser(),
+							'watchdefault'
+						)
+					),
+				];
 			}
-			$out .= "
-				<tr>
-					<td></td>
-					<td class='mw-submit'>" .
-						Xml::submitButton(
-							wfMessage( 'confirm' )->text(),
-							array( 'id' => 'mw-Protect-submit' )
-						) .
-					"</td>
-				</tr>\n";
-			$out .= Xml::closeElement( 'tbody' ) . Xml::closeElement( 'table' );
 		}
-		$out .= Xml::closeElement( 'fieldset' );
 
-		if ( $wgUser->isAllowed( 'editinterface' ) ) {
-			$title = Title::makeTitle( NS_MEDIAWIKI, 'Protect-dropdown' );
-			$link = Linker::link(
-				$title,
-				wfMessage( 'protect-edit-reasonlist' )->escaped(),
-				array(),
-				array( 'action' => 'edit' )
+		if ( $this->mPerformer->isAllowed( 'editinterface' ) ) {
+			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+			$link = $linkRenderer->makeKnownLink(
+				$this->mContext->msg( 'protect-dropdown' )->inContentLanguage()->getTitle(),
+				$this->mContext->msg( 'protect-edit-reasonlist' )->text(),
+				[],
+				[ 'action' => 'edit' ]
 			);
 			$out .= '<p class="mw-protect-editreasons">' . $link . '</p>';
 		}
 
-		if ( !$this->disabled ) {
-			$out .= Html::hidden( 'wpEditToken', $wgUser->getEditToken( array( 'protect', $this->mTitle->getPrefixedDBkey() ) ) );
-			$out .= Xml::closeElement( 'form' );
-			$wgOut->addScript( $this->buildCleanupScript() );
-		}
+		$htmlForm = HTMLForm::factory( 'ooui', $fields, $this->mContext );
+		$htmlForm
+			->setMethod( 'post' )
+			->setId( 'mw-Protect-Form' )
+			->setTableId( 'mw-protect-table2' )
+			->setAction( $this->mTitle->getLocalURL( 'action=protect' ) )
+			->setSubmitID( 'mw-Protect-submit' )
+			->setSubmitTextMsg( 'confirm' )
+			->setTokenSalt( [ 'protect', $this->mTitle->getPrefixedDBkey() ] )
+			->suppressDefaultSubmit( $this->disabled )
+			->setWrapperLegendMsg( 'protect-legend' )
+			->prepareForm();
 
-		return $out;
-	}
-
-	/**
-	 * Build protection level selector
-	 *
-	 * @param string $action action to protect
-	 * @param string $selected current protection level
-	 * @return String: HTML fragment
-	 */
-	function buildSelector( $action, $selected ) {
-		global $wgUser;
-
-		// If the form is disabled, display all relevant levels. Otherwise,
-		// just show the ones this user can use.
-		$levels = MWNamespace::getRestrictionLevels( $this->mTitle->getNamespace(),
-			$this->disabled ? null : $wgUser
-		);
-
-		$id = 'mwProtect-level-' . $action;
-		$attribs = array(
-			'id' => $id,
-			'name' => $id,
-			'size' => count( $levels ),
-			'onchange' => 'ProtectionForm.updateLevels(this)',
-			) + $this->disabledAttrib;
-
-		$out = Xml::openElement( 'select', $attribs );
-		foreach ( $levels as $key ) {
-			$out .= Xml::option( $this->getOptionLabel( $key ), $key, $key == $selected );
-		}
-		$out .= Xml::closeElement( 'select' );
-		return $out;
+		return $htmlForm->getHTML( false ) . $out;
 	}
 
 	/**
 	 * Prepare the label for a protection selector option
 	 *
-	 * @param string $permission permission required
-	 * @return String
+	 * @param string $permission Permission required
+	 * @return string
 	 */
 	private function getOptionLabel( $permission ) {
 		if ( $permission == '' ) {
-			return wfMessage( 'protect-default' )->text();
+			return $this->mContext->msg( 'protect-default' )->text();
 		} else {
 			// Messages: protect-level-autoconfirmed, protect-level-sysop
-			$msg = wfMessage( "protect-level-{$permission}" );
+			$msg = $this->mContext->msg( "protect-level-{$permission}" );
 			if ( $msg->exists() ) {
 				return $msg->text();
 			}
-			return wfMessage( 'protect-fallback', $permission )->text();
+			return $this->mContext->msg( 'protect-fallback', $permission )->text();
 		}
-	}
-
-	function buildCleanupScript() {
-		global $wgCascadingRestrictionLevels, $wgOut;
-
-		$cascadeableLevels = $wgCascadingRestrictionLevels;
-		$options = array(
-			'tableId' => 'mwProtectSet',
-			'labelText' => wfMessage( 'protect-unchain-permissions' )->plain(),
-			'numTypes' => count( $this->mApplicableTypes ),
-			'existingMatch' => count( array_unique( $this->mExistingExpiry ) ) === 1,
-		);
-
-		$wgOut->addJsConfigVars( 'wgCascadeableLevels', $cascadeableLevels );
-		$script = Xml::encodeJsCall( 'ProtectionForm.init', array( $options ) );
-		return Html::inlineScript( ResourceLoader::makeLoaderConditionalScript( $script ) );
 	}
 
 	/**
 	 * Show protection long extracts for this page
-	 *
-	 * @param $out OutputPage
-	 * @access private
 	 */
-	function showLogExtract( &$out ) {
+	private function showLogExtract() {
 		# Show relevant lines from the protection log:
 		$protectLogPage = new LogPage( 'protect' );
-		$out->addHTML( Xml::element( 'h2', null, $protectLogPage->getName()->text() ) );
-		LogEventsList::showLogExtract( $out, 'protect', $this->mTitle );
+		$this->mOut->addHTML( Xml::element( 'h2', null, $protectLogPage->getName()->text() ) );
+		/** @phan-suppress-next-line PhanTypeMismatchPropertyByRef */
+		LogEventsList::showLogExtract( $this->mOut, 'protect', $this->mTitle );
 		# Let extensions add other relevant log extracts
-		wfRunHooks( 'ProtectionForm::showLogExtract', array( $this->mArticle, $out ) );
+		$this->hookRunner->onProtectionForm__showLogExtract( $this->mArticle, $this->mOut );
 	}
 }

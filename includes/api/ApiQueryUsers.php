@@ -1,9 +1,5 @@
 <?php
 /**
- *
- *
- * Created on July 30, 2007
- *
  * Copyright © 2007 Roan Kattouw "<Firstname>.<Lastname>@gmail.com"
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,79 +20,112 @@
  * @file
  */
 
+use MediaWiki\Auth\AuthManager;
+use MediaWiki\Block\DatabaseBlock;
+use MediaWiki\User\UserFactory;
+use MediaWiki\User\UserGroupManager;
+use MediaWiki\User\UserNameUtils;
+use Wikimedia\ParamValidator\ParamValidator;
+
 /**
  * Query module to get information about a list of users
  *
  * @ingroup API
  */
 class ApiQueryUsers extends ApiQueryBase {
+	use ApiQueryBlockInfoTrait;
 
-	private $tokenFunctions, $prop;
+	private $prop;
 
-	public function __construct( $query, $moduleName ) {
+	/** @var UserNameUtils */
+	private $userNameUtils;
+
+	/** @var UserFactory */
+	private $userFactory;
+
+	/** @var UserGroupManager */
+	private $userGroupManager;
+
+	/** @var GenderCache */
+	private $genderCache;
+
+	/** @var AuthManager */
+	private $authManager;
+
+	/**
+	 * Properties whose contents does not depend on who is looking at them. If the usprops field
+	 * contains anything not listed here, the cache mode will never be public for logged-in users.
+	 * @var array
+	 */
+	protected static $publicProps = [
+		// everything except 'blockinfo' which might show hidden records if the user
+		// making the request has the appropriate permissions
+		'groups',
+		'groupmemberships',
+		'implicitgroups',
+		'rights',
+		'editcount',
+		'registration',
+		'emailable',
+		'gender',
+		'centralids',
+		'cancreate',
+	];
+
+	/**
+	 * @param ApiQuery $query
+	 * @param string $moduleName
+	 * @param UserNameUtils $userNameUtils
+	 * @param UserFactory $userFactory
+	 * @param UserGroupManager $userGroupManager
+	 * @param GenderCache $genderCache
+	 * @param AuthManager $authManager
+	 */
+	public function __construct(
+		ApiQuery $query,
+		$moduleName,
+		UserNameUtils $userNameUtils,
+		UserFactory $userFactory,
+		UserGroupManager $userGroupManager,
+		GenderCache $genderCache,
+		AuthManager $authManager
+	) {
 		parent::__construct( $query, $moduleName, 'us' );
-	}
-
-	/**
-	 * Get an array mapping token names to their handler functions.
-	 * The prototype for a token function is func($user)
-	 * it should return a token or false (permission denied)
-	 * @return Array tokenname => function
-	 */
-	protected function getTokenFunctions() {
-		// Don't call the hooks twice
-		if ( isset( $this->tokenFunctions ) ) {
-			return $this->tokenFunctions;
-		}
-
-		// If we're in JSON callback mode, no tokens can be obtained
-		if ( !is_null( $this->getMain()->getRequest()->getVal( 'callback' ) ) ) {
-			return array();
-		}
-
-		$this->tokenFunctions = array(
-			'userrights' => array( 'ApiQueryUsers', 'getUserrightsToken' ),
-		);
-		wfRunHooks( 'APIQueryUsersTokens', array( &$this->tokenFunctions ) );
-
-		return $this->tokenFunctions;
-	}
-
-	/**
-	 * @param $user User
-	 * @return String
-	 */
-	public static function getUserrightsToken( $user ) {
-		global $wgUser;
-
-		// Since the permissions check for userrights is non-trivial,
-		// don't bother with it here
-		return $wgUser->getEditToken( $user->getName() );
+		$this->userNameUtils = $userNameUtils;
+		$this->userFactory = $userFactory;
+		$this->userGroupManager = $userGroupManager;
+		$this->genderCache = $genderCache;
+		$this->authManager = $authManager;
 	}
 
 	public function execute() {
+		$db = $this->getDB();
 		$params = $this->extractRequestParams();
+		$this->requireMaxOneParameter( $params, 'userids', 'users' );
 
-		if ( !is_null( $params['prop'] ) ) {
-			$this->prop = array_flip( $params['prop'] );
+		if ( $params['prop'] !== null ) {
+			$this->prop = array_fill_keys( $params['prop'], true );
 		} else {
-			$this->prop = array();
+			$this->prop = [];
 		}
+		$useNames = $params['users'] !== null;
 
 		$users = (array)$params['users'];
-		$goodNames = $done = array();
+		$userids = (array)$params['userids'];
+
+		$goodNames = $done = [];
 		$result = $this->getResult();
 		// Canonicalize user names
 		foreach ( $users as $u ) {
-			$n = User::getCanonicalName( $u );
+			$n = $this->userNameUtils->getCanonical( $u );
 			if ( $n === false || $n === '' ) {
-				$vals = array( 'name' => $u, 'invalid' => '' );
-				$fit = $result->addValue( array( 'query', $this->getModuleName() ),
+				$vals = [ 'name' => $u, 'invalid' => true ];
+				$fit = $result->addValue( [ 'query', $this->getModuleName() ],
 					null, $vals );
 				if ( !$fit ) {
 					$this->setContinueEnumParameter( 'users',
 						implode( '|', array_diff( $users, $done ) ) );
-					$goodNames = array();
+					$goodNames = [];
 					break;
 				}
 				$done[] = $u;
@@ -105,296 +134,243 @@ class ApiQueryUsers extends ApiQueryBase {
 			}
 		}
 
+		if ( $useNames ) {
+			$parameters = &$goodNames;
+		} else {
+			$parameters = &$userids;
+		}
+
 		$result = $this->getResult();
 
-		if ( count( $goodNames ) ) {
-			$this->addTables( 'user' );
-			$this->addFields( User::selectFields() );
-			$this->addWhereFld( 'user_name', $goodNames );
+		if ( count( $parameters ) ) {
+			$userQuery = User::getQueryInfo();
+			$this->addTables( $userQuery['tables'] );
+			$this->addFields( $userQuery['fields'] );
+			$this->addJoinConds( $userQuery['joins'] );
+			if ( $useNames ) {
+				$this->addWhereFld( 'user_name', $goodNames );
+			} else {
+				$this->addWhereFld( 'user_id', $userids );
+			}
 
-			$this->showHiddenUsersAddBlockInfo( isset( $this->prop['blockinfo'] ) );
+			$this->addBlockInfoToQuery( isset( $this->prop['blockinfo'] ) );
 
-			$data = array();
+			$data = [];
 			$res = $this->select( __METHOD__ );
 			$this->resetQueryParams();
 
 			// get user groups if needed
 			if ( isset( $this->prop['groups'] ) || isset( $this->prop['rights'] ) ) {
-				$userGroups = array();
+				$userGroups = [];
 
 				$this->addTables( 'user' );
-				$this->addWhereFld( 'user_name', $goodNames );
+				if ( $useNames ) {
+					$this->addWhereFld( 'user_name', $goodNames );
+				} else {
+					$this->addWhereFld( 'user_id', $userids );
+				}
+
 				$this->addTables( 'user_groups' );
-				$this->addJoinConds( array( 'user_groups' => array( 'INNER JOIN', 'ug_user=user_id' ) ) );
-				$this->addFields( array( 'user_name', 'ug_group' ) );
+				$this->addJoinConds( [ 'user_groups' => [ 'JOIN', 'ug_user=user_id' ] ] );
+				$this->addFields( [ 'user_name' ] );
+				$this->addFields( $this->userGroupManager->getQueryInfo()['fields'] );
+				$this->addWhere( 'ug_expiry IS NULL OR ug_expiry >= ' .
+					$db->addQuotes( $db->timestamp() ) );
 				$userGroupsRes = $this->select( __METHOD__ );
 
 				foreach ( $userGroupsRes as $row ) {
-					$userGroups[$row->user_name][] = $row->ug_group;
+					$userGroups[$row->user_name][] = $row;
 				}
+			}
+			if ( isset( $this->prop['gender'] ) ) {
+				$userNames = [];
+				foreach ( $res as $row ) {
+					$userNames[] = $row->user_name;
+				}
+				$this->genderCache->doQuery( $userNames, __METHOD__ );
 			}
 
 			foreach ( $res as $row ) {
 				// create user object and pass along $userGroups if set
 				// that reduces the number of database queries needed in User dramatically
 				if ( !isset( $userGroups ) ) {
-					$user = User::newFromRow( $row );
+					$user = $this->userFactory->newFromRow( $row );
 				} else {
 					if ( !isset( $userGroups[$row->user_name] ) || !is_array( $userGroups[$row->user_name] ) ) {
-						$userGroups[$row->user_name] = array();
+						$userGroups[$row->user_name] = [];
 					}
-					$user = User::newFromRow( $row, array( 'user_groups' => $userGroups[$row->user_name] ) );
+					$user = $this->userFactory->newFromRow( $row, [ 'user_groups' => $userGroups[$row->user_name] ] );
 				}
-				$name = $user->getName();
-
-				$data[$name]['userid'] = $user->getId();
-				$data[$name]['name'] = $name;
+				if ( $useNames ) {
+					$key = $user->getName();
+				} else {
+					$key = $user->getId();
+				}
+				$data[$key]['userid'] = $user->getId();
+				$data[$key]['name'] = $user->getName();
 
 				if ( isset( $this->prop['editcount'] ) ) {
-					$data[$name]['editcount'] = $user->getEditCount();
+					$data[$key]['editcount'] = $user->getEditCount();
 				}
 
 				if ( isset( $this->prop['registration'] ) ) {
-					$data[$name]['registration'] = wfTimestampOrNull( TS_ISO_8601, $user->getRegistration() );
+					$data[$key]['registration'] = wfTimestampOrNull( TS_ISO_8601, $user->getRegistration() );
 				}
 
 				if ( isset( $this->prop['groups'] ) ) {
-					$data[$name]['groups'] = $user->getEffectiveGroups();
+					$data[$key]['groups'] = $this->userGroupManager->getUserEffectiveGroups( $user );
+				}
+
+				if ( isset( $this->prop['groupmemberships'] ) ) {
+					$data[$key]['groupmemberships'] = array_map( static function ( $ugm ) {
+						return [
+							'group' => $ugm->getGroup(),
+							'expiry' => ApiResult::formatExpiry( $ugm->getExpiry() ),
+						];
+					}, $this->userGroupManager->getUserGroupMemberships( $user ) );
 				}
 
 				if ( isset( $this->prop['implicitgroups'] ) ) {
-					$data[$name]['implicitgroups'] = $user->getAutomaticGroups();
+					$data[$key]['implicitgroups'] = $this->userGroupManager->getUserImplicitGroups( $user );
 				}
 
 				if ( isset( $this->prop['rights'] ) ) {
-					$data[$name]['rights'] = $user->getRights();
+					$data[$key]['rights'] = $this->getPermissionManager()
+						->getUserPermissions( $user );
 				}
 				if ( $row->ipb_deleted ) {
-					$data[$name]['hidden'] = '';
+					$data[$key]['hidden'] = true;
 				}
-				if ( isset( $this->prop['blockinfo'] ) && !is_null( $row->ipb_by_text ) ) {
-					$data[$name]['blockid'] = $row->ipb_id;
-					$data[$name]['blockedby'] = $row->ipb_by_text;
-					$data[$name]['blockedbyid'] = $row->ipb_by;
-					$data[$name]['blockreason'] = $row->ipb_reason;
-					$data[$name]['blockexpiry'] = $row->ipb_expiry;
+				if ( isset( $this->prop['blockinfo'] ) && $row->ipb_by_text !== null ) {
+					$data[$key] += $this->getBlockDetails( DatabaseBlock::newFromRow( $row ) );
 				}
 
-				if ( isset( $this->prop['emailable'] ) && $user->canReceiveEmail() ) {
-					$data[$name]['emailable'] = '';
+				if ( isset( $this->prop['emailable'] ) ) {
+					$data[$key]['emailable'] = $user->canReceiveEmail();
 				}
 
 				if ( isset( $this->prop['gender'] ) ) {
-					$gender = $user->getOption( 'gender' );
-					if ( strval( $gender ) === '' ) {
-						$gender = 'unknown';
-					}
-					$data[$name]['gender'] = $gender;
+					$data[$key]['gender'] = $this->genderCache->getGenderOf( $user, __METHOD__ );
 				}
 
-				if ( !is_null( $params['token'] ) ) {
-					$tokenFunctions = $this->getTokenFunctions();
-					foreach ( $params['token'] as $t ) {
-						$val = call_user_func( $tokenFunctions[$t], $user );
-						if ( $val === false ) {
-							$this->setWarning( "Action '$t' is not allowed for the current user" );
-						} else {
-							$data[$name][$t . 'token'] = $val;
-						}
-					}
+				if ( isset( $this->prop['centralids'] ) ) {
+					$data[$key] += ApiQueryUserInfo::getCentralUserInfo(
+						$this->getConfig(), $user, $params['attachedwiki']
+					);
 				}
 			}
 		}
 
 		$context = $this->getContext();
 		// Second pass: add result data to $retval
-		foreach ( $goodNames as $u ) {
+		foreach ( $parameters as $u ) {
 			if ( !isset( $data[$u] ) ) {
-				$data[$u] = array( 'name' => $u );
-				$urPage = new UserrightsPage;
-				$urPage->setContext( $context );
-				$iwUser = $urPage->fetchUser( $u );
+				if ( $useNames ) {
+					$data[$u] = [ 'name' => $u ];
+					$urPage = new UserrightsPage;
+					$urPage->setContext( $context );
 
-				if ( $iwUser instanceof UserRightsProxy ) {
-					$data[$u]['interwiki'] = '';
+					$iwUser = $urPage->fetchUser( $u );
 
-					if ( !is_null( $params['token'] ) ) {
-						$tokenFunctions = $this->getTokenFunctions();
-
-						foreach ( $params['token'] as $t ) {
-							$val = call_user_func( $tokenFunctions[$t], $iwUser );
-							if ( $val === false ) {
-								$this->setWarning( "Action '$t' is not allowed for the current user" );
-							} else {
-								$data[$u][$t . 'token'] = $val;
+					if ( $iwUser instanceof UserRightsProxy ) {
+						$data[$u]['interwiki'] = true;
+					} else {
+						$data[$u]['missing'] = true;
+						if ( isset( $this->prop['cancreate'] ) ) {
+							$status = $this->authManager->canCreateAccount( $u );
+							$data[$u]['cancreate'] = $status->isGood();
+							if ( !$status->isGood() ) {
+								$data[$u]['cancreateerror'] = $this->getErrorFormatter()->arrayFromStatus( $status );
 							}
 						}
 					}
 				} else {
-					$data[$u]['missing'] = '';
+					$data[$u] = [ 'userid' => $u, 'missing' => true ];
 				}
+
 			} else {
 				if ( isset( $this->prop['groups'] ) && isset( $data[$u]['groups'] ) ) {
-					$result->setIndexedTagName( $data[$u]['groups'], 'g' );
+					ApiResult::setArrayType( $data[$u]['groups'], 'array' );
+					ApiResult::setIndexedTagName( $data[$u]['groups'], 'g' );
+				}
+				if ( isset( $this->prop['groupmemberships'] ) && isset( $data[$u]['groupmemberships'] ) ) {
+					ApiResult::setArrayType( $data[$u]['groupmemberships'], 'array' );
+					ApiResult::setIndexedTagName( $data[$u]['groupmemberships'], 'groupmembership' );
 				}
 				if ( isset( $this->prop['implicitgroups'] ) && isset( $data[$u]['implicitgroups'] ) ) {
-					$result->setIndexedTagName( $data[$u]['implicitgroups'], 'g' );
+					ApiResult::setArrayType( $data[$u]['implicitgroups'], 'array' );
+					ApiResult::setIndexedTagName( $data[$u]['implicitgroups'], 'g' );
 				}
 				if ( isset( $this->prop['rights'] ) && isset( $data[$u]['rights'] ) ) {
-					$result->setIndexedTagName( $data[$u]['rights'], 'r' );
+					ApiResult::setArrayType( $data[$u]['rights'], 'array' );
+					ApiResult::setIndexedTagName( $data[$u]['rights'], 'r' );
 				}
 			}
 
-			$fit = $result->addValue( array( 'query', $this->getModuleName() ),
-				null, $data[$u] );
+			$fit = $result->addValue( [ 'query', $this->getModuleName() ], null, $data[$u] );
 			if ( !$fit ) {
-				$this->setContinueEnumParameter( 'users',
-					implode( '|', array_diff( $users, $done ) ) );
+				if ( $useNames ) {
+					$this->setContinueEnumParameter( 'users',
+						implode( '|', array_diff( $users, $done ) ) );
+				} else {
+					$this->setContinueEnumParameter( 'userids',
+						implode( '|', array_diff( $userids, $done ) ) );
+				}
 				break;
 			}
 			$done[] = $u;
 		}
-		$result->setIndexedTagName_internal( array( 'query', $this->getModuleName() ), 'user' );
-	}
-
-	/**
-	 * Gets all the groups that a user is automatically a member of (implicit groups)
-	 *
-	 * @deprecated since 1.20; call User::getAutomaticGroups() directly.
-	 * @param $user User
-	 * @return array
-	 */
-	public static function getAutoGroups( $user ) {
-		wfDeprecated( __METHOD__, '1.20' );
-
-		return $user->getAutomaticGroups();
+		$result->addIndexedTagName( [ 'query', $this->getModuleName() ], 'user' );
 	}
 
 	public function getCacheMode( $params ) {
-		return isset( $params['token'] ) ? 'private' : 'anon-public-user-private';
+		if ( array_diff( (array)$params['prop'], static::$publicProps ) ) {
+			return 'anon-public-user-private';
+		} else {
+			return 'public';
+		}
 	}
 
 	public function getAllowedParams() {
-		return array(
-			'prop' => array(
-				ApiBase::PARAM_DFLT => null,
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => array(
+		return [
+			'prop' => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => [
 					'blockinfo',
 					'groups',
+					'groupmemberships',
 					'implicitgroups',
 					'rights',
 					'editcount',
 					'registration',
 					'emailable',
 					'gender',
-				)
-			),
-			'users' => array(
-				ApiBase::PARAM_ISMULTI => true
-			),
-			'token' => array(
-				ApiBase::PARAM_TYPE => array_keys( $this->getTokenFunctions() ),
-				ApiBase::PARAM_ISMULTI => true
-			),
-		);
+					'centralids',
+					'cancreate',
+					// When adding a prop, consider whether it should be added
+					// to self::$publicProps
+				],
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
+			],
+			'attachedwiki' => null,
+			'users' => [
+				ParamValidator::PARAM_ISMULTI => true
+			],
+			'userids' => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'integer'
+			],
+		];
 	}
 
-	public function getParamDescription() {
-		return array(
-			'prop' => array(
-				'What pieces of information to include',
-				'  blockinfo      - Tags if the user is blocked, by whom, and for what reason',
-				'  groups         - Lists all the groups the user(s) belongs to',
-				'  implicitgroups - Lists all the groups a user is automatically a member of',
-				'  rights         - Lists all the rights the user(s) has',
-				'  editcount      - Adds the user\'s edit count',
-				'  registration   - Adds the user\'s registration timestamp',
-				'  emailable      - Tags if the user can and wants to receive ' .
-					'email through [[Special:Emailuser]]',
-				'  gender         - Tags the gender of the user. Returns "male", "female", or "unknown"',
-			),
-			'users' => 'A list of users to obtain the same information for',
-			'token' => 'Which tokens to obtain for each user',
-		);
-	}
-
-	public function getResultProperties() {
-		$props = array(
-			'' => array(
-				'userid' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'name' => 'string',
-				'invalid' => 'boolean',
-				'hidden' => 'boolean',
-				'interwiki' => 'boolean',
-				'missing' => 'boolean'
-			),
-			'editcount' => array(
-				'editcount' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				)
-			),
-			'registration' => array(
-				'registration' => array(
-					ApiBase::PROP_TYPE => 'timestamp',
-					ApiBase::PROP_NULLABLE => true
-				)
-			),
-			'blockinfo' => array(
-				'blockid' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'blockedby' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'blockedbyid' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'blockedreason' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'blockedexpiry' => array(
-					ApiBase::PROP_TYPE => 'timestamp',
-					ApiBase::PROP_NULLABLE => true
-				)
-			),
-			'emailable' => array(
-				'emailable' => 'boolean'
-			),
-			'gender' => array(
-				'gender' => array(
-					ApiBase::PROP_TYPE => array(
-						'male',
-						'female',
-						'unknown'
-					),
-					ApiBase::PROP_NULLABLE => true
-				)
-			)
-		);
-
-		self::addTokenProperties( $props, $this->getTokenFunctions() );
-
-		return $props;
-	}
-
-	public function getDescription() {
-		return 'Get information about a list of users.';
-	}
-
-	public function getExamples() {
-		return 'api.php?action=query&list=users&ususers=brion|TimStarling&usprop=groups|editcount|gender';
+	protected function getExamplesMessages() {
+		return [
+			'action=query&list=users&ususers=Example&usprop=groups|editcount|gender'
+				=> 'apihelp-query+users-example-simple',
+		];
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/API:Users';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Users';
 	}
 }

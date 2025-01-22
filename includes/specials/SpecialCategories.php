@@ -21,64 +21,52 @@
  * @ingroup SpecialPage
  */
 
+use MediaWiki\Cache\LinkBatchFactory;
+use Wikimedia\Rdbms\ILoadBalancer;
+
 /**
  * @ingroup SpecialPage
  */
 class SpecialCategories extends SpecialPage {
 
-	/**
-	 * @var PageLinkRenderer
-	 */
-	protected $linkRenderer = null;
+	/** @var LinkBatchFactory */
+	private $linkBatchFactory;
 
-	public function __construct() {
-		parent::__construct( 'Categories' );
-
-		// Since we don't control the constructor parameters, we can't inject services that way.
-		// Instead, we initialize services in the execute() method, and allow them to be overridden
-		// using the initServices() method.
-	}
+	/** @var ILoadBalancer */
+	private $loadBalancer;
 
 	/**
-	 * Initialize or override the PageLinkRenderer SpecialCategories collaborates with.
-	 * Useful mainly for testing.
-	 *
-	 * @todo: the pager should also be injected, and de-coupled from the rendering logic.
-	 *
-	 * @param PageLinkRenderer $linkRenderer
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param ILoadBalancer $loadBalancer
 	 */
-	public function setPageLinkRenderer(
-		PageLinkRenderer $linkRenderer
+	public function __construct(
+		LinkBatchFactory $linkBatchFactory,
+		ILoadBalancer $loadBalancer
 	) {
-		$this->linkRenderer = $linkRenderer;
-	}
-
-	/**
-	 * Initialize any services we'll need (unless it has already been provided via a setter).
-	 * This allows for dependency injection even though we don't control object creation.
-	 */
-	private function initServices() {
-		if ( !$this->linkRenderer ) {
-			$lang = $this->getContext()->getLanguage();
-			$titleFormatter = new MediaWikiTitleCodec( $lang, GenderCache::singleton() );
-			$this->linkRenderer = new MediaWikiPageLinkRenderer( $titleFormatter );
-		}
+		parent::__construct( 'Categories' );
+		$this->linkBatchFactory = $linkBatchFactory;
+		$this->loadBalancer = $loadBalancer;
 	}
 
 	public function execute( $par ) {
-		$this->initServices();
-
 		$this->setHeaders();
 		$this->outputHeader();
-		$this->getOutput()->allowClickjacking();
+		$this->addHelpLink( 'Help:Categories' );
+		$this->getOutput()->setPreventClickjacking( false );
 
-		$from = $this->getRequest()->getText( 'from', $par );
+		$from = $this->getRequest()->getText( 'from', $par ?? '' );
 
-		$cap = new CategoryPager( $this->getContext(), $from, $this->linkRenderer );
+		$cap = new CategoryPager(
+			$this->getContext(),
+			$this->linkBatchFactory,
+			$this->getLinkRenderer(),
+			$this->loadBalancer,
+			$from
+		);
 		$cap->doQuery();
 
 		$this->getOutput()->addHTML(
-			Html::openElement( 'div', array( 'class' => 'mw-spcontent' ) ) .
+			Html::openElement( 'div', [ 'class' => 'mw-spcontent' ] ) .
 				$this->msg( 'categoriespagetext', $cap->getNumRows() )->parseAsBlock() .
 				$cap->getStartForm( $from ) .
 				$cap->getNavigationBar() .
@@ -90,111 +78,5 @@ class SpecialCategories extends SpecialPage {
 
 	protected function getGroupName() {
 		return 'pages';
-	}
-}
-
-/**
- * TODO: Allow sorting by count.  We need to have a unique index to do this
- * properly.
- *
- * @ingroup SpecialPage Pager
- */
-class CategoryPager extends AlphabeticPager {
-
-	/**
-	 * @var PageLinkRenderer
-	 */
-	protected $linkRenderer;
-
-	/**
-	 * @param IContextSource $context
-	 * @param string $from
-	 * @param PageLinkRenderer $linkRenderer
-	 */
-	public function __construct( IContextSource $context, $from, PageLinkRenderer $linkRenderer
-	) {
-		parent::__construct( $context );
-		$from = str_replace( ' ', '_', $from );
-		if ( $from !== '' ) {
-			$from = Title::capitalize( $from, NS_CATEGORY );
-			$this->setOffset( $from );
-			$this->setIncludeOffset( true );
-		}
-
-		$this->linkRenderer = $linkRenderer;
-	}
-
-	function getQueryInfo() {
-		return array(
-			'tables' => array( 'category' ),
-			'fields' => array( 'cat_title', 'cat_pages' ),
-			'conds' => array( 'cat_pages > 0' ),
-			'options' => array( 'USE INDEX' => 'cat_title' ),
-		);
-	}
-
-	function getIndexField() {
-#		return array( 'abc' => 'cat_title', 'count' => 'cat_pages' );
-		return 'cat_title';
-	}
-
-	function getDefaultQuery() {
-		parent::getDefaultQuery();
-		unset( $this->mDefaultQuery['from'] );
-
-		return $this->mDefaultQuery;
-	}
-
-#	protected function getOrderTypeMessages() {
-#		return array( 'abc' => 'special-categories-sort-abc',
-#			'count' => 'special-categories-sort-count' );
-#	}
-
-	protected function getDefaultDirections() {
-#		return array( 'abc' => false, 'count' => true );
-		return false;
-	}
-
-	/* Override getBody to apply LinksBatch on resultset before actually outputting anything. */
-	public function getBody() {
-		$batch = new LinkBatch;
-
-		$this->mResult->rewind();
-
-		foreach ( $this->mResult as $row ) {
-			$batch->addObj( Title::makeTitleSafe( NS_CATEGORY, $row->cat_title ) );
-		}
-		$batch->execute();
-		$this->mResult->rewind();
-
-		return parent::getBody();
-	}
-
-	function formatRow( $result ) {
-		$title = new TitleValue( NS_CATEGORY, $result->cat_title );
-		$text = $title->getText();
-		$link = $this->linkRenderer->renderHtmlLink( $title, $text );
-
-		$count = $this->msg( 'nmembers' )->numParams( $result->cat_pages )->escaped();
-		return Html::rawElement( 'li', null, $this->getLanguage()->specialList( $link, $count ) ) . "\n";
-	}
-
-	public function getStartForm( $from ) {
-		global $wgScript;
-
-		return Xml::tags(
-			'form',
-			array( 'method' => 'get', 'action' => $wgScript ),
-			Html::hidden( 'title', $this->getTitle()->getPrefixedText() ) .
-				Xml::fieldset(
-					$this->msg( 'categories' )->text(),
-					Xml::inputLabel(
-						$this->msg( 'categoriesfrom' )->text(),
-						'from', 'from', 20, $from ) .
-						' ' .
-						Xml::submitButton( $this->msg( 'allpagessubmit' )->text()
-						)
-				)
-		);
 	}
 }

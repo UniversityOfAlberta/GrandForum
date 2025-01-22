@@ -1,7 +1,5 @@
 <?php
 /**
- * External storage in some particular medium.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,25 +16,54 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup ExternalStorage
- * @author Aaron Schulz
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+
 /**
- * Accessable external objects in a particular storage medium
+ * Base class for external storage.
  *
+ * There can be multiple "locations" for a storage medium type (e.g. DB clusters, filesystems).
+ * Blobs are stored under URLs of the form `<protocol>://<location>/<path>`. Each type of storage
+ * medium has an associated protocol.
+ *
+ * @see ExternalStoreAccess
  * @ingroup ExternalStorage
  * @since 1.21
  */
-abstract class ExternalStoreMedium {
-	/** @var Array */
-	protected $params = array();
+abstract class ExternalStoreMedium implements LoggerAwareInterface {
+	/** @var array Usage context options for this instance */
+	protected $params = [];
+	/** @var string Default database domain to store content under */
+	protected $dbDomain;
+	/** @var bool Whether this was factoried with an explicit DB domain */
+	protected $isDbDomainExplicit;
+
+	/** @var LoggerInterface */
+	protected $logger;
 
 	/**
-	 * @param array $params Options
+	 * @param array $params Usage context options for this instance:
+	 *   - domain: the DB domain ID of the wiki the content is for [required]
+	 *   - logger: LoggerInterface instance [optional]
+	 *   - isDomainImplicit: whether this was factoried without an explicit DB domain [optional]
 	 */
-	public function __construct( array $params = array() ) {
+	public function __construct( array $params ) {
 		$this->params = $params;
+		if ( isset( $params['domain'] ) ) {
+			$this->dbDomain = $params['domain'];
+			$this->isDbDomainExplicit = empty( $params['isDomainImplicit'] );
+		} else {
+			throw new InvalidArgumentException( 'Missing DB "domain" parameter.' );
+		}
+
+		$this->logger = $params['logger'] ?? new NullLogger();
+	}
+
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
@@ -52,14 +79,13 @@ abstract class ExternalStoreMedium {
 	 * Fetch data from given external store URLs.
 	 *
 	 * @param array $urls A list of external store URLs
-	 * @return array Map from the url to the text stored. Unfound data is not represented
+	 * @return string[] Map of (url => text) for the URLs where data was actually found
 	 */
 	public function batchFetchFromURLs( array $urls ) {
-		$retval = array();
+		$retval = [];
 		foreach ( $urls as $url ) {
 			$data = $this->fetchFromURL( $url );
-			// Dont return when false to allow for simpler implementations.
-			// errored urls are handled in ExternalStore::batchFetchFromURLs
+			// Dont return when false to allow for simpler implementations
 			if ( $data !== false ) {
 				$retval[$url] = $data;
 			}
@@ -71,10 +97,21 @@ abstract class ExternalStoreMedium {
 	/**
 	 * Insert a data item into a given location
 	 *
-	 * @param string $location the location name
-	 * @param string $data the data item
+	 * @param string $location The location name
+	 * @param string $data The data item
 	 * @return string|bool The URL of the stored data item, or false on error
 	 * @throws MWException
 	 */
 	abstract public function store( $location, $data );
+
+	/**
+	 * Check if a given location is read-only
+	 *
+	 * @param string $location The location name
+	 * @return bool Whether this location is read-only
+	 * @since 1.31
+	 */
+	public function isReadOnly( $location ) {
+		return false;
+	}
 }

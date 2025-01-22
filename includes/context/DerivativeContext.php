@@ -1,7 +1,5 @@
 <?php
 /**
- * Request-dependant objects containers.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -17,19 +15,21 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.19
- *
  * @author Daniel Friesen
  * @file
  */
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Permissions\Authority;
 
 /**
  * An IContextSource implementation which will inherit context from another source
  * but allow individual pieces of context to be changed locally
  * eg: A ContextSource that can inherit from the main RequestContext but have
  *     a different Title instance set on it.
+ * @newable
+ * @since 1.19
  */
-class DerivativeContext extends ContextSource {
+class DerivativeContext extends ContextSource implements MutableContext {
 	/**
 	 * @var WebRequest
 	 */
@@ -46,14 +46,24 @@ class DerivativeContext extends ContextSource {
 	private $wikipage;
 
 	/**
+	 * @var string
+	 */
+	private $action;
+
+	/**
 	 * @var OutputPage
 	 */
 	private $output;
 
 	/**
-	 * @var User
+	 * @var User|null
 	 */
 	private $user;
+
+	/**
+	 * @var Authority
+	 */
+	private $authority;
 
 	/**
 	 * @var Language
@@ -71,7 +81,12 @@ class DerivativeContext extends ContextSource {
 	private $config;
 
 	/**
-	 * Constructor
+	 * @var Timing
+	 */
+	private $timing;
+
+	/**
+	 * @stable to call
 	 * @param IContextSource $context Context to inherit from
 	 */
 	public function __construct( IContextSource $context ) {
@@ -79,73 +94,63 @@ class DerivativeContext extends ContextSource {
 	}
 
 	/**
-	 * Set the SiteConfiguration object
-	 *
-	 * @param Config $s
+	 * @param Config $config
 	 */
-	public function setConfig( Config $s ) {
-		$this->config = $s;
+	public function setConfig( Config $config ) {
+		$this->config = $config;
 	}
 
 	/**
-	 * Get the Config object
-	 *
 	 * @return Config
 	 */
 	public function getConfig() {
-		if ( !is_null( $this->config ) ) {
-			return $this->config;
-		} else {
-			return $this->getContext()->getConfig();
-		}
+		return $this->config ?: $this->getContext()->getConfig();
 	}
 
 	/**
-	 * Set the WebRequest object
+	 * @deprecated since 1.27 use a StatsdDataFactory from MediaWikiServices (preferably injected).
+	 *  Hard deprecated since 1.39.
 	 *
-	 * @param WebRequest $r
+	 * @return IBufferingStatsdDataFactory
 	 */
-	public function setRequest( WebRequest $r ) {
-		$this->request = $r;
+	public function getStats() {
+		wfDeprecated( __METHOD__, '1.27' );
+		return MediaWikiServices::getInstance()->getStatsdDataFactory();
 	}
 
 	/**
-	 * Get the WebRequest object
-	 *
+	 * @return Timing
+	 */
+	public function getTiming() {
+		return $this->timing ?: $this->getContext()->getTiming();
+	}
+
+	/**
+	 * @param WebRequest $request
+	 */
+	public function setRequest( WebRequest $request ) {
+		$this->request = $request;
+	}
+
+	/**
 	 * @return WebRequest
 	 */
 	public function getRequest() {
-		if ( !is_null( $this->request ) ) {
-			return $this->request;
-		} else {
-			return $this->getContext()->getRequest();
-		}
+		return $this->request ?: $this->getContext()->getRequest();
 	}
 
 	/**
-	 * Set the Title object
-	 *
-	 * @param Title $t
-	 * @throws MWException
+	 * @param Title $title
 	 */
-	public function setTitle( $t ) {
-		if ( $t !== null && !$t instanceof Title ) {
-			throw new MWException( __METHOD__ . " expects an instance of Title" );
-		}
-		$this->title = $t;
+	public function setTitle( Title $title ) {
+		$this->title = $title;
 	}
 
 	/**
-	 * Get the Title object
-	 *
-	 * @return Title
+	 * @return Title|null
 	 */
 	public function getTitle() {
-		if ( !is_null( $this->title ) ) {
-			return $this->title;
-		} else {
-			return $this->getContext()->getTitle();
-		}
+		return $this->title ?: $this->getContext()->getTitle();
 	}
 
 	/**
@@ -159,21 +164,25 @@ class DerivativeContext extends ContextSource {
 	public function canUseWikiPage() {
 		if ( $this->wikipage !== null ) {
 			return true;
-		} elseif ( $this->title !== null ) {
-			return $this->title->canExist();
-		} else {
-			return $this->getContext()->canUseWikiPage();
 		}
+
+		if ( $this->title !== null ) {
+			return $this->title->canExist();
+		}
+
+		return $this->getContext()->canUseWikiPage();
 	}
 
 	/**
-	 * Set the WikiPage object
-	 *
 	 * @since 1.19
-	 * @param WikiPage $p
+	 * @param WikiPage $wikiPage
 	 */
-	public function setWikiPage( WikiPage $p ) {
-		$this->wikipage = $p;
+	public function setWikiPage( WikiPage $wikiPage ) {
+		$pageTitle = $wikiPage->getTitle();
+		if ( !$this->title || !$pageTitle->equals( $this->title ) ) {
+			$this->setTitle( $pageTitle );
+		}
+		$this->wikipage = $wikiPage;
 	}
 
 	/**
@@ -186,81 +195,91 @@ class DerivativeContext extends ContextSource {
 	 * @return WikiPage
 	 */
 	public function getWikiPage() {
-		if ( !is_null( $this->wikipage ) ) {
-			return $this->wikipage;
-		} else {
-			return $this->getContext()->getWikiPage();
+		if ( !$this->wikipage && $this->title ) {
+			$this->wikipage = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $this->title );
 		}
+
+		return $this->wikipage ?: $this->getContext()->getWikiPage();
 	}
 
 	/**
-	 * Set the OutputPage object
-	 *
-	 * @param OutputPage $o
+	 * @since 1.38
+	 * @param string $action
 	 */
-	public function setOutput( OutputPage $o ) {
-		$this->output = $o;
+	public function setActionName( string $action ): void {
+		$this->action = $action;
 	}
 
 	/**
-	 * Get the OutputPage object
+	 * Get the action name for the current web request.
 	 *
+	 * @since 1.38
+	 * @return string Action
+	 */
+	public function getActionName(): string {
+		return $this->action ?: $this->getContext()->getActionName();
+	}
+
+	/**
+	 * @param OutputPage $output
+	 */
+	public function setOutput( OutputPage $output ) {
+		$this->output = $output;
+	}
+
+	/**
 	 * @return OutputPage
 	 */
 	public function getOutput() {
-		if ( !is_null( $this->output ) ) {
-			return $this->output;
-		} else {
-			return $this->getContext()->getOutput();
-		}
+		return $this->output ?: $this->getContext()->getOutput();
 	}
 
 	/**
-	 * Set the User object
-	 *
-	 * @param User $u
+	 * @param User $user
 	 */
-	public function setUser( User $u ) {
-		$this->user = $u;
+	public function setUser( User $user ) {
+		$this->authority = $user;
+		$this->user = $user;
 	}
 
 	/**
-	 * Get the User object
-	 *
 	 * @return User
 	 */
 	public function getUser() {
-		if ( !is_null( $this->user ) ) {
-			return $this->user;
-		} else {
-			return $this->getContext()->getUser();
+		if ( !$this->user && $this->authority ) {
+			// Keep user consistent by using a possible set authority
+			$this->user = MediaWikiServices::getInstance()
+				->getUserFactory()
+				->newFromAuthority( $this->authority );
 		}
+		return $this->user ?: $this->getContext()->getUser();
+	}
+
+	public function setAuthority( Authority $authority ) {
+		$this->authority = $authority;
+		// If needed, a User object is constructed from this authority
+		$this->user = null;
 	}
 
 	/**
-	 * Set the Language object
-	 *
-	 * @deprecated since 1.19 Use setLanguage instead
-	 * @param Language|string $l Language instance or language code
+	 * @since 1.36
+	 * @return Authority
 	 */
-	public function setLang( $l ) {
-		wfDeprecated( __METHOD__, '1.19' );
-		$this->setLanguage( $l );
+	public function getAuthority(): Authority {
+		return $this->authority ?: $this->getContext()->getAuthority();
 	}
 
 	/**
-	 * Set the Language object
-	 *
-	 * @param Language|string $l Language instance or language code
+	 * @param Language|string $language Language instance or language code
 	 * @throws MWException
 	 * @since 1.19
 	 */
-	public function setLanguage( $l ) {
-		if ( $l instanceof Language ) {
-			$this->lang = $l;
-		} elseif ( is_string( $l ) ) {
-			$l = RequestContext::sanitizeLangCode( $l );
-			$obj = Language::factory( $l );
+	public function setLanguage( $language ) {
+		if ( $language instanceof Language ) {
+			$this->lang = $language;
+		} elseif ( is_string( $language ) ) {
+			$language = RequestContext::sanitizeLangCode( $language );
+			$obj = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( $language );
 			$this->lang = $obj;
 		} else {
 			throw new MWException( __METHOD__ . " was passed an invalid type of data." );
@@ -268,49 +287,26 @@ class DerivativeContext extends ContextSource {
 	}
 
 	/**
-	 * @deprecated since 1.19 Use getLanguage instead
-	 * @return Language
-	 */
-	public function getLang() {
-		wfDeprecated( __METHOD__, '1.19' );
-		$this->getLanguage();
-	}
-
-	/**
-	 * Get the Language object
-	 *
 	 * @return Language
 	 * @since 1.19
 	 */
 	public function getLanguage() {
-		if ( !is_null( $this->lang ) ) {
-			return $this->lang;
-		} else {
-			return $this->getContext()->getLanguage();
-		}
+		return $this->lang ?: $this->getContext()->getLanguage();
 	}
 
 	/**
-	 * Set the Skin object
-	 *
-	 * @param Skin $s
+	 * @param Skin $skin
 	 */
-	public function setSkin( Skin $s ) {
-		$this->skin = clone $s;
+	public function setSkin( Skin $skin ) {
+		$this->skin = clone $skin;
 		$this->skin->setContext( $this );
 	}
 
 	/**
-	 * Get the Skin object
-	 *
 	 * @return Skin
 	 */
 	public function getSkin() {
-		if ( !is_null( $this->skin ) ) {
-			return $this->skin;
-		} else {
-			return $this->getContext()->getSkin();
-		}
+		return $this->skin ?: $this->getContext()->getSkin();
 	}
 
 	/**
@@ -320,13 +316,13 @@ class DerivativeContext extends ContextSource {
 	 * it would set only the original context, and not take
 	 * into account any changes.
 	 *
-	 * @param String Message name
-	 * @param Variable number of message arguments
+	 * @param string|string[]|MessageSpecifier $key Message key, or array of keys,
+	 *   or a MessageSpecifier.
+	 * @param mixed ...$params
 	 * @return Message
 	 */
-	public function msg() {
-		$args = func_get_args();
-
-		return call_user_func_array( 'wfMessage', $args )->setContext( $this );
+	public function msg( $key, ...$params ) {
+		// phpcs:ignore MediaWiki.Usage.ExtendClassUsage.FunctionVarUsage
+		return wfMessage( $key, ...$params )->setContext( $this );
 	}
 }

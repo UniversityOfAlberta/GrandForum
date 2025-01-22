@@ -3,22 +3,22 @@
  * @author Santhosh Thottingal
  */
 
-mediaWiki.language.convertGrammar = function ( word, form ) {
+mw.language.convertGrammar = function ( word, form ) {
 	var grammarForms, aou, origWord;
 
-	grammarForms = mediaWiki.language.getData( 'fi', 'grammarForms' );
-	if ( grammarForms && grammarForms[form] ) {
-		return grammarForms[form][word];
+	grammarForms = mw.language.getData( 'fi', 'grammarForms' );
+	if ( grammarForms && grammarForms[ form ] ) {
+		return grammarForms[ form ][ word ];
 	}
 
 	// vowel harmony flag
-	aou = word.match( /[aou][^äöy]*$/i );
+	aou = /[aou][^äöy]*$/i.test( word );
 	origWord = word;
-	if ( word.match( /wiki$/i ) ) {
+	if ( /wiki$/i.test( word ) ) {
 		aou = false;
 	}
-	//append i after final consonant
-	if ( word.match( /[bcdfghjklmnpqrstvwxz]$/i ) ) {
+	// append i after final consonant
+	if ( /[bcdfghjklmnpqrstvwxz]$/i.test( word ) ) {
 		word += 'i';
 	}
 
@@ -34,7 +34,7 @@ mediaWiki.language.convertGrammar = function ( word, form ) {
 			break;
 		case 'illative':
 			// Double the last letter and add 'n'
-			word += word.substr(  word.length - 1 ) + 'n';
+			word += word.slice( -1 ) + 'n';
 			break;
 		case 'inessive':
 			word += ( aou ? 'ssa' : 'ssä' );

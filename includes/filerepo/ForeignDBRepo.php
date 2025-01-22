@@ -21,6 +21,11 @@
  * @ingroup FileRepo
  */
 
+use MediaWiki\Storage\BlobStore;
+use Wikimedia\Rdbms\Database;
+use Wikimedia\Rdbms\DatabaseDomain;
+use Wikimedia\Rdbms\IDatabase;
+
 /**
  * A foreign repository with an accessible MediaWiki database
  *
@@ -48,19 +53,21 @@ class ForeignDBRepo extends LocalRepo {
 	/** @var string */
 	protected $tablePrefix;
 
-	/** @var bool */
-	protected $hasSharedCache;
-
-	# Other stuff
+	/** @var IDatabase */
 	protected $dbConn;
-	protected $fileFactory = array( 'ForeignDBFile', 'newFromTitle' );
-	protected $fileFromRowFactory = array( 'ForeignDBFile', 'newFromRow' );
+
+	/** @var callable */
+	protected $fileFactory = [ ForeignDBFile::class, 'newFromTitle' ];
+	/** @var callable */
+	protected $fileFromRowFactory = [ ForeignDBFile::class, 'newFromRow' ];
 
 	/**
 	 * @param array|null $info
 	 */
-	function __construct( $info ) {
+	public function __construct( $info ) {
 		parent::__construct( $info );
+
+		'@phan-var array $info';
 		$this->dbType = $info['dbType'];
 		$this->dbServer = $info['dbServer'];
 		$this->dbUser = $info['dbUser'];
@@ -68,72 +75,49 @@ class ForeignDBRepo extends LocalRepo {
 		$this->dbName = $info['dbName'];
 		$this->dbFlags = $info['dbFlags'];
 		$this->tablePrefix = $info['tablePrefix'];
-		$this->hasSharedCache = $info['hasSharedCache'];
+		$this->hasAccessibleSharedCache = $info['hasSharedCache'];
+
+		$dbDomain = new DatabaseDomain( $this->dbName, null, $this->tablePrefix );
+		$this->dbDomain = $dbDomain->getId();
 	}
 
-	/**
-	 * @return DatabaseBase
-	 */
-	function getMasterDB() {
+	public function getPrimaryDB() {
 		if ( !isset( $this->dbConn ) ) {
-			$this->dbConn = DatabaseBase::factory( $this->dbType,
-				array(
-					'host' => $this->dbServer,
-					'user' => $this->dbUser,
-					'password' => $this->dbPassword,
-					'dbname' => $this->dbName,
-					'flags' => $this->dbFlags,
-					'tablePrefix' => $this->tablePrefix,
-					'foreign' => true,
-				)
-			);
+			$func = $this->getDBFactory();
+			$this->dbConn = $func( DB_PRIMARY );
 		}
 
 		return $this->dbConn;
 	}
 
-	/**
-	 * @return DatabaseBase
-	 */
-	function getSlaveDB() {
-		return $this->getMasterDB();
+	public function getReplicaDB() {
+		return $this->getPrimaryDB();
 	}
 
 	/**
-	 * @return bool
+	 * @return Closure
 	 */
-	function hasSharedCache() {
-		return $this->hasSharedCache;
-	}
+	protected function getDBFactory() {
+		$type = $this->dbType;
+		$params = [
+			'host' => $this->dbServer,
+			'user' => $this->dbUser,
+			'password' => $this->dbPassword,
+			'dbname' => $this->dbName,
+			'flags' => $this->dbFlags,
+			'tablePrefix' => $this->tablePrefix
+		];
 
-	/**
-	 * Get a key on the primary cache for this repository.
-	 * Returns false if the repository's cache is not accessible at this site.
-	 * The parameters are the parts of the key, as for wfMemcKey().
-	 * @return bool|mixed
-	 */
-	function getSharedCacheKey( /*...*/ ) {
-		if ( $this->hasSharedCache() ) {
-			$args = func_get_args();
-			array_unshift( $args, $this->dbName, $this->tablePrefix );
-
-			return call_user_func_array( 'wfForeignMemcKey', $args );
-		} else {
-			return false;
-		}
+		return static function ( $index ) use ( $type, $params ) {
+			return Database::factory( $type, $params );
+		};
 	}
 
 	protected function assertWritableRepo() {
-		throw new MWException( get_class( $this ) . ': write operations are not supported.' );
+		throw new MWException( static::class . ': write operations are not supported.' );
 	}
 
-	/**
-	 * Return information about the repository.
-	 *
-	 * @return array
-	 * @since 1.22
-	 */
-	function getInfo() {
-		return FileRepo::getInfo();
+	public function getBlobStore(): ?BlobStore {
+		return null;
 	}
 }

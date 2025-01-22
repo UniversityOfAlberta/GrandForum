@@ -2,7 +2,6 @@
 /**
  * Implements Special:Filepath
  *
- * @section LICENSE
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -28,16 +27,68 @@
  * @ingroup SpecialPage
  */
 class SpecialFilepath extends RedirectSpecialPage {
-	function __construct() {
+
+	/** @var SearchEngineFactory */
+	private $searchEngineFactory;
+
+	/**
+	 * @param SearchEngineFactory $searchEngineFactory
+	 */
+	public function __construct(
+		SearchEngineFactory $searchEngineFactory
+	) {
 		parent::__construct( 'Filepath' );
-		$this->mAllowedRedirectParams = array( 'width', 'height' );
+		$this->mAllowedRedirectParams = [ 'width', 'height' ];
+		$this->searchEngineFactory = $searchEngineFactory;
 	}
 
-	// implement by redirecting through Special:Redirect/file
-	function getRedirect( $par ) {
+	/**
+	 * Implement by redirecting through Special:Redirect/file.
+	 *
+	 * @param string|null $par
+	 * @return Title
+	 */
+	public function getRedirect( $par ) {
 		$file = $par ?: $this->getRequest()->getText( 'file' );
 
-		return SpecialPage::getSafeTitleFor( 'Redirect', 'file/' . $file );
+		$redirect = null;
+		if ( $file ) {
+			$redirect = SpecialPage::getSafeTitleFor( 'Redirect', "file/$file" );
+		}
+		if ( $redirect === null ) {
+			// The user input is empty or an invalid title,
+			// redirect to form of Special:Redirect with the invalid value prefilled
+			$this->mAddedRedirectParams['wpvalue'] = $file;
+			$redirect = SpecialPage::getSafeTitleFor( 'Redirect', 'file' );
+		}
+		// @phan-suppress-next-line PhanTypeMismatchReturnNullable Known to be valid
+		return $redirect;
+	}
+
+	/**
+	 * Return an array of subpages beginning with $search that this special page will accept.
+	 *
+	 * @param string $search Prefix to search for
+	 * @param int $limit Maximum number of results to return (usually 10)
+	 * @param int $offset Number of results to skip (usually 0)
+	 * @return string[] Matching subpages
+	 */
+	public function prefixSearchSubpages( $search, $limit, $offset ) {
+		$title = Title::newFromText( $search, NS_FILE );
+		if ( !$title || $title->getNamespace() !== NS_FILE ) {
+			// No prefix suggestion outside of file namespace
+			return [];
+		}
+		$searchEngine = $this->searchEngineFactory->create();
+		$searchEngine->setLimitOffset( $limit, $offset );
+		// Autocomplete subpage the same as a normal search, but just for files
+		$searchEngine->setNamespaces( [ NS_FILE ] );
+		$result = $searchEngine->defaultPrefixSearch( $search );
+
+		return array_map( static function ( Title $t ) {
+			// Remove namespace in search suggestion
+			return $t->getText();
+		}, $result );
 	}
 
 	protected function getGroupName() {

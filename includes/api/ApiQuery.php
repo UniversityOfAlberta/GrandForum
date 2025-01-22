@@ -1,9 +1,5 @@
 <?php
 /**
- *
- *
- * Created on Sep 7, 2006
- *
  * Copyright © 2006 Yuri Astrakhan "<Firstname><Lastname>@gmail.com"
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +20,13 @@
  * @file
  */
 
+use MediaWiki\Export\WikiExporterFactory;
+use MediaWiki\MainConfigNames;
+use Wikimedia\ObjectFactory\ObjectFactory;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\ILoadBalancer;
+
 /**
  * This is the main query class. It behaves similar to ApiMain: based on the
  * parameters given, it will create a list of titles to work on (an ApiPageSet
@@ -39,76 +42,476 @@ class ApiQuery extends ApiBase {
 
 	/**
 	 * List of Api Query prop modules
-	 * @var array
 	 */
-	private static $QueryPropModules = array(
-		'categories' => 'ApiQueryCategories',
-		'categoryinfo' => 'ApiQueryCategoryInfo',
-		'contributors' => 'ApiQueryContributors',
-		'duplicatefiles' => 'ApiQueryDuplicateFiles',
-		'extlinks' => 'ApiQueryExternalLinks',
-		'images' => 'ApiQueryImages',
-		'imageinfo' => 'ApiQueryImageInfo',
-		'info' => 'ApiQueryInfo',
-		'links' => 'ApiQueryLinks',
-		'iwlinks' => 'ApiQueryIWLinks',
-		'langlinks' => 'ApiQueryLangLinks',
-		'pageprops' => 'ApiQueryPageProps',
-		'redirects' => 'ApiQueryRedirects',
-		'revisions' => 'ApiQueryRevisions',
-		'stashimageinfo' => 'ApiQueryStashImageInfo',
-		'templates' => 'ApiQueryLinks',
-	);
+	private const QUERY_PROP_MODULES = [
+		'categories' => [
+			'class' => ApiQueryCategories::class,
+		],
+		'categoryinfo' => [
+			'class' => ApiQueryCategoryInfo::class,
+		],
+		'contributors' => [
+			'class' => ApiQueryContributors::class,
+			'services' => [
+				'RevisionStore',
+				'ActorMigration',
+				'UserGroupManager',
+				'GroupPermissionsLookup',
+			]
+		],
+		'deletedrevisions' => [
+			'class' => ApiQueryDeletedRevisions::class,
+			'services' => [
+				'RevisionStore',
+				'ContentHandlerFactory',
+				'ParserFactory',
+				'SlotRoleRegistry',
+				'ChangeTagDefStore',
+				'LinkBatchFactory',
+				'ContentRenderer',
+				'ContentTransformer',
+			]
+		],
+		'duplicatefiles' => [
+			'class' => ApiQueryDuplicateFiles::class,
+			'services' => [
+				'RepoGroup',
+			]
+		],
+		'extlinks' => [
+			'class' => ApiQueryExternalLinks::class,
+		],
+		'fileusage' => [
+			'class' => ApiQueryBacklinksprop::class,
+			'services' => [
+				// Same as for linkshere, redirects, transcludedin
+				'LinksMigration',
+			]
+		],
+		'images' => [
+			'class' => ApiQueryImages::class,
+		],
+		'imageinfo' => [
+			'class' => ApiQueryImageInfo::class,
+			'services' => [
+				// Same as for stashimageinfo
+				'RepoGroup',
+				'ContentLanguage',
+				'BadFileLookup',
+			]
+		],
+		'info' => [
+			'class' => ApiQueryInfo::class,
+			'services' => [
+				'ContentLanguage',
+				'LinkBatchFactory',
+				'NamespaceInfo',
+				'TitleFactory',
+				'TitleFormatter',
+				'WatchedItemStore',
+				'LanguageConverterFactory',
+				'RestrictionStore',
+				'LinksMigration',
+			],
+		],
+		'links' => [
+			'class' => ApiQueryLinks::class,
+			'services' => [
+				// Same as for templates
+				'LinkBatchFactory',
+				'LinksMigration',
+			]
+		],
+		'linkshere' => [
+			'class' => ApiQueryBacklinksprop::class,
+			'services' => [
+				// Same as for fileusage, redirects, transcludedin
+				'LinksMigration',
+			]
+		],
+		'iwlinks' => [
+			'class' => ApiQueryIWLinks::class,
+		],
+		'langlinks' => [
+			'class' => ApiQueryLangLinks::class,
+			'services' => [
+				'LanguageNameUtils',
+				'ContentLanguage',
+			]
+		],
+		'pageprops' => [
+			'class' => ApiQueryPageProps::class,
+			'services' => [
+				'PageProps',
+			]
+		],
+		'redirects' => [
+			'class' => ApiQueryBacklinksprop::class,
+			'services' => [
+				// Same as for fileusage, linkshere, transcludedin
+				'LinksMigration',
+			]
+		],
+		'revisions' => [
+			'class' => ApiQueryRevisions::class,
+			'services' => [
+				'RevisionStore',
+				'ContentHandlerFactory',
+				'ParserFactory',
+				'SlotRoleRegistry',
+				'ChangeTagDefStore',
+				'ActorMigration',
+				'ContentRenderer',
+				'ContentTransformer',
+			]
+		],
+		'stashimageinfo' => [
+			'class' => ApiQueryStashImageInfo::class,
+			'services' => [
+				// Same as for imageinfo
+				'RepoGroup',
+				'ContentLanguage',
+				'BadFileLookup',
+			]
+		],
+		'templates' => [
+			'class' => ApiQueryLinks::class,
+			'services' => [
+				// Same as for links
+				'LinkBatchFactory',
+				'LinksMigration',
+			]
+		],
+		'transcludedin' => [
+			'class' => ApiQueryBacklinksprop::class,
+			'services' => [
+				// Same as for fileusage, linkshere, redirects
+				'LinksMigration',
+			]
+		],
+	];
 
 	/**
 	 * List of Api Query list modules
-	 * @var array
 	 */
-	private static $QueryListModules = array(
-		'allcategories' => 'ApiQueryAllCategories',
-		'allfileusages' => 'ApiQueryAllLinks',
-		'allimages' => 'ApiQueryAllImages',
-		'alllinks' => 'ApiQueryAllLinks',
-		'allpages' => 'ApiQueryAllPages',
-		'allredirects' => 'ApiQueryAllLinks',
-		'alltransclusions' => 'ApiQueryAllLinks',
-		'allusers' => 'ApiQueryAllUsers',
-		'backlinks' => 'ApiQueryBacklinks',
-		'blocks' => 'ApiQueryBlocks',
-		'categorymembers' => 'ApiQueryCategoryMembers',
-		'deletedrevs' => 'ApiQueryDeletedrevs',
-		'embeddedin' => 'ApiQueryBacklinks',
-		'exturlusage' => 'ApiQueryExtLinksUsage',
-		'filearchive' => 'ApiQueryFilearchive',
-		'imageusage' => 'ApiQueryBacklinks',
-		'iwbacklinks' => 'ApiQueryIWBacklinks',
-		'langbacklinks' => 'ApiQueryLangBacklinks',
-		'logevents' => 'ApiQueryLogEvents',
-		'pageswithprop' => 'ApiQueryPagesWithProp',
-		'pagepropnames' => 'ApiQueryPagePropNames',
-		'prefixsearch' => 'ApiQueryPrefixSearch',
-		'protectedtitles' => 'ApiQueryProtectedTitles',
-		'querypage' => 'ApiQueryQueryPage',
-		'random' => 'ApiQueryRandom',
-		'recentchanges' => 'ApiQueryRecentChanges',
-		'search' => 'ApiQuerySearch',
-		'tags' => 'ApiQueryTags',
-		'usercontribs' => 'ApiQueryContributions',
-		'users' => 'ApiQueryUsers',
-		'watchlist' => 'ApiQueryWatchlist',
-		'watchlistraw' => 'ApiQueryWatchlistRaw',
-	);
+	private const QUERY_LIST_MODULES = [
+		'allcategories' => [
+			'class' => ApiQueryAllCategories::class,
+		],
+		'alldeletedrevisions' => [
+			'class' => ApiQueryAllDeletedRevisions::class,
+			'services' => [
+				'RevisionStore',
+				'ContentHandlerFactory',
+				'ParserFactory',
+				'SlotRoleRegistry',
+				'ChangeTagDefStore',
+				'NamespaceInfo',
+				'ContentRenderer',
+				'ContentTransformer',
+			]
+		],
+		'allfileusages' => [
+			'class' => ApiQueryAllLinks::class,
+			'services' => [
+				// Same as for alllinks, allredirects, alltransclusions
+				'NamespaceInfo',
+				'GenderCache',
+				'LinksMigration',
+			]
+		],
+		'allimages' => [
+			'class' => ApiQueryAllImages::class,
+			'services' => [
+				'RepoGroup',
+				'GroupPermissionsLookup',
+			]
+		],
+		'alllinks' => [
+			'class' => ApiQueryAllLinks::class,
+			'services' => [
+				// Same as for allfileusages, allredirects, alltransclusions
+				'NamespaceInfo',
+				'GenderCache',
+				'LinksMigration',
+			]
+		],
+		'allpages' => [
+			'class' => ApiQueryAllPages::class,
+			'services' => [
+				'NamespaceInfo',
+				'GenderCache',
+				'RestrictionStore',
+			]
+		],
+		'allredirects' => [
+			'class' => ApiQueryAllLinks::class,
+			'services' => [
+				// Same as for allfileusages, alllinks, alltransclusions
+				'NamespaceInfo',
+				'GenderCache',
+				'LinksMigration',
+			]
+		],
+		'allrevisions' => [
+			'class' => ApiQueryAllRevisions::class,
+			'services' => [
+				'RevisionStore',
+				'ContentHandlerFactory',
+				'ParserFactory',
+				'SlotRoleRegistry',
+				'ActorMigration',
+				'NamespaceInfo',
+				'ContentRenderer',
+				'ContentTransformer',
+			]
+		],
+		'mystashedfiles' => [
+			'class' => ApiQueryMyStashedFiles::class,
+		],
+		'alltransclusions' => [
+			'class' => ApiQueryAllLinks::class,
+			'services' => [
+				// Same as for allfileusages, alllinks, allredirects
+				'NamespaceInfo',
+				'GenderCache',
+				'LinksMigration',
+			]
+		],
+		'allusers' => [
+			'class' => ApiQueryAllUsers::class,
+			'services' => [
+				'UserFactory',
+				'UserGroupManager',
+				'GroupPermissionsLookup',
+				'ContentLanguage',
+			]
+		],
+		'backlinks' => [
+			'class' => ApiQueryBacklinks::class,
+			'services' => [
+				'LinksMigration',
+			]
+		],
+		'blocks' => [
+			'class' => ApiQueryBlocks::class,
+			'services' => [
+				'BlockActionInfo',
+				'BlockRestrictionStore',
+				'CommentStore',
+			],
+		],
+		'categorymembers' => [
+			'class' => ApiQueryCategoryMembers::class,
+			'services' => [
+				'CollationFactory',
+			]
+		],
+		'deletedrevs' => [
+			'class' => ApiQueryDeletedrevs::class,
+			'services' => [
+				'CommentStore',
+				'RowCommentFormatter',
+				'RevisionStore',
+				'ChangeTagDefStore',
+				'LinkBatchFactory',
+			],
+		],
+		'embeddedin' => [
+			'class' => ApiQueryBacklinks::class,
+			'services' => [
+				'LinksMigration',
+			]
+		],
+		'exturlusage' => [
+			'class' => ApiQueryExtLinksUsage::class,
+		],
+		'filearchive' => [
+			'class' => ApiQueryFilearchive::class,
+			'services' => [
+				'CommentStore',
+				'CommentFormatter',
+			],
+		],
+		'imageusage' => [
+			'class' => ApiQueryBacklinks::class,
+			'services' => [
+				'LinksMigration',
+			]
+		],
+		'iwbacklinks' => [
+			'class' => ApiQueryIWBacklinks::class,
+		],
+		'langbacklinks' => [
+			'class' => ApiQueryLangBacklinks::class,
+		],
+		'logevents' => [
+			'class' => ApiQueryLogEvents::class,
+			'services' => [
+				'CommentStore',
+				'RowCommentFormatter',
+				'ChangeTagDefStore',
+			],
+		],
+		'pageswithprop' => [
+			'class' => ApiQueryPagesWithProp::class,
+		],
+		'pagepropnames' => [
+			'class' => ApiQueryPagePropNames::class,
+		],
+		'prefixsearch' => [
+			'class' => ApiQueryPrefixSearch::class,
+			'services' => [
+				'SearchEngineConfig',
+				'SearchEngineFactory',
+			],
+		],
+		'protectedtitles' => [
+			'class' => ApiQueryProtectedTitles::class,
+			'services' => [
+				'CommentStore',
+				'RowCommentFormatter'
+			],
+		],
+		'querypage' => [
+			'class' => ApiQueryQueryPage::class,
+			'services' => [
+				'SpecialPageFactory',
+			]
+		],
+		'random' => [
+			'class' => ApiQueryRandom::class,
+		],
+		'recentchanges' => [
+			'class' => ApiQueryRecentChanges::class,
+			'services' => [
+				'CommentStore',
+				'RowCommentFormatter',
+				'ChangeTagDefStore',
+				'SlotRoleStore',
+				'SlotRoleRegistry',
+			],
+		],
+		'search' => [
+			'class' => ApiQuerySearch::class,
+			'services' => [
+				'SearchEngineConfig',
+				'SearchEngineFactory',
+			],
+		],
+		'tags' => [
+			'class' => ApiQueryTags::class,
+		],
+		'usercontribs' => [
+			'class' => ApiQueryUserContribs::class,
+			'services' => [
+				'CommentStore',
+				'UserIdentityLookup',
+				'UserNameUtils',
+				'RevisionStore',
+				'ChangeTagDefStore',
+				'ActorMigration',
+			],
+		],
+		'users' => [
+			'class' => ApiQueryUsers::class,
+			'services' => [
+				'UserNameUtils',
+				'UserFactory',
+				'UserGroupManager',
+				'GenderCache',
+				'AuthManager',
+			],
+		],
+		'watchlist' => [
+			'class' => ApiQueryWatchlist::class,
+			'services' => [
+				'CommentStore',
+				'WatchedItemQueryService',
+				'ContentLanguage',
+				'NamespaceInfo',
+				'GenderCache',
+			],
+		],
+		'watchlistraw' => [
+			'class' => ApiQueryWatchlistRaw::class,
+			'services' => [
+				'WatchedItemQueryService',
+				'ContentLanguage',
+				'NamespaceInfo',
+				'GenderCache',
+			]
+		],
+	];
 
 	/**
 	 * List of Api Query meta modules
-	 * @var array
 	 */
-	private static $QueryMetaModules = array(
-		'allmessages' => 'ApiQueryAllMessages',
-		'siteinfo' => 'ApiQuerySiteinfo',
-		'userinfo' => 'ApiQueryUserInfo',
-		'filerepoinfo' => 'ApiQueryFileRepoInfo',
-	);
+	private const QUERY_META_MODULES = [
+		'allmessages' => [
+			'class' => ApiQueryAllMessages::class,
+			'services' => [
+				'ContentLanguage',
+				'LanguageFactory',
+				'LanguageNameUtils',
+				'LocalisationCache',
+				'MessageCache',
+			]
+		],
+		'authmanagerinfo' => [
+			'class' => ApiQueryAuthManagerInfo::class,
+			'services' => [
+				'AuthManager',
+			]
+		],
+		'siteinfo' => [
+			'class' => ApiQuerySiteinfo::class,
+			'services' => [
+				'UserOptionsLookup',
+				'UserGroupManager',
+				'LanguageConverterFactory',
+				'LanguageFactory',
+				'LanguageNameUtils',
+				'ContentLanguage',
+				'NamespaceInfo',
+				'InterwikiLookup',
+				'Parser',
+				'MagicWordFactory',
+				'SpecialPageFactory',
+				'SkinFactory',
+				'DBLoadBalancer',
+				'ReadOnlyMode',
+			]
+		],
+		'userinfo' => [
+			'class' => ApiQueryUserInfo::class,
+			'services' => [
+				'TalkPageNotificationManager',
+				'WatchedItemStore',
+				'UserEditTracker',
+				'UserOptionsLookup',
+				'UserGroupManager',
+			]
+		],
+		'filerepoinfo' => [
+			'class' => ApiQueryFileRepoInfo::class,
+			'services' => [
+				'RepoGroup',
+			]
+		],
+		'tokens' => [
+			'class' => ApiQueryTokens::class,
+		],
+		'languageinfo' => [
+			'class' => ApiQueryLanguageinfo::class,
+			'services' => [
+				'LanguageFactory',
+				'LanguageNameUtils',
+				'LanguageFallback',
+				'LanguageConverterFactory',
+			],
+		],
+	];
 
 	/**
 	 * @var ApiPageSet
@@ -116,31 +519,51 @@ class ApiQuery extends ApiBase {
 	private $mPageSet;
 
 	private $mParams;
-	private $mNamedDB = array();
+	private $mNamedDB = [];
 	private $mModuleMgr;
-	private $mGeneratorContinue;
-	private $mUseLegacyContinue;
+
+	/** @var ILoadBalancer */
+	private $loadBalancer;
+
+	/** @var WikiExporterFactory */
+	private $wikiExporterFactory;
 
 	/**
-	 * @param $main ApiMain
-	 * @param $action string
+	 * @param ApiMain $main
+	 * @param string $action
+	 * @param ObjectFactory $objectFactory
+	 * @param ILoadBalancer $loadBalancer
+	 * @param WikiExporterFactory $wikiExporterFactory
 	 */
-	public function __construct( $main, $action ) {
+	public function __construct(
+		ApiMain $main,
+		$action,
+		ObjectFactory $objectFactory,
+		ILoadBalancer $loadBalancer,
+		WikiExporterFactory $wikiExporterFactory
+	) {
 		parent::__construct( $main, $action );
 
-		$this->mModuleMgr = new ApiModuleManager( $this );
+		$this->mModuleMgr = new ApiModuleManager(
+			$this,
+			$objectFactory
+		);
 
 		// Allow custom modules to be added in LocalSettings.php
-		global $wgAPIPropModules, $wgAPIListModules, $wgAPIMetaModules;
-		$this->mModuleMgr->addModules( self::$QueryPropModules, 'prop' );
-		$this->mModuleMgr->addModules( $wgAPIPropModules, 'prop' );
-		$this->mModuleMgr->addModules( self::$QueryListModules, 'list' );
-		$this->mModuleMgr->addModules( $wgAPIListModules, 'list' );
-		$this->mModuleMgr->addModules( self::$QueryMetaModules, 'meta' );
-		$this->mModuleMgr->addModules( $wgAPIMetaModules, 'meta' );
+		$config = $this->getConfig();
+		$this->mModuleMgr->addModules( self::QUERY_PROP_MODULES, 'prop' );
+		$this->mModuleMgr->addModules( $config->get( MainConfigNames::APIPropModules ), 'prop' );
+		$this->mModuleMgr->addModules( self::QUERY_LIST_MODULES, 'list' );
+		$this->mModuleMgr->addModules( $config->get( MainConfigNames::APIListModules ), 'list' );
+		$this->mModuleMgr->addModules( self::QUERY_META_MODULES, 'meta' );
+		$this->mModuleMgr->addModules( $config->get( MainConfigNames::APIMetaModules ), 'meta' );
+
+		$this->getHookRunner()->onApiQuery__moduleManager( $this->mModuleMgr );
 
 		// Create PageSet that will process titles/pageids/revids/generator
 		$this->mPageSet = new ApiPageSet( $this );
+		$this->loadBalancer = $loadBalancer;
+		$this->wikiExporterFactory = $wikiExporterFactory;
 	}
 
 	/**
@@ -152,20 +575,23 @@ class ApiQuery extends ApiBase {
 	}
 
 	/**
-	 * Get the query database connection with the given name.
+	 * Get a cached database connection with a given name.
+	 *
 	 * If no such connection has been requested before, it will be created.
 	 * Subsequent calls with the same $name will return the same connection
-	 * as the first, regardless of the values of $db and $groups
+	 * as the first, regardless of the values of $db and $groups.
+	 *
+	 * @deprecated since 1.39 Use or override ApiBase::getDB() and optionally
+	 *  pass a query group to wfGetDB() or ILoadBalancer::getConnectionRef().
 	 * @param string $name Name to assign to the database connection
 	 * @param int $db One of the DB_* constants
-	 * @param array $groups Query groups
-	 * @return DatabaseBase
+	 * @param string|string[] $groups Query groups
+	 * @return IDatabase
 	 */
 	public function getNamedDB( $name, $db, $groups ) {
+		wfDeprecated( __METHOD__, '1.39' );
 		if ( !array_key_exists( $name, $this->mNamedDB ) ) {
-			$this->profileDBIn();
-			$this->mNamedDB[$name] = wfGetDB( $db, $groups );
-			$this->profileDBOut();
+			$this->mNamedDB[$name] = $this->loadBalancer->getConnectionRef( $db, $groups );
 		}
 
 		return $this->mNamedDB[$name];
@@ -177,44 +603,6 @@ class ApiQuery extends ApiBase {
 	 */
 	public function getPageSet() {
 		return $this->mPageSet;
-	}
-
-	/**
-	 * Get the array mapping module names to class names
-	 * @deprecated since 1.21, use getModuleManager()'s methods instead
-	 * @return array array(modulename => classname)
-	 */
-	public function getModules() {
-		wfDeprecated( __METHOD__, '1.21' );
-
-		return $this->getModuleManager()->getNamesWithClasses();
-	}
-
-	/**
-	 * Get the generators array mapping module names to class names
-	 * @deprecated since 1.21, list of generators is maintained by ApiPageSet
-	 * @return array array(modulename => classname)
-	 */
-	public function getGenerators() {
-		wfDeprecated( __METHOD__, '1.21' );
-		$gens = array();
-		foreach ( $this->mModuleMgr->getNamesWithClasses() as $name => $class ) {
-			if ( is_subclass_of( $class, 'ApiQueryGeneratorBase' ) ) {
-				$gens[$name] = $class;
-			}
-		}
-
-		return $gens;
-	}
-
-	/**
-	 * Get whether the specified module is a prop, list or a meta query module
-	 * @deprecated since 1.21, use getModuleManager()->getModuleGroup()
-	 * @param string $moduleName Name of the module to find type for
-	 * @return mixed string or null
-	 */
-	function getModuleType( $moduleName ) {
-		return $this->getModuleManager()->getModuleGroup( $moduleName );
 	}
 
 	/**
@@ -245,23 +633,26 @@ class ApiQuery extends ApiBase {
 	public function execute() {
 		$this->mParams = $this->extractRequestParams();
 
-		// $pagesetParams is a array of parameter names used by the pageset generator
-		//   or null if pageset has already finished and is no longer needed
-		// $completeModules is a set of complete modules with the name as key
-		$this->initContinue( $pagesetParams, $completeModules );
-
 		// Instantiate requested modules
-		$allModules = array();
+		$allModules = [];
 		$this->instantiateModules( $allModules, 'prop' );
-		$propModules = $allModules; // Keep a copy
+		$propModules = array_keys( $allModules );
 		$this->instantiateModules( $allModules, 'list' );
 		$this->instantiateModules( $allModules, 'meta' );
 
 		// Filter modules based on continue parameter
-		$modules = $this->initModules( $allModules, $completeModules, $pagesetParams !== null );
+		$continuationManager = new ApiContinuationManager( $this, $allModules, $propModules );
+		$this->setContinuationManager( $continuationManager );
+		/** @var ApiQueryBase[] $modules */
+		$modules = $continuationManager->getRunModules();
+		'@phan-var ApiQueryBase[] $modules';
 
-		// Execute pageset if in legacy mode or if pageset is not done
-		if ( $completeModules === null || $pagesetParams !== null ) {
+		if ( !$continuationManager->isGeneratorDone() ) {
+			// Query modules may optimize data requests through the $this->getPageSet()
+			// object by adding extra fields from the page table.
+			foreach ( $modules as $module ) {
+				$module->requestExtraData( $this->mPageSet );
+			}
 			// Populate page/revision information
 			$this->mPageSet->execute();
 			// Record page information (title, namespace, if exists, etc)
@@ -273,149 +664,33 @@ class ApiQuery extends ApiBase {
 		$cacheMode = $this->mPageSet->getCacheMode();
 
 		// Execute all unfinished modules
-		/** @var $module ApiQueryBase */
 		foreach ( $modules as $module ) {
 			$params = $module->extractRequestParams();
 			$cacheMode = $this->mergeCacheMode(
 				$cacheMode, $module->getCacheMode( $params ) );
-			$module->profileIn();
 			$module->execute();
-			wfRunHooks( 'APIQueryAfterExecute', array( &$module ) );
-			$module->profileOut();
+			$this->getHookRunner()->onAPIQueryAfterExecute( $module );
 		}
 
 		// Set the cache mode
 		$this->getMain()->setCacheMode( $cacheMode );
 
-		if ( $completeModules === null ) {
-			return; // Legacy continue, we are done
-		}
-
-		// Reformat query-continue result section
-		$result = $this->getResult();
-		$qc = $result->getData();
-		if ( isset( $qc['query-continue'] ) ) {
-			$qc = $qc['query-continue'];
-			$result->unsetValue( null, 'query-continue' );
-		} elseif ( $this->mGeneratorContinue !== null ) {
-			$qc = array();
-		} else {
-			// no more "continue"s, we are done!
-			return;
-		}
-
-		// we are done with all the modules that do not have result in query-continue
-		$completeModules = array_merge( $completeModules, array_diff_key( $modules, $qc ) );
-		if ( $pagesetParams !== null ) {
-			// The pageset is still in use, check if all props have finished
-			$incompleteProps = array_intersect_key( $propModules, $qc );
-			if ( count( $incompleteProps ) > 0 ) {
-				// Properties are not done, continue with the same pageset state - copy current parameters
-				$main = $this->getMain();
-				$contValues = array();
-				foreach ( $pagesetParams as $param ) {
-					// The param name is already prefix-encoded
-					$contValues[$param] = $main->getVal( $param );
-				}
-			} elseif ( $this->mGeneratorContinue !== null ) {
-				// Move to the next set of pages produced by pageset, properties need to be restarted
-				$contValues = $this->mGeneratorContinue;
-				$pagesetParams = array_keys( $contValues );
-				$completeModules = array_diff_key( $completeModules, $propModules );
-			} else {
-				// Done with the pageset, finish up with the the lists and meta modules
-				$pagesetParams = null;
+		// Write the continuation data into the result
+		$this->setContinuationManager( null );
+		if ( $this->mParams['rawcontinue'] ) {
+			$data = $continuationManager->getRawNonContinuation();
+			if ( $data ) {
+				$this->getResult()->addValue( null, 'query-noncontinue', $data,
+					ApiResult::ADD_ON_TOP | ApiResult::NO_SIZE_CHECK );
 			}
-		}
-
-		$continue = '||' . implode( '|', array_keys( $completeModules ) );
-		if ( $pagesetParams !== null ) {
-			// list of all pageset parameters to use in the next request
-			$continue = implode( '|', $pagesetParams ) . $continue;
-		} else {
-			// we are done with the pageset
-			$contValues = array();
-			$continue = '-' . $continue;
-		}
-		$contValues['continue'] = $continue;
-		foreach ( $qc as $qcModule ) {
-			foreach ( $qcModule as $qcKey => $qcValue ) {
-				$contValues[$qcKey] = $qcValue;
-			}
-		}
-		$this->getResult()->addValue( null, 'continue', $contValues );
-	}
-
-	/**
-	 * Parse 'continue' parameter into the list of complete modules and a list of generator parameters
-	 * @param array|null $pagesetParams returns list of generator params or null if pageset is done
-	 * @param array|null $completeModules returns list of finished modules (as keys), or null if legacy
-	 */
-	private function initContinue( &$pagesetParams, &$completeModules ) {
-		$pagesetParams = array();
-		$continue = $this->mParams['continue'];
-		if ( $continue !== null ) {
-			$this->mUseLegacyContinue = false;
-			if ( $continue !== '' ) {
-				// Format: ' pagesetParam1 | pagesetParam2 || module1 | module2 | module3 | ...
-				// If pageset is done, use '-'
-				$continue = explode( '||', $continue );
-				$this->dieContinueUsageIf( count( $continue ) !== 2 );
-				if ( $continue[0] === '-' ) {
-					$pagesetParams = null; // No need to execute pageset
-				} elseif ( $continue[0] !== '' ) {
-					// list of pageset params that might need to be repeated
-					$pagesetParams = explode( '|', $continue[0] );
-				}
-				$continue = $continue[1];
-			}
-			if ( $continue !== '' ) {
-				$completeModules = array_flip( explode( '|', $continue ) );
-			} else {
-				$completeModules = array();
+			$data = $continuationManager->getRawContinuation();
+			if ( $data ) {
+				$this->getResult()->addValue( null, 'query-continue', $data,
+					ApiResult::ADD_ON_TOP | ApiResult::NO_SIZE_CHECK );
 			}
 		} else {
-			$this->mUseLegacyContinue = true;
-			$completeModules = null;
+			$continuationManager->setContinuationIntoResult( $this->getResult() );
 		}
-	}
-
-	/**
-	 * Validate sub-modules, filter out completed ones, and do requestExtraData()
-	 * @param array $allModules An dict of name=>instance of all modules requested by the client
-	 * @param array|null $completeModules list of finished modules, or null if legacy continue
-	 * @param bool $usePageset True if pageset will be executed
-	 * @return array of modules to be processed during this execution
-	 */
-	private function initModules( $allModules, $completeModules, $usePageset ) {
-		$modules = $allModules;
-		$tmp = $completeModules;
-		$wasPosted = $this->getRequest()->wasPosted();
-
-		/** @var $module ApiQueryBase */
-		foreach ( $allModules as $moduleName => $module ) {
-			if ( !$wasPosted && $module->mustBePosted() ) {
-				$this->dieUsageMsgOrDebug( array( 'mustbeposted', $moduleName ) );
-			}
-			if ( $completeModules !== null && array_key_exists( $moduleName, $completeModules ) ) {
-				// If this module is done, mark all its params as used
-				$module->extractRequestParams();
-				// Make sure this module is not used during execution
-				unset( $modules[$moduleName] );
-				unset( $tmp[$moduleName] );
-			} elseif ( $completeModules === null || $usePageset ) {
-				// Query modules may optimize data requests through the $this->getPageSet()
-				// object by adding extra fields from the page table.
-				// This function will gather all the extra request fields from the modules.
-				$module->requestExtraData( $this->mPageSet );
-			} else {
-				// Error - this prop module must have finished before generator is done
-				$this->dieContinueUsageIf( $this->mModuleMgr->getModuleGroup( $moduleName ) === 'prop' );
-			}
-		}
-		$this->dieContinueUsageIf( $completeModules !== null && count( $tmp ) !== 0 );
-
-		return $modules;
 	}
 
 	/**
@@ -423,8 +698,8 @@ class ApiQuery extends ApiBase {
 	 * The cache mode may increase in the level of privacy, but public modules
 	 * added to private data do not decrease the level of privacy.
 	 *
-	 * @param $cacheMode string
-	 * @param $modCacheMode string
+	 * @param string $cacheMode
+	 * @param string $modCacheMode
 	 * @return string
 	 */
 	protected function mergeCacheMode( $cacheMode, $modCacheMode ) {
@@ -434,7 +709,7 @@ class ApiQuery extends ApiBase {
 			}
 		} elseif ( $modCacheMode === 'public' ) {
 			// do nothing, if it's public already it will stay public
-		} else { // private
+		} else {
 			$cacheMode = 'private';
 		}
 
@@ -443,15 +718,19 @@ class ApiQuery extends ApiBase {
 
 	/**
 	 * Create instances of all modules requested by the client
-	 * @param array $modules to append instantiated modules to
+	 * @param array &$modules To append instantiated modules to
 	 * @param string $param Parameter name to read modules from
 	 */
 	private function instantiateModules( &$modules, $param ) {
+		$wasPosted = $this->getRequest()->wasPosted();
 		if ( isset( $this->mParams[$param] ) ) {
 			foreach ( $this->mParams[$param] as $moduleName ) {
 				$instance = $this->mModuleMgr->getModule( $moduleName, $param );
 				if ( $instance === null ) {
 					ApiBase::dieDebug( __METHOD__, 'Error instantiating module' );
+				}
+				if ( !$wasPosted && $instance->mustBePosted() ) {
+					$this->dieWithErrorOrDebug( [ 'apierror-mustbeposted', $moduleName ] );
 				}
 				// Ignore duplicates. TODO 2.0: die()?
 				if ( !array_key_exists( $moduleName, $modules ) ) {
@@ -470,183 +749,169 @@ class ApiQuery extends ApiBase {
 		$pageSet = $this->getPageSet();
 		$result = $this->getResult();
 
-		// We don't check for a full result set here because we can't be adding
-		// more than 380K. The maximum revision size is in the megabyte range,
-		// and the maximum result size must be even higher than that.
+		// We can't really handle max-result-size failure here, but we need to
+		// check anyway in case someone set the limit stupidly low.
+		$fit = true;
 
 		$values = $pageSet->getNormalizedTitlesAsResult( $result );
 		if ( $values ) {
-			$result->addValue( 'query', 'normalized', $values );
+			// @phan-suppress-next-line PhanRedundantCondition
+			$fit = $fit && $result->addValue( 'query', 'normalized', $values );
 		}
 		$values = $pageSet->getConvertedTitlesAsResult( $result );
 		if ( $values ) {
-			$result->addValue( 'query', 'converted', $values );
+			$fit = $fit && $result->addValue( 'query', 'converted', $values );
 		}
 		$values = $pageSet->getInterwikiTitlesAsResult( $result, $this->mParams['iwurl'] );
 		if ( $values ) {
-			$result->addValue( 'query', 'interwiki', $values );
+			$fit = $fit && $result->addValue( 'query', 'interwiki', $values );
 		}
 		$values = $pageSet->getRedirectTitlesAsResult( $result );
 		if ( $values ) {
-			$result->addValue( 'query', 'redirects', $values );
+			$fit = $fit && $result->addValue( 'query', 'redirects', $values );
 		}
 		$values = $pageSet->getMissingRevisionIDsAsResult( $result );
 		if ( $values ) {
-			$result->addValue( 'query', 'badrevids', $values );
+			$fit = $fit && $result->addValue( 'query', 'badrevids', $values );
 		}
 
 		// Page elements
-		$pages = array();
+		$pages = [];
 
 		// Report any missing titles
 		foreach ( $pageSet->getMissingTitles() as $fakeId => $title ) {
-			$vals = array();
+			$vals = [];
 			ApiQueryBase::addTitleInfo( $vals, $title );
-			$vals['missing'] = '';
+			$vals['missing'] = true;
+			if ( $title->isKnown() ) {
+				$vals['known'] = true;
+			}
 			$pages[$fakeId] = $vals;
 		}
 		// Report any invalid titles
-		foreach ( $pageSet->getInvalidTitles() as $fakeId => $title ) {
-			$pages[$fakeId] = array( 'title' => $title, 'invalid' => '' );
+		foreach ( $pageSet->getInvalidTitlesAndReasons() as $fakeId => $data ) {
+			$pages[$fakeId] = $data + [ 'invalid' => true ];
 		}
 		// Report any missing page ids
 		foreach ( $pageSet->getMissingPageIDs() as $pageid ) {
-			$pages[$pageid] = array(
+			$pages[$pageid] = [
 				'pageid' => $pageid,
-				'missing' => ''
-			);
+				'missing' => true,
+			];
 		}
 		// Report special pages
-		/** @var $title Title */
+		/** @var Title $title */
 		foreach ( $pageSet->getSpecialTitles() as $fakeId => $title ) {
-			$vals = array();
+			$vals = [];
 			ApiQueryBase::addTitleInfo( $vals, $title );
-			$vals['special'] = '';
-			if ( $title->isSpecialPage() &&
-				!SpecialPageFactory::exists( $title->getDBkey() )
-			) {
-				$vals['missing'] = '';
-			} elseif ( $title->getNamespace() == NS_MEDIA &&
-				!wfFindFile( $title )
-			) {
-				$vals['missing'] = '';
+			$vals['special'] = true;
+			if ( !$title->isKnown() ) {
+				$vals['missing'] = true;
 			}
 			$pages[$fakeId] = $vals;
 		}
 
 		// Output general page information for found titles
 		foreach ( $pageSet->getGoodTitles() as $pageid => $title ) {
-			$vals = array();
+			$vals = [];
 			$vals['pageid'] = $pageid;
 			ApiQueryBase::addTitleInfo( $vals, $title );
 			$pages[$pageid] = $vals;
 		}
 
 		if ( count( $pages ) ) {
+			$pageSet->populateGeneratorData( $pages );
+			ApiResult::setArrayType( $pages, 'BCarray' );
+
 			if ( $this->mParams['indexpageids'] ) {
-				$pageIDs = array_keys( $pages );
+				$pageIDs = array_keys( ApiResult::stripMetadataNonRecursive( $pages ) );
 				// json treats all map keys as strings - converting to match
 				$pageIDs = array_map( 'strval', $pageIDs );
-				$result->setIndexedTagName( $pageIDs, 'id' );
-				$result->addValue( 'query', 'pageids', $pageIDs );
+				ApiResult::setIndexedTagName( $pageIDs, 'id' );
+				$fit = $fit && $result->addValue( 'query', 'pageids', $pageIDs );
 			}
 
-			$result->setIndexedTagName( $pages, 'page' );
-			$result->addValue( 'query', 'pages', $pages );
+			ApiResult::setIndexedTagName( $pages, 'page' );
+			$fit = $fit && $result->addValue( 'query', 'pages', $pages );
 		}
+
+		if ( !$fit ) {
+			$this->dieWithError( 'apierror-badconfig-resulttoosmall', 'badconfig' );
+		}
+
 		if ( $this->mParams['export'] ) {
 			$this->doExport( $pageSet, $result );
 		}
 	}
 
 	/**
-	 * This method is called by the generator base when generator in the smart-continue
-	 * mode tries to set 'query-continue' value. ApiQuery stores those values separately
-	 * until the post-processing when it is known if the generation should continue or repeat.
-	 * @param ApiQueryGeneratorBase $module generator module
-	 * @param string $paramName
-	 * @param mixed $paramValue
-	 * @return bool true if processed, false if this is a legacy continue
-	 */
-	public function setGeneratorContinue( $module, $paramName, $paramValue ) {
-		if ( $this->mUseLegacyContinue ) {
-			return false;
-		}
-		$paramName = $module->encodeParamName( $paramName );
-		if ( $this->mGeneratorContinue === null ) {
-			$this->mGeneratorContinue = array();
-		}
-		$this->mGeneratorContinue[$paramName] = $paramValue;
-
-		return true;
-	}
-
-	/**
-	 * @param $pageSet ApiPageSet Pages to be exported
-	 * @param $result ApiResult Result to output to
+	 * @param ApiPageSet $pageSet Pages to be exported
+	 * @param ApiResult $result Result to output to
 	 */
 	private function doExport( $pageSet, $result ) {
-		$exportTitles = array();
-		$titles = $pageSet->getGoodTitles();
+		$exportTitles = [];
+		$titles = $pageSet->getGoodPages();
 		if ( count( $titles ) ) {
-			$user = $this->getUser();
-			/** @var $title Title */
+			/** @var Title $title */
 			foreach ( $titles as $title ) {
-				if ( $title->userCan( 'read', $user ) ) {
+				if ( $this->getAuthority()->authorizeRead( 'read', $title ) ) {
 					$exportTitles[] = $title;
 				}
 			}
 		}
 
-		$exporter = new WikiExporter( $this->getDB() );
-		// WikiExporter writes to stdout, so catch its
-		// output with an ob
-		ob_start();
+		$exporter = $this->wikiExporterFactory->getWikiExporter( $this->getDB() );
+		$sink = new DumpStringOutput;
+		$exporter->setOutputSink( $sink );
+		$exporter->setSchemaVersion( $this->mParams['exportschema'] );
 		$exporter->openStream();
 		foreach ( $exportTitles as $title ) {
 			$exporter->pageByTitle( $title );
 		}
 		$exporter->closeStream();
-		$exportxml = ob_get_contents();
-		ob_end_clean();
 
 		// Don't check the size of exported stuff
 		// It's not continuable, so it would cause more
 		// problems than it'd solve
-		$result->disableSizeCheck();
 		if ( $this->mParams['exportnowrap'] ) {
 			$result->reset();
 			// Raw formatter will handle this
-			$result->addValue( null, 'text', $exportxml );
-			$result->addValue( null, 'mime', 'text/xml' );
+			$result->addValue( null, 'text', $sink, ApiResult::NO_SIZE_CHECK );
+			$result->addValue( null, 'mime', 'text/xml', ApiResult::NO_SIZE_CHECK );
+			$result->addValue( null, 'filename', 'export.xml', ApiResult::NO_SIZE_CHECK );
 		} else {
-			$r = array();
-			ApiResult::setContent( $r, $exportxml );
-			$result->addValue( 'query', 'export', $r );
+			$result->addValue( 'query', 'export', $sink, ApiResult::NO_SIZE_CHECK );
+			$result->addValue( 'query', ApiResult::META_BC_SUBELEMENTS, [ 'export' ] );
 		}
-		$result->enableSizeCheck();
 	}
 
 	public function getAllowedParams( $flags = 0 ) {
-		$result = array(
-			'prop' => array(
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => $this->mModuleMgr->getNames( 'prop' )
-			),
-			'list' => array(
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => $this->mModuleMgr->getNames( 'list' )
-			),
-			'meta' => array(
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => $this->mModuleMgr->getNames( 'meta' )
-			),
+		$result = [
+			'prop' => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'submodule',
+			],
+			'list' => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'submodule',
+			],
+			'meta' => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'submodule',
+			],
 			'indexpageids' => false,
 			'export' => false,
 			'exportnowrap' => false,
+			'exportschema' => [
+				ParamValidator::PARAM_DEFAULT => WikiExporter::schemaVersion(),
+				ParamValidator::PARAM_TYPE => XmlDumpWriter::$supportedSchemas,
+			],
 			'iwurl' => false,
-			'continue' => null,
-		);
+			'continue' => [
+				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
+			],
+			'rawcontinue' => false,
+		];
 		if ( $flags ) {
 			$result += $this->getPageSet()->getFinalParams( $flags );
 		}
@@ -654,114 +919,55 @@ class ApiQuery extends ApiBase {
 		return $result;
 	}
 
-	/**
-	 * Override the parent to generate help messages for all available query modules.
-	 * @return string
-	 */
-	public function makeHelpMsg() {
-
-		// Use parent to make default message for the query module
-		$msg = parent::makeHelpMsg();
-
-		$querySeparator = str_repeat( '--- ', 12 );
-		$moduleSeparator = str_repeat( '*** ', 14 );
-		$msg .= "\n$querySeparator Query: Prop  $querySeparator\n\n";
-		$msg .= $this->makeHelpMsgHelper( 'prop' );
-		$msg .= "\n$querySeparator Query: List  $querySeparator\n\n";
-		$msg .= $this->makeHelpMsgHelper( 'list' );
-		$msg .= "\n$querySeparator Query: Meta  $querySeparator\n\n";
-		$msg .= $this->makeHelpMsgHelper( 'meta' );
-		$msg .= "\n\n$moduleSeparator Modules: continuation  $moduleSeparator\n\n";
-
-		return $msg;
-	}
-
-	/**
-	 * For all modules of a given group, generate help messages and join them together
-	 * @param string $group Module group
-	 * @return string
-	 */
-	private function makeHelpMsgHelper( $group ) {
-		$moduleDescriptions = array();
-
-		$moduleNames = $this->mModuleMgr->getNames( $group );
-		sort( $moduleNames );
-		foreach ( $moduleNames as $name ) {
-			/**
-			 * @var $module ApiQueryBase
-			 */
-			$module = $this->mModuleMgr->getModule( $name );
-
-			$msg = ApiMain::makeHelpMsgHeader( $module, $group );
-			$msg2 = $module->makeHelpMsg();
-			if ( $msg2 !== false ) {
-				$msg .= $msg2;
+	public function isReadMode() {
+		// We need to make an exception for certain meta modules that should be
+		// accessible even without the 'read' right. Restrict the exception as
+		// much as possible: no other modules allowed, and no pageset
+		// parameters either. We do allow the 'rawcontinue' and 'indexpageids'
+		// parameters since frameworks might add these unconditionally and they
+		// can't expose anything here.
+		$allowedParams = [ 'rawcontinue' => 1, 'indexpageids' => 1 ];
+		$this->mParams = $this->extractRequestParams();
+		$request = $this->getRequest();
+		foreach ( $this->mParams + $this->getPageSet()->extractRequestParams() as $param => $value ) {
+			$needed = $param === 'meta';
+			if ( !isset( $allowedParams[$param] ) && $request->getCheck( $param ) !== $needed ) {
+				return true;
 			}
-			if ( $module instanceof ApiQueryGeneratorBase ) {
-				$msg .= "Generator:\n  This module may be used as a generator\n";
-			}
-			$moduleDescriptions[] = $msg;
 		}
 
-		return implode( "\n", $moduleDescriptions );
+		// Ask each module if it requires read mode. Any true => this returns
+		// true.
+		$modules = [];
+		$this->instantiateModules( $modules, 'meta' );
+		foreach ( $modules as $module ) {
+			if ( $module->isReadMode() ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
-	public function shouldCheckMaxlag() {
-		return true;
-	}
+	protected function getExamplesMessages() {
+		$title = Title::newMainPage()->getPrefixedText();
+		$mp = rawurlencode( $title );
 
-	public function getParamDescription() {
-		return $this->getPageSet()->getFinalParamDescription() + array(
-			'prop' => 'Which properties to get for the titles/revisions/pageids. ' .
-				'Module help is available below',
-			'list' => 'Which lists to get. Module help is available below',
-			'meta' => 'Which metadata to get about the site. Module help is available below',
-			'indexpageids' => 'Include an additional pageids section listing all returned page IDs',
-			'export' => 'Export the current revisions of all given or generated pages',
-			'exportnowrap' => 'Return the export XML without wrapping it in an ' .
-				'XML result (same format as Special:Export). Can only be used with export',
-			'iwurl' => 'Whether to get the full URL if the title is an interwiki link',
-			'continue' => array(
-				'When present, formats query-continue as key-value pairs that ' .
-					'should simply be merged into the original request.',
-				'This parameter must be set to an empty string in the initial query.',
-				'This parameter is recommended for all new development, and ' .
-					'will be made default in the next API version.'
-			),
-		);
-	}
-
-	public function getDescription() {
-		return array(
-			'Query API module allows applications to get needed pieces of data ' .
-				'from the MediaWiki databases,',
-			'and is loosely based on the old query.php interface.',
-			'All data modifications will first have to use query to acquire a ' .
-				'token to prevent abuse from malicious sites.'
-		);
-	}
-
-	public function getPossibleErrors() {
-		return array_merge(
-			parent::getPossibleErrors(),
-			$this->getPageSet()->getFinalPossibleErrors()
-		);
-	}
-
-	public function getExamples() {
-		return array(
-			'api.php?action=query&prop=revisions&meta=siteinfo&' .
-				'titles=Main%20Page&rvprop=user|comment&continue=',
-			'api.php?action=query&generator=allpages&gapprefix=API/&prop=revisions&continue=',
-		);
+		return [
+			'action=query&prop=revisions&meta=siteinfo&' .
+				"titles={$mp}&rvprop=user|comment&continue="
+				=> 'apihelp-query-example-revisions',
+			'action=query&generator=allpages&gapprefix=API/&prop=revisions&continue='
+				=> 'apihelp-query-example-allpages',
+		];
 	}
 
 	public function getHelpUrls() {
-		return array(
-			'https://www.mediawiki.org/wiki/API:Query',
-			'https://www.mediawiki.org/wiki/API:Meta',
-			'https://www.mediawiki.org/wiki/API:Properties',
-			'https://www.mediawiki.org/wiki/API:Lists',
-		);
+		return [
+			'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Query',
+			'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Meta',
+			'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Properties',
+			'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Lists',
+		];
 	}
 }

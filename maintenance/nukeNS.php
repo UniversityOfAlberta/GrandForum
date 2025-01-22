@@ -44,7 +44,7 @@ require_once __DIR__ . '/Maintenance.php';
 class NukeNS extends Maintenance {
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Remove pages with only 1 revision from any namespace";
+		$this->addDescription( 'Remove pages with only 1 revision from any namespace' );
 		$this->addOption( 'delete', "Actually delete the page" );
 		$this->addOption( 'ns', 'Namespace to delete from, default NS_MEDIAWIKI', false, true );
 		$this->addOption( 'all', 'Delete everything regardless of revision count' );
@@ -52,14 +52,12 @@ class NukeNS extends Maintenance {
 
 	public function execute() {
 		$ns = $this->getOption( 'ns', NS_MEDIAWIKI );
-		$delete = $this->getOption( 'delete', false );
-		$all = $this->getOption( 'all', false );
-		$dbw = wfGetDB( DB_MASTER );
-		$dbw->begin( __METHOD__ );
+		$delete = $this->hasOption( 'delete' );
+		$all = $this->hasOption( 'all' );
+		$dbw = $this->getDB( DB_PRIMARY );
+		$this->beginTransaction( $dbw, __METHOD__ );
 
-		$tbl_pag = $dbw->tableName( 'page' );
-		$tbl_rev = $dbw->tableName( 'revision' );
-		$res = $dbw->query( "SELECT page_title FROM $tbl_pag WHERE page_namespace = $ns" );
+		$res = $dbw->select( 'page', 'page_title', [ 'page_namespace' => $ns ], __METHOD__ );
 
 		$n_deleted = 0;
 
@@ -69,12 +67,12 @@ class NukeNS extends Maintenance {
 			$id = $title->getArticleID();
 
 			// Get corresponding revisions
-			$res2 = $dbw->query( "SELECT rev_id FROM $tbl_rev WHERE rev_page = $id" );
-			$revs = array();
-
-			foreach ( $res2 as $row2 ) {
-				$revs[] = $row2->rev_id;
-			}
+			$revs = $dbw->selectFieldValues(
+				'revision',
+				'rev_id',
+				[ 'rev_page' => $id ],
+				__METHOD__
+			);
 			$count = count( $revs );
 
 			// skip anything that looks modified (i.e. multiple revs)
@@ -85,29 +83,32 @@ class NukeNS extends Maintenance {
 				// as much as I hate to cut & paste this, it's a little different, and
 				// I already have the id & revs
 				if ( $delete ) {
-					$dbw->query( "DELETE FROM $tbl_pag WHERE page_id = $id" );
-					$dbw->commit( __METHOD__ );
+					$dbw->delete( 'page', [ 'page_id' => $id ], __METHOD__ );
+					$this->commitTransaction( $dbw, __METHOD__ );
 					// Delete revisions as appropriate
-					$child = $this->runChild( 'NukePage', 'nukePage.php' );
+					/** @var NukePage $child */
+					$child = $this->runChild( NukePage::class, 'nukePage.php' );
+					'@phan-var NukePage $child';
 					$child->deleteRevisions( $revs );
-					$this->purgeRedundantText( true );
-					$n_deleted ++;
+					$n_deleted++;
 				}
 			} else {
 				$this->output( "skip: " . $title->getPrefixedText() . "\n" );
 			}
 		}
-		$dbw->commit( __METHOD__ );
+		$this->commitTransaction( $dbw, __METHOD__ );
 
 		if ( $n_deleted > 0 ) {
+			$this->purgeRedundantText( true );
+
 			# update statistics - better to decrement existing count, or just count
 			# the page table?
-			$pages = $dbw->selectField( 'site_stats', 'ss_total_pages' );
+			$pages = $dbw->selectField( 'site_stats', 'ss_total_pages', [], __METHOD__ );
 			$pages -= $n_deleted;
 			$dbw->update(
 				'site_stats',
-				array( 'ss_total_pages' => $pages ),
-				array( 'ss_row_id' => 1 ),
+				[ 'ss_total_pages' => $pages ],
+				[ 'ss_row_id' => 1 ],
 				__METHOD__
 			);
 		}
@@ -118,5 +119,5 @@ class NukeNS extends Maintenance {
 	}
 }
 
-$maintClass = "NukeNS";
+$maintClass = NukeNS::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

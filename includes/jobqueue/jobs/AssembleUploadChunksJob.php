@@ -20,6 +20,7 @@
  * @file
  * @ingroup Upload
  */
+use Wikimedia\ScopedCallback;
 
 /**
  * Assemble the segments of a chunked upload.
@@ -27,59 +28,64 @@
  * @ingroup Upload
  */
 class AssembleUploadChunksJob extends Job {
-	public function __construct( $title, $params ) {
+	public function __construct( Title $title, array $params ) {
 		parent::__construct( 'AssembleUploadChunks', $title, $params );
 		$this->removeDuplicates = true;
 	}
 
 	public function run() {
 		$scope = RequestContext::importScopedSession( $this->params['session'] );
+		$this->addTeardownCallback( static function () use ( &$scope ) {
+			ScopedCallback::consume( $scope ); // T126450
+		} );
+
 		$context = RequestContext::getMain();
+		$user = $context->getUser();
 		try {
-			$user = $context->getUser();
-			if ( !$user->isLoggedIn() ) {
+			if ( !$user->isRegistered() ) {
 				$this->setLastError( "Could not load the author user from session." );
 
 				return false;
 			}
 
-			if ( count( $_SESSION ) === 0 ) {
-				// Empty session probably indicates that we didn't associate
-				// with the session correctly. Note that being able to load
-				// the user does not necessarily mean the session was loaded.
-				// Most likely cause by suhosin.session.encrypt = On.
-				$this->setLastError( "Error associating with user session. " .
-					"Try setting suhosin.session.encrypt = Off" );
-
-				return false;
-			}
-
 			UploadBase::setSessionStatus(
+				$user,
 				$this->params['filekey'],
-				array( 'result' => 'Poll', 'stage' => 'assembling', 'status' => Status::newGood() )
+				[ 'result' => 'Poll', 'stage' => 'assembling', 'status' => Status::newGood() ]
 			);
 
 			$upload = new UploadFromChunks( $user );
 			$upload->continueChunks(
 				$this->params['filename'],
 				$this->params['filekey'],
-				$context->getRequest()
+				new WebRequestUpload( $context->getRequest(), 'null' )
 			);
 
 			// Combine all of the chunks into a local file and upload that to a new stash file
 			$status = $upload->concatenateChunks();
 			if ( !$status->isGood() ) {
 				UploadBase::setSessionStatus(
+					$user,
 					$this->params['filekey'],
-					array( 'result' => 'Failure', 'stage' => 'assembling', 'status' => $status )
+					[ 'result' => 'Failure', 'stage' => 'assembling', 'status' => $status ]
 				);
-				$this->setLastError( $status->getWikiText() );
 
-				return false;
+				// the chunks did not get assembled, but this should not be considered a job
+				// failure - they simply didn't pass verification for some reason, and that
+				// reason is stored in above session to inform the clients
+				return true;
 			}
 
+			// We can only get warnings like 'duplicate' after concatenating the chunks
+			$status = Status::newGood();
+			$status->value = [
+				'warnings' => UploadBase::makeWarningsSerializable(
+					$upload->checkWarnings( $user )
+				)
+			];
+
 			// We have a new filekey for the fully concatenated file
-			$newFileKey = $upload->getLocalFile()->getFileKey();
+			$newFileKey = $upload->getStashFile()->getFileKey();
 
 			// Remove the old stash file row and first chunk file
 			$upload->stash->removeFileNoAuth( $this->params['filekey'] );
@@ -93,27 +99,29 @@ class AssembleUploadChunksJob extends Job {
 
 			// Cache the info so the user doesn't have to wait forever to get the final info
 			UploadBase::setSessionStatus(
+				$user,
 				$this->params['filekey'],
-				array(
+				[
 					'result' => 'Success',
 					'stage' => 'assembling',
 					'filekey' => $newFileKey,
 					'imageinfo' => $imageInfo,
-					'status' => Status::newGood()
-				)
+					'status' => $status
+				]
 			);
-		} catch ( MWException $e ) {
+		} catch ( Exception $e ) {
 			UploadBase::setSessionStatus(
+				$user,
 				$this->params['filekey'],
-				array(
+				[
 					'result' => 'Failure',
 					'stage' => 'assembling',
 					'status' => Status::newFatal( 'api-error-stashfailed' )
-				)
+				]
 			);
-			$this->setLastError( get_class( $e ) . ": " . $e->getText() );
+			$this->setLastError( get_class( $e ) . ": " . $e->getMessage() );
 			// To be extra robust.
-			MWExceptionHandler::rollbackMasterChangesAndLog( $e );
+			MWExceptionHandler::rollbackPrimaryChangesAndLog( $e );
 
 			return false;
 		}
@@ -124,7 +132,7 @@ class AssembleUploadChunksJob extends Job {
 	public function getDeduplicationInfo() {
 		$info = parent::getDeduplicationInfo();
 		if ( is_array( $info['params'] ) ) {
-			$info['params'] = array( 'filekey' => $info['params']['filekey'] );
+			$info['params'] = [ 'filekey' => $info['params']['filekey'] ];
 		}
 
 		return $info;

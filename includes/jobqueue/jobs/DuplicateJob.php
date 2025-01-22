@@ -18,7 +18,7 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Cache
+ * @ingroup JobQueue
  */
 
 /**
@@ -26,29 +26,28 @@
  *
  * @ingroup JobQueue
  */
-final class DuplicateJob extends Job {
+final class DuplicateJob extends Job implements GenericParameterJob {
 	/**
 	 * Callers should use DuplicateJob::newFromJob() instead
 	 *
-	 * @param Title $title
-	 * @param array $params job parameters
+	 * @param array $params Job parameters
 	 */
-	function __construct( $title, $params ) {
-		parent::__construct( 'duplicate', $title, $params );
+	public function __construct( array $params ) {
+		parent::__construct( 'duplicate', $params );
 	}
 
 	/**
 	 * Get a duplicate no-op version of a job
 	 *
-	 * @param Job $job
+	 * @param RunnableJob $job
 	 * @return Job
 	 */
-	public static function newFromJob( Job $job ) {
-		$djob = new self( $job->getTitle(), $job->getParams() );
+	public static function newFromJob( RunnableJob $job ) {
+		$djob = new self( $job->getParams() );
 		$djob->command = $job->getType();
-		$djob->params = is_array( $djob->params ) ? $djob->params : array();
-		$djob->params = array( 'isDuplicate' => true ) + $djob->params;
-		$djob->metadata = $job->metadata;
+		$djob->params = is_array( $djob->params ) ? $djob->params : [];
+		$djob->params = [ 'isDuplicate' => true ] + $djob->params;
+		$djob->metadata = $job->getMetadata();
 
 		return $djob;
 	}

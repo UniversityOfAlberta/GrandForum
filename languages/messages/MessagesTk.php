@@ -1,11 +1,10 @@
 <?php
 /** Turkmen (Türkmençe)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Amire80
  * @author Cekli829
@@ -17,7 +16,7 @@
  * @author The Evil IP address
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Media',
 	NS_SPECIAL          => 'Ýörite',
 	NS_TALK             => 'Çekişme',
@@ -33,7 +32,6 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Ýardam_çekişme',
 	NS_CATEGORY         => 'Kategoriýa',
 	NS_CATEGORY_TALK    => 'Kategoriýa_çekişme',
-);
+];
 
 $linkTrail = '/^([a-zÄäÇçĞğŇňÖöŞşÜüÝýŽž]+)(.*)$/sDu';
-

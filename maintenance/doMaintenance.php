@@ -21,10 +21,16 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @author Chad Horohoe <chad@anyonecanedit.org>
  * @file
  * @ingroup Maintenance
  */
+
+use MediaWiki\Maintenance\MaintenanceRunner;
+use MediaWiki\Settings\SettingsBuilder;
+
+// No AutoLoader yet
+require_once __DIR__ . '/includes/MaintenanceRunner.php';
+require_once __DIR__ . '/includes/MaintenanceParameters.php';
 
 if ( !defined( 'RUN_MAINTENANCE_IF_MAIN' ) ) {
 	echo "This file must be included after Maintenance.php\n";
@@ -32,91 +38,53 @@ if ( !defined( 'RUN_MAINTENANCE_IF_MAIN' ) ) {
 }
 
 // Wasn't included from the file scope, halt execution (probably wanted the class)
-// If a class is using commandLine.inc (old school maintenance), they definitely
+// If a class is using CommandLineInc (old school maintenance), they definitely
 // cannot be included and will proceed with execution
-if ( !Maintenance::shouldExecute() && $maintClass != 'CommandLineInc' ) {
+// @phan-suppress-next-line PhanSuspiciousValueComparisonInGlobalScope
+if ( !MaintenanceRunner::shouldExecute() && $maintClass != CommandLineInc::class ) {
 	return;
 }
 
+// @phan-suppress-next-line PhanImpossibleConditionInGlobalScope
 if ( !$maintClass || !class_exists( $maintClass ) ) {
 	echo "\$maintClass is not set or is set to a non-existent class.\n";
 	exit( 1 );
 }
 
-// Get an object to start us off
-$maintenance = new $maintClass();
+// Define the MediaWiki entrypoint
+define( 'MEDIAWIKI', true );
 
-// Basic sanity checks and such
-$maintenance->setup();
+$IP = wfDetectInstallPath();
+
+$runner = new MaintenanceRunner();
+$runner->init( $maintClass );
 
 // We used to call this variable $self, but it was moved
 // to $maintenance->mSelf. Keep that here for b/c
-$self = $maintenance->getName();
+$self = $runner->getName();
 
-# Start the autoloader, so that extensions can derive classes from core files
-require_once "$IP/includes/AutoLoader.php";
-# Stub the profiler
-require_once "$IP/includes/profiler/Profiler.php";
+$runner->defineSettings();
 
-# Start the profiler
-$wgProfiler = array();
-if ( file_exists( "$IP/StartProfiler.php" ) ) {
-	require "$IP/StartProfiler.php";
-}
+// Custom setup for Maintenance entry point
+if ( !defined( 'MW_SETUP_CALLBACK' ) ) {
 
-// Some other requires
-require_once "$IP/includes/Defines.php";
-require_once "$IP/includes/DefaultSettings.php";
-
-# Load composer's autoloader if present
-if ( is_readable( "$IP/vendor/autoload.php" ) ) {
-	require_once "$IP/vendor/autoload.php";
-}
-
-if ( defined( 'MW_CONFIG_CALLBACK' ) ) {
-	# Use a callback function to configure MediaWiki
-	call_user_func( MW_CONFIG_CALLBACK );
-} else {
-	if ( file_exists( "$IP/../wmf-config/wikimedia-mode" ) ) {
-		// Load settings, using wikimedia-mode if needed
-		// @todo FIXME: Replace this hack with general farm-friendly code
-		# @todo FIXME: Wikimedia-specific stuff needs to go away to an ext
-		# Maybe a hook?
-		global $cluster;
-		$cluster = 'pmtpa';
-		require "$IP/../wmf-config/wgConf.php";
+	// Define a function, since we can't put a closure or object
+	// reference into MW_SETUP_CALLBACK.
+	function wfMaintenanceSetup( SettingsBuilder $settingsBuilder ) {
+		global $runner;
+		$runner->overrideConfig( $settingsBuilder );
 	}
-	// Require the configuration (probably LocalSettings.php)
-	require $maintenance->loadSettings();
+
+	define( 'MW_SETUP_CALLBACK', 'wfMaintenanceSetup' );
 }
 
-if ( $maintenance->getDbType() === Maintenance::DB_NONE ) {
-	if ( $wgLocalisationCacheConf['storeClass'] === false && ( $wgLocalisationCacheConf['store'] == 'db' || ( $wgLocalisationCacheConf['store'] == 'detect' && !$wgCacheDirectory ) ) ) {
-		$wgLocalisationCacheConf['storeClass'] = 'LCStoreNull';
-	}
-}
-$maintenance->finalSetup();
-// Some last includes
+// Initialize MediaWiki (load settings, initialized session,
+// enable MediaWikiServices)
 require_once "$IP/includes/Setup.php";
 
-// Do the work
-try {
-	$maintenance->execute();
+$success = $runner->run();
 
-	// Potentially debug globals
-	$maintenance->globals();
-
-	// Perform deferred updates.
-	DeferredUpdates::doUpdates( 'commit' );
-
-	// log profiling info
-	wfLogProfilingData();
-
-	// Commit and close up!
-	$factory = wfGetLBFactory();
-	$factory->commitMasterChanges();
-	$factory->shutdown();
-} catch ( MWException $mwe ) {
-	echo $mwe->getText();
+// Exit with an error status if execute() returned false
+if ( !$success ) {
 	exit( 1 );
 }

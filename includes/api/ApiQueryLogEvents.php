@@ -1,9 +1,5 @@
 <?php
 /**
- *
- *
- * Created on Oct 16, 2006
- *
  * Copyright © 2006 Yuri Astrakhan "<Firstname><Lastname>@gmail.com"
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +20,16 @@
  * @file
  */
 
+use MediaWiki\CommentFormatter\CommentFormatter;
+use MediaWiki\CommentFormatter\RowCommentFormatter;
+use MediaWiki\MainConfigNames;
+use MediaWiki\ParamValidator\TypeDef\NamespaceDef;
+use MediaWiki\ParamValidator\TypeDef\UserDef;
+use MediaWiki\Storage\NameTableAccessException;
+use MediaWiki\Storage\NameTableStore;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * Query action to List the log events, with optional filtering by various parameters.
  *
@@ -31,8 +37,36 @@
  */
 class ApiQueryLogEvents extends ApiQueryBase {
 
-	public function __construct( $query, $moduleName ) {
+	/** @var CommentStore */
+	private $commentStore;
+
+	/** @var CommentFormatter */
+	private $commentFormatter;
+
+	/** @var NameTableStore */
+	private $changeTagDefStore;
+
+	/** @var string[]|null */
+	private $formattedComments;
+
+	/**
+	 * @param ApiQuery $query
+	 * @param string $moduleName
+	 * @param CommentStore $commentStore
+	 * @param RowCommentFormatter $commentFormatter
+	 * @param NameTableStore $changeTagDefStore
+	 */
+	public function __construct(
+		ApiQuery $query,
+		$moduleName,
+		CommentStore $commentStore,
+		RowCommentFormatter $commentFormatter,
+		NameTableStore $changeTagDefStore
+	) {
 		parent::__construct( $query, $moduleName, 'le' );
+		$this->commentStore = $commentStore;
+		$this->commentFormatter = $commentFormatter;
+		$this->changeTagDefStore = $changeTagDefStore;
 	}
 
 	private $fld_ids = false, $fld_title = false, $fld_type = false,
@@ -43,8 +77,9 @@ class ApiQueryLogEvents extends ApiQueryBase {
 	public function execute() {
 		$params = $this->extractRequestParams();
 		$db = $this->getDB();
+		$this->requireMaxOneParameter( $params, 'title', 'prefix', 'namespace' );
 
-		$prop = array_flip( $params['prop'] );
+		$prop = array_fill_keys( $params['prop'], true );
 
 		$this->fld_ids = isset( $prop['ids'] );
 		$this->fld_title = isset( $prop['title'] );
@@ -57,52 +92,68 @@ class ApiQueryLogEvents extends ApiQueryBase {
 		$this->fld_details = isset( $prop['details'] );
 		$this->fld_tags = isset( $prop['tags'] );
 
-		$hideLogs = LogEventsList::getExcludeClause( $db, 'user', $this->getUser() );
+		$hideLogs = LogEventsList::getExcludeClause( $db, 'user', $this->getAuthority() );
 		if ( $hideLogs !== false ) {
 			$this->addWhere( $hideLogs );
 		}
 
-		// Order is significant here
-		$this->addTables( array( 'logging', 'user', 'page' ) );
-		$this->addJoinConds( array(
-			'user' => array( 'LEFT JOIN',
-				'user_id=log_user' ),
-			'page' => array( 'LEFT JOIN',
-				array( 'log_namespace=page_namespace',
-					'log_title=page_title' ) ) ) );
+		$this->addTables( [ 'logging', 'actor' ] );
+		$this->addJoinConds( [
+			'actor' => [ 'JOIN', 'actor_id=log_actor' ],
+		] );
 
-		$this->addFields( array(
+		$this->addFields( [
 			'log_id',
 			'log_type',
 			'log_action',
 			'log_timestamp',
 			'log_deleted',
-		) );
+		] );
 
-		$this->addFieldsIf( 'page_id', $this->fld_ids );
-		$this->addFieldsIf( array( 'log_user', 'log_user_text', 'user_name' ), $this->fld_user );
-		$this->addFieldsIf( 'log_user', $this->fld_userid );
+		if ( $this->fld_ids ) {
+			$this->addTables( 'page' );
+			$this->addJoinConds( [
+				'page' => [ 'LEFT JOIN',
+					[ 'log_namespace=page_namespace',
+						'log_title=page_title' ] ]
+			] );
+			// log_page is the page_id saved at log time, whereas page_id is from a
+			// join at query time.  This leads to different results in various
+			// scenarios, e.g. deletion, recreation.
+			$this->addFields( [ 'page_id', 'log_page' ] );
+		}
+		$this->addFieldsIf( [ 'actor_name', 'actor_user' ], $this->fld_user );
+		$this->addFieldsIf( 'actor_user', $this->fld_userid );
 		$this->addFieldsIf(
-			array( 'log_namespace', 'log_title' ),
+			[ 'log_namespace', 'log_title' ],
 			$this->fld_title || $this->fld_parsedcomment
 		);
-		$this->addFieldsIf( 'log_comment', $this->fld_comment || $this->fld_parsedcomment );
 		$this->addFieldsIf( 'log_params', $this->fld_details );
 
+		if ( $this->fld_comment || $this->fld_parsedcomment ) {
+			$commentQuery = $this->commentStore->getJoin( 'log_comment' );
+			$this->addTables( $commentQuery['tables'] );
+			$this->addFields( $commentQuery['fields'] );
+			$this->addJoinConds( $commentQuery['joins'] );
+		}
+
 		if ( $this->fld_tags ) {
-			$this->addTables( 'tag_summary' );
-			$this->addJoinConds( array( 'tag_summary' => array( 'LEFT JOIN', 'log_id=ts_log_id' ) ) );
-			$this->addFields( 'ts_tags' );
+			$this->addFields( [ 'ts_tags' => ChangeTags::makeTagSummarySubquery( 'logging' ) ] );
 		}
 
-		if ( !is_null( $params['tag'] ) ) {
+		if ( $params['tag'] !== null ) {
 			$this->addTables( 'change_tag' );
-			$this->addJoinConds( array( 'change_tag' => array( 'INNER JOIN',
-				array( 'log_id=ct_log_id' ) ) ) );
-			$this->addWhereFld( 'ct_tag', $params['tag'] );
+			$this->addJoinConds( [ 'change_tag' => [ 'JOIN',
+				[ 'log_id=ct_log_id' ] ] ] );
+			try {
+				$this->addWhereFld( 'ct_tag_id', $this->changeTagDefStore->getId( $params['tag'] ) );
+			} catch ( NameTableAccessException $exception ) {
+				// Return nothing.
+				$this->addWhere( '1=0' );
+			}
 		}
 
-		if ( !is_null( $params['action'] ) ) {
+		if ( $params['action'] !== null ) {
 			// Do validation of action param, list of allowed actions can contains wildcards
 			// Allow the param, when the actions is in the list or a wildcard version is listed.
 			$logAction = $params['action'];
@@ -110,22 +161,24 @@ class ApiQueryLogEvents extends ApiQueryBase {
 				// all items in the list have a slash
 				$valid = false;
 			} else {
-				$logActions = array_flip( $this->getAllowedLogActions() );
+				$logActions = array_fill_keys( $this->getAllowedLogActions(), true );
 				list( $type, $action ) = explode( '/', $logAction, 2 );
 				$valid = isset( $logActions[$logAction] ) || isset( $logActions[$type . '/*'] );
 			}
 
 			if ( !$valid ) {
-				$valueName = $this->encodeParamName( 'action' );
-				$this->dieUsage(
-					"Unrecognized value for parameter '$valueName': {$logAction}",
-					"unknown_$valueName"
+				$encParamName = $this->encodeParamName( 'action' );
+				$this->dieWithError(
+					[ 'apierror-unrecognizedvalue', $encParamName, wfEscapeWikiText( $logAction ) ],
+					"unknown_$encParamName"
 				);
 			}
 
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable,PhanPossiblyUndeclaredVariable T240141
 			$this->addWhereFld( 'log_type', $type );
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable,PhanPossiblyUndeclaredVariable T240141
 			$this->addWhereFld( 'log_action', $action );
-		} elseif ( !is_null( $params['type'] ) ) {
+		} elseif ( $params['type'] !== null ) {
 			$this->addWhereFld( 'log_type', $params['type'] );
 		}
 
@@ -138,7 +191,7 @@ class ApiQueryLogEvents extends ApiQueryBase {
 		// Include in ORDER BY for uniqueness
 		$this->addWhereRange( 'log_id', $params['dir'], null, null );
 
-		if ( !is_null( $params['continue'] ) ) {
+		if ( $params['continue'] !== null ) {
 			$cont = explode( '|', $params['continue'] );
 			$this->dieContinueUsageIf( count( $cont ) != 2 );
 			$op = ( $params['dir'] === 'newer' ? '>' : '<' );
@@ -155,63 +208,89 @@ class ApiQueryLogEvents extends ApiQueryBase {
 		$this->addOption( 'LIMIT', $limit + 1 );
 
 		$user = $params['user'];
-		if ( !is_null( $user ) ) {
-			$userid = User::idFromName( $user );
-			if ( $userid ) {
-				$this->addWhereFld( 'log_user', $userid );
-			} else {
-				$this->addWhereFld( 'log_user_text', IP::sanitizeIP( $user ) );
-			}
+		if ( $user !== null ) {
+			$this->addWhereFld( 'actor_name', $user );
 		}
 
 		$title = $params['title'];
-		if ( !is_null( $title ) ) {
+		if ( $title !== null ) {
 			$titleObj = Title::newFromText( $title );
-			if ( is_null( $titleObj ) ) {
-				$this->dieUsage( "Bad title value '$title'", 'param_title' );
+			if ( $titleObj === null || $titleObj->isExternal() ) {
+				$this->dieWithError( [ 'apierror-invalidtitle', wfEscapeWikiText( $title ) ] );
 			}
 			$this->addWhereFld( 'log_namespace', $titleObj->getNamespace() );
 			$this->addWhereFld( 'log_title', $titleObj->getDBkey() );
 		}
 
+		if ( $params['namespace'] !== null ) {
+			$this->addWhereFld( 'log_namespace', $params['namespace'] );
+		}
+
 		$prefix = $params['prefix'];
 
-		if ( !is_null( $prefix ) ) {
-			global $wgMiserMode;
-			if ( $wgMiserMode ) {
-				$this->dieUsage( 'Prefix search disabled in Miser Mode', 'prefixsearchdisabled' );
+		if ( $prefix !== null ) {
+			if ( $this->getConfig()->get( MainConfigNames::MiserMode ) ) {
+				$this->dieWithError( 'apierror-prefixsearchdisabled' );
 			}
 
 			$title = Title::newFromText( $prefix );
-			if ( is_null( $title ) ) {
-				$this->dieUsage( "Bad title value '$prefix'", 'param_prefix' );
+			if ( $title === null || $title->isExternal() ) {
+				$this->dieWithError( [ 'apierror-invalidtitle', wfEscapeWikiText( $prefix ) ] );
 			}
 			$this->addWhereFld( 'log_namespace', $title->getNamespace() );
 			$this->addWhere( 'log_title ' . $db->buildLike( $title->getDBkey(), $db->anyString() ) );
 		}
 
-		// Paranoia: avoid brute force searches (bug 17342)
-		if ( $params['namespace'] !== null || !is_null( $title ) || !is_null( $user ) ) {
-			if ( !$this->getUser()->isAllowed( 'deletedhistory' ) ) {
+		// Paranoia: avoid brute force searches (T19342)
+		if ( $params['namespace'] !== null || $title !== null || $user !== null ) {
+			if ( !$this->getAuthority()->isAllowed( 'deletedhistory' ) ) {
 				$titleBits = LogPage::DELETED_ACTION;
 				$userBits = LogPage::DELETED_USER;
-			} elseif ( !$this->getUser()->isAllowed( 'suppressrevision' ) ) {
+			} elseif ( !$this->getAuthority()->isAllowedAny( 'suppressrevision', 'viewsuppressed' ) ) {
 				$titleBits = LogPage::DELETED_ACTION | LogPage::DELETED_RESTRICTED;
 				$userBits = LogPage::DELETED_USER | LogPage::DELETED_RESTRICTED;
 			} else {
 				$titleBits = 0;
 				$userBits = 0;
 			}
-			if ( ( $params['namespace'] !== null || !is_null( $title ) ) && $titleBits ) {
+			if ( ( $params['namespace'] !== null || $title !== null ) && $titleBits ) {
 				$this->addWhere( $db->bitAnd( 'log_deleted', $titleBits ) . " != $titleBits" );
 			}
-			if ( !is_null( $user ) && $userBits ) {
+			if ( $user !== null && $userBits ) {
 				$this->addWhere( $db->bitAnd( 'log_deleted', $userBits ) . " != $userBits" );
 			}
 		}
 
+		// T220999: MySQL/MariaDB (10.1.37) can sometimes irrationally decide that querying `actor` before
+		// `logging` and filesorting is somehow better than querying $limit+1 rows from `logging`.
+		// Tell it not to reorder the query. But not when `letag` was used, as it seems as likely
+		// to be harmed as helped in that case.
+		// If "user" was specified, it's obviously correct to query actor first (T282122)
+		if ( $params['tag'] === null && $user === null ) {
+			$this->addOption( 'STRAIGHT_JOIN' );
+		}
+
+		$this->addOption(
+			'MAX_EXECUTION_TIME',
+			$this->getConfig()->get( MainConfigNames::MaxExecutionTimeForExpensiveQueries )
+		);
+
 		$count = 0;
 		$res = $this->select( __METHOD__ );
+
+		if ( $this->fld_title ) {
+			$this->executeGenderCacheFromResultWrapper( $res, __METHOD__, 'log' );
+		}
+		if ( $this->fld_parsedcomment ) {
+			$this->formattedComments = $this->commentFormatter->formatItems(
+				$this->commentFormatter->rows( $res )
+					->commentKey( 'log_comment' )
+					->indexField( 'log_id' )
+					->namespaceField( 'log_namespace' )
+					->titleField( 'log_title' )
+			);
+		}
+
 		$result = $this->getResult();
 		foreach ( $res as $row ) {
 			if ( ++$count > $limit ) {
@@ -222,158 +301,48 @@ class ApiQueryLogEvents extends ApiQueryBase {
 			}
 
 			$vals = $this->extractRowInfo( $row );
-			if ( !$vals ) {
-				continue;
-			}
-			$fit = $result->addValue( array( 'query', $this->getModuleName() ), null, $vals );
+			$fit = $result->addValue( [ 'query', $this->getModuleName() ], null, $vals );
 			if ( !$fit ) {
 				$this->setContinueEnumParameter( 'continue', "$row->log_timestamp|$row->log_id" );
 				break;
 			}
 		}
-		$result->setIndexedTagName_internal( array( 'query', $this->getModuleName() ), 'item' );
-	}
-
-	/**
-	 * @param $result ApiResult
-	 * @param $vals array
-	 * @param $params string
-	 * @param $type string
-	 * @param $action string
-	 * @param $ts
-	 * @param $legacy bool
-	 * @return array
-	 */
-	public static function addLogParams( $result, &$vals, $params, $type,
-		$action, $ts, $legacy = false
-	) {
-		switch ( $type ) {
-			case 'move':
-				if ( $legacy ) {
-					$targetKey = 0;
-					$noredirKey = 1;
-				} else {
-					$targetKey = '4::target';
-					$noredirKey = '5::noredir';
-				}
-
-				if ( isset( $params[$targetKey] ) ) {
-					$title = Title::newFromText( $params[$targetKey] );
-					if ( $title ) {
-						$vals2 = array();
-						ApiQueryBase::addTitleInfo( $vals2, $title, 'new_' );
-						$vals[$type] = $vals2;
-					}
-				}
-				if ( isset( $params[$noredirKey] ) && $params[$noredirKey] ) {
-					$vals[$type]['suppressedredirect'] = '';
-				}
-				$params = null;
-				break;
-			case 'patrol':
-				if ( $legacy ) {
-					$cur = 0;
-					$prev = 1;
-					$auto = 2;
-				} else {
-					$cur = '4::curid';
-					$prev = '5::previd';
-					$auto = '6::auto';
-				}
-				$vals2 = array();
-				$vals2['cur'] = $params[$cur];
-				$vals2['prev'] = $params[$prev];
-				$vals2['auto'] = $params[$auto];
-				$vals[$type] = $vals2;
-				$params = null;
-				break;
-			case 'rights':
-				$vals2 = array();
-				if ( $legacy ) {
-					list( $vals2['old'], $vals2['new'] ) = $params;
-				} else {
-					$vals2['new'] = implode( ', ', $params['5::newgroups'] );
-					$vals2['old'] = implode( ', ', $params['4::oldgroups'] );
-				}
-				$vals[$type] = $vals2;
-				$params = null;
-				break;
-			case 'block':
-				if ( $action == 'unblock' ) {
-					break;
-				}
-				$vals2 = array();
-				list( $vals2['duration'], $vals2['flags'] ) = $params;
-
-				// Indefinite blocks have no expiry time
-				if ( SpecialBlock::parseExpiryInput( $params[0] ) !== wfGetDB( DB_SLAVE )->getInfinity() ) {
-					$vals2['expiry'] = wfTimestamp( TS_ISO_8601,
-						strtotime( $params[0], wfTimestamp( TS_UNIX, $ts ) ) );
-				}
-				$vals[$type] = $vals2;
-				$params = null;
-				break;
-			case 'upload':
-				if ( isset( $params['img_timestamp'] ) ) {
-					$params['img_timestamp'] = wfTimestamp( TS_ISO_8601, $params['img_timestamp'] );
-				}
-				break;
-		}
-		if ( !is_null( $params ) ) {
-			$logParams = array();
-			// Keys like "4::paramname" can't be used for output so we change them to "paramname"
-			foreach ( $params as $key => $value ) {
-				if ( strpos( $key, ':' ) === false ) {
-					$logParams[$key] = $value;
-					continue;
-				}
-				$logParam = explode( ':', $key, 3 );
-				$logParams[$logParam[2]] = $value;
-			}
-			$result->setIndexedTagName( $logParams, 'param' );
-			$result->setIndexedTagName_recursive( $logParams, 'param' );
-			$vals = array_merge( $vals, $logParams );
-		}
-
-		return $vals;
+		$result->addIndexedTagName( [ 'query', $this->getModuleName() ], 'item' );
 	}
 
 	private function extractRowInfo( $row ) {
 		$logEntry = DatabaseLogEntry::newFromRow( $row );
-		$vals = array();
+		$vals = [
+			ApiResult::META_TYPE => 'assoc',
+		];
 		$anyHidden = false;
-		$user = $this->getUser();
 
 		if ( $this->fld_ids ) {
-			$vals['logid'] = intval( $row->log_id );
+			$vals['logid'] = (int)$row->log_id;
 		}
 
-		if ( $this->fld_title || $this->fld_parsedcomment ) {
+		if ( $this->fld_title ) {
 			$title = Title::makeTitle( $row->log_namespace, $row->log_title );
 		}
 
+		$authority = $this->getAuthority();
 		if ( $this->fld_title || $this->fld_ids || $this->fld_details && $row->log_params !== '' ) {
 			if ( LogEventsList::isDeleted( $row, LogPage::DELETED_ACTION ) ) {
-				$vals['actionhidden'] = '';
+				$vals['actionhidden'] = true;
 				$anyHidden = true;
 			}
-			if ( LogEventsList::userCan( $row, LogPage::DELETED_ACTION, $user ) ) {
+			if ( LogEventsList::userCan( $row, LogPage::DELETED_ACTION, $authority ) ) {
 				if ( $this->fld_title ) {
+					// @phan-suppress-next-next-line PhanTypeMismatchArgumentNullable,PhanPossiblyUndeclaredVariable
+					// title is set when used
 					ApiQueryBase::addTitleInfo( $vals, $title );
 				}
 				if ( $this->fld_ids ) {
-					$vals['pageid'] = intval( $row->page_id );
+					$vals['pageid'] = (int)$row->page_id;
+					$vals['logpage'] = (int)$row->log_page;
 				}
-				if ( $this->fld_details && $row->log_params !== '' ) {
-					self::addLogParams(
-						$this->getResult(),
-						$vals,
-						$logEntry->getParameters(),
-						$logEntry->getType(),
-						$logEntry->getSubtype(),
-						$logEntry->getTimestamp(),
-						$logEntry->isLegacy()
-					);
+				if ( $this->fld_details ) {
+					$vals['params'] = LogFormatter::newFromEntry( $logEntry )->formatParametersForApi();
 				}
 			}
 		}
@@ -385,19 +354,19 @@ class ApiQueryLogEvents extends ApiQueryBase {
 
 		if ( $this->fld_user || $this->fld_userid ) {
 			if ( LogEventsList::isDeleted( $row, LogPage::DELETED_USER ) ) {
-				$vals['userhidden'] = '';
+				$vals['userhidden'] = true;
 				$anyHidden = true;
 			}
-			if ( LogEventsList::userCan( $row, LogPage::DELETED_USER, $user ) ) {
+			if ( LogEventsList::userCan( $row, LogPage::DELETED_USER, $authority ) ) {
 				if ( $this->fld_user ) {
-					$vals['user'] = $row->user_name === null ? $row->log_user_text : $row->user_name;
+					$vals['user'] = $row->actor_name;
 				}
 				if ( $this->fld_userid ) {
-					$vals['userid'] = $row->log_user;
+					$vals['userid'] = (int)$row->actor_user;
 				}
 
-				if ( !$row->log_user ) {
-					$vals['anon'] = '';
+				if ( !$row->actor_user ) {
+					$vals['anon'] = true;
 				}
 			}
 		}
@@ -405,18 +374,19 @@ class ApiQueryLogEvents extends ApiQueryBase {
 			$vals['timestamp'] = wfTimestamp( TS_ISO_8601, $row->log_timestamp );
 		}
 
-		if ( ( $this->fld_comment || $this->fld_parsedcomment ) && isset( $row->log_comment ) ) {
+		if ( $this->fld_comment || $this->fld_parsedcomment ) {
 			if ( LogEventsList::isDeleted( $row, LogPage::DELETED_COMMENT ) ) {
-				$vals['commenthidden'] = '';
+				$vals['commenthidden'] = true;
 				$anyHidden = true;
 			}
-			if ( LogEventsList::userCan( $row, LogPage::DELETED_COMMENT, $user ) ) {
+			if ( LogEventsList::userCan( $row, LogPage::DELETED_COMMENT, $authority ) ) {
 				if ( $this->fld_comment ) {
-					$vals['comment'] = $row->log_comment;
+					$vals['comment'] = $this->commentStore->getComment( 'log_comment', $row )->text;
 				}
 
 				if ( $this->fld_parsedcomment ) {
-					$vals['parsedcomment'] = Linker::formatComment( $row->log_comment, $title );
+					// @phan-suppress-next-line PhanTypeArraySuspiciousNullable
+					$vals['parsedcomment'] = $this->formattedComments[$row->log_id];
 				}
 			}
 		}
@@ -424,34 +394,39 @@ class ApiQueryLogEvents extends ApiQueryBase {
 		if ( $this->fld_tags ) {
 			if ( $row->ts_tags ) {
 				$tags = explode( ',', $row->ts_tags );
-				$this->getResult()->setIndexedTagName( $tags, 'tag' );
+				ApiResult::setIndexedTagName( $tags, 'tag' );
 				$vals['tags'] = $tags;
 			} else {
-				$vals['tags'] = array();
+				$vals['tags'] = [];
 			}
 		}
 
 		if ( $anyHidden && LogEventsList::isDeleted( $row, LogPage::DELETED_RESTRICTED ) ) {
-			$vals['suppressed'] = '';
+			$vals['suppressed'] = true;
 		}
 
 		return $vals;
 	}
 
+	/**
+	 * @return array
+	 */
 	private function getAllowedLogActions() {
-		global $wgLogActions, $wgLogActionsHandlers;
-
-		return array_keys( array_merge( $wgLogActions, $wgLogActionsHandlers ) );
+		$config = $this->getConfig();
+		return array_keys( array_merge(
+			$config->get( MainConfigNames::LogActions ),
+			$config->get( MainConfigNames::LogActionsHandlers )
+		) );
 	}
 
 	public function getCacheMode( $params ) {
 		if ( $this->userCanSeeRevDel() ) {
 			return 'private';
 		}
-		if ( !is_null( $params['prop'] ) && in_array( 'parsedcomment', $params['prop'] ) ) {
+		if ( $params['prop'] !== null && in_array( 'parsedcomment', $params['prop'] ) ) {
 			// formatComment() calls wfMessage() among other things
 			return 'anon-public-user-private';
-		} elseif ( LogEventsList::getExcludeClause( $this->getDB(), 'user', $this->getUser() )
+		} elseif ( LogEventsList::getExcludeClause( $this->getDB(), 'user', $this->getAuthority() )
 			=== LogEventsList::getExcludeClause( $this->getDB(), 'public' )
 		) { // Output can only contain public data.
 			return 'public';
@@ -461,13 +436,18 @@ class ApiQueryLogEvents extends ApiQueryBase {
 	}
 
 	public function getAllowedParams( $flags = 0 ) {
-		global $wgLogTypes;
-
-		return array(
-			'prop' => array(
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_DFLT => 'ids|title|type|user|timestamp|comment|details',
-				ApiBase::PARAM_TYPE => array(
+		$config = $this->getConfig();
+		if ( $flags & ApiBase::GET_VALUES_FOR_HELP ) {
+			$logActions = $this->getAllowedLogActions();
+			sort( $logActions );
+		} else {
+			$logActions = null;
+		}
+		$ret = [
+			'prop' => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_DEFAULT => 'ids|title|type|user|timestamp|comment|details',
+				ParamValidator::PARAM_TYPE => [
 					'ids',
 					'title',
 					'type',
@@ -478,156 +458,72 @@ class ApiQueryLogEvents extends ApiQueryBase {
 					'parsedcomment',
 					'details',
 					'tags'
-				)
-			),
-			'type' => array(
-				ApiBase::PARAM_TYPE => $wgLogTypes
-			),
-			'action' => array(
+				],
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
+			],
+			'type' => [
+				ParamValidator::PARAM_TYPE => LogPage::validTypes(),
+			],
+			'action' => [
 				// validation on request is done in execute()
-				ApiBase::PARAM_TYPE => ( $flags & ApiBase::GET_VALUES_FOR_HELP )
-					? $this->getAllowedLogActions()
-					: null
-			),
-			'start' => array(
-				ApiBase::PARAM_TYPE => 'timestamp'
-			),
-			'end' => array(
-				ApiBase::PARAM_TYPE => 'timestamp'
-			),
-			'dir' => array(
-				ApiBase::PARAM_DFLT => 'older',
-				ApiBase::PARAM_TYPE => array(
+				ParamValidator::PARAM_TYPE => $logActions
+			],
+			'start' => [
+				ParamValidator::PARAM_TYPE => 'timestamp'
+			],
+			'end' => [
+				ParamValidator::PARAM_TYPE => 'timestamp'
+			],
+			'dir' => [
+				ParamValidator::PARAM_DEFAULT => 'older',
+				ParamValidator::PARAM_TYPE => [
 					'newer',
 					'older'
-				)
-			),
-			'user' => null,
+				],
+				ApiBase::PARAM_HELP_MSG => 'api-help-param-direction',
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [
+					'newer' => 'api-help-paramvalue-direction-newer',
+					'older' => 'api-help-paramvalue-direction-older',
+				],
+			],
+			'user' => [
+				ParamValidator::PARAM_TYPE => 'user',
+				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name', 'ip', 'id', 'interwiki' ],
+			],
 			'title' => null,
-			'prefix' => null,
+			'namespace' => [
+				ParamValidator::PARAM_TYPE => 'namespace',
+				NamespaceDef::PARAM_EXTRA_NAMESPACES => [ NS_MEDIA, NS_SPECIAL ],
+			],
+			'prefix' => [],
 			'tag' => null,
-			'limit' => array(
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
-			),
-			'continue' => null,
-		);
+			'limit' => [
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+			],
+			'continue' => [
+				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
+			],
+		];
+
+		if ( $config->get( MainConfigNames::MiserMode ) ) {
+			$ret['prefix'][ApiBase::PARAM_HELP_MSG] = 'api-help-param-disabled-in-miser-mode';
+		}
+
+		return $ret;
 	}
 
-	public function getParamDescription() {
-		$p = $this->getModulePrefix();
-
-		return array(
-			'prop' => array(
-				'Which properties to get',
-				' ids            - Adds the ID of the log event',
-				' title          - Adds the title of the page for the log event',
-				' type           - Adds the type of log event',
-				' user           - Adds the user responsible for the log event',
-				' userid         - Adds the user ID who was responsible for the log event',
-				' timestamp      - Adds the timestamp for the event',
-				' comment        - Adds the comment of the event',
-				' parsedcomment  - Adds the parsed comment of the event',
-				' details        - Lists additional details about the event',
-				' tags           - Lists tags for the event',
-			),
-			'type' => 'Filter log entries to only this type',
-			'action' => array(
-				"Filter log actions to only this action. Overrides {$p}type",
-				"Wildcard actions like 'action/*' allows to specify any string for the asterisk"
-			),
-			'start' => 'The timestamp to start enumerating from',
-			'end' => 'The timestamp to end enumerating',
-			'dir' => $this->getDirectionDescription( $p ),
-			'user' => 'Filter entries to those made by the given user',
-			'title' => 'Filter entries to those related to a page',
-			'prefix' => 'Filter entries that start with this prefix. Disabled in Miser Mode',
-			'limit' => 'How many total event entries to return',
-			'tag' => 'Only list event entries tagged with this tag',
-			'continue' => 'When more results are available, use this to continue',
-		);
-	}
-
-	public function getResultProperties() {
-		global $wgLogTypes;
-
-		return array(
-			'ids' => array(
-				'logid' => 'integer',
-				'pageid' => 'integer'
-			),
-			'title' => array(
-				'ns' => 'namespace',
-				'title' => 'string'
-			),
-			'type' => array(
-				'type' => array(
-					ApiBase::PROP_TYPE => $wgLogTypes
-				),
-				'action' => 'string'
-			),
-			'details' => array(
-				'actionhidden' => 'boolean'
-			),
-			'user' => array(
-				'userhidden' => 'boolean',
-				'user' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'anon' => 'boolean'
-			),
-			'userid' => array(
-				'userhidden' => 'boolean',
-				'userid' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'anon' => 'boolean'
-			),
-			'timestamp' => array(
-				'timestamp' => 'timestamp'
-			),
-			'comment' => array(
-				'commenthidden' => 'boolean',
-				'comment' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				)
-			),
-			'parsedcomment' => array(
-				'commenthidden' => 'boolean',
-				'parsedcomment' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				)
-			)
-		);
-	}
-
-	public function getDescription() {
-		return 'Get events from logs.';
-	}
-
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-			array( 'code' => 'param_user', 'info' => 'User name $user not found' ),
-			array( 'code' => 'param_title', 'info' => 'Bad title value \'title\'' ),
-			array( 'code' => 'param_prefix', 'info' => 'Bad title value \'prefix\'' ),
-			array( 'code' => 'prefixsearchdisabled', 'info' => 'Prefix search disabled in Miser Mode' ),
-		) );
-	}
-
-	public function getExamples() {
-		return array(
-			'api.php?action=query&list=logevents'
-		);
+	protected function getExamplesMessages() {
+		return [
+			'action=query&list=logevents'
+				=> 'apihelp-query+logevents-example-simple',
+		];
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/API:Logevents';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Logevents';
 	}
 }

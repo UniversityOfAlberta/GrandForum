@@ -21,18 +21,18 @@
  */
 
 class PackedImageGallery extends TraditionalImageGallery {
-	function __construct( $mode = 'traditional' ) {
-		parent::__construct( $mode );
+	public function __construct( $mode = 'traditional', IContextSource $context = null ) {
+		parent::__construct( $mode, $context );
 		// Does not support per row option.
 		$this->mPerRow = 0;
 	}
 
 	/**
-	 * We artificially have 1.5 the resolution neccessary so that
+	 * We artificially have 1.5 the resolution necessary so that
 	 * we can scale it up by that much on the client side, without
 	 * worrying about requesting a new image.
 	 */
-	const SCALE_FACTOR = 1.5;
+	private const SCALE_FACTOR = 1.5;
 
 	protected function getVPad( $boxHeight, $thumbHeight ) {
 		return ( $this->getThumbPadding() + $boxHeight - $thumbHeight / self::SCALE_FACTOR ) / 2;
@@ -47,7 +47,7 @@ class PackedImageGallery extends TraditionalImageGallery {
 	}
 
 	/**
-	 * @param File $img The file being transformed. May be false
+	 * @param File|false $img The file being transformed. May be false
 	 * @return array
 	 */
 	protected function getThumbParams( $img ) {
@@ -60,10 +60,10 @@ class PackedImageGallery extends TraditionalImageGallery {
 		}
 
 		// self::SCALE_FACTOR so the js has some room to manipulate sizes.
-		return array(
+		return [
 			'width' => $width * self::SCALE_FACTOR,
 			'height' => $this->mHeights * self::SCALE_FACTOR,
-		);
+		];
 	}
 
 	protected function getThumbDivWidth( $thumbWidth ) {
@@ -76,7 +76,7 @@ class PackedImageGallery extends TraditionalImageGallery {
 	}
 
 	/**
-	 * @param MediaTransformOutput|bool $thumb the thumbnail, or false if no
+	 * @param MediaTransformOutput|false $thumb The thumbnail, or false if no
 	 *   thumb (which can happen)
 	 * @return float
 	 */
@@ -95,16 +95,17 @@ class PackedImageGallery extends TraditionalImageGallery {
 	/**
 	 * Add javascript which auto-justifies the rows by manipulating the image sizes.
 	 * Also ensures that the hover version of this degrades gracefully.
+	 * @return array
 	 */
 	protected function getModules() {
-		return array( 'mediawiki.page.gallery' );
+		return [ 'mediawiki.page.gallery' ];
 	}
 
 	/**
 	 * Do not support per-row on packed. It really doesn't work
 	 * since the images have varying widths.
+	 * @param int $num
 	 */
 	public function setPerRow( $num ) {
-		return;
 	}
 }

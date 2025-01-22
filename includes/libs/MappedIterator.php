@@ -18,7 +18,6 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @author Aaron Schulz
  */
 
 /**
@@ -29,10 +28,10 @@
 class MappedIterator extends FilterIterator {
 	/** @var callable */
 	protected $vCallback;
-	/** @var callable */
+	/** @var callable|null */
 	protected $aCallback;
 	/** @var array */
-	protected $cache = array();
+	protected $cache = [];
 
 	protected $rewound = false; // boolean; whether rewind() has been called
 
@@ -46,12 +45,13 @@ class MappedIterator extends FilterIterator {
 	 * the base iterator (post-callback) and will return true if that value should be
 	 * included in iteration of the MappedIterator (otherwise it will be filtered out).
 	 *
-	 * @param Iterator|Array $iter
+	 * @param Iterator|array $iter
 	 * @param callable $vCallback Value transformation callback
 	 * @param array $options Options map (includes "accept") (since 1.22)
+	 * @phan-param array{accept?:callable} $options
 	 * @throws UnexpectedValueException
 	 */
-	public function __construct( $iter, $vCallback, array $options = array() ) {
+	public function __construct( $iter, $vCallback, array $options = [] ) {
 		if ( is_array( $iter ) ) {
 			$baseIterator = new ArrayIterator( $iter );
 		} elseif ( $iter instanceof Iterator ) {
@@ -61,22 +61,24 @@ class MappedIterator extends FilterIterator {
 		}
 		parent::__construct( $baseIterator );
 		$this->vCallback = $vCallback;
-		$this->aCallback = isset( $options['accept'] ) ? $options['accept'] : null;
+		$this->aCallback = $options['accept'] ?? null;
 	}
 
-	public function next() {
-		$this->cache = array();
+	public function next(): void {
+		$this->cache = [];
 		parent::next();
 	}
 
-	public function rewind() {
+	public function rewind(): void {
 		$this->rewound = true;
-		$this->cache = array();
+		$this->cache = [];
 		parent::rewind();
 	}
 
-	public function accept() {
-		$value = call_user_func( $this->vCallback, $this->getInnerIterator()->current() );
+	public function accept(): bool {
+		$inner = $this->getInnerIterator();
+		'@phan-var Iterator $inner';
+		$value = call_user_func( $this->vCallback, $inner->current() );
 		$ok = ( $this->aCallback ) ? call_user_func( $this->aCallback, $value ) : true;
 		if ( $ok ) {
 			$this->cache['current'] = $value;
@@ -85,18 +87,20 @@ class MappedIterator extends FilterIterator {
 		return $ok;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function key() {
 		$this->init();
 
 		return parent::key();
 	}
 
-	public function valid() {
+	public function valid(): bool {
 		$this->init();
 
 		return parent::valid();
 	}
 
+	#[\ReturnTypeWillChange]
 	public function current() {
 		$this->init();
 		if ( parent::valid() ) {

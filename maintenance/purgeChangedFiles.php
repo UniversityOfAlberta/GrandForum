@@ -2,7 +2,6 @@
 /**
  * Scan the logging table and purge affected files within a timeframe.
  *
- * @section LICENSE
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -22,6 +21,8 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MediaWikiServices;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -35,20 +36,20 @@ class PurgeChangedFiles extends Maintenance {
 	 * Mapping from type option to log type and actions.
 	 * @var array
 	 */
-	private static $typeMappings = array(
-		'created' => array(
-			'upload' => array( 'upload' ),
-			'import' => array( 'upload', 'interwiki' ),
-		),
-		'deleted' => array(
-			'delete' => array( 'delete', 'revision' ),
-			'suppress' => array( 'delete', 'revision' ),
-		),
-		'modified' => array(
-			'upload' => array( 'overwrite', 'revert' ),
-			'move' => array( 'move', 'move_redir' ),
-		),
-	);
+	private static $typeMappings = [
+		'created' => [
+			'upload' => [ 'upload' ],
+			'import' => [ 'upload', 'interwiki' ],
+		],
+		'deleted' => [
+			'delete' => [ 'delete', 'revision' ],
+			'suppress' => [ 'delete', 'revision' ],
+		],
+		'modified' => [
+			'upload' => [ 'overwrite', 'revert' ],
+			'move' => [ 'move', 'move_redir' ],
+		],
+	];
 
 	/**
 	 * @var string
@@ -62,7 +63,7 @@ class PurgeChangedFiles extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Scan the logging table and purge files and thumbnails.";
+		$this->addDescription( 'Scan the logging table and purge files and thumbnails.' );
 		$this->addOption( 'starttime', 'Starting timestamp', true, true );
 		$this->addOption( 'endtime', 'Ending timestamp', true, true );
 		$this->addOption( 'type', 'Comma-separated list of types of changes to send purges for (' .
@@ -78,16 +79,16 @@ class PurgeChangedFiles extends Maintenance {
 		global $wgHTCPRouting;
 
 		if ( $this->hasOption( 'htcp-dest' ) ) {
-			$parts = explode( ':', $this->getOption( 'htcp-dest' ) );
+			$parts = explode( ':', $this->getOption( 'htcp-dest' ), 2 );
 			if ( count( $parts ) < 2 ) {
 				// Add default htcp port
 				$parts[] = '4827';
 			}
 
 			// Route all HTCP messages to provided host:port
-			$wgHTCPRouting = array(
-				'' => array( 'host' => $parts[0], 'port' => $parts[1] ),
-			);
+			$wgHTCPRouting = [
+				'' => [ 'host' => $parts[0], 'port' => $parts[1] ],
+			];
 			$this->verbose( "HTCP broadcasts to {$parts[0]}:{$parts[1]}\n" );
 		}
 
@@ -107,7 +108,7 @@ class PurgeChangedFiles extends Maintenance {
 		}
 
 		// Validate the timestamps
-		$dbr = $this->getDB( DB_SLAVE );
+		$dbr = $this->getDB( DB_REPLICA );
 		$this->startTimestamp = $dbr->timestamp( $this->getOption( 'starttime' ) );
 		$this->endTimestamp = $dbr->timestamp( $this->getOption( 'endtime' ) );
 
@@ -137,22 +138,22 @@ class PurgeChangedFiles extends Maintenance {
 	 * @param string $type Type of change to find
 	 */
 	protected function purgeFromLogType( $type ) {
-		$repo = RepoGroup::singleton()->getLocalRepo();
-		$dbr = $this->getDB( DB_SLAVE );
+		$repo = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo();
+		$dbr = $this->getDB( DB_REPLICA );
 
 		foreach ( self::$typeMappings[$type] as $logType => $logActions ) {
 			$this->verbose( "Scanning for {$logType}/" . implode( ',', $logActions ) . "\n" );
 
 			$res = $dbr->select(
 				'logging',
-				array( 'log_title', 'log_timestamp', 'log_params' ),
-				array(
+				[ 'log_title', 'log_timestamp', 'log_params' ],
+				[
 					'log_namespace' => NS_FILE,
 					'log_type' => $logType,
 					'log_action' => $logActions,
 					'log_timestamp >= ' . $dbr->addQuotes( $this->startTimestamp ),
 					'log_timestamp <= ' . $dbr->addQuotes( $this->endTimestamp ),
-				),
+				],
 				__METHOD__
 			);
 
@@ -165,19 +166,21 @@ class PurgeChangedFiles extends Maintenance {
 					continue;
 				}
 
-				// Purge current version and any versions in oldimage table
+				// Purge current version and its thumbnails
 				$file->purgeCache();
-				$file->purgeHistory();
+				// Purge the old versions and their thumbnails
+				foreach ( $file->getHistory() as $oldFile ) {
+					$oldFile->purgeCache();
+				}
 
 				if ( $logType === 'delete' ) {
 					// If there is an orphaned storage file... delete it
 					if ( !$file->exists() && $repo->fileExists( $file->getPath() ) ) {
 						$dpath = $this->getDeletedPath( $repo, $file );
 						if ( $repo->fileExists( $dpath ) ) {
-							// Sanity check to avoid data loss
-							$repo->getBackend()->delete( array( 'src' => $file->getPath() ) );
+							// Check to avoid data loss
+							$repo->getBackend()->delete( [ 'src' => $file->getPath() ] );
 							$this->verbose( "Deleted orphan file: {$file->getPath()}.\n" );
-
 						} else {
 							$this->error( "File was not deleted: {$file->getPath()}.\n" );
 						}
@@ -185,7 +188,6 @@ class PurgeChangedFiles extends Maintenance {
 
 					// Purge items from fileachive table (rows are likely here)
 					$this->purgeFromArchiveTable( $repo, $file );
-
 				} elseif ( $logType === 'move' ) {
 					// Purge the target file as well
 
@@ -194,14 +196,13 @@ class PurgeChangedFiles extends Maintenance {
 						$target = $params['4::target'];
 						$targetFile = $repo->newFile( Title::makeTitle( NS_FILE, $target ) );
 						$targetFile->purgeCache();
-						$targetFile->purgeHistory();
 						$this->verbose( "Purged file {$target}; move target @{$row->log_timestamp}.\n" );
 					}
 				}
 
 				$this->verbose( "Purged file {$row->log_title}; {$type} @{$row->log_timestamp}.\n" );
 
-				if ( $this->hasOption( 'sleep-per-batch' ) && ++$bSize > $this->mBatchSize ) {
+				if ( $this->hasOption( 'sleep-per-batch' ) && ++$bSize > $this->getBatchSize() ) {
 					$bSize = 0;
 					// sleep-per-batch is milliseconds, usleep wants micro seconds.
 					usleep( 1000 * (int)$this->getOption( 'sleep-per-batch' ) );
@@ -211,11 +212,11 @@ class PurgeChangedFiles extends Maintenance {
 	}
 
 	protected function purgeFromArchiveTable( LocalRepo $repo, LocalFile $file ) {
-		$dbr = $repo->getSlaveDB();
+		$dbr = $repo->getReplicaDB();
 		$res = $dbr->select(
 			'filearchive',
-			array( 'fa_archive_name' ),
-			array( 'fa_name' => $file->getName() ),
+			[ 'fa_archive_name' ],
+			[ 'fa_name' => $file->getName() ],
 			__METHOD__
 		);
 
@@ -229,10 +230,9 @@ class PurgeChangedFiles extends Maintenance {
 			if ( !$file->exists() && $repo->fileExists( $ofile->getPath() ) ) {
 				$dpath = $this->getDeletedPath( $repo, $ofile );
 				if ( $repo->fileExists( $dpath ) ) {
-					// Sanity check to avoid data loss
-					$repo->getBackend()->delete( array( 'src' => $ofile->getPath() ) );
+					// Check to avoid data loss
+					$repo->getBackend()->delete( [ 'src' => $ofile->getPath() ] );
 					$this->output( "Deleted orphan file: {$ofile->getPath()}.\n" );
-
 				} else {
 					$this->error( "File was not deleted: {$ofile->getPath()}.\n" );
 				}
@@ -244,6 +244,7 @@ class PurgeChangedFiles extends Maintenance {
 	protected function getDeletedPath( LocalRepo $repo, LocalFile $file ) {
 		$hash = $repo->getFileSha1( $file->getPath() );
 		$key = "{$hash}.{$file->getExtension()}";
+
 		return $repo->getDeletedHashPath( $key ) . $key;
 	}
 
@@ -257,8 +258,7 @@ class PurgeChangedFiles extends Maintenance {
 			$this->output( $msg );
 		}
 	}
-
 }
 
-$maintClass = "PurgeChangedFiles";
+$maintClass = PurgeChangedFiles::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

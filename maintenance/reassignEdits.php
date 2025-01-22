@@ -20,8 +20,11 @@
  * @file
  * @ingroup Maintenance
  * @author Rob Church <robchur@gmail.com>
- * @licence GNU General Public Licence 2.0 or later
+ * @license GPL-2.0-or-later
  */
+
+use MediaWiki\MediaWikiServices;
+use Wikimedia\IPUtils;
 
 require_once __DIR__ . '/Maintenance.php';
 
@@ -34,7 +37,7 @@ require_once __DIR__ . '/Maintenance.php';
 class ReassignEdits extends Maintenance {
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Reassign edits from one user to another";
+		$this->addDescription( 'Reassign edits from one user to another' );
 		$this->addOption( "force", "Reassign even if the target user doesn't exist" );
 		$this->addOption( "norc", "Don't update the recent changes table" );
 		$this->addOption( "report", "Print out details of what would be changed, but don't update it" );
@@ -67,114 +70,134 @@ class ReassignEdits extends Maintenance {
 	/**
 	 * Reassign edits from one user to another
 	 *
-	 * @param $from User to take edits from
-	 * @param $to User to assign edits to
-	 * @param $rc bool Update the recent changes table
-	 * @param $report bool Don't change things; just echo numbers
-	 * @return integer Number of entries changed, or that would be changed
+	 * @param User &$from User to take edits from
+	 * @param User &$to User to assign edits to
+	 * @param bool $updateRC Update the recent changes table
+	 * @param bool $report Don't change things; just echo numbers
+	 * @return int Number of entries changed, or that would be changed
 	 */
-	private function doReassignEdits( &$from, &$to, $rc = false, $report = false ) {
-		$dbw = wfGetDB( DB_MASTER );
-		$dbw->begin( __METHOD__ );
+	private function doReassignEdits( &$from, &$to, $updateRC = false, $report = false ) {
+		$dbw = $this->getDB( DB_PRIMARY );
+		$this->beginTransaction( $dbw, __METHOD__ );
+		$actorNormalization = MediaWikiServices::getInstance()->getActorNormalization();
+		$fromActorId = $actorNormalization->findActorId( $from, $dbw );
 
 		# Count things
 		$this->output( "Checking current edits..." );
-		$res = $dbw->select( 'revision', 'COUNT(*) AS count', $this->userConditions( $from, 'rev_user', 'rev_user_text' ), __METHOD__ );
-		$row = $dbw->fetchObject( $res );
-		$cur = $row->count;
-		$this->output( "found {$cur}.\n" );
+		$revQueryInfo = ActorMigration::newMigration()->getWhere( $dbw, 'rev_user', $from );
+		$revisionRows = $dbw->selectRowCount(
+			[ 'revision' ] + $revQueryInfo['tables'],
+			'*',
+			$revQueryInfo['conds'],
+			__METHOD__,
+			[],
+			$revQueryInfo['joins']
+		);
+		$this->output( "found {$revisionRows}.\n" );
 
 		$this->output( "Checking deleted edits..." );
-		$res = $dbw->select( 'archive', 'COUNT(*) AS count', $this->userConditions( $from, 'ar_user', 'ar_user_text' ), __METHOD__ );
-		$row = $dbw->fetchObject( $res );
-		$del = $row->count;
-		$this->output( "found {$del}.\n" );
+		$archiveRows = $dbw->selectRowCount(
+			[ 'archive' ],
+			'*',
+			[ 'ar_actor' => $fromActorId ],
+			__METHOD__
+		);
+		$this->output( "found {$archiveRows}.\n" );
 
 		# Don't count recent changes if we're not supposed to
-		if ( $rc ) {
+		if ( $updateRC ) {
 			$this->output( "Checking recent changes..." );
-			$res = $dbw->select( 'recentchanges', 'COUNT(*) AS count', $this->userConditions( $from, 'rc_user', 'rc_user_text' ), __METHOD__ );
-			$row = $dbw->fetchObject( $res );
-			$rec = $row->count;
-			$this->output( "found {$rec}.\n" );
+			$recentChangesRows = $dbw->selectRowCount(
+				[ 'recentchanges' ],
+				'*',
+				[ 'rc_actor' => $fromActorId ],
+				__METHOD__
+			);
+			$this->output( "found {$recentChangesRows}.\n" );
 		} else {
-			$rec = 0;
+			$recentChangesRows = 0;
 		}
 
-		$total = $cur + $del + $rec;
+		$total = $revisionRows + $archiveRows + $recentChangesRows;
 		$this->output( "\nTotal entries to change: {$total}\n" );
 
-		if ( !$report ) {
-			if ( $total ) {
+		$toActorId = $actorNormalization->acquireActorId( $to, $dbw );
+		if ( !$report && $total ) {
+			$this->output( "\n" );
+			if ( $revisionRows ) {
 				# Reassign edits
-				$this->output( "\nReassigning current edits..." );
-				$dbw->update( 'revision', $this->userSpecification( $to, 'rev_user', 'rev_user_text' ),
-					$this->userConditions( $from, 'rev_user', 'rev_user_text' ), __METHOD__ );
-				$this->output( "done.\nReassigning deleted edits..." );
-				$dbw->update( 'archive', $this->userSpecification( $to, 'ar_user', 'ar_user_text' ),
-					$this->userConditions( $from, 'ar_user', 'ar_user_text' ), __METHOD__ );
+				$this->output( "Reassigning current edits..." );
+				$dbw->update(
+					'revision',
+					[ 'rev_actor' => $toActorId ],
+					[ 'rev_actor' => $fromActorId ],
+					__METHOD__
+				);
 				$this->output( "done.\n" );
-				# Update recent changes if required
-				if ( $rc ) {
-					$this->output( "Updating recent changes..." );
-					$dbw->update( 'recentchanges', $this->userSpecification( $to, 'rc_user', 'rc_user_text' ),
-						$this->userConditions( $from, 'rc_user', 'rc_user_text' ), __METHOD__ );
-					$this->output( "done.\n" );
-				}
+			}
+
+			if ( $archiveRows ) {
+				$this->output( "Reassigning deleted edits..." );
+				$dbw->update( 'archive',
+					[ 'ar_actor' => $toActorId ],
+					[ 'ar_actor' => $fromActorId ],
+					__METHOD__
+				);
+				$this->output( "done.\n" );
+			}
+			# Update recent changes if required
+			if ( $recentChangesRows ) {
+				$this->output( "Updating recent changes..." );
+				$dbw->update( 'recentchanges',
+					[ 'rc_actor' => $toActorId ],
+					[ 'rc_actor' => $fromActorId ],
+					__METHOD__
+				);
+				$this->output( "done.\n" );
+			}
+
+			# If $from is an IP, delete any relevant rows from the
+			# ip_changes. No update needed, as $to cannot be an IP.
+			if ( !$from->isRegistered() ) {
+				$this->output( "Deleting ip_changes..." );
+				$dbw->delete(
+					'ip_changes',
+					[
+						'ipc_hex' => IPUtils::toHex( $from->getName() )
+					],
+					__METHOD__
+				);
+				$this->output( "done.\n" );
 			}
 		}
 
-		$dbw->commit( __METHOD__ );
-		return (int)$total;
-	}
+		$this->commitTransaction( $dbw, __METHOD__ );
 
-	/**
-	 * Return the most efficient set of user conditions
-	 * i.e. a user => id mapping, or a user_text => text mapping
-	 *
-	 * @param $user User for the condition
-	 * @param $idfield string Field name containing the identifier
-	 * @param $utfield string Field name containing the user text
-	 * @return array
-	 */
-	private function userConditions( &$user, $idfield, $utfield ) {
-		return $user->getId() ? array( $idfield => $user->getId() ) : array( $utfield => $user->getName() );
-	}
-
-	/**
-	 * Return user specifications
-	 * i.e. user => id, user_text => text
-	 *
-	 * @param $user User for the spec
-	 * @param $idfield string Field name containing the identifier
-	 * @param $utfield string Field name containing the user text
-	 * @return array
-	 */
-	private function userSpecification( &$user, $idfield, $utfield ) {
-		return array( $idfield => $user->getId(), $utfield => $user->getName() );
+		return $total;
 	}
 
 	/**
 	 * Initialise the user object
 	 *
-	 * @param $username string Username or IP address
+	 * @param string $username Username or IP address
 	 * @return User
 	 */
 	private function initialiseUser( $username ) {
-		if ( User::isIP( $username ) ) {
-			$user = new User();
-			$user->setId( 0 );
-			$user->setName( $username );
+		$services = MediaWikiServices::getInstance();
+		if ( $services->getUserNameUtils()->isIP( $username ) ) {
+			$user = User::newFromName( $username, false );
+			$user->getActorId();
 		} else {
 			$user = User::newFromName( $username );
 			if ( !$user ) {
-				$this->error( "Invalid username", true );
+				$this->fatalError( "Invalid username" );
 			}
 		}
 		$user->load();
+
 		return $user;
 	}
 }
 
-$maintClass = "ReassignEdits";
+$maintClass = ReassignEdits::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

@@ -1,15 +1,13 @@
 <?php
 /** Iloko (Ilokano)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Midia',
 	NS_SPECIAL          => 'Espesial',
 	NS_TALK             => 'Tungtungan',
@@ -26,5 +24,4 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Tulong_tungtungan',
 	NS_CATEGORY         => 'Kategoria',
 	NS_CATEGORY_TALK    => 'Kategoria_tungtungan',
-);
-
+];
