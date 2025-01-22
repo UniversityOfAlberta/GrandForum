@@ -12,38 +12,38 @@ abstract class Cache {
 	
 	static function store($key, $data, $time=172800){
 	    global $wgSitename;
-	    if(function_exists('apc_store')){
-            apc_store($wgSitename.$key, $data, $time);
+	    if(function_exists('apcu_store')){
+            apcu_store($wgSitename.$key, $data, $time);
         }
 	}
 	
 	static function fetch($key){
 	    global $wgSitename;
-	    if(function_exists('apc_fetch')){
-            return apc_fetch($wgSitename.$key);
+	    if(function_exists('apcu_fetch')){
+            return apcu_fetch($wgSitename.$key);
         }
         return "";
 	}
 	
 	static function delete($key, $prefix=false){
 	    global $wgSitename;
-	    if(function_exists('apc_delete') && class_exists('APCIterator')){
+	    if(function_exists('apcu_delete') && class_exists('APCIterator')){
 	        if($prefix){
-	            $it = new APCIterator('user', '/^'.str_replace(")", '\)', str_replace("(", '\(', $wgSitename)).$key.'/', APC_ITER_KEY);
+	            $it = new APCIterator('user', '/^'.str_replace(")", '\)', str_replace("(", '\(', $wgSitename)).$key.'/', APCU_ITER_KEY);
 	            foreach($it as $k){
-	                apc_delete($k['key']);
+	                apcu_delete($k['key']);
 	            }
 	        }
 	        else{
-                apc_delete($wgSitename.$key);
+                apcu_delete($wgSitename.$key);
             }
         }
 	}
 	
 	static function exists($key){
 	    global $wgSitename;
-	    if(function_exists('apc_exists')){
-            return apc_exists($wgSitename.$key);
+	    if(function_exists('apcu_exists')){
+            return apcu_exists($wgSitename.$key);
         }
         return false;
 	}

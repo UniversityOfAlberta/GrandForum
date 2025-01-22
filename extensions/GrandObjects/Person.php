@@ -903,7 +903,7 @@ class Person extends BackboneModel {
      * @param string $endRange The end date of the role
      * @return array The array of People of the type $filter between $startRange and $endRange
      */
-    static function getAllPeopleDuring($filter=null, $startRange, $endRange){
+    static function getAllPeopleDuring($filter, $startRange, $endRange){
         self::generateAllPeopleCache();
         $people = array();
         if($filter != null && $filter != "all"){
@@ -974,7 +974,7 @@ class Person extends BackboneModel {
      * @param string $date The date that the person was on the role $filter
      * @return array An array of People of the type $filter
      */
-    static function getAllPeopleOn($filter=null, $date){
+    static function getAllPeopleOn($filter, $date){
         self::generateAllPeopleCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
@@ -3400,7 +3400,7 @@ class Person extends BackboneModel {
        
     function getHQPDuring($startRange, $endRange){ return array(); }
 
-    function getRelationsDuring($type='all', $startRange, $endRange){ return array(); }
+    function getRelationsDuring($type, $startRange, $endRange){ return array(); }
 
     function getRelations($type='all', $history=false){ return array(); }
     
@@ -3744,7 +3744,7 @@ class FullPerson extends Person {
      * @param string $endRange The end date
      * @return array The Relationships this Person has
      */
-    function getRelationsDuring($type='all', $startRange, $endRange){
+    function getRelationsDuring($type, $startRange, $endRange){
         $type = DBFunctions::escape($type);
         $startRange = DBFunctions::escape($startRange);
         $endRange = DBFunctions::escape($endRange);
