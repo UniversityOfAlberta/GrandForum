@@ -176,6 +176,78 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="identification" tooltip="Self-Identification Form" name="Self-Identification Form" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="age" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="AGE" orientation="vertical" options="18-24 years old|25-34 years old|35-44 years old|45-54 years old|55-64 years old|65-74 years old|75+ years old|I prefer not to answer" optional="true">
+            <![CDATA[
+                <table>
+                <tr>
+                    <td colspan='2'>
+                        <p>Please note that the information provided here will not be shared. It will not be used to adjudicate applications and will not affect your ranking. This information is solely collected so the platform can monitor the equity performance of programs and design new measures that achieve greater equity, diversity and inclusion in the research enterprise.</p>
+                        
+                        <p>All applications for fellowships require you to complete a self-identification form; however, if you would prefer not to self-identify and/or provide the requested information, you may select “I prefer not to answer" for any or all of the questions.</p>
+                        
+                        <p>Any self-identification statistics shared will always be reported in aggregate form to ensure protection of the identity of any individual.</p>
+                        
+                        <p>The collection of this information is an essential part of efforts to improve EDI in science and research. For further information, please see the Tri-Agency's policy on Self-Identification Data Collection in Support of EDI and Canada's 50-30 Challenge.</p>
+                        
+                        <p>See the Tri-Agency's policy on Self-Identification Data Collection in Support of EDI here: <a href='https://science.gc.ca/eic/site/063.nsf/eng/h_97615.html' target='_blank'>https://science.gc.ca/eic/site/063.nsf/eng/h_97615.html</a></p>
+                    </td>
+                </tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Age:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="gender" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="GENDER" orientation="vertical" options="Woman|Man|Gender fluid, nonbinary and/or Two Spirit|LGBTQ2IA+|My gender identity and/or sexual orientation is not listed above.|I prefer not to answer" optional="true">
+            <![CDATA[
+                <tr>
+                    <td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Self-Identified Gender Identity and Sexual Orientation:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="gender_other" type="Text" width="300px" blobType="BLOB_TEXT" blobItem="GENDER_OTHER" optional="true">
+            <![CDATA[
+                    If your gender identity or sexual orientation were not listed, and you would like to specify, please do so here:<br />
+                    {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="INDIGENOUS" orientation="vertical" options="First Nations (Includes status, treaty or registered Indians, as well as non-status and non-registered Indians)|Métis|Inuit/Inuk|I prefer not to answer|Not applicable" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Do you identify as a member of any of the following Indigenous populations:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="ethnicities" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ETHNICITIES" orientation="vertical" options="Black|Persons of mixed origin (with one parent in one of the Visible Minority communities listed)|Japanese|Filipino|Non-white West Asian, North African/Arab (includes Egyptian; Libyan; Lebanese; Iranian; etc.)|Non-white Latin American (includes Indigenous peoples from Central and South America, etc.)|Chinese|Korean|South Asian/East Indian (includes Indian from India; Bangladeshi; Pakistani; East Indian from Guyana, Trinidad, East Africa; etc.)|Southeast Asian (includes Burmese, Cambodian, Laotian; Thai; Vietnamese; etc.)|White|My ethnicity is not listed here|I prefer not to answer|Not applicable" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Do you identify with any of the following ethnicities:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="ethnicities_other" type="Text" width="300px" blobType="BLOB_TEXT" blobItem="ETHNICITIES_OTHER" optional="true">
+            <![CDATA[
+                    If your ethnicity was not listed above, and you would like to specify, please do so here:<br />
+                    {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="disability" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="DISABILITY" orientation="vertical" options="Yes|No|I prefer not to answer" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Are you a person living with a disability?</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="postsecondary" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="POSTSECONDARY" orientation="vertical" options="Yes|No|I prefer not to answer" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Are you a first generation postsecondary student?<br />
+This is defined as an individual whose parents did not complete postsecondary education. </b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
