@@ -280,6 +280,93 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="security" name="Research Security" blobSection="CAT_SECURITY" tooltip="Research Security" type="EditableReportSection">
+        <ReportItem id="attestation1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION1" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <ol>
+                <li>
+                    <b>Fill in and upload the <a href='https://www.nserc-crsng.gc.ca/InterAgency-Interorganismes/RS-SR/_doc/Attestation_e.pdf' target='_blank'>Attestation Form</a> for each project member</b> (The research team includes researchers with named roles in the grant applications, as well as any other researchers involved in activities supported by the grant, such as highly qualified personnel (HQP), co-authors, or informal collaborators who may or may not be identified in the grant application. HQP can include undergraduate and graduate students, post-doctoral researchers, as well as research staff).
+                    <div style='display:flex; width: 100%; margin-top: 1em;'>
+                        <div style='width: 50%; min-width: 500px;'>
+                            {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION3" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION4" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION5" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION6" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation7" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION7" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation8" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION8" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+                </div></li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="private" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SECURITY_PRIVATE" options="Yes|No">
+            <![CDATA[
+                <li id='private'>
+                    Will the research involve a private sector partner organization?  (Partner organizations from a private sector (those that are not owned or operated by any order of government and include all for-profit organizations), including industrial associations and producer groups (since their member organizations are principally from the private sector)
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="risk" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <li id='risk' style='display:none;'>
+                        In case of involvement of a private sector partner in the project, fill in the <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'><b>Risk Assessment Form</b></a> and upload it to the Forum. <br />
+                        In case risks are identified in the Risk Assessment Form, develop a risk mitigation plan with the institution and must be submitted to GlycoNet.  One Risk Assessment Form is needed per project, developed with the Project Leader’s institution. It is also recommended to utilize existing government resources, such as <a href='https://science.gc.ca/site/science/en/safeguarding-your-research' target='_blank'>Safeguarding Your Research</a> portal and particularly <a href='https://science.gc.ca/site/science/en/safeguarding-your-research/guidelines-and-tools-implement-research-security/mitigating-your-research-security-risks/what-steps-can-you-take-protect-your-research' target='_blank'>Mitigating Your Research Security Risks</a> page.
+                    {$item}
+                    </li>
+                </ol>
+                <div id='risk_no' style='display:none; margin-top: 1em;'>No further requirements</div>
+                <script type='text/javascript'>
+                    $('#private input').change(function(){
+                        var privateValue = $('#private input:checked').val();
+                        if(privateValue == "Yes"){
+                            $('#risk').show();
+                            $('#risk_no').hide();
+                        }
+                        else if(privateValue == "No"){
+                            $('#risk').hide();
+                            $('#risk_no').show();
+                        }
+                        else{
+                            $('#risk').hide();
+                            $('#risk_no').hide();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="ccv" name="NI CCVs" blobSection="CAT_CCV" tooltip="Common CV" type="ReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD1" mimeType="application/pdf">
             <![CDATA[

@@ -49,47 +49,40 @@
     </ReportSection>
     <ReportSection id="letters" name="Partner Letters" title="Partner Letters of Support" blobSection="CAT_SUPPORT" tooltip="Partner Letters of Support" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="appendix_bookmark" type="BookmarkReportItem" offset="1" text="Appendix"></ReportItem>
-        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD2" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD3" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD4" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload7" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD7" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload8" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD8" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload9" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD9" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload10" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD10" mimeType="application/pdf">
-        </ReportItem>
+        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf" />
+        <ReportItem id="upload2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD2" mimeType="application/pdf" />
+        <ReportItem id="upload3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD3" mimeType="application/pdf" />
+        <ReportItem id="upload4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD4" mimeType="application/pdf" />
+        <ReportItem id="upload5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf" />
+        <ReportItem id="upload6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf" />
+        <ReportItem id="upload7" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD7" mimeType="application/pdf" />
+        <ReportItem id="upload8" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD8" mimeType="application/pdf" />
+        <ReportItem id="upload9" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD9" mimeType="application/pdf" />
+        <ReportItem id="upload10" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD10" mimeType="application/pdf" />
+    </ReportSection>
+    <ReportSection id="security" name="Research Security" blobSection="CAT_SECURITY" tooltip="Research Security" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="attestation1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION1" mimeType="application/pdf" />
+        <ReportItem id="attestation2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION2" mimeType="application/pdf" />
+        <ReportItem id="attestation3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION3" mimeType="application/pdf" />
+        <ReportItem id="attestation4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION4" mimeType="application/pdf" />
+        <ReportItem id="attestation5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION5" mimeType="application/pdf" />
+        <ReportItem id="attestation6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION6" mimeType="application/pdf" />
+        <ReportItem id="attestation7" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION7" mimeType="application/pdf" />
+        <ReportItem id="attestation8" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION8" mimeType="application/pdf" />
+        <If if="{==({getText(RP_STRAT,CAT_SECURITY,CAT_SECURITY_PRIVATE,0,{$user_id},{$project_id})},Yes)}">
+            <ReportItem id="risk" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" />
+        </If>
     </ReportSection>
     <ReportSection id="ccv" name="NI CCVs" blobSection="CAT_CCV" tooltip="Common CV" type="HeaderReportSection" pagebreak="false">
-        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD1" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD2" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD3" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD4" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD5" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD6" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload7" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD7" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload8" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD8" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload9" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD9" mimeType="application/pdf">
-        </ReportItem>
-        <ReportItem id="upload10" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD10" mimeType="application/pdf">
-        </ReportItem>
+        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD1" mimeType="application/pdf" />
+        <ReportItem id="upload2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD2" mimeType="application/pdf" />
+        <ReportItem id="upload3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD3" mimeType="application/pdf" />
+        <ReportItem id="upload4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD4" mimeType="application/pdf" />
+        <ReportItem id="upload5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD5" mimeType="application/pdf" />
+        <ReportItem id="upload6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD6" mimeType="application/pdf" />
+        <ReportItem id="upload7" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD7" mimeType="application/pdf" />
+        <ReportItem id="upload8" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD8" mimeType="application/pdf" />
+        <ReportItem id="upload9" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD9" mimeType="application/pdf" />
+        <ReportItem id="upload10" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD10" mimeType="application/pdf" />
     </ReportSection>
 </Report>
