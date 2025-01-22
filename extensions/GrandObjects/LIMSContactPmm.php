@@ -74,6 +74,10 @@ class LIMSContactPmm extends BackboneModel {
 	function getPerson(){
 	    return Person::newFromId($this->owner);
 	}
+
+    function getProject(){
+	    return Project::newFromId($this->projectId);
+	}
 	
 	function getOwner(){
 	    return $this->owner;
