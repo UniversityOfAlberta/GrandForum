@@ -16,7 +16,7 @@ class LIMSOpportunityPmm extends BackboneModel {
     
     static function generateRequestId(){
         if(self::$requestIds == null){
-            $data = DBFunctions::select(array('grand_lims_opportunity'),
+            $data = DBFunctions::select(array('grand_pmm_opportunity'),
                                         array('id', 'date'),
                                         array(),
                                         array('date' => 'ASC'));
@@ -36,7 +36,7 @@ class LIMSOpportunityPmm extends BackboneModel {
     }
 
     static function newFromId($id){
-        $data = DBFunctions::select(array('grand_lims_opportunity'),
+        $data = DBFunctions::select(array('grand_pmm_opportunity'),
                                     array('*'),
                                     array('id' => $id));
         $opportunity = new LIMSOpportunityPmm($data);
@@ -44,7 +44,7 @@ class LIMSOpportunityPmm extends BackboneModel {
     }
     
     static function newFromProjectId($id, $start_date="0000-00-00", $end_date="2100-01-01"){
-        $data = DBFunctions::select(array('grand_lims_opportunity'),
+        $data = DBFunctions::select(array('grand_pmm_opportunity'),
                                     array('*'),
                                     array('project' => $id));
         $opportunities = array();
@@ -55,7 +55,7 @@ class LIMSOpportunityPmm extends BackboneModel {
     }
 
     static function getOpportunities($contact_id){
-        $data = DBFunctions::select(array('grand_lims_opportunity'),
+        $data = DBFunctions::select(array('grand_pmm_opportunity'),
                                     array('*'),
                                     array('contact' => $contact_id));
         $opportunities = array();
@@ -158,7 +158,7 @@ class LIMSOpportunityPmm extends BackboneModel {
 
     function create(){
         if(self::isAllowedToCreate()){
-            DBFunctions::insert('grand_lims_opportunity',
+            DBFunctions::insert('grand_pmm_opportunity',
                                 array('contact' => $this->contact,
                                       'owner' => $this->owner,
                                       'description' => $this->description));
@@ -171,7 +171,7 @@ class LIMSOpportunityPmm extends BackboneModel {
     function update(){
         if($this->isAllowedToEdit()){
             $newProducts = array();
-            DBFunctions::update('grand_lims_opportunity',
+            DBFunctions::update('grand_pmm_opportunity',
                                 array('contact' => $this->contact,
                                       'owner' => $this->owner,
                                       'description' => $this->description),
@@ -183,7 +183,7 @@ class LIMSOpportunityPmm extends BackboneModel {
 
     function delete(){
         if($this->isAllowedToEdit()){
-            DBFunctions::delete('grand_lims_opportunity',
+            DBFunctions::delete('grand_pmm_opportunity',
                                 array('id' => $this->id));
             DBFunctions::delete('grand_lims_task',
                                 array('opportunity' => $this->id));

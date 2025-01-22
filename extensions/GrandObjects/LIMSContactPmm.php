@@ -17,7 +17,7 @@ class LIMSContactPmm extends BackboneModel {
 	
 	static function newFromId($id){
 	    if(!isset(self::$cache[$id])){
-	        $data = DBFunctions::select(array('grand_lims_contact'),
+	        $data = DBFunctions::select(array('grand_pmm_contact'),
 	                                    array('*'),
 	                                    array('id' => $id));
 	        self::$cache[$id] = new LIMSContactPmm($data);
@@ -28,13 +28,13 @@ class LIMSContactPmm extends BackboneModel {
 	static function getAllContacts($project=null){
 	    if($project == null){
 	        // Get All
-	        $data = DBFunctions::select(array('grand_lims_contact'),
+	        $data = DBFunctions::select(array('grand_pmm_contact'),
 	                                    array('id'),
 	                                    array());
 	    }
 	    else{
 	        // Get only the contacts which belong to $project
-	        $data = DBFunctions::select(array('grand_lims_contact' => 'c', 
+	        $data = DBFunctions::select(array('grand_pmm_contact' => 'c', 
 	                                          'grand_lims_projects' => 'p'),
 	                                    array('c.id'),
 	                                    array('c.id' => EQ(COL('p.contact_id')),
@@ -129,7 +129,7 @@ class LIMSContactPmm extends BackboneModel {
      */
     function validate(){
         $details = $this->getDetails();
-        $data = DBFunctions::select(array('grand_lims_contact'),
+        $data = DBFunctions::select(array('grand_pmm_contact'),
                                     array('id'),
                                     array('details' => LIKE('%"firstName":"'.DBFunctions::like($details->firstName).'"%'),
                                           WHERE_AND('details') => LIKE('%"lastName":"'.DBFunctions::like($details->lastName).'"%'),
@@ -191,7 +191,7 @@ class LIMSContactPmm extends BackboneModel {
 	    if(self::isAllowedToCreate()){
 	        $me = Person::newFromWgUser();
 	        $this->owner = $me->getId();
-	        DBFunctions::insert('grand_lims_contact',
+	        DBFunctions::insert('grand_pmm_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
 	                                  'project_id' => $this->projectId,
@@ -213,7 +213,7 @@ class LIMSContactPmm extends BackboneModel {
 	    if($this->isAllowedToEdit()){
 	        $me = Person::newFromWgUser();
 	        $this->owner = $me->getId();
-	        DBFunctions::update('grand_lims_contact',
+	        DBFunctions::update('grand_pmm_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
 	                                  'project_id' => $this->projectId,
@@ -248,7 +248,7 @@ class LIMSContactPmm extends BackboneModel {
 	        }
 	        DBFunctions::delete('grand_lims_projects',
 	                            array('contact_id' => $this->id));
-	        DBFunctions::delete('grand_lims_contact',
+	        DBFunctions::delete('grand_pmm_contact',
 	                            array('id' => $this->id));
 	        $this->id = "";
 	    }
