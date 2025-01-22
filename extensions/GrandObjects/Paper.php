@@ -578,7 +578,7 @@ class Paper extends BackboneModel{
     }
     
     // Constructor
-    function Paper($data){
+    function __construct($data){
         if(!empty($data)){
             $me = Person::newFromWgUser();
             $this->id = $data[0]['id'];

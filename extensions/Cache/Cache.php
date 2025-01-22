@@ -5,7 +5,7 @@ abstract class Cache {
 	var $fileName;
 	var $compress;
 	
-	function Cache($fileName, $directory = ""){
+	function __construct($fileName, $directory = ""){
 		$this->fileName = $directory.$fileName;
 		$this->compress = true;
 	}

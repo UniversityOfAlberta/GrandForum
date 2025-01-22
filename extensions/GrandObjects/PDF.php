@@ -61,7 +61,7 @@ class PDF extends BackboneModel {
         return $pdfs;
     }
     
-    function PDF($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['token'];
             $this->reportId = $data[0]['report_id'];

@@ -131,7 +131,7 @@ class GradDBFinancial extends BackboneModel{
     }
 
     // Constructor
-    function GradDBFinancial($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->userId = $data[0]['user_id'];

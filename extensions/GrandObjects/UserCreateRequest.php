@@ -51,7 +51,7 @@ class UserCreateRequest {
 		return new UserCreateRequest($data);
     }
     
-    function UserCreateRequest($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->requestingUser = Person::newFromId($data[0]['requesting_user']);

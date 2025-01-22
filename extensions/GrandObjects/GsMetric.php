@@ -22,7 +22,7 @@ class GsMetric {
     var $scopus_coauthor_count;
 
     // constructor
-    function GsMetric($data){
+    function __construct($data){
         if(count($data)>0){
             $this->id = $data[0]['id'];
             $this->user_id = $data[0]['user_id'];

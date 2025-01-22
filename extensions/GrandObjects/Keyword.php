@@ -72,7 +72,7 @@ class Keyword extends Grant {
         return array_values($partners);
     }
     
-    function Keyword($data){
+    function __construct($data){
         $me = Person::newFromWgUser();
         if(count($data) > 0 && $me->isLoggedIn()){
             $row = $data[0];

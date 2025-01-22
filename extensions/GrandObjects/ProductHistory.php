@@ -23,7 +23,7 @@ class ProductHistory extends BackboneModel {
         return self::$cache[$id];
     }
     
-    function ProductHistory($data=array()){
+    function __construct($data=array()){
         if(count($data) > 0){
             $me = Person::newFromWgUser();
             $row = $data[0];

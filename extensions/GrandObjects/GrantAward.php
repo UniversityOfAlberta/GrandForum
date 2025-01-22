@@ -83,7 +83,7 @@ class GrantAward extends BackboneModel {
         }
     }
     
-    function GrantAward($data){
+    function __construct($data){
         $me = Person::newFromWgUser();
         if(count($data) > 0){
             $row = $data[0];

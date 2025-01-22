@@ -25,7 +25,7 @@ class GrantPartner extends BackboneModel {
     }
     
     // Creates a new Parter based on the given DB resultset
-    function GrantPartner($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->award_id = $data[0]['award_id'];

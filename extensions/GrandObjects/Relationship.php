@@ -50,7 +50,7 @@ class Relationship extends BackboneModel {
 
     
     // Constructor
-    function Relationship($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->user1 = $data[0]['user1'];

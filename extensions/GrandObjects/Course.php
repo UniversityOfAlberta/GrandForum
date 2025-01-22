@@ -73,7 +73,7 @@ class Course extends BackboneModel{
     var $courseName;
 
     // Constructor
-    function Course($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->term = $data[0]['Term'];

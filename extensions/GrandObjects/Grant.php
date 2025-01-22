@@ -82,7 +82,7 @@ class Grant extends BackboneModel {
         return $grants;
     }
     
-    function Grant($data){
+    function __construct($data){
         $me = Person::newFromWgUser();
         if(count($data) > 0 && $me->isLoggedIn()){
             $row = $data[0];

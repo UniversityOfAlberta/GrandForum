@@ -31,7 +31,7 @@ class Metric {
     var $gs_change_date;
 
     // constructor
-    function Metric($data){
+    function __construct($data){
         $this->id = $data[0]['id'];
         $this->user_id = $data[0]['user_id'];
         $this->acm_start_date = $data[0]['acm_start_date'];

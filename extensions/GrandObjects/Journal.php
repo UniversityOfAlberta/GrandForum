@@ -21,7 +21,7 @@ class Journal extends BackboneModel {
     var $eigenfactor;
     var $snip;
 
-    function Journal($data){
+    function __construct($data){
         if (!empty($data)){
             $row = $data[0]; // since we're passing the entire result set
             $this->id = @$row['id'];

@@ -1046,7 +1046,7 @@ class Person extends BackboneModel {
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
-    function Person($data){
+    function __construct($data){
         global $wgUser;
         if(!empty($data)){
             $this->id = @$data[0]['user_id'];
@@ -3498,8 +3498,8 @@ class FullPerson extends Person {
     var $dateAtsec3;
     var $dateAtsAnniversary;
     
-    function FullPerson($data){
-        self::Person($data);
+    function __construct($data){
+        parent::__construct($data);
         if(!empty($data)){
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
@@ -4497,8 +4497,8 @@ class FullPerson extends Person {
 
 class LimitedPerson extends Person {
     
-    function LimitedPerson($data){
-        self::Person($data);
+    function __construct($data){
+        parent::__construct($data);
         $this->full = 0;
     }
     
