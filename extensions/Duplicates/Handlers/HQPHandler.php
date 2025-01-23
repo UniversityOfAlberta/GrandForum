@@ -2,8 +2,8 @@
 
 class HQPHandler extends PersonHandler {
         
-    function HQPHandler($id){
-        $this->PersonHandler($id);
+    function __construct($id){
+        parent::__construct($id);
     }
     
     static function init(){
