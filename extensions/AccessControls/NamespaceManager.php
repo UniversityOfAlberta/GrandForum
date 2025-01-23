@@ -10,7 +10,7 @@ require_once("includes/specialpage/SpecialPage.php");
 class NamespaceManager extends SpecialPage {
 
 
-	function NamespaceManager() {
+	function __construct() {
 		global $wgMessageCache;
 		SpecialPage::__construct("NamespaceManager");
 

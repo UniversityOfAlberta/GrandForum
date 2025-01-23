@@ -7,7 +7,7 @@ $wgSpecialPageGroups['AnnokiControl'] = 'other';
  
 class AnnokiControl extends SpecialPage {
 
-  function AnnokiControl() {
+  function __construct() {
     SpecialPage::__construct("AnnokiControl", STAFF.'+', true);
   }
 

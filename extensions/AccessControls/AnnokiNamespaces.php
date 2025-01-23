@@ -13,7 +13,7 @@ class AnnokiNamespaces {
 	/*
 	 * Initializes the Annoki Custom Namespaces object
 	 */
-	function AnnokiNamespaces() {
+	function __construct() {
 	  global $wgNamespaces;
 	  $this->userNS = new UserNamespaces();
 	  $this->registerHooks();
