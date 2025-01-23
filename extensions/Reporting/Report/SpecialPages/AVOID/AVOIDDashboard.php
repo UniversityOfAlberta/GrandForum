@@ -353,7 +353,7 @@ class AVOIDDashboard extends SpecialPage {
                                 <td>5</td>
                             </tr>
                             <tr>
-                                <td>LISTEN TO AN EDUCATION MODULE</td>
+                                <td>COMPLETE AN EDUCATION MODULE</td>
                                 <td>5</td>
                             </tr>
                             <tr>
@@ -385,15 +385,11 @@ class AVOIDDashboard extends SpecialPage {
                                 <td>2</td>
                             </tr>
                             <tr>
-                                <td>REGISTER FOR ASK AN EXPERT</td>
-                                <td>5</td>
-                            </tr>
-                            <tr>
                                 <td>CLICK ON 5 COMMUNITY PROGRAMS</td>
                                 <td>10</td>
                             </tr>
                             <tr>
-                                <td>SUBMIT TO COMMUNITY PROGRAMS</td>
+                                <td>SUBMIT A PROGRAM TO COMMUNITY PROGRAMS</td>
                                 <td>5</td>
                             </tr>
                         </table>
