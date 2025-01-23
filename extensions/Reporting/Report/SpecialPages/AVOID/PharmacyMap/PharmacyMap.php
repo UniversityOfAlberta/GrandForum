@@ -16,8 +16,8 @@ class PharmacyMap extends BackbonePage {
         $me = Person::newFromUser($user);
         if($config->getValue('networkFullName') == "AVOID Australia" &&
             !($me->isRoleAtLeast(STAFF) ||
-              $me->isRole("GroupA") && !$me->isRoleOn("GroupA", date('Y-m-d', time() - 86400*30.5*6)) || // Allow A until 6 months
-              $me->isRole("GroupD") && !$me->isRoleOn("GroupD", date('Y-m-d', time() - 86400*30.5*6)) // Allow D until 6 months
+              $me->isRole("GroupA") && !$me->isRoleOn("GroupA", date('Y-m-d', time() - 86400*30.5*7)) || // Allow A until 6 months
+              $me->isRole("GroupD") && !$me->isRoleOn("GroupD", date('Y-m-d', time() - 86400*30.5*7)) // Allow D until 6 months
             )){
             return false;
         }
