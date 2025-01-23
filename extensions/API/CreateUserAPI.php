@@ -2,7 +2,7 @@
 
 class CreateUserAPI extends API{
 
-    function CreateUserAPI(){
+    function __construct(){
         $this->addPOST("wpName",true,"The User Name of the user to add","UserName");
         $this->addPOST("wpPassword",false,"The Password of the user to add","Password");
         $this->addPOST("wpEmail",false,"The User's email address","me@email.com");

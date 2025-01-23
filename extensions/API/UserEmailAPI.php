@@ -2,7 +2,7 @@
 
 class UserEmailAPI extends API{
 
-    function UserEmailAPI(){
+    function __construct(){
         $this->addPOST("email", true, "The email address for this account.", "email@mail.com");
     }
 

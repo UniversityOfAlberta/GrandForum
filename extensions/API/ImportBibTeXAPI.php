@@ -23,7 +23,7 @@ class ImportBibTeXAPI extends API{
 
     var $structure = null;
 
-    function ImportBibTeXAPI(){
+    function __construct(){
         $this->addPost("bibtex", true, "The BibTeX reference(s)", "");
     }
 
