@@ -11,7 +11,7 @@ class TabbedPage {
     var $tabs;
 
     // Constructs the tabbed page, using the given id
-    function TabbedPage($id="tabs"){
+    function __construct($id="tabs"){
         global $wgOut;
         $wgOut->addHTML("<style type='text/css'>
             #bodyContent > h1:first-child {

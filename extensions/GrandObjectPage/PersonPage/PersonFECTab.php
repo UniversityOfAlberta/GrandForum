@@ -5,8 +5,8 @@ class PersonFECTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function PersonFECTab($person, $visibility){
-        parent::AbstractEditableTab("FEC History");
+    function __construct($person, $visibility){
+        parent::__construct("FEC History");
         $this->person = $person;
         $this->visibility = $visibility;
         $this->tooltip = "Contains information about important milestones in the faculty member's academic and employment record.";

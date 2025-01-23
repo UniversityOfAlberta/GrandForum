@@ -2,8 +2,8 @@
 
 class PersonCoursesNoTableTab extends PersonCoursesTab {
 
-    function PersonCoursesNoTableTab($person, $visibility, $startRange="0000-00-00", $endRange=CYCLE_END){
-        parent::PersonCoursesTab($person, $visibility, $startRange, $endRange);
+    function __construct($person, $visibility, $startRange="0000-00-00", $endRange=CYCLE_END){
+        parent::__construct($person, $visibility, $startRange, $endRange);
     }
     
     function getHTML($start=null, $end=null, $showPercentages=false, $generatePDF=false, $editing=false){

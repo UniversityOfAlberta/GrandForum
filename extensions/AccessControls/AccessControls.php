@@ -3,6 +3,7 @@
 require "SpecialSideUserLogin.php";
 require "Management.php";
 require "AnnokiNamespaces.php";
+require "UserNamespaces.php";
 require "AccessControls.body.php";
 require "CustomSpecialSearch.php";
 require "ProtectedChangesList.php";

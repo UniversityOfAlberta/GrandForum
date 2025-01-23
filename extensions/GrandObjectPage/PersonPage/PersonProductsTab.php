@@ -6,13 +6,13 @@ class PersonProductsTab extends AbstractTab {
     var $visibility;
     var $category;
 
-    function PersonProductsTab($person, $visibility, $category='all'){
+    function __construct($person, $visibility, $category='all'){
         global $config;
         if($category == "all" || is_array($category)){
-            parent::AbstractTab(Inflect::pluralize($config->getValue("productsTerm")));
+            parent::__construct(Inflect::pluralize($config->getValue("productsTerm")));
         }
         else{
-            parent::AbstractTab(Inflect::pluralize($category));
+            parent::__construct(Inflect::pluralize($category));
         }
         $this->person = $person;
         $this->visibility = $visibility;

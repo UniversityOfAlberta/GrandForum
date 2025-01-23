@@ -8,9 +8,9 @@ class PersonEmploymentTab extends AbstractEditableTab {
     var $startRange;
     var $endRange;
 
-    function PersonEmploymentTab($person, $visibility){
+    function __construct($person, $visibility){
         global $config;
-        parent::AbstractTab("Education/Employment");
+        parent::__construct("Education/Employment");
         $this->person = $person;
         $this->visibility = $visibility;
         $this->tooltip = "Contains a table with a list of this Person's eduction/employment history.";

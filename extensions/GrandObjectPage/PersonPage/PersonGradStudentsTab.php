@@ -7,8 +7,8 @@ class PersonGradStudentsTab extends AbstractTab {
     var $startRange;
     var $endRange;
 
-    function PersonGradStudentsTab($person, $visibility, $startRange="0000-00-00", $endRange=CYCLE_END){
-        parent::AbstractTab("HQP");
+    function __construct($person, $visibility, $startRange="0000-00-00", $endRange=CYCLE_END){
+        parent::__construct("HQP");
         $this->person = $person;
         $this->visibility = $visibility;
         $this->startRange = $startRange;

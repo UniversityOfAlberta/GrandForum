@@ -5,8 +5,8 @@ class PersonServicesTab extends AbstractTab {
     var $person;
     var $visibility;
 
-    function PersonServicesTab($person, $visibility){
-        parent::AbstractTab("Service Roles");
+    function __construct($person, $visibility){
+        parent::__construct("Service Roles");
         $this->person = $person;
         $this->visibility = $visibility;
     }

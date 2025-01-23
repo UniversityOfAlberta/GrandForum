@@ -9,8 +9,8 @@ class PersonVisualizationsTab extends AbstractTab {
     var $person;
     var $visibility;
 
-    function PersonVisualizationsTab($person, $visibility){
-        parent::AbstractTab("Timeline");
+    function __construct($person, $visibility){
+        parent::__construct("Timeline");
         $this->person = $person;
         $this->visibility = $visibility;
     }

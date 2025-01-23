@@ -3,8 +3,8 @@
 class TabbedAjaxPage extends TabbedPage {
 
     // Constructs the tabbed page, using the given id
-    function TabbedAjaxPage($id="tabs"){
-        self::TabbedPage($id);
+    function __construct($id="tabs"){
+        parent::__construct($id);
     }
     
     // Writes all of the html

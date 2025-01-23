@@ -5,8 +5,8 @@ class PersonNotesTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function PersonNotesTab($person, $visibility){
-        parent::AbstractEditableTab("Notes");
+    function __construct($person, $visibility){
+        parent::__construct("Notes");
         $this->person = $person;
         $this->visibility = $visibility;
     }

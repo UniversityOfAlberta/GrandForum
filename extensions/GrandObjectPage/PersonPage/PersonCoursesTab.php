@@ -8,8 +8,8 @@ class PersonCoursesTab extends AbstractEditableTab {
     var $endRange;
     var $levels = null; // array(1,2,3,4) to specify course levels
 
-    function PersonCoursesTab($person, $visibility, $startRange="0000-00-00", $endRange=CYCLE_END){
-        parent::AbstractTab("Teaching");
+    function __construct($person, $visibility, $startRange="0000-00-00", $endRange=CYCLE_END){
+        parent::__construct("Teaching");
         $this->person = $person;
         $this->visibility = $visibility;
         $this->startRange = $startRange;

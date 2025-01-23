@@ -5,8 +5,8 @@ class PersonRelationsTab extends AbstractTab {
     var $person;
     var $visibility;
 
-    function PersonRelationsTab($person, $visibility){
-        parent::AbstractTab("Supervisors");
+    function __construct($person, $visibility){
+        parent::__construct("Supervisors");
         $this->person = $person;
         $this->visibility = $visibility;
     }

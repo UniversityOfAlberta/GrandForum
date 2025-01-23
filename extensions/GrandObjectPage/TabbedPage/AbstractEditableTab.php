@@ -2,8 +2,8 @@
 
 abstract class AbstractEditableTab extends AbstractTab {
     
-    function AbstractEditableTab($name){
-        parent::AbstractTab($name);
+    function __construct($name){
+        parent::__construct($name);
     }
     
     function showEditButton(){
