@@ -12,7 +12,7 @@ $wgHooks['SubLevelTabs'][] = 'QASummary::createSubTabs';
 
 class QASummary extends SpecialPage{
 
-    function QASummary() {
+    function __construct() {
         parent::__construct("QASummary", null, true);
     }
 

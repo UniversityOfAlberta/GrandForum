@@ -5,8 +5,8 @@ class DepartmentTab extends AbstractTab {
     var $department;
     var $depts;
 
-    function DepartmentTab($department, $depts){
-        parent::AbstractTab($depts[0]);
+    function __construct($department, $depts){
+        parent::__construct($depts[0]);
         $this->department = $department;
         $this->depts = $depts;
     }

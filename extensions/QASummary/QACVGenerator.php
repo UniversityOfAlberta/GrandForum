@@ -11,7 +11,7 @@ $wgHooks['SubLevelTabs'][] = 'QACVGenerator::createSubTabs';
 
 class QACVGenerator extends SpecialPage{
 
-    function QACVGenerator() {
+    function __construct() {
         parent::__construct("QACVGenerator", STAFF.'+', true);
     }
 
