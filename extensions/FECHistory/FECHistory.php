@@ -9,7 +9,7 @@ $wgHooks['SubLevelTabs'][] = 'FECHistory::createSubTabs';
 
 class FECHistory extends SpecialPage{
 
-    function FECHistory() {
+    function __construct() {
         parent::__construct("FECHistory", null, true);
     }
 
