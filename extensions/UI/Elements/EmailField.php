@@ -2,8 +2,8 @@
 
 class EmailField extends UIElement {
     
-    function EmailField($id, $name, $value, $validations=VALIDATE_NOTHING){
-        parent::UIElement($id, $name, $value, $validations + VALIDATE_EMAIL);
+    function __construct($id, $name, $value, $validations=VALIDATE_NOTHING){
+        parent::__construct($id, $name, $value, $validations + VALIDATE_EMAIL);
         $this->attr('size', 30);
     }
     

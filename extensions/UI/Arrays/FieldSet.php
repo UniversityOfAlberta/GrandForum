@@ -4,8 +4,8 @@ class FieldSet extends UIElementArray {
     
     var $legend;
     
-    function FieldSet($id, $legend){
-        parent::UIElementArray($id);
+    function __construct($id, $legend){
+        parent::__construct($id);
         $this->legend = $legend;
         $this->attr('style', 'display:inline;min-width:500px;');
     }
