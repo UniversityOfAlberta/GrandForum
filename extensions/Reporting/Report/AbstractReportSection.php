@@ -24,7 +24,7 @@ abstract class AbstractReportSection {
     var $variables = array();
     
     // Creates a new AbstractReportSection
-    function AbstractReportSection(){
+    function __construct(){
         $this->id = "";
         $this->instructions = "";
         $this->name = "";

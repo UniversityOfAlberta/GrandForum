@@ -33,7 +33,7 @@ abstract class AbstractReportItem {
     var $prev = null;
     
     // Creates a new AbstractReportItem
-    function AbstractReportItem(){
+    function __construct(){
         $this->id = "";
         $this->value = "";
         $this->blobType = BLOB_TEXT;

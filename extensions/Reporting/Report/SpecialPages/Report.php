@@ -10,10 +10,10 @@ $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 
 class TemplateReport extends AbstractReport{
     
-    function TemplateReport(){
+    function __construct(){
         global $config;
         $report = @$_GET['report'];
-        $this->AbstractReport(dirname(__FILE__)."/../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, false);
+        parent::__construct(dirname(__FILE__)."/../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, false);
     }
 
     static function createTab(&$tabs){

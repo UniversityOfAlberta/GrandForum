@@ -111,7 +111,7 @@ class ReportXMLParser {
     
     // Creates a new ReportXMLParser.  $xml should be a string containing the contents of an xml file, 
     // and $report should be the Report object which is being created
-    function ReportXMLParser($xml, $report){
+    function __construct($xml, $report){
         $this->xml = $xml;
         $this->report = $report;
         $this->errors = array();

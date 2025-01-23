@@ -6,8 +6,8 @@ class EditableReportSection extends AbstractReportSection {
     var $reportCharLimits = true;
     
     // Creates a new EditableReportSection()
-    function EditableReportSection(){
-        $this->AbstractReportSection();
+    function __construct(){
+        parent::__construct();
         $this->autosave = true;
     }
     

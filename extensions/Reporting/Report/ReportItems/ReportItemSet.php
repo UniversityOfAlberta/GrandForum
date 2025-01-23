@@ -14,7 +14,7 @@ abstract class ReportItemSet extends AbstractReportItem{
     var $data;
 
     // Creates a new ReportItemSet
-    function ReportItemSet(){
+    function __construct(){
         $this->items = null;
         $this->blobIndex = "";
         $this->cached = null;

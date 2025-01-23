@@ -9,7 +9,7 @@ $wgHooks['SubLevelTabs'][] = 'SPOTGenerator::createSubTabs';
 
 class SPOTGenerator extends SpecialPage{
 
-    function SPOTGenerator() {
+    function __construct() {
         parent::__construct("SPOTGenerator", STAFF.'+', true);
     }
     

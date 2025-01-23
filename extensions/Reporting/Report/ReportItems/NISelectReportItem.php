@@ -2,8 +2,8 @@
 
 class NISelectReportItem extends SelectReportItem {
 
-    function NISelectReportItem(){
-        parent::SelectReportItem();
+    function __construct(){
+        parent::__construct();
         $nis = Person::getAllPeople(NI);
         $names = array("");
         foreach($nis as $ni){

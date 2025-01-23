@@ -11,7 +11,7 @@ class FECReflections extends SpecialPage {
     
     static $validDepts = array("All");
     
-    function FECReflections(){
+    function __construct(){
         global $config, $facultyMap;
         parent::__construct("FECReflections", null, true);
         self::$validDepts = array_merge(self::$validDepts, $facultyMap[getFaculty()]);

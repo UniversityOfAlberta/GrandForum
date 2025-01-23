@@ -13,7 +13,7 @@ function runAnnualReportTable($par) {
 
 class AnnualReportTable extends SpecialPage{
 
-    function AnnualReportTable() {
+    function __construct() {
         SpecialPage::__construct("AnnualReportTable", null, false, 'runAnnualReportTable');
     }
     

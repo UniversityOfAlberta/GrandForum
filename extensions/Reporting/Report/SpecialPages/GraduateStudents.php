@@ -9,7 +9,7 @@ $wgHooks['SubLevelTabs'][] = 'GraduateStudents::createSubTabs';
 
 class GraduateStudents extends SpecialPage {
     
-    function GraduateStudents(){
+    function __construct(){
         parent::__construct("GraduateStudents", null, true);
     }
     

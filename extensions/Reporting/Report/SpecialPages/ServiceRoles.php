@@ -9,7 +9,7 @@ $wgHooks['SubLevelTabs'][] = 'ServiceRoles::createSubTabs';
 
 class ServiceRoles extends SpecialPage {
     
-    function ServiceRoles(){
+    function __construct(){
         parent::__construct("ServiceRoles", null, true);
     }
     
