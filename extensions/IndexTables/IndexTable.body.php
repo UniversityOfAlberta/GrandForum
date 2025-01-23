@@ -1,7 +1,5 @@
 <?php
 
-require_once("InactiveUsers.php");
-
 $wgHooks['OutputPageParserOutput'][] = 'IndexTable::generateTable';
 $wgHooks['userCan'][] = 'IndexTable::userCanExecute';
 $wgHooks['SubLevelTabs'][] = 'IndexTable::createSubTabs';
