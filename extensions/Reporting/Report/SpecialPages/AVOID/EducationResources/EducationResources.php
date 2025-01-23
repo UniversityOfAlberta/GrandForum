@@ -123,8 +123,11 @@ class EducationResources extends SpecialPage {
                 </a>");
             }
             else {
-                $wgOut->addHTML("<p class='program-body' style='margin-top: 0;'>
+                $wgOut->addHTML("<p class='program-body' style='margin-top: 0; width: 100%;'>
                                     <en>This category does not have an education module</en>
+                                    <span style='display:block; text-align: center; width: 100%;'>
+                                        <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}.png' style='max-height: 10em;' alt='".showLanguage($category->title, $category->titleFr)."' />
+                                    </span>
                                  </p>");
             }
             $wgOut->addHTML("</div>");

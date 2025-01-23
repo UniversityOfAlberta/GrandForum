@@ -54,6 +54,7 @@
                 "text" => "Strength",
                 "no" => "Keep up the good work!",
                 "education" => array(
+                    "Activity" => "Activity",
                     "Resources" => "index.php/Special:EducationResources?topic=Activity",
                 ),
                 "programs" => array(),
