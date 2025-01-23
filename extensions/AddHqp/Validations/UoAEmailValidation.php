@@ -2,8 +2,8 @@
 
 class UoAEmailValidation extends UIValidation {
 
-    function UoAEmailValidation($neg=false, $warning=false) {
-        parent::UIValidation($neg, $warning);
+    function __construct($neg=false, $warning=false) {
+        parent::__construct($neg, $warning);
     }
     
     function validateFn($value){
