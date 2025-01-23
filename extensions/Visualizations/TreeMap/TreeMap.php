@@ -11,13 +11,13 @@ class TreeMap extends Visualization {
     var $width = "500";
     var $height = "500";
     
-    function TreeMap($url, $sizeLabel="Size", $countLabel="Count", $sizeUnit="", $countUnit=""){
+    function __construct($url, $sizeLabel="Size", $countLabel="Count", $sizeUnit="", $countUnit=""){
         $this->url = $url;
         $this->sizeLabel = $sizeLabel;
         $this->countLabel = $countLabel;
         $this->sizeUnit = $sizeUnit;
         $this->countUnit = $countUnit;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

@@ -8,9 +8,9 @@ class Bar extends Visualization {
      * Creates a new Bar visualization
      * @param Array $data The data
      */
-    function Bar($data){
+    function __construct($data){
         $this->data = $data;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

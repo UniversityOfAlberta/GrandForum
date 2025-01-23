@@ -5,9 +5,9 @@ class Graph extends Visualization {
     static $a = 0;
     var $url = "";
     
-    function Graph($url){
+    function __construct($url){
         $this->url = $url;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

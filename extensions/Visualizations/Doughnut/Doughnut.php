@@ -13,11 +13,11 @@ class Doughnut extends Visualization {
      * @param boolean $clickable Whether or not the sections should respond to click events.
      * @param string $fn The javascript code to run when a section is clicked.  A 'text' variable can be accessed for this code
      */
-    function Doughnut($url, $clickable=false, $fn=""){
+    function __construct($url, $clickable=false, $fn=""){
         $this->url = $url;
         $this->clickable = ($clickable) ? "true" : "false";
         $this->fn = $fn;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

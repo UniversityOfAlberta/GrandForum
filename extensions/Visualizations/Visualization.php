@@ -52,7 +52,7 @@ abstract class Visualization {
     var $initialized = false;
     var $index;
     
-    function Visualization(){
+    function __construct(){
         if(!$this->initialized){
             $this->init();
             $this->initialized = true;

@@ -7,9 +7,9 @@ class VisTimeline extends Visualization {
     var $width = "100%";
     var $height = "500px";
     
-    function VisTimeline($url){
+    function __construct($url){
         $this->url = $url;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

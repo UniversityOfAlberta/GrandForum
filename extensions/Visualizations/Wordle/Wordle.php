@@ -18,11 +18,11 @@ class Wordle extends Visualization {
      * @param boolean $clickable Whether or not the words should respond to click events (and hover events)
      * @param string $fn The javascript code to run when a word is clicked.  A 'text' variable can be accessed for this code
      */
-    function Wordle($url, $clickable=false, $fn=""){
+    function __construct($url, $clickable=false, $fn=""){
         $this->url = $url;
         $this->clickable = ($clickable) ? "true" : "false";
         $this->fn = $fn;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){
