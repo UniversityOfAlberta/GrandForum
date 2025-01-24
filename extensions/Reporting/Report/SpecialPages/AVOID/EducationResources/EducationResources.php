@@ -23,10 +23,11 @@ class EducationResources extends SpecialPage {
 	    }
         if($config->getValue('networkFullName') == "AVOID Australia" &&
             !($me->isRoleAtLeast(STAFF) ||
-              $me->isRole("GroupA") && !$me->isRoleOn("GroupA", date('Y-m-d', time() - 86400*30.5*7)) || // Allow A until 6 months
-              $me->isRole("GroupB") && $me->isRoleOn("GroupB", date('Y-m-d', time() - 86400*30.5*6)) && !$me->isRoleOn("GroupB", date('Y-m-d', time() - 86400*30.5*12)) || // Allow B between 6 and 12 months
-              $me->isRole("GroupC") && !$me->isRoleOn("GroupC", date('Y-m-d', time() - 86400*30.5*7)) || // Allow C until 6 months
-              $me->isRole("GroupD") && !$me->isRoleOn("GroupD", date('Y-m-d', time() - 86400*30.5*7)) // Allow D until 6 months
+              $me->isRole("Member") ||
+              $me->isRole("GroupA") && !$me->isRoleOn("GroupA", date('Y-m-d', time() - 86400*30.5*7)) || // Allow A until 7 months
+              $me->isRole("GroupB") && !$me->isRoleOn("GroupB", date('Y-m-d', time() - 86400*30.5*7)) || // Allow B until 7 months
+              $me->isRole("GroupC") && !$me->isRoleOn("GroupC", date('Y-m-d', time() - 86400*30.5*7)) || // Allow C until 7 months
+              $me->isRole("GroupD") && !$me->isRoleOn("GroupD", date('Y-m-d', time() - 86400*30.5*7)) // Allow D until 7 months
             )){
             return false;
         }
