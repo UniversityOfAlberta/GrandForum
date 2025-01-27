@@ -16,12 +16,12 @@
             <th>Geography</th>
             <th>Owner</th>
             <th style="white-space:nowrap;">Request Id</th>
-            <th>Status</th>
-            <th>Node</th>
+            <!-- <th>Status</th> -->
+            <!-- <th>Node</th> -->
             <th>Request</th>
-            <th style="white-space:nowrap;">User Type</th>
+            <!-- <th style="white-space:nowrap;">User Type</th> -->
             <th width="1%" style="white-space:nowrap;">Request Date</th>
-            <th width="1%">Category</th>
+            <!-- <th width="1%">Category</th> -->
             <th>Assignee</th>
             <th>Task</th>
             <th width="1%">Status</th>
@@ -61,7 +61,7 @@
                         <td>
                             <%= opportunity.requestId %><span style="display:none;"><%= opportunity.id %></span>
                         </td>
-                        <td>
+                        <!-- <td>
                             <span style="display:none;"><%= opportunity.status %></span>
                             <% if(opportunity.id != null){ %>
                                 <select class="opportunity-status" data-id="<%= opportunity.id %>">
@@ -71,22 +71,22 @@
                                 </select>
                             <% } %>
                             <span style="display:none;"><%= opportunity.id %></span>
-                        </td>
-                        <td>
+                        </td> -->
+                        <!-- <td>
                             <%= opportunity.project.name %><span style="display:none;"><%= opportunity.id %></span>
-                        </td>
+                        </td> -->
                         <td>
                             <%= opportunity.description %><span style="display:none;"><%= opportunity.id %></span>
                         </td>
-                        <td>
+                        <!-- <td>
                             <%= opportunity.userType %><span style="display:none;"><%= opportunity.id %></span>
-                        </td>
+                        </td> -->
                         <td>
                             <%= opportunity.date.substr(0,10) %><span style="display:none;"><%= opportunity.id %></span>
                         </td>
-                        <td style="white-space:nowrap;">
+                        <!-- <td style="white-space:nowrap;">
                             <%= opportunity.category %><span style="display:none;"><%= opportunity.id %></span>
-                        </td>
+                        </td> -->
                         <td>
                             <a href="<%= task.assignee.url %>"><%= task.assignee.name %></a><span style="display:none;"><%= opportunity.id %></span>
                         </td>
