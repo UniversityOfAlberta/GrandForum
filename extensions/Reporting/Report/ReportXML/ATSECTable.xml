@@ -4,27 +4,22 @@
         <Role role="ATSEC" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="atsec_votes" permissions="" />
-            <SectionPermission id="atsec_numbers" permissions="" />
         </Role>
         <Role role="DEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="atsec_votes" permissions="rw" />
-            <SectionPermission id="atsec_numbers" permissions="rw" />
         </Role>
         <Role role="VDEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="atsec_votes" permissions="rw" />
-            <SectionPermission id="atsec_numbers" permissions="rw" />
         </Role>
         <Role role="HR" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="atsec_votes" permissions="r" />
-            <SectionPermission id="atsec_numbers" permissions="r" />
         </Role>
         <Role role="MANAGER+" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="atsec_votes" permissions="" />
-            <SectionPermission id="atsec_numbers" permissions="" />
         </Role>
     </Permissions>
     <Script>
@@ -644,108 +639,6 @@
                         dbWritable = false;
                         $(".selectedReportTab").click();
                         dbWritable = true;
-                    });
-                </script>
-            ]]>
-        </Static>
-    </ReportSection>
-    <ReportSection id="atsec_numbers" tooltip="ATSEC Numbers" name="ATSEC Numbers" title="ATSEC Numbers" type="ReportSection">
-        <Static>
-            <![CDATA[
-                <table id='chairTable' class='wikitable' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th width="1%">Case#</th>
-                            <th>Name</th>
-                            <th>Rank</th>
-                            <th>Department</th>
-                            <th>PhD</th>
-                            <th>Appointment</th>
-                            <th>Assistant</th>
-                            <th>Associate</th>
-                            <th>Professor</th>
-                            <th>FSO II</th>
-                            <th>FSO III</th>
-                            <th>FSO IV</th>
-                            <th>ATS I</th>
-                            <th>ATS II</th>
-                            <th>ATS III</th>
-                            <th>Probation1</th>
-                            <th>Probation2</th>
-                            <th>Tenure</th>
-                            <th>Retirement</th>
-                            <th>Date of Last Degree</th>
-                            <th>Last Degree</th>
-                            <th># Journal Papers</th>
-                            <th># Refereed Papers</th>
-                            <th># Other Papers</th>
-                            <th># Grants</th>
-                            <th># PhD</th>
-                            <th># MSc</th>
-                            <th># UGrad</th>
-                            <th># PDF</th>
-                            <th># Awards</th>
-                            <th># Courses</th>
-                            <th># Students</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </Static>
-        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" atsec="true" includeDD="true" start="{$last_year}-07-01" end="{$this_year}-07-01">
-            <Static>
-                <![CDATA[
-                    <tr>
-                        <td style='white-space:nowrap;'>{getExtra()}</td>
-                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
-                        <td>{$user_level}</td>
-                        <td>{$user_dept}</td>
-                        <td>{substr({getPersonVar(dateOfPhd)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateOfAppointment)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateOfAssistant)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateOfAssociate)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateOfProfessor)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateFso2)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateFso3)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateFso4)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateAtsec1)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateAtsec2)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateAtsec3)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateOfProbation1)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateOfProbation2)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateOfTenure)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateOfRetirement)},0,10)}</td>
-                        <td>{substr({getPersonVar(dateOfLastDegree)},0,10)}</td>
-                        <td>{getPersonVar(lastDegree)}</td>
-                        <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Any Journal)}</td>
-                        <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</td>
-                        <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Not Refereed)}</td>
-                        <td align='right'>{$user_grant_count}</td>
-                        <td align='right'>{$user_phd_count}</td>
-                        <td align='right'>{$user_msc_count}</td>
-                        <td align='right'>{$user_ugrad_count}</td>
-                        <td align='right'>{$user_fellow_count}</td>
-                        <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Award)}</td>
-                        <td align='right'>{$user_lectures_count}</td>
-                        <td align='right'>{$user_lectures_student_count}</td>
-                    </tr>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                    </tbody>
-                </table>
-                <script type='text/javascript'>
-                    $('#chairTable').DataTable({
-                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                        "autoWidth": false,
-                        "iDisplayLength": -1,
-                        "scrollX": true,
-                        'dom': 'Blfrtip',
-                        'buttons': [
-                            'excel'
-                        ]
                     });
                 </script>
             ]]>
