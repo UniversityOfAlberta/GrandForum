@@ -329,8 +329,8 @@ class AVOIDDashboard extends SpecialPage {
         if($membersOnly == ""){
             // Member Frailty Status
             $facebookLink = ($config->getValue('networkFullName') != "AVOID Australia") 
-                          ? "<div class='module-2cols-outer'><img src='{$wgServer}{$wgScriptPath}/skins/icons/avoid/glyphicons_social_30_facebook.png' />
-                             <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Join the discussion in the <a target='_blank' href='https://www.facebook.com/groups/1751174705081179/'>member's only facebook group</a></span></div>" 
+                          ? "<img src='{$wgServer}{$wgScriptPath}/skins/icons/avoid/glyphicons_social_30_facebook.png' />
+                             <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>Join the discussion in the <a target='_blank' href='https://www.facebook.com/groups/1751174705081179/'>member's only facebook group</a></span>" 
                           : "";
             if($config->getValue("networkFullName") == "AVOID KFLA"){
                 $gamificationText = "<a href='https://healthyagingcentres.ca/awards/'>Healthy Lifestyle Rewards</a><br />
@@ -442,13 +442,10 @@ class AVOIDDashboard extends SpecialPage {
                                         <fr>Étape 2. Utilisez le modèle de plan d’action ci-dessous pour choisir un changement sain et en faire le suivi <b>cette semaine</b><br /></fr>
                                         <fr>Étape 3. Utilisez les modules d’éducation, les programmes et les ressources pour soutenir vos objectifs de vieillissement sain.</fr>
                                     </p>");
-                                    
-            $ausVideo = ($config->getValue('networkFullName') == "AVOID Australia") ? "<div class='module-2cols-outer'><b>EVERY STEP YOU TAKE MATTERS</b><br /><a style='cursor:pointer;' onClick=\"window.open('https://www.youtube.com/embed/agGYvoLL_vo?si=tenudfwvUulgjopM', 'video', 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=854,height=480');\"><img src='{$wgServer}{$wgScriptPath}/EducationModules/poster2.png' style='max-height: 8.25em;width: 100%;object-fit: contain;object-position: left top;' /></a></div>" : "";
             $wgOut->addHTML("       <div>
                                         <en>
                                             <div class='modules' style='margin-top: 0.5em;'>
-                                                {$facebookLink}
-                                                {$ausVideo}
+                                                <div class='module-2cols-outer'>{$facebookLink}</div>
                                                 <div class='module-2cols-outer'>{$gamificationLink}</div>
                                             </div>
                                         </en>
