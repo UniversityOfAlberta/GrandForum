@@ -21,7 +21,7 @@
             <![CDATA[
                 <p>AGE-WELL, Canada’s AgeTech network, is dedicated to the creation of technologies and services that benefit older adults and caregivers. Our mission is to help older Canadians maintain their independence, health and quality of life through technologies, programs and services that increase their safety, support their independent living, and enhance their social participation.</p>
                 
-                <p>AGE-WELL has identified <a href="https://agewell-nce.ca/challenge-areas" target="_blank">8 Challenge Areas</a> – difficult and complex problem areas found through extensive public consultation – that demand innovation and deployment of real-world solutions. EPIC Conference (2025) provides a unique platform for AGE-WELL and EPIC-AT students, postdoctoral fellows, research staff and ECRs to present their research alongside their stakeholder partners.  It is an opportunity to showcase  thepotential impact of this work while connecting with colleagues from around the world.  Each session will also feature a segment called Moving the Dial that highlights how AGE-WELL partners and supported startups are improving quality of life for older adults and caregivers across Canada.</p>
+                <p>AGE-WELL has identified <a href="https://agewell-nce.ca/challenge-areas" target="_blank">8 Challenge Areas</a> – difficult and complex problem areas found through extensive public consultation – that demand innovation and deployment of real-world solutions. EPIC Conference (2025) provides a unique platform for AGE-WELL and EPIC-AT students, postdoctoral fellows, research staff and ECRs to present their research alongside their stakeholder partners.  It is an opportunity to showcase  thepotential impact of this work while connecting with colleagues from around the world.  Each session will also feature a segment called <i>Moving the Dial</i> that highlights how AGE-WELL partners and supported startups are improving quality of life for older adults and caregivers across Canada.</p>
 
                 Interested AGE-WELL HQP and EPIC-AT Fellows are asked to submit an application that includes:
                 <ul>
@@ -30,7 +30,7 @@
                 </ul>
                 
                 <p><b>HQP/EPIC-AT Fellow Presentation</b><br />
-                All sessions will be hosted on Zoom and comprise of an introduction to the Challenge Area by the session Chair, live presentations from researchers and their stakeholder partners, and a Moving the Dial presentation that features an AGE-WELL start-up or partner. Q&A will follow the each of the presentations.</p>
+                All sessions will be hosted on Zoom and comprise of an introduction to the Challenge Area by the session Chair, live presentations from HQP / EPIC-AT Fellows and their stakeholder partners, and a <i>Moving the Dial</i> presentation that features an AGE-WELL start-up or partner. Q&A will follow each of the presentations.</p>
                 
                 <p>Presenters are required to accompany their 10-minute talks with a presentation of 10 slides maximum (inclusive of title slide and bibliography). They are also required to co-present alongside a stakeholder in their research. For example, this stakeholder may be an older adult or caregiver with lived experience, an industry or community partner, or government decision-maker.</p>
                 
@@ -40,7 +40,7 @@
                     Presentation proposals are invited from <b>all AGE-WELL HQP and EPIC-AT Fellows including alumni</b>. Applicants are encouraged to review the full challenge area booklet <a href='https://agewell-nce.ca/wp-content/uploads/2018/05/Booklet_8_Challenges_English_2019oct2_digital.pdf' target='_blank'>here</a> and ensure they are available for their sessions on the dates below. Applicants may also wish to review <a href='https://blog.prezi.com/co-presenting-tips/' target="_blank">Co-presenting tips: How to deliver an engaging and cohesive presentation</a>
                 </p>
                 
-                <p>Applications will be open in Forum from March 1 to April 8, 2025.</p>
+                <p>Applications will be open in Forum from January 30 to March 14, 2025.</p>
                 <table class='wikitable'>
                     <tr>
                         <th>Challenge Area Sessions</th>
@@ -184,7 +184,7 @@
                     <td colspan='2'>
                         <p>Please note that the information provided here will not be shared. It will not be used to adjudicate applications and will not affect your ranking. This information is solely collected so the platform can monitor the equity performance of programs and design new measures that achieve greater equity, diversity and inclusion in the research enterprise.</p>
                         
-                        <p>All applications for fellowships require you to complete a self-identification form; however, if you would prefer not to self-identify and/or provide the requested information, you may select “I prefer not to answer" for any or all of the questions.</p>
+                        <p>All applications for the EPIC Conference require you to complete a self-identification form; however, if you would prefer not to self-identify and/or provide the requested information, you may select “I prefer not to answer" for any or all of the questions.</p>
                         
                         <p>Any self-identification statistics shared will always be reported in aggregate form to ensure protection of the identity of any individual.</p>
                         
@@ -193,14 +193,14 @@
                         <p>See the Tri-Agency's policy on Self-Identification Data Collection in Support of EDI here: <a href='https://science.gc.ca/eic/site/063.nsf/eng/h_97615.html' target='_blank'>https://science.gc.ca/eic/site/063.nsf/eng/h_97615.html</a></p>
                     </td>
                 </tr>
-                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Age:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;width:300px;'><b>Age:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
         <ReportItem id="gender" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="GENDER" orientation="vertical" options="Woman|Man|Gender fluid, nonbinary and/or Two Spirit|LGBTQ2IA+|My gender identity and/or sexual orientation is not listed above.|I prefer not to answer" optional="true">
             <![CDATA[
                 <tr>
-                    <td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Self-Identified Gender Identity and Sexual Orientation:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+                    <td align='right' valign='top' style='padding-top:5px;'><b>Self-Identified Gender Identity and Sexual Orientation:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
             ]]>
         </ReportItem>
         
@@ -213,15 +213,15 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="INDIGENOUS" orientation="vertical" options="First Nations (Includes status, treaty or registered Indians, as well as non-status and non-registered Indians)|Métis|Inuit/Inuk|I prefer not to answer|Not applicable" optional="true">
+        <ReportItem id="indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="INDIGENOUS" orientation="vertical" options="First Nations (Includes status, treaty or registered Indians, as well as non-status and non-registered Indians)|Métis|Inuit/Inuk|Other|I prefer not to answer|Not applicable" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Do you identify as a member of any of the following Indigenous populations:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Do you identify as a member of any of the following Indigenous populations:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
         <ReportItem id="ethnicities" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ETHNICITIES" orientation="vertical" options="Black|Persons of mixed origin (with one parent in one of the Visible Minority communities listed)|Japanese|Filipino|Non-white West Asian, North African/Arab (includes Egyptian; Libyan; Lebanese; Iranian; etc.)|Non-white Latin American (includes Indigenous peoples from Central and South America, etc.)|Chinese|Korean|South Asian/East Indian (includes Indian from India; Bangladeshi; Pakistani; East Indian from Guyana, Trinidad, East Africa; etc.)|Southeast Asian (includes Burmese, Cambodian, Laotian; Thai; Vietnamese; etc.)|White|My ethnicity is not listed here|I prefer not to answer|Not applicable" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Do you identify with any of the following ethnicities:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Do you identify with any of the following ethnicities:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
             ]]>
         </ReportItem>
         
@@ -234,16 +234,46 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="disability" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="DISABILITY" orientation="vertical" options="Yes|No|I prefer not to answer" optional="true">
+        <ReportItem id="disability" type="Radio" blobType="BLOB_TEXT" blobItem="DISABILITY" orientation="vertical" options="Yes|No|I prefer not to answer" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Are you a person living with a disability?</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Are you a person living with a disability?</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
-        <ReportItem id="postsecondary" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="POSTSECONDARY" orientation="vertical" options="Yes|No|I prefer not to answer" optional="true">
+        <ReportItem id="postsecondary" type="Radio" blobType="BLOB_TEXT" blobItem="POSTSECONDARY" orientation="vertical" options="Yes|No|I prefer not to answer" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Are you a first generation postsecondary student?<br />
-This is defined as an individual whose parents did not complete postsecondary education. </b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr>
+                    <td align='right' valign='top' style='padding-top:5px;'>
+                        <b>Are you a first generation postsecondary student?</b><br />
+                        <small>This is defined as an individual whose parents did not complete postsecondary education.</small>
+                    </td>
+                    <td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="immigrant" type="Radio" blobType="BLOB_TEXT" blobItem="IMMIGRANT" orientation="vertical" options="Non-immigrant|Immigrant|Non-permanent resident|Immigrant – Other|Prefer not to say" optional="true">
+            <![CDATA[
+                <tr>
+                    <td align='right' valign='top' style='padding-top:5px;'>
+                        <b>What is your immigrant status in Canada?</b><br />
+                        <small>Please see <a href='https://www23.statcan.gc.ca/imdb/p3VD.pl?Function=getVD&TVD=1324474&CVD=1324474&CLV=0&MLV=1&D=1' target='_blank'>here</a> for term definitions.</small>
+                    </td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="immigrant_other" type="Text" width="300px" blobType="BLOB_TEXT" blobItem="IMMIGRANT_OTHER" optional="true">
+            <![CDATA[
+                    If your immigration status was not listed above, and you would like to specify, please do so here:<br />
+                    {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="language" type="Radio" blobType="BLOB_TEXT" blobItem="LANGUAGE" orientation="vertical" options="Yes - Anglophone in Quebec|Yes - Francophone outside of Quebec|No|Prefer not to say" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b><b>Are you a member of an official language minority community in Canada?</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
                 </table>
             ]]>
         </ReportItem>
