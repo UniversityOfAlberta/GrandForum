@@ -455,10 +455,8 @@ function currentTimeStamp(){
  * @return string
  */
 function wfReportTimeOld() {
-	global $wgRequestTime, $wgShowHostnames;
-
-	$now = wfTime();
-	$elapsed = $now - $wgRequestTime;
+	global $wgRequest, $wgShowHostnames;
+	$elapsed = $wgRequest->getElapsedTime();
     $mem = memory_get_peak_usage(true);
     $bytes = array(1 => 'B', 2 => 'KiB', 3 => 'MiB', 4 => 'GiB');
     $ind = 1;
@@ -466,8 +464,7 @@ function wfReportTimeOld() {
 	    $mem = $mem / 1024;
 	    $ind++;
     }
-	
-
+    
 	return $wgShowHostnames
 		? sprintf( "<!-- Served by %s in %01.3f secs (%01.1f %s used). -->", wfHostname(), $elapsed, $mem, $bytes[$ind] )
 		: sprintf( "<!-- Served in %01.3f secs (%01.1f %s used). -->", $elapsed, $mem, $bytes[$ind] );

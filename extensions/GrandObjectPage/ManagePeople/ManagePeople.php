@@ -53,7 +53,7 @@ class ManagePeople extends BackbonePage {
     
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $me = Person::newFromWgUser();
             $title = "Manage HQP";
             if($me->isRoleAtLeast(STAFF)){

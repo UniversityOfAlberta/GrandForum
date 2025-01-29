@@ -604,8 +604,8 @@ class Person extends BackboneModel {
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
                     ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
-            $result = DBFunctions::execSQL($sql, false, false, true);
-            while($row = mysqli_fetch_array($result->result, MYSQLI_ASSOC)){
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
                 if(!isset(self::$universityCache[$row['user_id']]) || $row['primary'] == true){
                     self::$universityCache[$row['user_id']] = 
                         array("id"         => $row['id'],

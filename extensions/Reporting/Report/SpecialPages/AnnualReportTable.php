@@ -143,7 +143,7 @@ class AnnualReportTable extends SpecialPage{
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $tab = "Manager";
             if($person->isRole(CHAIR) || $person->isRole(EA)){
                 $tab = "Chair";

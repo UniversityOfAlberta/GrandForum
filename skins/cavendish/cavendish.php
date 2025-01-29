@@ -617,9 +617,7 @@ class CavendishTemplate extends QuickTemplate {
             header_remove("X-Frame-Options");
 		 } ?>
 	</head>
-<body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
-<?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
- class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>">
+<body class="mediawiki ltr ns-0 ns-subject skin-cavendish">
 
 <div id="internal"></div>
 <div id="container">
@@ -673,7 +671,7 @@ class CavendishTemplate extends QuickTemplate {
             if(count($config->getValue("socialLinks")) > 0){
 	            echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg highlights-text-hover'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}share_16x16.png' />&nbsp;▼</a>";
 	        }
-	        if($wgUser->isLoggedIn()){
+	        if($wgUser->isRegistered()){
 		        $p = Person::newFromId($wgUser->getId());
 		        
 		        $smallNotificationText = "";
@@ -742,8 +740,8 @@ class CavendishTemplate extends QuickTemplate {
                 $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
                 $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
                 
-	            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
-	            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
+                Hooks::run('TopLevelTabs', array(&$GLOBALS['tabs']));
+                Hooks::run('SubLevelTabs', array(&$GLOBALS['tabs']));
             ?>
 		    <?php 
 			    global $wgUser, $wgScriptPath, $tabs;
@@ -902,15 +900,15 @@ class CavendishTemplate extends QuickTemplate {
         $GLOBALS['toolbox']['Tools'] = TabUtils::createToolboxHeader("Tools");
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
         
-		if($wgUser->isLoggedIn()){
+		if($wgUser->isRegistered()){
 		    if(isset($_GET['returnto'])){
 		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
 		    }
 		    $me = Person::newFromWgUser();
-		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
-	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
+		    Hooks::run('ToolboxHeaders', array(&$GLOBALS['toolbox']));
+            Hooks::run('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        //$GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
-	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
+	        if($wgUser->isRegistered() && $config->getValue('networkName') == "AGE-WELL"){ 
 	            $resources = TabUtils::createToolboxHeader("Resources");
 	            $resources['links'][1001] = TabUtils::createToolboxLink("Network Management", "$wgServer$wgScriptPath/index.php/Network_Resources/Network_Management_Office");
 	            $resources['links'][1002] = TabUtils::createToolboxLink("HQP Resources", "$wgServer$wgScriptPath/index.php/HQP_Wiki:HQP Resources");
@@ -930,7 +928,7 @@ class CavendishTemplate extends QuickTemplate {
 	            $resources['links'][1007] = TabUtils::createToolboxLink("Weekly Digest", "$wgServer$wgScriptPath/index.php/Network_Resources/Weekly_Digest");
 	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
 	        }
-	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
+	        if($wgUser->isRegistered() && $config->getValue('networkName') == "GlycoNet"){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
@@ -1123,8 +1121,8 @@ $emailPassword
 </li>
 EOF;
         }
-		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );
-		wfRunHooks( 'SkinTemplateToolboxEnd', array( &$this ) );
+		Hooks::run( 'MonoBookTemplateToolboxEnd', array( &$this ) );
+        Hooks::run( 'SkinTemplateToolboxEnd', array( &$this ) );
 ?>
 	</li>
 <?php

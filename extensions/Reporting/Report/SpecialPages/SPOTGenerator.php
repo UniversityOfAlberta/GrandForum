@@ -177,7 +177,7 @@ class SPOTGenerator extends SpecialPage{
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = ($wgTitle->getNSText() == "Special" && ($wgTitle->getText() == "SPOTGenerator")) ? "selected" : "";
             $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("SPOT Generator", 
                                                                    "$wgServer$wgScriptPath/index.php/Special:SPOTGenerator", 

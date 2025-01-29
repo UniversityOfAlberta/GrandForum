@@ -36,7 +36,7 @@ class ProductHistories extends BackbonePage {
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = ($wgTitle->getNSText() == "Special" && ($wgTitle->getText() == "ProductHistories")) ? "selected" : "";
             $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Product Histories", 
                                                                    "$wgServer$wgScriptPath/index.php/Special:ProductHistories", 

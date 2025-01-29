@@ -67,7 +67,7 @@ class ServiceRoles extends SpecialPage {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ServiceRoles") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Service Roles", "$wgServer$wgScriptPath/index.php/Special:ServiceRoles", $selected);
         }

@@ -51,7 +51,7 @@ class ManageProducts extends BackbonePage {
     
     static function createToolboxLinks(&$toolbox){
 	    global $wgServer, $wgScriptPath, $config, $wgUser;
-	    if(ManageProducts::userCanExecute($wgUser)){
+	    if((new self)->userCanExecute($wgUser)){
 	        $toolbox['Tools']['links'][] = TabUtils::createToolboxLink("Manage ".Inflect::pluralize($config->getValue("productsTerm")), 
 	                                                                   "$wgServer$wgScriptPath/index.php/Special:ManageProducts");
 	        if(getFaculty() != "Engineering"){

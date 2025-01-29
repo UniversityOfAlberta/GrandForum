@@ -94,7 +94,7 @@ class IndexTable {
         $me = Person::newFromWgUser();
         if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
             $result = true;
-            self::userCanExecute($wgTitle, $wgUser, "read", $result);
+            (new self)->userCanExecute($wgTitle, $wgUser, "read", $result);
             if(!$result){
                 permissionError();
             }
