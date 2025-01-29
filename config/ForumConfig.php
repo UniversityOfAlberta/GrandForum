@@ -33,14 +33,14 @@
             return (isset($this->config[$key]));
         }
         
-        function getValue($key, $subKey=null){
+        function getValue($key, $subKey=null, $nullIfNoKey=false){
             if($subKey == null){
                 return @$this->config[$key];
             }
             else if(is_array($this->config[$key]) && isset($this->config[$key][$subKey])){
                 return $this->config[$key][$subKey];
             }
-            else if(isset($this->config[$key])){
+            else if(isset($this->config[$key]) && !$nullIfNoKey){
                 return $this->config[$key];
             }
             else{
