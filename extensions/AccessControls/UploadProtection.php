@@ -138,7 +138,7 @@ class UploadProtection {
     global $egAnnokiTablePrefix;
     
     $title = $article->getTitle();
-    if ($title->getNamespace() == NS_IMAGE){
+    if ($title->getNamespace() == NS_FILE){
       print "Deleting";
       $dbw = wfGetDB( DB_PRIMARY );
       $dbw->delete("${egAnnokiTablePrefix}upload_permissions", array('upload_name=\''.$title->getDBkey()."'"));
@@ -151,7 +151,7 @@ class UploadProtection {
     if($article != null){
         $title = $article->getTitle();
         $nsId = $title->getNamespace();
-        if ($nsId != NS_IMAGE || MWNamespace::isTalk($nsId))
+        if ($nsId != NS_FILE || MWNamespace::isTalk($nsId))
           return true;
 
         $pageNS = self::getNsForImageTitle($title);

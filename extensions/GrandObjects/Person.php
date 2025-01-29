@@ -1226,7 +1226,7 @@ class Person extends BackboneModel {
      */
     function isLoggedIn(){
         $user = $this->getUser();
-        return $user->isLoggedIn();
+        return $user->isRegistered();
     }
     
     /**

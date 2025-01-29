@@ -9,12 +9,12 @@ $wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getChordData';
 $wgHooks['UnknownAction'][] = 'PersonVisualTab::getSurveyData';
 
 $wgHooks['ArticleViewHeader'][] = 'PersonPage::processPage';
-$wgHooks['userCan'][] = 'PersonPage::userCanExecute';
+$wgHooks['ongetUserPermissionsErrors'][] = 'PersonPage::userCanExecute';
 $wgHooks['SubLevelTabs'][] = 'PersonPage::createSubTabs';
 
 class PersonPage {
 
-    function userCanExecute(&$title, &$user, $action, &$result){
+    static function userCanExecute(&$title, &$user, $action, &$result){
         $name = $title->getNSText();
         $me = Person::newFromUser($user);
         $person = Person::newFromName($title->getText());
@@ -31,7 +31,7 @@ class PersonPage {
         return true;
     }
 
-    function processPage($article, $outputDone, $pcache){
+    static function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config, $wgImpersonating, $wgDelegating, $wgMessage;
         $result = true;
         self::userCanExecute($wgTitle, $wgUser, "read", $result);

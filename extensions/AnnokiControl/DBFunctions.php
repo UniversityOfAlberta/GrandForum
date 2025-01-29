@@ -196,13 +196,8 @@ class DBFunctions {
 		    
 	        $rows = array();
 	        if($result != null){
-	            if(DBFunctions::$mysqlnd){
-	                $rows = mysqli_fetch_all($result->result, MYSQLI_ASSOC);
-	            }
-	            else{
-	                while ($row = mysqli_fetch_array($result->result, MYSQLI_ASSOC)) {
-		                $rows[] = $row;
-	                }
+	            while($row=$result->fetchRow()){
+		            $rows[] = $row;
 	            }
 	        }
 	        $peakMemAfter = memory_get_peak_usage(true)/1024/1024;

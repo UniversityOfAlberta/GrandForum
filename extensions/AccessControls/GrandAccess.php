@@ -42,15 +42,7 @@ class GrandAccess {
 	    if(count($me->getRoles()) > 0){
 	        foreach($me->getRoles() as $role){
 	            $aRights[$i++] = $role->getRole();
-	            $user->mGroups[] = $role->getRole().'_Wiki';
 	        }
-	    }
-	    foreach($aRights as $right){
-	        $user->mGroups[] = $right;
-	    }
-	    if($user->isLoggedIn()){
-	        $user->mGroups[] = "Poster";
-	        $user->mGroups[] = "Presentation";
 	    }
 	    return true;
 	}

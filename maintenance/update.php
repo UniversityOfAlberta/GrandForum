@@ -200,11 +200,11 @@ class UpdateMediaWiki extends Maintenance {
 		// Using an implicit marker (slots table didn't exist until 1.31)
 		// TODO: Use an explicit marker
 		// See T259771
-		if ( !$updater->tableExists( 'slots' ) ) {
+		/*if ( !$updater->tableExists( 'slots' ) ) {
 			$this->fatalError(
 				"Can not upgrade from versions older than 1.31, please upgrade to that version or later first."
 			);
-		}
+		}*/
 
 		$updater->doUpdates( $updates );
 

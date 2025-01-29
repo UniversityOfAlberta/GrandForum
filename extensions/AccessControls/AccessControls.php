@@ -34,7 +34,7 @@ $wgExtensionFunctions[] = "initializeAccessControls";
 $wgExtensionFunctions[] = "UploadProtection::initUploadFiles";
 
 //$wgHooks['ParserAfterTidy'][] = 'showQueryCounter';
-$wgHooks['userCan'][] = 'onUserCan';
+$wgHooks['ongetUserPermissionsErrors'][] = 'onUserCan';
 $wgHooks['SpecialPageBeforeExecute'][] = 'onUserCanExecute';
 $wgHooks['AbortMove'][] = 'onAbortMove';
 $wgHooks['AbortLogin'][] = 'onAbortLogin';

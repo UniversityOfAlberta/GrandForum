@@ -227,6 +227,7 @@ $wgEditPageFrameOptions = 'SAMEORIGIN';
 $wgImpersonating = false;
 $wgDelegating = false;
 $wgRealUser;
+$wgDeprecationReleaseLimit = '1.0';
 
 // Whether or not to show custom deprication notices
 define("DEBUG", true);

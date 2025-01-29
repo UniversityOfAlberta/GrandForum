@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 define('PROJECT_NS', 1);
 define('USER_NS', 2);
 
@@ -49,8 +52,8 @@ function registerExtraNamespaces(&$namespaces) {
 		if ($extraNamespace["nsUser"] != null) {
 			$wgUserNamespaces[$nsId] = array("id" => $extraNamespace["nsUser"], "name" => $extraNamespace["user_name"]);
 		}
-		if (!MWNamespace::isTalk($nsId)) {
-			$talk = MWNamespace::getTalk($nsId);
+		if (!MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($nsId)) {
+			$talk = MediaWikiServices::getInstance()->getNamespaceInfo()->getTalk($nsId);
 			$namespaces[$talk] = "{$nsName}_Talk";
 		}
 	}
@@ -164,8 +167,8 @@ function retrieveAllExtraNamespaces() {
 	$sql = "SELECT nsId, nsName, nsUser, user_name from $extraNSTable LEFT JOIN $userTable ON nsUser = user_id ORDER BY nsName";
 	$result = $dbr->query($sql);
 	$extraNS = array();
-	while ($row = $dbr->fetchRow($result)) {
-		$extraNS[] = $row;
+	foreach ( $result as $row ) {
+		$extraNS[] = get_object_vars($row);
 	}
 	
 	return $extraNS;
@@ -200,7 +203,7 @@ function getAllPages($includeTalk = false) {
 		if ($row[1] < 100 && $row[1] != NS_MAIN && $row[1] != NS_TALK) {
 			continue;
 		} 
-		if (!$includeTalk && MWNamespace::isTalk($row[1])) {
+		if (!$includeTalk && MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($row[1])) {
 			continue;
 		}
 		$nsName = "";
@@ -244,7 +247,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
 
 	$list = array();
 	foreach ($wgExtraNamespaces as $extraNSId => $extraNS) {
-		if (MWNamespace::isTalk($extraNSId) && !$includeTalk) {
+		if (MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($extraNSId) && !$includeTalk) {
 			continue;
 		}
 		if ($type == USER_NS && UserNamespaces::isUserNs($extraNSId)) {
@@ -297,7 +300,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    $ignore = array('sysop', 'bureaucrat', 'bot');
    
    foreach ($groups as $index => $ns) {
-     if (!in_array($ns, $ignore) && in_array(str_replace(" ", "_", $ns), $wgExtraNamespaces) && !MWNamespace::isTalk(self::getNamespaceID($ns))){
+     if (!in_array($ns, $ignore) && in_array(str_replace(" ", "_", $ns), $wgExtraNamespaces) && !MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk(self::getNamespaceID($ns))){
        $namespaces[] = $ns;
      }
    }

@@ -1,7 +1,7 @@
 <?php
 
 $wgHooks['OutputPageParserOutput'][] = 'IndexTable::generateTable';
-$wgHooks['userCan'][] = 'IndexTable::userCanExecute';
+$wgHooks['ongetUserPermissionsErrors'][] = 'IndexTable::userCanExecute';
 $wgHooks['SubLevelTabs'][] = 'IndexTable::createSubTabs';
 
 class IndexTable {
@@ -89,7 +89,7 @@ class IndexTable {
         return true;
     }
 
-    function generateTable($out, $parseroutput){
+    static function generateTable($out, $parseroutput){
         global $wgTitle, $wgOut, $wgUser, $config, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
         if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){

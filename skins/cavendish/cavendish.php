@@ -45,13 +45,6 @@ class CavendishTemplate extends QuickTemplate {
 		global $wgRequest, $wgServer, $wgScriptPath, $wgOut, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgDelegating, $wgTitle, $config;
 		$this->skin = $skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
-
-        if(FROZEN){
-            $wgMessage->addInfo("The Forum is currently not available for edits during the RMC review-and-deliberation period.");
-        }
-
-		// Suppress warnings to prevent notices about missing indexes in $this->data
-		wfSuppressWarnings();
 		
 ?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php $this->text('lang') ?>" lang="<?php $this->text('lang') ?>" dir="<?php $this->text('dir') ?>">

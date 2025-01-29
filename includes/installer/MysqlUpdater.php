@@ -32,13 +32,118 @@ use Wikimedia\Rdbms\MySQLField;
 class MysqlUpdater extends DatabaseUpdater {
 	protected function getCoreUpdateList() {
 		return [
-			// 1.35 but it must come first
+			// 1.23
+			[ 'addField', 'recentchanges', 'rc_source', 'patch-rc_source.sql' ],
+			[ 'ifTableNotExists', 'actor', 'addIndex', 'logging', 'log_user_text_type_time',
+				'patch-logging_user_text_type_time_index.sql' ],
+			[ 'ifTableNotExists', 'actor', 'addIndex', 'logging', 'log_user_text_time',
+				'patch-logging_user_text_time_index.sql' ],
+			[ 'addField', 'page', 'page_links_updated', 'patch-page_links_updated.sql' ],
+			[ 'addField', 'user', 'user_password_expires', 'patch-user_password_expire.sql' ],
+
+			// 1.24
+			[ 'addField', 'page_props', 'pp_sortkey', 'patch-pp_sortkey.sql' ],
+			[ 'dropField', 'recentchanges', 'rc_cur_time', 'patch-drop-rc_cur_time.sql' ],
+			[ 'addIndex', 'watchlist', 'wl_user_notificationtimestamp',
+				'patch-watchlist-user-notificationtimestamp-index.sql' ],
+			[ 'addField', 'page', 'page_lang', 'patch-page_lang.sql' ],
+			[ 'addField', 'pagelinks', 'pl_from_namespace', 'patch-pl_from_namespace.sql' ],
+			[ 'addField', 'templatelinks', 'tl_from_namespace', 'patch-tl_from_namespace.sql' ],
+			[ 'addField', 'imagelinks', 'il_from_namespace', 'patch-il_from_namespace.sql' ],
+			[ 'modifyField', 'image', 'img_major_mime',
+				'patch-img_major_mime-chemical.sql' ],
+			[ 'modifyField', 'oldimage', 'oi_major_mime',
+				'patch-oi_major_mime-chemical.sql' ],
+			[ 'modifyField', 'filearchive', 'fa_major_mime',
+				'patch-fa_major_mime-chemical.sql' ],
+
+			// 1.25
+			// note this patch covers other _comment and _description fields too
+			[ 'doExtendCommentLengths' ],
+
+			// 1.26
+			[ 'dropTable', 'hitcounter' ],
+			[ 'dropField', 'site_stats', 'ss_total_views', 'patch-drop-ss_total_views.sql' ],
+			[ 'dropField', 'page', 'page_counter', 'patch-drop-page_counter.sql' ],
+
+			// 1.27
+			[ 'dropTable', 'msg_resource_links' ],
+			[ 'dropTable', 'msg_resource' ],
+			[ 'addTable', 'bot_passwords', 'patch-bot_passwords.sql' ],
+			[ 'addField', 'watchlist', 'wl_id', 'patch-watchlist-wl_id.sql' ],
+			[ 'dropIndex', 'categorylinks', 'cl_collation', 'patch-kill-cl_collation_index.sql' ],
+			[ 'addIndex', 'categorylinks', 'cl_collation_ext',
+				'patch-add-cl_collation_ext_index.sql' ],
+			[ 'doCollationUpdate' ],
+
+			// 1.28
+			[ 'addIndex', 'recentchanges', 'rc_name_type_patrolled_timestamp',
+				'patch-add-rc_name_type_patrolled_timestamp_index.sql' ],
+			[ 'doRevisionPageRevIndexNonUnique' ],
+			[ 'doNonUniquePlTlIl' ],
+			[ 'addField', 'change_tag', 'ct_id', 'patch-change_tag-ct_id.sql' ],
+			[ 'modifyField', 'recentchanges', 'rc_ip', 'patch-rc_ip_modify.sql' ],
+			[ 'ifTableNotExists', 'actor', 'addIndex', 'archive', 'usertext_timestamp',
+				'patch-rename-ar_usertext_timestamp.sql' ],
+
+			// 1.29
+			[ 'addField', 'externallinks', 'el_index_60', 'patch-externallinks-el_index_60.sql' ],
+			[ 'dropIndex', 'user_groups', 'ug_user_group', 'patch-user_groups-primary-key.sql' ],
+			[ 'addField', 'user_groups', 'ug_expiry', 'patch-user_groups-ug_expiry.sql' ],
+			[ 'ifTableNotExists', 'actor',
+				'addIndex', 'image', 'img_user_timestamp', 'patch-image-user-index-2.sql' ],
+
+			// 1.30
+			[ 'modifyField', 'image', 'img_media_type', 'patch-add-3d.sql' ],
+			[ 'addTable', 'ip_changes', 'patch-ip_changes.sql' ],
+			[ 'renameIndex', 'categorylinks', 'cl_from', 'PRIMARY', false,
+				'patch-categorylinks-fix-pk.sql' ],
+			[ 'renameIndex', 'templatelinks', 'tl_from', 'PRIMARY', false,
+				'patch-templatelinks-fix-pk.sql' ],
+			[ 'renameIndex', 'pagelinks', 'pl_from', 'PRIMARY', false, 'patch-pagelinks-fix-pk.sql' ],
+			[ 'renameIndex', 'text', 'old_id', 'PRIMARY', false, 'patch-text-fix-pk.sql' ],
+			[ 'renameIndex', 'imagelinks', 'il_from', 'PRIMARY', false, 'patch-imagelinks-fix-pk.sql' ],
+			[ 'renameIndex', 'iwlinks', 'iwl_from', 'PRIMARY', false, 'patch-iwlinks-fix-pk.sql' ],
+			[ 'renameIndex', 'langlinks', 'll_from', 'PRIMARY', false, 'patch-langlinks-fix-pk.sql' ],
+			[ 'renameIndex', 'log_search', 'ls_field_val', 'PRIMARY', false, 'patch-log_search-fix-pk.sql' ],
+			[ 'renameIndex', 'module_deps', 'md_module_skin', 'PRIMARY', false,
+				'patch-module_deps-fix-pk.sql' ],
+			[ 'renameIndex', 'objectcache', 'keyname', 'PRIMARY', false, 'patch-objectcache-fix-pk.sql' ],
+			[ 'renameIndex', 'querycache_info', 'qci_type', 'PRIMARY', false,
+				'patch-querycache_info-fix-pk.sql' ],
+			[ 'renameIndex', 'site_stats', 'ss_row_id', 'PRIMARY', false, 'patch-site_stats-fix-pk.sql' ],
+			[ 'renameIndex', 'user_former_groups', 'ufg_user_group', 'PRIMARY', false,
+				'patch-user_former_groups-fix-pk.sql' ],
+			[ 'renameIndex', 'user_properties', 'user_properties_user_property', 'PRIMARY', false,
+				'patch-user_properties-fix-pk.sql' ],
+			[ 'addTable', 'comment', 'patch-comment-table.sql' ],
+			[ 'addTable', 'revision_comment_temp', 'patch-revision_comment_temp-table.sql' ],
+			// image_comment_temp is no longer needed when upgrading to MW 1.31 or newer,
+			// as it is dropped later in the update process as part of 'migrateImageCommentTemp'.
+			// File kept on disk and the updater entry here for historical purposes.
+			// [ 'addTable', 'image_comment_temp', 'patch-image_comment_temp-table.sql' ],
+			[ 'addField', 'archive', 'ar_comment_id', 'patch-archive-ar_comment_id.sql' ],
+			[ 'addField', 'filearchive', 'fa_description_id', 'patch-filearchive-fa_description_id.sql' ],
+			[ 'modifyField', 'image', 'img_description', 'patch-image-img_description-default.sql' ],
+			[ 'addField', 'ipblocks', 'ipb_reason_id', 'patch-ipblocks-ipb_reason_id.sql' ],
+			[ 'addField', 'logging', 'log_comment_id', 'patch-logging-log_comment_id.sql' ],
+			[ 'addField', 'oldimage', 'oi_description_id', 'patch-oldimage-oi_description_id.sql' ],
+			[ 'addField', 'protected_titles', 'pt_reason_id', 'patch-protected_titles-pt_reason_id.sql' ],
+			[ 'addField', 'recentchanges', 'rc_comment_id', 'patch-recentchanges-rc_comment_id.sql' ],
+			[ 'modifyField', 'revision', 'rev_comment', 'patch-revision-rev_comment-default.sql' ],
+
+			// This field was added in 1.31, but is put here so it can be used by 'migrateComments'
+			[ 'addField', 'image', 'img_description_id', 'patch-image-img_description_id.sql' ],
+
+			[ 'migrateComments' ],
+			[ 'renameIndex', 'l10n_cache', 'lc_lang_key', 'PRIMARY', false,
+				'patch-l10n_cache-primary-key.sql' ],
+			[ 'doUnsignedSyncronisation' ],
+
+            // 1.35 but it must come first
 			[ 'addField', 'revision', 'rev_actor', 'patch-revision-rev_actor.sql' ],
 
 			// 1.31
-			[ 'addField', 'image', 'img_description_id', 'patch-image-img_description_id.sql' ],
-			[ 'migrateComments' ],
-
 			[ 'addTable', 'slots', 'patch-slots.sql' ],
 			[ 'addField', 'slots', 'slot_origin', 'patch-slot-origin.sql' ],
 			[ 'addTable', 'content', 'patch-content.sql' ],
@@ -46,6 +151,7 @@ class MysqlUpdater extends DatabaseUpdater {
 			[ 'addTable', 'content_models', 'patch-content_models.sql' ],
 			[ 'migrateArchiveText' ],
 			[ 'addTable', 'actor', 'patch-actor-table.sql' ],
+			[ 'addTable', 'revision_actor_temp', 'patch-revision_actor_temp-table.sql' ],
 			[ 'addField', 'archive', 'ar_actor', 'patch-archive-ar_actor.sql' ],
 			[ 'addField', 'ipblocks', 'ipb_by_actor', 'patch-ipblocks-ipb_by_actor.sql' ],
 			[ 'addField', 'image', 'img_actor', 'patch-image-img_actor.sql' ],
@@ -54,11 +160,7 @@ class MysqlUpdater extends DatabaseUpdater {
 			[ 'addField', 'recentchanges', 'rc_actor', 'patch-recentchanges-rc_actor.sql' ],
 			[ 'addField', 'logging', 'log_actor', 'patch-logging-log_actor.sql' ],
 			[ 'migrateActors' ],
-
-			// Adds a default value to the rev_text_id field to allow Multi Content
-			// Revisions migration to happen where rows will have to be added to the
-			// revision table with no rev_text_id.
-			[ 'setDefault', 'revision', 'rev_text_id', 0 ],
+			[ 'modifyField', 'revision', 'rev_text_id', 'patch-rev_text_id-default.sql' ],
 			[ 'modifyTable', 'site_stats', 'patch-site_stats-modify.sql' ],
 			[ 'populateArchiveRevId' ],
 			[ 'addIndex', 'recentchanges', 'rc_namespace_title_timestamp',
@@ -67,8 +169,9 @@ class MysqlUpdater extends DatabaseUpdater {
 			// 1.32
 			[ 'addTable', 'change_tag_def', 'patch-change_tag_def.sql' ],
 			[ 'populateExternallinksIndex60' ],
-			[ 'dropDefault', 'externallinks', 'el_index_60' ],
-			[ 'runMaintenance', DeduplicateArchiveRevId::class ],
+			[ 'modifyfield', 'externallinks', 'el_index_60',
+				'patch-externallinks-el_index_60-drop-default.sql' ],
+			[ 'runMaintenance', DeduplicateArchiveRevId::class, 'maintenance/deduplicateArchiveRevId.php' ],
 			[ 'addField', 'change_tag', 'ct_tag_id', 'patch-change_tag-tag_id.sql' ],
 			[ 'addIndex', 'archive', 'ar_revid_uniq', 'patch-archive-ar_rev_id-unique.sql' ],
 			[ 'populateContentTables' ],
@@ -83,8 +186,9 @@ class MysqlUpdater extends DatabaseUpdater {
 				'patch-site_identifiers-fix-pk.sql' ],
 			[ 'addIndex', 'recentchanges', 'rc_this_oldid', 'patch-recentchanges-rc_this_oldid-index.sql' ],
 			[ 'dropTable', 'transcache' ],
-			[ 'runMaintenance', PopulateChangeTagDef::class ],
-			[ 'dropIndex', 'change_tag', 'change_tag_rc_tag', 'patch-change_tag-change_tag_rc_tag_id.sql' ],
+			[ 'runMaintenance', PopulateChangeTagDef::class, 'maintenance/populateChangeTagDef.php' ],
+			[ 'addIndex', 'change_tag', 'change_tag_rc_tag_id',
+				'patch-change_tag-change_tag_rc_tag_id.sql' ],
 			[ 'addField', 'ipblocks', 'ipb_sitewide', 'patch-ipb_sitewide.sql' ],
 			[ 'addTable', 'ipblocks_restrictions', 'patch-ipblocks_restrictions-table.sql' ],
 			[ 'migrateImageCommentTemp' ],
@@ -122,7 +226,7 @@ class MysqlUpdater extends DatabaseUpdater {
 			[ 'modifyField', 'page', 'page_restrictions', 'patch-page_restrictions-null.sql' ],
 			[ 'renameIndex', 'ipblocks', 'ipb_address', 'ipb_address_unique', false,
 				'patch-ipblocks-rename-ipb_address.sql' ],
-			[ 'dropField', 'revision', 'rev_user', 'patch-revision-actor-comment-MCR.sql' ],
+			//[ 'addField', 'revision', 'rev_actor', 'patch-revision-actor-comment-MCR.sql' ],
 			[ 'dropField', 'archive', 'ar_text_id', 'patch-archive-MCR.sql' ],
 			[ 'doLanguageLinksLengthSync' ],
 			[ 'doFixIpbAddressUniqueIndex' ],
@@ -225,6 +329,99 @@ class MysqlUpdater extends DatabaseUpdater {
 			[ 'modifyField', 'templatelinks', 'tl_namespace', 'patch-templatelinks-tl_title-nullable.sql' ],
 			[ 'dropField', 'templatelinks', 'tl_title', 'patch-templatelinks-drop-tl_title.sql' ],
 		];
+	}
+	
+	protected function doExtendCommentLengths() {
+		$table = $this->db->tableName( 'revision' );
+		$res = $this->db->query( "SHOW COLUMNS FROM $table LIKE 'rev_comment'", __METHOD__ );
+		$row = $res->fetchObject();
+
+		if ( $row && ( $row->Type !== "varbinary(767)" || $row->Default !== "" ) ) {
+			$this->applyPatch(
+				'patch-editsummary-length.sql',
+				false,
+				'Extending edit summary lengths (and setting defaults)'
+			);
+		} else {
+			$this->output( "...comment fields are up to date.\n" );
+		}
+	}
+	
+	protected function doRevisionPageRevIndexNonUnique() {
+		if ( !$this->doTable( 'revision' ) ) {
+			return true;
+		} elseif ( !$this->db->indexExists( 'revision', 'rev_page_id', __METHOD__ ) ) {
+			$this->output( "...rev_page_id index not found on revision.\n" );
+			return true;
+		}
+
+		if ( !$this->db->indexUnique( 'revision', 'rev_page_id', __METHOD__ ) ) {
+			$this->output( "...rev_page_id index already non-unique.\n" );
+			return true;
+		}
+
+		return $this->applyPatch(
+			'patch-revision-page-rev-index-nonunique.sql',
+			false,
+			'Making rev_page_id index non-unique'
+		);
+	}
+	
+	protected function doNonUniquePlTlIl() {
+		$info = $this->db->indexInfo( 'pagelinks', 'pl_namespace', __METHOD__ );
+		if ( is_array( $info ) && $info[0]->Non_unique ) {
+			$this->output( "...pl_namespace, tl_namespace, il_to indices are already non-UNIQUE.\n" );
+
+			return true;
+		}
+		if ( $this->skipSchema ) {
+			$this->output( "...skipping schema change (making pl_namespace, tl_namespace " .
+				"and il_to indices non-UNIQUE).\n" );
+
+			return false;
+		}
+
+		return $this->applyPatch(
+			'patch-pl-tl-il-nonunique.sql',
+			false,
+			'Making pl_namespace, tl_namespace and il_to indices non-UNIQUE'
+		);
+	}
+	
+	protected function doUnsignedSyncronisation() {
+		$sync = [
+			[ 'table' => 'bot_passwords', 'field' => 'bp_user' ],
+			[ 'table' => 'change_tag', 'field' => 'ct_log_id' ],
+			[ 'table' => 'change_tag', 'field' => 'ct_rev_id' ],
+			[ 'table' => 'page_restrictions', 'field' => 'pr_user' ],
+			[ 'table' => 'user_newtalk', 'field' => 'user_id' ],
+			[ 'table' => 'user_properties', 'field' => 'up_user' ],
+		];
+
+		foreach ( $sync as $s ) {
+			if ( !$this->doTable( $s['table'] ) ) {
+				continue;
+			}
+
+			$info = $this->db->fieldInfo( $s['table'], $s['field'] );
+			if ( $info === false ) {
+				continue;
+			}
+			$fullName = "{$s['table']}.{$s['field']}";
+			if ( $info->isUnsigned() ) {
+				$this->output( "...$fullName is already unsigned int.\n" );
+
+				continue;
+			}
+
+			$this->applyPatch(
+				"patch-{$s['table']}-{$s['field']}-unsigned.sql",
+				false,
+				"Making $fullName into an unsigned int"
+			);
+		}
+
+		return true;
 	}
 
 	/**

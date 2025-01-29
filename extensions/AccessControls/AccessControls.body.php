@@ -84,7 +84,7 @@ function checkPublicSections(&$parser, &$text){
 
 function parsePublicSections($title, $text){
 	global $wgUser, $wgScriptPath, $wgOut, $publicPresent;
-	if(!is_null($title) && !$wgOut->isDisabled() && !$wgUser->isLoggedIn()){
+	if(!is_null($title) && !$wgOut->isDisabled() && !$wgUser->isRegistered()){
 		$buffer = "";
 		$offset = 0;
 		
@@ -228,7 +228,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	}
 	
 	//Check to see if the title is for an uploaded file, and if the user has permission to view that file.
-	if ($egAnProtectUploads && $title->getNamespace() == NS_IMAGE){
+	if ($egAnProtectUploads && $title->getNamespace() == NS_FILE){
 	  require_once('UploadProtection.php');
 	  
 	  $uploadNS = UploadProtection::getNsForImageTitle($title);
