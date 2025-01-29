@@ -4009,9 +4009,6 @@ class Person extends BackboneModel {
     
     function isEpic2(){
         $date = "2020-09-01";
-        $university = $this->getUniversity();
-        $position = $university['position'];
-        $uniDate = $university['date'];
         if($this->isSubRoleBefore("Affiliate HQP", $date) || 
            $this->isSubRoleBefore("Project Funded HQP", $date) ||
            $this->isSubRoleBefore("WP/CC Funded HQP", $date) ||
