@@ -575,8 +575,8 @@ class Register extends SpecialPage{
             $domain = @$splitEmail[1];
             $_POST['wpName'] = ucfirst($_POST['wpName']);
             $emptyUser = new User();
-            if(strlen($_POST['wpName']) < 5){
-                $wgMessage->addError("This User Name must be atleast 5 characters long.");
+            if(strlen($_POST['wpName']) < 4){
+                $wgMessage->addError("This User Name must be atleast 4 characters long.");
             }
             else if(!preg_match("/[À-Ÿa-zA-Z]+/", $_POST['wpName'])){
                 $wgMessage->addError("This User Name must include atleast 1 alphabet character.");
