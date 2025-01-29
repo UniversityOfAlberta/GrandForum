@@ -50,30 +50,28 @@ class CavendishTemplate extends QuickTemplate {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php $this->text('lang') ?>" lang="<?php $this->text('lang') ?>" dir="<?php $this->text('dir') ?>">
 	<head>
 		<meta http-equiv="Content-Type" content="<?php $this->text('mimetype') ?>; charset=<?php $this->text('charset') ?>" />
-		<?php $this->html('headlinks') ?>
 		<title><?php $this->text('pagetitle') ?></title>
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.png'; ?>" rel="shortcut icon" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
 		
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/autocomplete.css" type="text/css" />
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/rte-content.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/autocomplete.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/rte-content.css" type="text/css" />
 		
-		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/jquery.qtip.min.css" rel="Stylesheet" />
-		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/chosen/chosen.css.php" rel="Stylesheet" />
-		<?php $this->html('csslinks') ?>
+		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/jquery.qtip.min.css" rel="Stylesheet" />
+		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/chosen/chosen.css.php" rel="Stylesheet" />
 
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/shared.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" type="text/css" media="print" />
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/print.css" type="text/css" media="print" />
-		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/cavendish.css?<?php echo filemtime('skins/cavendish/cavendish.css'); ?>" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/common/shared.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/common/commonPrint.css" type="text/css" media="print" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/print.css" type="text/css" media="print" />
+		<link type="text/css" rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/cavendish.css?<?php echo filemtime('skins/cavendish/cavendish.css'); ?>" />
 		
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/jquery.dataTables.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/fixedHeader.dataTables.min.css" rel="Stylesheet" />
 		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/simplePagination/simplePagination.css" />
 		
-		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/main.css"; /*]]>*/</style>
-		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/extensions.css"; /*]]>*/</style>
-		<style <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> type="text/css">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/print.css"; /*]]>*/</style>
+		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/main.css"; /*]]>*/</style>
+		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/extensions.css"; /*]]>*/</style>
+		<style <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> type="text/css">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/print.css"; /*]]>*/</style>
 		
 		<link rel="stylesheet" type="text/css" media="print" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/switcheroo/switcheroo.css" rel="Stylesheet" />
@@ -258,27 +256,10 @@ class CavendishTemplate extends QuickTemplate {
 		    var wgBreakFrames = "<?php echo $wgBreakFrames; ?>";
 		    var wgUserName = "<?php echo $wgUser->getName(); ?>";
 		</script>
-		<?php echo $wgOut->getScript(); ?>
-		<!-- site js -->
-		<?php	if($this->data['jsvarurl']) { ?>
-		<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('jsvarurl') ?>"><!-- site js --></script>
-		<?php	} ?>
-		<!-- should appear here -->
-		<?php	if($this->data['pagecss']) { ?>
-				<style type="text/css"><?php $this->html('pagecss') ?></style>
-		<?php	}
-				if($this->data['usercss']) { ?>
-				<style type="text/css"><?php $this->html('usercss') ?></style>
-		<?php	}
-				if($this->data['userjs']) { ?>
-				<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('userjs' ) ?>"></script>
-		<?php	}
-				if($this->data['userjsprev']) { ?>
-				<script type="<?php $this->text('jsmimetype') ?>"><?php $this->html('userjsprev') ?></script>
-		<?php	}
-				if($this->data['trackbackhtml']) print $this->data['trackbackhtml']; ?>
-
+		
 		<?php createModels(); ?>
+		<?php echo $wgOut->getBottomScripts(); ?>
+		
 		<script type='text/javascript'>
 		
 		    // Configs
