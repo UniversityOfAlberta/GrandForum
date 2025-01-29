@@ -850,8 +850,8 @@ class CavendishTemplate extends QuickTemplate {
 			<?php if($this->data['catlinks']) { ?><div id="catlinks"><?php       $this->html('catlinks') ?></div><?php } ?>
 			<!-- end content -->
 			<?php if($this->data['dataAfterContent']) { $this->html ('dataAfterContent'); } ?>
-				<div id="footer"><table><tr><td align="left" width="1%" nowrap="nowrap">
-		    <?php if($this->data['copyrightico']) { ?><div id="f-copyrightico"><?php $this->html('copyrightico') ?></div><?php } ?></td><td align="center">
+				<div id="footer"><table style="width:100%"><tr><td align="left" width="1%" nowrap="nowrap">
+		    </td><td align="center">
     <?php	// Generate additional footer links
 		    $footerlinks = array(
 			    'lastmod', 'viewcount', 'numberofwatchingusers', 'credits', 'copyright',
@@ -876,7 +876,8 @@ class CavendishTemplate extends QuickTemplate {
 		echo "<li id='f-disclaimer'><a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a></li>\n";
 	    echo "<li id='f-disclaimer'><a href='mailto:{$config->getValue('supportEmail')}'>Support</a></li>\n";
     ?>
-    </ul></td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
+    </ul>
+    </td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
 	    </div><!-- end of the FOOTER div -->
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->
@@ -908,30 +909,6 @@ class CavendishTemplate extends QuickTemplate {
 		    Hooks::run('ToolboxHeaders', array(&$GLOBALS['toolbox']));
             Hooks::run('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        //$GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
-	        if($wgUser->isRegistered() && $config->getValue('networkName') == "AGE-WELL"){ 
-	            $resources = TabUtils::createToolboxHeader("Resources");
-	            $resources['links'][1001] = TabUtils::createToolboxLink("Network Management", "$wgServer$wgScriptPath/index.php/Network_Resources/Network_Management_Office");
-	            $resources['links'][1002] = TabUtils::createToolboxLink("HQP Resources", "$wgServer$wgScriptPath/index.php/HQP_Wiki:HQP Resources");
-	            $resources['links'][1003] = TabUtils::createToolboxLink("Technical Resources", "$wgServer$wgScriptPath/index.php/Network_Resources/SFU_Core_Facility");
-	            for($year=date('Y'); $year >= 2014; $year--){
-	                $title = "Conference:{$config->getValue('networkName')}_Annual_Conference_{$year}";
-	                if(Wiki::newFromTitle("{$title}")->exists()){
-	                    $resources['links'][1004] = TabUtils::createToolboxLink("{$year} Conference", "$wgServer$wgScriptPath/index.php/{$title}");
-	                    break;
-	                }
-	            }
-	            $resources['links'][1005] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
-	            if($me->isRole(TL) || $me->isRole(TC) || $me->isRoleAtLeast(STAFF)){
-	                $resources['links'][1006] = TabUtils::createToolboxLink("WP Coordinators", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
-	            }
-	            $resources['links'][1007] = TabUtils::createToolboxLink("Funding", "$wgServer$wgScriptPath/index.php/Network_Resources/Funding");
-	            $resources['links'][1007] = TabUtils::createToolboxLink("Weekly Digest", "$wgServer$wgScriptPath/index.php/Network_Resources/Weekly_Digest");
-	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
-	        }
-	        if($wgUser->isRegistered() && $config->getValue('networkName') == "GlycoNet"){
-	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
-	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
-	        }
 	        if($me->isRoleAtLeast(ADMIN)){
 	            $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        }
