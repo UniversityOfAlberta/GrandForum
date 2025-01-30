@@ -19,6 +19,9 @@ if($config->getValue('reportingExtras', 'Assessor')){
     require_once("InPersonFollowup.php");
 }
 require_once("AdminDataCollection.php");
+if($config->getValue('networkFullName') == 'AVOID Australia'){
+    require_once("AdminDataCollectionAustralia.php");
+}
 require_once("AdminUsageStats.php");
 require_once("ConnectFitbit.php");
 require_once("FitbitStats.php");
