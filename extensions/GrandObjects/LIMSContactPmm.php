@@ -140,11 +140,19 @@ class LIMSContactPmm extends BackboneModel {
 	                       'url' => $person->getUrl());
             // Fetches the single project using projectId
             $project = $this->getProject(); 
-            $projectData = array(
-                'id' => $project->getId(),
-                'name' => $project->getName(),
-                'url' => $project->getUrl()
-            );
+            if ($project != null) {
+                $projectData = array(
+                    'id' => $project->getId(),
+                    'name' => $project->getName(),
+                    'url' => $project->getUrl()
+                );
+            } else {
+                $projectData = array(
+                    'id'=> 0,
+                    'name'=> '',
+                    'url'=> ''
+                );
+            }
 
 	        $opportunities = array();
 	        foreach($this->getOpportunities() as $opportunity){
