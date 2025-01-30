@@ -31,19 +31,8 @@ LIMSOpportunityPmm = Backbone.Model.extend({
             owner: {id: "",
                     name: "",
                     url: ""},
-            project: {id: "",
-                      name: "",
-                      url: ""},
-            userType: "",
             description: "",
-            category: "",
-            surveyed: "",
-            responded: "",
-            satisfaction: "",
-            status: "",
-            products: [],
             files: [],
-            date: "",
             isAllowedToEdit: true
         };
     }

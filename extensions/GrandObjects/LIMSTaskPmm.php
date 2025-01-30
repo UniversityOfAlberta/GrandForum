@@ -16,7 +16,7 @@ class LIMSTaskPmm extends BackboneModel {
     var $date;
 	
 	static function newFromId($id){
-	    $data = DBFunctions::select(array('grand_lims_task'),
+	    $data = DBFunctions::select(array('grand_pmm_task'),
 	                                array('*'),
 	                                array('id' => $id));
 	    $opportunity = new LIMSTaskPmm($data);
@@ -24,7 +24,7 @@ class LIMSTaskPmm extends BackboneModel {
 	}
 	
 	static function getTasks($opportunity_id){
-	    $data = DBFunctions::select(array('grand_lims_task'),
+	    $data = DBFunctions::select(array('grand_pmm_task'),
 	                                array('*'),
 	                                array('opportunity' => $opportunity_id));
 	    $tasks = array();
@@ -164,7 +164,7 @@ class LIMSTaskPmm extends BackboneModel {
 	
 	function create(){
 	    if(self::isAllowedToCreate()){
-	        DBFunctions::insert('grand_lims_task',
+	        DBFunctions::insert('grand_pmm_task',
 	                            array('opportunity' => $this->opportunity,
 	                                  'assignee' => $this->assignee,
 	                                  'task' => $this->task,
@@ -181,7 +181,7 @@ class LIMSTaskPmm extends BackboneModel {
 	
 	function update(){
 	    if($this->isAllowedToEdit()){
-	        $data = DBFunctions::select(array('grand_lims_task'),
+	        $data = DBFunctions::select(array('grand_pmm_task'),
 	                                    array('*'),
 	                                    array('id' => $this->id));
 	        if(@$data[0]['assignee'] != $this->assignee){
@@ -194,7 +194,7 @@ class LIMSTaskPmm extends BackboneModel {
 	            $assignee = Person::newFromId($this->assignee);
 	            $this->sendMail($assignee, 'due_date');
 	        }
-	        DBFunctions::update('grand_lims_task',
+	        DBFunctions::update('grand_pmm_task',
 	                            array('opportunity' => $this->opportunity,
 	                                  'assignee' => $this->assignee,
 	                                  'task' => $this->task,
@@ -207,7 +207,7 @@ class LIMSTaskPmm extends BackboneModel {
 	
 	function delete(){
 	    if($this->isAllowedToEdit()){
-	        DBFunctions::delete('grand_lims_task',
+	        DBFunctions::delete('grand_pmm_task',
 	                            array('id' => $this->id));
 	        $this->id = "";
 	    }
