@@ -17,20 +17,13 @@ class LIMSOpportunityPmm extends BackboneModel {
     static function generateRequestId(){
         if(self::$requestIds == null){
             $data = DBFunctions::select(array('grand_pmm_opportunity'),
-                                        array('id', 'date'),
-                                        array(),
-                                        array('date' => 'ASC'));
-            $lastYear = "0000";
+                                        array('id'),
+                                        array());
+            $increment = 1;
             foreach($data as $row){
-                $year = substr($row['date'], 0, 4);
-                if($lastYear != $year){
-                    $increment = 1;
-                }
                 $number = sprintf('%03d', $increment);
-                self::$requestIds[$row['id']] = "GIS{$year}-{$number}";
-                
+                self::$requestIds[$row['id']] = "Request-{$number}";
                 $increment++;
-                $lastYear = $year;
             }
         }
     }
