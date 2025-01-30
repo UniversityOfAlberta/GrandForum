@@ -155,7 +155,8 @@ class DataCollection extends BackboneModel {
     }
     
     function create(){
-        if($this->canUserRead()){
+        global $wgImpersonating, $wgDelegating;
+        if($this->canUserRead() && !$wgImpersonating && !$wgDelegating){
             $me = Person::newFromWgUser();
             $this->userId = $me->getId();
             DBFunctions::insert('grand_data_collection',
@@ -170,7 +171,8 @@ class DataCollection extends BackboneModel {
     }
     
     function update(){
-        if($this->canUserRead()){
+        global $wgImpersonating, $wgDelegating;
+        if($this->canUserRead() && !$wgImpersonating && !$wgDelegating){
             DBFunctions::update('grand_data_collection',
                                 array('data' => json_encode($this->data),
                                       'modified' => EQ(COL('CURRENT_TIMESTAMP'))),
@@ -181,7 +183,8 @@ class DataCollection extends BackboneModel {
     }
     
     function delete(){
-        if($this->canUserRead()){
+        global $wgImpersonating, $wgDelegating;
+        if($this->canUserRead() && !$wgImpersonating && !$wgDelegating){
             DBFunctions::delete('grand_data_collection',
                                 array('id' => $this->id));
             DBFunctions::commit();

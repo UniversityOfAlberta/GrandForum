@@ -73,12 +73,14 @@ class AdminDataCollectionAustralia extends SpecialPage{
             $html .= "<td style='padding:0;' valign='top' align='right'>";
             $html .= "<table class='wikitable' style='border-collapse: collapse; table-layout: auto; width: 100%; margin-top:0px; margin-bottom:0;'>";
             $totalTime = 0;
+            $hits = 0;
             foreach($resource_data as $page){
                 $page_name = trim($page["page"]);
                 $page_data = json_decode($page["data"], true);
-                
                 if($page_name == "Special:Report?report=EducationModules/$key"){
-                    @$html .= "<tr style=''><td nowrap>Hits:</td> <td align='right'>{$page_data['hits']}</td></tr>\n";
+                    if(isset($page_data['hits'])){
+                        $hits += $page_data['hits'];
+                    }
                 }
                 if($page_name == $key){
                     foreach($page_data as $key2 => $value){
@@ -100,6 +102,10 @@ class AdminDataCollectionAustralia extends SpecialPage{
             $minutes = floor(($totalTime / 60) % 60);
             $seconds = $totalTime % 60;
             $value = str_pad($hours,2,"0", STR_PAD_LEFT).":".str_pad($minutes,2,"0", STR_PAD_LEFT).":".str_pad($seconds,2,"0", STR_PAD_LEFT);
+            
+            if($hits > 0){
+                $html .= "<tr style=''><td nowrap>Hits:</td> <td align='right'>{$hits}</td></tr>\n";
+            }
             if($value != "00:00:00"){
                 $html .= "<tr><td>Time:</td> <td align='right'>{$value}</td></tr>\n";
             }
