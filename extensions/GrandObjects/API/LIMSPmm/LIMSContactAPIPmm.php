@@ -19,12 +19,12 @@ class LIMSContactAPIPmm extends RESTAPI {
             $contact = new LIMSContactPmm(array());
             $contact->title = $this->POST('title');
             $contact->owner = $me->getId();
+            $contact->projectId = $this->POST('projectId');
             $contact->details = $this->POST('details');
             // Trim the details
             foreach($contact->details as $key => $value){
                 $contact->details->{$key} = trim($value);
             }
-            $contact->projects = $this->POST('projects');
             // Validate first
             $validation = $contact->validate();
             if($validation !== true){

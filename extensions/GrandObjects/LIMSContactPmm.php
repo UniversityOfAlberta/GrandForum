@@ -11,12 +11,12 @@ class LIMSContactPmm extends BackboneModel {
     var $id;
     var $title;
     var $owner;
+    var $projectId;
     var $details = array();
-    var $projects = null;
 	
 	static function newFromId($id){
 	    if(!isset(self::$cache[$id])){
-	        $data = DBFunctions::select(array('grand_lims_contact'),
+	        $data = DBFunctions::select(array('grand_pmm_contact'),
 	                                    array('*'),
 	                                    array('id' => $id));
 	        self::$cache[$id] = new LIMSContactPmm($data);
@@ -24,20 +24,19 @@ class LIMSContactPmm extends BackboneModel {
 	    return self::$cache[$id];
 	}
 	
-	static function getAllContacts($project=null){
-	    if($project == null){
+	static function getAllContacts($project_id=null){
+	    if($project_id == null){
 	        // Get All
-	        $data = DBFunctions::select(array('grand_lims_contact'),
+	        $data = DBFunctions::select(array('grand_pmm_contact'),
 	                                    array('id'),
 	                                    array());
 	    }
 	    else{
-	        // Get only the contacts which belong to $project
-	        $data = DBFunctions::select(array('grand_lims_contact' => 'c', 
-	                                          'grand_lims_projects' => 'p'),
-	                                    array('c.id'),
-	                                    array('c.id' => EQ(COL('p.contact_id')),
-	                                          'p.project_id' => $project->getId()));
+	        // Get only the contacts which belong to $project using project_id column directly in the where clause
+	        $data = DBFunctions::select(array('grand_pmm_contact'),
+	                                    array('id'),
+	                                     array('project_id' => $project_id));
+              
 	    }
 	    $contacts = array();
 	    foreach($data as $row){
@@ -54,6 +53,7 @@ class LIMSContactPmm extends BackboneModel {
 		    $this->id = $data[0]['id'];
 		    $this->title = $data[0]['title'];
 		    $this->owner = $data[0]['owner'];
+		    $this->projectId= $data[0]['project_id'];
 		    $this->details = json_decode($data[0]['details']);
 		    if($this->details == null){
 		        $this->details = array();
@@ -72,26 +72,21 @@ class LIMSContactPmm extends BackboneModel {
 	function getPerson(){
 	    return Person::newFromId($this->owner);
 	}
+
+    function getProject(){
+	    return Project::newFromId($this->projectId);
+	}
 	
 	function getOwner(){
 	    return $this->owner;
 	}
+
+	function getProjectId(){
+	    return $this->projectId;
+	}
 	
 	function getDetails(){
 	    return $this->details;
-	}
-	
-	function getProjects(){
-	    if($this->projects === null){
-	        $this->projects = array();
-	        $data = DBFunctions::select(array('grand_lims_projects'),
-	                                    array('project_id'),
-	                                    array('contact_id' => $this->getId()));
-	        foreach($data as $row){
-	            $this->projects[] = Project::newFromId($row['project_id']);
-	        }
-	    }
-	    return $this->projects;
 	}
 	
 	function getUrl(){
@@ -123,7 +118,7 @@ class LIMSContactPmm extends BackboneModel {
      */
     function validate(){
         $details = $this->getDetails();
-        $data = DBFunctions::select(array('grand_lims_contact'),
+        $data = DBFunctions::select(array('grand_pmm_contact'),
                                     array('id'),
                                     array('details' => LIKE('%"firstName":"'.DBFunctions::like($details->firstName).'"%'),
                                           WHERE_AND('details') => LIKE('%"lastName":"'.DBFunctions::like($details->lastName).'"%'),
@@ -143,19 +138,23 @@ class LIMSContactPmm extends BackboneModel {
 	        $owner = array('id' => $person->getId(),
 	                       'name' => $person->getNameForForms(),
 	                       'url' => $person->getUrl());
-	        $opportunities = array();
-	        $projects = array();
-	        if(is_array($this->getProjects())){
-                foreach($this->getProjects() as $project){
-                    $url = "";
-                    if($project->getId() != -1){
-                        $url = $project->getUrl();
-                    }
-                    $projects[] = array('id' => $project->getId(),
-                                        'name' => $project->getName(),
-                                        'url' => $url);
-                }
+            // Fetches the single project using projectId
+            $project = $this->getProject(); 
+            if ($project != null) {
+                $projectData = array(
+                    'id' => $project->getId(),
+                    'name' => $project->getName(),
+                    'url' => $project->getUrl()
+                );
+            } else {
+                $projectData = array(
+                    'id'=> 0,
+                    'name'=> '',
+                    'url'=> ''
+                );
             }
+
+	        $opportunities = array();
 	        foreach($this->getOpportunities() as $opportunity){
 	            $opp = $opportunity->toArray();
 	            $tasks = array();
@@ -169,9 +168,10 @@ class LIMSContactPmm extends BackboneModel {
 	        $json = array('id' => $this->getId(),
 	                      'title' => $this->getTitle(),
 	                      'owner' => $owner,
+	                      'projectId' => $this->getProjectId(),
 	                      'details' => $this->getDetails(),
 	                      'url' => $this->getUrl(),
-	                      'projects' => $projects,
+	                      'project' => $projectData,
 	                      'isAllowedToEdit' => $this->isAllowedToEdit(),
 	                      'opportunities' => $opportunities);
 	        return $json;
@@ -183,20 +183,12 @@ class LIMSContactPmm extends BackboneModel {
 	    if(self::isAllowedToCreate()){
 	        $me = Person::newFromWgUser();
 	        $this->owner = $me->getId();
-	        DBFunctions::insert('grand_lims_contact',
+	        DBFunctions::insert('grand_pmm_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
+	                                  'project_id' => $this->projectId,
 	                                  'details' => json_encode($this->details)));
 	        $this->id = DBFunctions::insertId();
-	        // Now add projects
-	        foreach($this->projects as $project){
-                DBFunctions::insert("grand_lims_projects", 
-                                    array('contact_id' => $this->id,
-                                          'project_id' => $project->id),
-                                    true);
-            }
-            $this->projects = null;
-            $this->getProjects();
 	    }
 	}
 	
@@ -204,30 +196,12 @@ class LIMSContactPmm extends BackboneModel {
 	    if($this->isAllowedToEdit()){
 	        $me = Person::newFromWgUser();
 	        $this->owner = $me->getId();
-	        DBFunctions::update('grand_lims_contact',
+	        DBFunctions::update('grand_pmm_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
+	                                  'project_id' => $this->projectId,
 	                                  'details' => json_encode($this->details)),
 	                            array('id' => $this->id));
-	        // Now add projects
-	        $this->getProjects(); // Just incase projects not provided
-	        foreach($this->projects as $project){
-                if(!isset($project->id) || $project->id == 0){
-                    $p = Project::newFromName($project->name);
-                    $project->id = $p->getId();
-                }
-            }
-            
-	        DBFunctions::delete('grand_lims_projects',
-	                            array('contact_id' => $this->id));
-	        foreach($this->projects as $project){
-                DBFunctions::insert("grand_lims_projects", 
-                                    array('contact_id' => $this->id,
-                                          'project_id' => $project->id),
-                                    true);
-            }
-            $this->projects = null;
-            $this->getProjects();
 	    }
 	}
 	
@@ -236,9 +210,7 @@ class LIMSContactPmm extends BackboneModel {
 	        foreach($this->getOpportunities() as $opportunity){
 	            $opportunity->delete();
 	        }
-	        DBFunctions::delete('grand_lims_projects',
-	                            array('contact_id' => $this->id));
-	        DBFunctions::delete('grand_lims_contact',
+	        DBFunctions::delete('grand_pmm_contact',
 	                            array('id' => $this->id));
 	        $this->id = "";
 	    }
