@@ -71,13 +71,39 @@ class AdminDataCollectionAustralia extends SpecialPage{
         // Topics
         foreach(IntakeSummary::$topics as $key => $topic){
             $html .= "<td style='padding:0;' valign='top' align='right'>";
+            $html .= "<table class='wikitable' style='border-collapse: collapse; table-layout: auto; width: 100%; margin-top:0px; margin-bottom:0;'>";
+            $totalTime = 0;
             foreach($resource_data as $page){
                 $page_name = trim($page["page"]);
                 $page_data = json_decode($page["data"], true);
+                
                 if($page_name == "Special:Report?report=EducationModules/$key"){
-                    @$html .= "{$page_data['hits']}";
+                    @$html .= "<tr style=''><td nowrap>Hits:</td> <td align='right'>{$page_data['hits']}</td></tr>\n";
+                }
+                if($page_name == $key){
+                    foreach($page_data as $key2 => $value){
+                        if(strlen($key2) < 4){
+                            continue;
+                        }
+                        if(is_array($value)){
+                            continue;
+                            $value = implode("|",$value);
+                        }
+                        $key2 = str_replace("Time", " Time", $key2);
+                        if(strpos($key2, "Time")){
+                            $totalTime += $value;
+                        }
+                    }
                 }
             }
+            $hours = floor($totalTime / 3600);
+            $minutes = floor(($totalTime / 60) % 60);
+            $seconds = $totalTime % 60;
+            $value = str_pad($hours,2,"0", STR_PAD_LEFT).":".str_pad($minutes,2,"0", STR_PAD_LEFT).":".str_pad($seconds,2,"0", STR_PAD_LEFT);
+            if($value != "00:00:00"){
+                $html .= "<tr><td>Time:</td> <td align='right'>{$value}</td></tr>\n";
+            }
+            $html .= "</table>";
             $html .= "</td>";
         }
             
