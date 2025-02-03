@@ -597,6 +597,18 @@ class GsmsData extends BackboneModel{
         }
         return $time;
     }
+    
+    function getAgreeToSupervise(){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $sop = $this->getSOP();
+        $reviewers = array();
+        foreach($sop->getReviewers() as $reviewer){
+            if($sop->getAgreeToSupervise($reviewer)){
+                $reviewers[] = Person::newFromId($reviewer);
+            }
+        }
+        return $reviewers;
+    }
 
     function getAssignedSupervisors() {
         $year = ($this->year != "") ? $this->year : YEAR;
