@@ -470,6 +470,8 @@ class FrailtyReport extends SpecialPage {
                          'left'    => 1);
 
         $pdfNoDisplay = (!isset($_GET['preview'])) ? ".pdfnodisplay { display:none }" : "";
+        $frailtyStatus = ($config->getValue('networkFullName') != "AVOID Australia") ? ".frailtyStatus { font-weight: 800; margin-top: 1em; }" : 
+                                                                                       ".frailtyStatus { display: none; }";
         $bodyMargins = (!isset($_GET['preview'])) ? "margin-top: {$margins['top']}cm;
                                                      margin-right: {$margins['right']}cm;
                                                      margin-bottom: {$margins['bottom']}cm;
@@ -569,10 +571,7 @@ class FrailtyReport extends SpecialPage {
                                 text-decoration: underline;
                             }
                             
-                            .frailtyStatus {
-                                font-weight: 800;
-                                margin-top: 1em;
-                            }
+                            $frailtyStatus
                             
                             .list {
                                 text-align: justify;
