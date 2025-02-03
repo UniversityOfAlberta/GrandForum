@@ -67,6 +67,13 @@ for($y=YEAR;$y<=YEAR;$y++){
 			            $sups[] = str_replace("@ualberta.ca", "", $sup->getEmail());
 			        }
 			    }
+			    
+			    if(count($sups) == 0){
+			        $supervisors = $gsms->getAgreeToSupervise();
+			        foreach($supervisors as $sup){
+			            $sups[] = str_replace("@ualberta.ca", "", $sup->getEmail());
+			        }
+			    }
 
                 $array['student_id'] = str_pad($array['student_id'], 7, "0", STR_PAD_LEFT);
 
@@ -93,7 +100,7 @@ for($y=YEAR;$y<=YEAR;$y++){
 				    $loc = "{$outdir}/{$y}/" . $f;
 				    array_push($filenames, $f);
 			    }
-			    
+
 			    $oldContents = @file_get_contents($loc);
 			    $newContents = implode("\n", $output) . "\n";
 			    
