@@ -1104,6 +1104,11 @@ class AVOIDDashboard extends SpecialPage {
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config, $wgMessage;
         $me = Person::newFromId($wgUser->getId());
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
+        // Some users in AVOID Australia dont have access to the dashboard, so redirect to main page in those cases
+        if($wgTitle->getText() == "AVOIDDashboard" && $config->getValue('networkFullName') == "AVOID Australia" && !((new self())->userCanExecute($wgUser))){
+            redirect("{$wgServer}{$wgScriptPath}");
+            return true;
+        }
         if($me->isRole(ADMIN) || $me->isRole(STAFF) || $config->getValue('networkFullName') == "AVOID Australia" || 
                                                        $config->getValue('networkFullName') == "AVOID AB"){
             return true;
