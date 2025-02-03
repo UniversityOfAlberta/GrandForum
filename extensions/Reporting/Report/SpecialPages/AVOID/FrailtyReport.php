@@ -1002,6 +1002,13 @@ behaviour. They are not clinical recommendations, for which you should seek advi
         $dompdfOptions->setDpi(96);
         $dompdf = new Dompdf\Dompdf($dompdfOptions);
         $dompdf->setPaper('letter', 'portrait');
+        $dompdf->setHttpContext(stream_context_create([ 
+            'ssl' => [ 
+                'verify_peer' => FALSE, 
+                'verify_peer_name' => FALSE,
+                'allow_self_signed'=> TRUE
+            ] 
+        ]));
         
         $dompdf->load_html($html);
         $dompdf->render();
