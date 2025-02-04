@@ -24,9 +24,12 @@ LIMSContactViewPmm = Backbone.View.extend({
     },
     
     render: function(){
-        main.set('title', this.model.get('title'));
+        if (!_.isUndefined(main) && !_.isUndefined(main.set)) {
+            main.set('title', this.model.get('title'));
+        }
         this.$el.html(this.template(this.model.toJSON()));
         return this.$el;
+        
     }
 
 });
