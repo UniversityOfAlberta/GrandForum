@@ -439,19 +439,5 @@ class PersonVisualizationsTab extends AbstractTab {
             exit;
 	    }
 	}
-	
-	static function getRootDiscipline($disc){
-	    $discs = explode("|", $disc);
-	    $dics = $discs[0];
-	    $disciplines = AboutTab::getDisciplineList();
-	    foreach($disciplines as $name => $discipline){
-	        foreach($discipline as $d){
-	            if($d == $disc){
-	                return $name;
-	            }
-	        }
-	    }
-	    return "Other";
-	}
 }
 ?>
