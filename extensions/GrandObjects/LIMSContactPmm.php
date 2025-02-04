@@ -117,18 +117,27 @@ class LIMSContactPmm extends BackboneModel {
      * Verifies that the Contact is unique
      */
     function validate(){
-        $details = $this->getDetails();
+        // if (!isset($this->projectId) || !is_numeric($this->projectId)) {
+        //     return "The project ID must be a valid number.";
+        // }
+
+        // Check if a contact with the same projectId already exists
         $data = DBFunctions::select(array('grand_pmm_contact'),
                                     array('id'),
-                                    array('details' => LIKE('%"firstName":"'.DBFunctions::like($details->firstName).'"%'),
-                                          WHERE_AND('details') => LIKE('%"lastName":"'.DBFunctions::like($details->lastName).'"%'),
-                                          WHERE_AND('id') => NEQ($this->id)));
-        if($details->firstName == "" || $details->lastName == ""){
-            return "The first name and last name cannot be empty";
+                                    array('project_id' => $this->projectId));
+        
+        // If updating an existing contact, exclude it from the check
+        if ($this->id) {
+            $data = DBFunctions::select(array('grand_pmm_contact'),
+                                        array('id'),
+                                        array('project_id' => $this->projectId,
+                                            'id' => NEQ($this->id)));
         }
-        else if(count($data) > 0){
-            return "A contact with the name '{$details->firstName} {$details->lastName}' already exists";
-        }
+
+        // if (count($data) > 0) {
+        //     return "A contact with the project ID '{$this->projectId}' already exists.";
+        // }
+
         return true;
     }
 	
