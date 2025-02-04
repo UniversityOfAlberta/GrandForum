@@ -1954,7 +1954,7 @@ class Paper extends BackboneModel{
                 }
             }
             $data = $this->getData();
-            if(count($data) == 0){
+            if(empty($data) || count($data) == 0){
                 $data = new stdClass();
             }
             $json = array('id' => $this->getId(),
