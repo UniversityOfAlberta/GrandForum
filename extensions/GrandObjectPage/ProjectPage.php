@@ -119,6 +119,9 @@ class ProjectPage {
                     $tabbedPage->addTab(new ProjectKPITab($project, $visibility));
                     //$tabbedPage->addTab(new ProjectKPISummaryTab($project, $visibility));
                 }
+                if(isExtensionEnabled("PMM")){
+                    $tabbedPage->addTab(new ProjectLIMSPmmTab($project, $visibility));
+                }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
