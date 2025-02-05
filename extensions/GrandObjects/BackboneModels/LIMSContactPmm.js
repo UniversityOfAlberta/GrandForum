@@ -28,9 +28,6 @@ LIMSContactPmm = Backbone.Model.extend({
     },
 
     urlRoot: function(){
-        if(this.get('id') == null){
-            return 'index.php?action=api.limscontactpmm/project/' + this.get('projectId');
-        }
         return 'index.php?action=api.limscontactpmm';
     },
 

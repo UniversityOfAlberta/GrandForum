@@ -6,10 +6,6 @@ class LIMSContactAPIPmm extends RESTAPI {
         if($this->getParam('id') != ""){
             $contact = LIMSContactPmm::newFromId($this->getParam('id'));
             return $contact->toJSON();
-        } else if ($this->getParam('project_id')){
-            $contact = new LIMSContactPmm([]);
-            $contact->projectId = $this->getParam('project_id');
-            return $contact->toJSON();
         } else {
             $contacts = new Collection(LIMSContactPmm::getAllContacts());
             return $contacts->toJSON();

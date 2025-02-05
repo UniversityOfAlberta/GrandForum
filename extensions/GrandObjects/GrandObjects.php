@@ -231,7 +231,6 @@ $apiRequest->addAction('Hidden','limstask/:id', 'LIMSTaskAPI');
 $apiRequest->addAction('Hidden','limscontactpmm', 'LIMSContactAPIPmm');
 $apiRequest->addAction('Hidden','limscontactpmm/:id', 'LIMSContactAPIPmm');
 $apiRequest->addAction('Hidden','limscontactpmm/:contact_id/limsopportunitiespmm', 'LIMSOpportunityAPIPmm');
-$apiRequest->addAction('Hidden','limscontactpmm/project/:project_id', 'LIMSContactAPIPmm');
 $apiRequest->addAction('Hidden','limsopportunitypmm', 'LIMSOpportunityAPIPmm');
 $apiRequest->addAction('Hidden','limsopportunitypmm/:id', 'LIMSOpportunityAPIPmm');
 $apiRequest->addAction('Hidden','limsopportunitypmm/:id/files/:file_id', 'LIMSOpportunityAPIPmm');
