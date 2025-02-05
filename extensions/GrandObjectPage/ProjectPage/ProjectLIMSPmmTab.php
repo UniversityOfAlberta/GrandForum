@@ -24,17 +24,6 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
         
     }
 
-
-
-    // function generateBody()
-    // {
-    //     global $wgUser, $wgServer, $wgScriptPath, $config;
-    //     if ($wgUser->isLoggedIn()) {
-    //         $project = $this->project;
-    //         $this->html = "hello";
-    //     }
-    //     return $this->html;
-    // }
     function generateBody()
 {
     global $wgUser, $wgServer, $wgScriptPath, $config, $wgOut;
@@ -56,7 +45,8 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
                         var contactModel = new LIMSContactPmm({ projectId: {$project->getId()} });
                         var contactView = new LIMSContactViewPmm({ 
                             model: contactModel,
-                             el: '#lims-contact-container'
+                             el: '#lims-contact-container',
+                             isDialog: true
                         });
                         contactView.render();
                  });
