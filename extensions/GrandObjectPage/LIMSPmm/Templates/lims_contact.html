@@ -3,7 +3,7 @@
 <h3>Opportunities</h3>
 <div id="opportunities"></div>
 
-<% if(isAllowedToEdit){ %>
+<% if(isAllowedToEdit && !this.isDialog){ %>
     <br />
     <button id='edit'>Edit Contact</button>
 <% } %>
