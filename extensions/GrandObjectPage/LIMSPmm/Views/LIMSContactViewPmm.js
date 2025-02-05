@@ -2,15 +2,10 @@ LIMSContactViewPmm = Backbone.View.extend({
     isDialog: false,
 
     initialize: function(options){
+        this.model.fetch();
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model.opportunities, "sync", this.renderOpportunities);
         this.template = _.template($('#lims_contact_template').html());
-
-        if(!this.model.isNew()){
-            this.model.fetch()
-        } else {
-            this.render();
-        }
 
         if(options.isDialog != undefined){
             this.isDialog = options.isDialog;
