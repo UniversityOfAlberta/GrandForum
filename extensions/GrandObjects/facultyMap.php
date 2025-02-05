@@ -23,6 +23,24 @@ $facultyMap = array(
         "Chemical and Materials Engineering", "Chemical & Materials Engineering",
         "Civil and Environmental Engineering", "Civil & Environmental Engineering",
         "Electrical & Computer Engineering", "Electrical and Computer Engineering"
+    ),
+    "Arts" => array(
+        "Art and Design",
+        "Drama",
+        "Music",
+        "East Asian Studies",
+        "English and Film Studies",
+        "History, Classics, and Religion",
+        "Modern Languages and Cultural Studies",
+        "Philosophy",
+        "Media and Technology Studies",
+        "Anthropology",
+        "Economics",
+        "Linguistics",
+        "Political Science",
+        "Psychology",
+        "Sociology",
+        "Women's and Gender Studies"
     )
 );
 
@@ -49,6 +67,24 @@ $facultyMapSimple = array(
         "Chemical and Materials Engineering",
         "Civil and Environmental Engineering",
         "Electrical & Computer Engineering"
+    ),
+    "Arts" => array(
+        "Art and Design",
+        "Drama",
+        "Music",
+        "East Asian Studies",
+        "English and Film Studies",
+        "History, Classics, and Religion",
+        "Modern Languages and Cultural Studies",
+        "Philosophy",
+        "Media and Technology Studies",
+        "Anthropology",
+        "Economics",
+        "Linguistics",
+        "Political Science",
+        "Psychology",
+        "Sociology",
+        "Women's and Gender Studies"
     )
 );
 ?>

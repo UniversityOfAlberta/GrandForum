@@ -2,7 +2,7 @@
 <Products>
 
     <!-- Publications -->
-    <Publications category="Publication" citationFormat="{%Authors} {(%Dates).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{ #%Articleno}{, %Pages.} {%Publisher}&lt;br />{DOI: %doi}">
+    <Publications category="Publication" citationFormat="{%Authors} {(%Dates).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{ #%Articleno}{, %Pages.} {%Publisher}">
         <Publication type="Bachelors Thesis" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
             <statuses ccv_id="cf36bbd2e16c45cba9768a84ac2d6729" ccv_name="Publishing Status">
@@ -20,12 +20,10 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Student"></authors>
-            <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Book" ccv_id="4ef4df71a505469788b587f1a509eadf" ccv_name="Books" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -38,6 +36,7 @@
                 <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
                 <status>Rejected</status>
             </statuses>
+            <description>A non-serial publication that is complete in one volume or a designated finite number of volumes.</description>
             <data>
                 <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <!--field>address</field--> <!-- In some entried in DB, but not in UI -->
@@ -46,12 +45,10 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="ecd4abd985ec4e9ab590f0ecb86811a7" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="e555fb44aaf14740b880693b01603a35" ccv_name="Authors"></authors>
-            <description ccv_id="6480fa19889345619e778b394ad1445e" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Book Chapter" ccv_id="fd8f2ffe3f5c43db8b5c3f72d8ffd994" ccv_name="Book Chapters" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -64,6 +61,7 @@
                 <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
                 <status>Rejected</status>
             </statuses>
+            <description>A defined chapter or section of a book, usually with a separate title or number.</description>
             <data>
                 <field ccv_id="b864a9512e89482487f83ed22c454e9d" ccv_name="Book Title" ccvtk="booktitle" label="Book Title" type="String">book_title</field>
                 <field label="Number of pages" type="String">ms_pages</field>
@@ -75,12 +73,10 @@
                 <field label="DOI" type="DOI">doi</field>
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="51bd72e89f85442a9ae199e75fe5e765" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Authors"></authors>
-            <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Book Review" ccv_id="400f7d5f7bc14b2dac24bc0d5dcbeaae" ccv_name="Book Reviews" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -93,6 +89,7 @@
                 <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
                 <status>Rejected</status>
             </statuses>
+            <description>A written review and critical analysis of the content, scope and quality of a book or other monographic work.</description>
             <data>
                 <field ccv_id="3340c13c1bc64e7dae2ef3374cf5af3d" ccv_name="Book Reviewed Title" label="Book Title" type="String">book_title</field>
                 <field ccv_id="5f11ba80ed404696b501fbc43fba56a4" ccv_name="Published In" label="Published In" type="String">published_in</field>
@@ -106,12 +103,10 @@
                 <field label="DOI" type="DOI">doi</field>
                 <field ccv_id="55de4e145f4f4a10b7cc0eb797e9464b" ccv_name="URL" label="URL" type="URL">url</field>
                 <field ccv_id="96f6d37a0c6041d1a6a8d09f4cb8537b" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="3af9bb3859ad4c8a83094a176627c678" ccv_name="Review Date" label="Review Date"></date>
             <authors ccv_id="fffe619bc6264073b21cb7f8581b77b2" ccv_name="Book Reviewed Authors"></authors>
-            <description ccv_id="52508c116e1d46ea91e9715f35317e38" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Collections Paper" ccv_id="fd8f2ffe3f5c43db8b5c3f72d8ffd994" ccv_name="Book Chapters" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -137,12 +132,10 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Authors"></authors>
-            <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Edited Book" ccv_id="4ef4df71a505469788b587f1a509eadf" ccv_name="Books" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -162,12 +155,10 @@
                 <field label="DOI" type="DOI">doi</field>
                 <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="b9156e483a5a42a3b49d5ee599c73aee" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="e555fb44aaf14740b880693b01603a35" ccv_name="Authors"></authors>
-            <description ccv_id="6480fa19889345619e778b394ad1445e" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Journal Abstract" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -198,12 +189,10 @@
                 <field label="ISSN" type="String">issn</field>
                 <field label="DOI" type="DOI">doi</field>
                 <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
-            <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Journal Paper" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -216,6 +205,7 @@
                 <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
                 <status>Rejected</status>
             </statuses>
+            <description>An article, typically the realization of a research paper reporting original research findings, published in a journal issue.</description>
             <data>
                 <field label="Category Ranking" type="String">category_ranking</field>
                 <field label="Category Ranking" type="String">category_ranking_override</field>
@@ -237,12 +227,10 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
-            <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Magazine/Newspaper Article" ccv_id="0cc2796367394f13990bef926491ff02" ccv_name="Magazine Entries" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -268,12 +256,10 @@
                 <field label="DOI" type="String">doi</field>
                 <field ccv_id="56b229f58f6749c3902dfcc33854ed36" ccv_name="URL" label="URL" type="String">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="6b626ef9b271446e9338a21390f4d4fd" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="06b9551cd0e8452a80d9c3cc2540ab3c" ccv_name="Authors"></authors>
-            <description ccv_id="124a4f172b4246dd92d434a6c0b2fda0" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Masters Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -294,12 +280,10 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="e921d0d933bd48ed9192283bb16a83f6" ccv_name="URL" bibtex="url"  label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
-            <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Misc" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -315,7 +299,6 @@
                 <field label="Number of pages" type="String">ms_pages</field>
                 <field ccv_id="934cc966420041649511eb4232cdd36a" ccv_name="Page Range" label="Page Range" type="Pages">pages</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
@@ -334,6 +317,7 @@
                 <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
                 <status>Rejected</status>
             </statuses>
+            <description>A paper, published within a conference proceeding, typically the realization of a research paper reporting original research findings.</description>
             <data>
                 <field label="Acceptance Rate" type="String">acceptance_ratio</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" ccvtk="conf_name" bibtex="journal" label="Conference Name" type="String">event_title</field>
@@ -348,12 +332,10 @@
                 <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="06295e65f66b4c6aa286d08bd9fac59b" ccv_name="Invited?" ccvtk="invited" label="Invited?" type="Radio" options="Yes|No">invited</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
-            <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
         
         <Publication type="Workshop Paper" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -383,12 +365,10 @@
                 <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
                 <field ccv_id="06295e65f66b4c6aa286d08bd9fac59b" ccv_name="Invited?" ccvtk="invited" label="Invited?" type="Radio" options="Yes|No">invited</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
-            <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="PHD Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -409,12 +389,10 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="e921d0d933bd48ed9192283bb16a83f6" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
-            <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Proceedings Paper" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -443,12 +421,10 @@
                 <field bibtex="url" ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" label="URL" type="URL">url</field>
                 <field ccv_id="06295e65f66b4c6aa286d08bd9fac59b" ccv_name="Invited?" ccvtk="invited" label="Invited?" type="Radio" options="Yes|No">invited</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
-            <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="White Paper" ccv_id="7e57525337d5498a9506fdadee098b10" ccv_name="Reports" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -460,12 +436,10 @@
                 <field label="Publisher" type="String">publisher</field>
                 <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
-            <description ccv_id="694c4c7bf6ad47309ab6f77f4fee1869" ccv_name="Description / Contribution Value"></description>
         </Publication>
         
         <Publication type="Tech Report" status="Submitted|To Appear|Under Revision|Published|Rejected">
@@ -479,7 +453,6 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
@@ -498,6 +471,7 @@
                 <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
                 <status>Rejected</status>
             </statuses>
+            <description>A display poster, published within a conference proceeding, typically containing text with illustrative figures and/or tables, usually reporting research results or proposing hypotheses, submitted for acceptance to and/or presented at a conference, seminar, symposium, workshop or similar event.</description>
             <data>
                 <field label="Acceptance Rate" type="String">acceptance_ratio</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
@@ -508,15 +482,13 @@
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
-                <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="String">peer_reviewed</field>
+                <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
-            <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
         
         <Publication type="Manual" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -540,12 +512,10 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="8ee878c89ccc43089ee35784a143dddd" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-                <field label="If Yes" type="Radio" options="Full paper reviewed by reviewers and editorial board|Full paper reviewed by editor only|Paper published in full after review of abstract">peer_reviewed_ifyes</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="68abef7baf294189a44bab18b9fa8b71" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="0593e6041a7646c2b6cd2949878fdac5" ccv_name="Authors"></authors>
-            <description ccv_id="4d0d46d2136b499f8a9d24ac05ae9ed3" ccv_name="Description / Contribution Value"></description>
         </Publication>
     </Publications>
 
@@ -577,7 +547,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Colloquium" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -606,7 +575,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Plenary" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -635,7 +603,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Panel Member" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -664,7 +631,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Conference Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -673,6 +639,7 @@
                 <status lov_id="00000000000000000000000000000400" lov_name="Yes">Invited</status>
                 <status lov_id="00000000000000000000000000000401" lov_name="No">Not Invited</status>
             </statuses>
+            <description>A set of slides containing text, tables or figures, designed to communicate ideas or research results, for projection and viewing by an audience at a conference, symposium, seminar, lecture, workshop or other gatherings.</description>
             <data>
                 <field ccv_id="8d882e55b0a54d0b8eec347f5502a19b" ccv_name="Conference / Event Name" ccvtk="event_title" label="Event Title" type="String">event_title</field>
                 <field ccv_id="f4b5f1a1d181404ca9c0fea81f9a7e79" ccv_name="Location" ccvtk="location" label="Location" type="String">location</field>
@@ -693,7 +660,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Workshop Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -722,7 +688,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Public Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -751,7 +716,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Tutorial" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -780,7 +744,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Keynote" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -809,7 +772,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Web Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -838,7 +800,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Poster Presentation" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -867,7 +828,6 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
         <Presentation type="Other" status="Invited|Not Invited" ccv_id="c7ce6f054e0941ea8b27127dbd4a26d0" ccv_name="Presentations">
@@ -896,19 +856,162 @@
                 ]]>
             </contributors>
             <date label="Date" ccv_id="725e4c54320b474680feaf530567fdd3" ccv_name="Presentation Year"></date>
-            <description ccv_id="cc257bd89e6341a6bd53cc1cf05935c9" ccv_name="Description / Contribution Value"></description>
         </Presentation>
     </Presentations>
     
+    <!-- Dissemination -->
+    <Disseminations category="Dissemination" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
+        <Dissemination type="Blog post" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A piece of writing or other item of content published on a blog.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Dissemination>
+        <Dissemination type="Dictionary entry" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Entries of new words, new meanings of existing words, changes in spelling and hyphenation over a longer period of time, and grammatical changes.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Dissemination>
+        <Dissemination type="Encyclopedia entry" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Authored entries in a reference work or a compendium focusing on a particular domain or on all branches of knowledge.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Dissemination>
+        <Dissemination type="Magazine article" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A popular interest periodical usually containing articles on a variety of topics, written by various authors in a non scholarly style or a trade publication, unlike a consumer publication, covers a specific topic for people who work in that particular field or industry.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Dissemination>
+        <Dissemination type="Newspaper article" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Work consisting of a news item appearing in a general-interest newspaper or other general news periodical, containing information of current and timely interest in a field.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Dissemination>
+        <Dissemination type="Report" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A report is a separately published record of research findings, research still in progress, policy developments and events, or other technical findings, usually bearing a report number and sometimes a grant number assigned by the funding agency. Also, an official record of the activities of a committee or corporate entity, the proceedings of a government body, or an investigation by an agency, whether published or private, usually archived or submitted to a higher authority, voluntarily or under mandate. In a more general sense, any formal account of facts or information related to a specific event or phenomenon, sometimes given at regular intervals.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Dissemination>
+        <Dissemination type="Talk, interview, podcast or speech" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>An oral presentation of information to the public. Including talks, interviews and podcasts.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Dissemination>
+        <Dissemination type="Website" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A collection of related web pages containing text, images, videos and/or other digital assets that are addressed relative to a common Uniform Resource Locator (URL). A website is hosted on at least one web server, accessible via a network such as the Internet or a private local area network.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Dissemination>
+        <Dissemination type="Other" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Any other dissemination output that is not covered by the above.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Dissemination>
+    </Disseminations>
+    
+    <!-- Creatives -->
+    <Creatives category="Creative" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
+        <Creative type="Artistic output or performance" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Collection of information records that, in combination, represent a full and up-to-date history of artistic or performance outputs resulting from, or related to, the person’s research or scholarly activities.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Creative>
+        <Creative type="Design" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Plans, drawing or set of drawings showing how something e.g. building, product is to be made and how it will work and look.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Creative>
+        <Creative type="Image" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A visual representation other than text, a still image. A visual representation other than text, including all types of moving image and still image.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Creative>
+        <Creative type="Interactive resource" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A resource requiring interaction from the user to be understood, executed, or experienced. Examples include forms on Web pages, applets, multimedia learning objects, chat services, or virtual reality environments.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Creative>
+        <Creative type="Moving image or video" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A moving display, either generated dynamically by a computer program or formed from a series of pre-recorded still images imparting an impression of motion when shown in succession.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Creative>
+        <Creative type="Musical composition" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Musical composition can refer to an original piece of music, the structure of a musical piece, or the process of creating a new piece of music.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Creative>
+        <Creative type="Sound" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A resource primarily intended to be heard. Examples include a music playback file format, an audio compact disc, and recorded speech or sounds.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Creative>
+        <Creative type="Other" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Any other creative output that is not covered by the above.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Creative>
+    </Creatives>
+    
     <!-- Patents and Spin Offs -->
     <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
-        <Product type="Tool" status="" visible="true">
+        <Product type="Tool" status="">
             <data></data>
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Product>
         
-        <Product type="Report of Invention" status="" visible="true">
+        <Product type="ICT Filed" status="">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
@@ -916,26 +1019,19 @@
             <date label="Date"></date>
         </Product>
         
-        <Product type="ICT Filed" status="" visible="true">
-            <data>
-                <field label="URL" type="URL">url</field>
-            </data>
-            <authors label="Author"></authors>
-            <date label="Date"></date>
-        </Product>
-        
-        <Product type="Patent" status="Provisional patent filed|Non-provisional patent filed|Patent allowed|Patent issued|Patent licenced" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}" visible="true">
+        <Product type="Patent" status="Filed|Awarded" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
             <data>
                 <field bibtex="number" label="Number" type="String">number</field>
                 <field label="Country" type="String">country</field>
                 <field label="Tech Department" type="String">tech_department</field>
             </data>
+            <description>A patent or patent application.</description>
             <authors label="Inventor"></authors>
             <acceptance_date label="Date Filed"></acceptance_date>
             <date label="Date Awarded"></date>
         </Product>
         
-        <Product type="Spin-Off" status="" visible="true">
+        <Product type="Spin-Off" status="">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
@@ -943,7 +1039,7 @@
             <date label="Date"></date>
         </Product>
 
-        <Product type="Software" status="" visible="true">
+        <Product type="Software" status="">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
@@ -951,7 +1047,7 @@
             <date label="Date"></date>
         </Product>
 
-        <Product type="App" status="" visible="true">
+        <Product type="App" status="">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
@@ -959,7 +1055,7 @@
             <date label="Date"></date>
         </Product>
         
-        <Product type="Technology" status="" visible="true">
+        <Product type="Technology" status="">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
@@ -967,7 +1063,7 @@
             <date label="Date"></date>
         </Product>
         
-        <Product type="Start-Up" visible="true">
+        <Product type="Start-Up">
             <data>
                 <field label="Company Name" type="String">name</field>
             </data>
@@ -975,10 +1071,11 @@
             <date label="Date"></date>
         </Product>
         
-        <Product type="Misc" status="" visible="true">
+        <Product type="Misc" status="">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
+            <description>Any other legal or IP output that is not covered by the above.</description>
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Product>

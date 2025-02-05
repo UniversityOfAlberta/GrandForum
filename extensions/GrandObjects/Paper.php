@@ -476,6 +476,7 @@ class Paper extends BackboneModel{
                                                                                'tname' => $tname,
                                                                                'titles' => $titles,
                                                                                'visible' => $visible,
+                                                                               'description' => '',
                                                                                'citationFormat' => $citationFormat,
                                                                                'ccv_status' => array(),
                                                                                'authors_label' => "Author",
@@ -522,6 +523,9 @@ class Paper extends BackboneModel{
                                                                                                          'options' => $foptions,
                                                                                                          'hidden' => $fhidden);
                             }
+                        }
+                        else if($child->getName() == "description"){
+                            $categories['categories'][$cname]['types'][$tname]['description'] = "$child";
                         }
                         else if($child->getName() == "statuses"){
                             foreach($child->children() as $status){
