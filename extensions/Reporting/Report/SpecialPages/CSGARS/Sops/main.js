@@ -11,7 +11,8 @@ $("head").append('<script type="text/javascript" src="'+wgServer+wgScriptPath+'/
 // Adapted from a category plugin for annotatorjs written in coffee-script by Michael Widner
 // https://github.com/PoeticMediaLab/Annotator-Categories
 
-var profs = [{option: "Ali", value: "Ali"},
+var profs = [{option: "Abdalla", value: "Abdalla"},
+             {option: "Ali", value: "Ali"},
              {option: "Amaral", value: "Amaral"},
              {option: "Ardakanian", value: "Ardakanian"},
              {option: "Barbosa", value: "Barbosa"},
