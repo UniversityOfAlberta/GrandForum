@@ -15,7 +15,7 @@
         </Role>
         <Role role="HR" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="atsec" permissions="rw" />
-            <SectionPermission id="atsec_votes" permissions="r" />
+            <SectionPermission id="atsec_votes" permissions="rw" />
         </Role>
         <Role role="MANAGER+" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="atsec" permissions="rw" />
