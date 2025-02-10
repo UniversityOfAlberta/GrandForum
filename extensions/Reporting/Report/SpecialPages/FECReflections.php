@@ -95,10 +95,10 @@ class FECReflections extends SpecialPage {
                     if(!$person->isSubRole("Dean's Decision") &&
                        !$person->isRoleOn(DEAN, "{$year}-07-01") &&
                        !$person->isRoleOn(VDEAN, "{$year}-07-01") &&
-                       (strstr($case, "N") !== false ||
-                        strstr($case, "A") !== false ||
-                        strstr($case, "B") !== false ||
-                        strstr($case, "C") !== false)){
+                       (strstr($case, "M") !== false ||
+                        strstr($case, "D") !== false ||
+                        strstr($case, "E") !== false ||
+                        strstr($case, "F") !== false)){
                         // FSO
                         $nFSO++;
                         
@@ -107,10 +107,8 @@ class FECReflections extends SpecialPage {
                            $revisedIncrement != "0.00" &&
                            $revisedIncrement != "0.00 (PTC)" &&
                            $revisedIncrement != "0A"){
-                            if(strstr($case, "A") !== false){
-                                $sumFSO += floatval($revisedIncrement);
-                                $nUncappedFSO++;
-                            }
+                            $sumFSO += floatval($revisedIncrement);
+                            $nUncappedFSO++;
                         }
                     }
                     continue; // Skip
