@@ -92,7 +92,7 @@ class FECReflections extends SpecialPage {
                    strstr($case, "F") !== false ||
                    strstr($case, "M") !== false ||
                    strstr($case, "T") !== false){
-                    if(!$person->isSubRole("Dean's Decision") &&
+                    if(!$person->isSubRole("DD") &&
                        !$person->isRoleOn(DEAN, "{$year}-07-01") &&
                        !$person->isRoleOn(VDEAN, "{$year}-07-01") &&
                        (strstr($case, "M") !== false ||
@@ -113,7 +113,7 @@ class FECReflections extends SpecialPage {
                     }
                     continue; // Skip
                 }
-                if(!$person->isSubRole("Dean's Decision") &&
+                if(!$person->isSubRole("DD") &&
                    !$person->isRoleOn(DEAN, "{$year}-07-01") &&
                    !$person->isRoleOn(VDEAN, "{$year}-07-01") &&
                    (strstr($case, "N") !== false ||
