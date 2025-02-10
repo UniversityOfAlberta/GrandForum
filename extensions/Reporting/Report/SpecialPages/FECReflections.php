@@ -30,7 +30,7 @@ class FECReflections extends SpecialPage {
 	    $blob_data = $blob->getData();
 	    //$blob_data = null;
 	    
-        if(date('Y-m-d') >= ($year+1)."-01-01" && is_array($blob_data)){
+        if(date('Y-m-d') >= ($year+1)."-06-31" && is_array($blob_data)){
             $nPeople = @$blob_data['nPeople'];
             $nProfs = @$blob_data['nProfs'];
             $nFSO = @$blob_data['nFSO'];
