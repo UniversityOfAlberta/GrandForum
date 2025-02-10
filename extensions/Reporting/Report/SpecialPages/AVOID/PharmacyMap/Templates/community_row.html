@@ -14,6 +14,7 @@
     <br /><br />
     <a style="cursor: pointer;" onClick="$(this).hide();$(this).siblings('div').slideDown();">Show more information</a>
     <div style="display:none;">
+        <% console.log(output); %>
         <% if(output.Eligibility != ""){ %>
             <b>Eligibility:</b> <%= output.Eligibility %><br />
         <% } %>
@@ -22,6 +23,12 @@
         <% } %>
         <% if(output.PhysicalAddress1 != ""){ %>
             <b>Address:</b> <%= output.PhysicalAddress1 %><br />
+        <% } %>
+        <% if(output.MailingAddressCity != ""){ %>
+            <b>City/Suburb:</b> <%= output.MailingAddressCity %><br />
+        <% } %>
+        <% if(output.PhysicalAddressPostalCode != ""){ %>
+            <b>Postal Code:</b> <%= output.PhysicalAddressPostalCode %><br />
         <% } %>
         <% if (output.EmailAddressMain != ""){ %>
             <b>Email:</b> <a href='mailto:<%= output.EmailAddressMain %>'><%= output.EmailAddressMain %></a><br />
