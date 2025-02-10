@@ -334,7 +334,7 @@ class FECReflections extends SpecialPage {
                           'nAssistProfs' => $nAssistProfs,
                           'nAssocProfs' => $nAssocProfs,
                           'nFullProfs' => $nFullProfs,
-                          'subAssistProfs' => $sumAssistProfs,
+                          'sumAssistProfs' => $sumAssistProfs,
                           'sumAssocProfs' => $sumAssocProfs,
                           'sumFullProfs' => $sumFullProfs,
                           'sumFSO' => $sumFSO,
