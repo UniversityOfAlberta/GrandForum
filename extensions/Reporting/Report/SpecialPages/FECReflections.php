@@ -317,7 +317,7 @@ class FECReflections extends SpecialPage {
                 $pubs->attributes['includeHQP'] = "false";
                 foreach($pubs->getData() as $pub){
                     $pub = Product::newFromId($pub['product_id']);
-                    if($pub->getType() == "Patent" && ($pub->getStatus() == "Awarded" || $pub->getStatus() == "Published")){
+                    if($pub->getType() == "Patent" && $pub->getStatus() == "Awarded"){
                         $publications['nonpr']['patents'][$pub->getId()] = $pub;
                     }
                 }
