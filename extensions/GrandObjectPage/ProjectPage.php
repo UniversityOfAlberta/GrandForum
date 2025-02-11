@@ -106,7 +106,7 @@ class ProjectPage {
                     $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
                 }
                 else if($config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false)){
-                    $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
+                    // $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));

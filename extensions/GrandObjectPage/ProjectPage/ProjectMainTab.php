@@ -374,7 +374,7 @@ class ProjectMainTab extends AbstractEditableTab {
     function showChallenge(){
         global $wgServer, $wgScriptPath, $config;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        if(!$edit){
+        if(!$edit && count($config->getValue("projectPhaseNames")) > 1){
             $this->html .= "<tr>
                                 <td><b>Phase:</b></td>
                                 <td>{$this->project->getPhase(true)}</td>

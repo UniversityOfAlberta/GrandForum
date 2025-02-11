@@ -10,7 +10,7 @@ LIMSContactsTableViewPmm = Backbone.View.extend({
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "remove", function(){ _.defer(this.render); }.bind(this) );
         this.template = _.template($('#lims_contacts_table_template').html());
-        main.set('title', 'Manage LIMS');
+        main.set('title', 'Activity Management');
     },
        
     events: {
