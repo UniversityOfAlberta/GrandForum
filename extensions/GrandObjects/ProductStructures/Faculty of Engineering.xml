@@ -79,36 +79,6 @@
             <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Authors"></authors>
         </Publication>
 
-        <Publication type="Book Review" ccv_id="400f7d5f7bc14b2dac24bc0d5dcbeaae" ccv_name="Book Reviews" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
-            <title ccv_id="3214ba37ee804b6cb4137a08cbb6ea5f" ccv_name="Review Title"></title>
-            <statuses ccv_id="67c9f5ee59a240cf8dcec1712914fc9c" ccv_name="Publishing Status">
-                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
-                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
-                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
-                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
-                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
-                <status>Rejected</status>
-            </statuses>
-            <description>A written review and critical analysis of the content, scope and quality of a book or other monographic work.</description>
-            <data>
-                <field ccv_id="3340c13c1bc64e7dae2ef3374cf5af3d" ccv_name="Book Reviewed Title" label="Book Title" type="String">book_title</field>
-                <field ccv_id="5f11ba80ed404696b501fbc43fba56a4" ccv_name="Published In" label="Published In" type="String">published_in</field>
-                <field ccv_id="bbb8c897c038404c9e81611eee66f371" ccv_name="Volume" label="Volume" type="String">volume</field>
-                <field ccv_id="ac8545aa13254e05b04610c934c2e2b4" ccv_name="Issue" label="Issue" type="String">number</field>
-                <field label="Number of pages" type="String">ms_pages</field>
-                <field ccv_id="9a94ba6ddbff45ff8c6c67c80a0c5b32" ccv_name="Page Range" label="Page Range" type="Pages">pages</field>
-                <field ccv_id="bf0591eee2db4bab8a937de660d40976" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
-                <field label="ISBN" type="String">isbn</field>
-                <field label="ISSN" type="String">issn</field>
-                <field label="DOI" type="DOI">doi</field>
-                <field ccv_id="55de4e145f4f4a10b7cc0eb797e9464b" ccv_name="URL" label="URL" type="URL">url</field>
-                <field ccv_id="96f6d37a0c6041d1a6a8d09f4cb8537b" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
-            </data>
-            <acceptance_date label="Acceptance Date"></acceptance_date>
-            <date ccv_id="3af9bb3859ad4c8a83094a176627c678" ccv_name="Review Date" label="Review Date"></date>
-            <authors ccv_id="fffe619bc6264073b21cb7f8581b77b2" ccv_name="Book Reviewed Authors"></authors>
-        </Publication>
-
         <Publication type="Collections Paper" ccv_id="fd8f2ffe3f5c43db8b5c3f72d8ffd994" ccv_name="Book Chapters" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="52a699a6b0fe42a4851a7d5ae355360b" ccv_name="Chapter Title"></title>
             <statuses ccv_id="cf36bbd2e16c45cba9768a84ac2d6729" ccv_name="Publishing Status">
@@ -935,6 +905,8 @@
         </Dissemination>
     </Disseminations>
     
+    
+    
     <!-- Creatives -->
     <Creatives category="Creative" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
         <Creative type="Artistic output or performance" status="">
@@ -1003,8 +975,192 @@
         </Creative>
     </Creatives>
     
+    <!-- Review and editing -->
+    <Reviews category="Review and Editing" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
+        <Review type="Annotation" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>An annotation in the sense of a legal note is a legally explanatory comment on a decision handed down by a court or arbitral tribunal.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Review>
+        <Review type="Book Review" ccv_id="400f7d5f7bc14b2dac24bc0d5dcbeaae" ccv_name="Book Reviews" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+            <title ccv_id="3214ba37ee804b6cb4137a08cbb6ea5f" ccv_name="Review Title"></title>
+            <statuses ccv_id="67c9f5ee59a240cf8dcec1712914fc9c" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>Rejected</status>
+            </statuses>
+            <description>A written review and critical analysis of the content, scope and quality of a book or other monographic work.</description>
+            <data>
+                <field ccv_id="3340c13c1bc64e7dae2ef3374cf5af3d" ccv_name="Book Reviewed Title" label="Book Title" type="String">book_title</field>
+                <field ccv_id="5f11ba80ed404696b501fbc43fba56a4" ccv_name="Published In" label="Published In" type="String">published_in</field>
+                <field ccv_id="bbb8c897c038404c9e81611eee66f371" ccv_name="Volume" label="Volume" type="String">volume</field>
+                <field ccv_id="ac8545aa13254e05b04610c934c2e2b4" ccv_name="Issue" label="Issue" type="String">number</field>
+                <field label="Number of pages" type="String">ms_pages</field>
+                <field ccv_id="9a94ba6ddbff45ff8c6c67c80a0c5b32" ccv_name="Page Range" label="Page Range" type="Pages">pages</field>
+                <field ccv_id="bf0591eee2db4bab8a937de660d40976" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
+                <field label="ISBN" type="String">isbn</field>
+                <field label="ISSN" type="String">issn</field>
+                <field label="DOI" type="DOI">doi</field>
+                <field ccv_id="55de4e145f4f4a10b7cc0eb797e9464b" ccv_name="URL" label="URL" type="URL">url</field>
+                <field ccv_id="96f6d37a0c6041d1a6a8d09f4cb8537b" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="3af9bb3859ad4c8a83094a176627c678" ccv_name="Review Date" label="Review Date"></date>
+            <authors ccv_id="fffe619bc6264073b21cb7f8581b77b2" ccv_name="Book Reviewed Authors"></authors>
+        </Review>
+        <Review type="Journal issue or edition" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A journal is a serial publication devoted to disseminating original research and current developments on a subject.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Review>
+        <Review type="Review" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A review of others’ published work.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Review>
+        <Review type="Transcription" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A written record of words spoken in court proceedings or in a speech, interview, broadcast, or sound recording.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Review>
+        <Review type="Translation" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Translations of books and articles that identify modifications to the original edition, such as a new or revised preface.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Review>
+        <Review type="Other" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Any other review or editing output that is not covered by the above.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Review>
+    </Reviews>
+    
+    <!-- Data and process -->
+    <Datas category="Data and Process" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
+        <Data type="Cartographic material" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Cartographic material	Any material representing the whole or part of the earth or any celestial body at any scale. Cartographic materials include two- and three-dimensional maps and plans (including maps of imaginary places); aeronautical, navigational, and celestial charts; atlases; globes; block diagrams; sections; aerial photographs with a cartographic purpose; bird’s-eye views (map views), etc.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Data>
+        <Data type="Clinical study" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A work that reports on the results of a research study to evaluate interventions or exposures on biomedical or health-related outcomes. The two main types of clinical studies are interventional studies (clinical trials) and observational studies. While most clinical studies concern humans, this publication type may be used for clinical veterinary articles meeting the requisites for humans.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Data>
+        <Data type="Dataset" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A collection of related facts and data encoded in a defined structure.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Data>
+        <Data type="Data management plan" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>A formal statement describing how research data will be managed and documented throughout a research project and the terms regarding the subsequent deposit of the data with a data repository for long-term management and preservation.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Data>
+        <Data type="Physical object" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Physical samples include biological specimens, rock or mineral specimens, soil or sediment cores, plants and seeds, water quality samples, archaeological artefacts, or DNA and human tissue samples. Samples may be used in analyses and can be destroyed in this process, whereas specimens are preserved curated objects that can be continuously studied.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Data>
+        <Data type="Research protocol or technique" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Practical methods or skills applied to particular tasks identified as part of the research.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Data>
+        <Data type="Research tool" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Series of observations, measurements or facts identified from the research.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Data>
+        <Creative type="Other" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <description>Any other data or process out that is not covered by the above.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Creative>
+    </Datas>
+    
     <!-- Patents and Spin Offs -->
     <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
+        <Product type="Invention" status="">
+            <data></data>
+            <description>Practical and original outputs arising from research.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Product>
+        
+        <Product type="License" status="">
+            <data></data>
+            <description>Signed agreements to exploit a piece of IP such as a process, product, data, or software.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Product>
+        
+        <Product type="Registered copyright" status="">
+            <data></data>
+            <description>Registered ownership of rights under a system of laws for promoting both the creation of and access to artistic, literary, musical, dramatic and other creative works.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Product>
+        
+        <Product type="Standards or policy" status="">
+            <data></data>
+            <description>The development of a rule or principle that is used as a basis for judgement.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Product>
+        
+        <Product type="Trademark" status="">
+            <data></data>
+            <description>A sign used to distinguish the goods or services of one undertaking from those of others. A trademark may consist of words and combinations of words (for instance, names or slogans), logos, figures and images, letters, numbers, sounds, or, in rare instances, smells or moving images, or a combination thereof.</description>
+            <authors label="Author"></authors>
+            <date label="Date"></date>
+        </Product>
+        
         <Product type="Tool" status="">
             <data></data>
             <authors label="Author"></authors>

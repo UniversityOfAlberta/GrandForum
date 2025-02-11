@@ -350,7 +350,7 @@
                 </Static>
                 <ReportItemSet type="String" array="Journal Paper|
                                                     Conference Paper\|Proceedings Paper\|Workshop Paper|
-                                                    Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                                                    Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
                     <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
                         <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                             <![CDATA[
@@ -379,7 +379,7 @@
                 </Static>
                 <ReportItemSet type="String" array="Journal Paper|
                                                     Conference Paper\|Proceedings Paper\|Workshop Paper|
-                                                    Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                                                    Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
                     <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
                         <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                             <![CDATA[
@@ -407,7 +407,7 @@
                 </Static>
                 <ReportItemSet type="String" array="Journal Paper|
                                                     Conference Paper\|Proceedings Paper\|Workshop Paper|
-                                                    Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                                                    Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
                     <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="No">
                         <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                             <![CDATA[
@@ -436,7 +436,7 @@
                 <!-- Footnotes -->
                 <ReportItemSet type="String" array="Journal Paper|
                                                     Conference Paper\|Proceedings Paper\|Workshop Paper|
-                                                    Bachelors Thesis\|Book\|Book Chapter\|Book Review\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                                                    Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Magazine/Newspaper Article\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
                     <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="No">
                         <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                             <![CDATA[
