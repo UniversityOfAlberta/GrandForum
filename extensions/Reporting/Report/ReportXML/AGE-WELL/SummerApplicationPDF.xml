@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL's 7th Annual EPIC Summer Institute" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2024" disabled="false">
+<Report name="AGE-WELL's 7th Annual EPIC Summer Institute" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2025" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
                 <div style="float:left;">
-                    <h4 style='font-size:1.5em;'>AGE-WELL's 7th Annual EPIC Summer Institute</h4>
+                    <h4 style='font-size:1.5em;'>AGE-WELL's 8th Annual EPIC Summer Institute</h4>
                     <h4>Co-Creating Possibilities: Autonomy and Independence</h4>
                 </div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -106,7 +106,7 @@
         </ReportItem>
         <ReportItem id="capacity" type="TextareaReportItem" blobItem="CAPACITY">
             <![CDATA[
-                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Autonomy and Independence”</b></p>
+                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Supportive Homes and Communities”</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
