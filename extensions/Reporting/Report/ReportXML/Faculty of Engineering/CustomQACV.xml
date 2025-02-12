@@ -533,14 +533,14 @@
                     ]]>
                 </Static>
             </If>
-            <If id="publications_if2" if="{>({getNProducts({$start_year}, {$this_year}, Publication, Conference Paper|Proceedings Paper,, false, true)}, 0)}">
+            <If id="publications_if2" if="{>({getNProducts({$start_year}, {$this_year}, Publication, Conference Paper,, false, true)}, 0)}">
                 <ReportItem id="conferencebookmark" type="SubBookmarkReportItem" title="Conference Papers">
                     <![CDATA[
                         <h3>Conference Papers</h3>
                         <ul>
                     ]]>
                 </ReportItem>
-                <ReportItemSet id="conferences" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper" peerReviewed="Yes" includeHQP="false" start="{$start_year}" end="{$this_year}">
+                <ReportItemSet id="conferences" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper" peerReviewed="Yes" includeHQP="false" start="{$start_year}" end="{$this_year}">
                     <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
                         <![CDATA[
                             <li style="page-break-inside: avoid;">{$item}</li>

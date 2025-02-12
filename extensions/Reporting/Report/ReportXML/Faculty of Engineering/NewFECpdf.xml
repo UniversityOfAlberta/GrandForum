@@ -274,7 +274,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -323,7 +323,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="products2_2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Proceedings Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products2_2" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Workshop Paper" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">
@@ -332,7 +332,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="products3_2" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|PHD Thesis|Proceedings Paper|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="products3_2" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Collections Paper|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|PHD Thesis|Journal Abstract|White Paper|Tech Report|Poster|Manual" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                 <![CDATA[
                     <li style="page-break-inside: avoid;">

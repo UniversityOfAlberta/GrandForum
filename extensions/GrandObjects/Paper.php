@@ -787,7 +787,6 @@ class Paper extends BackboneModel{
             case 'Book':
             case 'Book Chapter':
             case 'Collections Paper':
-            case 'Proceedings Paper':
             default:
                 if($status != "Published"){
                     return false;
@@ -1736,11 +1735,8 @@ class Paper extends BackboneModel{
 
         $data = $this->getData();
         $vn = $this->getVenue();
-        if($this->getType() == "Proceedings Paper" && $vn == ""){
-            $completeness['venue'] = false;
-        }
         
-        if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
+        if(in_array($this->getType(), array('Book', 'Collections Paper', 'Journal Paper'))){
             $pg = $this->getData(array('ms_pages', 'pages'));
             if (!(strlen($pg) > 0)){
                 $completeness['pages'] = false;

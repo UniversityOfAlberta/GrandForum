@@ -827,7 +827,7 @@ class CCVExport extends SpecialPage {
                     } 
                     else if ($key == "invited" && 
                              $product->getCategory() == "Publication" && 
-                             ($type == "Conference Paper" || $type == "Proceedings Paper")){
+                             ($type == "Conference Paper")){
                         // Always add Invited field...
                         $field = $ccv_item->addChild("field");
                         $field->addAttribute('id', "720d2f02feaf4aacb06ce60be0c6f603");

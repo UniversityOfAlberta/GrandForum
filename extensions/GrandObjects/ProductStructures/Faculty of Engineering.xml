@@ -158,6 +158,7 @@
                 <field label="ISBN" type="String">isbn</field>
                 <field label="ISSN" type="String">issn</field>
                 <field label="DOI" type="DOI">doi</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
@@ -363,38 +364,6 @@
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
-        </Publication>
-
-        <Publication type="Proceedings Paper" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
-            <pub_type ccv_id="81ef87c09ded47ae8880b8d79e83406f" ccv_name="Conference Publication Type">
-                <type lov_id="00000000000000000000000100007000">Paper</type>
-            </pub_type>
-            <title ccv_id="8e6ee535c95e42ec866b777c7472bafb" ccv_name="Publication Title"></title>
-            <statuses ccv_id="080301b1f1c0464bba7fcfa1fa8fe182" ccv_name="Publishing Status">
-                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
-                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
-                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
-                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
-                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
-                <status>Rejected</status>
-            </statuses>
-            <data>
-                <field label="Acceptance Rate" type="String">acceptance_ratio</field>
-                <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
-                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
-                <field label="Number of pages" type="String">ms_pages</field>
-                <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="Pages">pages</field>
-                <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
-                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
-                <field bibtex="issn" label="ISSN" type="String">issn</field>
-                <field bibtex="doi" label="DOI" type="DOI">doi</field>
-                <field bibtex="url" ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" label="URL" type="URL">url</field>
-                <field ccv_id="06295e65f66b4c6aa286d08bd9fac59b" ccv_name="Invited?" ccvtk="invited" label="Invited?" type="Radio" options="Yes|No">invited</field>
-                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
-            </data>
-            <acceptance_date label="Acceptance Date"></acceptance_date>
-            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Year" label="Publication Date"></date>
-            <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
         </Publication>
 
         <Publication type="White Paper" ccv_id="7e57525337d5498a9506fdadee098b10" ccv_name="Reports" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
@@ -833,6 +802,7 @@
     <Disseminations category="Dissemination" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
         <Dissemination type="Blog post" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A piece of writing or other item of content published on a blog.</description>
@@ -841,6 +811,7 @@
         </Dissemination>
         <Dissemination type="Dictionary entry" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Entries of new words, new meanings of existing words, changes in spelling and hyphenation over a longer period of time, and grammatical changes.</description>
@@ -849,6 +820,7 @@
         </Dissemination>
         <Dissemination type="Encyclopedia entry" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Authored entries in a reference work or a compendium focusing on a particular domain or on all branches of knowledge.</description>
@@ -857,6 +829,7 @@
         </Dissemination>
         <Dissemination type="Magazine article" status="">
             <data>
+                <field label="Magazine Title" type="String">published_in</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A popular interest periodical usually containing articles on a variety of topics, written by various authors in a non scholarly style or a trade publication, unlike a consumer publication, covers a specific topic for people who work in that particular field or industry.</description>
@@ -865,6 +838,7 @@
         </Dissemination>
         <Dissemination type="Newspaper article" status="">
             <data>
+                <field label="Newspaper Title" type="String">published_in</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Work consisting of a news item appearing in a general-interest newspaper or other general news periodical, containing information of current and timely interest in a field.</description>
@@ -873,6 +847,7 @@
         </Dissemination>
         <Dissemination type="Report" status="">
             <data>
+                <field label="Institution" type="String">university</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A report is a separately published record of research findings, research still in progress, policy developments and events, or other technical findings, usually bearing a report number and sometimes a grant number assigned by the funding agency. Also, an official record of the activities of a committee or corporate entity, the proceedings of a government body, or an investigation by an agency, whether published or private, usually archived or submitted to a higher authority, voluntarily or under mandate. In a more general sense, any formal account of facts or information related to a specific event or phenomenon, sometimes given at regular intervals.</description>
@@ -881,6 +856,7 @@
         </Dissemination>
         <Dissemination type="Talk, interview, podcast or speech" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>An oral presentation of information to the public. Including talks, interviews and podcasts.</description>
@@ -889,6 +865,7 @@
         </Dissemination>
         <Dissemination type="Website" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A collection of related web pages containing text, images, videos and/or other digital assets that are addressed relative to a common Uniform Resource Locator (URL). A website is hosted on at least one web server, accessible via a network such as the Internet or a private local area network.</description>
@@ -897,6 +874,7 @@
         </Dissemination>
         <Dissemination type="Other" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Any other dissemination output that is not covered by the above.</description>
@@ -905,12 +883,11 @@
         </Dissemination>
     </Disseminations>
     
-    
-    
     <!-- Creatives -->
     <Creatives category="Creative" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
         <Creative type="Artistic output or performance" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Collection of information records that, in combination, represent a full and up-to-date history of artistic or performance outputs resulting from, or related to, the person’s research or scholarly activities.</description>
@@ -919,6 +896,7 @@
         </Creative>
         <Creative type="Design" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Plans, drawing or set of drawings showing how something e.g. building, product is to be made and how it will work and look.</description>
@@ -927,6 +905,7 @@
         </Creative>
         <Creative type="Image" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A visual representation other than text, a still image. A visual representation other than text, including all types of moving image and still image.</description>
@@ -935,6 +914,7 @@
         </Creative>
         <Creative type="Interactive resource" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A resource requiring interaction from the user to be understood, executed, or experienced. Examples include forms on Web pages, applets, multimedia learning objects, chat services, or virtual reality environments.</description>
@@ -943,6 +923,7 @@
         </Creative>
         <Creative type="Moving image or video" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A moving display, either generated dynamically by a computer program or formed from a series of pre-recorded still images imparting an impression of motion when shown in succession.</description>
@@ -951,6 +932,7 @@
         </Creative>
         <Creative type="Musical composition" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Musical composition can refer to an original piece of music, the structure of a musical piece, or the process of creating a new piece of music.</description>
@@ -959,6 +941,7 @@
         </Creative>
         <Creative type="Sound" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A resource primarily intended to be heard. Examples include a music playback file format, an audio compact disc, and recorded speech or sounds.</description>
@@ -967,6 +950,7 @@
         </Creative>
         <Creative type="Other" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Any other creative output that is not covered by the above.</description>
@@ -979,6 +963,7 @@
     <Reviews category="Review and Editing" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
         <Review type="Annotation" status="">
             <data>
+                <field label="Custodian" type="String">custodian</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>An annotation in the sense of a legal note is a legally explanatory comment on a decision handed down by a court or arbitral tribunal.</description>
@@ -1016,6 +1001,7 @@
         </Review>
         <Review type="Journal issue or edition" status="">
             <data>
+                <field label="Journal Title" type="String">journal_title</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A journal is a serial publication devoted to disseminating original research and current developments on a subject.</description>
@@ -1024,14 +1010,16 @@
         </Review>
         <Review type="Review" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
-            <description>A review of others’ published work.</description>
+            <description>A review of others' published work.</description>
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Review>
         <Review type="Transcription" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A written record of words spoken in court proceedings or in a speech, interview, broadcast, or sound recording.</description>
@@ -1040,6 +1028,7 @@
         </Review>
         <Review type="Translation" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Translations of books and articles that identify modifications to the original edition, such as a new or revised preface.</description>
@@ -1048,6 +1037,7 @@
         </Review>
         <Review type="Other" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Any other review or editing output that is not covered by the above.</description>
@@ -1114,61 +1104,80 @@
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Data>
-        <Creative type="Other" status="">
+        <Data type="Other" status="">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Any other data or process out that is not covered by the above.</description>
             <authors label="Author"></authors>
             <date label="Date"></date>
-        </Creative>
+        </Data>
     </Datas>
     
     <!-- Patents and Spin Offs -->
     <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
         <Product type="Invention" status="">
-            <data></data>
+            <data>
+                <field label="Publisher" type="String">publisher</field>
+                <field label="URL" type="URL">url</field>
+            </data>
             <description>Practical and original outputs arising from research.</description>
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Product>
         
         <Product type="License" status="">
-            <data></data>
+            <data>
+                <field label="Publisher" type="String">publisher</field>
+                <field label="URL" type="URL">url</field>
+            </data>
             <description>Signed agreements to exploit a piece of IP such as a process, product, data, or software.</description>
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Product>
         
         <Product type="Registered copyright" status="">
-            <data></data>
+            <data>
+                <field label="Publisher" type="String">publisher</field>
+                <field label="URL" type="URL">url</field>
+            </data>
             <description>Registered ownership of rights under a system of laws for promoting both the creation of and access to artistic, literary, musical, dramatic and other creative works.</description>
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Product>
         
         <Product type="Standards or policy" status="">
-            <data></data>
+            <data>
+                <field label="Publisher" type="String">publisher</field>
+                <field label="URL" type="URL">url</field>
+            </data>
             <description>The development of a rule or principle that is used as a basis for judgement.</description>
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Product>
         
         <Product type="Trademark" status="">
-            <data></data>
+            <data>
+                <field label="Publisher" type="String">publisher</field>
+                <field label="URL" type="URL">url</field>
+            </data>
             <description>A sign used to distinguish the goods or services of one undertaking from those of others. A trademark may consist of words and combinations of words (for instance, names or slogans), logos, figures and images, letters, numbers, sounds, or, in rare instances, smells or moving images, or a combination thereof.</description>
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Product>
         
         <Product type="Tool" status="">
-            <data></data>
+            <data>
+                <field label="Publisher" type="String">publisher</field>
+                <field label="URL" type="URL">url</field>
+            </data>
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Product>
         
         <Product type="ICT Filed" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <authors label="Author"></authors>
@@ -1180,6 +1189,7 @@
                 <field bibtex="number" label="Number" type="String">number</field>
                 <field label="Country" type="String">country</field>
                 <field label="Tech Department" type="String">tech_department</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
             </data>
             <description>A patent or patent application.</description>
             <authors label="Inventor"></authors>
@@ -1197,6 +1207,7 @@
 
         <Product type="Software" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <authors label="Author"></authors>
@@ -1205,6 +1216,7 @@
 
         <Product type="App" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <authors label="Author"></authors>
@@ -1213,6 +1225,7 @@
         
         <Product type="Technology" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <authors label="Author"></authors>
@@ -1222,6 +1235,7 @@
         <Product type="Start-Up">
             <data>
                 <field label="Company Name" type="String">name</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
             </data>
             <authors label="Author"></authors>
             <date label="Date"></date>
@@ -1229,6 +1243,7 @@
         
         <Product type="Misc" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Any other legal or IP output that is not covered by the above.</description>
