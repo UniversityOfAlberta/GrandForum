@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Strategic Initiatives Review" reportType="RP_STRAT_REVIEW" ajax="true" disabled="false" year="2024">
+<Report name="Strategic Initiatives Review" reportType="RP_STRAT_REVIEW" ajax="true" disabled="false" year="2025">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SAB">
             <SectionPermission id="materials" permissions="rw" />
