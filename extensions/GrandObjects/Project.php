@@ -1213,14 +1213,16 @@ class Project extends BackboneModel {
      * @return array Returns an array of file Articles that belong to this Project
      */
     function getFiles(){
-        $sql = "SELECT p.page_id
-                FROM mw_an_upload_permissions u, mw_page p
+        $sql = "SELECT i.img_name
+                FROM mw_an_upload_permissions u, mw_image i
                 WHERE u.nsName = REPLACE('{$this->getName()}', ' ', '_')
-                AND (u.upload_name = REPLACE(p.page_title, '_', ' ') OR u.upload_name = REPLACE(CONCAT('File:', p.page_title), '_', ' '))";
+                AND (u.upload_name = REPLACE(i.img_name, '_', ' ') OR u.upload_name = REPLACE(CONCAT('File:', i.img_name), '_', ' '))";
         $data = DBFunctions::execSQL($sql);
         $articles = array();
         foreach($data as $row){
-            $article = Article::newFromId($row['page_id']);
+            $title = Title::newFromText($row['img_name'], NS_FILE);
+            
+            $article = Article::newFromTitle($title, RequestContext::getMain());
             if($article != null){
                 $articles[] = $article;
             }
