@@ -209,7 +209,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
         // These probably won't exist in most cases, but if they do, then yay
         var start_date = this.$("[name=startDate]").val();
         var end_date = this.$("[name=endDate]").val();
-        if(start_date != "" && start_date != "0000-00-00"){
+        if(start_date != "" && start_date != ZOT){
             this.$("[name=endDate]").datepicker("option", "minDate", start_date);
         }
     },
@@ -218,7 +218,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
         // These probably won't exist in most cases, but if they do, then yay
         var start_date = this.$("[name=startDate]").val();
         var end_date = this.$("[name=endDate]").val()
-        if(end_date != "" && end_date != "0000-00-00"){
+        if(end_date != "" && end_date != ZOT){
             this.$("[name=startDate]").datepicker("option", "maxDate", end_date);
         }
         else{
@@ -228,14 +228,14 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
     update: function(){
         var uniStart = (this.model.get('personUniversity') != null) ? this.model.get('personUniversity').get('startDate') : "";
-        var uniEnd   = (this.model.get('personUniversity') != null) ? this.model.get('personUniversity').get('endDate').replace("0000-00-00", "9999-99-99") : "";
+        var uniEnd   = (this.model.get('personUniversity') != null) ? this.model.get('personUniversity').get('endDate').replace(ZOT, EOT) : "";
         var relStart = this.model.get('startDate');
-        var relEnd   = this.model.get('endDate').replace("0000-00-00", "9999-99-99");
+        var relEnd   = this.model.get('endDate').replace(ZOT, EOT);
         
-        uniStart = (uniStart != "") ? uniStart : "9999-99-99";
-        uniEnd   = (uniEnd   != "") ? uniEnd   : "9999-99-99";
-        relStart = (relStart != "") ? relStart : "9999-99-99";
-        relEnd   = (relEnd   != "") ? relEnd   : "9999-99-99";
+        uniStart = (uniStart != "") ? uniStart : EOT;
+        uniEnd   = (uniEnd   != "") ? uniEnd   : EOT;
+        relStart = (relStart != "") ? relStart : EOT;
+        relEnd   = (relEnd   != "") ? relEnd   : EOT;
         
         if(this.model.get('deleted') == "true"){
             this.$el.addClass('deleted');
@@ -249,7 +249,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
         this.parent.parent.$("#uniEnd").removeClass("inlineWarning");
         if((this.model.get('status') == "Completed" ||
             this.model.get('status') == "Withdrew") &&
-            (uniEnd == "" || uniEnd == "0000-00-00" || uniEnd == "9999-99-99")){
+            (uniEnd == "" || uniEnd == ZOT || uniEnd == EOT)){
             this.parent.parent.$("#uniEnd").addClass("inlineWarning");
             this.$(".relError ul").append("<li>There should be a <b>University end date</b> when status is '" + this.model.get('status') + "'</li>").show();
         }
@@ -257,7 +257,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
             this.model.get('status') == "Withdrew" ||
             this.model.get('status') == "Changed Supervisor") &&
            (this.model.get('endDate') == "" ||
-            this.model.get('endDate') == "0000-00-00")){
+            this.model.get('endDate') == ZOT)){
             this.$(".endDateCell").addClass("inlineWarning");
             this.$(".relError ul").append("<li>There should be an end date when status is '" + this.model.get('status') + "'</li>").show();
         }

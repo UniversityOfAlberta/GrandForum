@@ -29,7 +29,7 @@
 </td>
 <td id="endDate" align="center">
     <!-- These dates will most likely change after the relationship data is loaded. These just make it a bit less jarring -->
-    <% if(end == '0000-00-00 00:00:00'){ %>
+    <% if(end == ZOTT){ %>
         Current
     <% } else if(end != null) { %>
         <%= end.substr(0, 10) %>

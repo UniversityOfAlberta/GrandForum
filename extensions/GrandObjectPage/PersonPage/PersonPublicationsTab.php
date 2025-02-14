@@ -8,7 +8,7 @@ class PersonPublicationsTab extends AbstractTab {
     var $startRange;
     var $endRange;
 
-    function PersonPublicationsTab($person, $visibility, $category='all', $startRange="0000-00-00", $endRange=CYCLE_END){
+    function PersonPublicationsTab($person, $visibility, $category='all', $startRange=SOT, $endRange=CYCLE_END){
         global $config;
         if($category == "all" || is_array($category)){
             parent::AbstractTab(ucwords(Inflect::pluralize($config->getValue("productsTerm")), " \t\r\n\f\v-/"));

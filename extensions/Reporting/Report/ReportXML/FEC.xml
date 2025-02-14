@@ -422,8 +422,8 @@
                     <![CDATA[
                         {set(style, 
                             {if("{getExtra(start_date)}" < "{getExtra(start)}" || 
-                                "{getExtra(start_date)}" == "0000-00-00" || 
-                                "{getExtra(start)}" == "0000-00-00", 
+                                "{getExtra(start_date)}" == ZOT || 
+                                "{getExtra(start)}" == ZOT, 
                                     style='background:#FF6600;'
                             )}
                         )}

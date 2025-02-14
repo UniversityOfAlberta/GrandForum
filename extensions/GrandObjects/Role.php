@@ -34,8 +34,8 @@ class Role extends BackboneModel {
 			$this->id = $data[0]['id'];
 			$this->user = $data[0]['user_id'];
 			$this->role = $data[0]['role'];
-			$this->startDate = $data[0]['start_date'];
-			$this->endDate = $data[0]['end_date'];
+			$this->startDate = ZERO_DATE($data[0]['start_date']);
+			$this->endDate = ZERO_DATE($data[0]['end_date']);
 			$this->comment = $data[0]['comment'];
 		}
 	}
@@ -57,8 +57,8 @@ class Role extends BackboneModel {
 	    $status = DBFunctions::insert('grand_roles',
 	                                  array('user_id'    => $this->user,
 	                                        'role'       => $this->getRole(),
-	                                        'start_date' => $this->getStartDate(),
-	                                        'end_date'   => $this->getEndDate(),
+	                                        'start_date' => ZERO_DATE($this->getStartDate(), zull),
+	                                        'end_date'   => ZERO_DATE($this->getEndDate(), zull),
 	                                        'comment'    => $this->getComment()));
 	    $id = DBFunctions::insertId();
 	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
@@ -82,8 +82,8 @@ class Role extends BackboneModel {
 	function update(){
 	    $status = DBFunctions::update('grand_roles',
 	                                  array('role'       => $this->getRole(),
-	                                        'start_date' => $this->getStartDate(),
-	                                        'end_date'   => $this->getEndDate(),
+	                                        'start_date' => ZERO_DATE($this->getStartDate(), zull),
+	                                        'end_date'   => ZERO_DATE($this->getEndDate(), zull),
 	                                        'comment'    => $this->getComment()),
 	                                  array('id' => EQ($this->getId())));
 	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);

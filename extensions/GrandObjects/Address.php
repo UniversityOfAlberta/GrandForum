@@ -151,7 +151,7 @@ class Address {
      * @return string The start date for this Address
      */
     function getStartDate(){
-        return ($this->start_date == "0000-00-00 00:00:00") ? "" : $this->start_date;
+        return ($this->start_date == ZOTT) ? "" : $this->start_date;
     }
     
     /**
@@ -159,7 +159,7 @@ class Address {
      * @return string The end date for this address
      */
     function getEndDate(){
-        return ($this->end_date == "0000-00-00 00:00:00") ? "" : $this->end_date;
+        return ($this->end_date == ZOTT) ? "" : $this->end_date;
     }
     
     /**

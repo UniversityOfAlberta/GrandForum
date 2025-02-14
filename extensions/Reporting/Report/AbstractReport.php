@@ -319,7 +319,7 @@ abstract class AbstractReport extends SpecialPage {
             $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year), 
                                  $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year));
         }
-        $largestDate = "0000-00-00 00:00:00";
+        $largestDate = ZOT;
         $return = array();
         foreach($check as $c){
             $tst = $c['timestamp'];
@@ -370,7 +370,7 @@ abstract class AbstractReport extends SpecialPage {
                 unset($check[$key]);
             }
         }
-        $largestDate = "0000-00-00 00:00:00";
+        $largestDate = ZOT;
         $return = array();
         foreach($check as $c){
             $tst = $c['timestamp'];
@@ -511,10 +511,10 @@ abstract class AbstractReport extends SpecialPage {
     // Adds a new Permission to this Report
     function addPermission($type, $permission, $start=null, $end=null){
         if($start == null){
-            $start = "0000-00-00";
+            $start = SOT;
         }
         if($end == null){
-            $end = "2100-12-31";
+            $end = EOT;
         }
         $this->permissions[$type][] = array('perm' => $permission, 'start' => $start, 'end' => $end);
     }

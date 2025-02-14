@@ -18,9 +18,9 @@ class PersonUniversitiesAPI extends RESTAPI {
             // All Universities
             $newUniversities = array();
             foreach($universities as $uni){
-                if($uni['endDate'] == '0000-00-00 00:00:00'){
+                if($uni['endDate'] == ZOTT){
                     // Till the end of time
-                    $newUniversities['9999-99-99 99:99:99_'.$uni['startDate'].'_'.$uni['id']] = $uni;
+                    $newUniversities[EOT.'_'.$uni['startDate'].'_'.$uni['id']] = $uni;
                 }
                 else{
                     $newUniversities[$uni['endDate'].'_'.$uni['startDate'].'_'.$uni['id']] = $uni;
@@ -92,8 +92,8 @@ class PersonUniversitiesAPI extends RESTAPI {
                                   'research_area' => $researchArea,
                                   'position_id' => $position_id,
                                   '`primary`' => $primary,
-                                  'start_date' => $start_date,
-                                  'end_date' => $end_date));
+                                  'start_date' => ZERO_DATE($start_date, zull),
+                                  'end_date' => ZERO_DATE($end_date, zull)));
         $this->params['personUniversityId'] = DBFunctions::insertId();
         $person->universityDuring = array();
         Person::$allUniversityCache = array();
@@ -166,8 +166,8 @@ class PersonUniversitiesAPI extends RESTAPI {
                                   'research_area' => $researchArea,
                                   'position_id' => $position_id,
                                   '`primary`' => $primary,
-                                  'start_date' => $start_date,
-                                  'end_date' => $end_date),
+                                  'start_date' => ZERO_DATE($start_date, zull),
+                                  'end_date' => ZERO_DATE($end_date, zull)),
                             array('id' => EQ($personUniversityId)));
 
         $person->universityDuring = array();

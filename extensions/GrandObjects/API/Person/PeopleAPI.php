@@ -25,7 +25,7 @@ class PeopleAPI extends RESTAPI {
                 else{
                     // Get the specific role
                     if(strstr($role, "Former-") !== false){
-                        $people = Person::getAllPeopleDuring(str_replace("Former-", "", $role), "0000-00-00", date('Y-m-d'));
+                        $people = Person::getAllPeopleDuring(str_replace("Former-", "", $role), SOT, date('Y-m-d'));
                     }
                     else{
                         $people = Person::getAllPeople($role);

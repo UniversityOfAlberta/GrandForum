@@ -131,8 +131,8 @@ EditGrantView = Backbone.View.extend({
     changeStart: function(){
         var start_date = this.$("#start_date").val();
         var end_date = this.$("#end_date").val();
-        if(start_date != "" && start_date != "0000-00-00"){
-            if(end_date != "" && end_date != "0000-00-00"){
+        if(start_date != "" && start_date != ZOT){
+            if(end_date != "" && end_date != ZOT){
                 this.$("#end_date").datepicker("option", "minDate", start_date);
             }
             else{
@@ -145,7 +145,7 @@ EditGrantView = Backbone.View.extend({
     changeEnd: function(){
         var start_date = this.$("#start_date").val();
         var end_date = this.$("#end_date").val();
-        if(end_date != "" && end_date != "0000-00-00"){
+        if(end_date != "" && end_date != ZOT){
             this.$("#start_date").datepicker("option", "maxDate", end_date);
         }
     },

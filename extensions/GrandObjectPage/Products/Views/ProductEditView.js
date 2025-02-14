@@ -40,8 +40,8 @@ ProductEditView = Backbone.View.extend({
     
     // Sets the end date to infinite (0000-00-00)
     setInfinite: function(){
-        this.$("input[name=date]").val('0000-00-00').change();
-        //this.model.set('date', '0000-00-00');
+        this.$("input[name=date]").val(ZOT).change();
+        //this.model.set('date', ZOT);
     },
     
     events: {
@@ -58,7 +58,7 @@ ProductEditView = Backbone.View.extend({
     updateStatus: function(){
         _.defer(function(){
             var currentDate = new Date().toISOString().substr(0, 10);
-            if(this.model.get('category') == "Publication" && this.model.get('date') != "0000-00-00" && 
+            if(this.model.get('category') == "Publication" && this.model.get('date') != ZOT && 
                                                               this.model.get('date') != ""){
                 if(currentDate < this.model.get('date')){
                     this.$("[name=status]").val("Accepted").change();
@@ -69,7 +69,7 @@ ProductEditView = Backbone.View.extend({
                     this.$("[name=status]").prop("disabled", true);
                 }
             }
-            else if(this.model.get('category') == "Publication" && this.model.get('acceptance_date') != "0000-00-00" && 
+            else if(this.model.get('category') == "Publication" && this.model.get('acceptance_date') != ZOT && 
                                                                    this.model.get('acceptance_date') != ""){
                 this.$("[name=status]").val("Accepted").change();
                 this.$("[name=status]").prop("disabled", true);
@@ -83,8 +83,8 @@ ProductEditView = Backbone.View.extend({
     changeStart: function(){
         var start_date = this.$("[name=acceptance_date]").val();
         var end_date = this.$("[name=date]").val();
-        if(start_date != "" && start_date != "0000-00-00"){
-            if(end_date != "" && end_date != "0000-00-00"){
+        if(start_date != "" && start_date != ZOT){
+            if(end_date != "" && end_date != ZOT){
                 this.$("[name=date]").datepicker("option", "minDate", start_date);
             }
             else{
@@ -98,7 +98,7 @@ ProductEditView = Backbone.View.extend({
     changeEnd: function(){
         var start_date = this.$("[name=acceptance_date]").val();
         var end_date = this.$("[name=date]").val();
-        if(end_date != "" && end_date != "0000-00-00"){
+        if(end_date != "" && end_date != ZOT){
             this.$("[name=acceptance_date]").datepicker("option", "maxDate", end_date);
         }
         else{
@@ -111,7 +111,7 @@ ProductEditView = Backbone.View.extend({
         // These probably won't exist in most cases, but if they do, then yay
         var start_date = this.$("[name=data_start_date]").val();
         var end_date = this.$("[name=data_end_date]").val();
-        if(start_date != "" && start_date != "0000-00-00"){
+        if(start_date != "" && start_date != ZOT){
             this.$("[name=data_end_date]").datepicker("option", "minDate", start_date);
         }
     },
@@ -120,7 +120,7 @@ ProductEditView = Backbone.View.extend({
         // These probably won't exist in most cases, but if they do, then yay
         var start_date = this.$("[name=data_start_date]").val();
         var end_date = this.$("[name=data_end_date]").val();
-        if(end_date != "" && end_date != "0000-00-00"){
+        if(end_date != "" && end_date != ZOT){
             this.$("[name=data_start_date]").datepicker("option", "maxDate", end_date);
         }
         else{

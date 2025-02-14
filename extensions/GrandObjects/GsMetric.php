@@ -26,7 +26,7 @@ class GsMetric {
         if(count($data)>0){
             $this->id = $data[0]['id'];
             $this->user_id = $data[0]['user_id'];
-            $this->start_date = $data[0]['start_date'];
+            $this->start_date = ZERO_DATE($data[0]['start_date']);
             $this->citation_count = $data[0]['citation_count'];
             $this->hindex_5_years = $data[0]['hindex_5_years'];
             $this->i10_index_5_years = $data[0]['i10_index_5_years'];
@@ -37,7 +37,7 @@ class GsMetric {
             $this->scopus_citation_count = $data[0]['scopus_citation_count'];
             $this->scopus_h_index = $data[0]['scopus_h_index'];
             $this->scopus_coauthor_count = $data[0]['scopus_coauthor_count'];
-            $this->change_date = $data[0]['change_date'];
+            $this->change_date = ZERO_DATE($data[0]['change_date']);
             $this->gs_citations = $this->getGsCitations();
         }
      }
@@ -122,7 +122,7 @@ class GsMetric {
             $newArray = array();
             foreach($data as $row){
                 $date = explode('-',$row['year']);
-                $year = $date[0];
+                $year = ZERO_DATE($date[0]);
                 $newArray[$year] = $row['count'];
             }
             $this->gs_citations = $newArray;
@@ -140,7 +140,7 @@ class GsMetric {
             DBFunctions::begin();
             $status = DBFunctions::insert('grand_user_gsmetrics',
                                           array('user_id' => $this->user_id,
-                                                'start_date' => $this->start_date,
+                                                'start_date' => ZERO_DATE($this->start_date, zull),
                                                 'citation_count' => $this->citation_count,
                                                 'hindex_5_years' => $this->hindex_5_years,
                                                 'i10_index_5_years' => $this->i10_index_5_years,
@@ -161,7 +161,7 @@ class GsMetric {
                     $date = "$key-01-01 00:00:00";
                     $status = DBFunctions::insert('grand_gs_citations',
                                       array('user_id' => $this->user_id,
-                                           'year' => $date,
+                                           'year' => ZERO_DATE($date, zull),
                                            'count' => $val),
                                       true);
                     if(!$status){

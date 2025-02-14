@@ -96,7 +96,7 @@ class Telephone {
      * @return string The start date of this Telephone
      */
     function getStartDate(){
-        return ($this->start_date == "0000-00-00 00:00:00") ? "" : $this->start_date;
+        return ($this->start_date == ZOTT) ? "" : $this->start_date;
     }
     
     /**
@@ -104,7 +104,7 @@ class Telephone {
      * @return string The end date of this Telephone
      */
     function getEndDate(){
-        return ($this->end_date == "0000-00-00 00:00:00") ? "" : $this->end_date;
+        return ($this->end_date == ZOTT) ? "" : $this->end_date;
     }
     
     /**

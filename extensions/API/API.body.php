@@ -205,6 +205,7 @@ abstract class API {
         if(isset($_POST[$key])) return $_POST[$key];
         $model = (isset($_POST['model'])) ? json_decode($_POST['model']) : array();
         if(isset($model->$key)) return $model->$key;
+        return "";
     }
 
     /**

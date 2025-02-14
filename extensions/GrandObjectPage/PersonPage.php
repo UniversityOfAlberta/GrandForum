@@ -98,15 +98,15 @@ class PersonPage {
                 }
                 // Set the value of the Profile start/end fields
                 if(!isset($_GET['startRange']) && !isset($_GET['endRange']) && $me->getId() == $person->getId()){
-                    $startRange = ($me->getProfileStartDate() != "0000-00-00") ? $me->getProfileStartDate() : "0000-00-00";
-                    $endRange   = ($me->getProfileEndDate()   != "0000-00-00") ? $me->getProfileEndDate()   : date('Y-m-d');
+                    $startRange = ($me->getProfileStartDate() != ZOT) ? $me->getProfileStartDate() : SOT;
+                    $endRange   = ($me->getProfileEndDate()   != ZOT) ? $me->getProfileEndDate()   : date('Y-m-d');
                 }
                 else{
-                    $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : "0000-00-00";
+                    $startRange = (isset($_GET['startRange'])) ? $_GET['startRange'] : SOT;
                     $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : date('Y-m-d');
                 }
                 
-                if($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00') && $me->isAllowedToEdit($person) && !$person->isMe()){
+                if($person->isRoleDuring(HQP, SOT, EOT) && $me->isAllowedToEdit($person) && !$person->isMe()){
                     $wgMessage->addInfo("You can edit this HQP because you co-supervise them or are on their examining committee. Please make sure that the information you are providing is correct.");
                 }
                 
@@ -117,7 +117,7 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonFECTab($person, $visibility));
                     $tabbedPage->addTab(new PersonNotesTab($person, $visibility));
                 }
-                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
+                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, SOT, EOT)){
                     $tabbedPage->addTab(new HQPExitTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATS")) && $visibility['isMe']){

@@ -44,5 +44,10 @@ class DropOldTables extends AbstractMigration
         $this->dropTable('grand_theme_leaders');
         $this->dropTable('grand_disciplines');
         $this->dropTable('grand_disciplines_map');
+        $this->dropTable('grand_milestones');
+        $this->dropTable('grand_milestones_people');
+        $this->dropTable('grand_report_blobs_impersonated');
+        $this->dropTable('grand_role_request');
+        $this->dropTable('grand_university_activities');
     }
 }

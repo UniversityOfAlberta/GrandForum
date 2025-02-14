@@ -112,8 +112,8 @@ ManagePeopleEditRolesRowView = Backbone.View.extend({
     
     // Sets the end date to infinite (0000-00-00)
     setInfinite: function(){
-        this.$("input[name=endDate]").val('0000-00-00');
-        this.model.set('endDate', '0000-00-00');
+        this.$("input[name=endDate]").val(ZOT);
+        this.model.set('endDate', ZOT);
     },
     
     events: {

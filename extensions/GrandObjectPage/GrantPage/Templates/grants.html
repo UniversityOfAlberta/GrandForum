@@ -30,7 +30,7 @@
             <% var ar = (grant.get('start_date') >= START && grant.get('end_date') <= END && grant.get('end_date') >= START ||
                          grant.get('start_date') <= START && grant.get('end_date') >= START ||
                          grant.get('start_date') <= END && grant.get('end_date') >= END ||
-                         grant.get('start_date') <= END && grant.get('end_date') == "0000-00-00");
+                         grant.get('start_date') <= END && grant.get('end_date') == ZOT);
             %>
             <tr class="<% if(ar){ %>ar<% } %>">
                 <td>

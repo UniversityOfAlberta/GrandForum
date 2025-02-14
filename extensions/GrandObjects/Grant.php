@@ -108,8 +108,8 @@ class Grant extends BackboneModel {
                 $this->seq_no = $row['seq_no'];
                 $this->prog_description = $row['prog_description'];
                 $this->request = $row['request'];
-                $this->start_date = $row['start_date'];
-                $this->end_date = $row['end_date'];
+                $this->start_date = ZERO_DATE($row['start_date']);
+                $this->end_date = ZERO_DATE($row['end_date']);
                 $this->deleted = $row['deleted'];
                 $this->exclude = false;
                 if($this->portions == null){
@@ -314,8 +314,8 @@ class Grant extends BackboneModel {
                                   'seq_no' => $this->seq_no,
                                   'prog_description' => $this->prog_description,
                                   'request' => $this->request,
-                                  'start_date' => $this->start_date,
-                                  'end_date' => $this->end_date));
+                                  'start_date' => ZERO_DATE($this->start_date, zull),
+                                  'end_date' => ZERO_DATE($this->end_date, zull)));
         $this->id = DBFunctions::insertId();
         if($this->exclude){
             DBFunctions::insert('grand_grants_exclude',
@@ -365,8 +365,8 @@ class Grant extends BackboneModel {
                                   'seq_no' => $this->seq_no,
                                   'prog_description' => $this->prog_description,
                                   'request' => $this->request,
-                                  'start_date' => $this->start_date,
-                                  'end_date' => $this->end_date),
+                                  'start_date' => ZERO_DATE($this->start_date, zull),
+                                  'end_date' => ZERO_DATE($this->end_date, zull)),
                             array('id' => EQ($this->id)));
         DBFunctions::delete('grand_grants_exclude',
                             array('grant_id' => $this->id,

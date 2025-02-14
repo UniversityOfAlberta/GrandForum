@@ -201,7 +201,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         // These probably won't exist in most cases, but if they do, then yay
         var start_date = this.$("#uniStart [name=startDate]").val();
         var end_date = this.$("#uniEnd [name=endDate]").val();
-        if(start_date != "" && start_date != "0000-00-00"){
+        if(start_date != "" && start_date != ZOT){
             this.$("#uniEnd [name=endDate]").datepicker("option", "minDate", start_date);
         }
     },
@@ -210,7 +210,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         // These probably won't exist in most cases, but if they do, then yay
         var start_date = this.$("#uniStart [name=startDate]").val();
         var end_date = this.$("#uniEnd [name=endDate]").val();
-        if(end_date != "" && end_date != "0000-00-00"){
+        if(end_date != "" && end_date != ZOT){
             this.$("#uniStart [name=startDate]").datepicker("option", "maxDate", end_date);
         }
         else{

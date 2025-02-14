@@ -59,8 +59,8 @@ class Relationship extends BackboneModel {
             $this->type = $data[0]['type'];
             $this->status = $data[0]['status'];
             $this->thesis = $data[0]['thesis'];
-            $this->startDate = $data[0]['start_date'];
-            $this->endDate = $data[0]['end_date'];
+            $this->startDate = ZERO_DATE($data[0]['start_date']);
+            $this->endDate = ZERO_DATE($data[0]['end_date']);
             $this->comment = $data[0]['comment'];
         }
     }
@@ -130,16 +130,16 @@ class Relationship extends BackboneModel {
                                                 'type' => $this->getType(),
                                                 'status' => $this->getStatus(),
                                                 'thesis' => $this->getThesis(),
-                                                'start_date' => $this->getStartDate(),
-                                                'end_date' => $this->getEndDate(),
+                                                'start_date' => ZERO_DATE($this->getStartDate(), zull),
+                                                'end_date' => ZERO_DATE($this->getEndDate(), zull),
                                                 'comment' => $this->getComment()),true);
                 if($this->endDate == ""){
-                    $this->endDate ="0000-00-00 00:00:00";
+                    $this->endDate = ZOTT;
                 }
-                if($status && $this->endDate != "0000-00-00 00:00:00"){
+                if($status && $this->endDate != ZOTT){
                     $status = DBFunctions::insert('grand_movedOn',
                                             array('user_id' => $this->user2,
-                                                  'effective_date' => $this->endDate,
+                                                  'effective_date' => ZERO_DATE($this->endDate, zull),
                                                   'status' => $this->status),
                                               true);
                 }
@@ -175,8 +175,8 @@ class Relationship extends BackboneModel {
                                                 'type' => $this->getType(),
                                                 'status' => $this->getStatus(),
                                                 'thesis' => $this->getThesis(),
-                                                'start_date' => $this->getStartDate(),
-                                                'end_date' => $this->getEndDate(),
+                                                'start_date' => ZERO_DATE($this->getStartDate(), zull),
+                                                'end_date' => ZERO_DATE($this->getEndDate(), zull),
                                                 'comment' => $this->getComment()),
                                           array('id' => EQ($this->id)));
             if($status){

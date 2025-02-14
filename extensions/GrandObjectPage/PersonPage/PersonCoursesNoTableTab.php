@@ -2,7 +2,7 @@
 
 class PersonCoursesNoTableTab extends PersonCoursesTab {
 
-    function PersonCoursesNoTableTab($person, $visibility, $startRange="0000-00-00", $endRange=CYCLE_END){
+    function PersonCoursesNoTableTab($person, $visibility, $startRange=SOT, $endRange=CYCLE_END){
         parent::PersonCoursesTab($person, $visibility, $startRange, $endRange);
     }
     

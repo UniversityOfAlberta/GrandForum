@@ -228,7 +228,7 @@ class UploadCCVAPI extends API{
             }
             if(CommonCV::getCaptionFromValue($hqp['status'], "Degree Status") == "In Progress"){
                 // HQP is still active
-                $end_date = "0000-00-00 00:00:00";
+                $end_date = ZOTT;
             }
             else{
                 if($hqp['end_year'] == "" && $hqp['end_month'] == "" && 
@@ -287,8 +287,8 @@ class UploadCCVAPI extends API{
                 DBFunctions::insert('grand_roles',
                                     array('user_id'     => $person->getId(),
                                           'role'        => HQP,
-                                          'start_date'  => $start_date,
-                                          'end_date'    => $end_date));
+                                          'start_date'  => ZERO_DATE($start_date, zull),
+                                          'end_date'    => ZERO_DATE($end_date, zull)));
             }
             if(count(DBFunctions::select(array('grand_relations'),
                                          array('*'),
@@ -301,8 +301,8 @@ class UploadCCVAPI extends API{
                                     array('user1'       => $supervisor->getId(),
                                           'user2'       => $person->getId(),
                                           'type'        => 'Supervises',
-                                          'start_date'  => $start_date,
-                                          'end_date'    => $end_date));
+                                          'start_date'  => ZERO_DATE($start_date, zull),
+                                          'end_date'    => ZERO_DATE($end_date, zull)));
             }
             if(count(DBFunctions::select(array('grand_user_university'),
                                          array('*'),
@@ -316,8 +316,8 @@ class UploadCCVAPI extends API{
                                           'university_id' => $university,
                                           'department'    => $supervisor->getDepartment(),
                                           'position_id'   => $position,
-                                          'start_date'    => $start_date,
-                                          'end_date'      => $end_date));
+                                          'start_date'    => ZERO_DATE($start_date, zull),
+                                          'end_date'      => ZERO_DATE($end_date, zull)));
             }
             $status = true;
         }
@@ -409,8 +409,8 @@ class UploadCCVAPI extends API{
                                           'code'              => $address['postal_code'],
                                           'country'           => $address['location_country'],
                                           'province'          => $address['location_subdivision'],
-                                          'start_date'        => "{$address['start_year']}-{$address['start_month']}-{$address['start_day']} 00:00:00",
-                                          'end_date'          => "{$address['end_year']}-{$address['end_month']}-{$address['end_day']} 00:00:00",
+                                          'start_date'        => ZERO_DATE("{$address['start_year']}-{$address['start_month']}-{$address['start_day']} 00:00:00", zull),
+                                          'end_date'          => ZERO_DATE("{$address['end_year']}-{$address['end_month']}-{$address['end_day']} 00:00:00", zull),
                                           'primary_indicator' => $address['primary_indicator']));
             }
         }
@@ -426,8 +426,8 @@ class UploadCCVAPI extends API{
                                           'area_code'         => $phone['area_code'],
                                           'number'            => $phone['number'],
                                           'extension'         => $phone['extension'],
-                                          'start_date'        => "{$phone['start_year']}-{$phone['start_month']}-{$phone['start_day']} 00:00:00",
-                                          'end_date'          => "{$phone['end_year']}-{$phone['end_month']}-{$phone['end_day']} 00:00:00",
+                                          'start_date'        => ZERO_DATE("{$phone['start_year']}-{$phone['start_month']}-{$phone['start_day']} 00:00:00", zull),
+                                          'end_date'          => ZERO_DATE("{$phone['end_year']}-{$phone['end_month']}-{$phone['end_day']} 00:00:00", zull),
                                           'primary_indicator' => $phone['primary_indicator']));
             }
         }
@@ -449,7 +449,7 @@ class UploadCCVAPI extends API{
             
             $start_date = $deg['start_year']."-".str_pad($deg['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
             if($deg['end_year'] == "" || $deg['end_month'] == ""){
-                $end_date = "0000-00-00 00:00:00";
+                $end_date = ZOTT;
             }
             else{
                 $end_date = $deg['end_year']."-".str_pad($deg['end_month'], 2, '0', STR_PAD_LEFT)."-".str_pad(cal_days_in_month(CAL_GREGORIAN, $deg['end_month'], $deg['end_year']), 2, '0', STR_PAD_LEFT)." 00:00:00";
@@ -557,8 +557,8 @@ class UploadCCVAPI extends API{
                                                     'university_id' => $university,
                                                     'department'    => $department,
                                                     'position_id'   => $position,
-                                                    'start_date'    => $start_date,
-                                                    'end_date'      => $end_date));
+                                                    'start_date'    => ZERO_DATE($start_date, zull),
+                                                    'end_date'      => ZERO_DATE($end_date, zull)));
             }
         }
         return $status;
@@ -579,7 +579,7 @@ class UploadCCVAPI extends API{
             
             $start_date = $emp['start_year']."-".str_pad($emp['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
             if($emp['end_year'] == "" || $emp['end_month'] == ""){
-                $end_date = "0000-00-00 00:00:00";
+                $end_date = ZOTT;
             }
             else{
                 $end_date = $emp['end_year']."-".str_pad($emp['end_month'], 2, '0', STR_PAD_LEFT)."-".str_pad(cal_days_in_month(CAL_GREGORIAN, $emp['end_month'], $emp['end_year']), 2, '0', STR_PAD_LEFT)." 00:00:00";
@@ -665,8 +665,8 @@ class UploadCCVAPI extends API{
                                                     'university_id' => $university,
                                                     'department'    => $department,
                                                     'position_id'   => $position,
-                                                    'start_date'    => $start_date,
-                                                    'end_date'      => $end_date));
+                                                    'start_date'    => ZERO_DATE($start_date, zull),
+                                                    'end_date'      => ZERO_DATE($end_date, zull)));
             }
         }
         return $status;

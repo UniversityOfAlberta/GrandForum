@@ -131,7 +131,7 @@ class PersonVisualizationsTab extends AbstractTab {
             foreach($person->getRoles(true) as $role){
                 $start = substr($role->getStartDate(), 0, 10);
                 $end = substr($role->getEndDate(), 0, 10);
-                if($end == "0000-00-00"){
+                if($end == ZOT){
                     $end = $today;
                 }
                 if(strcmp($start, $end) > 0){
@@ -148,10 +148,10 @@ class PersonVisualizationsTab extends AbstractTab {
             foreach($person->getUniversities() as $university){
                 $start = substr($university['start'], 0, 10);
                 $end = substr($university['end'], 0, 10);
-                if($end == "0000-00-00"){
+                if($end == ZOT){
                     $end = $today;
                 }
-                if($start == "0000-00-00"){
+                if($start == ZOT){
                     $startY = substr($person->getRegistration(), 0, 4);
                     $startM = substr($person->getRegistration(), 4, 2);
                     $startD = substr($person->getRegistration(), 6, 2);
@@ -184,7 +184,7 @@ class PersonVisualizationsTab extends AbstractTab {
                     foreach($type as $relation){
                         $start = substr($relation->getStartDate(), 0, 10);
                         $end = substr($relation->getEndDate(), 0, 10);
-                        if($end == "0000-00-00"){
+                        if($end == ZOT){
                             $end = $today;
                         }
                         if(strcmp($start, $end) > 0){
@@ -209,7 +209,7 @@ class PersonVisualizationsTab extends AbstractTab {
                         if($hqp->getId() == $person->getId()){
                             $start = substr($r->getStartDate(), 0, 10);
                             $end = substr($r->getEndDate(), 0, 10);
-                            if($end == "0000-00-00"){
+                            if($end == ZOT){
                                 $end = $today;
                             }
                             if(strcmp($start, $end) > 0){
@@ -230,7 +230,7 @@ class PersonVisualizationsTab extends AbstractTab {
             
             foreach($person->getPapersAuthored('all', "1900-00-00", "2100-01-01", false, false) as $paper){
                 $start = $paper->getDate();
-                if($start == "0000-00-00"){
+                if($start == ZOT){
                     $start = $paper->getAcceptanceDate();
                 }
                 $content = "<a href='{$paper->getUrl()}' target='_blank'>View Product's Page</a>";

@@ -574,8 +574,7 @@ class Person extends BackboneModel {
             else{
                 $sql = "SELECT r.id, r.user_id, r.role
                         FROM grand_roles r, mw_user u
-                        WHERE (end_date = '0000-00-00 00:00:00'
-                               OR end_date > CURRENT_TIMESTAMP)
+                        WHERE (end_date IS NULL OR end_date > CURRENT_TIMESTAMP)
                         AND start_date <= CURRENT_TIMESTAMP
                         AND r.user_id = u.user_id
                         AND u.deleted = 0";
@@ -602,7 +601,7 @@ class Person extends BackboneModel {
                     FROM grand_user_university uu, grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
-                    ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
+                    ORDER BY COALESCE(end_date, '".EOT."') DESC";
             $result = DBFunctions::execSQL($sql, false, false, true);
             while($row = mysqli_fetch_array($result->result, MYSQLI_ASSOC)){
                 if(!isset(self::$universityCache[$row['user_id']]) || $row['primary'] == true){
@@ -612,8 +611,8 @@ class Person extends BackboneModel {
                               "department" => $row['department'],
                               "position"   => $row['position'],
                               "primary"    => $row['primary'],
-                              "start"      => $row['start_date'],
-                              "date"       => $row['end_date'],
+                              "start"      => ZERO_DATE($row['start_date']),
+                              "date"       => ZERO_DATE($row['end_date']),
                               "research_area" => $row['research_area']);
                 }
             }
@@ -901,13 +900,13 @@ class Person extends BackboneModel {
                 FROM grand_roles
                 WHERE ($roleSQL) AND
                 (
-                    ((end_date != '0000-00-00 00:00:00') AND
+                    ((end_date IS NOT NULL) AND
                      ((start_date BETWEEN '$startRange' AND '$endRange') || 
                       (end_date BETWEEN '$startRange' AND '$endRange') || 
                       (start_date <= '$startRange' AND end_date >= '$endRange'))
                     )
                     OR
-                    ((end_date = '0000-00-00 00:00:00') AND
+                    ((end_date IS NULL) AND
                      ((start_date <= '$endRange'))
                     )
                 )");
@@ -936,10 +935,10 @@ class Person extends BackboneModel {
         $sql = "SELECT DISTINCT uu.user_id FROM grand_user_university uu, mw_user u
                 WHERE department = '$department'
                 AND (
-                    ( (end_date != '0000-00-00 00:00:00') AND
+                    ( (end_date IS NOT NULL) AND
                     (( start_date BETWEEN '$start' AND '$end' ) || ( end_date BETWEEN '$start' AND '$end' ) || (start_date <= '$start' AND end_date >= '$end') ))
                     OR
-                    ( (end_date = '0000-00-00 00:00:00') AND
+                    ( (end_date IS NULL) AND
                     ((start_date <= '$end')))
                 )
                 AND uu.user_id = u.user_id
@@ -1176,10 +1175,10 @@ class Person extends BackboneModel {
             // User is at least Staff
             return true;
         }
-        if($this->isRelatedToDuring($person, SUPERVISES_BOTH, "0000-00-00", "2100-00-00") ||
-           $this->isRelatedToDuring($person, SUPERVISORY_COMMITTEE, "0000-00-00", "2100-00-00") ||
-           $this->isRelatedToDuring($person, EXAMINER, "0000-00-00", "2100-00-00") ||
-           $this->isRelatedToDuring($person, COMMITTEE_CHAIR, "0000-00-00", "2100-00-00")){
+        if($this->isRelatedToDuring($person, SUPERVISES_BOTH, SOT, EOT) ||
+           $this->isRelatedToDuring($person, SUPERVISORY_COMMITTEE, SOT, EOT) ||
+           $this->isRelatedToDuring($person, EXAMINER, SOT, EOT) ||
+           $this->isRelatedToDuring($person, COMMITTEE_CHAIR, SOT, EOT)){
             // User has supervised the Person
             return true;
         }
@@ -1766,7 +1765,7 @@ class Person extends BackboneModel {
                             WHERE u.university_id = uu.university_id
                             AND uu.position_id = p.position_id
                             AND uu.user_id = '{$id}'
-                            ORDER BY REPLACE(end_date, '0000-00-00', '9999-99-99') DESC, start_date DESC, id DESC";
+                            ORDER BY COALESCE(end_date, '".EOT."') DESC, start_date DESC, id DESC";
                     $data = DBFunctions::execSQL($sql);
                     Cache::store("user_universities_{$id}", $data);
                 }
@@ -1780,7 +1779,7 @@ class Person extends BackboneModel {
                             FROM grand_user_university uu, grand_universities u, grand_positions p
                             WHERE u.university_id = uu.university_id
                             AND uu.position_id = p.position_id
-                            ORDER BY REPLACE(end_date, '0000-00-00', '9999-99-99') DESC, start_date DESC, id DESC";
+                            ORDER BY COALESCE(end_date, '".EOT."') DESC, start_date DESC, id DESC";
                     $data = DBFunctions::execSQL($sql);
                     Cache::store("user_university", $data);
                 }
@@ -1794,8 +1793,8 @@ class Person extends BackboneModel {
                                                                          "department" => $row['department'],
                                                                          "position" => $row['position'],
                                                                          "research_area" => $row['research_area'],
-                                                                         "start" => $row['start_date'],
-                                                                         "end" => $row['end_date']);
+                                                                         "start" => ZERO_DATE($row['start_date'], ZOT),
+                                                                         "end" => ZERO_DATE($row['end_date'], ZOT));
                 }
             }
         }
@@ -1804,10 +1803,10 @@ class Person extends BackboneModel {
         $unis = array();
         if(isset(self::$allUniversityCache[$id])){
             foreach(self::$allUniversityCache[$id] as $uni){
-                if(($uni['end'] != "0000-00-00" && (($uni['start'] >= $startRange && $uni['start'] <= $endRange) || 
+                if(($uni['end'] != ZOT && (($uni['start'] >= $startRange && $uni['start'] <= $endRange) || 
                                                     ($uni['end']   >= $startRange && $uni['end']   <= $endRange) ||
                                                     ($uni['start'] <= $endRange   && $uni['end']   >= $endRange))) || 
-                   ($uni['end'] == "0000-00-00" && $uni['start'] <= $endRange)){
+                   ($uni['end'] == ZOT && $uni['start'] <= $endRange)){
                     $unis[] = $uni;
                 }
             }
@@ -1835,7 +1834,7 @@ class Person extends BackboneModel {
                 WHERE uu.user_id = '{$this->id}'
                 AND u.university_id = uu.university_id
                 AND uu.position_id = p.position_id
-                ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-99-99 99:99:99') DESC, start_date DESC, id DESC";
+                ORDER BY COALESCE(end_date, '".EOT."') DESC, start_date DESC, id DESC";
         $data = DBFunctions::execSQL($sql);
         $array = array();
         if(count($data) > 0){
@@ -1846,8 +1845,8 @@ class Person extends BackboneModel {
                                  "position"   => $row['position'],
                                  "researchArea" => $row['research_area'],
                                  "primary" => $row['primary'],
-                                 "start" => $row['start_date'],
-                                 "end" => $row['end_date']);
+                                 "start" => ZERO_DATE($row['start_date']),
+                                 "end" => ZERO_DATE($row['end_date']));
             }
         }
         return $array;
@@ -1996,7 +1995,7 @@ class Person extends BackboneModel {
                         FROM grand_roles
                         WHERE user_id = '{$this->id}'
                         AND start_date <= '{$history}'
-                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+                        AND (end_date >= '{$history}' OR end_date IS NULL)";
                 $data = DBFunctions::execSQL($sql);
             }
             $roles = array();
@@ -2020,8 +2019,8 @@ class Person extends BackboneModel {
                 $this->roles[] = new Role(array(0 => array('id' => -1,
                                                            'user_id' => $this->id,
                                                            'role' => INACTIVE,
-                                                           'start_date' => '0000-00-00 00:00:00',
-                                                           'end_date' => '0000-00-00 00:00:00',
+                                                           'start_date' => ZOTT,
+                                                           'end_date' => ZOTT,
                                                            'comment' => '')));
             }
         }
@@ -2131,10 +2130,10 @@ class Person extends BackboneModel {
                     FROM grand_roles
                     WHERE user_id = '{$this->id}'
                     AND ( 
-                    ( (end_date != '0000-00-00 00:00:00') AND
+                    ( (end_date IS NOT NULL) AND
                     (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
                     OR
-                    ( (end_date = '0000-00-00 00:00:00') AND
+                    ( (end_date IS NULL) AND
                     ((start_date <= '$endRange')))
                     )";
             $data = DBFunctions::execSQL($sql);
@@ -2164,7 +2163,7 @@ class Person extends BackboneModel {
             $sql = "SELECT *
                     FROM grand_roles
                     WHERE user_id = '{$this->id}'
-                    AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
+                    AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date IS NULL))";
             $data = DBFunctions::execSQL($sql);
             Cache::store($cacheId, $data);
         }
@@ -2252,8 +2251,8 @@ class Person extends BackboneModel {
                 'position' => $row['position'],
                 'researchArea' => $row['research_area'],
                 'primary' => $row['primary'],
-                'startDate' => substr($row['start_date'], 0, 10),
-                'endDate' => substr($row['end_date'], 0, 10)
+                'startDate' => substr(ZERO_DATE($row['start_date']), 0, 10),
+                'endDate' => substr(ZERO_DATE($row['end_date']), 0, 10)
             );
         }
         return $universities;
@@ -2338,7 +2337,7 @@ class Person extends BackboneModel {
                 $startDate = substr($r->getStartDate(), 0, 10);
                 $endDate = substr($r->getEndDate(), 0, 10);
                 if($r->getRole() == $role && (($date >= $startDate && $date <= $endDate) || 
-                                              ($date >= $startDate && $endDate == "0000-00-00"))){
+                                              ($date >= $startDate && $endDate == ZOT))){
                     return true;
                 }
             }
@@ -2478,7 +2477,7 @@ class Person extends BackboneModel {
                         WHERE user2 = '{$this->id}'
                         AND (type = 'Supervises' OR type = 'Co-Supervises')
                         AND start_date <= '{$history}'
-                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+                        AND (end_date >= '{$history}' OR end_date IS NULL)";
             }
             $data = DBFunctions::execSQL($sql);
             $people = array();
@@ -2514,10 +2513,10 @@ class Person extends BackboneModel {
                 WHERE user2 = '{$this->id}'
                 AND (type = 'Supervises' OR type = 'Co-Supervises')
                 AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
+                ( (end_date IS NOT NULL) AND
                 (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
                 OR
-                ( (end_date = '0000-00-00 00:00:00') AND
+                ( (end_date IS NULL) AND
                 ((start_date <= '$endRange')))
                 )";
     
@@ -2565,7 +2564,7 @@ class Person extends BackboneModel {
                         WHERE user1 = '{$this->id}'
                         AND (type = 'Supervises' OR type = 'Co-Supervises')
                         AND start_date <= '{$history}'
-                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+                        AND (end_date >= '{$history}' OR end_date IS NULL)";
             }
             $data = DBFunctions::execSQL($sql);
             return count($data);
@@ -2616,7 +2615,7 @@ class Person extends BackboneModel {
         
         $data = array();
         foreach($relations as $r){
-            $universities = $this->getUniversitiesDuring("0000-00-00", "2100-00-00", $r->user2);
+            $universities = $this->getUniversitiesDuring(SOT, EOT, $r->user2);
             $role = $r->getType();
             if(@implode($hqpTypes) == "committee" || $hqpTypes == "committee"){
                 if($role == SUPERVISES || $role == CO_SUPERVISES){
@@ -2683,9 +2682,9 @@ class Person extends BackboneModel {
                 continue;
             }
 
-            $end_date = ($endDate1 == '0000-00-00') ? "Current" : $endDate1;
+            $end_date = ($endDate1 == ZOT) ? "Current" : $endDate1;
             $start = $university['start'];
-            $finish = ($university['end'] == '0000-00-00') ? "" : $university['end'];
+            $finish = ($university['end'] == ZOT) ? "" : $university['end'];
             
             $data[$end_date.$startDate1.$position.$r->getId()] = 
                 array('hqp' => $r->user2,
@@ -2770,7 +2769,7 @@ class Person extends BackboneModel {
                     if(!isset($processed[$p->getId()])){
                         if(!$hqp->isRoleOn(NI, $p->getAcceptanceDate()) && 
                            !$hqp->isRoleOn(NI, $p->getDate()) &&
-                           !($p->getAcceptanceDate() == "0000-00-00" && $p->getDate() == "0000-00-00" && $hqp->isRole(NI))){ // Check to make sure HQP isn't a Faculty now
+                           !($p->getAcceptanceDate() == ZOT && $p->getDate() == ZOT && $hqp->isRole(NI))){ // Check to make sure HQP isn't a Faculty now
                             $processed[$p->getId()] = true;
                             $papersArray[] = $p;
                         }
@@ -2849,7 +2848,7 @@ class Person extends BackboneModel {
                     if(!isset($processed[$p->getId()])){
                         if(!$hqp->isRoleOn(NI, $p->getAcceptanceDate()) && 
                            !$hqp->isRoleOn(NI, $p->getDate()) &&
-                           !($p->getAcceptanceDate() == "0000-00-00" && $p->getDate() == "0000-00-00" && $hqp->isRole(NI))){ // Check to make sure HQP isn't a Faculty now
+                           !($p->getAcceptanceDate() == ZOT && $p->getDate() == ZOT && $hqp->isRole(NI))){ // Check to make sure HQP isn't a Faculty now
                             $processed[$p->getId()] = true;
                             $papersArray[] = $p;
                         }
@@ -2875,11 +2874,11 @@ class Person extends BackboneModel {
             $reportedYear = $paper->getReportedForPerson($this->getId());
             $acceptanceDate = $paper->getAcceptanceDate();
             $date = ($onlyUseStartDate) ? $acceptanceDate : $paper->getDate();
-            if(($acceptanceDateLabel == "Acceptance Date" && $acceptanceDate == "0000-00-00" && $date >= "2020-07-01")){
+            if(($acceptanceDateLabel == "Acceptance Date" && $acceptanceDate == ZOT && $date >= "2020-07-01")){
                 // Don't allow papers without acceptance dates (starting 2020-07-01)
                 continue;
             }
-            if($acceptanceDate == "0000-00-00" || $acceptanceDate == ""){
+            if($acceptanceDate == ZOT || $acceptanceDate == ""){
                 $acceptanceDate = $date;
             }
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
@@ -2892,7 +2891,7 @@ class Person extends BackboneModel {
                  ($acceptanceDate >= $startRange && $date <= $endRange && $date >= $startRange ||
                   $acceptanceDate <= $startRange && $date >= $startRange ||
                   $acceptanceDate <= $endRange && $date >= $endRange ||
-                  $acceptanceDate <= $endRange && $date == "0000-00-00")) ||
+                  $acceptanceDate <= $endRange && $date == ZOT)) ||
                 // Handle Reported Products
                 ($useReported && $reportedYear != "" && ($reportedYear).CYCLE_START_MONTH >= $startRange && 
                                                         ($reportedYear+1).CYCLE_END_MONTH <= $endRange) ||
@@ -2900,7 +2899,7 @@ class Person extends BackboneModel {
                 ($paper->getData('yearly') == 1 && ($paper->getData('start_date') >= $startRange && $paper->getData('end_date') <= $endRange && $paper->getData('end_date') >= $startRange ||
                                                      $paper->getData('start_date') <= $startRange && $paper->getData('end_date') >= $startRange ||
                                                      $paper->getData('start_date') <= $endRange && $paper->getData('end_date') >= $endRange ||
-                                                     $paper->getData('start_date') <= $endRange && $paper->getData('end_date') == "0000-00-00"))
+                                                     $paper->getData('start_date') <= $endRange && $paper->getData('end_date') == ZOT))
                 )){
                 $papersArray[] = $paper;
             }
@@ -3152,7 +3151,7 @@ class Person extends BackboneModel {
                         WHERE user2 = '{$this->id}'
                         AND type LIKE '%Committee%'
                         AND start_date <= '{$history}'
-                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+                        AND (end_date >= '{$history}' OR end_date IS NULL)";
             }
             $data = DBFunctions::execSQL($sql);
             $people = array();
@@ -3190,9 +3189,8 @@ class Person extends BackboneModel {
             $relation = Relationship::newFromId($row['id']);
             $relations[] = $relation;
         }
-        usort($relations, function($a, $b){ 
-            return str_replace("0000-00-00", "9999-12-31", $a->getEndDate()) < 
-                   str_replace("0000-00-00", "9999-12-31", $b->getEndDate());
+        usort($relations, function($a, $b){
+            return (ZERO_DATE($a->getEndDate(), EOT) < ZERO_DATE($b->getEndDate(), EOT));
         });
         return $relations;
     }
@@ -3438,9 +3436,6 @@ class FullPerson extends Person {
     var $dateOfRetirement;
     var $dateOfLastDegree;
     var $lastDegree;
-    //var $publicationHistoryRefereed;
-    //var $publicationHistoryBooks;
-    //var $publicationHistoryPatents;
     var $dateFso2;
     var $dateFso3;
     var $dateFso4;
@@ -3460,8 +3455,8 @@ class FullPerson extends Person {
             $this->wos = @$data[0]['wos'];
             $this->alexId = @$data[0]['alex_id'];
             $this->publicProfile = @$data[0]['user_public_profile'];
-            $this->profileStartDate = @$data[0]['profile_start_date'];
-            $this->profileEndDate = @$data[0]['profile_end_date'];
+            $this->profileStartDate = @ZERO_DATE($data[0]['profile_start_date']);
+            $this->profileEndDate = @ZERO_DATE($data[0]['profile_end_date']);
             $this->hqps = null;
             $this->historyHqps = null;
         }
@@ -3614,7 +3609,7 @@ class FullPerson extends Person {
                              type = 'Co-Supervises' 
                              $extraSQL)
                         AND start_date <= '{$history}'
-                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+                        AND (end_date >= '{$history}' OR end_date IS NULL)";
             }
             $data = DBFunctions::execSQL($sql);
             $hqps = array();
@@ -3641,7 +3636,7 @@ class FullPerson extends Person {
         $hqps = array();
         foreach($data as $row){
             $hqp = Person::newFromId($row['user2']);
-            if($hqp->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
+            if($hqp->isRoleDuring(HQP, SOT, EOT)){
                 $hqps[strtolower($hqp->getName())] = $hqp;
             }
         }
@@ -3664,10 +3659,10 @@ class FullPerson extends Person {
                 WHERE user1 = '{$this->id}'
                 AND (type = 'Supervises' OR type = 'Co-Supervises')
                 AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
+                ( (end_date IS NOT NULL) AND
                 (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
                 OR
-                ( (end_date = '0000-00-00 00:00:00') AND
+                ( (end_date IS NULL) AND
                 ((start_date <= '$endRange')))
                 )";
     
@@ -3717,15 +3712,15 @@ class FullPerson extends Person {
             }
         }
         $sql .= "AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
+                ( (end_date IS NOT NULL) AND
                 (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
                 OR
-                ( (end_date = '0000-00-00 00:00:00') AND
+                ( (end_date IS NULL) AND
                 ((start_date <= '$endRange')))
                 )
                 AND u.user_id = r.user2
                 AND u.deleted != 1
-        ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
+        ORDER BY COALESCE(end_date, '".EOT."') DESC";
         $data = DBFunctions::execSQL($sql);
         $relations = array();
         foreach($data as $row){
@@ -3754,7 +3749,7 @@ class FullPerson extends Person {
             if(!$history){
                 $sql .= " AND start_date >= end_date";
             }
-            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
+            $sql .= " ORDER BY COALESCE(end_date, '".EOT."') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $relation = Relationship::newFromId($row['id']);
@@ -3773,7 +3768,7 @@ class FullPerson extends Person {
             if(!$history){
                 $sql .= " AND start_date >= end_date";
             }
-            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
+            $sql .= " ORDER BY COALESCE(end_date, '".EOT."') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $relation = Relationship::newFromId($row['id']);
@@ -3794,7 +3789,7 @@ class FullPerson extends Person {
             if(!$history){
                 $sql .= " AND start_date >= end_date";
             }
-            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
+            $sql .= " ORDER BY COALESCE(end_date, '".EOT."') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $relation = Relationship::newFromId($row['id']);
@@ -3968,9 +3963,6 @@ class FullPerson extends Person {
                                               'date_retirement',
                                               'date_last_degree',
                                               'last_degree',
-                                              //'publication_history_refereed',
-                                              //'publication_history_books',
-                                              //'publication_history_patents',
                                               'date_fso2',
                                               'date_fso3',
                                               'date_fso4',
@@ -3983,7 +3975,7 @@ class FullPerson extends Person {
             if(count($data) >0){
                 $row = $data[0];
                 foreach($row as $key => $value){
-                    $row[$key] = str_replace("0000-00-00 00:00:00", "", $value);
+                    $row[$key] = ZERO_DATE($value, "");
                 }
                 $this->faculty = $row['faculty'];
                 $this->departments = json_decode($row['departments'], true);
@@ -4006,9 +3998,6 @@ class FullPerson extends Person {
                 $this->dateOfRetirement = $row['date_retirement'];
                 $this->dateOfLastDegree = $row['date_last_degree'];
                 $this->lastDegree = $row['last_degree'];
-                //$this->publicationHistoryRefereed = $row['publication_history_refereed'];
-                //$this->publicationHistoryBooks = $row['publication_history_books'];
-                //$this->publicationHistoryPatents = $row['publication_history_patents'];
                 $this->dateFso2 = $row['date_fso2'];
                 $this->dateFso3 = $row['date_fso3'];
                 $this->dateFso4 = $row['date_fso4'];
@@ -4034,28 +4023,25 @@ class FullPerson extends Person {
                 $status = DBFunctions::update('grand_personal_fec_info', 
                                         array('faculty' => $this->faculty,
                                               'departments' => json_encode($this->departments),
-                                              'date_of_phd' => $this->dateOfPhd,
-                                              'date_of_appointment' => $this->dateOfAppointment,
-                                              'date_assistant' => $this->dateOfAssistant,
-                                              'date_associate' => $this->dateOfAssociate,
-                                              'date_professor' => $this->dateOfProfessor,
-                                              'date_tenure' => $this->dateOfTenure,
+                                              'date_of_phd' => ZERO_DATE($this->dateOfPhd, zull),
+                                              'date_of_appointment' => ZERO_DATE($this->dateOfAppointment, zull),
+                                              'date_assistant' => ZERO_DATE($this->dateOfAssistant, zull),
+                                              'date_associate' => ZERO_DATE($this->dateOfAssociate, zull),
+                                              'date_professor' => ZERO_DATE($this->dateOfProfessor, zull),
+                                              'date_tenure' => ZERO_DATE($this->dateOfTenure, zull),
                                               'sabbatical' => json_encode($this->sabbatical),
-                                              'date_probation1' => $this->dateOfProbation1,
-                                              'date_probation2' => $this->dateOfProbation2,
-                                              'date_retirement' => $this->dateOfRetirement,
-                                              'date_last_degree' => $this->dateOfLastDegree,
-                                              'last_degree' => $this->lastDegree,
-                                              //'publication_history_refereed' => $this->publicationHistoryRefereed,
-                                              //'publication_history_books' => $this->publicationHistoryBooks,
-                                              //'publication_history_patents' => $this->publicationHistoryPatents,
-                                              'date_fso2' => $this->dateFso2,
-                                              'date_fso3' => $this->dateFso3,
-                                              'date_fso4' => $this->dateFso4,
-                                              'date_atsec1' => $this->dateAtsec1,
-                                              'date_atsec2' => $this->dateAtsec2,
-                                              'date_atsec3' => $this->dateAtsec3,
-                                              'date_ats_anniversary' => $this->dateAtsAnniversary),
+                                              'date_probation1' => ZERO_DATE($this->dateOfProbation1, zull),
+                                              'date_probation2' => ZERO_DATE($this->dateOfProbation2, zull),
+                                              'date_retirement' => ZERO_DATE($this->dateOfRetirement, zull),
+                                              'date_last_degree' => ZERO_DATE($this->dateOfLastDegree, zull),
+                                              'last_degree' => ZERO_DATE($this->lastDegree, zull),
+                                              'date_fso2' => ZERO_DATE($this->dateFso2, zull),
+                                              'date_fso3' => ZERO_DATE($this->dateFso3, zull),
+                                              'date_fso4' => ZERO_DATE($this->dateFso4, zull),
+                                              'date_atsec1' => ZERO_DATE($this->dateAtsec1, zull),
+                                              'date_atsec2' => ZERO_DATE($this->dateAtsec2, zull),
+                                              'date_atsec3' => ZERO_DATE($this->dateAtsec3, zull),
+                                              'date_ats_anniversary' => ZERO_DATE($this->dateAtsAnniversary, zull)),
                                         array('user_id' => EQ($this->getId())));
                 if($status){
                     DBFunctions::commit();
@@ -4067,28 +4053,25 @@ class FullPerson extends Person {
                                     array('user_id' => $this->getId(),
                                           'faculty' => $this->faculty,
                                           'departments' => json_encode($this->departments),
-                                          'date_of_phd' => $this->dateOfPhd,
-                                          'date_of_appointment' => $this->dateOfAppointment,
-                                          'date_assistant' => $this->dateOfAssistant,
-                                          'date_associate' => $this->dateOfAssociate,
-                                          'date_professor' => $this->dateOfProfessor,
-                                          'date_tenure' => $this->dateOfTenure,
+                                          'date_of_phd' => ZERO_DATE($this->dateOfPhd, zull),
+                                          'date_of_appointment' => ZERO_DATE($this->dateOfAppointment, zull),
+                                          'date_assistant' => ZERO_DATE($this->dateOfAssistant, zull),
+                                          'date_associate' => ZERO_DATE($this->dateOfAssociate, zull),
+                                          'date_professor' => ZERO_DATE($this->dateOfProfessor, zull),
+                                          'date_tenure' => ZERO_DATE($this->dateOfTenure, zull),
                                           'sabbatical' => json_encode($this->sabbatical),
-                                          'date_probation1' => $this->dateOfProbation1,
-                                          'date_probation2' => $this->dateOfProbation2,
-                                          'date_retirement' => $this->dateOfRetirement,
-                                          'date_last_degree' => $this->dateOfLastDegree,
-                                          'last_degree' => $this->lastDegree,
-                                          //'publication_history_refereed' => $this->publicationHistoryRefereed,
-                                          //'publication_history_books' => $this->publicationHistoryBooks,
-                                          //'publication_history_patents' => $this->publicationHistoryPatents,
-                                          'date_fso2' => $this->dateFso2,
-                                          'date_fso3' => $this->dateFso3,
-                                          'date_fso4' => $this->dateFso4,
-                                          'date_atsec1' => $this->dateAtsec1,
-                                          'date_atsec2' => $this->dateAtsec2,
-                                          'date_atsec3' => $this->dateAtsec3,
-                                          'date_ats_anniversary' => $this->dateAtsAnniversary),
+                                          'date_probation1' => ZERO_DATE($this->dateOfProbation1, zull),
+                                          'date_probation2' => ZERO_DATE($this->dateOfProbation2, zull),
+                                          'date_retirement' => ZERO_DATE($this->dateOfRetirement, zull),
+                                          'date_last_degree' => ZERO_DATE($this->dateOfLastDegree, zull),
+                                          'last_degree' => ZERO_DATE($this->lastDegree, zull),
+                                          'date_fso2' => ZERO_DATE($this->dateFso2, zull),
+                                          'date_fso3' => ZERO_DATE($this->dateFso3, zull),
+                                          'date_fso4' => ZERO_DATE($this->dateFso4, zull),
+                                          'date_atsec1' => ZERO_DATE($this->dateAtsec1, zull),
+                                          'date_atsec2' => ZERO_DATE($this->dateAtsec2, zull),
+                                          'date_atsec3' => ZERO_DATE($this->dateAtsec3, zull),
+                                          'date_ats_anniversary' => ZERO_DATE($this->dateAtsAnniversary, zull)),
                                            true);
                if($status){
                     DBFunctions::commit();
@@ -4255,7 +4238,7 @@ class FullPerson extends Person {
         if($this->isRetired($date)){
             return "";
         }
-        else if($this->isNew($date) && $this->isATSEC1("9999-99-99")){
+        else if($this->isNew($date) && $this->isATSEC1(EOT)){
             return "T1";                          
         }
         if($this->isRoleOn("ATS", $date) && $this->isATSEC1($date)){
@@ -4267,14 +4250,14 @@ class FullPerson extends Person {
         else if($this->isRoleOn("ATS", $date) && $this->isATSEC3($date)){
             return "T3";
         }
-        else if($this->isNew($date) && ($this->isAssistantProfessor("9999-99-99") ||
-                                        $this->isAssociateProfessor("9999-99-99") ||
-                                        $this->isProfessor("9999-99-99"))){
+        else if($this->isNew($date) && ($this->isAssistantProfessor(EOT) ||
+                                        $this->isAssociateProfessor(EOT) ||
+                                        $this->isProfessor(EOT))){
             return "N1";                          
         }
-        else if($this->isNew($date) && ($this->isFSO2("9999-99-99") ||
-                                        $this->isFSO3("9999-99-99") ||
-                                        $this->isFSO4("9999-99-99"))){
+        else if($this->isNew($date) && ($this->isFSO2(EOT) ||
+                                        $this->isFSO3(EOT) ||
+                                        $this->isFSO4(EOT))){
             return "M1";
         }
         else if($this->isAssistantProfessor($date)){
@@ -4373,8 +4356,8 @@ class FullPerson extends Person {
                                           'wos' => $this->getWOS(),
                                           'alex_id' => $this->getAlexId(),
                                           'user_public_profile' => $this->getProfile(false),
-                                          'profile_start_date' => $this->getProfileStartDate(),
-                                          'profile_end_date' => $this->getProfileEndDate(),
+                                          'profile_start_date' => ZERO_DATE($this->getProfileStartDate(), zull),
+                                          'profile_end_date' => ZERO_DATE($this->getProfileEndDate(), zull),
                                           'full' => $this->full),
                                     array('user_name' => EQ($this->getName())));
             DBFunctions::commit();
@@ -4407,8 +4390,8 @@ class FullPerson extends Person {
                                           array('user_id' => EQ($this->getId())));
             if(!$wgImpersonating && !$wgDelegating){
                 DBFunctions::update('mw_user',
-                                    array('profile_start_date' => $this->getProfileStartDate(),
-                                          'profile_end_date' => $this->getProfileEndDate()),
+                                    array('profile_start_date' => ZERO_DATE($this->getProfileStartDate(), zull),
+                                          'profile_end_date' => ZERO_DATE($this->getProfileEndDate(), zull)),
                                     array('user_id' => EQ($this->getId())));
             }
             Person::$cache = array();

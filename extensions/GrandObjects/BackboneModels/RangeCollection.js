@@ -4,7 +4,7 @@ function between(object, start, end){
     return ((start1 <= start && end1   >= end)   ||             // ---s1----s----e----e1---
             (end1   >= start && end1   <= end)   ||             // ---s----e1----e---
             (start1 >= start && start1 <= end)   ||             // ---s----s1----e---
-            (start1 <= start && end1 == '0000-00-00 00:00:00')  // ---s----s1----infinity=e1
+            (start1 <= start && (end1 == ZOTT || end1 == ZOT))  // ---s----s1----infinity=e1
            );
 }
 
