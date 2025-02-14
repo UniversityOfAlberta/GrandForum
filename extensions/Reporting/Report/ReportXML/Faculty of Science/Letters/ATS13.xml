@@ -5,7 +5,7 @@
             <![CDATA[
                 Eleni Stroulia<br />
                 Vice Dean of Science<br />
-                Chair Academic Teaching Staff Evaluation Committee
+                Chair, Academic Teaching Staff Evaluation Committee
             ]]>
         </ReportItem>
         <ReportItem id="body">
@@ -23,12 +23,11 @@
                 Sincerely,<br />
                 <br />
                 <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
                 <br />
                 Eleni Stroulia<br />
                 Vice Dean of Science<br />
-                Chair of the Academic Teaching Staff Evaluation Committee<br />
-                ES/jb
+                Chair of the Academic Teaching Staff Evaluation Committee
                 </div>
             ]]>
         </ReportItem>

@@ -5,16 +5,16 @@
             <![CDATA[
                 Eleni Stroulia<br />
                 Vice Dean of Science<br />
-                Chair Academic Teaching Staff Evaluation Committee
+                Chair, Academic Teaching Staff Evaluation Committee
             ]]>
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
                 <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within the Faculty of Science.</p>
 
-                <p>At its meeting of April 3, {$next_year}, the ATSEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
+                <p>At its meeting of February 27, {$next_year}, the ATSEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
 
-                <p>As you chose not to appear before ATSEC to present your case or submit documentation in support of your case, the decision will be final and binding. As per Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC.</p>
+                <p>As you chose not to appear before ATSEC to present your case or submit documentation in support of your case, the decision will be final and binding.</p>
 
                 <p>Should you have any procedural questions, please contact sciea@ualberta.ca.</p>
             ]]>
@@ -24,12 +24,11 @@
                 Sincerely,<br />
                 <br />
                 <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
                 <br />
                 Eleni Stroulia<br />
                 Vice Dean of Science<br />
-                Chair of the Academic Teaching Staff Evaluation Committee<br />
-                ES/jb
+                Chair of the Academic Teaching Staff Evaluation Committee
                 </div>
             ]]>
         </ReportItem>
