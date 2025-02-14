@@ -293,9 +293,15 @@ class ApplicationsTable extends SpecialPage{
     function generateProgress(){
         global $wgOut;
         
+        $exp = new IntegerReportItem();
+        $exp->setBlobType(BLOB_TEXT);
+        $exp->setBlobItem("LIVED_EXPERIENCES");
+        $exp->setBlobSection("INFORMATION");
+        $exp->setId("lived_experience");
+        
         $tabbedPage = new InnerTabbedPage("reports");
         for($year=date('Y'); $year >= 2021; $year--){
-            $tab = new ApplicationTab(RP_PROGRESS, null, $year, "{$year}", array());                                           
+            $tab = new ApplicationTab(RP_PROGRESS, null, $year, "{$year}", array("Lived Experience" => $exp));                                           
             $tabbedPage->addTab($tab);
         }
         $wgOut->addHTML($tabbedPage->showPage());
@@ -304,9 +310,15 @@ class ApplicationsTable extends SpecialPage{
     function generateCompletion(){
         global $wgOut;
         
+        $exp = new IntegerReportItem();
+        $exp->setBlobType(BLOB_TEXT);
+        $exp->setBlobItem("LIVED_EXPERIENCES");
+        $exp->setBlobSection("INFORMATION");
+        $exp->setId("lived_experience");
+        
         $tabbedPage = new InnerTabbedPage("reports");
         for($year=date('Y'); $year >= 2021; $year--){
-            $tab = new ApplicationTab('RP_COMPLETION', null, $year, "{$year}", array());
+            $tab = new ApplicationTab('RP_COMPLETION', null, $year, "{$year}", array("Lived Experience" => $exp));
             $tab->addExtra($this->completionReportSummary($year));
                                                       
             $tabbedPage->addTab($tab);
