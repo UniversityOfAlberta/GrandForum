@@ -456,6 +456,24 @@
             <date ccv_id="68abef7baf294189a44bab18b9fa8b71" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="0593e6041a7646c2b6cd2949878fdac5" ccv_name="Authors"></authors>
         </Publication>
+        
+        <Publication type="Preprint" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+            <data>
+                <field label="Journal Title" type="String">published_in</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
+        </Publication>
+        
+        <Publication type="Working Copy" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+            <data>
+                <field label="Institution" type="String">institution</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
+        </Publication>
     </Publications>
 
     <!-- Presentations -->
@@ -1050,6 +1068,7 @@
     <Datas category="Data and Process" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
         <Data type="Cartographic material" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Cartographic material	Any material representing the whole or part of the earth or any celestial body at any scale. Cartographic materials include two- and three-dimensional maps and plans (including maps of imaginary places); aeronautical, navigational, and celestial charts; atlases; globes; block diagrams; sections; aerial photographs with a cartographic purpose; bird’s-eye views (map views), etc.</description>
@@ -1058,6 +1077,7 @@
         </Data>
         <Data type="Clinical study" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A work that reports on the results of a research study to evaluate interventions or exposures on biomedical or health-related outcomes. The two main types of clinical studies are interventional studies (clinical trials) and observational studies. While most clinical studies concern humans, this publication type may be used for clinical veterinary articles meeting the requisites for humans.</description>
@@ -1066,6 +1086,7 @@
         </Data>
         <Data type="Dataset" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A collection of related facts and data encoded in a defined structure.</description>
@@ -1074,6 +1095,7 @@
         </Data>
         <Data type="Data management plan" status="">
             <data>
+                <field label="Journal Title" type="String">published_in</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>A formal statement describing how research data will be managed and documented throughout a research project and the terms regarding the subsequent deposit of the data with a data repository for long-term management and preservation.</description>
@@ -1082,6 +1104,7 @@
         </Data>
         <Data type="Physical object" status="">
             <data>
+                <field label="Custodian" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Physical samples include biological specimens, rock or mineral specimens, soil or sediment cores, plants and seeds, water quality samples, archaeological artefacts, or DNA and human tissue samples. Samples may be used in analyses and can be destroyed in this process, whereas specimens are preserved curated objects that can be continuously studied.</description>
@@ -1090,6 +1113,7 @@
         </Data>
         <Data type="Research protocol or technique" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Practical methods or skills applied to particular tasks identified as part of the research.</description>
@@ -1098,6 +1122,7 @@
         </Data>
         <Data type="Research tool" status="">
             <data>
+                <field label="Institution" type="String">institution</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Series of observations, measurements or facts identified from the research.</description>
@@ -1106,6 +1131,7 @@
         </Data>
         <Data type="Other" status="">
             <data>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
             <description>Any other data or process out that is not covered by the above.</description>
