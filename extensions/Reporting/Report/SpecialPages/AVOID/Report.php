@@ -26,6 +26,7 @@ require_once("AdminUsageStats.php");
 require_once("ConnectFitbit.php");
 require_once("FitbitStats.php");
 require_once("Descriptors.php");
+require_once("Descriptors6Month.php");
 require_once("Descriptors12Month.php");
 require_once("RawData.php");
 require_once("IndexComponents.php");
