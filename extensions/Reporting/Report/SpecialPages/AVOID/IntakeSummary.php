@@ -409,7 +409,9 @@ class IntakeSummary extends SpecialPage {
                 $html .= "<td></td>";
                 $html .= "<td></td>";
                 $html .= "<td></td>";
+                $html .= "<td></td>";
                 
+                $html .= "<td></td>";
                 $html .= "<td></td>";
                 $html .= "<td></td>";
                 $html .= "<td></td>";
