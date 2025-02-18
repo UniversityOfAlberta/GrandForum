@@ -35,6 +35,10 @@ class Descriptors extends SpecialPage {
         return $person->isRoleAtLeast(STAFF);
     }
     
+    static function getPeople(){
+        return Person::getAllPeople(CI);
+    }
+    
     static function compareProgress(&$aggregates, &$status, $val1, $rp, $blobItem, $category, $person){
         if(!AVOIDDashboard::hasSubmittedSurvey($person->getId(), $rp)){
             return $val1;
@@ -314,7 +318,7 @@ class Descriptors extends SpecialPage {
         global $wgServer, $wgScriptPath, $wgOut, $EQ5D5L;
         $me = Person::newFromWgUser();
         $wgOut->setPageTitle("Descriptives");
-        $people = Person::getAllPeople(CI);
+        $people = self::getPeople();
         
         $api = new UserFrailtyIndexAPI();
         $nIntake = 0;
