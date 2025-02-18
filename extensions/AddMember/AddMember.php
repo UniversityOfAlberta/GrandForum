@@ -130,6 +130,7 @@ class AddMember extends SpecialPage{
                         <thead><tr bgcolor='#F2F2F2'>
                             <th>Requesting User</th>
                             <th>User Name</th>
+                            <th>Email</th>
                             <th>Timestamp</th>
                             <th>Staff</th>
                             <th>Roles</th>
@@ -147,6 +148,7 @@ class AddMember extends SpecialPage{
                         <thead><tr bgcolor='#F2F2F2'>
                             <th>Requesting User</th>
                             <th>User Name</th>
+                            <th>Email</th>
                             <th>Timestamp</th>
                             <th>Roles</th>
                             <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
@@ -194,10 +196,12 @@ class AddMember extends SpecialPage{
                         </td>");
             if($history && $request->isCreated()){
                 $user = Person::newFromName($request->getName());
-                $wgOut->addHTML("<td align='left'><a target='_blank' href='{$user->getUrl()}'>{$request->getName()}</a></td>");
+                $wgOut->addHTML("<td align='left'><a target='_blank' href='{$user->getUrl()}'>{$request->getName()}</a></td>
+                                 <td align='left'>{$request->getEmail()}</td>");
             }
             else{
-                $wgOut->addHTML("<td align='left'>{$request->getName()}<br />{$request->getEmail()}</td>");
+                $wgOut->addHTML("<td align='left'>{$request->getName()}</td>
+                                 <td align='left'>{$request->getEmail()}</td>");
             } 
             $wgOut->addHTML("<td>".str_replace(" ", "<br />", $request->getLastModified())."</td>");
             if($history){
@@ -265,7 +269,7 @@ class AddMember extends SpecialPage{
                                                 'buttons': [
                                                     'excel', 'pdf'
                                                 ]
-                                            }).fnSort([[2,'desc']]);
+                                            }).fnSort([[3,'desc']]);
                                             $('#requests').css('display', 'table');
                                          </script>");
     }

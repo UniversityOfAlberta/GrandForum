@@ -157,21 +157,23 @@ class ProjectWikiTab extends AbstractTab {
         $this->html .= "<tbody>\n";
         foreach($pages as $page){
             if($page->getTitle()->getText() != "Main"){
-                $this->html .= "<tr>\n";
-                $revId = $page->getRevIdFetched();
-                $revision = Revision::newFromId($revId);
-			    $date = $revision->getTimestamp();
-			    $year = substr($date, 0, 4);
-			    $month = substr($date, 4, 2);
-			    $day = substr($date, 6, 2);
-			    $hour = substr($date, 8, 2);
-			    $minute = substr($date, 10, 2);
-			    $second = substr($date, 12, 2);
-			    $editor = Person::newFromId($revision->getUser());
-                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>{$page->getTitle()->getText()}</a></td>\n";
-                $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
-                $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";
-                $this->html .= "</tr>\n";
+                $img = $page->getPage()->getFile();
+                if($img->exists()){
+                    $editor = Person::newFromName($img->getUser());
+                    $date = $page->getTimestamp();
+			        $year = substr($date, 0, 4);
+			        $month = substr($date, 4, 2);
+			        $day = substr($date, 6, 2);
+			        $hour = substr($date, 8, 2);
+			        $minute = substr($date, 10, 2);
+			        $second = substr($date, 12, 2);
+			        
+			        $this->html .= "<tr>\n";
+                    $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>{$page->getTitle()->getText()}</a></td>\n";
+                    $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
+                    $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";
+                    $this->html .= "</tr>\n";
+                }
             }
         }
         $this->html .= "</tbody></table>";

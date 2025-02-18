@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL's 7th Annual EPIC Summer Institute" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2024" disabled="true">
+<Report name="AGE-WELL's 7th Annual EPIC Summer Institute" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2025" disabled="false">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="description" permissions="rw" />
@@ -20,32 +20,47 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="AGE-WELL's 7th Annual EPIC Summer Institute" name="Program Description" type="ReportSection" title="AGE-WELL's 7th Annual EPIC Summer Institute">
+    <ReportSection id="description" tooltip="AGE-WELL's 8th Annual EPIC Summer Institute" name="Program Description" type="ReportSection" title="AGE-WELL's 8th Annual EPIC Summer Institute">
         <Static>
             <![CDATA[
-                <p>Toronto, Ontario | June 24 – 28, 2024</p>
+                <h3>Description</h3>
                 <p>Canada’s older adult population overwhelmingly prefers to age in place – in the homes and communities that they know and in which they are comfortable. Aging in place is about being able to live independently in one’s own home and community through appropriate supports and services, including the design of physical spaces and the use of technology within the environment.</p>
                 
-                <p>There is immense potential for smart home systems, socially assistive robots, and age-friendly communities to enable aging in place with autonomy and dignity. As an older adult walks around their smart home, floor tiles could collect vital signs such as heart rate and blood pressure. Motion sensors could detect falls and connect the older adult to a caregiver or emergency services. </p>
+                <p>There is immense potential for smart home systems, socially assistive robots, and age-friendly communities to enable aging in place. As an older adult walks around their smart home, floor tiles could collect vital signs such as heart rate and blood pressure. Motion sensors could detect falls and connect the older adult to a caregiver or emergency services. Virtual care platforms could allow older adults in rural and remote communities to access health professionals from their homes. Technology-enabled homeshare programs could provide older adults with in-person assistance, the financial means to remain and at home and provide distant caregivers with peace of mind.</p>
                 
                 <p>Technology-based solutions and services can help older adults to live independently and improve their quality of life, while also supporting caregivers and importantly, providing a cost-effective alternative to long-term care.</p>
                 
-                <p>#epicSI2024 participants will work directly with older adults, caregivers and other stakeholders to co-create innovative solutions – technologies, policies, and services – that will empower older adults to age with independence and dignity at home.</p>
+                <p>#epicSI2025 participants will work directly with older adults, caregivers and other stakeholders to co-create innovative solutions – technologies, policies, and services – that will empower older adults to age with independence and dignity at home.</p>
                 
-                <p>The 2024 AGE-WELL Summer Institute will take place in Toronto, Ontario (June 24-28, 2024).</p>
-
-                <h3>Eligibility:</h3>
+                <p>The 2025 AGE-WELL Summer Institute will take place in Charlottetown, PEI (July 7-11, 2025).</p>
+                
+                <h3>Learning Goals</h3>
+                <p>The AGE-WELL Summer Institute <i>Co-Creating Possibilities: Supportive Homes & Communities</i> is an intensive, one week project-based learning experience. Multidisciplinary teams will tackle specific problem areas identified by researchers and stakeholders as a pressing concern where technology innovation could make a real difference. Teams will work through the design process from problem definition to brainstorming solutions, developing business models and implementation plans, to successfully pitching their projects.</p>
+                
+                The summer institute is aimed at building AGE-WELL trainee capacity to:
+                <ol>
+                    <li>Face the challenges of working in transdisciplinary teams;</li>
+                    <li>Engage with stakeholders to identify problems and develop solutions in the identified space;</li>
+                    <li>Design practical and innovative solutions (technologies and related policies or services) that have the potential to make a real-world impact;</li>
+                    <li>Explore non-traditional academic knowledge mobilization opportunities such as commercialization, policy formulation etc.;</li>
+                    <li>Communicate project potential in a persuasive and engaging manner.</li>
+                </ol>
+                
+                <h3>Expected Outcomes</h3>
+                <p>#epicSI2025 is, foremost, a learning experience. By the end of the week, each participant will have actively practiced a myriad of skills required to successfully co-create a meaningful solution to a real-world problem – from stakeholder engagement to prototyping and market research to business model plans. Throughout the week, teams will work together to design a slide deck and 5 minute pitch presentation. On Friday, teams will pitch their solutions for a chance to win cash prizes and additional in-kind support to continue developing the solution. </p>
+                
+                <h3>Eligibility</h3>
                 <p>Applicants must be current AGE-WELL network HQP or EPIC-AT Fellows in good standing (e.g. have completed reporting requirements, returned all signed documents etc.) who have not attended a previous AGE-WELL Summer Institute.</p>
                 
                 <p>Preference will be given to AGE-WELL HQP who have made measurable progress towards completing, or have completed, the Innovators of Tomorrow Certificate Program and to EPIC-AT Fellows who are on track to complete their courses.</p>
-
-                <p>AGE-WELL and/or EPIC-AT will cover the cost of economy travel, breakfasts and lunches for successful applicants. Double occupancy accommodation will also be covered for those who are not based in Toronto. Successful applicants requiring international flights will be asked to cover the cost of their travel to Pearson International Airport.</p>
                 
-                <p>Application Deadline: April 8, 2024 (via Forum)</p>
+                <p>AGE-WELL and/or EPIC-AT will cover the cost of economy travel, breakfasts and lunches for successful applicants. Accommodation will also be covered for those who are not based in Charlottetown. Successful applicants requiring international flights will be asked to cover the cost of their travel to Charlottetown Airport.</p>
                 
-                <p>Contact: <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a></p>
-
-                <p>Read more about previous AGE-WELL EPIC Summer Institutes <a href='https://agewell-nce.ca/archives/8510'>here</a>.</p>
+                <p>Application Deadline: March 17, 2025 (via Forum)</p>
+                
+                <p>Contact: <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a></p>
+                
+                <p>Read more about previous AGE-WELL EPIC Summer Institutes <a target='_blank' href='https://agewell-nce.ca/archives/8510'>here</a>.</p>
             ]]>
         </Static>
     </ReportSection>
@@ -134,7 +149,7 @@
         </ReportItem>
         <ReportItem id="capacity" type="TextareaReportItem" blobItem="CAPACITY">
             <![CDATA[
-                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Autonomy and Independence” (250 words)</b></p>
+                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Supportive Homes and Communities” (250 words)</b></p>
                 {$item}
             ]]>
         </ReportItem>

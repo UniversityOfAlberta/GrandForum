@@ -23,6 +23,12 @@
         <% if(output.PhysicalAddress1 != ""){ %>
             <b>Address:</b> <%= output.PhysicalAddress1 %><br />
         <% } %>
+        <% if(output.MailingAddressCity != ""){ %>
+            <b>City/Suburb:</b> <%= output.MailingAddressCity %><br />
+        <% } %>
+        <% if(output.PhysicalAddressPostalCode != ""){ %>
+            <b>Postal Code:</b> <%= output.PhysicalAddressPostalCode %><br />
+        <% } %>
         <% if (output.EmailAddressMain != ""){ %>
             <b>Email:</b> <a href='mailto:<%= output.EmailAddressMain %>'><%= output.EmailAddressMain %></a><br />
         <% } %>

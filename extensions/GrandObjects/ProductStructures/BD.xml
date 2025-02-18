@@ -608,6 +608,13 @@
             </data>
         </Activity>
         
+        <Activity type="Professional End User" status="">
+            <data>
+                <field label="Institution" type="String">institution</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Activity>
+        
         <Activity type="Interview (Broadcast or Text)" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">conference</field>
