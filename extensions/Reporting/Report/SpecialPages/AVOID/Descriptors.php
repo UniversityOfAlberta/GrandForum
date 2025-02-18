@@ -355,11 +355,26 @@ class Descriptors extends SpecialPage {
                               "<60-64" => array(),
                               "65-74" => array(),
                               "75+" => array());
+        $frailtyByAge6 = array("All" => array(),
+                              "<60-64" => array(),
+                              "65-74" => array(),
+                              "75+" => array());
+        $frailtyByAge12 = array("All" => array(),
+                              "<60-64" => array(),
+                              "65-74" => array(),
+                              "75+" => array());
         
         $cfs = array(0,0,0,0,0,0,0,0,0,0);
         $cfs6 = array(0,0,0,0,0,0,0,0,0,0);
         $cfs12 = array(0,0,0,0,0,0,0,0,0,0);
+        
         $cfsByAge = array("<60-64" => array(0,0,0,0,0,0,0,0,0,0),
+                          "65-74" => array(0,0,0,0,0,0,0,0,0,0),
+                          "75+" => array(0,0,0,0,0,0,0,0,0,0));
+        $cfsByAge6 = array("<60-64" => array(0,0,0,0,0,0,0,0,0,0),
+                          "65-74" => array(0,0,0,0,0,0,0,0,0,0),
+                          "75+" => array(0,0,0,0,0,0,0,0,0,0));
+        $cfsByAge12 = array("<60-64" => array(0,0,0,0,0,0,0,0,0,0),
                           "65-74" => array(0,0,0,0,0,0,0,0,0,0),
                           "75+" => array(0,0,0,0,0,0,0,0,0,0));
                           
@@ -367,11 +382,37 @@ class Descriptors extends SpecialPage {
                          "<60-64" => array(),
                          "65-74" => array(),
                          "75+" => array());
+        $eqByAge6 = array("All" => array(),
+                         "<60-64" => array(),
+                         "65-74" => array(),
+                         "75+" => array());
+        $eqByAge12 = array("All" => array(),
+                         "<60-64" => array(),
+                         "65-74" => array(),
+                         "75+" => array());
+                         
         $selfHealthByAge = array("All" => array(),
                                  "<60-64" => array(),
                                  "65-74" => array(),
                                  "75+" => array());
+        $selfHealthByAge6 = array("All" => array(),
+                                 "<60-64" => array(),
+                                 "65-74" => array(),
+                                 "75+" => array());
+        $selfHealthByAge12 = array("All" => array(),
+                                 "<60-64" => array(),
+                                 "65-74" => array(),
+                                 "75+" => array());
+                                 
         $lonelinessByAge = array("All" => array("3-5" => array(), "6-9" => array()),
+                                 "<60-64"  => array("3-5" => array(), "6-9" => array()),
+                                 "65-74"  => array("3-5" => array(), "6-9" => array()),
+                                 "75+"  => array("3-5" => array(), "6-9" => array()));
+        $lonelinessByAge6 = array("All" => array("3-5" => array(), "6-9" => array()),
+                                 "<60-64"  => array("3-5" => array(), "6-9" => array()),
+                                 "65-74"  => array("3-5" => array(), "6-9" => array()),
+                                 "75+"  => array("3-5" => array(), "6-9" => array()));
+        $lonelinessByAge12 = array("All" => array("3-5" => array(), "6-9" => array()),
                                  "<60-64"  => array("3-5" => array(), "6-9" => array()),
                                  "65-74"  => array("3-5" => array(), "6-9" => array()),
                                  "75+"  => array("3-5" => array(), "6-9" => array()));
@@ -642,6 +683,15 @@ class Descriptors extends SpecialPage {
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
                 $scores = $fScores["Health"];
                 $selfHealth = self::getBlobData("HEALTH_QUESTIONS", "healthstatus_avoid6", $person, YEAR, "RP_AVOID_SIXMO");
+                $eqId = implode("", $api->getHealthScores($person->getId(), "RP_AVOID_SIXMO"));
+                $eqMean = $EQ5D5L[$eqId];
+                $loneliness = array_sum($api->getLonelinessScores($person->getId(), "RP_AVOID_SIXMO"));
+                $age = self::getBlobData("AVOID_Questions_tab0", "avoid_age", $person, YEAR);
+                $gender = self::getBlobData("AVOID_Questions_tab0", "avoid_gender", $person, YEAR);
+                $ethnicity = self::getBlobData("AVOID_Questions_tab0", "ethnicity_avoid", $person, YEAR)["ethnicity_avoid"];
+                $income = self::getBlobData("AVOID_Questions_tab0", "income_avoid", $person, YEAR);
+                $living = self::getBlobData("AVOID_Questions_tab0", "living_avoid", $person, YEAR);
+                $education = self::getBlobData("AVOID_Questions_tab0", "education_avoid", $person, YEAR);
                 $total = $fScores["Total"]/36;
                 $total6 = $total;
                 
@@ -661,6 +711,52 @@ class Descriptors extends SpecialPage {
                 else {
                     $frailty6[3][] = $total;
                     if($total0 != null){ $means6[3][] = $diff; }
+                }
+                
+                $frailtyByAge6["All"][] = $total;
+                $eqByAge6["All"][] = $eqMean;
+                $selfHealthByAge6["All"][] = $selfHealth;
+                if($loneliness <= 5){
+                    $lonelinessByAge6["All"]["3-5"][] = $loneliness;
+                }
+                else{
+                    $lonelinessByAge6["All"]["6-9"][] = $loneliness;
+                }
+                if($age == "less than 60" || $age < 65){
+                    $frailtyByAge6["<60-64"][] = $total;
+                    @$cfsByAge6["<60-64"][$fScores["CFS"]]++;
+                    $eqByAge6["<60-64"][] = $eqMean;
+                    $selfHealthByAge6["<60-64"][] = $selfHealth;
+                    if($loneliness <= 5){
+                        $lonelinessByAge6["<60-64"]["3-5"][] = $loneliness;
+                    }
+                    else{
+                        $lonelinessByAge6["<60-64"]["6-9"][] = $loneliness;
+                    }
+                }
+                else if($age >= 65 && $age < 75){
+                    $frailtyByAge6["65-74"][] = $total;
+                    @$cfsByAge6["65-74"][$fScores["CFS"]]++;
+                    $eqByAge6["65-74"][] = $eqMean;
+                    $selfHealthByAge6["65-74"][] = $selfHealth;
+                    if($loneliness <= 5){
+                        $lonelinessByAge6["65-74"]["3-5"][] = $loneliness;
+                    }
+                    else{
+                        $lonelinessByAge6["65-74"]["6-9"][] = $loneliness;
+                    }
+                }
+                else if($age >= 75){
+                    $frailtyByAge6["75+"][] = $total;
+                    @$cfsByAge6["75+"][$fScores["CFS"]]++;
+                    $eqByAge6["75+"][] = $eqMean;
+                    $selfHealthByAge6["75+"][] = $selfHealth;
+                    if($loneliness <= 5){
+                        $lonelinessByAge6["75+"]["3-5"][] = $loneliness;
+                    }
+                    else{
+                        $lonelinessByAge6["75+"]["6-9"][] = $loneliness;
+                    }
                 }
                 
                 @$cfs6[$fScores["CFS"]]++;
@@ -688,7 +784,16 @@ class Descriptors extends SpecialPage {
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_TWELVEMO") && self::getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID_TWELVEMO");
                 $scores = $fScores["Health"];
-                $selfHealth = self::getBlobData("HEALTH_QUESTIONS", "healthstatus_avoid6", $person, YEAR, "RP_AVOID_SIXMO");
+                $selfHealth = self::getBlobData("HEALTH_QUESTIONS", "healthstatus_avoid6", $person, YEAR, "RP_AVOID_TWELVEMO");
+                $eqId = implode("", $api->getHealthScores($person->getId(), "RP_AVOID_TWELVEMO"));
+                $eqMean = $EQ5D5L[$eqId];
+                $loneliness = array_sum($api->getLonelinessScores($person->getId(), "RP_AVOID_TWELVEMO"));
+                $age = self::getBlobData("AVOID_Questions_tab0", "avoid_age", $person, YEAR);
+                $gender = self::getBlobData("AVOID_Questions_tab0", "avoid_gender", $person, YEAR);
+                $ethnicity = self::getBlobData("AVOID_Questions_tab0", "ethnicity_avoid", $person, YEAR)["ethnicity_avoid"];
+                $income = self::getBlobData("AVOID_Questions_tab0", "income_avoid", $person, YEAR);
+                $living = self::getBlobData("AVOID_Questions_tab0", "living_avoid", $person, YEAR);
+                $education = self::getBlobData("AVOID_Questions_tab0", "education_avoid", $person, YEAR);
                 $total = $fScores["Total"]/36;
                 $total12 = $total;
                 
@@ -708,6 +813,52 @@ class Descriptors extends SpecialPage {
                 else {
                     $frailty12[3][] = $total;
                     if($total6 != null){ $means12[3][] = $diff; }
+                }
+                
+                $frailtyByAge12["All"][] = $total;
+                $eqByAge12["All"][] = $eqMean;
+                $selfHealthByAge12["All"][] = $selfHealth;
+                if($loneliness <= 5){
+                    $lonelinessByAge12["All"]["3-5"][] = $loneliness;
+                }
+                else{
+                    $lonelinessByAge12["All"]["6-9"][] = $loneliness;
+                }
+                if($age == "less than 60" || $age < 65){
+                    $frailtyByAge12["<60-64"][] = $total;
+                    @$cfsByAge12["<60-64"][$fScores["CFS"]]++;
+                    $eqByAge12["<60-64"][] = $eqMean;
+                    $selfHealthByAge12["<60-64"][] = $selfHealth;
+                    if($loneliness <= 5){
+                        $lonelinessByAge12["<60-64"]["3-5"][] = $loneliness;
+                    }
+                    else{
+                        $lonelinessByAge12["<60-64"]["6-9"][] = $loneliness;
+                    }
+                }
+                else if($age >= 65 && $age < 75){
+                    $frailtyByAge12["65-74"][] = $total;
+                    @$cfsByAge12["65-74"][$fScores["CFS"]]++;
+                    $eqByAge12["65-74"][] = $eqMean;
+                    $selfHealthByAge12["65-74"][] = $selfHealth;
+                    if($loneliness <= 5){
+                        $lonelinessByAge12["65-74"]["3-5"][] = $loneliness;
+                    }
+                    else{
+                        $lonelinessByAge12["65-74"]["6-9"][] = $loneliness;
+                    }
+                }
+                else if($age >= 75){
+                    $frailtyByAge12["75+"][] = $total;
+                    @$cfsByAge12["75+"][$fScores["CFS"]]++;
+                    $eqByAge12["75+"][] = $eqMean;
+                    $selfHealthByAge12["75+"][] = $selfHealth;
+                    if($loneliness <= 5){
+                        $lonelinessByAge12["75+"]["3-5"][] = $loneliness;
+                    }
+                    else{
+                        $lonelinessByAge12["75+"]["6-9"][] = $loneliness;
+                    }
                 }
                 
                 @$cfs12[$fScores["CFS"]]++;
@@ -1001,24 +1152,34 @@ class Descriptors extends SpecialPage {
                     <tr>
                         <th>Variable</th>
                         <th>RCHA Total (N=".count($frailtyByAge["All"]).")</th>
+                        <th>6 Month Total (N=".count($frailtyByAge6["All"]).")</th>
+                        <th>12 Month Total (N=".count($frailtyByAge12["All"]).")</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>All</td>
 	                    <td>".number_format(array_sum($frailtyByAge['All'])/max(1,count($frailtyByAge['All'])), 2)." (".number_format(stdev($frailtyByAge['All']), 2).")</td>
+	                    <td>".number_format(array_sum($frailtyByAge6['All'])/max(1,count($frailtyByAge6['All'])), 2)." (".number_format(stdev($frailtyByAge6['All']), 2).")</td>
+	                    <td>".number_format(array_sum($frailtyByAge12['All'])/max(1,count($frailtyByAge12['All'])), 2)." (".number_format(stdev($frailtyByAge12['All']), 2).")</td>
 	                </tr>
 	                <tr>
 	                    <td><60-64</td>
 	                    <td>".number_format(array_sum($frailtyByAge['<60-64'])/max(1,count($frailtyByAge['<60-64'])), 2)." (".number_format(stdev($frailtyByAge['<60-64']), 2).")</td>
+	                    <td>".number_format(array_sum($frailtyByAge6['<60-64'])/max(1,count($frailtyByAge6['<60-64'])), 2)." (".number_format(stdev($frailtyByAge6['<60-64']), 2).")</td>
+	                    <td>".number_format(array_sum($frailtyByAge12['<60-64'])/max(1,count($frailtyByAge12['<60-64'])), 2)." (".number_format(stdev($frailtyByAge12['<60-64']), 2).")</td>
 	                </tr>
 	                <tr>
 	                    <td>65-74</td>
 	                    <td>".number_format(array_sum($frailtyByAge['65-74'])/max(1,count($frailtyByAge['65-74'])), 2)." (".number_format(stdev($frailtyByAge['65-74']), 2).")</td>
+	                    <td>".number_format(array_sum($frailtyByAge6['65-74'])/max(1,count($frailtyByAge6['65-74'])), 2)." (".number_format(stdev($frailtyByAge6['65-74']), 2).")</td>
+	                    <td>".number_format(array_sum($frailtyByAge12['65-74'])/max(1,count($frailtyByAge12['65-74'])), 2)." (".number_format(stdev($frailtyByAge12['65-74']), 2).")</td>
 	                </tr>
 	                <tr>
 	                    <td>75+</td>
 	                    <td>".number_format(array_sum($frailtyByAge['75+'])/max(1,count($frailtyByAge['75+'])), 2)." (".number_format(stdev($frailtyByAge['75+']), 2).")</td>
+	                    <td>".number_format(array_sum($frailtyByAge6['75+'])/max(1,count($frailtyByAge6['75+'])), 2)." (".number_format(stdev($frailtyByAge6['75+']), 2).")</td>
+	                    <td>".number_format(array_sum($frailtyByAge12['75+'])/max(1,count($frailtyByAge12['75+'])), 2)." (".number_format(stdev($frailtyByAge12['75+']), 2).")</td>
                     </tr>
                 </tbody>
             </table>");
