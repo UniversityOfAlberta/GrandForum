@@ -318,7 +318,7 @@ class Descriptors extends SpecialPage {
         global $wgServer, $wgScriptPath, $wgOut, $EQ5D5L;
         $me = Person::newFromWgUser();
         $wgOut->setPageTitle("Descriptives");
-        $people = self::getPeople();
+        $people = static::getPeople();
         
         $api = new UserFrailtyIndexAPI();
         $nIntake = 0;
