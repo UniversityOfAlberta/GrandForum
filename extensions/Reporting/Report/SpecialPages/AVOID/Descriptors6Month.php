@@ -7,8 +7,8 @@ $wgSpecialPageGroups['Descriptors6Month'] = 'reporting-tools';
 
 $wgHooks['SubLevelTabs'][] = 'Descriptors6Month::createSubTabs';
 
-function runDescriptors12Month($par) {
-    Descriptors12Month::execute($par);
+function runDescriptors6Month($par) {
+    Descriptors6Month::execute($par);
 }
 
 class Descriptors6Month extends Descriptors {
