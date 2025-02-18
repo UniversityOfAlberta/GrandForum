@@ -94,7 +94,9 @@ class ProjectDashboardTab extends AbstractEditableTab {
         if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
             $this->showUpToDate($this->project, $this->visibility);
             if(!$this->project->isSubProject()){
-                $this->showTopProducts($this->project, $this->visibility);
+                if($config->getValue('nProjectTopProducts') > 0){
+                    $this->showTopProducts($this->project, $this->visibility);
+                }
                 if($config->getValue('projectTechEnabled')){
                     $this->showTechnologyEvaluationAdoption($this->project, $this->visibility);
                     $this->showPolicy($this->project, $this->visibility);
@@ -116,7 +118,9 @@ class ProjectDashboardTab extends AbstractEditableTab {
         global $config;
         $this->showEditUpToDate($this->project, $this->visibility);
         if(!$this->project->isSubProject()){
-            $this->showEditTopProducts($this->project, $this->visibility);
+            if($config->getValue('nProjectTopProducts') > 0){
+                $this->showTopProducts($this->project, $this->visibility);
+            }
             if($config->getValue('projectTechEnabled')){
                 $this->showEditTechnologyEvaluationAdoption($this->project, $this->visibility);
                 $this->showEditPolicy($this->project, $this->visibility);

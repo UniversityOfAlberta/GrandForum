@@ -125,9 +125,9 @@ class ProjectPage {
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
-                // if($config->getValue('wikiEnabled')){
-                //     $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
-                // }
+                if($config->getValue('wikiEnabled')){
+                    $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
+                }
                 if($config->getValue('networkName') == "GlycoNet" && (strstr($project->getName(), "GIS-") === false)){
                     $tabbedPage->addTab(new ProjectReportsTab($project, $visibility));
                 }
