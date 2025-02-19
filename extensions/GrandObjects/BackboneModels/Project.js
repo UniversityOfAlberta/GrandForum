@@ -18,8 +18,7 @@ Project = Backbone.Model.extend({
     },
     
     getMembers: function(){
-        this.members.fetch();
-        return this.members;
+        return this.members.fetch();
     },
     
     getLink: function(){
