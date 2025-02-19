@@ -479,7 +479,7 @@ class Descriptors extends SpecialPage {
                 
                 $total = $fScores["Total"]/36;
                 $total0 = $total;
-                $revisedTotal = ($fscores["Total"] + $fscores["Extra"]["Total"])/53;
+                $revisedTotal = ($fScores["Total"] + $fScores["Extra"]["Total"])/53;
                 $revisedTotal0 = $revisedTotal;
                 
                 if($total >= 0 && $total <= 0.1){
@@ -726,7 +726,7 @@ class Descriptors extends SpecialPage {
              
                 $total = $fScores["Total"]/36;
                 $total6 = $total;
-                $revisedTotal = ($fscores["Total"] + $fscores["Extra"]["Total"])/53;
+                $revisedTotal = ($fScores["Total"] + $fScores["Extra"]["Total"])/53;
                 $revisedTotal6 = $revisedTotal;
                 
                 $diff = $total6 - $total0;
@@ -847,7 +847,7 @@ class Descriptors extends SpecialPage {
 
                 $total = $fScores["Total"]/36;
                 $total12 = $total;
-                $revisedTotal = ($fscores["Total"] + $fscores["Extra"]["Total"])/53;
+                $revisedTotal = ($fScores["Total"] + $fScores["Extra"]["Total"])/53;
                 $revisedTotal12 = $revisedTotal;
                 
                 $diff = $total12 - $total6;
