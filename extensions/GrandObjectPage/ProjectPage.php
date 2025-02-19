@@ -91,29 +91,29 @@ class ProjectPage {
                 $tabbedPage = new TabbedPage("project");
                 $tabbedPage->singleHeader = false;
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
-                // if($config->getValue('projectLongDescription')){
-                //     if($config->getValue('networkName') == "FES"){
-                //         $tabbedPage->addTab(new ProjectFESDescriptionTab($project, $visibility));
-                //     }
-                //     else{
-                //         $tabbedPage->addTab(new ProjectDescriptionTab($project, $visibility));
-                //     }
-                // }
+                if($config->getValue('projectLongDescription')){
+                    if($config->getValue('networkName') == "FES"){
+                        $tabbedPage->addTab(new ProjectFESDescriptionTab($project, $visibility));
+                    }
+                    else{
+                        $tabbedPage->addTab(new ProjectDescriptionTab($project, $visibility));
+                    }
+                }
                 /*if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }*/
                 if($config->getValue('networkType') == "CFREF"){
                     $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
                 }
-                else if($config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false)){
-                    // $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
+                else if($config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false) && $config->getValue('networkName') != "I-VECTOR"){
+                    $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                // if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET') && $config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false)){
-                //     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
-                // }
+                if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET') && $config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false)&& $config->getValue('networkName') != "I-VECTOR"){
+                    $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
+                }
                 if(strstr($project->getName(), "GIS-") !== false){
                     $tabbedPage->addTab(new ProjectKPI2Tab($project, $visibility));
                     $tabbedPage->addTab(new ProjectKPITab($project, $visibility));
