@@ -222,7 +222,6 @@ class Project extends BackboneModel {
             }
             knatsort($projects);
             $projects = array_values($projects);
-            print_r($projects); // Outputs $projects in a human-readable format
             self::$projectCache[$subProjects[1]] = $projects;
         }
         return self::$projectCache[$subProjects[1]];
