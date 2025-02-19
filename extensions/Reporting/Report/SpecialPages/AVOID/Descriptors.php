@@ -460,6 +460,9 @@ class Descriptors extends SpecialPage {
             $total = null;
             $total6 = null;
             $total12 = null;
+            $revisedTotal = null;
+            $revisedTotal6 = null;
+            $revisedTotal12 = null;
             if(!$person->isRoleAtMost(CI)){
                 continue;
             }
