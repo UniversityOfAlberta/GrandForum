@@ -5,6 +5,9 @@ Project = Backbone.Model.extend({
     initialize: function(){
         this.products = new ProjectProducts();
         this.products.url = this.urlRoot + '/' + this.get('id') + '/products';
+        
+        this.members = new People();
+        this.members.url = this.urlRoot + '/' + this.get('id') + '/members';
     },
     
     urlRoot: 'index.php?action=api.project',
@@ -12,6 +15,11 @@ Project = Backbone.Model.extend({
     getProducts: function(){
         this.products.fetch();
         return this.products;
+    },
+    
+    getMembers: function(){
+        this.members.fetch();
+        return this.members;
     },
     
     getLink: function(){
