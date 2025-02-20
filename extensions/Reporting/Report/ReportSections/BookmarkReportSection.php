@@ -3,8 +3,8 @@
 class BookmarkReportSection extends AbstractReportSection {
     
     // Creates a new ReportSection (not editable)
-    function BookmarkReportSection(){
-        $this->AbstractReportSection();
+    function __construct(){
+        parent::__construct();
         $this->setPageBreak(false);
     }
     
