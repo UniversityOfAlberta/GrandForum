@@ -1126,7 +1126,7 @@ abstract class AbstractReport extends SpecialPage {
                         $caseNumber = ($caseNumber != "") ? "{$caseNumber}-" : "";
                         $firstName = $report->person->getFirstName();
                         $lastName = $report->person->getLastName();
-                        $name = str_replace(" ", "-", $caseNumber."{$lastName}".substr($lastName, 0, 1)."-".trim(str_replace(":", "", $type)));
+                        $name = str_replace(" ", "-", $caseNumber."{$lastName}".substr($firstName, 0, 1)."-".trim(str_replace(":", "", $type)));
                         $zip->addFromString(utf8_decode("{$name}.pdf"), $pdf->getPDF());
                     }
                 }
