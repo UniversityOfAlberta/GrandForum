@@ -28,14 +28,14 @@
         $academicDept = $csv[6];
         $academicDeptCode = $csv[7];
         $hrDeptId = $csv[8];
-        $hrDept = $csv[9];
+        $hrDept = trim($csv[9]);
         $program = $csv[10];
         
-        if(strstr($hrDept, "SCI ") === false &&
-           strstr($hrDept, "SC ") === false &&
-           strstr($hrDept, "ART Psychology") === false &&
-           strstr($hrDept, "ENG ") === false &&
-           strstr($hrDept, "ALES ") === false){
+        if(strstr(strtoupper($hrDept), "SCI ") === false &&
+           strstr(strtoupper($hrDept), "SC ") === false &&
+           strstr(strtoupper($hrDept), "ENG ") === false &&
+           strstr(strtoupper($hrDept), "ALES ") === false &&
+           strstr(strtoupper($hrDept), "ART ") === false){
             continue;
         }
         
@@ -91,6 +91,15 @@
                                 array('employee_id' => $emplid),
                                 array('user_id' => $person->getId()));
                                 
+            if(strstr(strtoupper($hrDept), "ART ") !== false){
+                // From Arts department, so wipe any previous university entries
+                DBFunctions::delete('grand_roles',
+                                    array('user_id' => $person->getId(),
+                                          'role' => HQP));
+                DBFunctions::delete('grand_user_university',
+                                    array('user_id' => $person->getId()));
+            }
+            
             if(count($person->getRoles(true)) == 0){
                 $role = ($type == "Faculty") ? CI : HQP;
                 DBFunctions::insert("grand_roles",
@@ -100,6 +109,9 @@
             }
             
             if(count($person->getUniversities()) == 0){
+                $pos = str_replace("Professor 1", "Professor", $pos);
+                $pos = str_replace("Professor 2", "Professor", $pos);
+                $pos = str_replace("Professor 3", "Professor", $pos);
                 $pos = str_replace("Full Professor", "Professor", $pos);
                 $pos = str_replace("Post-Doctoral Fellows", "Post-Doctoral Fellow", $pos);
                 $pos = str_replace("Masters", "Graduate Student - Master's", $pos);
@@ -107,6 +119,9 @@
                 
                 $uni = "University of Alberta";
                 $dept = (isset($deptCodes[$hrDeptId])) ? $deptCodes[$hrDeptId] : "Unknown";
+                if($dept == "Unknown" && $hrDept != ""){
+                    $dept = $academicDept;
+                }
                 
                 $api = new PersonUniversitiesAPI();
                 $api->params['id'] = $person->getId();

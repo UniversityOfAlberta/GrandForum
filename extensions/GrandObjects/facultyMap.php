@@ -25,22 +25,22 @@ $facultyMap = array(
         "Electrical & Computer Engineering", "Electrical and Computer Engineering"
     ),
     "Arts" => array(
-        "Art and Design",
+        "Art and Design", "Art And Design",
         "Drama",
         "Music",
         "East Asian Studies",
-        "English and Film Studies",
-        "History, Classics, and Religion",
-        "Modern Languages and Cultural Studies",
+        "English and Film Studies", "English & Film Studies",
+        "History, Classics, and Religion", "History/Classics/Religion",
+        "Modern Languages and Cultural Studies", "Mod Lang & Cultural Stud",
         "Philosophy",
-        "Media and Technology Studies",
+        "Media and Technology Studies", "Media Tech Studies(MTS)", "Media Tech Studies",
         "Anthropology",
         "Economics",
         "Linguistics",
         "Political Science",
         "Psychology",
         "Sociology",
-        "Women's and Gender Studies"
+        "Women's and Gender Studies", "Women & Gender Studies"
     )
 );
 
