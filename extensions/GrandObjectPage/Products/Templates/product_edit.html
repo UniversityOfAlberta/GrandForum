@@ -33,10 +33,10 @@
     <% } %>
 <% } %>
 <h2>Metadata</h2>
-<div style="display:inline-block; margin-right:10px; vertical-align:top;">
-    <table id="productData" width="50%">
+<div style="display:inline-block; vertical-align:top;width:95%;">
+    <table id="productData" width="100%">
         <tr>
-            <td class="label">Category:</td>
+            <td class="label" style="width:1%;">Category:</td>
             <td class="field">
                 <% var def = (category == "") ? [{option: "Choose a Category...", value: ""}] : []; %>
                 <%= HTML.Select(this, 'category', {options: def.concat(_.keys(this.model.getPossibleCategories()))}) %>
@@ -52,6 +52,10 @@
                         <%= HTML.MiscAutoComplete(this, 'type', {size: '30', misc: this.model.getPossibleMiscTypes(), prefix: 'Misc'}) %>
                     <% } else if(type.split('Other').length > 1){ %>
                         <%= HTML.MiscAutoComplete(this, 'type', {size: '30', misc: this.model.getPossibleMiscTypes(), prefix: 'Other'}) %>
+                    <% } %><br />
+                    <% if(productStructure.categories[category] != undefined &&
+      productStructure.categories[category].types[type] != undefined){ %>
+                        <small><%= productStructure.categories[category].types[type].description %></small>
                     <% } %>
                 </td>
             </tr>
@@ -90,10 +94,6 @@
                 <td colspan="2"></td>
             <% } %>
         </tr>
-    </table>
-</div>
-<div style="display:inline-block; vertical-align:top;">
-    <table>
         <% _.each(this.model.getPossibleFields(), function(val, index){ %>
             <% if(!val.hidden){ %>
                 <tr id="<%= index %>">
@@ -129,7 +129,8 @@
                 <!-- Add some specific warnings -->
                 <% if(type == "Conference Paper" && (index == "event_title" || index == "event_location")){ %>
                 <tr>
-                    <td colspan="2" align="right">
+                    <td></td>
+                    <td>
                         <small>The above field is required for successful data migration to CCV</small>
                     </td>
                 </tr>

@@ -2,9 +2,9 @@
 
 class ImportBibTeXAPI extends API{
 
-    static $bibtexHash = array('inproceedings' => 'Proceedings Paper',
-                               'proceedings' => 'Proceedings Paper',
-                               'inbook' => 'Proceedings Paper',
+    static $bibtexHash = array('inproceedings' => 'Conference Paper',
+                               'proceedings' => 'Conference Paper',
+                               'inbook' => 'Conference Paper',
                                'conference' => 'Conference Paper',
                                'book' => 'Book',
                                'article' => 'Journal Paper',

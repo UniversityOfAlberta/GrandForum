@@ -30,7 +30,7 @@ class FECReflections extends SpecialPage {
 	    $blob_data = $blob->getData();
 	    //$blob_data = null;
 	    
-        if(date('Y-m-d') >= ($year+1)."-01-01" && is_array($blob_data)){
+        if(date('Y-m-d') >= ($year+1)."-06-31" && is_array($blob_data)){
             $nPeople = @$blob_data['nPeople'];
             $nProfs = @$blob_data['nProfs'];
             $nFSO = @$blob_data['nFSO'];
@@ -92,13 +92,13 @@ class FECReflections extends SpecialPage {
                    strstr($case, "F") !== false ||
                    strstr($case, "M") !== false ||
                    strstr($case, "T") !== false){
-                    if(!$person->isSubRole("Dean's Decision") &&
+                    if(!$person->isSubRole("DD") &&
                        !$person->isRoleOn(DEAN, "{$year}-07-01") &&
                        !$person->isRoleOn(VDEAN, "{$year}-07-01") &&
-                       (strstr($case, "N") !== false ||
-                        strstr($case, "A") !== false ||
-                        strstr($case, "B") !== false ||
-                        strstr($case, "C") !== false)){
+                       (strstr($case, "M") !== false ||
+                        strstr($case, "D") !== false ||
+                        strstr($case, "E") !== false ||
+                        strstr($case, "F") !== false)){
                         // FSO
                         $nFSO++;
                         
@@ -107,15 +107,13 @@ class FECReflections extends SpecialPage {
                            $revisedIncrement != "0.00" &&
                            $revisedIncrement != "0.00 (PTC)" &&
                            $revisedIncrement != "0A"){
-                            if(strstr($case, "A") !== false){
-                                $sumFSO += floatval($revisedIncrement);
-                                $nUncappedFSO++;
-                            }
+                            $sumFSO += floatval($revisedIncrement);
+                            $nUncappedFSO++;
                         }
                     }
                     continue; // Skip
                 }
-                if(!$person->isSubRole("Dean's Decision") &&
+                if(!$person->isSubRole("DD") &&
                    !$person->isRoleOn(DEAN, "{$year}-07-01") &&
                    !$person->isRoleOn(VDEAN, "{$year}-07-01") &&
                    (strstr($case, "N") !== false ||
@@ -319,7 +317,7 @@ class FECReflections extends SpecialPage {
                 $pubs->attributes['includeHQP'] = "false";
                 foreach($pubs->getData() as $pub){
                     $pub = Product::newFromId($pub['product_id']);
-                    if($pub->getType() == "Patent" && ($pub->getStatus() == "Awarded" || $pub->getStatus() == "Published")){
+                    if($pub->getType() == "Patent" && $pub->getStatus() == "Awarded"){
                         $publications['nonpr']['patents'][$pub->getId()] = $pub;
                     }
                 }
@@ -334,7 +332,7 @@ class FECReflections extends SpecialPage {
                           'nAssistProfs' => $nAssistProfs,
                           'nAssocProfs' => $nAssocProfs,
                           'nFullProfs' => $nFullProfs,
-                          'subAssistProfs' => $sumAssistProfs,
+                          'sumAssistProfs' => $sumAssistProfs,
                           'sumAssocProfs' => $sumAssocProfs,
                           'sumFullProfs' => $sumFullProfs,
                           'sumFSO' => $sumFSO,

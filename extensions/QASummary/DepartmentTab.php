@@ -297,7 +297,6 @@ class DepartmentTab extends AbstractTab {
             $papers = $hqp->getPapersAuthored("Publication", ($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
             foreach($papers as $paper){
                 if(($paper->getType() == "Conference Paper" || 
-                    $paper->getType() == "Proceedings Paper" || 
                     $paper->getType() == "Poster") && 
                     $this->department == "Biological Sciences"){
                     continue;

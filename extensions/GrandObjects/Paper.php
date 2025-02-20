@@ -476,6 +476,7 @@ class Paper extends BackboneModel{
                                                                                'tname' => $tname,
                                                                                'titles' => $titles,
                                                                                'visible' => $visible,
+                                                                               'description' => '',
                                                                                'citationFormat' => $citationFormat,
                                                                                'ccv_status' => array(),
                                                                                'authors_label' => "Author",
@@ -522,6 +523,9 @@ class Paper extends BackboneModel{
                                                                                                          'options' => $foptions,
                                                                                                          'hidden' => $fhidden);
                             }
+                        }
+                        else if($child->getName() == "description"){
+                            $categories['categories'][$cname]['types'][$tname]['description'] = "$child";
                         }
                         else if($child->getName() == "statuses"){
                             foreach($child->children() as $status){
@@ -783,7 +787,6 @@ class Paper extends BackboneModel{
             case 'Book':
             case 'Book Chapter':
             case 'Collections Paper':
-            case 'Proceedings Paper':
             default:
                 if($status != "Published"){
                     return false;
@@ -1732,11 +1735,8 @@ class Paper extends BackboneModel{
 
         $data = $this->getData();
         $vn = $this->getVenue();
-        if($this->getType() == "Proceedings Paper" && $vn == ""){
-            $completeness['venue'] = false;
-        }
         
-        if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
+        if(in_array($this->getType(), array('Book', 'Collections Paper', 'Journal Paper'))){
             $pg = $this->getData(array('ms_pages', 'pages'));
             if (!(strlen($pg) > 0)){
                 $completeness['pages'] = false;

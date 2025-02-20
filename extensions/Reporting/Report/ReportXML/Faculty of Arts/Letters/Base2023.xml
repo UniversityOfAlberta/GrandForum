@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name=" " headerName=" " pageCount="false" reportType="RP_LETTER{GET(n, 1)}" pdfType="RP_LETTER{GET(n, 1)}" pdfFiles="Letters/Base2023" personId="{GET(userId, {$my_id})}" ajax="true" year="2023" encrypt="true">
+    <Permissions>
+        <Role role="DEAN">
+            <SectionPermission id="fec1" permissions="rw" />
+            <SectionPermission id="fec2" permissions="rw" />
+            <SectionPermission id="fec3" permissions="rw" />
+            <SectionPermission id="fec4" permissions="rw" />
+            <SectionPermission id="fec5" permissions="rw" />
+            <SectionPermission id="atsec1" permissions="rw" />
+            <SectionPermission id="atsec2" permissions="rw" />
+            <SectionPermission id="atsec3" permissions="rw" />
+            <SectionPermission id="atsec4" permissions="rw" />
+            <SectionPermission id="letter" permissions="rw" />
+        </Role>
+        <Role role="VDEAN">
+            <SectionPermission id="fec1" permissions="rw" />
+            <SectionPermission id="fec2" permissions="rw" />
+            <SectionPermission id="fec3" permissions="rw" />
+            <SectionPermission id="fec4" permissions="rw" />
+            <SectionPermission id="fec5" permissions="rw" />
+            <SectionPermission id="atsec1" permissions="rw" />
+            <SectionPermission id="atsec2" permissions="rw" />
+            <SectionPermission id="atsec3" permissions="rw" />
+            <SectionPermission id="atsec4" permissions="rw" />
+            <SectionPermission id="letter" permissions="rw" />
+        </Role>
+        <Role role="HR">
+            <SectionPermission id="fec1" permissions="rw" />
+            <SectionPermission id="fec2" permissions="rw" />
+            <SectionPermission id="fec3" permissions="rw" />
+            <SectionPermission id="fec4" permissions="rw" />
+            <SectionPermission id="fec5" permissions="rw" />
+            <SectionPermission id="atsec1" permissions="rw" />
+            <SectionPermission id="atsec2" permissions="rw" />
+            <SectionPermission id="atsec3" permissions="rw" />
+            <SectionPermission id="atsec4" permissions="rw" />
+            <SectionPermission id="letter" permissions="rw" />
+        </Role>
+        <Role role="MANAGER+">
+            <SectionPermission id="fec1" permissions="rw" />
+            <SectionPermission id="fec2" permissions="rw" />
+            <SectionPermission id="fec3" permissions="rw" />
+            <SectionPermission id="fec4" permissions="rw" />
+            <SectionPermission id="fec5" permissions="rw" />
+            <SectionPermission id="atsec1" permissions="rw" />
+            <SectionPermission id="atsec2" permissions="rw" />
+            <SectionPermission id="atsec3" permissions="rw" />
+            <SectionPermission id="atsec4" permissions="rw" />
+            <SectionPermission id="letter" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="fec1" name="FEC Letter 1" title="FEC Letters Table" type="EditableReportSection" blobSection="TABLE" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
+                <div style='float:right; margin-top: -45px;display:flex;'>
+                    <div><button id='generateAll' type='button'>Generate All Letters</button></div>
+                    <div><button id='downloadAll' class='noDisable' type='button'>Download All Letters</button></div>
+                </div>
+                <script type='text/javascript'>
+                    function postToIframe(data,url,target){
+                        $('body').append('<form action="'+url+'" method="post" target="'+target+'" id="postToIframe"></form>');
+                        $.each(data,function(n,v){
+                            $('#postToIframe').append('<input type="hidden" name="'+n+'" value="'+v+'" />');
+                        });
+                        $('#postToIframe').submit().remove();
+                    }
+                    $('#generateAll').click(function(){
+                        $('.generatePDF:not(:disabled)').click();
+                    });
+                    $('#downloadAll').click(function(){
+                        var pdfs = $.makeArray($(".letterPDF:visible").map(function(i, pdf){ return $(pdf).attr('href');})).join(',').replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '');
+                        postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip&zipName=Letters.zip', 'downloadFrame');
+                    });
+                </script>
+                <table id='letterTable' width='100%' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Case#</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>PDF</th>
+                            <th style='width:14em;'>Generate</th>
+                            <th>Template</th>
+                            <th>Date</th>
+                            <th>Comments</th>
+                            <th>Location</th>
+                            <th>Show 0D Message</th>
+                            <th>Chair Position</th>
+                            <th>Performance</th>
+                            <th>Present Case</th>
+                            <th>Chair (From)</th>
+                            <th>Sabbatical Duration</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01">
+            <Static>
+                <![CDATA[
+                    <tr data-fecid="{getExtra()}" data-userid="{$user_id}">
+                        <td>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_dept}</td>
+                ]]>
+            </Static>
+            <ReportItem id="letter" type="PDFReportItem" class="letterPDF downloadButton{$user_id}" reportType="Letters/Base2023" pdfReport="{$report_type}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                        <td style='white-space:nowrap;' align='center'>
+                            <input class='generatePDF' type='button' value="Generate PDF" />
+                            <img class="throbber" style="display: none; vertical-align: -20%;" src="../skins/Throbber.gif">
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="template" type="Select" personId="1" blobItem="TEMPLATE" blobSubItem="{$user_id}" width="3em" options="|5|10|16|18|19|20|21|22|23|24|26|27|28|29|30|31|32|33|34|35|36|38|40|50|51" labels="|05 - Department Chair recommends second probationary period and Dean supports recommendation|10 - End of a First or Second Probationary Period Department Chair recommends tenure FEC supports recommendation|16 - Department Chair recommends tenure and FEC extends second probationary period by one year|18 - Department Chair supports application for promotion and FEC awards promotion|19 - Department Chair supports application for promotion and preliminary position of FEC is to deny promotion|20 - Department Chair does not support promotion and staff member is advised of the right to appear before FEC and contest the recommendation|21 - Department Chair does not support promotion and staff member appears before FEC to contest the Chair’s recommendation and the final decision of FEC is to deny promotion|22 - Department Chair opposes application for promotion and FEC awards promotion|23 - FEC New (Jul1-Oct1)|24 - FEC New (Oct2-Jun1)|26 - FEC Agree with Chair (above 1.0)|27 - FEC goes higher|28 - Recommend is 1.0 and FEC lowered appeared reconsideration|29 - FEC less than a single increment|30 - Recommend is less than 1.0 and FEC lowered|31 - Recommend less than 1.0 and FEC lowered reconsideration|32 - FEC Agree with Chair less than 1.0 appear|33 - FEC Agree with Chair less than 1.0 no appearance|34 - Recommend 1.0 or multiple and FEC less than 1.0|35 - Recommend is 1.0 and FEC lowered appear|36 - Recommend multiple and FEC lowered but not less than 1.0|38 - Recommend no increment and FEC decides 0D|40 - Sabbatical|50 - Promotion to FSO III|51 - Promotion to FSO IV">
+                <![CDATA[
+                        <td align="center" class="template">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="followup_date" type="Text" personId="1" blobItem="FOLLOWUP_DATE" blobSubItem="{$user_id}" width="9em">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="comment" type="Textarea" personId="1" blobItem="COMMENT" blobSubItem="{$user_id}" height="50px" width="200px">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="location" type="Text" personId="1" blobItem="LOCATION" blobSubItem="{$user_id}" width="9em">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="0d" type="Select" personId="1" blobItem="0D" blobSubItem="{$user_id}" options="|Yes|No" width="4em">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="chair_position" type="Select" personId="1" blobItem="CHAIR_POSITION" blobSubItem="{$user_id}" options="|continues to support their original recommendation|now supports the preliminary position of FEC">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="performance" type="Select" personId="1" blobItem="PERFORMANCE" blobSubItem="{$user_id}" width="8em" options="|satisfactory|strong|exemplary">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="present_case" type="Select" personId="1" blobItem="PRESENT_CASE" blobSubItem="{$user_id}" options="|present your case|submit documentation in support of your case">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="chair" type="Text" personId="1" blobItem="CHAIR" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="sabb_duration" type="Select" personId="1" blobItem="SABB_DURATION" blobSubItem="{$user_id}" options="|6 month|12 month">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="sabb_start" type="Text" personId="1" blobItem="SABB_START" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="sabb_end" type="Text" personId="1" blobItem="SABB_END" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type="text/javascript">
+                    var table = $('#letterTable').DataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1,
+                        "scrollX": true,
+                        "scrollY": 500
+                    });
+                    $(".template").change(function(){
+                        if($("option:selected", $(this)).val() == ""){
+                            $(".generatePDF", $(this).closest("tr")).prop("disabled", true);
+                        }
+                        else{
+                            $(".generatePDF", $(this).closest("tr")).prop("disabled", false);
+                        }
+                    }).trigger("change");
+                    $('#letterTable select, #letterTable textarea, #letterTable input').change(function(){
+                        saveAll();
+                    });
+                    $('#letterTable input.generatePDF').click(function(){
+                        var userid = $(this).closest("tr").attr("data-userid");
+                        var template = $(".template select option:selected", $(this).closest("tr")).val();
+                        $(this).prop("disabled", true);
+                        $(this).siblings(".throbber").show();
+                        saveAll(function(){
+                            if(template != ""){
+                                $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + 
+                                                                "&n=" + "{$report_type}".slice(-1) + 
+                                                                "&userId=" + userid + 
+                                                                "&generatePDF", function(response){
+                                    $(".downloadButton" + userid).attr("href", wgServer + wgScriptPath + "/index.php/Special:ReportArchive?getpdf=" + response["Letters/" + template].tok).show();
+                                    $(this).prop("disabled", false);
+                                    $(this).siblings(".throbber").hide();
+                                }.bind(this));
+                            }
+                            else{
+                                $(this).prop("disabled", false);
+                                $(this).siblings(".throbber").hide();
+                            }
+                        }.bind(this));
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="fec2" name="FEC Letter 2" blobReport="RP_LETTER2" copy="fec1" />
+    <ReportSection id="fec3" name="FEC Letter 3" blobReport="RP_LETTER3" copy="fec1" />
+    <ReportSection id="fec4" name="FEC Letter 4" blobReport="RP_LETTER4" copy="fec1" />
+    <ReportSection id="fec5" name="FEC Variance" blobReport="RP_LETTER5" title="FEC Letters Table" type="EditableReportSection" blobSection="TABLE" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
+                <div style='float:right; margin-top: -45px;display:flex;'>
+                    <div><button id='generateAll' type='button'>Generate All Letters</button></div>
+                    <div><button id='downloadAll' class='noDisable' type='button'>Download All Letters</button></div>
+                </div>
+                <script type='text/javascript'>
+                    function postToIframe(data,url,target){
+                        $('body').append('<form action="'+url+'" method="post" target="'+target+'" id="postToIframe"></form>');
+                        $.each(data,function(n,v){
+                            $('#postToIframe').append('<input type="hidden" name="'+n+'" value="'+v+'" />');
+                        });
+                        $('#postToIframe').submit().remove();
+                    }
+                    $('#generateAll').click(function(){
+                        $('.generatePDF:not(:disabled)').click();
+                    });
+                    $('#downloadAll').click(function(){
+                        var pdfs = $.makeArray($(".letterPDF:visible").map(function(i, pdf){ return $(pdf).attr('href');})).join(',').replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '');
+                        postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip&zipName=Letters.zip', 'downloadFrame');
+                    });
+                </script>
+                <table id='letterTable' width='100%' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Case#</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>PDF</th>
+                            <th style='width:14em;'>Generate</th>
+                            <th>Template</th>
+                            <th>From</th>
+                            <th>Role</th>
+                            <th>Replace Role</th>
+                            <th>Teaching</th>
+                            <th>Research</th>
+                            <th>Service</th>
+                            <th>Admin</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01">
+            <Static>
+                <![CDATA[
+                    <tr data-fecid="{getExtra()}" data-userid="{$user_id}">
+                        <td>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_dept}</td>
+                ]]>
+            </Static>
+            <ReportItem id="letter" type="PDFReportItem" class="letterPDF downloadButton{$user_id}" reportType="Letters/Base2023" pdfReport="{$report_type}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                        <td style='white-space:nowrap;' align='center'>
+                            <input class='generatePDF' type='button' value="Generate PDF" />
+                            <img class="throbber" style="display: none; vertical-align: -20%;" src="../skins/Throbber.gif">
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="template" type="Select" personId="1" blobItem="TEMPLATE" blobSubItem="{$user_id}" options="|Variance" labels="|Variance" width="6em">
+                <![CDATA[
+                        <td align="center" class="template">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="from" type="Text" personId="1" blobItem="FROM" blobSubItem="{$user_id}" width="9em">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="role" type="Text" personId="1" blobItem="ROLE" blobSubItem="{$user_id}" width="9em">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="replace_role" type="Select" options="|Yes" personId="1" blobItem="REPLACE_ROLE" blobSubItem="{$user_id}" width="9em">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="teaching" type="Text" personId="1" blobItem="TEACHING" blobSubItem="{$user_id}" width="28px">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="research" type="Text" personId="1" blobItem="RESEARCH" blobSubItem="{$user_id}" width="28px">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="service" type="Text" personId="1" blobItem="SERVICE" blobSubItem="{$user_id}" width="28px">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin" type="Text" personId="1" blobItem="ADMIN" blobSubItem="{$user_id}" width="28px">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="start_date" type="Text" personId="1" blobItem="START_DATE" blobSubItem="{$user_id}" width="82px">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="end_date" type="Text" personId="1" blobItem="END_DATE" blobSubItem="{$user_id}" width="82px">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type="text/javascript">
+                    var table = $('#letterTable').DataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1,
+                        "scrollX": true,
+                        "scrollY": 500
+                    });
+                    $(".template").change(function(){
+                        if($("option:selected", $(this)).val() == ""){
+                            $(".generatePDF", $(this).closest("tr")).prop("disabled", true);
+                        }
+                        else{
+                            $(".generatePDF", $(this).closest("tr")).prop("disabled", false);
+                        }
+                    }).trigger("change");
+                    $('#letterTable select, #letterTable textarea, #letterTable input').change(function(){
+                        saveAll();
+                    });
+                    $('#letterTable input.generatePDF').click(function(){
+                        var userid = $(this).closest("tr").attr("data-userid");
+                        var template = $(".template select option:selected", $(this).closest("tr")).val();
+                        $(this).prop("disabled", true);
+                        $(this).siblings(".throbber").show();
+                        saveAll(function(){
+                            if(template != ""){
+                                $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + 
+                                                                "&n=" + "{$report_type}".slice(-1) + 
+                                                                "&userId=" + userid + 
+                                                                "&generatePDF", function(response){
+                                    $(".downloadButton" + userid).attr("href", wgServer + wgScriptPath + "/index.php/Special:ReportArchive?getpdf=" + response["Letters/" + template].tok).show();
+                                    $(this).prop("disabled", false);
+                                    $(this).siblings(".throbber").hide();
+                                }.bind(this));
+                            }
+                            else{
+                                $(this).prop("disabled", false);
+                                $(this).siblings(".throbber").hide();
+                            }
+                        }.bind(this));
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="atsec1" name="ATSEC Letter 1" title="ATSEC Letters Table" type="EditableReportSection" blobSection="TABLE" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
+                <div style='float:right; margin-top: -45px;display:flex;'>
+                    <div><button id='generateAll' type='button'>Generate All Letters</button></div>
+                    <div><button id='downloadAll' class='noDisable' type='button'>Download All Letters</button></div>
+                </div>
+                <script type='text/javascript'>
+                    function postToIframe(data,url,target){
+                        $('body').append('<form action="'+url+'" method="post" target="'+target+'" id="postToIframe"></form>');
+                        $.each(data,function(n,v){
+                            $('#postToIframe').append('<input type="hidden" name="'+n+'" value="'+v+'" />');
+                        });
+                        $('#postToIframe').submit().remove();
+                    }
+                    $('#generateAll').click(function(){
+                        $('.generatePDF:not(:disabled)').click();
+                    });
+                    $('#downloadAll').click(function(){
+                        var pdfs = $.makeArray($(".letterPDF:visible").map(function(i, pdf){ return $(pdf).attr('href');})).join(',').replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '');
+                        postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip&zipName=Letters.zip', 'downloadFrame');
+                    });
+                </script>
+                <table id='letterTable' width='100%' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Case#</th>
+                            <th>Name</th>
+                            <th>PDF</th>
+                            <th style='width:14em;'>Generate</th>
+                            <th>Template</th>
+                            <th>Date</th>
+                            <th>Comments</th>
+                            <th>Chair Position</th>
+                            <th>Promotion Rank</th>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" atsec="true" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01">
+            <Static>
+                <![CDATA[
+                    <tr data-fecid="{getExtra()}" data-userid="{$user_id}">
+                        <td>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                ]]>
+            </Static>
+            <ReportItem id="letter" type="PDFReportItem" class="letterPDF downloadButton{$user_id}" reportType="Letters/Base2023" pdfReport="{$report_type}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                        <td style='white-space:nowrap;' align='center'>
+                            <input class='generatePDF' type='button' value="Generate PDF" />
+                            <img class="throbber" style="display: none; vertical-align: -20%;" src="../skins/Throbber.gif">
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="template" type="Select" personId="1" blobItem="TEMPLATE" blobSubItem="{$user_id}" width="3em" options="|ATS11|ATS12|ATS13|ATS14|ATS15|ATS16|ATS17|ATS18|ATS19|ATS20" labels="|11 - Agree with Chair (1.0 or Higher)|12 - Contestable from ATSEC|13 - Higher than Recommendation|14 - Lower but not less than 1.0|15 - 0A|16 - 0B|17 - 0C|18 - 0D|19 - Promotion|20 - Agree for Lower than 1">
+                <![CDATA[
+                        <td align="center" class="template">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="followup_date" type="Text" personId="1" blobItem="FOLLOWUP_DATE" blobSubItem="{$user_id}" width="9em">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="comment" type="Textarea" personId="1" blobItem="COMMENT" blobSubItem="{$user_id}" height="50px" width="200px">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="chair_position" type="Select" personId="1" blobItem="CHAIR_POSITION" blobSubItem="{$user_id}" options="|continues to support their original recommendation|now supports the preliminary position of FEC">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="promotion" type="Select" personId="1" blobItem="PROMOTION" blobSubItem="{$user_id}" options="|Associate Lecturer|Full Lecturer">
+                <![CDATA[
+                        <td align="center">
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type="text/javascript">
+                    var table = $('#letterTable').DataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1,
+                        "scrollX": true,
+                        "scrollY": 500
+                    });
+                    $(".template").change(function(){
+                        if($("option:selected", $(this)).val() == ""){
+                            $(".generatePDF", $(this).closest("tr")).prop("disabled", true);
+                        }
+                        else{
+                            $(".generatePDF", $(this).closest("tr")).prop("disabled", false);
+                        }
+                    }).trigger("change");
+                    $('#letterTable select, #letterTable textarea, #letterTable input').change(function(){
+                        saveAll();
+                    });
+                    $('#letterTable input.generatePDF').click(function(){
+                        var userid = $(this).closest("tr").attr("data-userid");
+                        var template = $(".template select option:selected", $(this).closest("tr")).val();
+                        $(this).prop("disabled", true);
+                        $(this).siblings(".throbber").show();
+                        saveAll(function(){
+                            if(template != ""){
+                                $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + 
+                                                                "&n=" + "{$report_type}".slice(-1) + 
+                                                                "&userId=" + userid + 
+                                                                "&generatePDF", function(response){
+                                    $(".downloadButton" + userid).attr("href", wgServer + wgScriptPath + "/index.php/Special:ReportArchive?getpdf=" + response["Letters/" + template].tok).show();
+                                    $(this).prop("disabled", false);
+                                    $(this).siblings(".throbber").hide();
+                                }.bind(this));
+                            }
+                            else{
+                                $(this).prop("disabled", false);
+                                $(this).siblings(".throbber").hide();
+                            }
+                        }.bind(this));
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="letter" tooltip="Letter" name="Letter" title="" blobSection="LETTER" type="HeaderReportSection" pagebreak="false">
+        <Static id="header">
+            <![CDATA[
+                <style>
+                    #pdfBody p {
+                        margin-bottom: 1em;
+                    }
+                </style>
+                <table style="width: 100%; margin-top: -2em;" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td align="left">
+                            <div class='previewnodisplay'><img src='skins/UAlberta_Black.png' style='height: 4em;' /></div>
+                            <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/UAlberta_Black.png' style='height: 4em;' /></div>
+                        </td>
+                        <td align="right">
+                            <div class='previewnodisplay' style='margin-left: 3em; margin-top: 1em;'><img src='skins/LetterTitle.png' style='height: 4em;' /></div>
+                            <div class='generatenodisplay' style='margin-left: 3em; margin-top: 1em;'><img src='{$wgServer}{$wgScriptPath}/skins/LetterTitle.png' style='height: 4em;' /></div>
+                        </td>
+                    </tr>
+                </table>
+                <hr style='border-width: 0.1em;' />
+                <div style="font-size: 1.25em;display:inline-block;">
+                <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td align="left">
+                            <b>Faculty of Science</b><br />
+                            Office of the Dean<br />
+                            6-189 Centennial Centre for Interdisciplinary Science (CCIS)<br />
+                            Edmonton, AB, Canada T6G 2E1
+                        </td>
+                        <td align="right">
+                            <b>T</b> 780.492.4757<br />
+                            <b>F</b> 780.492.9434<br />
+                            dean.science@ualberta.ca<br />
+                            www.ualberta.ca/science
+                        </td>
+                    </tr>
+                </table>
+                <br /><br />
+                <table cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td valign="top">Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td valign="top">{$date}<div style='height:0.25em;' /></td>
+                    </tr>
+                    <tr>
+                        <td valign="top">To:</td>
+                        <td valign="top">{$user_first_name} {$user_last_name}, {$user_dept}<div style='height:0.25em;' /></td>
+                    </tr>
+                    <tr>
+                        <td valign="top">From:</td>
+                        <td valign="top">
+            ]]>
+        </Static>
+        <Static id="from">
+            <![CDATA[
+                            Eleni Stroulia<br />
+                            Vice Dean of Science<br />
+                            Chair Faculty Evaluation Committee
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                            <div style='height:0.25em;' />
+                        </td>
+                    </tr>
+                    <tr class='cc'>
+                        <td valign="top">Cc:</td>
+                        <td valign="top">Department Chair<br />
+                            Faculty Personnel File
+                            <div style='height:0.25em;' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Re:</td>
+                        <td valign="top"><b>{$section_title}</b></td>
+                    </tr>
+                </table><br /><br />
+            ]]>
+        </Static>
+        <Static id="body">
+            <![CDATA[
+                <span></span>
+            ]]>
+        </Static>
+        <If id="bodyset" if="{==(1,1)}">
+
+        </If>
+        <Static id="footer">
+            <![CDATA[
+                Sincerely,<br />
+                <br />
+                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
+                <br />
+                Eleni Stroulia<br />
+                Vice Dean of Science<br />
+                Chair of the Science Faculty Evaluation Committee<br />
+                ES/pw
+                </div>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="atsec2" name="ATSEC Letter 2" blobReport="RP_LETTER2" copy="atsec1" />
+    <ReportSection id="atsec3" name="ATSEC Letter 3" blobReport="RP_LETTER3" copy="atsec1" />
+    <ReportSection id="atsec4" name="ATSEC Letter 4" blobReport="RP_LETTER4" copy="atsec1" />
+</Report>
