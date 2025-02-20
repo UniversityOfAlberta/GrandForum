@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="FECpdf" extends="../FEC">
+    <ReportSection id="information">
+        <ReportItem id="executive_summary" type="Textarea" blobItem="EXECUTIVE_SUMMARY" rich="true" position="1">
+            <![CDATA[
+                <h2>Executive Summary</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="review" />
     <ReportSection id="submit" />
 </Report>
