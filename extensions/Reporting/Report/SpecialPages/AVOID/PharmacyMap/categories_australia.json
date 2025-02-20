@@ -182,6 +182,14 @@
                         "tags": []
                     },
                     {
+                        "text": "Cricket",
+                        "value": 114,
+                        "code": "CFN-ACT-OUT-CRICKET",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    },
+                    {
                         "text": "Croquet",
                         "value": 114,
                         "code": "CFN-ACT-OUT-CROQUET",
