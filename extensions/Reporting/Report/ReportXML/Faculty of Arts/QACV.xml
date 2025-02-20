@@ -644,14 +644,14 @@
         </If>
 
         <!-- Patents -->
-        <If id="patents_if" if="{>({getNProducts(0000-00-00, 2100-06-30, Patent/Spin-Off, all,, false)}, 0)}">
+        <If id="patents_if" if="{>({getNProducts(SOT, EOT, Patent/Spin-Off, all,, false)}, 0)}">
             <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents">
                 <![CDATA[
                     <h2>Patents/Spin-Offs</h2>
                     <ul>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" includeHQP="false" start="0000-00-00" end="2100-06-30">
+            <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" includeHQP="false" start="SOT" end="EOT">
                 <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
                     <![CDATA[
                         <li>{$item}</li>
