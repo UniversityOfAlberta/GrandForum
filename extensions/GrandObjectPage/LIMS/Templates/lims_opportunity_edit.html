@@ -14,7 +14,7 @@
         
         <td align="right"><b>Owner:</b></td>
         <td style="padding-right:30px;">
-            <%= HTML.Select(this, 'owner.id', {style: 'width:200px;vertical-align:middle;', options: _.union([{option: owner.name, value: owner.id}], _.filter(_.map(this.project.members.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != owner.id; }))}) %>
+            <%= HTML.Select(this, 'owner.id', {style: 'width:200px;vertical-align:middle;', options: _.union([{option: owner.name, value: owner.id}], _.filter(_.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != owner.id; }))}) %>
         </td>
         
         <td align="right"><b>User Type:</b></td>
