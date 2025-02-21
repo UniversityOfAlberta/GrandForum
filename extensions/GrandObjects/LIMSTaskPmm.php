@@ -13,7 +13,6 @@ class LIMSTaskPmm extends BackboneModel {
     var $dueDate;
     var $comments;
     var $status;
-    var $date;
 	
 	static function newFromId($id){
 	    $data = DBFunctions::select(array('grand_pmm_task'),
@@ -46,7 +45,6 @@ class LIMSTaskPmm extends BackboneModel {
 		    $this->dueDate = $data[0]['due_date'];
 		    $this->comments = $data[0]['comments'];
 		    $this->status = $data[0]['status'];
-		    $this->date = $data[0]['date'];
 		}
 	}
 	
@@ -80,10 +78,6 @@ class LIMSTaskPmm extends BackboneModel {
 	
 	function getStatus(){
 	    return $this->status;
-	}
-	
-	function getDate(){
-	    return $this->date;
 	}
 	
 	function isAllowedToEdit(){
@@ -155,7 +149,6 @@ class LIMSTaskPmm extends BackboneModel {
 	                      'dueDate' => $this->getDueDate(),
 	                      'comments' => $this->getComments(),
 	                      'status' => $this->getStatus(),
-	                      'date' => $this->getDate(),
 	                      'isAllowedToEdit' => $this->isAllowedToEdit());
 	        return $json;
 	    }
@@ -170,8 +163,7 @@ class LIMSTaskPmm extends BackboneModel {
 	                                  'task' => $this->task,
 	                                  'due_date' => $this->dueDate,
 	                                  'comments' => $this->comments,
-	                                  'status' => $this->status,
-	                                  'date' => COL('CURRENT_TIMESTAMP')));
+	                                  'status' => $this->status));
 	        $this->id = DBFunctions::insertId();
 	        // Send mail to assignee
 	        $assignee = Person::newFromId($this->assignee);

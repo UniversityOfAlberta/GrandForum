@@ -19,7 +19,6 @@
             <th>Assignee</th>
             <th>Task</th>
             <th width="1%">Status</th>
-            <th width="1%" style="white-space:nowrap;">Assigned On</th>
             <th width="1%" style="white-space:nowrap;">Due Date</th>
         </tr>
     </thead>
@@ -66,9 +65,7 @@
                         <td style="white-space:nowrap;">
                             <%= task.status %><span style="display:none;"><%= task.id %></span>
                         </td>
-                        <td align="center" style="white-space:nowrap;">
-                            <%= task.date.substr(0,10) %><span style="display:none;"><%= task.id %></span>
-                        </td>
+                        
                         <td align="center" style="white-space:nowrap;">
                             <%= task.dueDate %><span style="display:none;"><%= task.id %></span>
                         </td>
