@@ -2,7 +2,7 @@
 
 require_once("Notification.php");
 
-$wgHooks['UnknownAction'][] = 'viewNotifications';
+UnknownAction::createAction('viewNotifications');
 
 function viewNotifications($action, $request){
 	if($action == "viewNotifications"){

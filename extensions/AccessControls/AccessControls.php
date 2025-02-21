@@ -40,7 +40,6 @@ $wgHooks['AbortMove'][] = 'onAbortMove';
 $wgHooks['AbortLogin'][] = 'onAbortLogin';
 $wgHooks['TitleMoveComplete'][] = 'onTitleMoveComplete';
 $wgHooks['FetchChangesList'][] = 'onFetchChangesList';
-$wgHooks['UnknownAction'][] = 'listStragglers';
 $wgHooks['EditFilter'][] = 'preventUnauthorizedTransclusionsOnSave';
 $wgHooks['ParserBeforeStrip'][] = 'preventUnauthorizedTransclusionOnPreview';
 $wgHooks['ParserAfterTidy'][] = 'checkPublicSections';

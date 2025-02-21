@@ -7,9 +7,9 @@
 
 $wgHooks['CheckImpersonationPermissions'][] = 'AbstractReport::checkImpersonationPermissions';
 $wgHooks['ImpersonationMessage'][] = 'AbstractReport::impersonationMessage';
-$wgHooks['UnknownAction'][] = 'AbstractReport::downloadBlob';
-$wgHooks['UnknownAction'][] = 'AbstractReport::downloadReportZip';
-$wgHooks['UnknownAction'][] = 'AbstractReport::tinyMCEUpload';
+UnknownAction::createAction('AbstractReport::downloadBlob');
+UnknownAction::createAction('AbstractReport::downloadReportZip');
+UnknownAction::createAction('AbstractReport::tinyMCEUpload');
 
 require_once("ReportConstants.php");
 require_once("SpecialPages/Report.php");

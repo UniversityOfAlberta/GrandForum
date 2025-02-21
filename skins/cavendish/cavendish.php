@@ -253,7 +253,6 @@ class CavendishTemplate extends QuickTemplate {
 		<script type="text/javascript">
 		    var wgServer = "<?php echo $wgServer; ?>";
 		    var wgScriptPath = "<?php echo $wgScriptPath; ?>";
-		    var wgBreakFrames = "<?php echo $wgBreakFrames; ?>";
 		    var wgUserName = "<?php echo $wgUser->getName(); ?>";
 		</script>
 		
@@ -684,6 +683,7 @@ class CavendishTemplate extends QuickTemplate {
 		        echo "<a id='status_profile_photo' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
 		        if(!$wgImpersonating && !$wgDelegating){
 		            $logout = $this->data['personal_urls']['logout'];
+		            $logout['href'] = $config->getValue('shibLogoutUrl');
 	                $getStr = "";
                     foreach($_GET as $key => $get){
                         if($key == "title" || $key == "returnto"){
@@ -928,175 +928,8 @@ class CavendishTemplate extends QuickTemplate {
 	        }
 		}
 		else if(!isExtensionEnabled("Shibboleth")){
-		    global $wgSiteName;
-		    setcookie('sideToggled', 'out', time()-3600);
-		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
-		    if($loginFailed){
-		        if(isset($_POST['wpName'])){
-		            $_POST['wpUsername'] = $_POST['wpName'];
-		        }
-		        else{
-		            $_POST['wpName'] = $_POST['wpUsername'];
-		        }
-		        $person = Person::newFromName($_POST['wpName']);
-		        if($person == null || $person->getName() == "" || $person->getName() != $_POST['wpName']){
-		            $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
-		            if(isset($_POST['wpMailmypassword'])){
-		                $failMessage .= "<b>Password request failed</b>";
-		            }
-		            $failMessage .= "</p>";
-		        }
-		        else if(isset($_POST['wpMailmypassword'])){
-		            $user = User::newFromName($_POST['wpUsername']);
-		            $user->load();
-		            $failMessage = "<p>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every 10 minutes.</b></p>";
-		        }
-		        else if($person->getUser()->checkTemporaryPassword($_POST['wpPassword'])){
-		            $failMessage = "";
-		            return;
-		        }
-		        else{
-		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
-		        }
-		        if(isset($_POST['wpMailmypassword'])){
-		            echo "<script type='text/javascript'>
-		                parent.showResetMessage(\"$failMessage\");
-		            </script>";
-		            exit;
-		        }
-		        $message = "<tr><td colspan='2'><div style='display:inline-block;' id='failMessage'>$failMessage</span>
-<p>
-You must have cookies enabled to log in to {$config->getValue('siteName')}.<br />
-</p>
-<p>
-Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
-If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</p></td></tr>";
-		        $emailPassword = "
-		        
-		        <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:5px;'>
-		        <table>
-		            <tr>
-		                <td>
-		                    <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
-		                    <input type='hidden' name='wpEmail' value='' />
-		                    <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
-		                </td>
-		            </tr>
-		        </table>
-		        </form>
-		        <iframe name='resetFrame' id='resetFrame' src='' style='width:0;height:0;border:0;' frameborder='0' width='0' height='0'></iframe>
-		        <script type='text/javascript'>
-		            function showResetMessage(message){
-		                $('#failMessage').html(message);
-		            }
-		            $('#wpUsername1').attr('value', $('#wpName1').val());
-		            $('#wpName1').change(function(){
-		                $('#wpUsername1').attr('value', $('#wpName1').val());
-		            }).keyup(function(){
-		                $('#wpUsername1').attr('value', $('#wpName1').val());
-		            });
-		        </script>";
-		    }
-		    if($_SESSION == null || 
-		       $wgRequest->getSessionData('wsLoginToken') == "" ||
-		       $wgRequest->getSessionData('wsLoginToken') == null){
-		        wfSetupSession();
-		        LoginForm::setLoginToken();
-		    }
-		    $getStr = "";
-	        foreach($_GET as $key => $get){
-	            if($key == "title" || 
-	               $key == "returnto" || 
-	               $key == "returntoquery" ||
-	               ($key == "action" && $get == "submitlogin") ||
-	               ($key == "type" && $get == "login")){
-	                continue;
-	            }
-	            if(strlen($getStr) == 0){
-	                $getStr .= "?$key=$get";
-	            }
-	            else{
-	                $getStr .= "&$key=$get";
-	            }
-	        }
-	        $returnTo = "";
-	        if(isset($_GET['returnto'])){
-	            $returnTo = $_GET['returnto'];
-	            if(isset($_GET['returntoquery'])){
-	                $returnTo .= "?".$_GET['returntoquery'];
-	            }
-	        }
-	        else if (isset($_GET['title'])){
-	            $returnTo .= str_replace(" ", "_", $_GET['title']);
-	        }
-	        else {
-	            $url = str_replace("$wgScriptPath/", "", 
-	                   str_replace("index.php/", "", $wgRequest->getRequestURL()));
-	            $returnTo .= str_replace(" ", "_", $url);
-	        }
-	        $returnTo .= $getStr;
-	        $returnTo = urlencode($returnTo);
-	        if(isset($_POST['returnto'])){
-	            $returnTo = $_POST['returnto'];
-	        }
-	        
-		    $wgUser->setCookies();
-		    
-		    if(isset($_POST['wpPassword']) &&
-		       isset($_POST['wpNewPassword']) &&
-		       isset($_POST['wpRetype']) &&
-		       isset($_POST['wpName']) &&
-		       $_POST['wpNewPassword'] == $_POST['wpRetype']){
-		        $user = User::newFromName($_POST['wpName']);
-		        $user->load();
-		        if($user->checkPassword($_POST['wpNewPassword'])){
-		            redirect("$wgServer$wgScriptPath/index.php/$returnTo");
-		        }
-		    }
-		    
-		    $token = LoginForm::getLoginToken();
-		    $name = $wgRequest->getText('wpName');
-		    
-		    echo "<span class='highlights-text'>Login</span>
-			<ul class='pBody'>";
-		    echo <<< EOF
-<form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
-	<table style='width:185px;'>
-	    $message
-		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
-			<td valign='middle' align='right' style='width:1%;'>Username:</td>
-			<td class="mw-input">
-				<input type='text' class='loginText dark' style='width:97%;' name="wpName" value="$name" id="wpName1"
-					tabindex="1" size='20' />
-			</td>
-		</tr>
-		<tr>
-			<td valign='middle' align='right' style='width:1%;'><label for='wpPassword1'>Password:</label></td>
-			<td class="mw-input">
-				<input type='password' class='loginPassword dark' style='width:97%' name="wpPassword" id="wpPassword1"
-					tabindex="2" size='20' />
-			</td>
-		</tr>
-		    <tr><td colspan="2"><br /></td></tr>
-		<tr>
-			<!--td></td-->
-			<td colspan="2" class="mw-input">
-				<input type='checkbox' name="wpRemember"
-					tabindex="4"
-					value="1" id="wpRemember"
-										/> <label for="wpRemember">Remember my login on this computer</label>
-			</td>
-		</tr>
-	    <tr>
-			<td colspan="2" class="mw-submit">
-				<input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" value="Log in" />
-			</td>
-		</tr>
-	</table>
-<input type="hidden" name="wpLoginToken" value="$token" /></form>
-$emailPassword
-</li>
-EOF;
+		    $userLogin = new SpecialSideUserLogin();
+		    $userLogin->render();
         }
 		Hooks::run( 'MonoBookTemplateToolboxEnd', array( &$this ) );
         Hooks::run( 'SkinTemplateToolboxEnd', array( &$this ) );

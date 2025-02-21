@@ -13,7 +13,7 @@
     require_once("Products/Products.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';
-    $wgHooks['UnknownAction'][] = 'noCreate';
+    UnknownAction::createAction('noCreate');
     
     function noEdit($editpage){
         global $wgArticle;

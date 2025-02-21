@@ -437,7 +437,7 @@ class Person extends BackboneModel {
                                                    'full',
                                                    'deleted'),
                                              array('user_id' => NOT_IN($keys)));
-            while($row = mysqli_fetch_array($result->result, MYSQLI_ASSOC)){
+            while($row = $result->fetchRow()){
                 $userId = $row['user_id'];
                 if(!$row['full']){
                     unset($row['user_twitter']);

@@ -1,6 +1,6 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PersonProfileTab::getPersonCloudData';
+UnknownAction::createAction('PersonProfileTab::getPersonCloudData');
 
 class PersonProfileTab extends AbstractEditableTab {
 

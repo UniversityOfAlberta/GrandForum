@@ -13,7 +13,7 @@ function runImpersonate($par) {
 
 class Impersonate extends SpecialPage {
 
-	function __construct() {
+	function Impersonate() {
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    SpecialPage::__construct("Impersonate", null, true, 'runImpersonate');
 	}

@@ -2,10 +2,10 @@
 
 require_once("SpecialImpersonate.php");
 
-$wgHooks['AuthPluginSetup'][] = 'impersonate';
+$wgHooks['AuthPluginSetup'][] = 'startImpersonate';
 $wgHooks['UserGetRights'][] = 'changeGroups';
 $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
-$wgHooks['UnknownAction'][] = 'getUserMode';
+UnknownAction::createAction('getUserMode');
 
 function getUserMode($action, $page){
     global $wgUser, $wgImpersonating, $wgDelegating, $config;
@@ -13,7 +13,7 @@ function getUserMode($action, $page){
     if($action == 'getUserMode'){
         session_write_close();
         $json = array();
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             $json = array('mode' => 'loggedOut',
                           'message' => 'You are currently logged out');
             header('Content-Type: application/json');
@@ -52,9 +52,9 @@ function getUserMode($action, $page){
     return true;
 }
 
-function impersonate(){
+function startImpersonate(){
     global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgTitle;
-    if(!$wgUser->isLoggedIn()){
+    if(!$wgUser->isRegistered()){
         return true;
     }
     /*if(isset($_GET['embed']) && $_GET['embed'] != "false"){
