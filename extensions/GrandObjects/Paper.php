@@ -476,6 +476,7 @@ class Paper extends BackboneModel{
                                                                                'tname' => $tname,
                                                                                'titles' => $titles,
                                                                                'visible' => $visible,
+                                                                               'description' => '',
                                                                                'citationFormat' => $citationFormat,
                                                                                'ccv_status' => array(),
                                                                                'authors_label' => "Author",
@@ -522,6 +523,9 @@ class Paper extends BackboneModel{
                                                                                                          'options' => $foptions,
                                                                                                          'hidden' => $fhidden);
                             }
+                        }
+                        else if($child->getName() == "description"){
+                            $categories['categories'][$cname]['types'][$tname]['description'] = "$child";
                         }
                         else if($child->getName() == "statuses"){
                             foreach($child->children() as $status){
@@ -586,7 +590,7 @@ class Paper extends BackboneModel{
             $this->description = isset($data[0]['description']) ? $data[0]['description'] : false;
             $this->title = $data[0]['title'];
             $this->type = $data[0]['type'];
-            $this->date = $data[0]['date'];
+            $this->date = substr(ZERO_DATE($data[0]['date']), 0, 10);
             $this->status = $data[0]['status'];
             $this->deleted = $data[0]['deleted'];
             $this->access_id = $data[0]['access_id'];
@@ -601,7 +605,7 @@ class Paper extends BackboneModel{
             $this->data = isset($data[0]['data']) ? unserialize($data[0]['data']) : false;
             $this->lastModified = $data[0]['date_changed'];
             $this->dateCreated = $data[0]['date_created'];
-            $this->acceptance_date = $data[0]['acceptance_date'];
+            $this->acceptance_date = substr(ZERO_DATE($data[0]['acceptance_date']), 0, 10);
             foreach($this->getExclusions() as $exclusion){
                 if($exclusion->getId() == $me->getId()){
                     $this->exclude = true;
@@ -671,13 +675,13 @@ class Paper extends BackboneModel{
      */
     function getStatus(){
         $currentDate = date('Y-m-d');
-        if($this->category == "Publication" && $this->date != "0000-00-00" && $this->date != ""){
+        if($this->category == "Publication" && $this->date != ZOT && $this->date != ""){
             if($currentDate < $this->date){
                 return "Accepted";
             }
             return "Published";
         }
-        if($this->category == "Publication" && $this->acceptance_date != "0000-00-00" && $this->acceptance_date != ""){
+        if($this->category == "Publication" && $this->acceptance_date != ZOT && $this->acceptance_date != ""){
             return "Accepted";
         }
         return $this->status;
@@ -783,7 +787,6 @@ class Paper extends BackboneModel{
             case 'Book':
             case 'Book Chapter':
             case 'Collections Paper':
-            case 'Proceedings Paper':
             default:
                 if($status != "Published"){
                     return false;
@@ -916,7 +919,7 @@ class Paper extends BackboneModel{
                                 // Author matches themselves
                                 $score += 1000;
                             }
-                            if($me->isRelatedToDuring($p, "all", "0000-00-00", "2100-00-00")){
+                            if($me->isRelatedToDuring($p, "all", SOT, EOT)){
                                 // Author is related to user
                                 $score += 100;
                             }
@@ -1218,7 +1221,7 @@ class Paper extends BackboneModel{
     function getDate(){
         global $config;
         $date = $this->date;
-        if($date == "0000-00-00"){
+        if($date == ZOT){
             return $date;
         }
         else{
@@ -1493,7 +1496,7 @@ class Paper extends BackboneModel{
         }
         if(strstr(strtolower($matches[0]), "authors") !== false){
             $date = $this->getDate();
-            if($date == "0000-00-00"){
+            if($date == ZOT){
                 $date = $this->getAcceptanceDate();
             }
             $yearAgo = strtotime("{$date} -10 year"); // Extend the year to 10 years ago so that publications after graduation are still counted
@@ -1516,7 +1519,7 @@ class Paper extends BackboneModel{
                         $name = "<span style='background: #dfdfdf; {$isMe}' class='citation_author faculty_author'>{$a->getNameForProduct()}{$ccid}{$isLead}</span>";
                     }
                     else if(($a->isRoleOn(HQP, $date) || $a->isRole(HQP) || $a->wasLastRole(HQP)) &&
-                            (($highlightOnlyMyHQP !== false && $me->isRelatedToDuring($a, SUPERVISES_BOTH, "0000-00-00", "2100-00-00")) ||
+                            (($highlightOnlyMyHQP !== false && $me->isRelatedToDuring($a, SUPERVISES_BOTH, SOT, EOT)) ||
                              ($highlightOnlyMyHQP === false))){
                         $unis = array_merge($a->getUniversitiesDuring($yearAgo, $date), 
                                             $a->getUniversitiesDuring($yearAgo, $nextYear));
@@ -1732,11 +1735,8 @@ class Paper extends BackboneModel{
 
         $data = $this->getData();
         $vn = $this->getVenue();
-        if($this->getType() == "Proceedings Paper" && $vn == ""){
-            $completeness['venue'] = false;
-        }
         
-        if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
+        if(in_array($this->getType(), array('Book', 'Collections Paper', 'Journal Paper'))){
             $pg = $this->getData(array('ms_pages', 'pages'));
             if (!(strlen($pg) > 0)){
                 $completeness['pages'] = false;
@@ -1841,8 +1841,8 @@ class Paper extends BackboneModel{
                                                 'description' => $this->description,
                                                 'type' => $this->type,
                                                 'title' => $this->title,
-                                                'date' => $this->date,
-                                                'acceptance_date' => $this->acceptance_date,
+                                                'date' => ZERO_DATE($this->date, zull),
+                                                'acceptance_date' => ZERO_DATE($this->acceptance_date, zull),
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'contributors' => serialize($contributors),
@@ -1938,8 +1938,8 @@ class Paper extends BackboneModel{
                                                 'description' => $this->description,
                                                 'type' => $this->type,
                                                 'title' => $this->title,
-                                                'date' => $this->date,
-                                                'acceptance_date' => $this->acceptance_date,
+                                                'date' => ZERO_DATE($this->date, zull),
+                                                'acceptance_date' => ZERO_DATE($this->acceptance_date, zull),
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'contributors' => serialize($contributors),

@@ -217,13 +217,6 @@ class ReportBlob {
 				    edited_by = {$impersonateId} ,
 				    encrypted = '{$encrypt}'
 			    WHERE blob_id = {$this->_blob_id}", true);
-	        if($wgImpersonating){
-	            $oldData = DBFunctions::escape($res[0]['data']);
-	            $impersonateId = $wgRealUser->getId();
-	            $sql = "INSERT INTO `grand_report_blobs_impersonated` (`blob_id`, `user_id`, `previous_value`, `current_value`)
-	                    VALUES ('{$this->_blob_id}', '{$impersonateId}', '{$oldData}', '".DBFunctions::escape($this->_data_transformed)."')";
-	            DBFunctions::execSQL($sql, true);
-	        }
 		}
 		else {
 			// Insert query.
@@ -240,14 +233,6 @@ class ReportBlob {
 			                                "user_id = {$this->_owner_id} AND " .
 			                                "year = {$this->_year} AND " .
 			                                "proj_id = {$this->_proj_id} AND {$where};");
-			    if(count($res) > 0){
-			        $blob_id = $res[0]['blob_id'];
-			        $oldData = "";
-	                $impersonateId = $wgRealUser->getId();
-	                $sql = "INSERT INTO `grand_report_blobs_impersonated` (`blob_id`, `user_id`, `previous_value`, `current_value`)
-	                        VALUES ('$blob_id', '{$impersonateId}', '$oldData', '".DBFunctions::escape($this->_data_transformed)."')";
-	                DBFunctions::execSQL($sql, true);
-	            }
 	        }
 		}
 		DBFunctions::commit();

@@ -181,12 +181,12 @@ ManageProductsViewRow = Backbone.View.extend({
              (acceptance >= START && date <= END && date >= START ||
               acceptance <= START && date >= START ||
               acceptance <= END && date >= END ||
-              acceptance <= END && date == "0000-00-00")) ||
+              acceptance <= END && date == ZOT)) ||
             // Handle Yearly Awards
             (yearly == 1 && (start >= START && end <= END && end >= START ||
                              start <= START && end >= START ||
                              start <= END && end >= END ||
-                             start <= END && end == "0000-00-00"))
+                             start <= END && end == ZOT))
             ){
             this.$el.addClass('ar');
         }

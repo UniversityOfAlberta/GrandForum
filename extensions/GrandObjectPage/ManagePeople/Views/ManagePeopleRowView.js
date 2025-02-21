@@ -184,7 +184,7 @@ ManagePeopleRowView = Backbone.View.extend({
                         return;
                     }
                     
-                    if(tmpStart.substr(0,10) > tmpEnd.substr(0,10) && tmpEnd.substr(0,10) != '0000-00-00'){
+                    if(tmpStart.substr(0,10) > tmpEnd.substr(0,10) && tmpEnd.substr(0,10) != ZOT){
                         // Date doesn't make sense, so don't use it
                         return;
                     }
@@ -202,10 +202,10 @@ ManagePeopleRowView = Backbone.View.extend({
                 end = this.model.get('end').substr(0,10);
             }
             
-            if(start == '0000-00-00' || start == '0000-00-00 00:00:00' || start == '' || start == undefined){
+            if(start == ZOT || start == ZOTT || start == '' || start == undefined){
                 start = '';
             }
-            if(end == '0000-00-00' || end == '0000-00-00 00:00:00' || end == '' || end == undefined){
+            if(end == ZOT || end == ZOTT || end == '' || end == undefined){
                 end = 'Current';
             }
             
@@ -213,7 +213,7 @@ ManagePeopleRowView = Backbone.View.extend({
             if(start >= START && end <= END && end >= START ||
                start <= START && end >= START ||
                start <= END && end >= END ||
-               start <= END && end == "0000-00-00"){
+               start <= END && end == ZOT){
                 this.$el.addClass('ar');
             }
             

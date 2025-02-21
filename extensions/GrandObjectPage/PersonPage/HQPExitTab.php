@@ -214,7 +214,7 @@ EOF;
         $user = Person::newFromId($wgUser->getId());
         $person = Person::newFromName(str_replace(" ", ".", $person->getName()));
         $boxes = "";
-        if($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
+        if($person->isRoleDuring(HQP, SOT, EOT)){
             $movedOn = $person->getAllMovedOn();
             if($edit){
                 $wgOut->addScript("<script type='text/javascript'>

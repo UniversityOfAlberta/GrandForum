@@ -58,13 +58,13 @@
         $data = DBFunctions::execSQL("SELECT `user_id`, `date_of_phd`, `date_of_appointment` 
                                   FROM `grand_personal_fec_info` 
                                   WHERE `date_retirement` >= '{$end}' OR 
-                                        `date_retirement`  = '0000-00-00 00:00:00' 
-                                  ORDER BY REPLACE(`date_of_phd`, '0000-00-00 00:00:00', `date_of_appointment`) DESC");
+                                        `date_retirement` IS NULL
+                                  ORDER BY IFNULL(`date_of_phd`, `date_of_appointment`) DESC");
                                   
         $data2 = DBFunctions::execSQL("SELECT `user_id`, `date_of_phd`, `date_of_appointment` 
                                        FROM `grand_personal_fec_info` 
                                        WHERE `date_retirement` >= '{$end}' OR 
-                                             `date_retirement`  = '0000-00-00 00:00:00' 
+                                             `date_retirement` IS NULL 
                                        ORDER BY `date_of_appointment` DESC");
         foreach($data as $row){
             // Ordered by PhD Date
@@ -77,7 +77,7 @@
             if($fecType == "B1" ||
                $fecType == "B2" ||
                $fecType == "C1"){
-                if($row['date_of_phd'] == "0000-00-00 00:00:00"){
+                if($row['date_of_phd'] == ZOTT){
                     echo "Missing PhD date: {$person->getNameForForms()}\n";
                 }
                 $index = @++$counts[$fecType];
@@ -102,7 +102,7 @@
                $fecType == "T1" ||
                $fecType == "T2" ||
                $fecType == "T3"){
-                if($row['date_of_appointment'] == "0000-00-00 00:00:00"){
+                if($row['date_of_appointment'] == ZOTT){
                     echo "Missing Appointment date: {$person->getNameForForms()}\n";
                 }
                 $index = @++$counts[$fecType];

@@ -297,7 +297,6 @@ class DepartmentTab extends AbstractTab {
             $papers = $hqp->getPapersAuthored("Publication", ($year-6).CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
             foreach($papers as $paper){
                 if(($paper->getType() == "Conference Paper" || 
-                    $paper->getType() == "Proceedings Paper" || 
                     $paper->getType() == "Poster") && 
                     $this->department == "Biological Sciences"){
                     continue;
@@ -406,7 +405,7 @@ class DepartmentTab extends AbstractTab {
                 $movedOn = $hqp->getAllMovedOn();
                 foreach($movedOn as $mo){
                     $mo['employer'] = ($mo['employer'] == "") ? $mo['studies'] : $mo['employer'];
-                    if($mo['employer'] != "" && $mo['effective_date'] != "0000-00-00"){
+                    if($mo['employer'] != "" && $mo['effective_date'] != ZOT){
                         $supervisors = $hqp->getSupervisors($mo['effective_date']);
                         if(count($supervisors) == 0){
                             $supervisors = $hqp->getSupervisors(true);
@@ -416,9 +415,9 @@ class DepartmentTab extends AbstractTab {
                         $sups = array();
                         foreach($supervisors as $sup){
                             $sups[] = $sup->getNameForForms();
-                            $relations = $sup->getRelationsDuring('all', "0000-00-00", $mo['effective_date']);
+                            $relations = $sup->getRelationsDuring('all', SOT, $mo['effective_date']);
                             if(count($relations) == 0){
-                                $relations = $sup->getRelationsDuring('all', "0000-00-00", "2100-01-01");
+                                $relations = $sup->getRelationsDuring('all', SOT, EOT);
                             }
                             foreach($relations as $rel){
                                 if($rel->user2 == $hqp->getId()){

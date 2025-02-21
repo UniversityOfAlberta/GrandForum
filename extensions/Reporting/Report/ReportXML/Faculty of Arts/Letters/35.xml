@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/35" extends="Letters/Base">
+    <ReportSection id="letter" title="Incrementation - Recommendation of Less than 1.0 Incrementation">
+        <ReportItem id="from">
+            <![CDATA[
+                {getText({$report_type}, TABLE, CHAIR, {$user_id}, 1, 0)}
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="bodyset">
+            <If if="{==({getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)},N/A)}">
+                <![CDATA[
+                    <p>Based on my review of your performance, your annual report, and our meeting to discuss my review <b>N/A</b>, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of <b>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</b>.</p>
+                ]]>
+            </If>
+            <Else>
+                <![CDATA[
+                    <p>Based on my review of your performance, your annual report, and our meeting to discuss my review on <b>{getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}</b>, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of <b>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</b>.</p>
+                ]]>
+            </Else>
+            <Static>
+                <![CDATA[
+                    <p>The specifics of my recommendation can be accessed in the AIMS forum by selecting the recommendation link.</p>
+                    <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                    
+                    You may wish to consider the following option:
+                    <ul style='margin-left: 1em;'>
+                        <li>Under Article A6.17.1 of Schedule A, you have the right to appear before FEC to contest the recommendation.</li>
+                        <li>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</li>
+                    </ul>
+                    
+                    <p>Please be advised that the date for contested cases has been scheduled for <b>December 5, {$this_year} in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}</b>.</p>
+                    
+                    Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by November 5, {$this_year}, with a copy to your Department Chair:
+                    <ul style='margin-left: 1em;'>
+                        <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
+                        <li>any material in response to the Department Chair’s recommendation and any other material relevant to your case;</li>
+                        <li>a list of names of persons who will attend the FEC hearing as your witnesses.</li>
+                    </ul>
+                    
+                    <p>Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
+                    
+                    <p>If you choose not to appear before FEC to present your case or submit documentation in support of your position, and FEC confirms or increases the recommendation, the decision will be final and binding.</p>
+                    
+                    <p>Under Article A8.03.1 of Schedule A, you may not appeal this decision to the General Appeals Committee (GAC).</p>
+                    <p>If you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <ReportItem id="footer">
+            <![CDATA[
+                
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

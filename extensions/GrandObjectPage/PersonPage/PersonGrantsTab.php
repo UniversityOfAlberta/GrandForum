@@ -7,7 +7,7 @@ class PersonGrantsTab extends AbstractTab {
     var $startRange;
     var $endRange;
 
-    function __construct($person, $visibility, $startRange="0000-00-00", $endRange=CYCLE_END){
+    function __construct($person, $visibility, $startRange=SOT, $endRange=CYCLE_END){
         parent::__construct("Funding");
         $this->person = $person;
         $this->visibility = $visibility;

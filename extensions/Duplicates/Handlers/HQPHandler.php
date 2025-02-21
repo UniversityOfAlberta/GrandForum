@@ -17,7 +17,7 @@ class HQPHandler extends PersonHandler {
     }
     
     function getArray2(){
-        return Person::getAllPeopleDuring(HQP, "0000-00-00", "2100-00-00");
+        return Person::getAllPeopleDuring(HQP, SOT, EOT);
     }
 }
 

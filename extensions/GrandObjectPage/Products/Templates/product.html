@@ -27,10 +27,10 @@
     <% if(this.model.getPossibleStatus().length > 0){ %>
         <tr><td align="right"><b>Status:</b></td><td><%= status %></td></tr>
     <% } %>
-    <% if(!_.isEmpty(this.model.getAcceptanceDateLabel()) && acceptance_date != "" && acceptance_date != "0000-00-00"){ %>
+    <% if(!_.isEmpty(this.model.getAcceptanceDateLabel()) && acceptance_date != "" && acceptance_date != ZOT){ %>
         <tr><td align="right"><b><%= this.model.getAcceptanceDateLabel() %>:</b></td><td><%= formatDate(acceptance_date) %></td></tr>
     <% } %>
-    <% if(!_.isEmpty(this.model.getDateLabel()) && date != "" && date != "0000-00-00"){ %>
+    <% if(!_.isEmpty(this.model.getDateLabel()) && date != "" && date != ZOT){ %>
         <tr><td align="right"><b><%= this.model.getDateLabel() %>:</b></td><td><%= formatDate(date) %></td></tr>
     <% } %>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>

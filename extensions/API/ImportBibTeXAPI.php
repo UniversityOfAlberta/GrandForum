@@ -2,9 +2,9 @@
 
 class ImportBibTeXAPI extends API{
 
-    static $bibtexHash = array('inproceedings' => 'Proceedings Paper',
-                               'proceedings' => 'Proceedings Paper',
-                               'inbook' => 'Proceedings Paper',
+    static $bibtexHash = array('inproceedings' => 'Conference Paper',
+                               'proceedings' => 'Conference Paper',
+                               'inbook' => 'Conference Paper',
                                'conference' => 'Conference Paper',
                                'book' => 'Book',
                                'article' => 'Journal Paper',
@@ -118,7 +118,7 @@ class ImportBibTeXAPI extends API{
         if($product->description == ""){ $product->description = @$paper['abstract']; }
         if($product->status == ""){ $product->status = "Published"; }
         if($product->date == ""){ $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-{$paper['day']}"; }
-        if(str_replace("0000-00-00", "", $product->acceptance_date) == ""){
+        if(str_replace(ZOT, "", $product->acceptance_date) == ""){
             if(@$paper['acceptance_date'] != ""){
                 $product->acceptance_date = @"{$paper['acceptance_date']}";
             }

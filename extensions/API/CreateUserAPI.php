@@ -108,8 +108,8 @@ class CreateUserAPI extends API{
                                             array('user_id' => $person->getId(),
                                                   'university_id' => $unis[$defaultUni],
                                                   'position_id' => $poss[$defaultPos],
-                                                  'start_date' => @$_POST['startDate'],
-                                                  'end_date' => @$_POST['endDate']));
+                                                  'start_date' => @ZERO_DATE($_POST['startDate'], zull),
+                                                  'end_date' => @ZERO_DATE($_POST['endDate'], zull)));
                     }
                     
                     // Update names

@@ -106,7 +106,7 @@ class GrantAward extends BackboneModel {
                 $this->area_of_application_group = $row['area_of_application_group'];
                 $this->area_of_application = $row['area_of_application'];
                 $this->research_subject_group = $row['research_subject_group'];
-                //$this->installment = $row['installment'];
+                //$this->installment = ZERO_DATE($row['installment']);
                 //$this->partie = $row['partie'];
                 //$this->nb_partie = $row['nb_partie'];
                 $this->application_title = $row['application_title'];
@@ -256,7 +256,7 @@ class GrantAward extends BackboneModel {
                                   'area_of_application_group' => $this->area_of_application_group,
                                   'area_of_application' => $this->area_of_application,
                                   'research_subject_group' => $this->research_subject_group,
-                                  //'installment' => $this->installment,
+                                  //'installment' => ZERO_DATE($this->installment, zull),
                                   //'partie' => $this->partie,
                                   //'nb_partie' => $this->nb_partie,
                                   'application_title' => $this->application_title,
@@ -316,7 +316,7 @@ class GrantAward extends BackboneModel {
                                   'area_of_application_group' => $this->area_of_application_group,
                                   'area_of_application' => $this->area_of_application,
                                   'research_subject_group' => $this->research_subject_group,
-                                  //'installment' => $this->installment,
+                                  //'installment' => ZERO_DATE($this->installment, zull),
                                   //'partie' => $this->partie,
                                   //'nb_partie' => $this->nb_partie,
                                   'application_title' => $this->application_title,

@@ -98,8 +98,8 @@
     $start = microtime(true);
     
     // clean DB
-    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 68709", true);
-    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 46542", true);  
+    //DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 68709", true);
+    //DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 46542", true);  
     
     $dataDir = "csv/";
     $courseDescrFile = "allCoursesDescription.csv";
@@ -125,6 +125,22 @@
                                             FROM  INFORMATION_SCHEMA.TABLES
                                             WHERE TABLE_SCHEMA = '{$config->getValue('dbName')}'
                                             AND   TABLE_NAME   = 'grand_courses'");
+                                            
+    $existingCourses = array();
+    $existingUserCourses = array();
+    
+    $data = DBFunctions::execSQL("SELECT `id`, `Term`, `Class Nbr`
+                                  FROM grand_courses");
+    foreach($data as $row){
+        $existingCourses["{$row['Term']}_{$row['Class Nbr']}"] = $row['id'];
+    }
+    
+    $data = DBFunctions::execSQL("SELECT `user_id`, `course_id`
+                                  FROM grand_user_courses");
+    foreach($data as $row){
+        $existingUserCourses["{$row['user_id']}_{$row['course_id']}"] = true;
+    }
+                                            
     $courseID = $auto_increment[0]['AUTO_INCREMENT'] - 1; // needs to be out of the whole loop.
     foreach($dir as $file) {
     
@@ -193,33 +209,33 @@
                 $title = @DBFunctions::escape($map[$mapKey]['title']); // some courses may not exist in the map
                 $descr = @DBFunctions::escape($map[$mapKey]['descr']); // @ gets rid of warnings
                 
-                
-                //if ($userID == 337){ echo "yoooooooooo" . $subject . " " . $catalog . "\n"; }
-                
-                //if($person->isRole("ATS")){
-                    if(!isset($grandCourses[$key])){
-                        $courseID++; // # of total insertions
-                        $courseIds[$key] = $courseID;
-                        
-                        // set the key to values string
-                        $grandCourses[$key] = "('{$courseIds[$key]}',
-                                                '{$acadOrg}','{$term}','{$termString}',
-                                                '{$classNbr}','{$subject}','{$catalog}',
-                                                '{$component}','{$sect}','{$crsStatus}',
-                                                '{$facilID}','{$startDate}','{$endDate}',
-                                                '{$hrsFrom}','{$hrsTo}','{$totEnrl}',
-                                                '{$campus}','{$note}', '{$title}', '{$descr}')";
-                    }
+                if(isset($existingCourses["{$term}_{$classNbr}"])){
+                    $courseIds[$key] = $existingCourses["{$term}_{$classNbr}"];
+                }
+                else if(!isset($grandCourses[$key])){
+                    $courseID++; // # of total insertions
+                    $courseIds[$key] = $courseID;
                     
-                    // set grandUserCourses 
-                    if($userID != 0){      
+                    // set the key to values string
+                    $grandCourses[$key] = "('{$courseIds[$key]}',
+                                            '{$acadOrg}','{$term}','{$termString}',
+                                            '{$classNbr}','{$subject}','{$catalog}',
+                                            '{$component}','{$sect}','{$crsStatus}',
+                                            '{$facilID}','{$startDate}','{$endDate}',
+                                            '{$hrsFrom}','{$hrsTo}','{$totEnrl}',
+                                            '{$campus}','{$note}', '{$title}', '{$descr}')";
+                }
+                
+                // set grandUserCourses 
+                if($userID != 0){
+                    if(!isset($existingUserCourses["{$userID}_{$courseIds[$key]}"])){
                         $grandUserCourses[] = "('{$userID}','{$courseIds[$key]}')";
                     }
-               //}
+                }
             }
         }
         
-        if(count($grandUserCourses) > 0 && count($grandCourses) > 0){
+        if(count($grandCourses) > 0){
             $insertSQLGC = "INSERT INTO `grand_courses` 
                                    (`id`,
                                     `Acad Org`, `Term`, `term_string`,
@@ -228,10 +244,10 @@
                                     `Facil ID`, `Start Date`, `End Date`,
                                     `Hrs From`, `Hrs To`, `Tot Enrl`,
                                     `Campus`, `Note`, `Descr`, `Course Descr`) VALUES ";
-            
-            $insertSQLGUC = "INSERT INTO `grand_user_courses` (`user_id`, `course_id`) VALUES "; 
-                   
             DBFunctions::execSQL($insertSQLGC . implode(", ", $grandCourses), true);
+        }
+        if(count($grandUserCourses) > 0){
+            $insertSQLGUC = "INSERT INTO `grand_user_courses` (`user_id`, `course_id`) VALUES "; 
             DBFunctions::execSQL($insertSQLGUC . implode(", ", $grandUserCourses), true);
         }
                

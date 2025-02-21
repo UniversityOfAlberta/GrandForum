@@ -47,6 +47,11 @@ if(!defined('TESTING')){
     }
 }
 
+define("ZOT", "0000-00-00"); // Zero Time
+define("ZOTT", ZOT." 00:00:00"); // Zero Time with timestamp
+define("SOT", "1900-01-01"); // Start of Time
+define("EOT", "9999-01-01"); // End of Time
+
 $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 

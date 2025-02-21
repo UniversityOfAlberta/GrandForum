@@ -254,6 +254,10 @@ class CavendishTemplate extends QuickTemplate {
 		    var wgServer = "<?php echo $wgServer; ?>";
 		    var wgScriptPath = "<?php echo $wgScriptPath; ?>";
 		    var wgUserName = "<?php echo $wgUser->getName(); ?>";
+		    var ZOT = "<?php echo ZOT; ?>";
+		    var ZOTT = "<?php echo ZOTT; ?>";
+		    var SOT = "<?php echo SOT; ?>";
+		    var EOT = "<?php echo EOT; ?>";
 		</script>
 		
 		<?php createModels(); ?>

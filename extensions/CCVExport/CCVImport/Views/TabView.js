@@ -60,9 +60,6 @@ TabView = Backbone.View.extend({
         "grantImport" : function(){
              return new GrantImportView({parent: this, model: new CCVImportModel()});
         },
-        "gradDbImport" : function(){
-             return new GradImportView({parent: this, model: new CCVImportModel()});
-        },
         "courseEvalImport" : function(){
              return new EvalImportView({parent: this, model: new CCVImportModel()});
         },
@@ -76,9 +73,9 @@ TabView = Backbone.View.extend({
     },
     
     render: function(){
-	this.$el.html(this.template(this.model.toJSON()));
+	    this.$el.html(this.template(this.model.toJSON()));
         $( "#tabs" ).tabs();
-	return this.$el;
+	    return this.$el;
     }
 
 });

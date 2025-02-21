@@ -666,8 +666,8 @@ class CCVExport extends SpecialPage {
                     $field->addAttribute('label', $item_name);
                     $val = $field->addChild('lov');
         
-                    if($end != "0000-00-00 00:00:00" &&
-                       $end != "0000-00-00"){
+                    if($end != ZOTT &&
+                       $end != ZOT){
                         $lov_id = $status_map['Completed'];
                         self::setValue($val, "Completed");
                     } else {
@@ -827,7 +827,7 @@ class CCVExport extends SpecialPage {
                     } 
                     else if ($key == "invited" && 
                              $product->getCategory() == "Publication" && 
-                             ($type == "Conference Paper" || $type == "Proceedings Paper")){
+                             ($type == "Conference Paper")){
                         // Always add Invited field...
                         $field = $ccv_item->addChild("field");
                         $field->addAttribute('id', "720d2f02feaf4aacb06ce60be0c6f603");
@@ -863,8 +863,8 @@ class CCVExport extends SpecialPage {
                     }
                     $authorName = trim($a->getNameForProduct("{%last} {%f}"));
                     if($product->getCategory() == "Publication" &&
-                       ($person->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") ||
-                        $person->isRelatedToDuring($a, CO_SUPERVISES, "0000-00-00", "2100-00-00"))){
+                       ($person->isRelatedToDuring($a, SUPERVISES, SOT, EOT) ||
+                        $person->isRelatedToDuring($a, CO_SUPERVISES, SOT, EOT))){
                         $auth_arr[] = $authorName."*";
                     }
                     else{
@@ -968,8 +968,8 @@ class CCVExport extends SpecialPage {
 
                     $val = $field->addChild('lov');
         
-                    if($end != "0000-00-00 00:00:00" &&
-                       $end != "0000-00-00"){
+                    if($end != ZOTT &&
+                       $end != ZOT){
                         $lov_id = $status_map['Completed'];
                         self::setValue($val, "Completed");
                     } else {

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/ATS13" extends="Letters/Base">
+    <ReportSection id="letter" title="ATSEC Decision Regarding Merit Increment">
+        <ReportItem id="from">
+            <![CDATA[
+                Eleni Stroulia<br />
+                Vice Dean of Science<br />
+                Chair Academic Teaching Staff Evaluation Committee
+            ]]>
+        </ReportItem>
+        <ReportItem id="body">
+            <![CDATA[
+                <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within the Faculty of Science.</p>
+                <p>This is to inform you that the ATSEC has approved the award of a {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} merit increment rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} merit increment recommended by your Department Chair. The ATSEC was impressed by your contributions to the Faculty in relation to your colleagues in the past year, and wishes you well in the coming year. This increment takes effect July 1, {$next_year}.</p>
+
+                <p>I wish to thank you for your dedication and outstanding contributions to the Faculty of Science.</p>
+
+                <p>Should you have any procedural questions, please contact sciea@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer">
+            <![CDATA[
+                Sincerely,<br />
+                <br />
+                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <br />
+                Eleni Stroulia<br />
+                Vice Dean of Science<br />
+                Chair of the Academic Teaching Staff Evaluation Committee<br />
+                ES/jb
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

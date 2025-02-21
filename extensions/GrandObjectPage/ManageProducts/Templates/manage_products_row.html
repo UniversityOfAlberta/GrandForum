@@ -11,11 +11,11 @@
 </td>
 <td align="center" style="text-overflow: initial;">
     <% if(this.model.getAcceptanceDateLabel() != undefined){ %>
-        <span style="display:none"><%= acceptance_date.replace("0000-00-00", "9999-99-99") %></span><%= acceptance_date.replace("0000-00-00", "") %>
+        <span style="display:none"><%= acceptance_date.replace(ZOT, EOT) %></span><%= acceptance_date.replace(ZOT, "") %>
     <% } %>
 </td>
 <td align="center" style="text-overflow: initial;">
-    <span style="display:none"><%= date.replace("0000-00-00", "9999-99-99") %></span><%= date.replace("0000-00-00", "") %>
+    <span style="display:none"><%= date.replace(ZOT, EOT) %></span><%= date.replace(ZOT, "") %>
 </td>
 <td>
     <%= category %>
@@ -39,7 +39,7 @@
         <% if(!isMine) { %>
             <li>You (or one of your HQP) is not listed as an author</li>
         <% } %>
-        <% if(category == 'Publication' && this.model.getAcceptanceDateLabel() == 'Acceptance Date' && acceptance_date == '0000-00-00') { %>
+        <% if(category == 'Publication' && this.model.getAcceptanceDateLabel() == 'Acceptance Date' && acceptance_date == ZOT) { %>
             <li>Missing an Acceptance Date</li>
         <% } %>
     </ul>

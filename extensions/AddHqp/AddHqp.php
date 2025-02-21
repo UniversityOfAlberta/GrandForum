@@ -78,7 +78,7 @@ class AddHqp extends SpecialPage{
                 }
                 $('input[name=end_field]').parent().append('<span id=\"infinity\" style=\"font-weight:bold;font-size:18px;cursor:pointer;\" class=\"highlights-text\" title=\"Continuing\">&#8734;</span>');
                 $('#infinity').click(function(){
-                    $('input[name=end_field]').val('0000-00-00').change();
+                    $('input[name=end_field]').val(ZOT).change();
                 });
                 
                 $('form').submit(function(){

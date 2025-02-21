@@ -40,7 +40,7 @@ class PersonRelationsTab extends AbstractTab {
                             if($hqp->getId() == $person->getId()){
                                 $start_date = substr($r->getStartDate(), 0, 10);
                                 $end_date = substr($r->getEndDate(), 0, 10);
-                                $end_date = ($end_date == '0000-00-00') ? "Current" : $end_date;
+                                $end_date = ($end_date == ZOT) ? "Current" : $end_date;
                                 
                                 $position = "";
                                 foreach($universities as $university){

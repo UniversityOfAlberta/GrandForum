@@ -332,13 +332,13 @@ class ReportItemCallback {
     function getHqpStartDate(){
         $relation = Relationship::newFromId($this->reportItem->projectId);
         $array = explode(" ", $relation->getStartDate());
-        return str_replace("0000-00-00", "", $array[0]);
+        return str_replace(ZOT, "", $array[0]);
     }
     
     function getHqpEndDate(){
         $relation = Relationship::newFromId($this->reportItem->projectId);
         $array = explode(" ", $relation->getEndDate());
-        return str_replace("0000-00-00", "", $array[0]);
+        return str_replace(ZOT, "", $array[0]);
     }
     
     function getHqpResearchArea(){
@@ -348,7 +348,7 @@ class ReportItemCallback {
     }
 
     function getHqpStatus(){
-        if($this->getHqpEndDate() == '0000-00-00' || $this->getHqpEndDate() == ''){
+        if($this->getHqpEndDate() == ZOT || $this->getHqpEndDate() == ''){
             return "Continuing";
         }
         else{
@@ -763,7 +763,7 @@ class ReportItemCallback {
     
     function getAverageCourseEvalByTerm($term, $q){
         $person = Person::newFromId($this->reportItem->personId);
-        $courses = $person->getCoursesDuring("0000-00-00", "2100-01-01");
+        $courses = $person->getCoursesDuring(SOT, EOT);
         $avgs = array();
         foreach($courses as $course){
             if($course->component == "LEC" && strstr($term, $course->term_string) !== false){
@@ -1078,7 +1078,7 @@ class ReportItemCallback {
     function getUserUniEnd(){
         $person = Person::newFromId($this->reportItem->personId);
         $university = $person->getUniversity();
-        if($university['date'] == "0000-00-00 00:00:00"){
+        if($university['date'] == ZOTT){
             return "";
         }
         $date = new DateTime($university['date']);
@@ -1183,8 +1183,8 @@ class ReportItemCallback {
         $startDate = $this->reportItem->getReport()->startYear.CYCLE_START_MONTH;
         $endDate = $this->reportItem->getReport()->year.CYCLE_END_MONTH;
         
-        $startDate = ($this->getExtra('start_date') != "" && $this->getExtra('start_date') != "0000-00-00") ? max($this->getExtra('start_date'), $startDate) : $startDate;
-        $endDate   = ($this->getExtra('end_date')   != "" && $this->getExtra('end_date')   != "0000-00-00") ? min($this->getExtra('end_date'),   $endDate)   : $endDate;
+        $startDate = ($this->getExtra('start_date') != "" && $this->getExtra('start_date') != ZOT) ? max($this->getExtra('start_date'), $startDate) : $startDate;
+        $endDate   = ($this->getExtra('end_date')   != "" && $this->getExtra('end_date')   != ZOT) ? min($this->getExtra('end_date'),   $endDate)   : $endDate;
         if($me->isRelatedToDuring($person, CO_SUPERVISES, $startDate, $endDate)){
             // Only show if the person is a co-supervisor
             return $this->getUserSupervisors(true, $startDate, $endDate);
@@ -1229,7 +1229,7 @@ class ReportItemCallback {
             case "Conference":
                 $case = "Publication";
                 $category = "Publication";
-                $type = "Conference Paper|Proceedings Paper";
+                $type = "Conference Paper";
                 $histories = $person->getProductHistories($year, "Refereed");
                 break;
             case "Publication":
@@ -2184,7 +2184,7 @@ class ReportItemCallback {
     
     function getUserCoursesEnrolledByTerm($term){
         $person = Person::newFromId($this->reportItem->personId);
-        $courses = $person->getCoursesDuring("0000-00-00", "2100-01-01");
+        $courses = $person->getCoursesDuring(SOT, EOT);
         $enrolled = 0;
         foreach($courses as $course){
             if($course->component == "LEC" && strstr($term, $course->term_string) !== false){

@@ -73,10 +73,10 @@ function DURING($values){
         }
     }
     return "(
-        (($endKey != '0000-00-00 00:00:00') AND
+        (($endKey IS NOT NULL) AND
         (($startKey BETWEEN '$start' AND '$end') || ($endKey BETWEEN '$start' AND '$end') || ($startKey <= '$start' AND $endKey >= '$end') ))
         OR
-        (($endKey = '0000-00-00 00:00:00') AND
+        (($endKey IS NULL) AND
         (($startKey <= '$end')))
     )";
 }
@@ -107,6 +107,15 @@ function WHERE_AND($value){
     global $whereI;
     $i = str_pad($whereI++, 4, 0, STR_PAD_LEFT);
     return "$i AND ".$value;
+}
+
+define('zull', 'null'.rand(0,1000)); // zull (zero date null) Special value for NULL in the database, mostly for use with ZERO_DATE
+
+function ZERO_DATE($value, $return="0000-00-00 00:00:00"){
+    if($value == null || $value == "0000-00-00 00:00:00" || $value == "0000-00-00"){
+        return $return;
+    }
+    return $value;
 }
 
 /**
@@ -285,8 +294,13 @@ class DBFunctions {
                 $whereSQL[] = "{$key} {$value[0]} {$value[1]} ";
             }
             else{
-                $value = DBFunctions::escape($value);
-                $whereSQL[] = "{$key} = '{$value}' ";
+                if($value !== zull){
+                    $value = DBFunctions::escape($value);
+                    $whereSQL[] = "{$key} = '{$value}' ";
+                }
+                else {
+                    $whereSQL[] = "{$key} IS NULL ";
+                }
             }
         }
         foreach($order as $key => $value){
@@ -362,8 +376,13 @@ class DBFunctions {
                 $vals[] = "{$value[1]}";
             }
             else{
-                $value = DBFunctions::escape($value);
-                $vals[] = "'{$value}'";
+                if($value !== zull){
+                    $value = DBFunctions::escape($value);
+                    $vals[] = "'{$value}'";
+                }
+                else{
+                    $vals[] = "NULL";
+                }
             }
         }
         $sql .= implode(",", $cols).") VALUES(".implode(",", $vals).")";
@@ -388,8 +407,12 @@ class DBFunctions {
                 $whereSQL[] = "{$key} {$value[0]} {$value[1]} ";
             }
             else{
-                $value = DBFunctions::escape($value);
-                $whereSQL[] = "{$key} = '{$value}' ";
+                if($value !== zull){
+                    $value = DBFunctions::escape($value);
+                    $whereSQL[] = "{$key} = '{$value}' ";
+                } else {
+                    $whereSQL[] = "{$key} IS NULL ";
+                }
             }
         }
         $sql = "DELETE FROM $table ";
@@ -433,8 +456,13 @@ class DBFunctions {
                 $sets[] = "{$key} {$value[0]} {$value[1]} ";
             }
             else{
-                $value = DBFunctions::escape($value);
-                $sets[] = "{$key} = '{$value}' ";
+                if($value !== zull){
+                    $value = DBFunctions::escape($value);
+                    $sets[] = "{$key} = '{$value}' ";
+                }
+                else {
+                    $sets[] = "{$key} = NULL ";
+                }
             }
         }
         $sql .= implode(",\n", $sets);
@@ -448,8 +476,13 @@ class DBFunctions {
                 $whereSQL[] = "{$key} {$value[0]} {$value[1]} ";
             }
             else{
-                $value = DBFunctions::escape($value);
-                $whereSQL[] = "{$key} = '{$value}' ";
+                if($value !== zull){
+                    $value = DBFunctions::escape($value);
+                    $whereSQL[] = "{$key} = '{$value}' ";
+                }
+                else {
+                    $whereSQL[] = "{$key} IS NULL ";
+                }
             }
         }
         if(count($whereSQL) > 0){

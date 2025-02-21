@@ -229,7 +229,7 @@ class PersonFECTab extends AbstractEditableTab {
                                                         }
                                                     }
                                                   });
-                    $('<span style=\"vertical-align: middle;\" class=\"delete-icon\" title=\"Clear Date\"></span>').insertAfter('input.calendar:not(.initialized):not([name=sabbatical_start\\\[\\\]])').click(function(){ $(this).prev().val('0000-00-00'); });
+                    $('<span style=\"vertical-align: middle;\" class=\"delete-icon\" title=\"Clear Date\"></span>').insertAfter('input.calendar:not(.initialized):not([name=sabbatical_start\\\[\\\]])').click(function(){ $(this).prev().val(ZOT); });
                     $('input.calendar:not(.initialized)').addClass('initialized');
                 }
                 initCals();

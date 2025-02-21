@@ -166,6 +166,13 @@ class IncrementReportItem extends SelectReportItem {
 	    }
 	    $this->value = str_replace('{$item}', '{$item}'.$replacedText, $this->value);
 	    $this->value = str_replace('{$value}', '{$value}'.$replacedText, $this->value);
+	    $this->value .= "<script type='text/javascript'>
+	        $('select[name={$this->getPostId()}] option').each(function(){
+	            if($(this).val().indexOf('0.00') != -1){
+	                $(this).hide();
+	            }
+	        });
+	    </script>";
 	    parent::render();
 	}
 
