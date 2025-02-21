@@ -19,13 +19,7 @@ LIMSContactEditViewPmm = Backbone.View.extend({
             
             this.listenTo(this.model, "sync", function(){
                 this.selectTemplate();
-                var xhr =  this.project.fetch();
-                $(xhr).ready(function(){
-                    var xhr = this.project.getMembers();
-                    $(xhr).ready(function(){
-                        this.render();
-                    }.bind(this));
-                }.bind(this));
+                this.render();
             }.bind(this));
             this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
             this.listenTo(this.model.opportunities, "change:toDelete", this.removeOpportunities);

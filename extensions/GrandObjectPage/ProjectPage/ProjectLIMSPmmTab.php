@@ -2,6 +2,7 @@
 
 class ProjectLIMSPmmTab extends AbstractEditableTab {
 
+
     var $project;
     var $visibility;
 
@@ -33,6 +34,10 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
             <div id='lims-contact-container'></div>
             <script>
                 $(document).ready(function() {
+                        allPeople = new People();
+                        allPeople.simple = true;
+                        allPeople.roles = [STAFF,MANAGER,ADMIN];
+                        allPeopleXHR = allPeople.fetch();
                         var contactModel = new LIMSContactPmm({ projectId: {$project->getId()} });
                         var contactView = new LIMSContactEditViewPmm({ 
                             model: contactModel,
