@@ -35,7 +35,7 @@ allPeople.roles = [STAFF,MANAGER,ADMIN];
 allPeopleXHR = allPeople.fetch();
 
 pageRouter.on('route:showLIMSContactsTable', function(){
-    main.set('title', "Manage LIMS");
+    main.set('title', "Activity Management");
     $.when(allPeopleXHR).done(function(){
         // Get All LIMSContacts
         var contacts = new LIMSContactsPmm();

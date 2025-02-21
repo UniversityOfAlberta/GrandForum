@@ -41,7 +41,7 @@ class LIMSPmm extends BackbonePage {
     static function createSideBarLink(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
         if((new self)->userCanExecute($wgUser)){
-            $link = TabUtils::createToolboxLink("LIMS", "$wgServer$wgScriptPath/index.php/Special:LIMSPmm");
+            $link = TabUtils::createToolboxLink("Manage Project", "$wgServer$wgScriptPath/index.php/Special:LIMSPmm");
             $toolbox['Other']['links'][] = $link;
         }
         return true;

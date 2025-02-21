@@ -1,10 +1,15 @@
 LIMSContactViewPmm = Backbone.View.extend({
+    isDialog: false,
 
-    initialize: function(){
+    initialize: function(options){
         this.model.fetch();
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model.opportunities, "sync", this.renderOpportunities);
         this.template = _.template($('#lims_contact_template').html());
+
+        if(options.isDialog != undefined){
+            this.isDialog = options.isDialog;
+        }
     },
        
     events: {
@@ -24,9 +29,12 @@ LIMSContactViewPmm = Backbone.View.extend({
     },
     
     render: function(){
-        main.set('title', this.model.get('title'));
+        if (!_.isUndefined(main) && !_.isUndefined(main.set)) {
+            main.set('title', this.model.get('title'));
+        }
         this.$el.html(this.template(this.model.toJSON()));
         return this.$el;
+        
     }
 
 });

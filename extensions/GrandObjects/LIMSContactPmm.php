@@ -23,6 +23,18 @@ class LIMSContactPmm extends BackboneModel {
 	    }
 	    return self::$cache[$id];
 	}
+
+    static function newFromProjectId($id){
+	   
+        $data = DBFunctions::select(array('grand_pmm_contact'),
+                                    array('*'),
+                                    array('project_id' => $id));
+        $contact = new LIMSContactPmm($data);
+        if (!$contact->exists()){
+            $contact->projectId = $id;
+        }
+	    return $contact;
+	}
 	
 	static function getAllContacts($project_id=null){
 	    if($project_id == null){

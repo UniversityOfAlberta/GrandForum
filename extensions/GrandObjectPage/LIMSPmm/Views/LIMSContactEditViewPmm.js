@@ -4,11 +4,13 @@ LIMSContactEditViewPmm = Backbone.View.extend({
     subViews: [],
     saving: false,
     allProjects: null,
+    project: null,
 
     initialize: function(options){
         this.allProjects = new Projects();
         this.allProjects.type = "administrative";
         this.allProjects.fetch();
+        this.project = new Project({id: this.model.get('projectId')});
         this.allProjects.ready().then(function(){
             this.model.saving = false;
             if(!this.model.isNew()){
@@ -17,7 +19,13 @@ LIMSContactEditViewPmm = Backbone.View.extend({
             
             this.listenTo(this.model, "sync", function(){
                 this.selectTemplate();
-                this.render();
+                var xhr =  this.project.fetch();
+                $(xhr).ready(function(){
+                    var xhr = this.project.getMembers();
+                    $(xhr).ready(function(){
+                        this.render();
+                    }.bind(this));
+                }.bind(this));
             }.bind(this));
             this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
             this.listenTo(this.model.opportunities, "change:toDelete", this.removeOpportunities);
@@ -64,8 +72,9 @@ LIMSContactEditViewPmm = Backbone.View.extend({
         }
     },
     
-    addOpportunity: function(){
+    addOpportunity: function(event){
         this.model.opportunities.add(new LIMSOpportunityPmm({contact: this.model.get('id')}));
+
     },
     
     save: function(){
