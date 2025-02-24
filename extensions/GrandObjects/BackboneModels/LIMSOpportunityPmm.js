@@ -6,9 +6,9 @@ LIMSOpportunityPmm = Backbone.Model.extend({
     initialize: function(){
         this.tasks = new LIMSTasksPmm();
         this.tasks.opportunity = this;
-        if(!this.isNew()){
+        //if(!this.isNew()){
             this.tasks.fetch();
-        }
+        //}
         this.tasks.on("add", function(model){
             model.opportunity = this;
         }.bind(this));

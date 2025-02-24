@@ -41,23 +41,33 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
                              isDialog: true
                         });
                         contactModel.fetch();
-                        console.log( $('form'));
-
+                        
                         $('form').on('submit', function(e){
                                 if(this.submitted == 'Cancel'){
                                     return true;
                                 }
                                 if($('button[value=\"Save {$this->name}\"]').is(':visible')){
-                                    var requests = contactModel.save();
                                     e.preventDefault();
                                     $('button[value=\"Save {$this->name}\"]').prop('disabled', true);
-                                    $.when.apply($, requests).then(function(){
-                                        $('form').off('submit');
+                                    
+                                    // Save Contact
+                                    $.when.apply(null, contactView.save()).done(function(){
+                                        // Save Opportunities
+                                        $.when.apply(null, contactView.saveOpportunities()).done(function(){
+                                            // Save Tasks
+                                            $.when.apply(null, contactView.saveTasks()).done(function(){
+                                                $('form').off('submit');
+                                                $('button[value=\"Save {$this->name}\"]').prop('disabled', false);
+                                                _.delay(function(){
+                                                    $('button[value=\"Save {$this->name}\"]').click();
+                                                }, 10);
+                                            }.bind(this));
+                                        }.bind(this));
+                                    }.bind(this)).fail(function(e){
                                         $('button[value=\"Save {$this->name}\"]').prop('disabled', false);
-                                        _.delay(function(){
-                                            $('button[value=\"Save {$this->name}\"]').click();
-                                        }, 10);
-                                    });
+                                        clearAllMessages();
+                                        addError(e.responseText, true);
+                                    }.bind(this));
                                 }
                         });
                  });
@@ -95,8 +105,6 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
                              el: '#lims-contact-container',
                              isDialog: true
                         });
-                        contactModel.fetch();
-
                  });
             </script>
         ";
