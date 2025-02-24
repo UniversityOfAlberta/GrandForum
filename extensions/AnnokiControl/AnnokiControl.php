@@ -127,7 +127,6 @@ foreach($egAnnokiExtensions as $key => $extension){
 }
 
 require_once("AnnokiControl_body.php");
-$wgHooks['SpecialPageBeforeExecute'][] = 'showSpecialPageHeader';
 $wgHooks['MessagesPreLoad'][] = 'AnnokiControl::onMessagesPreLoad';
 
 $wgExtensionCredits['specialpage'][] = array(
@@ -174,11 +173,6 @@ function orderSpecialPages(&$aSpecialPages){
         }
     }
     $aSpecialPages = array_merge($array1, $array2);
-    return true;
-}
-
-function showSpecialPageHeader($special, $subpage){
-    $special->setHeaders();
     return true;
 }
 

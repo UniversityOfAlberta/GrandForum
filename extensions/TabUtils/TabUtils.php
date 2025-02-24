@@ -106,6 +106,8 @@ class TabUtils {
         }
         
         $content_actions = $new_actions;
+        $content_actions['namespaces'] = array();
+        $content_actions['associated-pages'] = array();
         return true;
     }
     
