@@ -842,7 +842,7 @@ class CavendishTemplate extends QuickTemplate {
 	<div id="mBody">
 		<div id="bodyContent" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 			<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
-			<h1><?php $this->text('title') ?></h1>
+			<h1><?php $this->html('title') ?></h1>
 			<div id='wgMessages'><?php $wgMessage->showMessages(); ?></div>
 			<div id='stickyMessages'></div>
 			<h3 id="siteSub"><?php $this->msg('tagline') ?></h3>
