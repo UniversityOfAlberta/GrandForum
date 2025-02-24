@@ -75,13 +75,13 @@ class Bar extends Visualization {
 	$labelString = "[";
 	$dataSetString = "[";
 	$count = 0;
-	while(list($key, $val) = each($data)){
+	foreach($data as $key => $val){
 	    $count++;
 	    $labelString .="$key";
 	    $dataSetString .= "$val";
 	    if($count != count($data)){
-	   	$labelString .= ",";
-		$dataSetString .= ",";
+            $labelString .= ",";
+            $dataSetString .= ",";
 	    }
 	}
 	$labelString .= "]";

@@ -195,7 +195,7 @@ abstract class AbstractReport extends SpecialPage {
                     $realPerson = Person::newFromUser($wgRealUser);
                     $managerImpersonating = $realPerson->isRoleAtLeast(MANAGER);
                 }
-                if(!$managerImpersonating && (!$wgUser->isLoggedIn() || ($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable() || (isset($_POST['user']) && $_POST['user'] != $wgUser->getName()))){
+                if(!$managerImpersonating && (!$wgUser->isRegistered() || ($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable() || (isset($_POST['user']) && $_POST['user'] != $wgUser->getName()))){
                     header('HTTP/1.1 403 Authentication Required');
                     exit;
                 }

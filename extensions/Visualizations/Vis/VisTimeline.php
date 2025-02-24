@@ -14,10 +14,8 @@ class VisTimeline extends Visualization {
     
     static function init(){
         global $wgOut, $wgServer, $wgScriptPath, $visualizations;
-        if(strstr($wgOut->getScript(), 'vis.min.js') === false){
-            $wgOut->addScript("<script src='$wgServer$wgScriptPath/extensions/Visualizations/Vis/js/vis.min.js' type='text/javascript'></script>");
-            $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/Visualizations/Vis/js/vis.min.css' rel='stylesheet' type='text/css' />");
-        }
+        $wgOut->addScript("<script src='$wgServer$wgScriptPath/extensions/Visualizations/Vis/js/vis.min.js' type='text/javascript'></script>");
+        $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/Visualizations/Vis/js/vis.min.css' rel='stylesheet' type='text/css' />");
         $wgOut->addScript("<script src='$wgServer$wgScriptPath/extensions/Visualizations/Vis/js/timeline/timeline.js' type='text/javascript'></script>");
         $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/Visualizations/Vis/js/timeline/timeline.css' rel='stylesheet' type='text/css' />");
     }

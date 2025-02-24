@@ -8,7 +8,7 @@ class PersonPublicationsTypesTab extends PersonPublicationsTab {
 
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             return "";
         }
         $me = Person::newFromWgUser();

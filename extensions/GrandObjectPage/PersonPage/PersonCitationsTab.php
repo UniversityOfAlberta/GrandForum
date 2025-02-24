@@ -14,7 +14,7 @@ class PersonCitationsTab extends AbstractTab {
 
     function generateBody(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             return "";
         }
         $wgOut->addScript(

@@ -21,7 +21,7 @@ class PersonProductsTab extends AbstractTab {
 
     function generateBody(){
         global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dashboard = null;
             if(is_array($this->category)){
                 $prods = array();

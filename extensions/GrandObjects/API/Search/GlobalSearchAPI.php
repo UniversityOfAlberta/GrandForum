@@ -106,11 +106,11 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
             case 'products':
                 $data = array();
-                $result = DBFunctions::rawSelect(array('grand_products'),
+                $rows = DBFunctions::select(array('grand_products'),
                                                  array('title', 'id', 'category'),
                                                  array('deleted' => '0',
                                                        'access_id' => '0'));
-                while ($product = mysqli_fetch_array($result->result, MYSQLI_ASSOC)) {
+                foreach($rows as $product){
                     if($product['category'] == "Publication" ||
                        $product['category'] == "Presentation"){
                         $pTitle = unaccentChars($product['title']);
@@ -129,7 +129,8 @@ class GlobalSearchAPI extends RESTAPI {
                     }
                 }
                 $results = array();
-                $myProducts = new Collection($me->getPapers('all', false, 'both'));
+                $papers = $me->getPapers('all', false, 'both');
+                $myProducts = new Collection($papers);
                 $productIds = $myProducts->pluck('id');
                 $flippedProductIds = @array_flip($productIds);
 

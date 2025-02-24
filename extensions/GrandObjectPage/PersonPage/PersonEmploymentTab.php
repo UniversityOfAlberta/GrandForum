@@ -27,7 +27,7 @@ class PersonEmploymentTab extends AbstractEditableTab {
 
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             return "";
         }
 

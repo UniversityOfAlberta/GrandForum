@@ -18,7 +18,7 @@ class PersonGradStudentsTab extends AbstractTab {
 
     function generateBody(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             return "";
         }
         $me = Person::newFromWgUser();
@@ -124,7 +124,7 @@ class PersonGradStudentsTab extends AbstractTab {
         uasort($rows, function ($a, $b){
             $ak = array_keys($a);
             $bk = array_keys($b);
-            return $ak[0] < $bk[0];
+            return strcmp($bk[0], $ak[0]);
         });
         foreach($rows as $id => $row){
             $hqp = Person::newFromId($id);
@@ -151,7 +151,7 @@ class PersonGradStudentsTab extends AbstractTab {
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
         $html = "";
 
-        if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
+        if($wgUser->isRegistered() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 $html .= "<h3>Doctoral Students (Supervised or Co-supervised)</h3>";
                 $html .= $this->supervisesHTML('phd', $this->startRange, $this->endRange);
@@ -183,9 +183,9 @@ class PersonGradStudentsTab extends AbstractTab {
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
         $html = "";
 
-        if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
+        if($wgUser->isRegistered() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
-                if(count($person->getRelationsDuring('all', $this->startRange, $this->endRange)>0)){
+                if(count($person->getRelationsDuring('all', $this->startRange, $this->endRange))>0){
                     $html .= $this->supervisesHTML('committee', $this->startRange, $this->endRange);
                 }
             }

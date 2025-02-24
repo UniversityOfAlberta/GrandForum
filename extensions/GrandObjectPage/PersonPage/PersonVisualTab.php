@@ -21,7 +21,7 @@ class PersonVisualTab extends AbstractTab {
     function showSurvey($person, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
         $me = Person::newFromWgUser();
-        if($wgUser->isLoggedIn() && ($person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER)){
+        if($wgUser->isRegistered() && ($person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER)){
             $dataUrl1 = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getSurveyData&person={$person->getId()}&degree=1";
             $dataUrl2 = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getSurveyData&person={$person->getId()}&degree=2";
             $fdg1 = new ForceDirectedGraph($dataUrl1);

@@ -6,7 +6,7 @@ class PersonCoursesTab extends AbstractEditableTab {
     var $visibility;
     var $startRange;
     var $endRange;
-    var $levels = null; // array(1,2,3,4) to specify course levels
+    var $levels = array(); // array(1,2,3,4) to specify course levels
 
     function __construct($person, $visibility, $startRange=SOT, $endRange=CYCLE_END){
         parent::__construct("Teaching");
@@ -187,7 +187,7 @@ class PersonCoursesTab extends AbstractEditableTab {
 
     function generateBody(){
         global $wgUser;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             return "";
         }
 

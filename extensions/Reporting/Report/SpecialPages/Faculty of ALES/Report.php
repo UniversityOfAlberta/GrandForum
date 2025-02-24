@@ -2,8 +2,8 @@
 
 class Report extends TemplateReport{
     
-    function Report(){
-        parent::TemplateReport();
+    function __construct(){
+        parent::__construct();
     }
 }
 

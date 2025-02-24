@@ -70,12 +70,12 @@ class IndexTable {
         }
         $selected = ($wgTitle->getText() == "ALL Grants" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
         $grantSubTab = TabUtils::createSubTab("Grants", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Grants", "$selected");
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             //$tabs['Main']['subtabs'][] = $grantSubTab;
         }
         $selected = ($wgTitle->getText() == "ALL Courses" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
         $grantSubTab = TabUtils::createSubTab("Courses", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Courses", "$selected");
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             //$tabs['Main']['subtabs'][] = $grantSubTab;
         }
         */
@@ -225,7 +225,7 @@ class IndexTable {
         
     private function generateCoursesTable(){
         global $wgUser,$wgOut;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             permissionError();
         }
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>

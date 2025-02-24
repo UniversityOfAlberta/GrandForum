@@ -13,7 +13,7 @@ class PersonStoriesTab extends AbstractTab {
 
     function generateBody(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             return "";
         }
         $stories = array_reverse($this->person->getStories());

@@ -18,9 +18,7 @@ class Chord extends Visualization {
         $wgOut->addScript('<style rel="stylesheet" type="text/css">
 
 }</style>');
-        if(strstr($wgOut->getScript(), 'raphael') === false){
-            $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Doughnut/doughnut/raphael.js" type="text/javascript" charset="utf-8"></script>');
-        }
+        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Doughnut/doughnut/raphael.js" type="text/javascript" charset="utf-8"></script>');
     }
 
     function show(){

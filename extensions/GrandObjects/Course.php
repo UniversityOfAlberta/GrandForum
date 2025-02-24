@@ -238,6 +238,24 @@ class Course extends BackboneModel{
         }
         return new Course(array());
     }
+    
+    static function getUserCourses($id){
+        if(!isset(self::$userCoursesCache[$id])){
+            $sql = "SELECT DISTINCT course_id
+                    FROM `grand_user_courses`
+                    WHERE (user_id = '$id')";
+            $data = DBFunctions::execSQL($sql);
+            $courses = array();
+            foreach($data as $row){
+                $course = Course::newFromId($row['course_id']);
+                $comp = str_replace("SEM", "C", str_replace("LAB", "B", str_replace("LEC", "A", $course->component)));
+                $courses["{$course->subject} {$course->catalog} {$course->startDate} {$comp} {$course->sect}"] = $course;
+            }
+            ksort($courses);
+            self::$userCoursesCache[$id] = $courses;
+        }
+        return self::$userCoursesCache[$id];
+    }
 
     /**
      * Returns True if the course is saved correctly to the course table in the database
@@ -359,24 +377,6 @@ class Course extends BackboneModel{
             $courses[] = Course::newFromId($row['id']);
         }
         return $courses;
-    }
-
-    function getUserCourses($id){
-        if(!isset(self::$userCoursesCache[$id])){
-            $sql = "SELECT DISTINCT course_id
-                    FROM `grand_user_courses`
-                    WHERE (user_id = '$id')";
-            $data = DBFunctions::execSQL($sql);
-            $courses = array();
-            foreach($data as $row){
-                $course = Course::newFromId($row['course_id']);
-                $comp = str_replace("SEM", "C", str_replace("LAB", "B", str_replace("LEC", "A", $course->component)));
-                $courses["{$course->subject} {$course->catalog} {$course->startDate} {$comp} {$course->sect}"] = $course;
-            }
-            ksort($courses);
-            self::$userCoursesCache[$id] = $courses;
-        }
-        return self::$userCoursesCache[$id];
     }
 
     function getProfessors(){
