@@ -1,6 +1,8 @@
 LIMSTaskEditViewPmm = Backbone.View.extend({
 
     tagName: "tr",
+
+    project: null,
     
     transactionTree: {
         '': [''],
@@ -11,10 +13,12 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         'Media': ['', 'Publications','Social Media','News Media']
     },
 
-    initialize: function(){
+    initialize: function(options){
+        this.project = options.project;
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
         this.selectTemplate();
+
     },
     
     selectTemplate: function(){

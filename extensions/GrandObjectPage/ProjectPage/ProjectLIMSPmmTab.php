@@ -34,17 +34,32 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
             <div id='lims-contact-container'></div>
             <script>
                 $(document).ready(function() {
-                        allPeople = new People();
-                        allPeople.simple = true;
-                        allPeople.roles = [STAFF,MANAGER,ADMIN];
-                        allPeopleXHR = allPeople.fetch();
                         var contactModel = new LIMSContactPmm({ projectId: {$project->getId()} });
                         var contactView = new LIMSContactEditViewPmm({ 
                             model: contactModel,
                              el: '#lims-contact-container',
                              isDialog: true
                         });
-                        contactView.render();
+                        contactModel.fetch();
+                        console.log( $('form'));
+
+                        $('form').on('submit', function(e){
+                                if(this.submitted == 'Cancel'){
+                                    return true;
+                                }
+                                if($('button[value=\"Save {$this->name}\"]').is(':visible')){
+                                    var requests = contactModel.save();
+                                    e.preventDefault();
+                                    $('button[value=\"Save {$this->name}\"]').prop('disabled', true);
+                                    $.when.apply($, requests).then(function(){
+                                        $('form').off('submit');
+                                        $('button[value=\"Save {$this->name}\"]').prop('disabled', false);
+                                        _.delay(function(){
+                                            $('button[value=\"Save {$this->name}\"]').click();
+                                        }, 10);
+                                    });
+                                }
+                        });
                  });
             </script>
         ";
@@ -80,7 +95,8 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
                              el: '#lims-contact-container',
                              isDialog: true
                         });
-                        contactView.render();
+                        contactModel.fetch();
+
                  });
             </script>
         ";

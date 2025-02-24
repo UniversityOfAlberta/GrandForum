@@ -3,34 +3,32 @@ LIMSContactEditViewPmm = Backbone.View.extend({
     isDialog: false,
     subViews: [],
     saving: false,
-    allProjects: null,
     project: null,
 
     initialize: function(options){
-        this.allProjects = new Projects();
-        this.allProjects.type = "administrative";
-        this.allProjects.fetch();
+        model = this.model;
+        view = this;
         this.project = new Project({id: this.model.get('projectId')});
-        this.allProjects.ready().then(function(){
-            this.model.saving = false;
-            if(!this.model.isNew()){
-                this.model.fetch();
-            }
+        this.saving = false;
+        if(!this.model.isNew()){
+            this.model.fetch();
+        }
             
-            this.listenTo(this.model, "sync", function(){
-                this.selectTemplate();
-                this.render();
-            }.bind(this));
-            this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
-            this.listenTo(this.model.opportunities, "change:toDelete", this.removeOpportunities);
-            this.listenTo(this.model, "change:title", function(){
-                if(!this.isDialog){
-                    main.set('title', this.model.get('title'));
-                }
-            });
-            this.listenTo(this.model, "change:details", this.changeDetails);
-            
+        this.listenTo(this.model, "sync", function(){
+            this.selectTemplate();
+            this.render();
+            // console.log(this.model.toJSON());
+
         }.bind(this));
+        this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
+        this.listenTo(this.model.opportunities, "change:toDelete", this.removeOpportunities);
+        this.listenTo(this.model, "change:title", function(){
+            if(!this.isDialog){
+                main.set('title', this.model.get('title'));
+            }
+        });
+        this.listenTo(this.model, "change:details", this.changeDetails);
+
         if(options.isDialog != undefined){
             this.isDialog = options.isDialog;
         }
@@ -75,14 +73,14 @@ LIMSContactEditViewPmm = Backbone.View.extend({
         var xhrs = [];
         this.$(".throbber").show();
         this.$("#save").prop('disabled', true);
-        this.model.saving = true;
+        this.saving = true;
         xhrs.push(this.model.save(null, {
             success: function(){
                 if(!this.isDialog){
                     this.saveOpportunities();
                 }
                 _.defer(function(){
-                    this.model.saving = false;
+                    this.saving = false;
                 }.bind(this));
             }.bind(this),
             error: function(o, e){
@@ -98,7 +96,7 @@ LIMSContactEditViewPmm = Backbone.View.extend({
                     }
                 }
                 _.defer(function(){
-                    this.model.saving = false;
+                    this.saving = false;
                 }.bind(this));
             }.bind(this)
         }));
@@ -197,13 +195,14 @@ LIMSContactEditViewPmm = Backbone.View.extend({
     },
         
     renderOpportunities: function(model){
-        var view = new LIMSOpportunityEditViewPmm({model: model, allProjects: this.allProjects});
+        var view = new LIMSOpportunityEditViewPmm({model: model, project: this.project});
+
         this.$("#opportunities").append(view.render());
         this.subViews.push(view);
     },
     
     render: function(){
-        if(!this.model.saving){
+        if(!this.saving){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
             }
