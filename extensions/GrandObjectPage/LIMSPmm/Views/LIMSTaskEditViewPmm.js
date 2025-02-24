@@ -31,14 +31,48 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.toDelete = true;
         this.model.trigger("change:toDelete");
     },
-    
+
+    renderTinyMCE: function(){
+        _.defer(function(){
+            this.$('textarea').tinymce({
+                theme: 'modern',
+                menubar: false,
+                relative_urls : false,
+                convert_urls: false,
+                plugins: 'link image charmap lists table paste',
+                toolbar: [
+                    'bold | link | bullist numlist'
+                ],
+                paste_data_images: true,
+                invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font',
+                imagemanager_insert_template : '<img src="{$url}" width="{$custom.width}" height="{$custom.height}" />',
+                setup: function(editor){
+                    editor.on('change', function(e){
+                        this.model.set('comments',editor.getContent());
+                    }.bind(this));
+                }.bind(this)
+
+            });
+        }.bind(this));
+    },
+
     render: function(){
+        for (edId in tinyMCE.editors){
+            var e = tinyMCE.editors[edId];
+            if(e != undefined){
+                e.destroy();
+                e.remove();
+            }
+        }
+
         if(!this.model.saving){
             this.$el.html(this.template(this.model.toJSON()));
             _.defer(function(){
                 this.$('select[name=assignee_id]').chosen();
             }.bind(this));
         }
+
+        this.renderTinyMCE();
         return this.$el;
     }
 
