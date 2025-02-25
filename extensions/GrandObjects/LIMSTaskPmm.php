@@ -172,20 +172,21 @@ class LIMSTaskPmm extends BackboneModel {
 	}
 	
 	function update(){
+        $me = Person::newFromWgUser();
 	    if($this->isAllowedToEdit()){
 	        $data = DBFunctions::select(array('grand_pmm_task'),
 	                                    array('*'),
 	                                    array('id' => $this->id));
-	        if(@$data[0]['assignee'] != $this->assignee){
-	            // If the assignee was changed, send email to new assignee
-	            $assignee = Person::newFromId($this->assignee);
-	            $this->sendMail($assignee, 'assignee');
-	        }
-	        else if(@substr($data[0]['due_date'],0,10) != $this->getDueDate()){
-	            // If Date was changed, send another email to the assignee
-	            $assignee = Person::newFromId($this->assignee);
-	            $this->sendMail($assignee, 'due_date');
-	        }
+            $assignee = Person::newFromId($this->assignee);
+
+	        // if(@$data[0]['assignee'] != $this->assignee){
+	        //     // If the assignee was changed, send email to new assignee
+	        //     $this->sendMail($assignee, 'assignee');
+	        // }
+	        // else if(@substr($data[0]['due_date'],0,10) != $this->getDueDate()){
+	        //     // If Date was changed, send another email to the assignee
+	        //     $this->sendMail($assignee, 'due_date');
+	        // }
 	        DBFunctions::update('grand_pmm_task',
 	                            array('opportunity' => $this->opportunity,
 	                                  'assignee' => $this->assignee,
@@ -194,6 +195,9 @@ class LIMSTaskPmm extends BackboneModel {
 	                                  'comments' => $this->comments,
 	                                  'status' => $this->status),
 	                            array('id' => $this->id));
+            if($assignee != null && $assignee->getId() != 0){
+                Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated", $this->getOpportunity()->getContact()->getProject()->getUrl()."?tab=activity-management", false);
+            }
 	    }
 	}
 	

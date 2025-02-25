@@ -14,7 +14,9 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
     }
 
     function canEdit() {
-        return $this->project->userCanEdit();
+        $me = Person::newFromWgUser();
+        return ($me->isRoleAtLeast(STAFF) || $me->isMemberOf($this->project));
+        // return $this->project->userCanEdit();
     }
 
     function generateEditBody(){

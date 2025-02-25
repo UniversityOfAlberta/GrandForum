@@ -112,17 +112,26 @@ class LIMSContactPmm extends BackboneModel {
 	
 	function isAllowedToEdit(){
         $me = Person::newFromWgUser();
-        return ($this->getPerson()->isMe() || $me->isRoleAtLeast(STAFF));
+        // var_dump($this->getProject());
+        // return ($me->isMemberOf($this->getProject()));
+        // return $me->isRoleAtLeast(STAFF);
+       
+        return ($me->isMemberOf($this->getProject()) || $me->isRoleAtLeast(STAFF));
+        // return true;
     }
     
     function isAllowedToView(){
         $me = Person::newFromWgUser();
-        return $me->isRoleAtLeast(STAFF);
+        return ($me->isMemberOf($this->getProject()) || $me->isRoleAtLeast(STAFF));
+        // return true;
     }
     
-    static function isAllowedToCreate(){
+    static function isAllowedToCreate($project = null){
         $me = Person::newFromWgUser();
-        return $me->isRoleAtLeast(STAFF);
+
+        return ($me->isRoleAtLeast(STAFF) || $me->isRole(PL));
+        // return $me->isRoleAtLeast(STAFF);
+
     }
     
     /**

@@ -6,6 +6,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
 
     initialize: function(options){
         this.project = options.project;
+        // console.log(this.project);
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
         this.selectTemplate();
