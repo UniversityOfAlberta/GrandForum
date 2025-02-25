@@ -46,10 +46,11 @@ class MyMailingLists extends SpecialPage{
         }
         else{
             $lists = MailingList::getPersonLists($person);
-            foreach(MailingList::getPublicLists() as $list){
-                if(array_search($list, $lists) === false){
-                    $publicLists[] = $list;
-                }
+            
+        }
+        foreach(MailingList::getPublicLists() as $list){
+            if(array_search($list, $lists) === false){
+                $publicLists[] = $list;
             }
         }
         $wgOut->addHTML("<form method='POST'><table class='mailTable' frame='box' rules='all'><thead>
