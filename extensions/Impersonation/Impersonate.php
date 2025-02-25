@@ -52,7 +52,7 @@ function getUserMode($action, $page){
     return true;
 }
 
-function startImpersonate(){
+function startImpersonate($wgUser){
     global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgTitle;
     if(!$wgUser->isRegistered()){
         return true;
