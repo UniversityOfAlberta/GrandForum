@@ -12,11 +12,16 @@ autoload_register('AddMember/Validations');
 class AddMember extends SpecialPage{
 
     function __construct() {
-        parent::__construct("AddMember", ADMIN.'+', true);
+        parent::__construct("AddMember", NI.'+', true);
     }
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("Add Member");
+        $person = Person::newFromWgUser();
+        if(!$person->isRoleAtLeast(ADMIN)){
+            redirect("$wgServer$wgScriptPath/index.php/Special:AddHqp");
+        }
         $user = Person::newFromId($wgUser->getId());
         if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){

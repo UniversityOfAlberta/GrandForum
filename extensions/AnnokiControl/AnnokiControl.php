@@ -25,7 +25,6 @@ function autoload_register($directory){
 }
 
 function redirect($url){
-    DBFunctions::commit();
     session_write_close();
     header("Location: $url");
     exit;

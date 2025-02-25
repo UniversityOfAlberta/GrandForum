@@ -5,7 +5,6 @@ $wgExtensionMessagesFiles['AddHqp'] = $dir . 'AddHqp.i18n.php';
 $wgSpecialPageGroups['AddHqp'] = 'network-tools';
 
 //$wgHooks['ToolboxLinks'][] = 'AddHqp::createToolboxLinks';
-$wgHooks['SpecialPage_initList'][] = 'AddHqp::redirect';
 autoload_register('AddHqp/Validations');
 require_once("$dir../AddMember/AddMember.body.php");
 
@@ -17,6 +16,7 @@ class AddHqp extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("Add Member");
         $user = Person::newFromId($wgUser->getId());
         if(isset($_POST['submit'])){
             $form = self::createForm();
@@ -197,14 +197,6 @@ class AddHqp extends SpecialPage{
         return true;
     }
 
-    static function redirect($specialPages){
-        global $wgTitle, $wgServer, $wgScriptPath;
-        $person = Person::newFromWgUser();
-        if($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "AddMember" && !$person->isRoleAtLeast(ADMIN)){
-            redirect("$wgServer$wgScriptPath/index.php/Special:AddHqp");
-        }
-        return true;
-    }
 }
 
 ?>

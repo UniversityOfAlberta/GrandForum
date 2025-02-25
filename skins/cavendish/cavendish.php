@@ -912,10 +912,6 @@ class CavendishTemplate extends QuickTemplate {
 		    $me = Person::newFromWgUser();
 		    Hooks::run('ToolboxHeaders', array(&$GLOBALS['toolbox']));
             Hooks::run('ToolboxLinks', array(&$GLOBALS['toolbox']));
-	        //$GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
-	        if($me->isRoleAtLeast(ADMIN)){
-	            $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
-	        }
 	        global $toolbox;
 	        $i = 0;
 	        foreach($toolbox as $key => $header){
