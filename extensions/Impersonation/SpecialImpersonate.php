@@ -8,12 +8,12 @@ $wgSpecialPageGroups['Impersonate'] = 'network-tools';
 $wgHooks['ToolboxLinks'][] = 'Impersonate::createDelegateLink';
 
 function runImpersonate($par) {
-  Impersonate::execute($par);
+    Impersonate::execute($par);
 }
 
 class Impersonate extends SpecialPage {
 
-	function Impersonate() {
+	function __construct() {
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    SpecialPage::__construct("Impersonate", null, true, 'runImpersonate');
 	}
@@ -37,7 +37,6 @@ class Impersonate extends SpecialPage {
         else if(count($user->getDelegates()) > 0){
             $allPeople = $user->getDelegates();
         }
-        
 	    
 	    $wgOut->addHTML("<span id='pageDescription'>Impersonating allows you to temporarily view the {$config->getValue('siteName')} as another user.<br />Select a user from the list below, and then click the 'Impersonate' button to begin a session.</span><table>
 	                        <tr><td>
