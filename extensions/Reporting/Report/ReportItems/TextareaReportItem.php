@@ -8,7 +8,7 @@ class TextareaReportItem extends AbstractReportItem {
         $imgConst = $DPI_CONSTANT*72/96;
         $mentionPlugin = "";
         $mentionSource = array();
-        if(count($mentions) > 0){
+        if($mentions != null && count($mentions) > 0){
             $mentionPlugin = "mention";
             foreach($mentions as $mention){
                 $mentionSource[] = array("name" => $mention);
