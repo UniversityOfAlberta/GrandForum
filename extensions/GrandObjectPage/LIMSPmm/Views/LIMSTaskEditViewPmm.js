@@ -38,6 +38,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
             this.$('textarea').tinymce({
                 theme: 'modern',
                 menubar: false,
+                statusbar: false,
                 relative_urls : false,
                 convert_urls: false,
                 plugins: 'link image charmap lists table paste',
@@ -58,13 +59,13 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
     },
 
     render: function(){
-        for (edId in tinyMCE.editors){
-            var e = tinyMCE.editors[edId];
-            if(e != undefined){
-                e.destroy();
-                e.remove();
-            }
-        }
+        // for (edId in tinyMCE.editors){
+        //     var e = tinyMCE.editors[edId];
+        //     if(e != undefined){
+        //         e.destroy();
+        //         e.remove();
+        //     }
+        // }
 
         if(!this.model.saving){
             this.$el.html(this.template(this.model.toJSON()));
