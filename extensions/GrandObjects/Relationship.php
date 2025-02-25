@@ -23,12 +23,19 @@ class Relationship extends BackboneModel {
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
-        $data = DBFunctions::select(array('grand_relations'),
-                                    array('*'),
-                                    array('id' => $id));
-        $Relationship = new Relationship($data);
-        self::$cache[$Relationship->id] = &$Relationship;
-        return $Relationship;
+        $cacheId = "rel_{$id}";
+        if(Cache::exists($cacheId)){
+            $data = Cache::fetch($cacheId);
+        }
+        else{
+            $data = DBFunctions::select(array('grand_relations'),
+                                        array('*'),
+                                        array('id' => $id));
+            Cache::store($cacheId, $data);
+        }
+        $relationship = new Relationship($data);
+        self::$cache[$relationship->id] = &$relationship;
+        return $relationship;
     }
 
     static function newFromUser1User2TypeStartDate($user1,$user2,$type,$startdate=false){
@@ -133,33 +140,25 @@ class Relationship extends BackboneModel {
                                                 'start_date' => ZERO_DATE($this->getStartDate(), zull),
                                                 'end_date' => ZERO_DATE($this->getEndDate(), zull),
                                                 'comment' => $this->getComment()),true);
-                if($this->endDate == ""){
-                    $this->endDate = ZOTT;
-                }
-                if($status && $this->endDate != ZOTT){
-                    $status = DBFunctions::insert('grand_movedOn',
-                                            array('user_id' => $this->user2,
-                                                  'effective_date' => ZERO_DATE($this->endDate, zull),
-                                                  'status' => $this->status),
-                                              true);
-                }
+            $this->id = DBFunctions::insertId();
+            Cache::delete($this->getCacheId());
+            if($this->endDate == ""){
+                $this->endDate = ZOTT;
+            }
+            if($status && $this->endDate != ZOTT){
+                $status = DBFunctions::insert('grand_movedOn',
+                                        array('user_id' => $this->user2,
+                                              'effective_date' => ZERO_DATE($this->endDate, zull),
+                                              'status' => $this->status),
+                                          true);
+            }
 
             if($status){
                 DBFunctions::commit();
-                $data = DBFunctions::select(array('grand_relations'),
-                                            array('id'),
-                                            array('user1' => EQ($this->user1),
-                                                  'user2' => EQ($this->user2),
-                                                  'type'  => EQ($this->getType())),
-                                            array('id' => 'DESC'),
-                                            array(1));
-                if(count($data) > 0){
-                    $this->id = $data[0]['id'];
-                    Relationship::$cache = array();
-                    Notification::addNotification($me, $this->getUser1(), "Relation Added", "You and {$this->getUser2()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");
-                    Notification::addNotification($me, $this->getUser2(), "Relation Added", "You and {$this->getUser1()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser1()->getUrl()}");
-                    return true;
-                }
+                Relationship::$cache = array();
+                Notification::addNotification($me, $this->getUser1(), "Relation Added", "You and {$this->getUser2()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");
+                Notification::addNotification($me, $this->getUser2(), "Relation Added", "You and {$this->getUser1()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser1()->getUrl()}");
+                return true;
             }
         }
         return false;
@@ -181,6 +180,7 @@ class Relationship extends BackboneModel {
                                           array('id' => EQ($this->id)));
             if($status){
                 Relationship::$cache = array();
+                Cache::delete($this->getCacheId());
                 return true;
             }
         }
@@ -192,6 +192,7 @@ class Relationship extends BackboneModel {
         if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
             $status = DBFunctions::delete('grand_relations',
                                           array('id' => EQ($this->id)));
+            Cache::delete($this->getCacheId());
             $this->id = "";
             if($status){
                 Notification::addNotification($me, $this->getUser1(), "Relation Deleted", "You and {$this->getUser2()->getNameForForms()} are no longer related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");

@@ -3275,20 +3275,23 @@ class Person extends BackboneModel {
     function getCoursePercent($course_id){
         $me = Person::newFromWgUser();
         if($this->isMe() || $me->isRoleAtLeast(ADMIN)){
-            $data = DBFunctions::select(array('grand_user_courses'),
-                                        array('percentage'),
-                                        array('course_id' => $course_id,
-                                              'user_id' => $this->getId()));
-            if(count($data)>0){
-                if($data[0]['percentage'] != ""){
-                    return $data[0]['percentage'];
-                }
-                else {
-                    return 100;
-                }
+            $cacheId = "course_percent_{$course_id}_{$this->getId()}";
+            if(Cache::exists($cacheId)){
+                return Cache::fetch($cacheId);
             }
-            else{
-                return 100;
+            else {
+                $data = DBFunctions::select(array('grand_user_courses'),
+                                            array('percentage'),
+                                            array('course_id' => $course_id,
+                                                  'user_id' => $this->getId()));
+                $percent = 100;
+                if(count($data)>0){
+                    if($data[0]['percentage'] != ""){
+                        $percent = $data[0]['percentage'];
+                    }
+                }
+                Cache::store($cacheId, $percent);
+                return $percent;
             }
         }
         return "";

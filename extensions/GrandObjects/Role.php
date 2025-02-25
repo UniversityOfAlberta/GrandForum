@@ -20,9 +20,16 @@ class Role extends BackboneModel {
 	    if(isset(self::$cache[$id])){
 	        return self::$cache[$id];
 	    }
-	    $data = DBFunctions::select(array('grand_roles'),
-	                                array('*'),
-	                                array('id' => $id));
+	    $cacheId = "role_{$id}";
+	    if(Cache::exists($cacheId)){
+	        $data = Cache::fetch($cacheId);
+	    }
+	    else{
+	        $data = DBFunctions::select(array('grand_roles'),
+	                                    array('*'),
+	                                    array('id' => $id));
+	        Cache::store($cacheId, $data);
+	    }
 		$role = new Role($data);
         self::$cache[$role->id] = &$role;
 		return $role;
@@ -68,6 +75,7 @@ class Role extends BackboneModel {
 	    $this->getPerson()->roles = null;
 	    if($status && php_sapi_name() != "cli"){
             $this->id = $id;
+            Cache::delete($this->getCacheId());
             Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role '{$this->getRole()}'", "{$person->getUrl()}");
             $supervisors = $person->getSupervisors();
             if(count($supervisors) > 0){
@@ -88,6 +96,7 @@ class Role extends BackboneModel {
 	                                  array('id' => EQ($this->getId())));
 	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
 	    Cache::delete("rolesCache");
+	    Cache::delete($this->getCacheId());
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
@@ -101,6 +110,7 @@ class Role extends BackboneModel {
 	                                  array('id' => EQ($this->getId())));
 	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
 	    Cache::delete("rolesCache");
+	    Cache::delete($this->getCacheId());
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
@@ -121,7 +131,7 @@ class Role extends BackboneModel {
 	}
 	
 	function getCacheId(){
-	
+	    return "role_{$this->getId()}";
 	}
 	
 	// Returns all distinct roles

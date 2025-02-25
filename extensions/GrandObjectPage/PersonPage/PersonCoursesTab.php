@@ -33,6 +33,7 @@ class PersonCoursesTab extends AbstractEditableTab {
                                     array('percentage' => $percent),
                                     array('user_id' => $this->person->getId(),
                                           'course_id' => $key));
+                Cache::delete("course_percent_{$key}_{$this->person->getId()}");
             }
         }
     }
