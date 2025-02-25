@@ -13,6 +13,12 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role subType="EPIC AT">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
