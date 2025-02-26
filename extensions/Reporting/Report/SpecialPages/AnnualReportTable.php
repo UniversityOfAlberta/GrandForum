@@ -31,6 +31,7 @@ class AnnualReportTable extends SpecialPage{
     
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
+        $this->getOutput()->setPageTitle("Annual Report Table");
         $me = Person::newFromWgUser();
         $wgOut->addHTML("<div id='arTable'>
             <ul>");

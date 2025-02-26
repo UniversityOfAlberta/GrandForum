@@ -15,6 +15,7 @@ class FECHistory extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
+        $this->getOutput()->setPageTitle("FEC History");
         $data = DBFunctions::execSQL("SELECT DISTINCT user_id FROM grand_personal_fec_info");
         $wgOut->addHTML("<table id='fechistory' frame='box' rules='all'>
                             <thead>

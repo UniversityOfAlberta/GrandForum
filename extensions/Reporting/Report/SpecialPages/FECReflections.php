@@ -55,8 +55,13 @@ class FECReflections extends SpecialPage {
         else{
             $people = Person::getAllPeopleDuring(NI, "2000-01-01", "2100-01-01");
             $people = Person::filterFaculty($people);
-            $publications = array('pr' => array(),
-                                  'nonpr' => array());
+            $publications = array('pr' => array('journals' => array(), 
+                                                'conference' => array(),
+                                                'book_chapters' => array(),
+                                                'others' => array()),
+                                  'nonpr' => array('journals' => array(), 
+                                                   'books' => array(),
+                                                   'patents' => array()));
             $rankings = array();
             $nPeople = 0;
             $nProfs = 0;
@@ -462,17 +467,19 @@ class FECReflections extends SpecialPage {
                                     <th style='width:6em;'>Associate</th>
                                     <th style='width:6em;'>Full</th>
                                 </tr>");
-            $courseRows = @array_merge($courses["A"][$dept], $courses["B"][$dept], $courses["C"][$dept]);
-            @array_multisort(array_keys($courseRows), SORT_NATURAL, $courseRows);
-            if(is_array($courseRows)){
-                foreach($courseRows as $key => $row){
-                    $keyLabel = ($key == "0") ? "No teaching" : $key;
-                    $wgOut->addHTML("<tr>
-                                        <td style='white-space:nowrap;'><b>{$keyLabel}</b></td>
-                                        <td align='right'>".@intval($courses["A"][$dept][$key])."</td>
-                                        <td align='right'>".@intval($courses["B"][$dept][$key])."</td>
-                                        <td align='right'>".@intval($courses["C"][$dept][$key])."</td>
-                                     </tr>");
+            if(isset($courses["A"][$dept]) && isset($courses["B"][$dept]) && isset($courses["C"][$dept])){
+                $courseRows = @array_merge($courses["A"][$dept], $courses["B"][$dept], $courses["C"][$dept]);
+                @array_multisort(array_keys($courseRows), SORT_NATURAL, $courseRows);
+                if(is_array($courseRows)){
+                    foreach($courseRows as $key => $row){
+                        $keyLabel = ($key == "0") ? "No teaching" : $key;
+                        $wgOut->addHTML("<tr>
+                                            <td style='white-space:nowrap;'><b>{$keyLabel}</b></td>
+                                            <td align='right'>".@intval($courses["A"][$dept][$key])."</td>
+                                            <td align='right'>".@intval($courses["B"][$dept][$key])."</td>
+                                            <td align='right'>".@intval($courses["C"][$dept][$key])."</td>
+                                         </tr>");
+                    }
                 }
             }
             $wgOut->addHTML("</table></div>");
@@ -480,8 +487,11 @@ class FECReflections extends SpecialPage {
         $wgOut->addHTML("</div>");
         
         // Students Taught
-        $studentRows = @array_merge($students["A"]["All"], $students["B"]["All"], $students["C"]["All"]);
-        @array_multisort(array_keys($studentRows), SORT_NATURAL, $studentRows);
+        $studentRows = array();
+        if(isset($students["A"]["All"]) && isset($students["B"]["All"]) && isset($students["C"]["All"])){
+            $studentRows = @array_merge($students["A"]["All"], $students["B"]["All"], $students["C"]["All"]);
+            @array_multisort(array_keys($studentRows), SORT_NATURAL, $studentRows);
+        }
             
         $wgOut->addHTML("<h3>Students Taught</h3>
                          <div id='students{$year}'>
@@ -520,7 +530,7 @@ class FECReflections extends SpecialPage {
     
     function execute($par){
         global $wgOut;
-        
+        $this->getOutput()->setPageTitle("FEC Reflections");
         $wgOut->addHTML("<div id='tabs'>");
         $wgOut->addHTML("   <ul>");
         for($year=YEAR;$year>2017;$year--){

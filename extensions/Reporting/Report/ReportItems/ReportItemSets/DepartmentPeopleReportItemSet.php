@@ -82,7 +82,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
             $B = Person::newFromId($b['person_id']);
             $A->getFecPersonalInfo();
             $B->getFecPersonalInfo();
-            return ($a['extra'].$A->dateOfAppointment > $b['extra'].$B->dateOfAppointment);
+            return strcmp($a['extra'].$A->dateOfAppointment, $b['extra'].$B->dateOfAppointment);
         });
         return $data;
     }

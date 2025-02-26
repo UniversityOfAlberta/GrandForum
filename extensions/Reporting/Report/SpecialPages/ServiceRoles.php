@@ -20,6 +20,7 @@ class ServiceRoles extends SpecialPage {
     
     function execute($par){
         global $wgOut;
+        $this->getOutput()->setPageTitle("Service Roles");
         $wgOut->addHTML("<table id='serviceRoles' class='wikitable'>
                             <thead>
                                 <tr>

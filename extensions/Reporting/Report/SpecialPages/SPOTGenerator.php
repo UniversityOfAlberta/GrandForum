@@ -119,7 +119,7 @@ class SPOTGenerator extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
-
+        $this->getOutput()->setPageTitle("SPOT Generator");
         $me = Person::newFromWgUser();
         $year = YEAR;
         $names = array();
