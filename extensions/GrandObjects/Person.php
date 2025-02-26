@@ -3950,30 +3950,36 @@ class FullPerson extends Person {
     
     function getFecPersonalInfo(){
         if(!isset(self::$fecInfoCache[$this->getId()])){
-            $data = DBFunctions::select(array('grand_personal_fec_info'),
-                                        array('user_id', 
-                                              'faculty',
-                                              'departments',
-                                              'date_of_phd',
-                                              'date_of_appointment',
-                                              'date_assistant',
-                                              'date_associate',
-                                              'date_professor',
-                                              'date_probation1',
-                                              'date_probation2',
-                                              'date_tenure',
-                                              'sabbatical',
-                                              'date_retirement',
-                                              'date_last_degree',
-                                              'last_degree',
-                                              'date_fso2',
-                                              'date_fso3',
-                                              'date_fso4',
-                                              'date_atsec1',
-                                              'date_atsec2',
-                                              'date_atsec3',
-                                              'date_ats_anniversary'),
-                                        array('user_id' => EQ($this->getId())));
+            if(Cache::exists("fec_info_{$this->getId()}")){
+                $data = Cache::fetch("fec_info_{$this->getId()}");
+            }
+            else{
+                $data = DBFunctions::select(array('grand_personal_fec_info'),
+                                            array('user_id', 
+                                                  'faculty',
+                                                  'departments',
+                                                  'date_of_phd',
+                                                  'date_of_appointment',
+                                                  'date_assistant',
+                                                  'date_associate',
+                                                  'date_professor',
+                                                  'date_probation1',
+                                                  'date_probation2',
+                                                  'date_tenure',
+                                                  'sabbatical',
+                                                  'date_retirement',
+                                                  'date_last_degree',
+                                                  'last_degree',
+                                                  'date_fso2',
+                                                  'date_fso3',
+                                                  'date_fso4',
+                                                  'date_atsec1',
+                                                  'date_atsec2',
+                                                  'date_atsec3',
+                                                  'date_ats_anniversary'),
+                                            array('user_id' => EQ($this->getId())));
+                Cache::store("fec_info_{$this->getId()}", $data);
+            }
             self::$fecInfoCache[$this->getId()] = $data;
             if(count($data) >0){
                 $row = $data[0];
@@ -4048,6 +4054,7 @@ class FullPerson extends Person {
                                         array('user_id' => EQ($this->getId())));
                 if($status){
                     DBFunctions::commit();
+                    Cache::delete("fec_info_{$this->getId()}");
                 }
                 return $status;
             }
@@ -4076,8 +4083,9 @@ class FullPerson extends Person {
                                           'date_atsec3' => ZERO_DATE($this->dateAtsec3, zull),
                                           'date_ats_anniversary' => ZERO_DATE($this->dateAtsAnniversary, zull)),
                                            true);
-               if($status){
+                if($status){
                     DBFunctions::commit();
+                    Cache::delete("fec_info_{$this->getId()}");
                 }
                 return $status;
             }
