@@ -248,52 +248,53 @@ EOF;
         }
         
         if(strtolower($this->getAttr('rich', 'false')) == 'true'){
-            $dom = new SmartDOMDocument();
-            $dom->loadHTML($blobValue);
+            if($blobValue != ""){
+                $dom = new SmartDOMDocument();
+                $dom->loadHTML($blobValue);
 
-            $imgs = $dom->getElementsByTagName("img");
-            $margins = $config->getValue('pdfMargins');
-            $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right'])*$DPI_CONSTANT;
-            $maxHeight = PDFGenerator::cmToPixels(27.94 - $margins['top'] - $margins['bottom'])*$DPI_CONSTANT;
-            foreach($imgs as $img){
-                $imgConst = $DPI_CONSTANT*72/96;
-                $style = $img->getAttribute('style');
-                preg_match("/width:\s*([0-9]*\.{0,1}[0-9]*)/", $style, $styleWidth);
-                preg_match("/height:\s*([0-9]*\.{0,1}[0-9]*)/", $style, $styleHeight);
-                if(isset($styleWidth[1]) && isset($styleHeight[1])){
-                    $widthPerc = ($styleWidth[1]*$imgConst)/$maxWidth;
-                    $heightPerc = ($styleHeight[1]*$imgConst)/$maxHeight;
+                $imgs = $dom->getElementsByTagName("img");
+                $margins = $config->getValue('pdfMargins');
+                $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right'])*$DPI_CONSTANT;
+                $maxHeight = PDFGenerator::cmToPixels(27.94 - $margins['top'] - $margins['bottom'])*$DPI_CONSTANT;
+                foreach($imgs as $img){
+                    $imgConst = $DPI_CONSTANT*72/96;
+                    $style = $img->getAttribute('style');
+                    preg_match("/width:\s*([0-9]*\.{0,1}[0-9]*)/", $style, $styleWidth);
+                    preg_match("/height:\s*([0-9]*\.{0,1}[0-9]*)/", $style, $styleHeight);
+                    if(isset($styleWidth[1]) && isset($styleHeight[1])){
+                        $widthPerc = ($styleWidth[1]*$imgConst)/$maxWidth;
+                        $heightPerc = ($styleHeight[1]*$imgConst)/$maxHeight;
+                        $perc = max(1.0, $widthPerc, $heightPerc);
+                        $style .= "width: ".($styleWidth[1]*$imgConst/$perc)."px !important;";
+                        $style .= "height: ".($styleHeight[1]*$imgConst/$perc)."px !important;";
+                    }
+                    $style .= "max-width: {$maxWidth}px;";
+                    $style .= "max-height: {$maxHeight}px;";
+                    $img->setAttribute('style', $style);
+                    
+                    $attrWidth = floatval($img->getAttribute('width'));
+                    $attrHeight = floatval($img->getAttribute('height'));
+                    $widthPerc = $attrWidth*$imgConst/$maxWidth;
+                    $heightPerc = $attrHeight*$imgConst/$maxHeight;
                     $perc = max(1.0, $widthPerc, $heightPerc);
-                    $style .= "width: ".($styleWidth[1]*$imgConst/$perc)."px !important;";
-                    $style .= "height: ".($styleHeight[1]*$imgConst/$perc)."px !important;";
+                    $img->setAttribute('width', $attrWidth*$imgConst/$perc);
+                    $img->setAttribute('height', $attrHeight*$imgConst/$perc);
                 }
-                $style .= "max-width: {$maxWidth}px;";
-                $style .= "max-height: {$maxHeight}px;";
-                $img->setAttribute('style', $style);
                 
-                $attrWidth = floatval($img->getAttribute('width'));
-                $attrHeight = floatval($img->getAttribute('height'));
-                $widthPerc = $attrWidth*$imgConst/$maxWidth;
-                $heightPerc = $attrHeight*$imgConst/$maxHeight;
-                $perc = max(1.0, $widthPerc, $heightPerc);
-                $img->setAttribute('width', $attrWidth*$imgConst/$perc);
-                $img->setAttribute('height', $attrHeight*$imgConst/$perc);
+                $tables = $dom->getElementsByTagName('table');
+                $margins = $config->getValue('pdfMargins');
+                foreach($tables as $table){
+                    $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right']); // Standard Letter width - margins
+                    $width = min($maxWidth, intval($table->getAttribute('width')));
+                    $table->setAttribute('width', $width);
+                    
+                    $table->setAttribute('cellspacing', ceil(1*$DPI_CONSTANT));
+                    $table->setAttribute('cellpadding', ceil(3*$DPI_CONSTANT));
+                    $table->setAttribute('rules', 'all');
+                    $table->setAttribute('frame', 'box');
+                }
+                $blobValue = "$dom";
             }
-            
-            $tables = $dom->getElementsByTagName('table');
-            $margins = $config->getValue('pdfMargins');
-            foreach($tables as $table){
-                $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right']); // Standard Letter width - margins
-                $width = min($maxWidth, intval($table->getAttribute('width')));
-                $table->setAttribute('width', $width);
-                
-                $table->setAttribute('cellspacing', ceil(1*$DPI_CONSTANT));
-                $table->setAttribute('cellpadding', ceil(3*$DPI_CONSTANT));
-                $table->setAttribute('rules', 'all');
-                $table->setAttribute('frame', 'box');
-            }
-            
-            $blobValue = "$dom";
             $blobValue = str_replace("</p>", "<br /><br style='font-size:1em;' />", $blobValue);
             $blobValue = str_replace("<p>", "", $blobValue);
             $blobValue = str_replace_last("<br /><br style='font-size:1em;' />", "", $blobValue);
