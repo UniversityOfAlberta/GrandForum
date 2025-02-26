@@ -133,7 +133,7 @@ class IndexTable {
      * Consists of the following columns
      * User Page | Twitter
      */
-    private function generatePersonTable($table){
+    private static function generatePersonTable($table){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
         $me = Person::newFromId($wgUser->getId());
         $data = Person::getAllPeople($table);
@@ -223,7 +223,7 @@ class IndexTable {
         return true;
     }
         
-    private function generateCoursesTable(){
+    private static function generateCoursesTable(){
         global $wgUser,$wgOut;
         if(!$wgUser->isRegistered()){
             permissionError();
