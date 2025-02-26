@@ -17,6 +17,7 @@
 		"christian-riesen/base32": "1.6.0",
 		"composer/semver": "3.3.2",
 		"cssjanus/cssjanus": "2.1.1",
+		"dompdf/dompdf": "^3.1",
 		"guzzlehttp/guzzle": "7.4.5",
 		"guzzlehttp/promises": "1.5.1",
 		"guzzlehttp/psr7": "2.4.5",

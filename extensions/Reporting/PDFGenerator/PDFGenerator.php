@@ -7,6 +7,7 @@ require_once('PDFParams.php');
 require_once('ReportIndex.php');
 require_once('ReportStorage.php');
 
+
 function calculateDPI(){
     if(isset($_GET['dpi'])){
         $GLOBALS['DPI'] = $_GET['dpi'];
@@ -36,6 +37,10 @@ function initGlobals(){
 }
 
 initGlobals();
+
+if(isset($_GET['generatePDF'])){
+    require_once($dir . '/../../../config/dompdf_config.inc.php');
+}
 
 /**
  * This class helps with the generation of a PDF document.
@@ -928,7 +933,7 @@ EOF;
      * @param string $name The name of the PDF document
      * @returns string Returns the pdf string
      */
-    function processChapters($dompdf, $name){
+    static function processChapters($dompdf, $name){
         global $IP;
         $str = "";
         $attached = array();
@@ -1003,7 +1008,7 @@ EOF;
      * Adds a pdf to the end of the PDF
      * @param string $pdf The id of the pdf
      */
-    function attachPDF($pdf){
+    static function attachPDF($pdf){
         global $wgOut;
         $pdf = strip_tags($pdf);
         $wgOut->addHTML("<script type='text/php'>
