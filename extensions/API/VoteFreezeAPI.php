@@ -69,7 +69,7 @@
             }
             else{
                 $wgMessage->addError("You do not have access to this api");
-                exit;
+                close();
             }
         }
 

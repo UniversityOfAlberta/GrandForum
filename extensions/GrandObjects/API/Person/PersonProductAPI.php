@@ -39,7 +39,7 @@ class PersonProductAPI extends RESTAPI {
                 header('Content-Type: text/plain');
                 $collection = new Collection($products);
                 echo implode("", $collection->pluck('toBibTeX()'));
-                exit;
+                close();
             }
             return json_encode($json);
         }

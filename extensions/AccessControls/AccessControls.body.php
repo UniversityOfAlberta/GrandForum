@@ -571,7 +571,7 @@ AND `page_is_redirect` =0";
       print '</html>';
       $dbr->freeResult( $res );
 
-      exit;
+      close();
     }
 
     return true;

@@ -876,7 +876,7 @@ class UploadCCVAPI extends API{
                 </head>
             </html>
 EOF;
-            exit;
+            close();
         }
         else{
             echo <<<EOF
@@ -888,7 +888,7 @@ EOF;
                 </head>
             </html>
 EOF;
-            exit;
+            close();
         }
     }
     

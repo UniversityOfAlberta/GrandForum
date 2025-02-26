@@ -15,7 +15,7 @@ abstract class RESTAPI extends API {
 		else{
 			if($this->isLoginRequired() && !$wgUser->isRegistered()){
                 header("HTTP/1.0: 403 Authentication Required");
-                exit;
+                close();
             }
 			$this->processParams($params);
 		    $this->doAction();
@@ -47,7 +47,7 @@ abstract class RESTAPI extends API {
 	function throwError($message, $code=400){
 	    header("HTTP/1.0: $code $message");
 	    echo $message;
-	    exit;
+	    close();
 	}
     
     function doAction(){
@@ -71,7 +71,7 @@ abstract class RESTAPI extends API {
         header('Content-Type: application/json');
         ob_start("ob_gzhandler");
         echo $json;
-        exit;
+        close();
     }
     
     function processParams($params){ }

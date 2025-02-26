@@ -144,7 +144,7 @@ class QACVDepartmentTab extends AbstractTab {
 	        $report->year = $year;
 	        $submitted = $report->isSubmitted();
 	        $report->generatePDF($person, $submitted);
-	        exit;
+	        close();
 	    }
 	    
         foreach(array_merge(Person::getAllPeopleDuring(NI, ($year-6).CYCLE_START_MONTH, "2100-01-01"), 
@@ -190,7 +190,7 @@ class QACVDepartmentTab extends AbstractTab {
             header('Content-Type: application/json');
             header('Content-Length: '.strlen(json_encode($json)));
             echo json_encode($json);
-	        exit;
+	        close();
 	    }
         
         $url = "$wgServer$wgScriptPath/index.php/Special:QACVGenerator?showTab={$this->id}&report=QACV2&person=' + id + '&generatePDF=true";

@@ -71,7 +71,7 @@ class HQPExitTab extends AbstractEditableTab {
             }
         }
         header("Location: {$this->person->getUrl()}?tab=hqp-moved-on");
-        exit;
+        close();
     }
     
     function generateEditBody(){

@@ -148,7 +148,7 @@ class ReportXMLParser {
                 header("Content-disposition: attachment; filename=\"{$this->report->name}_$time.report\"");
             }
             echo $encrypted;
-            exit;
+            close();
         }
     }
     

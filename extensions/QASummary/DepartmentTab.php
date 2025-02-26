@@ -449,7 +449,7 @@ class DepartmentTab extends AbstractTab {
             header('Pragma: public');
             ini_set('zlib.output_compression','0');
             echo implode("\n", $strings);
-            exit;
+            close();
         }
         else{
             $this->html .= "<button type='button' id='generate{$this->id}'>Generate PDF</button>&nbsp;";

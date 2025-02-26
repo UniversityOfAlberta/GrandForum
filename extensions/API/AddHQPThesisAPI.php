@@ -21,7 +21,7 @@ class AddHQPThesisAPI extends API{
 		if(!$noEcho){
             if($person->getName() == null){
                 echo "There is no person by the name of '{$_POST['user']}'\n";
-                exit;
+                close();
             }
         }
 		if($me->isAllowedToEdit($person)){

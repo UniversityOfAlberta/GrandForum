@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 if (!defined('MEDIAWIKI')) {
   echo "This file is a MediaWiki extension, and cannot be accessed independantly.";
   exit( 1 );
@@ -27,6 +30,11 @@ function autoload_register($directory){
 function redirect($url){
     session_write_close();
     header("Location: $url");
+    close();
+}
+
+function close(){
+    MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->shutdown();
     exit;
 }
 

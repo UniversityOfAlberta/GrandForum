@@ -133,7 +133,7 @@ function implode_wrapped($before, $after, $glue, $array){
 		global $wgOut, $wgUser, $wgScriptPath, $wgExtraNamespaces, $wgUserNamespaces;
 
 		//		print_r($groups);
-		//exit;
+		//close();
 		
 		/*$availableGroups = array_merge(AnnokiNamespaces::getExtraNamespaces(PROJECT_NS),
 					       AnnokiNamespaces::getExtraNamespaces(USER_NS));

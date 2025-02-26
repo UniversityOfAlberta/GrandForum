@@ -22,7 +22,7 @@
                             </script>
                         </head>
                     </html>";
-                    exit;
+                    close();
                 }
                 $gs_metric = new GsMetric(array());
                 $gs_metric->user_id = $person->getId();
@@ -32,7 +32,7 @@
                 //setting the info in gs_metric
                 if(!isset($index[1][0])){
                     $wgMessage->addError("There was a problem retrieving your Google Scholar Profile");
-                    exit;
+                    close();
                 }
                 $gs_metric->citation_count = $index[1][0];
                 $gs_metric->hindex = $index[1][2];
@@ -76,11 +76,11 @@
                 
                 $status =$gs_metric->create();
                 $wgMessage->addSuccess("Updated Google Citations.");
-                exit;
+                close();
             }
             else{
                 $wgMessage->addError("Please update your bio with your Google Scholar information.");
-                exit;
+                close();
             }
         }
 

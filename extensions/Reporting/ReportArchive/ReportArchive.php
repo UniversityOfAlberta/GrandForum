@@ -56,7 +56,7 @@ class ReportArchive extends SpecialPage {
                 if(isset($_GET['html'])){
                     $html = $sto->fetch_html($tok);
                     echo $html;
-                    exit;
+                    close();
                 }
                 $len = $sto->metadata('len_pdf');
                 $user_id = $sto->metadata('user_id');

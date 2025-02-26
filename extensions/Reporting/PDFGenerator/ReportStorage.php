@@ -309,7 +309,7 @@ class ReportStorage {
         ini_set('zlib.output_compression','0');
         echo $pdf;
         // This avoids mediawiki sending stuff regardless of $wgOut being disabled.
-        exit;
+        close();
     }
 
     function get_report_project_id(){

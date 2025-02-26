@@ -95,7 +95,7 @@ function permissionError($text="You are not allowed to execute the action you ha
                      <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
     $wgOut->output();
     $wgOut->disable();
-    exit;
+    close();
 }
 
 function isValidEmailAddr($addr, &$result){

@@ -244,7 +244,7 @@ class PersonVisualizationsTab extends AbstractTab {
             $array['items'] = $items;
             $array['groups'] = $groups;
             echo json_encode($array);
-            exit;
+            close();
         }
         return true;
     }
@@ -330,7 +330,7 @@ class PersonVisualizationsTab extends AbstractTab {
             
             header("Content-Type: application/json");
             echo json_encode(array($array));
-            exit;
+            close();
         }
         return true;
 	}
@@ -436,7 +436,7 @@ class PersonVisualizationsTab extends AbstractTab {
 
             header("Content-Type: application/json");
             echo json_encode($array);
-            exit;
+            close();
 	    }
 	}
 }

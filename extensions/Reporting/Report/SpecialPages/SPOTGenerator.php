@@ -131,7 +131,7 @@ class SPOTGenerator extends SpecialPage{
 	        $report->year = $year;
 	        $submitted = $report->isSubmitted();
 	        $report->generatePDF($person, $submitted);
-	        exit;
+	        close();
 	    }
 
 	    $people = array();

@@ -67,7 +67,7 @@
             $message .= "--".$uid."--";
             
             mail($config->getValue('supportEmail'), "[{$config->getValue('networkName')}] Report Issue", $message, $header);
-            exit;
+            close();
         }
         return true;
     }

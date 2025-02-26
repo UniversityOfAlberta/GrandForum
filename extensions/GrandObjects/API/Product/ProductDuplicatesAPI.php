@@ -37,7 +37,7 @@ class ProductDuplicatesAPI extends RESTAPI {
                 }
             }
             echo json_encode($duplicates);
-            exit;
+            close();
         }
     }
     

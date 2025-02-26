@@ -10,8 +10,7 @@ function disableLoginForm($template){
     $mainPage = Article::newFromID($title->getArticleID());
     //$wgOut->addWikiText($mainPage->getContent());
     $wgOut->output();
-    exit;
-    return true;
+    close();
 }
 
 function redirectTo($user, $html){

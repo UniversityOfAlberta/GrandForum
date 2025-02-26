@@ -1150,7 +1150,7 @@ EOF;
         header("Content-Type: application/pdf");
         header("Content-Length: $len");
         echo $pdfStr;
-        exit;
+        close();
     }
 }
 

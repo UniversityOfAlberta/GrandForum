@@ -33,22 +33,22 @@ function handleDuplicates($action, $request){
                 if($action == "getDuplicates"){
                     session_write_close();
                     $handler->handleGet();
-                    exit;
+                    close();
                 }
                 else if($action == "deleteDuplicates"){
                     $handler->handleDelete();
                     DBFunctions::commit();
-                    exit;
+                    close();
                 }
                 else if($action == "mergeDuplicates"){
                     $handler->handleMerge();
                     DBFunctions::commit();
-                    exit;
+                    close();
                 }
                 else if($action == "ignoreDuplicates"){
                     $handler->handleIgnore();
                     DBFunctions::commit();
-                    exit;
+                    close();
                 }
                 break;
             }

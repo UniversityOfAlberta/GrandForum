@@ -10,7 +10,7 @@ class UploadReportItem extends AbstractReportItem {
             (($this->getMD5(false) == $_GET['delete']) ||
              (decrypt($this->getMD5(false), true) != "" && decrypt($this->getMD5(false), true) == decrypt($_GET['delete'], true)))){
             $this->delete();
-            exit;
+            close();
         }
         
         if(isset($_GET['fileUploadForm']) && $_GET['fileUploadForm'] == $this->getPostId()){
@@ -197,7 +197,7 @@ class UploadReportItem extends AbstractReportItem {
                     });
                 </script>
               </html>";
-        exit;
+        close();
     }
     
     function save(){
@@ -228,26 +228,26 @@ class UploadReportItem extends AbstractReportItem {
                     echo "<div class='success'>The file was uploaded successfully.</div>";
                     unset($_POST['upload']);
                     $this->fileUploadForm();
-                    exit;
+                    close();
                 }
                 else if(!UploadBase::checkFileExtension($finalExt, $wgFileExtensions)){
                     echo "<div class='error'>Uploads of the type <i>.{$finalExt}</i> are not allowed.</div>";
                     unset($_POST['upload']);
                     $this->fileUploadForm();
-                    exit;
+                    close();
                 }
                 else if(!UploadBase::verifyExtension($mime, $finalExt)){
                     echo "<div class='error'>The uploaded file extension does not match its type, or it is corrupt.</div>";
                     unset($_POST['upload']);
                     $this->fileUploadForm();
-                    exit;
+                    close();
                 }
             }
             else{
                 echo "<div class='error'>The uploaded file is larger than the allowed size of ".($this->getAttr('fileSize', 1))."MB.</div>";
                 unset($_POST['upload']);
                 $this->fileUploadForm();
-                exit;
+                close();
             }
         }
         if(isset($_POST['upload'])){

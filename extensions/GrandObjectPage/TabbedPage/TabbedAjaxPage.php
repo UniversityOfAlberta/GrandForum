@@ -18,7 +18,7 @@ class TabbedAjaxPage extends TabbedPage {
             if(isset($_GET['showTab']) && $_GET['showTab'] == $tab->id){
                 $tab->generatebody();
                 echo $tab->html;
-                exit;
+                close();
             }
             if(isset($_GET['tab']) && $_GET['tab'] == $tab->id){
                 $activeTabIndex = $tab->id;

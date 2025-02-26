@@ -533,7 +533,7 @@ class DBFunctions {
 	 */
 	static function rollback(){
 	    DBFunctions::initDB();
-        DBFunctions::execSQL("ROLLBACK", true);
+	    DBFunctions::execSQL("ROLLBACK", true);
 	}
 	
 	/**

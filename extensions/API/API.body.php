@@ -94,7 +94,7 @@ class APIRequest{
             else {
                 echo "No API request was provided.  Exiting!\n";
             }
-            exit;
+            close();
         }
         return true;
     }
@@ -179,7 +179,7 @@ abstract class API {
             echo json_encode(array('errors' => $this->errors,
                                    'messages' => $this->messages,
                                    'data' => $this->data));
-            exit;
+            close();
         }
     }
 
@@ -304,7 +304,7 @@ abstract class API {
             <br />
             <b>Example Usage:</b><br /><code>$postParams$wgServer$wgScriptPath/index.php?action=api.".APIRequest::$action."{$getParams}</code><br /><br />
             <a href='$wgServer$wgScriptPath/index.php?action=api.index'>Return to Index</a>";
-        exit;
+        close();
     }
 
     /**

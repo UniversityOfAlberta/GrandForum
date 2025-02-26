@@ -79,7 +79,7 @@ class NotificationReportItem extends StaticReportItem {
 		$url = $wgServer.$wgScriptPath."/index.php/".$this->getAttr("url", "Special:Report");
 		$email = ($_POST['email'] == "true") ? true : false;
 		Notification::addNotification($creator, $user, "Report Notification", $message, $url, $email);
-		exit;
+		close();
 	}
 	
 	function renderForPDF(){

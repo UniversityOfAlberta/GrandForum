@@ -22,10 +22,10 @@ class UploadProtection {
       if ($contents && is_writable($uploadAuth))
 	file_put_contents($uploadAuth, $contents);
       else{
-	print "<b>Annoki Error</b>: The file AnnokiUploadAuth.php must exist at the base directory of the MediaWiki installation, but the web server doesn't have sufficient permissions to create this file.  
+        print "<b>Annoki Error</b>: The file AnnokiUploadAuth.php must exist at the base directory of the MediaWiki installation, but the web server doesn't have sufficient permissions to create this file.  
 <br><br>Please copy $localUploadAuth to $uploadAuth manually.
 <br><br>UNIX: cp $localUploadAuth $uploadAuth";
-      exit;
+        close();
       }
     }
   }
