@@ -1634,14 +1634,6 @@ class Person extends BackboneModel {
         if($this->isMe() || $me->isRoleAtLeast(STAFF)){
             return $this->gender;
         }
-        else{
-            // Check Project Leadership
-            foreach($this->getProjects(true) as $project){
-                if($me->isRole(PL, $project)){
-                    return $this->gender;
-                }
-            }
-        }
         return "";
     }
     
@@ -1655,7 +1647,7 @@ class Person extends BackboneModel {
             return "";
         }
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
+        if($this->isMe() || $me->isRoleAtLeast(STAFF)){
             if($config->getValue('nationalityAll')){
                 return $this->nationality;
             }
