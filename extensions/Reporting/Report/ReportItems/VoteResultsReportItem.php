@@ -81,7 +81,7 @@ class VoteResultsReportItem extends SelectReportItem {
         $output = "<td class='{$freezeId} tooltip' title=\"".implode("&lt;br /&gt;\n", $names)."\">$yes</td>
                    <td class='{$freezeId} tooltip' title=\"".implode("&lt;br /&gt;\n", $names)."\">$no</td>
                    <td class='{$freezeId} tooltip' title=\"".implode("&lt;br /&gt;\n", $names)."\">$abstain</td>";
-        if($me->isRoleAtLeast(VDEAN)){
+        if($me->isRoleAtLeast(VDEAN) && !$me->isRole(HR)){
             $output .= "<td class='{$freezeId}'><div style='display:inline-block;'><select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select></div></td>";
         }
         else{
