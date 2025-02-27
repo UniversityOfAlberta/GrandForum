@@ -527,6 +527,7 @@
                             <th colspan='4'>Increment Votes</th>
                             <th colspan='4'>Tenure Votes</th>
                             <th colspan='4'>Promotion Votes</th>
+                            <th rowspan='2'>HR Comments</th>
                         </tr>
                         <tr>
                             <th>Y</th>
@@ -598,7 +599,22 @@
                         </script>
                 ]]>
             </ReportItem>
-            
+            <If if="{contains({$my_roles},HR)}">
+                <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" personId="1" height="75px" encrypt="true">
+                    <![CDATA[
+                        <td>
+                            {$item}
+                        </td>
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else>
+                <![CDATA[
+                    <td>
+                        {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$user_id}, 1, 0)}
+                    </td>
+                ]]>
+            </Else>
             <Static>
                 <![CDATA[
                     </tr>
