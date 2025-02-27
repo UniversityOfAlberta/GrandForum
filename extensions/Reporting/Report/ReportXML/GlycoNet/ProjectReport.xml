@@ -39,9 +39,7 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="" />
-            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
@@ -56,9 +54,7 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="" />
-            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
@@ -73,9 +69,7 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="rw" />
-            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
@@ -182,9 +176,9 @@
     <ReportSection id="information" type="EditableReportSection" name="Project Information" blobSection="INFORMATION">
         <Static>
             <![CDATA[
-                <p><b>Theme:</b>           {$project_theme}</p>
-                <p><b>Project Title:</b>   {$project_name} - {$project_full_name}</p>
-                <p><b>Project Leader:</b>  {$project_leaders}<br />
+                <p><b>Research Area:</b>  {$project_theme}</p>
+                <p><b>Project Title:</b>  {$project_name} - {$project_full_name}</p>
+                <p><b>Project Leader:</b> {$project_leaders}<br />
             ]]>
         </Static>
         <ReportItemSet id="leaders" type="ProjectLeaders">
@@ -257,71 +251,29 @@
                 </table>
             ]]>
         </Static>
+        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
+            <![CDATA[
+                <p><b>Collaborators:</b><br />
+                    List individuals (e.g. federal, provincial, industry and foreign academic partners, stakeholders and/or end-users) that were involved in the project (e.g. research, KTEE) over the last year but are not members of GlycoNet. <b>Additionally, a contact for each funding source listed in the Partner Contributions section should be entered into this table.</b>
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
             <![CDATA[
-                <p><b>Partners and Collaborators:</b><br />
+                <p><b>Partners:</b><br />
                     List individuals (e.g. federal, provincial, industry and foreign academic partners, stakeholders and/or end-users) that were involved in the project (e.g. research, KTEE) over the last year but are not members of GlycoNet. <b>Additionally, a contact for each funding source listed in the Partner Contributions section should be entered into this table.</b>
                 </p>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="summary" type="EditableReportSection" name="Summary/Background" blobSection="INFORMATION">
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <!-- Project Leader View -->
-            <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500" recommended="true">
-                <![CDATA[
-                    <p><b>Executive Summary</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="background" type="TextareaReportItem" blobItem="BACKGROUND" rich="true" limit="1000" recommended="true">
-                <![CDATA[
-                    <br /><br />
-                    <p><b>Background Information</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="references" type="TextareaReportItem" blobItem="REFERENCES" rich="true">
-                <![CDATA[
-                    <br /><br />
-                    <p><b>References</b><br />
-                    <small>Please use Journal of Biological Chemistry Style: MacDonald, G. M., Steenhuis, J. J., and Barry, B. A. (1995) A difference Fourier transform infrared spectroscopic study of chlorophyll oxidation in hydroxylamine-treated photosystem II. J. Biol. Chem. <b>270</b>, 8420–8428<br />
-                    These references only apply to the Background section</small></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-    </ReportSection>
-    <ReportSection id="figures" type="EditableReportSection" name="Figures" blobSection="INFORMATION">
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <!-- Project Leader View -->
-            <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
-                <![CDATA[
-                    <p><b>Figures Upload</b></p>
-                    {$item}
-                    If any NIs have uploaded figures, they will be listed below.  You can use them to compile a the figures for the above upload.
-                ]]>
-            </ReportItem>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
-                <If id="if_null" if="{!=({getBlobMD5(RP_PROGRESS,INFORMATION,FIGURES,{$user_id},0,{$project_id})},)}">
-                    <![CDATA[
-                        <p><b>{$user_name}</b><br />
-                        <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_PROGRESS,INFORMATION,FIGURES,{$user_id},0,{$project_id})}&mime=application/pdf'>Download Figures</a></p>
-                    ]]>
-                </If>
-            </ReportItemSet>
-        </If>
-        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
-            <!-- Network Investigator View -->
-            <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" blobSubItem="{$my_id}" fileSize="20" mimeType="application/pdf">
-                <![CDATA[
-                    <p><b>Figures Upload</b></p>
-                    Your upload will be forwarded to the project leader.
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
+    <ReportSection id="summary" type="EditableReportSection" name="Report" blobSection="REPORT">
+        <ReportItem id="report" type="UploadReportItem" blobItem="REPORT" fileSize="10" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" type="EditableReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
         <ReportItem id="table" type="ProjectMilestoneTable">
@@ -340,186 +292,15 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
-                <![CDATA[
-                    <h3>Comments</h3>
-                    <p>If any of the milestones have been delayed or abandoned, please comment on them below.<br />
-                        <b>Please Note:</b> If a new milestone is to be added, please provide a justification.
-                    </p>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-    </ReportSection>
-    <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <!-- Project Leader View -->
-            <Static>
-                <![CDATA[
-                    {set(achievements,)}
-                    {set(deliverables,)}
-                    {set(edi,)}
-                    {set(lay_summary,)}
-                    {set(impact,)}
-                    {set(benefits,)}
-                ]]>
-            </Static>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
-                <Static id="setters">
-                    <![CDATA[
-                        {set(achievements,{concat({get(achievements)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,ACHIEVEMENTS,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(deliverables,{concat({get(deliverables)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,DELIVERABLES,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(edi,{concat({get(edi)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,EDI,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(lay_summary,{concat({get(lay_summary)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,LAY_SUMMARY,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(impact,{concat({get(impact)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,IMPACT,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(benefits,{concat({get(benefits)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,BENEFITS,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                    ]]>
-                </Static>
-            </ReportItemSet>
-            <ReportItem id="achievements_popup" type="PopupReportItem" title="NI Comments" text="{get(achievements)}">
-                <![CDATA[
-                    <p><b>Project Objectives and Past Achievements</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" rich="true" limit="500" recommended="true">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="deliverables_popup" type="PopupReportItem" title="NI Comments" text="{get(deliverables)}">
-                <![CDATA[
-                    <p><b>Research Achievements in the Current Funding Period</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" rich="true" limit="2000" recommended="true">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="edi_popup" type="PopupReportItem" title="NI Comments" text="{get(edi)}">
-                <![CDATA[
-                    <p><b>Implementation of EDI Activities</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="edi" type="TextareaReportItem" blobItem="EDI" rich="true" recommended="true">
-                <![CDATA[
-                    <small><br />Please provide an update on your EDI activities.</small>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="lay_popup" type="PopupReportItem" title="NI Comments" text="{get(lay_summary)}">
-                <![CDATA[
-                    <p><b>Lay Summary</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" rich="true">
-                <![CDATA[
-                    <small><br />Highlight the impact of the project over the past year in five sentences.  This summary may be included in the GlycoNet Annual Report.</small>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(impact)}">
-                <![CDATA[
-                    <p><b>Future Directions</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" rich="true" limit="500" recommended="true">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="benefits_popup" type="PopupReportItem" title="NI Comments" text="{get(benefits)}">
-                <![CDATA[
-                    <p><b>References</b><br />
-                    <small>Please use Journal of Biological Chemistry Style: MacDonald, G. M., Steenhuis, J. J., and Barry, B. A. (1995) A difference Fourier transform infrared spectroscopic study of chlorophyll oxidation in hydroxylamine-treated photosystem II. J. Biol. Chem. <b>270</b>, 8420–8428<br />
-                    These references only apply to the Achievements section</small></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" rich="true">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
-            <!-- Network Investigator View -->
-            <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Project Objectives and Past Achievements</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Research Achievements in the Current Funding Period</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="edi" type="Textarea" blobItem="EDI" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Implementation of EDI Activities</b></p>
-                    <small>Please provide an update on your EDI activities.</small>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Lay Summary</b></p>
-                    <small>Highlight the impact of the project over the past year in five sentences.  This summary may be included in the GlycoNet Annual Report.</small>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Future Directions</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>References</b><br />
-                    <small>Please use Journal of Biological Chemistry Style: MacDonald, G. M., Steenhuis, J. J., and Barry, B. A. (1995) A difference Fourier transform infrared spectroscopic study of chlorophyll oxidation in hydroxylamine-treated photosystem II. J. Biol. Chem. <b>270</b>, 8420–8428<br />
-                    These references only apply to the Achievements section</small></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
+        <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
+            <![CDATA[
+                <h3>Comments</h3>
+                <p>If any of the milestones have been delayed or abandoned, please comment on them below.<br />
+                    <b>Please Note:</b> If a new milestone is to be added, please provide a justification.
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KTEE" title="Knowledge exchange and technology exploitation">
         <If id="is_pl" if="{contains({$my_full_roles},PL)}">

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="SAB RPG Review" reportType="RP_SAB_RPG_REVIEW" ajax="true" disabled="false" year="2025">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SAB">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Evaluator">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+            <table align="left" class="wikitable">
+                <tr>
+                    <th style="min-width:110px;">Project Code</th>
+                    <th style="min-width:110px;">PI Name</th>
+                    <!--th style="min-width:110px;">Project Name</th-->
+                    <th style="min-width:125px;">Project Proposal PDF</th>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-RPG">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="RPGReport" project="false">
+                <![CDATA[<tr><td>{getText(RP_SAB_RPG_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><!--td>{getText(RP_RPG,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td--><td align='center'>{$item}</td>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
+        <ReportItem type="Upload" blobItem="CDA" blobType="BLOB_RAW" fileSize="5">
+            <![CDATA[
+                <p><b>Please note: If you are an external reviewer (not a GlycoNet member), please sign the CDA document before reviewing the application and upload it to the Forum.</b></p>
+                <p><a href='{$wgServer}{$wgScriptPath}/data/GlycoNet CDA - 2024 - GlycoNet Grant Funding Applications .pdf'><b>Download CDA Template</b></a></p>
+                
+                <h3>CDA Upload</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-RPG">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_RPG_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_RPG,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+                <ReportItem id="review" type="Upload" blobType="BLOB_RAW" blobItem="SAB_REVIEW" blobSubItem="{$user_id}" fileSize="5">
+                    <![CDATA[
+                        <p><b>Please complete your review using the provided template, ensuring all requested details are included, and upload it to the Forum in the WORD document format.</b></p>
+                        <p><a href='{$wgServer}{$wgScriptPath}/data/Scientific Review 2024.docx'><b>Download Scientific Review Template</b></a></p>
+                        
+                        <h3>Scientific Review Upload</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" name="Submit">
+        <ReportItem id="submitted" type="FakeSubmitReportItem" blobItem="SUBMITTED" emails="vsharko@glyconet.ca">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
