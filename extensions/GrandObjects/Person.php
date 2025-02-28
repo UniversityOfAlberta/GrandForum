@@ -508,7 +508,7 @@ class Person extends BackboneModel {
         return self::$salaryCache["max_salary_{$type}_{$year}"];
     }
     
-    function updateNamesCache(){
+    function updateNamesCache($bulk=false){
         $exploded = explode(".", unaccentChars($this->name));
         $firstName = ($this->firstName != "") ? unaccentChars($this->firstName) : @$exploded[0];
         $lastName = ($this->lastName != "") ? unaccentChars($this->lastName) : @$exploded[1];
@@ -557,9 +557,14 @@ class Person extends BackboneModel {
                 $inserts[] = "('".DBFunctions::escape($key)."','".DBFunctions::escape($this->getId())."')";
             }
         }
-        DBFunctions::delete('grand_names_cache',
-                            array('user_id' => $this->getId()));
-        DBFunctions::execSQL("INSERT INTO `grand_names_cache` (`name`, `user_id`) VALUES ".implode(", ", $inserts), true);
+        if(!$bulk){
+            DBFunctions::delete('grand_names_cache',
+                                array('user_id' => $this->getId()));
+            DBFunctions::execSQL("INSERT INTO `grand_names_cache` (`name`, `user_id`) VALUES ".implode(", ", $inserts), true);
+        }
+        else{
+            return $inserts;
+        }
     }
     
     /**
