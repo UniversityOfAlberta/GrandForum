@@ -649,11 +649,13 @@ EOF;
         $me = Person::newFromWgUser();
         if($visibility['isMe'] || $visibility['isSupervisor']){
             $nationality = "";
-            if($config->getValue("nationalityEnabled")){
+            if($config->getValue("nationalityEnabled") && ($person->isMe() || $me->isRoleAtLeast(STAFF))){
                 if($config->getValue("nationalityAll")){
                     $nationalityField = new SelectBox("nationality", "Nationality", $person->getNationality(), array_merge(array(""), array_values($countries)));
                     $nationality = "<tr>
-                        <td class='label'>Nationality:</td>
+                        <td class='label'>Nationality:
+                            <small style='margin-top: -1em; display: block; font-weight:normal;'>Only visible to Staff</small>
+                        </td>
                         <td class='value'>
                             {$nationalityField->render()}
                             <script type='text/javascript'>$(document).ready(function(){ $('#nationality').chosen(); });</script>
@@ -665,7 +667,9 @@ EOF;
                                                                                                                      "Canadian" => "Canadian/Landed Immigrant", 
                                                                                                                      "Foreign"));
                     $nationality = "<tr>
-                        <td class='label'>Nationality:</td>
+                        <td class='label'>Nationality:
+                            <small style='margin-top: -1em; display: block; font-weight:normal;'>Only visible to Staff</small>
+                        </td>
                         <td class='value'>{$nationalityField->render()}</td>
                     </tr>";
                 }
@@ -680,7 +684,9 @@ EOF;
                                                                                              "Two-spirit",
                                                                                              "Not disclosed"));
                 $gender = "<tr>
-                    <td class='label'>Gender:</td>
+                    <td class='label'>Gender:
+                        <small style='margin-top: -1em; display: block; font-weight:normal;'>Only visible to Staff</small>
+                    </td>
                     <td class='value'>{$genderField->render()}</td>
                 </tr>";
             }
@@ -802,7 +808,10 @@ EOF;
                                 <td class='value'><input type='text' name='last_name' value='".str_replace("'", "&#39;", $person->getLastName())."'></td>
                             </tr>
                             <tr>
-                                <td class='label'>Aliases:<br /><small>Can be used for alternate names<br />to help match ".strtolower($config->getValue('productsTerm'))." authors</small></td>
+                                <td class='label'>Aliases:
+                                    <small style='margin-top:-1em; display: block; font-weight:normal;'>Can be used for alternate names</small>
+                                    <small style='margin-top:-1em; display: block; font-weight:normal;'>to help match ".strtolower($config->getValue('productsTerm'))." authors</small>
+                                </td>
                                 <td class='value' style='max-width: 0;'><input type='text' name='aliases' value='".str_replace("'", "&#39;", implode(";", $person->getAliases()))."' /></td>
                             </tr>";
                    
