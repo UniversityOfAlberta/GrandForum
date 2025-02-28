@@ -29,6 +29,7 @@ class Impersonate extends SpecialPage {
 	
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
+		$this->getOutput()->setPageTitle("Impersonate");
 	    $user = Person::newFromWgUser();
 	    $allPeople = array();
 	    if($user->isRoleAtLeast(STAFF)){

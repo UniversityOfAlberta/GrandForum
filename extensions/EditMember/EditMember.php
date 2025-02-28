@@ -19,6 +19,7 @@ class EditMember extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
+        $this->getOutput()->setPageTitle("Edit Roles");
         $me = Person::newFromWgUser();
         $date = date("Y-m-d");
         $wgOut->addScript("<script type='text/javascript'>
