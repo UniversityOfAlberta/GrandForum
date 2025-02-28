@@ -17,13 +17,13 @@
     
     function noEdit($editpage){
         global $wgArticle;
-        wfRunHooks('ArticleViewHeader', array($wgArticle, "", ""));
+        Hooks::run('ArticleViewHeader', array($wgArticle, "", ""));
         return true;
     }
     
     function noCreate($action, $article){
         if($action == "createFromTemplate"){
-            wfRunHooks('ArticleViewHeader', array($article, "", "")); 
+            Hooks::run('ArticleViewHeader', array($article, "", "")); 
         }
         return true;
     }

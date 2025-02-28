@@ -29,7 +29,7 @@ abstract class Cache {
 	    global $wgSitename;
 	    if(function_exists('apcu_delete') && class_exists('APCUIterator')){
 	        if($prefix){
-	            $it = new APCUIterator('user', '/^'.str_replace(")", '\)', str_replace("(", '\(', $wgSitename)).$key.'/', APCU_ITER_KEY);
+	            $it = new APCUIterator('/^'.str_replace(")", '\)', str_replace("(", '\(', $wgSitename)).$key.'/', APC_ITER_KEY);
 	            foreach($it as $k){
 	                apcu_delete($k['key']);
 	            }

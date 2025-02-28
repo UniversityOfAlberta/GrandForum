@@ -231,12 +231,13 @@ class PersonProfileTab extends AbstractEditableTab {
             
             $api = new UserEmailAPI();
             $api->doAction(true);
-            
-            @FECReflections::saveBlobValue(implode(", ", $_POST['research_area']), "RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $this->person->getId());
-            @FECReflections::saveBlobValue($_POST['research_area_other'], "RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $this->person->getId());
-            
-            @FECReflections::saveBlobValue($_POST['peng_status'], "RP_FEC", "PENG_STATUS", "PENG_STATUS", 0, 0, $this->person->getId());
-            @FECReflections::saveBlobValue($_POST['peng_status_other'], "RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $this->person->getId());
+            if(isset($_POST['research_area'])){
+                FECReflections::saveBlobValue(implode(", ", $_POST['research_area']), "RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA", 0, 0, $this->person->getId());
+                FECReflections::saveBlobValue($_POST['research_area_other'], "RP_FEC", "RESEARCH_AREA", "RESEARCH_AREA_OTHER", 0, 0, $this->person->getId());
+                
+                FECReflections::saveBlobValue($_POST['peng_status'], "RP_FEC", "PENG_STATUS", "PENG_STATUS", 0, 0, $this->person->getId());
+                FECReflections::saveBlobValue($_POST['peng_status_other'], "RP_FEC", "PENG_STATUS", "PENG_STATUS_OTHER", 0, 0, $this->person->getId());
+            }
         }
         
         //Reset the cache to use the changed data

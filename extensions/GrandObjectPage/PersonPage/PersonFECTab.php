@@ -54,7 +54,8 @@ class PersonFECTab extends AbstractEditableTab {
         }
         
         // Files
-        $magic = MimeMagic::singleton();
+        $magic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
+        
         if(isset($_FILES)){
             foreach($_FILES as $key => $file){
                 if($file['tmp_name'] != ""){
