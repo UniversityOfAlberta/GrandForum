@@ -27,6 +27,13 @@ class ImportDOIAPI extends API{
             }
             else{
                 $_POST['bibtex'] = $_POST['bibtex']."\n";
+                $searchFor = '}';
+                $replaceWith = "\n}";
+                $mainString = $_POST['bibtex'];
+                
+                $stringPosition = strrpos($mainString, $searchFor);
+                $_POST['bibtex'] = substr_replace($mainString, $replaceWith, $stringPosition, strlen($searchFor));
+                
                 $api = new ImportBibTeXAPI();
                 $res = $api->doAction(true);
                 $this->messages = $api->messages;
