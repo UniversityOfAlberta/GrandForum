@@ -74,6 +74,12 @@ class AnnualReportTable extends SpecialPage{
                 foreach($data as $row){
                     $people[] = Person::newFromId($row['person_id']);
                 }
+                
+                $set->setAttr('atsec', 'true');
+                $data = $set->getData();
+                foreach($data as $row){
+                    $people[] = Person::newFromId($row['person_id']);
+                }
             }
             foreach($people as $person){
                 $case = $person->getCaseNumber($y);
