@@ -190,6 +190,10 @@
                     table#chairTable * {
                         font-size:11px !important;
                     }
+                    
+                    table.fixedHeader-floating * {
+                        font-size:11px !important;
+                    }
                 </style>
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
                 <div style='float:right; margin-top: -45px;display:flex;'>
@@ -512,6 +516,10 @@
             <![CDATA[
                 <style>
                     table#chairTable * {
+                        font-size:11px !important;
+                    }
+                    
+                    table.fixedHeader-floating * {
                         font-size:11px !important;
                     }
                 </style>
