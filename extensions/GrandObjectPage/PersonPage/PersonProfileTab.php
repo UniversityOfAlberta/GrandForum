@@ -109,6 +109,7 @@ class PersonProfileTab extends AbstractEditableTab {
         
         $this->person->publicProfile = @$_POST['public_profile'];
         $this->person->privateProfile = @$_POST['private_profile'];
+        $this->person->pronouns = @$_POST['pronouns'];
         $this->person->update();
         $this->person->setCRDC(@$_POST['crdc']);
         $this->person->setKeywords(explode(",", $_POST['keywords']));
@@ -689,6 +690,15 @@ EOF;
                     </td>
                     <td class='value'>{$genderField->render()}</td>
                 </tr>";
+                if($config->getValue('networkName') != 'FES'){
+                    $pronounsField = new ComboBox("pronouns", "Pronouns", $person->getPronouns(), array("", "she/her", "he/him", "they/them"));
+                    $gender .= "<tr>
+                    <td class='label'>Pronouns:
+                        <small style='margin-top: -1em; display: block; font-weight:normal;'>Only visible to Staff</small>
+                    </td>
+                    <td class='value'>{$pronounsField->render()}</td>
+                </tr>";
+                }
             }
             
             $stakeholderCategories = $config->getValue('stakeholderCategories');
