@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="2018 Quality Assurance Program Review CV" reportType="RP_QA" pdfFiles="QACVPDF" ajax="true" startYear="-6">
+    <Permissions>
+        <Role role="NI">
+            <SectionPermission id="introduction" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="ATS">
+            <SectionPermission id="introduction" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="BLOB_NONE" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <p>The information about a faculty member under the “My Profile” tab reflects the period from July 1 {$startYear} to June 30 {$endYear} and is organized into the following general categories.</p>
+                <ol>
+                    <li>The “Current Position and Employment History” data has been obtained from the eFEC system.</li>
+                    <li>The “Honors and Awards” section has been imported from the eFEC system and from a list maintained by the office of the Dean of Science.</li>
+                    <li>The Patent and Commercialization section uses data provided by TEC Edmonton.</li>
+                    <li>The “Courses Taught” section has been imported from a Beartracks data dump.</li>
+                    <li>The “Supervision and Training Responsibilities” section is obtained from two sources: (a) FGSR data on graduate students who have a milestone in the system, i.e., MSc students who have defended their thesis and PhD students who have gone through candidacy; (b) Undergraduate trainees, Technicians and Post-doctoral fellows are obtained from the eFEC system. Graduate students with no milestones (MSc course-based, or thesis-based MSc who have not defended before June 30 {$endYear} or PhD who have not passed their candidacy before June 30 {$endYear} are not included).</li>
+                    <li>The “Publications” section has been obtained from the eFEC system.</li>
+                    <li>The “Presentations” section is obtained from the eFEC system.</li>
+                    <li>Entries in the “Research Funding” section come from a data dump provided by RSO from Grants 3.0. NSERC makes available successful-application data. We have downloaded the NSERC data set (from <a target='_blank' href='http://open.canada.ca/data/en/dataset/c1b0f627-8c29-427c-ab73-33968ad9176e'>http://open.canada.ca/data/en/dataset/c1b0f627-8c29-427c-ab73-33968ad9176e</a>) and it is available under the “My Profile/Funding/Awards” tab.</li>
+                    <li>The “Service to the University and the Profession” has been imported from the eFEC system.</li>
+                </ol>
+                <p>All this data can be updated from the corresponding tabs under "My Profile"; relevant instructions on how to update each type of data is available on each tab</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review" name="Review" title="QA CV" blobSection="FEC_INFORMATION" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <style type='text/css'>
+                    body, html {
+                        margin: 0;
+                        padding: 0;
+                    }
+                    
+                    #pdfBody .pagebreak {
+		                border-width: 0 0 1px 0;
+		                border-style: dashed;
+		                border-color: #000000;
+		                margin-bottom: 8.3333333333333px;
+		                margin-top:8.3333333333333px;
+		            }
+		            
+		            /*#pdfBody .logo {
+		                background-image: url('../skins/Faculty of Science_Logo.png');
+		                background-size: 100% Auto;
+		                background-repeat: no-repeat;
+		            }*/
+		            
+		            #pdfBody .report_name {
+		                margin-top:28.333333333333px;
+		                margin-right: 100px;
+		            }
+		            
+		            #pdfBody .report_info {
+		                margin-top:20px;
+		                margin-right: 100px;
+		            }
+		            
+		            /*#pdfBody img.logo {
+		                display: none;
+		            }*/
+		            
+		            #pdfBody #page_header {
+		                width:100%;
+		                text-align:right;
+		                margin-top:-25px;
+		                font-size:smaller;
+		            }
+		            
+		            #pdfBody .belowLine {
+		                margin-bottom:25px;
+		            }
+		            
+		            #pdfBody {
+		                position: relative;
+		                white-space: normal !important;
+		            }
+		            
+		            #pdfBody {
+		                margin-top: 42.51968503937px;
+                        margin-right: 28.346456692913px;
+                        margin-bottom: 28.346456692913px;
+                        margin-left: 28.346456692913px;
+                    }
+		            
+		            .ui-dialog-content {
+		                white-space: normal !important;
+		            }
+		            @page {
+                        margin-top: 1.5cm;
+                        margin-right: 1cm;
+                        margin-bottom: 1cm;
+                        margin-left: 1cm;
+                    }
+		
+		            #pdfBody  {
+		                font-family: Helvetica !important;
+		                font-size: 13.333333333333px;
+		                text-align: justify;
+		            }
+		            
+		            #pdfBody table {
+		                text-align: initial;
+		            }
+		            
+		            #pdfBody .wikitable {
+		                border: none;
+		            }
+		            
+		            #pdfBody .wikitable th {
+		                background: #EEEEEE;
+		                padding: 1.6666666666667px;
+		            }
+		            
+		            #pdfBody .wikitable td {
+		                background: #FFFFFF;
+		                padding: 1.6666666666667px;
+		            }
+		            
+		            #pdfBody th {
+		                text-align: center;
+		            }
+		            
+		            /* Messages */
+		            
+                    #pdfBody .inlineError, #pdfBody .inlineWarning, #pdfBody .inlineSuccess, #pdfBody .inlineInfo {
+                        margin: 0 0;
+                        padding: 0 3.3333333333333px;
+                    }
+
+                    #pdfBody .inlineError {
+                        color: #D50013;
+                        background: #FEB8B8;
+                        border-radius: 3px;
+                        -moz-border-radius: 3px;
+	                    -webkit-border-radius: 3px;
+                    }
+
+                    #pdfBody .inlineWarning {
+                        color: #9C600D;
+                        background: #FDEEB2;
+                        border-radius: 3px;
+                        -moz-border-radius: 3px;
+	                    -webkit-border-radius: 3px;
+                    }
+
+                    #pdfBody .inlineSuccess {
+                        color: #51881D;
+                        background: #DEF1BE;
+                        border-radius: 3px;
+                        -moz-border-radius: 3px;
+                        -webkit-border-radius: 3px;
+                    }
+
+                    #pdfBody .inlineInfo {
+                        color: #0A5398;
+                        background: #BCE4F7;
+                        border-radius: 3px;
+                        -moz-border-radius: 3px;
+                        -webkit-border-radius: 3px;
+                    }
+                    
+                    #pdfBody .budgetError {
+                        color: #D50013;
+                        background: #FEB8B8;
+                    }
+		            
+		            #pdfBody td, #pdfBody th {
+		                font-family: Helvetica !important;
+		                background-color: #FFFFFF;
+		            }
+		            
+		            #pdfBody .report_name {
+		                position:absolute;
+		                right: 0;
+		                top: 0;
+		                margin-right:0 !important;
+		            }
+		            
+		            #pdfBody .report_info {
+		                width: 100%;
+		                height: 120px;
+		                font-size: 8.3333333333333px;
+		                top:0;
+		                margin-right:0 !important;
+		            }
+		            
+		            #pdfBody .report_info > tbody > tr > td {
+		                vertical-align: top;
+		            }
+		            
+		            #pdfBody .progress_table {
+		                white-space: nowrap;
+		                font-size: 8.3333333333333px;
+		                border-spacing:1px;
+		                border-width:1px;
+		                border-color: #000000;
+		                margin-top:8.3333333333333px;
+		            }
+		            
+		            #pdfBody .report_info > table {
+		                height: 120px;
+		            }
+		            
+		            #pdfBody hr {
+		                border-width: 1px 0 0 0;
+		                border-style: solid;
+		                border-color: #000000;
+		            }
+		            
+		            #pdfBody h1 {
+		                margin-top:0;
+		                margin-bottom: 0.25em;
+		                font-size: 23.333333333333px;
+		                font-weight: bold;
+		                padding: 1px 0 3.3333333333333px 0;
+		                border-bottom: 0 !important;
+		            }
+		            
+		            #pdfBody h2 {
+		                color: #00713B !important;
+		                font-size: 20px;
+		                font-weight: bold;
+		                padding: 3.3333333333333px 0 3.3333333333333px 0;
+		                margin-bottom: 3.3333333333333px;
+		                margin-top: 3.3333333333333px;
+		                border-bottom: 0 !important;
+		            }
+		            
+		            #pdfBody h3 {
+		                font-size: 18.333333333333px;
+		                font-weight: bold;
+		                padding: 1px 0 3.3333333333333px 0;
+		                margin-bottom: 3.3333333333333px;
+		                margin-top: 13.333333333333px;
+		                border-bottom: 0 !important;
+		            }
+		            
+		            #pdfBody h4 {
+		                margin-top:0;
+		                margin-bottom:0;
+		                font-size: 15px;
+		                border-bottom: 0 !important;
+		            }
+		            
+		            #pdfBody h1, #pdfBody h2, #pdfBody h3, #pdfBody h4 {
+		                page-break-inside: avoid;
+		            }
+		            
+		            #pdfBody #ni_report_wrapper, #pdfBody #hqp_report_wrapper, #pdfBody #ldr_report_wrapper, #pdfBody #ldr_comments_wrapper, #pdfBody #ldr_budget_wrapper {
+		                width: 100%;
+		            }
+		            
+		            #pdfBody #ni_budget_wrapper {
+		                width:100%;
+		            }
+		            
+		            .pdfnodisplay {
+		                display:none;
+		            }
+		            
+		            #pdfBody p {
+		                margin: 0;
+		            }
+		            
+		            #pdfBody small, #pdfBody .small {
+		                font-size: 10px;
+		                display:inline;
+		            }
+		            
+		            #pdfBody table.small {
+		                font-size: 10px;
+		                display: table;
+		            }
+		            
+		            #pdfBody td.small {
+		                font-size: 10px;
+		                display:table-cell;
+		            }
+		            
+		            #pdfBody .smaller {
+		                font-size: 9px;
+		            }
+		            
+		            #pdfBody .smallest {
+		                font-size: 8px;
+		            }
+		            
+		            #pdfBody ul {
+		                margin-top: 9px;
+		                margin-bottom: 9px;
+		            }
+		            
+		            #pdfBody ul ul {
+		                margin-top: 0;
+		                margin-bottom: 0;
+		            }
+		            
+		            #pdfBody li {
+		                font-weight: normal !important;
+		                margin-bottom: 0;
+		            }
+		            
+		            #pdfBody .tinymce li {
+		                margin-bottom: 0;
+		            }
+		            
+		            #pdfBody .tinymce ul {
+		                margin-top: 0;
+		                margin-bottom: 15px;
+		            }
+		            
+		            #pdfBody .tinymce ul ul {
+		                margin-top: 0;
+		                margin-bottom: 0;
+		            }
+		            
+		            #pdfBody .tinymce table p {
+		                margin-bottom: 0 !important;
+		            }
+		            
+		            #pdfBody b, #pdfBody strong {
+                        font-weight: bold !important;
+                    }
+		            
+		            #pdfBody .label {
+		                font-weight: bold;
+		            }
+		            
+		            #pdfBody ins {
+                        background: #AAFFAA;
+                        display: inline;
+                        text-decoration: none;
+                        vertical-align:top;
+                        position:relative;
+                    }
+
+                    #pdfBody del {
+                        background: #FFAAAA;
+                        display: inline;
+                        text-decoration: none;
+                        vertical-align:top;
+                        position:relative;
+                    }
+                    
+                    #pdfBody .logo {
+                        width:330.555px;
+                        height:113.33333333333px;
+                        position:absolute;
+                        margin-top: 13.333333333333px;
+                    }
+                    
+                    #pdfBody .logo_div {
+                        margin-bottom: 1.6666666666667px;
+                        height: 120px;
+                    }
+                    
+                    #pdfBody br {
+                        font-size: 0.5em;
+                    }
+                    
+                    #pdfBody .tinymce p {
+                        margin-bottom: 13.333333333333px;
+                    }
+                    
+                    #pdfBody .tinymce strong {
+                        page-break-after: avoid;
+                        page-break-before: avoid;
+                    }
+                    
+                    #pdfBody .tinymce ol, #pdfBody .tinymce ul {
+                        padding-left: 26.666666666667px;
+                    }
+                    
+                    #pdfBody .externalLink {
+                        color: #007d43 !important;
+                        text-decoration: none;
+                    }
+                    
+                    #pdfBody .tinymce table {
+                        max-width: 100%;
+                        border: none;
+                    }
+		            
+		        </style>
+                <div id="pdfBody">
+                <div style='position: absolute; top:-2.5em; border-style: solid; border-color: black; border-width: 0 0 1pt 0;'>
+                    This abbreviated CV was generated by the UAlberta Faculty of Science Forum system, to meet the requirements of University of Alberta’s {$this_year} Quality Assurance Graduate and Undergraduate Program Review. Information is reported for the July 1 {$startYear} to June 30 {$endYear} period only, and does not reflect the full academic record of the staff member.
+                </div>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <h1 style='padding:0; margin:0; font-size: 2em; font-weight: normal;'>{$user_name}</h1>
+                <table style="width:100%;line-height:1em;" cellpadding='0'>
+                    <tr>
+                        <td style='width:50%;' valign='top'>
+                            <table width="100%" cellpadding='0'>
+                                <tr><td>{$user_level}</td></tr>
+                                <tr><td>{$user_uni}</td></tr>
+                                <tr><td>{$user_dept}</td></tr>
+                            </table>
+                        </td>
+                        <td valign='top'>
+                            <table width="100%" cellpadding='0'>
+                                <tr><td align="right">Year of PhD:&nbsp;<b>{$user_phd_year}</b></td></tr>
+                                <tr><td align="right">Year of Appointment:&nbsp;<b>{$user_appointment_year}</b></td></tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table><br />
+            ]]>
+        </Static>
+        
+        <!-- Employment/Education History -->
+        <ReportItem id="educationbookmark" type="BookmarkReportItem" title="Education History">
+            <![CDATA[
+                <h2>Education History</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="education" type="PersonEducationReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employmentbookmark" type="BookmarkReportItem" title="Employment History">
+            <![CDATA[
+                <h2>Employment History</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment" type="PersonEmployment2ReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Honors and Awards -->
+        <If id="award_if" if="{>({getNProducts(1900-01-01, {$next_year}-12-31, Award, all,, false)}, 0)}">
+            <ReportItem id="awardbookmark" type="BookmarkReportItem" title="Honors and Awards">
+                <![CDATA[
+                    <h2>Honors and Awards</h2>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Award Category</th>
+                                <th>Awarded By</th>
+                                <th>Scope</th>
+                                <th>Years</th>
+                            </tr>
+                        </thead>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="1900-01-01" end="{$next_year}-12-31">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$product_title}</td>
+                            <td align='left'>{$product_type}</td>
+                            <td align='left'>{$award_by}</td>
+                            <td align='left'>{$award_scope}</td>
+                            <td align='center'>{$award_year_range}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </table><br />
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Courses Taught -->
+        <If id="courses_if" if="{>({$user_courses_count},0)}">
+            <ReportItem id="coursesbookmark" type="BookmarkReportItem" title="Courses Taught">
+                <![CDATA[
+                    <h2>Courses Taught</h2>
+                ]]>
+            </ReportItem>
+            <ReportItem id="courses" type="PersonCoursesReportItem" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <![CDATA[
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+        </If>
+        
+        <!-- Supervision and Training Responsibilities -->
+        <If id="supervision_if" if="{>({add({$user_grad_count},{$user_fellow_count},{$user_tech_count},{$user_ugrad_count})},0)}">
+            <ReportItem id="studentsbookmark" type="BookmarkReportItem" title="Supervision and Training Responsibilities">
+                <![CDATA[
+                    <h2>Supervision and Training Responsibilities</h2>
+                ]]>
+            </ReportItem>
+            <ReportItem id="students" type="PersonSupervisesReportItem" showOther="false">
+                <![CDATA[
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+        </If>
+        
+        <!-- Publications -->
+        <If id="publications_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, all,, false)}, 0)}">
+            <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
+                <![CDATA[
+                    <h2>Publications</h2>
+                    <p>If the authors are not being formatted correctly (bold/underline), click the author you wish to change and select what type of user they are.  You can also edit publications by going to <a href='https://forum-fos.ualberta.ca/index.php/Special:ManageProducts'><b>Manage Outputs</b></a>.</p>
+                    <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
+                ]]>
+            </ReportItem>
+            <If id="publications_if1" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Journal Paper|Journal Abstract|Collections Paper,, false, true)}, 0)}">
+                <ReportItem id="journalbookmark" type="SubBookmarkReportItem" title="Journals">
+                    <![CDATA[
+                        <h3>Journals</h3>
+                        <ul>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|Collections Paper" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+                        <![CDATA[
+                            <li style="page-break-inside: avoid;">{$item}</li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul><br />
+                    ]]>
+                </Static>
+            </If>
+            <If id="publications_if2" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Conference Paper|Workshop Paper,, false, true)}, 0)}">
+                <ReportItem id="conferencebookmark" type="SubBookmarkReportItem" title="Conference Papers">
+                    <![CDATA[
+                        <h3>Conference Papers</h3>
+                        <ul>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="conferences" type="PersonProductsReportItemSet" category="Publication" productType="Conference Paper|Workshop Paper" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+                        <![CDATA[
+                            <li style="page-break-inside: avoid;">{$item}</li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul><br />
+                    ]]>
+                </Static>
+            </If>
+            <If id="publications_if3" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Bachelors Thesis|Book|Book Chapter|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|Other|PHD Thesis|White Paper|Tech Report|Poster|Manual,, false, true)}, 0)}">
+                <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
+                    <![CDATA[
+                        <h3>Other</h3>
+                        <ul>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="others" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|Other|PHD Thesis|White Paper|Tech Report|Poster|Manual" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+                        <![CDATA[
+                            <li style="page-break-inside: avoid;">{$item}</li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul><br />
+                    ]]>
+                </Static>
+            </If>
+        </If>
+
+        <!-- Presentations -->
+        <If id="presentations_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Presentation, all,, false)}, 0)}">
+            <ReportItem id="presentationbookmark" type="BookmarkReportItem" title="Presentations">
+                <![CDATA[
+                    <h2>Invited Presentations <i>(by staff member)</i></h2>
+                    <ul>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" status="Invited" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <Static>
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">{$product_qa_citation}</li>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul><br />
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Grants -->
+        <If id="grants_if" if="{>({$user_cv_grant_count},0)}">
+            <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
+                <![CDATA[
+                    <h2>Research Funding</h2>
+                    <i>Total funding >= $10k awarded from external sources only and available during the reporting period</i>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Sponsor</th>
+                                <th>Starts</th>
+                                <th>Ends</th>
+                                <th>$Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </ReportItem> 
+            <ReportItemSet id="grants" type="PersonCVGrantsReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td align='left'>{$grant_project_id}<br />
+                                <p>{$grant_scientific_title}</p>
+                            </td>
+                            <td align='left'>{$grant_sponsor}</td>
+                            <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                            <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                            <td align='right'>${$grant_total}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </tbody></table><br />
+                ]]>
+            </Static>
+        </If>
+
+        <!-- Patents -->
+        <If id="patents_if" if="{>({getNProducts(0000-00-00, 2100-06-30, Patent/Spin-Off, all,, false)}, 0)}">
+            <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents">
+                <![CDATA[
+                    <h2>Patents/Spin-Offs</h2>
+                    <ul>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" includeHQP="false" start="0000-00-00" end="2100-06-30">
+                <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+                    <![CDATA[
+                        <li>{$item}</li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul><br />
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Service to the University and the Profession -->
+        <If id="committees_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Departmental|Faculty|University|Scientific|Community Outreach|Other,, false)}, 0)}">
+            <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service to the University and the Profession">
+                <![CDATA[
+                    <h2>Service to the University and the Profession</h2>
+                ]]>
+            </ReportItem>
+            
+            <!-- Departmental -->
+            <If id="departmental_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Departmental,, false)}, 0)}">
+                <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
+                    <![CDATA[
+                        <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Departmental</h3>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <Static>
+                        <![CDATA[
+                            <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+            </If>
+            
+            <!-- Faculty -->
+            <If id="faculty_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Faculty,, false)}, 0)}">
+                <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
+                    <![CDATA[
+                        <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Faculty</h3>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <Static>
+                        <![CDATA[
+                            <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+            </If>
+            
+            <!-- University -->
+            <If id="university_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, University,, false)}, 0)}">
+                <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
+                    <![CDATA[
+                        <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> University</h3>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <Static>
+                        <![CDATA[
+                            <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+            </If>
+            
+            <!-- Scientific -->
+            <If id="scientific_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Scientific,, false)}, 0)}">
+                <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
+                    <![CDATA[
+                        <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Scientific</h3>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <Static>
+                        <![CDATA[
+                            <p style='margin-left:2em;'>{$product_title} - {getProductData(organization)} (<b>{$product_scope}</b>), {$product_year_range}</p>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+            </If>
+            
+            <!-- Outreach and Community Engagement -->
+            <If id="community_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Community Outreach,, false)}, 0)}">
+                <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach and Community Engagement">
+                    <![CDATA[
+                        <h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Outreach and Community Engagement</h3>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <Static>
+                        <![CDATA[
+                            <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+            </If>
+            
+            <!-- Other -->
+            <If id="other_if" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Other,, false)}, 0)}">
+                <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
+                    <![CDATA[
+                    	<h3><i>July 1 {$startYear} to June 30 {$endYear}:</i> Other</h3>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <Static>
+                        <![CDATA[
+                            <p style='margin-left:2em;'>{$product_title}, {$product_year_range}</p>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+            </If>
+        </If>
+        
+        <!-- Footer -->
+        <Static>
+            <![CDATA[
+                <br /><br /><br />
+                <div style="page-break-inside:avoid; position: absolute; bottom:0;">
+                    <i>Generated: {$timestamp}</i>
+                </div>
+            ]]>
+         </Static>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="PDF Generation" blobSection="SEC_NONE" type="ReportSection">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

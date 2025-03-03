@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report extends="../FECpdf">
+    <ReportSection id="information">
+        <ReportItem id="executive_summary" type="Textarea" blobItem="EXECUTIVE_SUMMARY" rich="true" position="1">
+            <![CDATA[
+                <h3>Executive Summary</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

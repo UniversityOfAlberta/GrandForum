@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/34" extends="Letters/Base">
+    <ReportSection id="letter" title="Incrementation - Incrementation Awarded is Less than Recommendation">
+        <ReportItem id="from">
+            <![CDATA[
+                FEC Chair
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="bodyset">
+            <Static>
+                <![CDATA[
+                    <p>This is to inform you that at the Faculty Evaluation Committee (FEC) reconsideration meeting on {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, FEC did not support your minimal acceptable position of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation which was {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)} by your Department Chair and have instead awarded incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}.</p>
+                    
+                    <p>Since you appeared before the FEC seeking reconsideration of its preliminary position, you have the right to appeal this decision to the General Appeals Committee (GAC) in accordance with Article A8.03.1 of Schedule A. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of this letter.</p>
+                    
+                    
+                    <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</p>
+                ]]>
+            </Static>
+            <If if="{==({getText({$report_type}, TABLE, 0D, {$user_id}, 1, 0)},Yes)}">
+                <![CDATA[
+                    <p>Since the increment award is 0d and this is the second 0d over the last three years of review, the record will be forwarded to the Provost in accordance with Article A7 of Schedule A if the GAC upholds the FEC decision</p>
+                ]]>
+            </If>
+            <Static>
+                <![CDATA[
+                    <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</p>
+                    
+                    <p>Should you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <ReportItem id="footer">
+            <![CDATA[
+                
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

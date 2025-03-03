@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/41" extends="Letters/Base">
+    <ReportSection id="letter" title="Incrementation - Recommendation of 0d">
+        <ReportItem id="from">
+            <![CDATA[
+                {getText({$report_type}, TABLE, CHAIR, {$user_id}, 1, 0)}
+            ]]>
+        </ReportItem>
+        <ReportItem id="body">
+            <![CDATA[
+                <p>Based on my review of your academic activities and your annual report, and our meeting to review such on December 2 - 6, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of 0d.</p>
+
+                <p>My concerns are as follows:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                
+                <p>You may wish to consider the following option:</p>
+                <ul style='margin-left: 1em;'>
+                    <li>Under Article A6.17.1 of Schedule A, you have the right to appear before FEC to contest the recommendation</li>
+                    <li>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</li>
+                </ul>
+                
+                <p>Please be advised that the date for contested cases has been scheduled for December 5, {$this_year} in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}.</p>
+                
+                <p>Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to your Department Chair:</p>
+                
+                <ul style='margin-left: 1em;'>
+                    <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
+                    <li>any material in response to the Department Chair’s [Dean’s] recommendation and any other material relevant to your case;</li>
+                    <li>a list of names of persons who will attend the FEC hearing as your witnesses.</li>
+                </ul>
+                
+                <p>Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
+                
+                <p>If you choose not to contest the recommendation and appear before FEC to present your case or submit documentation in support of your case, its decision will be final and binding. Under Article A8.03.1 you may not appeal this decision to the General Appeals Committee (GAC).</p>
+                
+                <p>If FEC upholds my recommendation of 0d this would be the second 0d over the last three years of review, and in accordance with Article A7 of Schedule A the record would be forwarded to the Provost.</p>
+                
+                <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</p>
+                
+                <p>If you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

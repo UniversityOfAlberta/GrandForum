@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/ATS18" extends="Letters/Base">
+    <ReportSection id="letter" title="ATSEC Decision Regarding Merit Increment">
+        <ReportItem id="from">
+            <![CDATA[
+                Eleni Stroulia<br />
+                Vice Dean of Science<br />
+                Chair Academic Teaching Staff Evaluation Committee
+            ]]>
+        </ReportItem>
+        <ReportItem id="body">
+            <![CDATA[
+                <p>I am writing to inform you that the Academic Teaching Staff Evaluation Committee (ATSEC) has accepted the recommendation of your Department Chair and awarded you 0D, as your academic performance is unsatisfactory and unacceptable.</p>
+
+                <p>I would like to take this opportunity to thank you for your work this past year, and to wish you continued success in your teaching.</p>
+
+                <p>Should you have any procedural questions, please contact sciea@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer">
+            <![CDATA[
+                Sincerely,<br />
+                <br />
+                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <br />
+                Eleni Stroulia<br />
+                Vice Dean of Science<br />
+                Chair of the Academic Teaching Staff Evaluation Committee<br />
+                ES/jb
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
