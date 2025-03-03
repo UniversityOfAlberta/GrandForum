@@ -33,7 +33,7 @@ class Descriptors12Month extends Descriptors {
         $person = Person::newFromWgUser();
         if($person->isRoleAtLeast(STAFF) && $config->getValue('networkFullName') != "AVOID Australia"){
             $selected = @($wgTitle->getText() == "Descriptors12Month") ? "selected" : false;
-            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Descriptives 12 Month", "{$wgServer}{$wgScriptPath}/index.php/Special:Descriptors12Month", $selected);
+            $tabs['Manager']['subtabs']['descriptives']['dropdown'][] = TabUtils::createSubTab("12 Month", "{$wgServer}{$wgScriptPath}/index.php/Special:Descriptors12Month", $selected);
         }
         return true;
     }

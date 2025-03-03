@@ -1869,7 +1869,8 @@ class Descriptors extends SpecialPage {
         $person = Person::newFromWgUser();
         if($person->isRoleAtLeast(STAFF) && $config->getValue('networkFullName') != "AVOID Australia"){
             $selected = @($wgTitle->getText() == "Descriptors") ? "selected" : false;
-            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Descriptives", "{$wgServer}{$wgScriptPath}/index.php/Special:Descriptors", $selected);
+            $tabs['Manager']['subtabs']['descriptives'] = TabUtils::createSubTab("Descriptives", "{$wgServer}{$wgScriptPath}/index.php/Special:Descriptors", $selected);
+            $tabs['Manager']['subtabs']['descriptives']['dropdown'][] = TabUtils::createSubTab("Baseline", "{$wgServer}{$wgScriptPath}/index.php/Special:Descriptors", $selected);
         }
         return true;
     }
