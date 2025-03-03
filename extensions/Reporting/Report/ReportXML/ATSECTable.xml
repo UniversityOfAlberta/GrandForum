@@ -491,9 +491,11 @@
         <Static>
             <![CDATA[
                 <script type='text/javascript'>
+                    $(window).resize();
                     table = $('#chairTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                        "iDisplayLength": -1
+                        "iDisplayLength": -1,
+                        'fixedHeader': true
                     });
                     $('#chairTable select, #chairTable textarea').change(function(){
                         saveAll();
@@ -637,6 +639,7 @@
                     </tbody>
                 </table>
                 <script type='text/javascript'>
+                    $(window).resize();
                     table = $('#chairTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "autoWidth": false,
