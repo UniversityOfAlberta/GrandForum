@@ -527,6 +527,7 @@
                             <th colspan='4'>Increment Votes</th>
                             <th colspan='4'>Tenure Votes</th>
                             <th colspan='4'>Promotion Votes</th>
+                            <th rowspan='2'>HR Comments</th>
                         </tr>
                         <tr>
                             <th>Y</th>
@@ -556,14 +557,25 @@
                         <td>{$user_dept}</td>
                 ]]>
             </Static>
-            <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" personId="1" width="80px" history="false" encrypt="true">
+            
+            <If if="{contains({$my_roles},HR)}">
                 <![CDATA[
                     <td>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</td>
                     <td>
-                        {$item}
+                        {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}
                     </td>
                 ]]>
-            </ReportItem>
+            </If>
+            <Else>
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" personId="1" width="80px" history="false" encrypt="true">
+                    <![CDATA[
+                        <td>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</td>
+                        <td class='revised_increment_{$user_id}'>
+                            {$item}
+                        </td>
+                    ]]>
+                </ReportItem>
+            </Else>
             
             <!-- Increment Votes -->
             <ReportItem id="freeze" type="VoteResultsReportItem" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="75px">
@@ -598,7 +610,22 @@
                         </script>
                 ]]>
             </ReportItem>
-            
+            <If if="{contains({$my_roles},HR)}">
+                <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" personId="1" height="75px" encrypt="true">
+                    <![CDATA[
+                        <td>
+                            {$item}
+                        </td>
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else>
+                <![CDATA[
+                    <td>
+                        {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$user_id}, 1, 0)}
+                    </td>
+                ]]>
+            </Else>
             <Static>
                 <![CDATA[
                     </tr>
