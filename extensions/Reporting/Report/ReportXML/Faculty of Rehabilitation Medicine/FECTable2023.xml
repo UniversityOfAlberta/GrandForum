@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="ATSEC Table" title="ATSEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="false">
+<Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true" year="2023" disabled="false">
     <Permissions>
-        <Role role="ATSEC" start="{$this_year}-07-01" end="{$next_year}-07-01">
-            <SectionPermission id="atsec" permissions="rw" />
-            <SectionPermission id="atsec_votes" permissions="" />
+        <Role role="FEC" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="fec" permissions="rw" />
+            <SectionPermission id="fec_votes" permissions="" />
+            <SectionPermission id="fec_numbers" permissions="" />
         </Role>
         <Role role="DEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
-            <SectionPermission id="atsec" permissions="rw" />
-            <SectionPermission id="atsec_votes" permissions="rw" />
+            <SectionPermission id="fec" permissions="rw" />
+            <SectionPermission id="fec_votes" permissions="rw" />
+            <SectionPermission id="fec_numbers" permissions="rw" />
         </Role>
         <Role role="VDEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
-            <SectionPermission id="atsec" permissions="rw" />
-            <SectionPermission id="atsec_votes" permissions="rw" />
+            <SectionPermission id="fec" permissions="rw" />
+            <SectionPermission id="fec_votes" permissions="rw" />
+            <SectionPermission id="fec_numbers" permissions="rw" />
         </Role>
         <Role role="HR" start="{$this_year}-07-01" end="{$next_year}-07-01">
-            <SectionPermission id="atsec" permissions="rw" />
-            <SectionPermission id="atsec_votes" permissions="rw" />
+            <SectionPermission id="fec" permissions="rw" />
+            <SectionPermission id="fec_votes" permissions="r" />
+            <SectionPermission id="fec_numbers" permissions="r" />
         </Role>
         <Role role="MANAGER+" start="{$this_year}-07-01" end="{$next_year}-07-01">
-            <SectionPermission id="atsec" permissions="rw" />
-            <SectionPermission id="atsec_votes" permissions="" />
+            <SectionPermission id="fec" permissions="rw" />
+            <SectionPermission id="fec_votes" permissions="" />
+            <SectionPermission id="fec_numbers" permissions="" />
         </Role>
     </Permissions>
     <Script>
@@ -30,19 +35,26 @@
                     $.get(wgServer + wgScriptPath + '/index.php?action=api.voteFreeze', function(response){
                         var data = response.data;
                         
-                        var sumATS = 0;
+                        var sumFaculty = 0;
+                        var sumFSO = 0;
                         
-                        var nATS = 0;
+                        var nFaculty = 0;
+                        var nFSO = 0;
                         
-                        var nRevATS = 0;
+                        var nRevFaculty = 0;
+                        var nRevFSO = 0;
                         
-                        var sumRevATS = 0;
+                        var sumRevFaculty = 0;
+                        var sumRevFSO = 0;
                         
-                        var sumDDATS = 0;
+                        var sumDDFaculty = 0;
+                        var sumDDFSO = 0;
                         
-                        var nDDATS = 0;
+                        var nDDFaculty = 0;
+                        var nDDFSO = 0;
                         
-                        var targetATS = $('#targetATS input').val();
+                        var targetFac = $('#targetFac input').val();
+                        var targetFSO = $('#targetFso input').val();
                         
                         var needsSaving = false;
                         
@@ -122,11 +134,26 @@
                                increment != "0.00" &&
                                increment != "0.00 (PTC)" &&
                                increment != "0A"){
-                                sumATS += parseFloat(increment);
-                                if(revisedIncrement == ""){
-                                    revisedIncrement = increment;
+                                if(caseN.indexOf('A') != -1 ||
+                                   caseN.indexOf('B') != -1 ||
+                                   caseN.indexOf('C') != -1 ||
+                                   caseN.indexOf('N') != -1){
+                                    sumFaculty += parseFloat(increment);
+                                    if(revisedIncrement == ""){
+                                        revisedIncrement = increment;
+                                    }
+                                    nFaculty++;
+                                } else 
+                                if(caseN.indexOf('D') != -1 ||
+                                   caseN.indexOf('E') != -1 ||
+                                   caseN.indexOf('F') != -1 ||
+                                   caseN.indexOf('M') != -1){
+                                    sumFSO += parseFloat(increment);
+                                    if(revisedIncrement == ""){
+                                        revisedIncrement = increment;
+                                    }
+                                    nFSO++;
                                 }
-                                nATS++;
                             }
                             
                             if(revisedIncrement != "" &&
@@ -134,8 +161,20 @@
                                revisedIncrement != "0.00" &&
                                revisedIncrement != "0.00 (PTC)" &&
                                revisedIncrement != "0A"){
-                                sumRevATS += parseFloat(revisedIncrement);
-                                nRevATS++;
+                                if(caseN.indexOf('A') != -1 ||
+                                   caseN.indexOf('B') != -1 ||
+                                   caseN.indexOf('C') != -1 ||
+                                   caseN.indexOf('N') != -1){
+                                    sumRevFaculty += parseFloat(revisedIncrement);
+                                    nRevFaculty++;
+                                } else 
+                                if(caseN.indexOf('D') != -1 ||
+                                   caseN.indexOf('E') != -1 ||
+                                   caseN.indexOf('F') != -1 ||
+                                   caseN.indexOf('M') != -1){
+                                    sumRevFSO += parseFloat(revisedIncrement);
+                                    nRevFSO++;
+                                }
                             }
                             
                             if(ddIncrement != "" &&
@@ -143,8 +182,20 @@
                                ddIncrement != "0.00" &&
                                ddIncrement != "0.00 (PTC)" &&
                                ddIncrement != "0A"){
-                                sumDDATS += parseFloat(ddIncrement);
-                                nDDATS++;
+                                if(caseN.indexOf('A') != -1 ||
+                                   caseN.indexOf('B') != -1 ||
+                                   caseN.indexOf('C') != -1 ||
+                                   caseN.indexOf('N') != -1){
+                                    sumDDFaculty += parseFloat(ddIncrement);
+                                    nDDFaculty++;
+                                } else 
+                                if(caseN.indexOf('D') != -1 ||
+                                   caseN.indexOf('E') != -1 ||
+                                   caseN.indexOf('F') != -1 ||
+                                   caseN.indexOf('M') != -1){
+                                    sumDDFSO += parseFloat(ddIncrement);
+                                    nDDFSO++;
+                                }
                             }
                         });
                         
@@ -153,26 +204,43 @@
                             saveAll();
                         }
                         
-                        var atsSign = (targetATS - sumRevATS - sumDDATS > 0) ? "-" : "+";
+                        var facSign = (targetFac - sumRevFaculty - sumDDFaculty > 0) ? "-" : "+";
+                        var fsoSign = (targetFSO - sumRevFSO - sumDDFSO > 0) ? "-" : "+";
                         
-                        $("#averageATS").text(number_format(sumATS/Math.max(1,nATS)));
-                        $("#totalATS").text(number_format(sumATS));
+                        $("#averageFac").text(number_format(sumFaculty/Math.max(1,nFaculty)));
+                        $("#averageFSO").text(number_format(sumFSO/Math.max(1,nFSO)));
+                        $("#totalFac").text(number_format(sumFaculty));
+                        $("#totalFSO").text(number_format(sumFSO));
                         
-                        $("#runningAverageATS").text(number_format(sumRevATS/Math.max(1,nRevATS)));
-                        $("#runningTotalATS").text(number_format(sumRevATS));
+                        $("#runningAverageFac").text(number_format(sumRevFaculty/Math.max(1,nRevFaculty)));
+                        $("#runningAverageFSO").text(number_format(sumRevFSO/Math.max(1,nRevFSO)));
+                        $("#runningTotalFac").text(number_format(sumRevFaculty));
+                        $("#runningTotalFSO").text(number_format(sumRevFSO));
                         
-                        $("#ddAverageATS").text(number_format(sumDDATS/Math.max(1,nDDATS)));
-                        $("#ddTotalATS").text(number_format(sumDDATS));
+                        $("#ddAverageFac").text(number_format(sumDDFaculty/Math.max(1,nDDFaculty)));
+                        $("#ddAverageFSO").text(number_format(sumDDFSO/Math.max(1,nDDFSO)));
+                        $("#ddTotalFac").text(number_format(sumDDFaculty));
+                        $("#ddTotalFSO").text(number_format(sumDDFSO));
                         
-                        $("#deltaATS").text(atsSign + number_format(Math.abs(targetATS - sumRevATS - sumDDATS)));
+                        $("#deltaFac").text(facSign + number_format(Math.abs(targetFac - sumRevFaculty - sumDDFaculty)));
+                        $("#deltaFSO").text(fsoSign + number_format(Math.abs(targetFSO - sumRevFSO - sumDDFSO)));
                         
-                        if(atsSign == "+"){
-                            $("#deltaATS").css("background", "red");
-                            $("#deltaATS").css("color", "white");
+                        if(facSign == "+"){
+                            $("#deltaFac").css("background", "red");
+                            $("#deltaFac").css("color", "white");
                         }
                         else{
-                            $("#deltaATS").css("background", "white");
-                            $("#deltaATS").css("color", "black");
+                            $("#deltaFac").css("background", "white");
+                            $("#deltaFac").css("color", "black");
+                        }
+                        
+                        if(fsoSign == "+"){
+                            $("#deltaFSO").css("background", "red");
+                            $("#deltaFSO").css("color", "white");
+                        }
+                        else{
+                            $("#deltaFSO").css("background", "white");
+                            $("#deltaFSO").css("color", "black");
                         }
                         
                         lastData = response.data;
@@ -183,15 +251,11 @@
             </script>
         ]]>
     </Script>
-    <ReportSection id="atsec" tooltip="ATSEC Table" name="ATSEC Table" title="ATSEC Table" blobSection="TABLE" type="EditableReportSection">
+    <ReportSection id="fec" tooltip="FEC Table" name="FEC Table" title="FEC Table" blobSection="TABLE" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <style>
                     table#chairTable * {
-                        font-size:11px !important;
-                    }
-                    
-                    table.fixedHeader-floating * {
                         font-size:11px !important;
                     }
                 </style>
@@ -236,14 +300,14 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" atsec="true" start="{$last_year}-07-01" end="{$this_year}-07-01" excludeMe="true">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01" excludeMe="true">
             <Static>
                 <![CDATA[
                     <tr data-id="{$user_id}">
                         <td class="casenumber" style='white-space:nowrap;'>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                         <td>{$user_level}</td>
-                        <td>{$user_dept}</td>
+                        <td>{$user_depts}</td>
                 ]]>
             </Static>
             <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="downloadPDF" buttonName=" AR ">
@@ -314,7 +378,7 @@
                     </td>
                 ]]>
             </Static>
-            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_roles},ATSEC)})}">
+            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_roles},FEC)})}">
                 <!-- Increment Vote -->
                 <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
                     <![CDATA[
@@ -458,27 +522,36 @@
                     <table id='summary' class='wikitable' frame='box' rules='all'>
                         <tr>
                             <th></th>
-                            <th style='width:6em;'>ATS</th>
+                            <th style='width:6em;'>Faculty</th>
+                            <th style='width:6em;'>FSO</th>
                         </tr>
                         <tr>
                             <td><b>Dean's Decisions&nbsp;</b></td>
-                            <td id='ddTotalATS' align='right'></td>
+                            <td id='ddTotalFac' align='right'></td>
+                            <td id='ddTotalFSO' align='right'></td>
                         </tr>
                         <tr>
-                            <td><b>Recommendations to ATSEC&nbsp;</b></td>
-                            <td id='totalATS' align='right'></td>
+                            <td><b>Recommendations to FEC&nbsp;</b></td>
+                            <td id='totalFac' align='right'></td>
+                            <td id='totalFSO' align='right'></td>
                         </tr>
                         <tr>
-                            <td><b>Recommendations by ATSEC&nbsp;</b></td>
-                            <td id='runningTotalATS' align='right'></td>
+                            <td><b>Recommendations by FEC&nbsp;</b></td>
+                            <td id='runningTotalFac' align='right'></td>
+                            <td id='runningTotalFSO' align='right'></td>
                         </tr>
                         <tr>
                             <td><b>Total Pool&nbsp;</b></td>
                 ]]>
             </Static>
-            <ReportItem id="targetAts" type="Integer" blobItem="TARGET_ATS" blobSubItem="{$networkName}" decimals="2" personId="0" width="80px" placeholder="0.00">
+            <ReportItem id="targetFac" type="Integer" blobItem="TARGET_FAC" blobSubItem="{$networkName}" decimals="2" personId="0" width="80px" placeholder="0.00">
                 <![CDATA[
-                    <td id='targetATS' class='target' align='right'>{$item}</td>
+                    <td id='targetFac' class='target' align='right'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="targetFso" type="Integer" blobItem="TARGET_FSO" blobSubItem="{$networkName}" decimals="2" personId="0" width="80px" placeholder="0.00">
+                <![CDATA[
+                    <td id='targetFso' class='target' align='right'>{$item}</td>
                 ]]>
             </ReportItem>
             <Static>
@@ -486,7 +559,8 @@
                         </tr>
                         <tr>
                             <td><b>Running Targets&nbsp;</b></td>
-                            <td id='deltaATS' align='right'></td>
+                            <td id='deltaFac' align='right'></td>
+                            <td id='deltaFSO' align='right'></td>
                         </tr>
                     </table>
                 ]]>
@@ -495,11 +569,9 @@
         <Static>
             <![CDATA[
                 <script type='text/javascript'>
-                    $(window).resize();
                     table = $('#chairTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                        "iDisplayLength": -1,
-                        'fixedHeader': true
+                        "iDisplayLength": -1
                     });
                     $('#chairTable select, #chairTable textarea').change(function(){
                         saveAll();
@@ -511,15 +583,11 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="atsec_votes" tooltip="ATSEC Votes" name="ATSEC Votes" title="ATSEC Votes" blobSection="TABLE" type="EditableReportSection">
+    <ReportSection id="fec_votes" tooltip="FEC Votes" name="FEC Votes" title="FEC Votes" blobSection="TABLE" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <style>
                     table#chairTable * {
-                        font-size:11px !important;
-                    }
-                    
-                    table.fixedHeader-floating * {
                         font-size:11px !important;
                     }
                 </style>
@@ -537,7 +605,6 @@
                             <th colspan='4'>Increment Votes</th>
                             <th colspan='4'>Tenure Votes</th>
                             <th colspan='4'>Promotion Votes</th>
-                            <th rowspan='2'>HR Comments</th>
                         </tr>
                         <tr>
                             <th>Y</th>
@@ -557,7 +624,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" atsec="true" includeDD="false" start="{$last_year}-07-01" end="{$this_year}-07-01">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" includeDD="false" start="{$last_year}-07-01" end="{$this_year}-07-01">
             <Static>
                 <![CDATA[
                     <tr>
@@ -567,25 +634,14 @@
                         <td>{$user_dept}</td>
                 ]]>
             </Static>
-            
-            <If if="{contains({$my_roles},HR)}">
+            <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" personId="1" width="80px" history="false" encrypt="true">
                 <![CDATA[
                     <td>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</td>
                     <td>
-                        {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}
+                        {$item}
                     </td>
                 ]]>
-            </If>
-            <Else>
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" personId="1" width="80px" history="false" encrypt="true">
-                    <![CDATA[
-                        <td>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</td>
-                        <td class='revised_increment_{$user_id}'>
-                            {$item}
-                        </td>
-                    ]]>
-                </ReportItem>
-            </Else>
+            </ReportItem>
             
             <!-- Increment Votes -->
             <ReportItem id="freeze" type="VoteResultsReportItem" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="75px">
@@ -620,22 +676,7 @@
                         </script>
                 ]]>
             </ReportItem>
-            <If if="{contains({$my_roles},HR)}">
-                <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" personId="1" height="75px" encrypt="true">
-                    <![CDATA[
-                        <td>
-                            {$item}
-                        </td>
-                    ]]>
-                </ReportItem>
-            </If>
-            <Else>
-                <![CDATA[
-                    <td>
-                        {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$user_id}, 1, 0)}
-                    </td>
-                ]]>
-            </Else>
+            
             <Static>
                 <![CDATA[
                     </tr>
@@ -647,7 +688,6 @@
                     </tbody>
                 </table>
                 <script type='text/javascript'>
-                    $(window).resize();
                     table = $('#chairTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "autoWidth": false,
@@ -677,6 +717,108 @@
                         dbWritable = false;
                         $(".selectedReportTab").click();
                         dbWritable = true;
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="fec_numbers" tooltip="FEC Numbers" name="FEC Numbers" title="FEC Numbers" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th width="1%">Case#</th>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th>Department</th>
+                            <th>PhD</th>
+                            <th>Appointment</th>
+                            <th>Assistant</th>
+                            <th>Associate</th>
+                            <th>Professor</th>
+                            <th>FSO II</th>
+                            <th>FSO III</th>
+                            <th>FSO IV</th>
+                            <th>ATS I</th>
+                            <th>ATS II</th>
+                            <th>ATS III</th>
+                            <th>Probation1</th>
+                            <th>Probation2</th>
+                            <th>Tenure</th>
+                            <th>Retirement</th>
+                            <th>Date of Last Degree</th>
+                            <th>Last Degree</th>
+                            <th># Journal Papers</th>
+                            <th># Refereed Papers</th>
+                            <th># Other Papers</th>
+                            <th># Grants</th>
+                            <th># PhD</th>
+                            <th># MSc</th>
+                            <th># UGrad</th>
+                            <th># PDF</th>
+                            <th># Awards</th>
+                            <th># Courses</th>
+                            <th># Students</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" includeDD="true" start="{$last_year}-07-01" end="{$this_year}-07-01">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                        <td>{$user_dept}</td>
+                        <td>{substr({getPersonVar(dateOfPhd)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateOfAppointment)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateOfAssistant)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateOfAssociate)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateOfProfessor)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateFso2)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateFso3)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateFso4)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateAtsec1)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateAtsec2)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateAtsec3)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateOfProbation1)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateOfProbation2)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateOfTenure)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateOfRetirement)},0,10)}</td>
+                        <td>{substr({getPersonVar(dateOfLastDegree)},0,10)}</td>
+                        <td>{getPersonVar(lastDegree)}</td>
+                        <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Any Journal)}</td>
+                        <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</td>
+                        <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Not Refereed)}</td>
+                        <td align='right'>{$user_grant_count}</td>
+                        <td align='right'>{$user_phd_count}</td>
+                        <td align='right'>{$user_msc_count}</td>
+                        <td align='right'>{$user_ugrad_count}</td>
+                        <td align='right'>{$user_fellow_count}</td>
+                        <td align='right'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Award)}</td>
+                        <td align='right'>{$user_lectures_count}</td>
+                        <td align='right'>{$user_lectures_student_count}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#chairTable').DataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "autoWidth": false,
+                        "iDisplayLength": -1,
+                        "scrollX": true,
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            'excel'
+                        ]
                     });
                 </script>
             ]]>

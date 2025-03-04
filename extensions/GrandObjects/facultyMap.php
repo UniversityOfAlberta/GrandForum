@@ -41,6 +41,11 @@ $facultyMap = array(
         "Psychology",
         "Sociology",
         "Women's and Gender Studies", "Women & Gender Studies"
+    ),
+    "Rehabilitation Medicine" => array(
+        "Physical Therapy",
+        "Occupational Therapy",
+        "Communication Sciences & Disorders"
     )
 );
 
@@ -85,6 +90,11 @@ $facultyMapSimple = array(
         "Psychology",
         "Sociology",
         "Women's and Gender Studies"
+    ),
+    "Rehabilitation Medicine" => array(
+        "Physical Therapy",
+        "Occupational Therapy",
+        "Communication Sciences & Disorders"
     )
 );
 ?>

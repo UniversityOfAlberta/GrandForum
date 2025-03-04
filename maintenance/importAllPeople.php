@@ -35,7 +35,8 @@
            strstr(strtoupper($hrDept), "SC ") === false &&
            strstr(strtoupper($hrDept), "ENG ") === false &&
            strstr(strtoupper($hrDept), "ALES ") === false &&
-           strstr(strtoupper($hrDept), "ART ") === false){
+           strstr(strtoupper($hrDept), "ART ") === false &&
+           strstr(strtoupper($hrDept), "REHAB ") === false){
             continue;
         }
         
@@ -91,7 +92,7 @@
                                 array('employee_id' => $emplid),
                                 array('user_id' => $person->getId()));
                                 
-            if(strstr(strtoupper($hrDept), "ART ") !== false){
+            if(strstr(strtoupper($hrDept), "REHAB ") !== false){
                 // From Arts department, so wipe any previous university entries
                 DBFunctions::delete('grand_roles',
                                     array('user_id' => $person->getId(),

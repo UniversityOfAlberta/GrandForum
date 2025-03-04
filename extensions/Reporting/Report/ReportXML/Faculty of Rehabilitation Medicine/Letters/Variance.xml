@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/Variance" pdfType="RP_LETTER5" extends="Letters/Base">
+    <ReportSection id="letter" title="Confirmation of University Responsibilities – Article A2.01.2">
+        <ReportItem id="from">
+            <![CDATA[
+                {getText({$report_type}, TABLE, FROM, {$user_id}, 1, 0)}
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="bodyset">
+            <Static>
+                <![CDATA[
+                    <style>
+                        .cc { display: none; }
+                    </style>
+                    <p><i>A2.01.2 The responsibilities of an Academic Faculty member shall include Teaching, Research and Service as described below. [see remainder of Article A2] The proportion of Teaching, Research and Service shall be determined by agreement of the Department Chair and Academic Faculty member for the upcoming academic year, or as set out in the Academic Faculty member’s Letter of Appointment.</i></p><br />
+                ]]>
+            </Static>
+            <If if="{==({getText({$report_type}, TABLE, REPLACE_ROLE, {$user_id}, 1, 0)},Yes)}">
+                <![CDATA[
+                    <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText({$report_type}, TABLE, START_DATE, {$user_id}, 1, 0)}, F Y)} to {time2date({getText({$report_type}, TABLE, END_DATE, {$user_id}, 1, 0)}, F Y)}, {getText({$report_type}, TABLE, ROLE, {$user_id}, 1, 0)}.</p>
+                ]]>
+            </If>
+            <ElseIf if="{!=({getText({$report_type}, TABLE, ROLE, {$user_id}, 1, 0)},)}">
+                <![CDATA[
+                    <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText({$report_type}, TABLE, START_DATE, {$user_id}, 1, 0)}, F Y)} to {time2date({getText({$report_type}, TABLE, END_DATE, {$user_id}, 1, 0)}, F Y)}, during which period you will be holding the role of {getText({$report_type}, TABLE, ROLE, {$user_id}, 1, 0)}.</p>
+                ]]>
+            </ElseIf>
+            <Else>
+                <![CDATA[
+                    <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({getText({$report_type}, TABLE, START_DATE, {$user_id}, 1, 0)}, F Y)} to {time2date({getText({$report_type}, TABLE, END_DATE, {$user_id}, 1, 0)}, F Y)}.</p>
+                ]]>
+            </Else>
+            <Static>
+                <![CDATA[
+                    <table>
+                        <tr><td align='right'>Teaching:</td><td align='right' style='width:3em;'>{getText({$report_type}, TABLE, TEACHING, {$user_id}, 1, 0)}%</td></tr>
+                        <tr><td align='right'>Research:</td><td align='right' style='width:3em;'>{getText({$report_type}, TABLE, RESEARCH, {$user_id}, 1, 0)}%</td></tr>
+                        <tr><td align='right'>Service:</td><td align='right' style='width:3em;'>{getText({$report_type}, TABLE, SERVICE, {$user_id}, 1, 0)}%</td></tr>
+                        <tr><td align='right'>Admin:</td><td align='right' style='width:3em;'>{getText({$report_type}, TABLE, ADMIN, {$user_id}, 1, 0)}%</td></tr>
+                    </table><br />
+                
+                    <p>In accordance with Article A6.13, the Department Chair will review the performance of each Academic Faculty Member in the  year under review in relation to these responsibilities and to the Faculty’s standards of performance.</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <ReportItem id="footer">
+            <![CDATA[
+                <p>Please confirm your agreement with these terms and conditions by returning a signed copy of this memo to me.</p>
+
+                <p>
+                    <b>{getText({$report_type}, TABLE, FROM, {$user_id}, 1, 0)}</b><br />
+                    <br />
+                    <br />
+                    <br />
+                    ________________________________________________&nbsp;&nbsp;&nbsp;__________________________<br />
+                    Signature<span style='display:inline-block; width:23.25em;'>&nbsp;</span>Date
+                </p>
+                <br />
+                <p>
+                    <b>{$user_name}</b><br />
+                    <br />
+                    <br />
+                    <br />
+                    _________________________________________________&nbsp;&nbsp;&nbsp;__________________________<br />
+                    Signature<span style='display:inline-block; width:23.25em;'>&nbsp;</span>Date
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

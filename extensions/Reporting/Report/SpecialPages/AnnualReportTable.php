@@ -49,6 +49,7 @@ class AnnualReportTable extends SpecialPage{
                 <table id='table-$y' class='wikitable'>
                     <thead>
                         <th>Case#</th>
+                        <th>Role</th>
                         <th>Name</th>
                         <th class='deptCol'>Department</th>
                         <th>Report</th>
@@ -75,9 +76,19 @@ class AnnualReportTable extends SpecialPage{
                 foreach($data as $row){
                     $people[] = Person::newFromId($row['person_id']);
                 }
+                
+                $set->setAttr('atsec', 'true');
+                $data = $set->getData();
+                foreach($data as $row){
+                    $people[] = Person::newFromId($row['person_id']);
+                }
             }
             foreach($people as $person){
                 $case = $person->getCaseNumber($y);
+                $role = "Faculty/FSO";
+                if(strstr($case, "T") !== false){
+                    $role = "ATS";
+                }
                 if($case != ""){
                     $ar->person = $person;
                     $rec->person = $person;
@@ -106,6 +117,7 @@ class AnnualReportTable extends SpecialPage{
                     
                     $wgOut->addHTML("<tr>
                         <td>{$case}</td>
+                        <td align='center'>{$role}</td>
                         <td><a href='{$person->getUrl()}'>{$person->getReversedName()}</a></td>
                         <td class='deptCol'>{$person->getDepartment()}</td>
                         <td align='middle'>{$pdfButton}</td>
