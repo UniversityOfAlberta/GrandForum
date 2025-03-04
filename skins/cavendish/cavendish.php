@@ -679,6 +679,7 @@ class CavendishTemplate extends QuickTemplate {
 		        $p = Person::newFromId($wgUser->getId());
 		        
 		        $smallNotificationText = "";
+		        $notificationText = "";
 		        if(count($notifications) > 0){
 		            $notificationText = " (".count($notifications).")";
 		            $smallNotificationText = "<img class='overlay' style='margin-left:-16px;' src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12_red.png' />*";
