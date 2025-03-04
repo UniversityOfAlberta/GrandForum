@@ -706,24 +706,6 @@ class CavendishTemplate extends QuickTemplate {
 	            }
 	        }
 	        echo "</div>";
-            if(!TESTING && $wgScriptPath != "" && !DEMO){
-                exec("git rev-parse HEAD", $output);
-                $revId = @substr($output[0], 0, 10);
-                exec("git rev-parse --abbrev-ref HEAD", $output);
-                $branch = @$output[1];
-                $revIdFull = "<a class='highlights-text-hover' title='{$output[0]}' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/commit/{$output[0]}'>$revId</a>";
-                $branchFull = "<a class='highlights-text-hover' title='$branch' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/tree/$branch'>$branch</a>";
-                $docs = "<a class='highlights-text-hover' title='docs' target='_blank' href='https://grand-forum.readthedocs.io/en/latest/'>Docs</a>";
-                
-                if(strstr($wgScriptPath, "staging") !== false){
-                    echo "<div style='position:absolute;top:15px;left:525px;'>
-                            STAGING ($branchFull, $revIdFull), $docs&nbsp;&nbsp;<a target='_blank' href='https://grand.cs.ualberta.ca/~dwt/behat_test/symfony/output/output.html'><img src='https://grand.cs.ualberta.ca/~dwt/behat_test/testSuiteStatus.php' /></a></div>";
-                }
-                else{
-                    echo "<div style='position:absolute;top:15px;left:525px;'>
-                            DEVELOPMENT ($branchFull, $revIdFull), $docs&nbsp;&nbsp;<a target='_blank' href='https://grand.cs.ualberta.ca/~dwt/behat_test/symfony/output/output.html'><img src='https://grand.cs.ualberta.ca/~dwt/behat_test/testSuiteStatus.php' /></a></div>";
-                }
-            }
             if($config->getValue('globalMessage') != ""){
                 $wgMessage->addInfo($config->getValue('globalMessage'));
             }
