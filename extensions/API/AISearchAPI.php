@@ -11,7 +11,7 @@
                 "queryText" => $_POST['queryText']
             );
             $json = json_encode($data);
-            $url = 'http://129.128.215.129:5000/nlp_query';
+            $url = 'http://142.244.110.135:5000/nlp_query';
             $ch = curl_init($url);
              
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
