@@ -7,7 +7,7 @@ $wgHooks['AddNewAccount'][] = 'UserCreate::afterCreateUser';
 
 class UserCreate {
     
-    function afterCreateUser($wgUser, $byEmail=true){
+    static function afterCreateUser($wgUser, $byEmail=true){
         global $wgLocalTZoffset, $wgOut;
         $mUserType = $_POST['wpUserType'];
         $id = $wgUser->getId();

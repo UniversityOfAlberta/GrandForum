@@ -7,7 +7,7 @@ class EmailValidation extends UIValidation {
     }
     
     function validateFn($value){
-        return (User::isValidEmailAddr($value));
+        return (Sanitizer::validateEmail($value));
     }
     
     function failMessage($name){

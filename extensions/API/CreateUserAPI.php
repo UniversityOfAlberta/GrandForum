@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class CreateUserAPI extends API{
 
     function __construct(){
@@ -41,48 +43,29 @@ class CreateUserAPI extends API{
                 }
             }
             $wgRequest->setVal('wpName', $_POST['wpName']);
-            // Actually create a new user
-            if(isset($_POST['wpSendMail']) && $wgEnableEmail){
-                if($_POST['wpSendMail'] === "true"){
-                    $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
-                    $wgRequest->setVal('wpCreateaccountMail', true);
-                }
-                else {
-                    $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
-                    $wgEmailAuthentication = false;
-                    $wgEnableEmail = false;
-                    $wgRequest->setVal('wpCreateaccount', true);
-                    $_POST['wpPassword'] = User::randomPassword();
-                    $_POST['wpRetype'] = $_POST['wpPassword'];
-                }
-            }
-            else{
-                $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
-                $wgRequest->setVal('wpCreateaccount', true);
-                $_POST['wpPassword'] = User::randomPassword();
-                $_POST['wpRetype'] = $_POST['wpPassword'];
-            }
-            $wgRequest->setSessionData('wsCreateaccountToken', 'true');
-            $wgRequest->setVal('wpCreateaccountToken', 'true');
-            $wgRequest->setVal('type', 'signup');
-            if(isset($_POST['wpPassword'])){
-                $wgRequest->setVal('wpRetype', $_POST['wpPassword']);
-                $wgRequest->setVal('wpPassword', $_POST['wpPassword']);
-            }
-            $creator = self::getCreator($me);
-            LoginForm::setCreateaccountToken();
-            $wgRequest->setSessionData('wpCreateaccountToken', LoginForm::getCreateaccountToken());
-            $wgRequest->setVal('wpCreateaccountToken', LoginForm::getCreateaccountToken());
-            $specialUserLogin = new LoginForm($wgRequest);
-            
-            $specialUserLogin->getUser()->mRights = null;
-            $specialUserLogin->getUser()->mEffectiveGroups = null;
-            GrandAccess::$alreadyDone = array();
-            $tmpUser = User::newFromName($_POST['wpName']);
             $oldWgEnableEmail = $wgEnableEmail;
-            $wgEnableEmail = true;
+            // Actually create a new user
+            DBFunctions::delete('mw_actor',
+                                array('actor_name' => EQ($_POST['wpName'])));
+            $creator = self::getCreator($me);
+            GrandAccess::$alreadyDone = array();
+            $passwd = (isset($_POST['wpPassword'])) ? $_POST['wpPassword'] : PasswordFactory::generateRandomPasswordString();
+            $tmpUser = User::createNew($_POST['wpName'], array('real_name' => $_POST['wpRealName'], 
+                                                               'email' => $_POST['wpEmail']));
             $lastHTML = $wgOut->getHTML();
-            if($tmpUser->getID() == 0 && ($specialUserLogin->execute('signup') != false || $_POST['wpSendMail'] == true)){
+            if($tmpUser != null){
+                if(isset($_POST['wpPassword'])){
+                    DBFunctions::update('mw_user',
+                                        array('user_password' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString()),
+                                        array('user_id' => EQ($tmpUser->getId())));
+                }
+                else{
+                    DBFunctions::update('mw_user',
+                                        array('user_newpassword' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString(),
+                                              'user_newpass_time' => date('YmdHis')),
+                                        array('user_id' => EQ($tmpUser->getId())));
+                }
+                UserCreate::afterCreateUser($tmpUser);
                 $wgOut->clearHTML();
                 $wgOut->addHTML($lastHTML);
                 $wgEnableEmail = $oldWgEnableEmail;

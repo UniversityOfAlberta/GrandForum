@@ -67,7 +67,7 @@ class RequestUserAPI extends API{
 		    }
 		}
 		$email = $_POST['wpEmail'];
-		if(!User::isValidEmailAddr($email)){
+		if(!Sanitizer::validateEmail($email)){
 		    if($doEcho){
 		        echo "A valid email address must be provided.\n";
 		        close();
