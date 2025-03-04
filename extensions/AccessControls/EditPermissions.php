@@ -4,7 +4,7 @@ $wgHooks['EditPage::showEditForm:initial'][] = 'EditPermissions::clearEditForm';
 
 class EditPermissions{
 
-	function clearEditForm($editPage){
+	static function clearEditForm($editPage){
 		global $wgOut, $wgTitle, $wgUser;
 		$groups = $wgUser->getGroups();
 		if($wgTitle->getNsText() == "Template" && array_search("sysop", $groups) === false){
