@@ -81,7 +81,7 @@
                 </tr>
                 <tr>
                     <td><b>Supervisor:&nbsp;</b></td>
-                    <td>{$user_supervisors}</td>
+                    <td>{$user_current_supervisors}</td>
                 </tr>
             ]]>
         </Static>

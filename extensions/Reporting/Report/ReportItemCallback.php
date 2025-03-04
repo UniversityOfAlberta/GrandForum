@@ -190,6 +190,7 @@ class ReportItemCallback {
             "user_uni" => "getUserUni",
             "user_nationality" => "getUserNationality",
             "user_supervisors" => "getUserSupervisors",
+            "user_current_supervisors" => "getUserCurrentSupervisors",
             "user_supervisor_id" => "getUserSupervisorId",
             "user_projects" => "getUserProjects",
             "user_project_end_date" => "getUserProjectEndDate",
@@ -1520,6 +1521,21 @@ class ReportItemCallback {
                         $sup = $rel->getUser1();
                         $supervisors[$sup->getId()] = "<a target='_blank' href='{$sup->getUrl()}'>{$sup->getNameForForms()}</a>";
                     }
+                }
+            }
+        }
+        return implode(", ", $supervisors);
+    }
+    
+    function getUserCurrentSupervisors(){
+        $supervisors = array();
+        $person = Person::newFromId($this->reportItem->personId);
+        $me = $person;
+        foreach(Person::getAllPeople('all') as $person){
+            foreach($person->getRelations(SUPERVISES) as $rel){
+                if($rel->getUser2()->getId() == $me->getId()){
+                    $sup = $rel->getUser1();
+                    $supervisors[$sup->getId()] = "<a target='_blank' href='{$sup->getUrl()}'>{$sup->getNameForForms()}</a>";
                 }
             }
         }

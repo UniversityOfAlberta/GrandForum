@@ -130,7 +130,7 @@
                 </tr>
                 <tr>
                     <td><b title="Your supervisor would add you as their student in Manage People" class="tooltip">Supervisor:&nbsp;</b></td>
-                    <td>{$user_supervisors}</td>
+                    <td>{$user_current_supervisors}</td>
                 </tr>
             ]]>
         </Static>
