@@ -76,7 +76,7 @@ foreach($people as $person){
                     $api = new ImportDOIAPI();
                     $res = $api->doAction();
                 }
-                if(count($res['created']) > 0){
+                if(!empty($res['created'])){
                     $id = $res['created'][0]['id'];
                     DBFunctions::update('grand_products',
                                         array('created_by' => $person->getId()),

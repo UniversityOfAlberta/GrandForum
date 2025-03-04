@@ -19,7 +19,7 @@
             $inserts[] = $insert;
         }
         $deletes[] = $person->getId();
-        if(count($deletes) > 100){
+        if(count($deletes) > 250){
             update($inserts, $deletes);
             $inserts = array();
             $deletes = array();
