@@ -168,14 +168,14 @@
                     ]]>
                 </Static>
             </If>
-            <If id="publications_if3" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Bachelors Thesis|Book|Book Chapter|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|Other|PHD Thesis|White Paper|Tech Report|Poster|Manual,, false, true)}, 0)}">
+            <If id="publications_if3" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, Bachelors Thesis|Book|Book Chapter|Edited Book|Masters Thesis|Misc|Other|PHD Thesis|White Paper|Tech Report|Poster|Manual,, false, true)}, 0)}">
                 <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
                     <![CDATA[
                         <h3>Other</h3>
                         <ul>
                     ]]>
                 </ReportItem>
-                <ReportItemSet id="others" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|Other|PHD Thesis|White Paper|Tech Report|Poster|Manual" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <ReportItemSet id="others" type="PersonProductsReportItemSet" category="Publication" productType="Bachelors Thesis|Book|Book Chapter|Edited Book|Masters Thesis|Misc|Other|PHD Thesis|White Paper|Tech Report|Poster|Manual" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
                     <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
                         <![CDATA[
                             <li style="page-break-inside: avoid;">{$item}</li>
