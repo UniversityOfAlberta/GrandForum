@@ -271,6 +271,7 @@
     <ReportSection id="summary" type="EditableReportSection" name="Report" blobSection="REPORT">
         <ReportItem id="report" type="UploadReportItem" blobItem="REPORT" fileSize="10" mimeType="application/pdf">
             <![CDATA[
+                <p>Download the <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Annual Report - Narrative Template.docx" target="_blank"><b>report template</b></a>, and then upload a pdf below.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -844,7 +845,7 @@
                 </script>
             ]]>
         </Static>
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,enanak@ualberta.ca,vsharko@glyconet.ca" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,enanak@ualberta.ca,vsharko@glyconet.ca" text="" />
         <Static>
             <![CDATA[
                 <br />
