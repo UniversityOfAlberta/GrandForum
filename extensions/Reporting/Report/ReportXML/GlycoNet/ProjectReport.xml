@@ -89,7 +89,7 @@
                 <p><b>Before completing the report:</b></p>
                 <ul>
                     <li>Update the personal information on your Forum profile</li>
-                    <li>Update your products*, including publications, awards, presentations, patents, etc., either manually or by uploading your CCV; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                    <li>Update your products*, including publications, awards, presentations, patents, etc.; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                     <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                     <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                     <li>Add top research outcomes (found in the “Dashboard” tab on your project page)</li>
@@ -103,12 +103,12 @@
                             <li>Figures</li>
                             <li>Milestones (all)</li>
                             <li>Achievements</li>
-                            <li>KTEE</li>
-                            <li>Networking</li>
+                            <li>KPI</li>
+                            <!--li>Networking</li-->
                             <li>HQP</li>
                             <li>Budget</li>
                             <li>Partner Contributions</li>
-                            <li>CCV</li>
+                            <!--li>CCV</li-->
                         </ul>
                     </li>
                     <li>Generate and preview project report PDF</li>
@@ -126,7 +126,7 @@
                 <p><b>Before completing the report:</b></p>
                 <ul>
                     <li>Update the personal information on your Forum profile</li>
-                    <li>Update your products*, including publications, awards, presentations, patents, etc., either manually or by uploading your CCV; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                    <li>Update your products*, including publications, awards, presentations, patents, etc.; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                     <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                     <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                     <li>Add top research outcomes (found in the “Dashboard” tab on your profile page)</li>
@@ -139,12 +139,12 @@
                             <li>Figures</li>
                             <li>Milestones (assigned milestones only)</li>
                             <li>Achievements</li>
-                            <li>KTEE</li>
-                            <li>Networking</li>
+                            <li>KPI</li>
+                            <!--li>Networking</li-->
                             <li>HQP</li>
                             <li>Budget</li>
                             <li>Partner Contributions</li>
-                            <li>CCV</li>
+                            <!--li>CCV</li-->
                         </ul>
                     </li>
                 </ul><br />
@@ -388,7 +388,7 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="siminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Type|Event Name|Event Date|Details" types="Select(Seminar,Workshop)|Text|Date|Textarea" sizes="|200|80|250" multiple="true">
+            <ReportItem id="seminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Type|Event Name|Event Date|Details" types="Select(Seminar,Workshop)|Text|Date|Textarea" sizes="|200|80|250" multiple="true">
                 <![CDATA[
                     <h3>Seminars and Workshops</h3>
                     {$item}
@@ -396,7 +396,7 @@
             </ReportItem>
         </If>
     </ReportSection>
-    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships">
+    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships" delete="true">
         <If id="is_pl" if="{contains({$my_full_roles},PL)}">
             <!-- Project Leader View -->
             <Static>
@@ -753,7 +753,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV">
+    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV" delete="true">
         <ReportItem id="ccv" type="UploadReportItem" blobItem="CCV" blobSubItem="{$my_id}" fileSize="5" mimeType="application/pdf">
             <![CDATA[
                 <p><b>CCV Upload (PDF)</b></p>

@@ -188,14 +188,14 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="siminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Type|Event Name|Event Date|Details" types="Select(Seminar,Workshop)|Text|Date|Textarea" sizes="25%|25%|25%|25%" multiple="true" class="wikitable">
+        <ReportItem id="seminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Type|Event Name|Event Date|Details" types="Select(Seminar,Workshop)|Text|Date|Textarea" sizes="25%|25%|25%|25%" multiple="true" class="wikitable">
             <![CDATA[
                 <h3>Seminars and Workshops</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships">
+    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships" delete="true">
         <ReportItem id="collaborations" type="TextareaReportItem" blobItem="COLLABORATIONS">
             <![CDATA[
                 <p><b>Describe all collaborations and partners related to the project</b></p>
@@ -335,7 +335,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false">
         <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
             <![CDATA[
                 <h3>Cash Contributions</h3>
@@ -362,7 +362,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV" pagebreak="false">
+    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV" pagebreak="false" delete="true">
         <ReportItemSet id="people" type="ProjectAllPeopleReportItemSet">
             <If id="if_null" if="{!=({getBlobMD5(RP_PROGRESS,CCV,CCV,{$user_id},0,{$project_id})},)}">
                 <ReportItem id="ccv" type="UploadReportItem" blobItem="CCV" blobSubItem="{$user_id}" fileSize="5" mimeType="application/pdf">
