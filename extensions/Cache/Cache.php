@@ -10,7 +10,7 @@ abstract class Cache {
 		$this->compress = true;
 	}
 	
-	static function store($key, $data, $time=172800){
+	static function store($key, $data, $time=432000){
 	    global $wgSitename;
 	    if(function_exists('apcu_store')){
             apcu_store($wgSitename.$key, $data, $time);

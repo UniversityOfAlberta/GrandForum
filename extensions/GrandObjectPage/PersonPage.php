@@ -6,7 +6,6 @@ UnknownAction::createAction('PersonProfileTab::getPersonCloudData');
 UnknownAction::createAction('PersonVisualizationsTab::getTimelineData');
 UnknownAction::createAction('PersonVisualizationsTab::getDoughnutData');
 UnknownAction::createAction('PersonVisualizationsTab::getChordData');
-UnknownAction::createAction('PersonVisualTab::getSurveyData');
 
 $wgHooks['ArticleViewHeader'][] = 'PersonPage::processPage';
 $wgHooks['ongetUserPermissionsErrors'][] = 'PersonPage::userCanExecute';
@@ -161,7 +160,6 @@ class PersonPage {
                 if($me->isRoleAtLeast(STAFF) || $me->isRole(DEAN) || $me->isRole(VDEAN)){
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 }
-                //$tabbedPage->addTab(new PersonVisualTab($person,$visibility));
                 //$tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 
