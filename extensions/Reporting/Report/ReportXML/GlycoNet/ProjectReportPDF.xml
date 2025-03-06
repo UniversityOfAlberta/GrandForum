@@ -143,14 +143,14 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KTEE" title="Knowledge exchange and technology exploitation">
+    <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KPI" title="Key Performance Indicators">
         <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT">
             <![CDATA[
                 <p><b>Describe the impact or research outcomes of this project over the funding period that may result in the creation of intellectual property, outlicensing efforts, licenses negotiated or granted to industry, start-up companies created and similar entrepreneurial ventures.</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" start="0000-00-00" end="2100-00-00">
             <![CDATA[
                 <h2>Outcomes</h2>
                 {$item}

@@ -303,7 +303,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KTEE" title="Knowledge exchange and technology exploitation">
+    <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KPI" title="Key Performance Indicators">
         <If id="is_pl" if="{contains({$my_full_roles},PL)}">
             <!-- Project Leader View -->
             <Static>
@@ -343,11 +343,14 @@
                 ]]>
             </ReportItem>
         </If>
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
+        <ReportItem id="publications" type="ManageProductsReportItem">
             <![CDATA[
-                <h2>Outcomes</h2>
-                <p><b>List abstracts and publications (peer-reviewed or not) that resulted from the outcomes of work during the funding period.</b></p>
-                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a> (Opens in a new Tab).  In order for the product to show up below, it must be associated with the project, and have been written between the reporting period (April 1, {$this_year} - March 31, {$next_year})</p>
+                <h2>Publications</h2>
+                <p>If the authors cell of a product is highlighted yellow, then it means that you (or one of your HQP) is not listed as an author of that product and that it may need to be manually edited.</p>
+
+                <p>If the projects cell of a product is highlighted yellow, then it means that it is not associated with any projects.</p>
+
+                <p>Products which are listed as being 'Private' will not show up anywhere else on the forum except for on this page. To 'release' the product to the rest of the Forum, uncheck the 'Private' checkbox for a specific product, or press the 'Release All Private' button to release all of them. Once all of your changes are done, make sure to press the 'Save All' button.</p>
                 {$item}
             ]]>
         </ReportItem>

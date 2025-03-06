@@ -122,10 +122,11 @@ abstract class BackbonePage extends SpecialPage {
     /**
      * Loads the required templates and adds it to the OutputPage
      */
-    function loadTemplates(){
+    function loadTemplates($ret=false){
         global $wgOut, $wgMessage;
         $templates = $this->getTemplates();
         $templates[] = 'main';
+        $return = array();
         foreach($templates as $template){
             $fileName = self::$dirs[strtolower(get_class($this))]."/Templates/{$template}.html";
             if(strstr($template, "/") !== false){
@@ -145,7 +146,11 @@ abstract class BackbonePage extends SpecialPage {
                                             if(!isset(self::$loaded["$fileName"])){
                                                 $tpl = file_get_contents($fileName);
                                                 $name = str_replace(".html", "", $file);
-                                                $wgOut->addScript("<script type='text/template' id='{$name}_template'>\n$tpl</script>");
+                                                $script = "<script type='text/template' id='{$name}_template'>\n$tpl</script>";
+                                                if(!$ret){
+                                                    $wgOut->addScript($script);
+                                                }
+                                                $return[] = $script;
                                                 self::$loaded["$fileName"] = true;
                                             }
                                         }
@@ -165,7 +170,11 @@ abstract class BackbonePage extends SpecialPage {
                                 if(!isset(self::$loaded["$fileName"])){
                                     $tpl = file_get_contents($fileName);
                                     $name = $file;
-                                    $wgOut->addScript("<script type='text/template' id='{$name}_template'>\n$tpl</script>");
+                                    $script = "<script type='text/template' id='{$name}_template'>\n$tpl</script>";
+                                    if(!$ret){
+                                        $wgOut->addScript($script);
+                                    }
+                                    $return[] = $script;
                                     self::$loaded["$fileName"] = true;
                                 }
                             }
@@ -182,7 +191,11 @@ abstract class BackbonePage extends SpecialPage {
                     $tpl = file_get_contents($fileName);
                     $exploded = explode("/", $template);
                     $name = $exploded[count($exploded)-1];
-                    $wgOut->addScript("<script type='text/template' id='{$name}_template'>\n$tpl</script>");
+                    $script = "<script type='text/template' id='{$name}_template'>\n$tpl</script>";
+                    if(!$ret){
+                        $wgOut->addScript($script);
+                    }
+                    $return[] = $script;
                     self::$loaded["$fileName"] = true;
                 }
             }
@@ -191,7 +204,11 @@ abstract class BackbonePage extends SpecialPage {
                     $tpl = file_get_contents(dirname(__FILE__)."/Templates/{$template}.html");
                     $exploded = explode("/", $template);
                     $name = $exploded[count($exploded)-1];
-                    $wgOut->addScript("<script type='text/template' id='{$name}_template'>\n$tpl</script>");
+                    $script = "<script type='text/template' id='{$name}_template'>\n$tpl</script>";
+                    if(!$ret){
+                        $wgOut->addScript($script);
+                    }
+                    $return[] = $script;
                     self::$loaded[dirname(__FILE__)."/Templates/{$template}.html"] = true;
                 }
             }
@@ -199,6 +216,7 @@ abstract class BackbonePage extends SpecialPage {
                 $wgMessage->addWarning("BackbonePage <b>".get_class($this)."</b> is missing <i>$template.html</i>");
             }
         }
+        return $return;
     }
     
     /**
@@ -210,11 +228,12 @@ abstract class BackbonePage extends SpecialPage {
     /**
      * Loads the required views and adds it to the OutputPage
      */
-    function loadViews(){
+    function loadViews($ret=false){
         global $wgOut, $wgServer, $wgScriptPath, $wgMessage;
         $views = $this->getViews();
         $views[] = 'MainView';
         $exploded = explode("extensions/", self::$dirs[strtolower(get_class($this))]);
+        $return = array();
         foreach($views as $view){
             $exploded = explode("extensions/", self::$dirs[strtolower(get_class($this))]);
             $fileName = self::$dirs[strtolower(get_class($this))].'/Views/'.$view.'.js';
@@ -232,7 +251,11 @@ abstract class BackbonePage extends SpecialPage {
                                         $exploded = explode("extensions/", $dir);
                                         if($key != "backbone" || $file != "MainView.js"){
                                             if(!isset(self::$loaded["{$exploded[1]}/Views/$file"])){
-                                                $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/$file?".filemtime($viewDir."/".$file)."'></script>");
+                                                $script = "<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/$file?".filemtime($viewDir."/".$file)."'></script>";
+                                                if(!$ret){
+                                                    $wgOut->addScript($script);
+                                                }
+                                                $return[] = $script;
                                                 self::$loaded["{$exploded[1]}/Views/$file"] = true;
                                             }
                                         }
@@ -249,7 +272,11 @@ abstract class BackbonePage extends SpecialPage {
                             $file = $explodedView[count($explodedView)-1];
                             if(file_exists($dir."/Views/".$file.".js")){
                                 if(!isset(self::$loaded["{$exploded[1]}/Views/$file"])){
-                                    $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/{$file}.js?".filemtime($dir."/Views/".$file.".js")."'></script>");
+                                    $script = "<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/{$file}.js?".filemtime($dir."/Views/".$file.".js")."'></script>";
+                                    if(!$ret){
+                                        $wgOut->addScript($script);
+                                    }
+                                    $return[] = $script;
                                     self::$loaded["{$exploded[1]}/Views/$file"] = true;
                                 }
                             }
@@ -263,14 +290,22 @@ abstract class BackbonePage extends SpecialPage {
             }
             else if(file_exists($fileName)){
                 if(!isset(self::$loaded["{$exploded[1]}/Views/$view"])){
-                    $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/{$view}.js?".filemtime($fileName)."'></script>");
+                    $script = "<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/{$view}.js?".filemtime($fileName)."'></script>";
+                    if(!$ret){
+                        $wgOut->addScript($script);
+                    }
+                    $return[] = $script;
                     self::$loaded["{$exploded[1]}/Views/$view"] = true;
                 }
             }
             else if(file_exists(dirname(__FILE__)."/Views/{$view}.js")){
                 $exploded = explode("extensions/", dirname(__FILE__));
                 if(!isset(self::$loaded["{$exploded[1]}/Views/$view"])){
-                    $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/{$view}.js?".filemtime(dirname(__FILE__)."/Views/{$view}.js")."'></script>");
+                    $script = "<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/{$view}.js?".filemtime(dirname(__FILE__)."/Views/{$view}.js")."'></script>";
+                    if(!$ret){
+                        $wgOut->addScript($script);
+                    }
+                    $return[] = $script;
                     self::$loaded["{$exploded[1]}/Views/$view"] = true;
                 }
             }
@@ -278,6 +313,7 @@ abstract class BackbonePage extends SpecialPage {
                 $wgMessage->addWarning("BackbonePage <b>".get_class($this)."</b> is missing <i>$view.js</i>");
             }
         }
+        return $return;
     }
     
     /**
@@ -289,10 +325,11 @@ abstract class BackbonePage extends SpecialPage {
     /**
      * Loads the required models and adds it to the OutputPage
      */
-    function loadModels(){
+    function loadModels($ret=false){
         global $wgOut, $wgServer, $wgScriptPath, $wgMessage;
         $models = $this->getModels();
         $models[] = 'Main';
+        $return = array();
         foreach($models as $model){
             $exploded = explode("extensions/", self::$dirs[strtolower(get_class($this))]);
             $fileName = self::$dirs[strtolower(get_class($this))].'/Models/'.$model.'.js';
@@ -310,7 +347,9 @@ abstract class BackbonePage extends SpecialPage {
                                         $exploded = explode("extensions/", $dir);
                                         if($key != "backbone" || $file != "Main.js"){
                                             if(!isset(self::$loaded["{$exploded[1]}/Models/$file"])){
-                                                $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Models/$file?".filemtime($modelDir."/".$file)."'></script>");
+                                                $script = "<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Models/$file?".filemtime($modelDir."/".$file)."'></script>";
+                                                $wgOut->addScript($script);
+                                                $return[] = $script;
                                                 self::$loaded["{$exploded[1]}/Models/$file"] = true;
                                             }
                                         }
@@ -327,7 +366,11 @@ abstract class BackbonePage extends SpecialPage {
                             $file = $explodedModel[count($explodedModel)-1];
                             if(file_exists($dir."/Models/".$file.".js")){
                                 if(!isset(self::$loaded["{$exploded[1]}/Models/$file"])){
-                                    $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Models/{$file}.js?".filemtime($dir."/Models/".$file.".js")."'></script>");
+                                    $script = "<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Models/{$file}.js?".filemtime($dir."/Models/".$file.".js")."'></script>";
+                                    if(!$ret){
+                                        $wgOut->addScript($script);
+                                    }
+                                    $return[] = $script;
                                     self::$loaded["{$exploded[1]}/Models/$file"] = true;
                                 }
                             }
@@ -356,6 +399,7 @@ abstract class BackbonePage extends SpecialPage {
                 $wgMessage->addWarning("BackbonePage <b>".get_class($this)."</b> is missing <i>$model.js</i>");
             }
         }
+        return $return;
     }
     
     /**

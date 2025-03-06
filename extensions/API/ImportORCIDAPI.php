@@ -7,7 +7,7 @@ class ImportORCIDAPI extends API{
     }
 
     function processParams($params){
-        
+        $_POST['project'] = @$_POST['project'];
     }
     
 	function doAction($noEcho=false){

@@ -30,6 +30,7 @@ class ImportBibTeXAPI extends API{
     function processParams($params){
         // Add new line since parsing will most likely fail otherwise
         $_POST['bibtex'] = $_POST['bibtex']."\n";
+        $_POST['project'] = @$_POST['project'];
     }
     
     function getMonth($month){
@@ -107,6 +108,12 @@ class ImportBibTeXAPI extends API{
         $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-01";
         $product->data = array();
         if(!is_array($product->projects)){ $product->projects = array(); }
+        if($_POST['project'] != "" && count($product->projects) == 0){
+            $project = Project::newFromId($_POST['project']);
+            if($project != null){
+                $product->projects[] = $project;
+            }
+        }
         $product->authors = array();
         if(!$product->exists()){
             if ($private) { $product->access_id = $me->getId(); }

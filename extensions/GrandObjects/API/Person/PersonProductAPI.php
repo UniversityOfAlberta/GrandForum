@@ -28,13 +28,23 @@ class PersonProductAPI extends RESTAPI {
                 $products = Product::getAllPapers("all", true, 'both', $onlyPublic, 'Public');
             }
             else if($showManaged){
-                foreach($person->getPapers("all", true, 'both', $onlyPublic, 'Public') as $p){
-                    $products[$p->getId()] = $p;
+                $projectId = $this->getParam('projectId');
+                $projects = array();
+                if($projectId == ""){
+                    foreach($person->getPapers("all", true, 'both', $onlyPublic, 'Public') as $p){
+                        $products[$p->getId()] = $p;
+                    }
+                    $projects = $person->getProjects();
                 }
-                $projects = $person->getProjects();
+                else{
+                    $project = Project::newFromId($projectId);
+                    if($project != null){
+                        $projects = array($project);
+                    }
+                }
                 foreach($projects as $project){
                     if($person->isRole(PL, $project) || $person->isRole(PA, $project)){
-                        foreach($project->getPapers("all", "0000-00-00", EOT) as $p){
+                        foreach($project->getPapers("all", "0000-00-00", EOT, $onlyPublic) as $p){
                             $products[$p->getId()] = $p;
                         }
                     }

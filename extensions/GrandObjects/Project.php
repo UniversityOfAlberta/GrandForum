@@ -1334,8 +1334,8 @@ class Project extends BackboneModel {
     }
     
     // Returns an array of papers relating to this project
-    function getPapers($category="all", $startRange = false, $endRange = false){
-        return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);
+    function getPapers($category="all", $startRange = false, $endRange = false, $onlyPublic=true){
+        return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange, true, $onlyPublic);
     }
     
     function getTopProductsLastUpdated(){
