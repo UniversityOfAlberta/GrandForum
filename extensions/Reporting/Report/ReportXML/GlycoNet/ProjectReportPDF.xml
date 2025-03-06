@@ -152,7 +152,45 @@
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" start="0000-00-00" end="2100-00-00">
             <![CDATA[
-                <h2>Outcomes</h2>
+                <h2>Publications</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="new" type="MultiText" blobItem="NEW" blobType="BLOB_ARRAY" labels="Type|Details" types="Select(Knowledge Product,Service,Process)|Textarea" sizes="25%|75%" multiple="true" class="wikitable">
+            <![CDATA[
+                <h2>New or Improved Products</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ip" type="MultiText" blobItem="IP" blobType="BLOB_ARRAY" labels="Type|Details" types="Select(New Patent Filed,New Patent Issued,New License Granted,New License Under Negotiation,New Copyrights)|Textarea" sizes="25%|75%" multiple="true" class="wikitable">
+            <![CDATA[
+                <h2>Intellectual Properties</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="new_companies" type="MultiText" blobItem="NEW_COMPANIES" blobType="BLOB_ARRAY" labels="Company" types="Text" multiple="true" class="wikitable">
+            <![CDATA[
+                <h2>Companies</h2>
+                <h3>New Companies Created</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="enhanced_companies" type="MultiText" blobItem="ENHANCED_COMPANIES" blobType="BLOB_ARRAY" labels="Company" types="Text" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Companies Enhanced</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="forums" type="MultiText" blobItem="FORUMS" blobType="BLOB_ARRAY" labels="Nationality|Event Name|Event Date|How the knowledge was presented" types="Select(National,International)|Text|Date|Text" sizes="25%|25%|25%|25%" multiple="true" class="wikitable">
+            <![CDATA[
+                <h2>Instances where Knowledge is Presented</h2>
+                <h3>National and International Forums where knowledge is presented</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="siminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Type|Event Name|Event Date|Details" types="Select(Seminar,Workshop)|Text|Date|Textarea" sizes="25%|25%|25%|25%" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Seminars and Workshops</h3>
                 {$item}
             ]]>
         </ReportItem>

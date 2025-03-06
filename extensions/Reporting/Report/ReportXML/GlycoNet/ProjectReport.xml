@@ -354,6 +354,47 @@
                 {$item}
             ]]>
         </ReportItem>
+        <If if="{contains({$my_full_roles},PL)}">
+            <!-- Project Leader View -->
+            <ReportItem id="new" type="MultiText" blobItem="NEW" blobType="BLOB_ARRAY" labels="Type|Details" types="Select(Knowledge Product,Service,Process)|Textarea" sizes="|250" multiple="true">
+                <![CDATA[
+                    <h2>New or Improved Products</h2>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="ip" type="MultiText" blobItem="IP" blobType="BLOB_ARRAY" labels="Type|Details" types="Select(New Patent Filed,New Patent Issued,New License Granted,New License Under Negotiation,New Copyrights)|Textarea" sizes="|250" multiple="true">
+                <![CDATA[
+                    <h2>Intellectual Properties</h2>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="new_companies" type="MultiText" blobItem="NEW_COMPANIES" blobType="BLOB_ARRAY" labels="Company" types="Text" multiple="true">
+                <![CDATA[
+                    <h2>Companies</h2>
+                    <h3>New Companies Created</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="enhanced_companies" type="MultiText" blobItem="ENHANCED_COMPANIES" blobType="BLOB_ARRAY" labels="Company" types="Text" multiple="true">
+                <![CDATA[
+                    <h3>Companies Enhanced</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="forums" type="MultiText" blobItem="FORUMS" blobType="BLOB_ARRAY" labels="Nationality|Event Name|Event Date|How the knowledge was presented" types="Select(National,International)|Text|Date|Text" sizes="|200|80|250" multiple="true">
+                <![CDATA[
+                    <h2>Instances where Knowledge is Presented</h2>
+                    <h3>National and International Forums where knowledge is presented</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="siminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Type|Event Name|Event Date|Details" types="Select(Seminar,Workshop)|Text|Date|Textarea" sizes="|200|80|250" multiple="true">
+                <![CDATA[
+                    <h3>Seminars and Workshops</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
     </ReportSection>
     <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships">
         <If id="is_pl" if="{contains({$my_full_roles},PL)}">
