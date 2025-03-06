@@ -8,7 +8,7 @@ class Chord extends Visualization {
     var $height = "500";
     var $options = true;
     
-    function Chord($url){
+    function __construct($url){
         $this->url = $url;
         parent::__construct();
     }
