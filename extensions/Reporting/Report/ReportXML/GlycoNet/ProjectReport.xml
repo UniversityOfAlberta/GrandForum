@@ -664,7 +664,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" delete="true">
         <ReportItem id="cash_contributions" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" sizes="|75|250||75|175" multiple="true" addText="Add Contribution">
             <![CDATA[
                 Contact information for each funding source described in the tables below should be entered into the "Partners and Collaborators" table in the Project Information tab.
@@ -745,7 +745,7 @@
             </ReportItemSet>
         </If>
     </ReportSection>
-    <ReportSection id="extension" type="EditableReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2017/2018 Collaborative Team Grants">
+    <ReportSection id="extension" type="EditableReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2017/2018 Collaborative Team Grants" delete="true">
         <ReportItem id="check" type="Radio" blobType="BLOB_TEXT" blobItem="CHECK" options="a) Collaborative Team Grant|b) Translational Grant|c) Either a Collaborative Team Grant or a Translational Grant|d) We do not wish to extend this project">
             <![CDATA[
                 <p>Round 3 and 4 Collaborative Team Grants (e.g. projects ending June 2019 or December 2019) may apply for a project extension to March 31, 2020 by completing this section.</p>
