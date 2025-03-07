@@ -45,12 +45,12 @@ You should log in and change your password now.';
     $totalMem = 0;
     $totalTime = 0;
     foreach($egAnnokiExtensions as $key => $extension){
-      $exist = "<td>" . (is_readable($extension['path'])?"Installed":"Not Installed") . "</td>";
+      $exist = "<td>" . (is_readable(@$extension['path'])?"Installed":"Not Installed") . "</td>";
 
       $status = "<td>" . (isExtensionEnabled($key)?"Enabled":"Disabled") . "</td>";
-      $newHTML .= "<tr><td>".$extension['name']."</td>$exist$status<td align='right'>{$extension['size']}</td><td align='right'>{$extension['time']}</td></tr>\n";
-      $totalMem += $extension['size'];
-      $totalTime += $extension['time'];
+      $newHTML .= "<tr><td>".@$extension['name']."</td>$exist$status<td align='right'>".@$extension['size']."</td><td align='right'>".@$extension['time']."</td></tr>\n";
+      $totalMem += @$extension['size'];
+      $totalTime += @$extension['time'];
     }
     
     $newHTML .= "</tbody></table></div>";
