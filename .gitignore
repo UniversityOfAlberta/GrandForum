@@ -1,4 +1,3 @@
-.htaccess
 Classes/dompdf/lib/fonts/log.htm
 behat/behat.yml
 behat/bin/behat

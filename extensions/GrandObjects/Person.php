@@ -570,6 +570,7 @@ class Person extends BackboneModel {
     /**
      * Caches the resultset of the user roles table
      * NOTE: This only caches the current roles, not the history
+     * TODO: This may need to be optimized since it could get quite large.  It could possibly exclude HQP
      */
     static function generateRolesCache(){
         if(empty(self::$rolesCache)){
