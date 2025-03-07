@@ -18,13 +18,21 @@ class GlobalSearchAPI extends RESTAPI {
             case 'people':
                 $data = array();
                 $fullTextSearch = DBFunctions::escape(implode("* +", $searchNames));
+                $likeSearch = DBFunctions::escape(implode("%", $searchNames));
+                $reversedLikeSearch = DBFunctions::escape(implode("%", array_reverse($searchNames)));
                 $people = DBFunctions::execSQL("SELECT DISTINCT user_id
                                                 FROM `grand_names_cache`
-                                                WHERE MATCH(name) AGAINST ('+$fullTextSearch*' IN BOOLEAN MODE) 
+                                                WHERE name LIKE '%$likeSearch%'
+                                                OR name LIKE '%$reversedLikeSearch%' 
                                                 LIMIT 100");
+                /*$people = DBFunctions::execSQL("SELECT DISTINCT user_id
+                                                FROM `grand_names_cache`
+                                                WHERE MATCH(name) AGAINST ('+$fullTextSearch*' IN BOOLEAN MODE) 
+                                                LIMIT 100");*/
                 $peopleFullText = DBFunctions::execSQL("(SELECT user_id FROM mw_user
                                                          WHERE user_id IN (SELECT user_id FROM grand_person_keywords WHERE keyword LIKE '%".str_replace(" ", "%", $escapedSearch)."%')
                                                          AND deleted = 0)");
+                                                         
                 foreach($people as $person){
                     $data[$person['user_id']] = $person['user_id'];
                 }
