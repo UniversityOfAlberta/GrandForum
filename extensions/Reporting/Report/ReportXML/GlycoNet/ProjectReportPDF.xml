@@ -58,47 +58,17 @@
             <![CDATA[
                 </table>
                 </p><br />
-                <p><b>Trainees and role:</b>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
-                    <tr>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Title</th>
-                        <th>Citizenship</th>
-                        <th>Gender</th>
-                        <th>Supervisor(s)</th>
-                    </tr>
             ]]>
         </Static>
-        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
-            <Static>
-                <![CDATA[
-                    <tr>
-                        <td>{$user_name}</td>
-                        <td>{$user_uni}</td>
-                        <td>{$user_level}</td>
-                        <td>{$user_nationality}</td>
-                        <td>{$user_gender}</td>
-                        <td>{$user_supervisors}</td>
-                    </tr>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        <Static>
+        <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" class="wikitable" labels="Company/Organization Name|Cash|In-kind|Contact Full Name|Email|Other Details" multiple="true" addText="Add Partner">
             <![CDATA[
-                </table>
-                </p><br />
-            ]]>
-        </Static>
-        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" class="wikitable" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
-            <![CDATA[
-                <p><b>Collaborators:</b>
+                <p><b>Partners:</b>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" class="wikitable" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
+        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" class="wikitable" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
             <![CDATA[
-                <p><b>Partners:</b>
+                <p><b>Collaborators:</b>
                 {$item}
             ]]>
         </ReportItem>
