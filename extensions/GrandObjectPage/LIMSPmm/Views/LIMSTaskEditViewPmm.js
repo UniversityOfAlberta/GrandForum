@@ -21,14 +21,14 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
 
         console.log(userRole,isPLAllowed);
         
-        var isMemberAllowed = !isPLAllowed;
+        var isMemberAllowed = !isPLAllowed && (this.model.get('status') == 'Assigned' || this.model.get('status') == 'Done');
         
 
         this.model.set('isLeaderAllowedToEdit', isPLAllowed);
         this.model.set('isMemberAllowedToEdit', isMemberAllowed);
 
 
-        if((!isPLAllowed&& !isMemberAllowed)){
+        if(!this.model.get('isAllowedToEdit')){
             // Not allowed to edit, use read-only version
             this.template = _.template($('#lims_task_template').html());
         }
