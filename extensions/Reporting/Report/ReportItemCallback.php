@@ -628,6 +628,25 @@ class ReportItemCallback {
         $enrolled = $this->getCourseEvalEnrolled();
         $responses = $this->getCourseEvalResponses();
         
+        if(isset($_GET['generatePDF']) && isset($_GET['preview'])){
+            // Preview
+            $top = 17.6;
+            $line = 3.3;
+            $display = "block";
+        }
+        else if(!isset($_GET['generatePDF'])){
+            // Normal view
+            $top = 21;
+            $line = 3.3;
+            $display = "inline-block";
+        }
+        else {
+            // PDF
+            $top = 18;
+            $line = 1.65;
+            $display = "block";
+        }
+        
         $ret .= "<style>
                     table.chart td {
                         background-color: transparent !important;
@@ -655,11 +674,11 @@ class ReportItemCallback {
                     case 3: $color = "#01c0bb"; break;
                     case 4: $color = "#2fa954"; break;
                 }
-                $top = 1*$dpi;
+                $bartop = 1*$dpi;
                 $marginTop = ((($vote/$max)*$height) <= 1) ? "-1.25em" : 0;
                 $ret .= "<td valign='bottom' style='height: {$height}em; width: 2.5%;'>
-                            <div style='position: relative; display: inline-block; background: $color; width: 100%; height: ".(($vote/$max)*$height)."em;'>
-                                <div style='position: absolute; top: {$top}px; margin-top: {$marginTop}; width: 100%; line-height: 1em; font-size: 0.75em; color: black; text-align: center;'>{$vote}</div>
+                            <div style='position: relative; display: {$display}; bottom: 0; background: $color; width: 100%; height: ".(($vote/$max)*$height)."em;'>
+                                <div style='position: absolute; top: {$bartop}px; margin-top: {$marginTop}; width: 100%; line-height: 1em; font-size: 0.75em; color: black; text-align: center;'>{$vote}</div>
                             </div>
                          </td>";
             }
@@ -683,22 +702,16 @@ class ReportItemCallback {
             $ret .= "<td colspan='5' valign='top' align='center'>{$index}</td>
                      <td></td>";
         }
-        $top = 18;
-        if(isset($_GET['generatePDF']) && isset($_GET['preview'])){
-            $top = 17.6;
-        }
-        else if(!isset($_GET['generatePDF'])){
-            $top = 20.9;
-        }
+        
         $ret .= "   </tr>
                     <tr>
                         <td valign='top'>
                             <div style='width: 35%; text-align: right; margin-top: -{$top}em; height: 10em; position:relative; font-size: 0.75em; font-weight: bold;'>
-                                 <div style='position: absolute; top: 0; right:0;'>$max</div>
-                                 <div style='position: absolute; top: 3.3em; right:0;'>".($max*0.75)."</div>
-                                 <div style='position: absolute; top: 6.6em; right:0;'>".($max*0.5)."</div>
-                                 <div style='position: absolute; top: 9.9em; right:0;'>".($max*0.25)."</div>
-                                 <div style='position: absolute; top: 13.3em; right:0;'>0</div>
+                                 <div style='position: absolute; top: ".($line*0)."; right:0;'>$max</div>
+                                 <div style='position: absolute; top: ".($line*1)."em; right:0;'>".($max*0.75)."</div>
+                                 <div style='position: absolute; top: ".($line*2)."em; right:0;'>".($max*0.5)."</div>
+                                 <div style='position: absolute; top: ".($line*3)."em; right:0;'>".($max*0.25)."</div>
+                                 <div style='position: absolute; top: ".($line*4)."em; right:0;'>0</div>
                              </div>
                          </td>
                     </tr>
