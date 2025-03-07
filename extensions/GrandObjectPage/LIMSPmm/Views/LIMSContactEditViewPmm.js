@@ -10,6 +10,7 @@ LIMSContactEditViewPmm = Backbone.View.extend({
         view = this;
         this.project = new Project({id: this.model.get('projectId')});
         this.project.getMembers();
+        this.project.fetch();
         var xhrs = this.project.getMembers();
         this.saving = false;
         if(!this.model.isNew()){

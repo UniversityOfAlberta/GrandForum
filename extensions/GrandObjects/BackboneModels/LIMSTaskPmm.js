@@ -22,7 +22,9 @@ LIMSTaskPmm = Backbone.Model.extend({
             dueDate: "",
             comments: "",
             status: "",
-            isAllowedToEdit: true
+            isMemberAllowedToEdit: true,
+            isLeaderAllowedToEdit: true,
+
         };
     }
 
