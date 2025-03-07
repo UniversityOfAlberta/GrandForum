@@ -271,7 +271,10 @@
     <ReportSection id="summary" type="EditableReportSection" name="Report" blobSection="REPORT">
         <ReportItem id="report" type="UploadReportItem" blobItem="REPORT" fileSize="10" mimeType="application/pdf">
             <![CDATA[
-                <p>Download the <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Annual Report - Narrative Template.docx" target="_blank"><b>report template</b></a>, and then upload a pdf below.</p>
+                <p>Please ensure that all sections and questions in this report template are fully answered. If a particular section does not apply to your project, please indicate this by writing 'Not Applicable' or 'N/A' <b>and provide a brief explanation as to why</b>. Incomplete responses without adequate explanation may impact the assessment of your project’s progress.</p>
+                
+                <p>Please note that this information will be provided to the GlycoNet Research Management Committee and Scientific Advisory Board for evaluation of performance. Your thorough and accurate reporting is important for maintaining transparency and ensuring continued support from GlycoNet.</p>
+                <p>Download the <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Annual Report - Narrative Template.docx" target="_blank"><b>report template</b></a>, and then upload a <b>PDF</b> below.</p>
                 {$item}
             ]]>
         </ReportItem>
