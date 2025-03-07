@@ -316,8 +316,8 @@ class Descriptors extends SpecialPage {
     
     function execute($par){
         global $wgServer, $wgScriptPath, $wgOut, $EQ5D5L;
+        $this->getOutput()->setPageTitle("Baseline Descriptives");
         $me = Person::newFromWgUser();
-        $wgOut->setPageTitle("Descriptives");
         $people = static::getPeople();
         
         $api = new UserFrailtyIndexAPI();
@@ -755,7 +755,7 @@ class Descriptors extends SpecialPage {
                     $revisedfrailty6[0][] = $revisedTotal;
                     if($revisedTotal0 != null){ $revisedmeans6[0][] = $reviseddiff; }
                 }
-                else if($revisedTotal >= 0.1 && $revisedfrailty6 <= 0.21){
+                else if($revisedTotal >= 0.1 && $revisedTotal <= 0.21){
                     $revisedfrailty6[1][] = $revisedTotal;
                     if($revisedTotal0 != null){ $revisedmeans6[1][] = $reviseddiff; }
                 }

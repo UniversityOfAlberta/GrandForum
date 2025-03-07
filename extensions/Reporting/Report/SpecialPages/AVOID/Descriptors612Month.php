@@ -29,6 +29,11 @@ class Descriptors612Month extends Descriptors {
         SpecialPage::__construct("Descriptors612Month", null, true, 'runDescriptors612Month');
     }
     
+    function execute($par){
+        parent::execute($par);
+        $this->getOutput()->setPageTitle("6 and 12 Month Descriptives");
+    }
+    
     static function createSubTabs(&$tabs){
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
         $person = Person::newFromWgUser();
