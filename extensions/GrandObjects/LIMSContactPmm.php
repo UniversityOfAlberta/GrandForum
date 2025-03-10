@@ -116,7 +116,7 @@ class LIMSContactPmm extends BackboneModel {
         // return ($me->isMemberOf($this->getProject()));
         // return $me->isRoleAtLeast(STAFF);
        
-        return ($me->isMemberOf($this->getProject()) || $me->isRoleAtLeast(STAFF));
+        return ($me->isRole(PL, $this->getProject()) || $me->isRoleAtLeast(STAFF));
         // return true;
     }
     

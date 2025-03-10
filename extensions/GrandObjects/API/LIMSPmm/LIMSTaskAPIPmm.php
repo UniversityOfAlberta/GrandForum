@@ -44,7 +44,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
             return $task->toJSON();
         }
         else{
-            $this->throwError("You are not allowed to edit this Task");
+            return $task->toJSON();
         }
     }
     

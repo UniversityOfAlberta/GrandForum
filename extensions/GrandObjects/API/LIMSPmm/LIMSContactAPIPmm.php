@@ -61,7 +61,8 @@ class LIMSContactAPIPmm extends RESTAPI {
             return $contact->toJSON();
         }
         else{
-            $this->throwError("You are not allowed to edit this Contact");
+            return $contact->toJSON();
+
         }
     }
     

@@ -116,45 +116,7 @@ class LIMSTaskPmm extends BackboneModel
      * @param Person $assignee The Person to send the email to
      * @param string $type The type of message to send (one of 'new', 'assignee', 'due_date', 'reminder')
      */
-    function sendMail($assignee, $type)
-    {
-        global $config, $wgScriptPath, $wgAdditionalMailParams;
-        if ($wgScriptPath != "") {
-            // Don't send any mail if in a test environment
-            return;
-        }
-        if ($assignee == null) {
-            // This shouldn't be null, but just incase fail silently
-            return;
-        }
-        $message = "";
-        $title = "";
-        $url = $this->getOpportunity()->getContact()->getUrl();
-        switch ($type) {
-            case 'new':
-                $title = "{$config->getValue('networkName')} LIMS: {$this->getOpportunity()->getContact()->getTitle()}, {$this->getDueDate()} (new)";
-                $message = "<p>A new LIMS task has been assigned to you entitled <a href='{$url}'>{$this->getTask()}</a> with a due date of {$this->getDueDate()}.</p>";
-                break;
-            case 'assignee':
-                $title = "{$config->getValue('networkName')} LIMS: {$this->getOpportunity()->getContact()->getTitle()}, {$this->getDueDate()} (assigned)";
-                $message = "<p>A LIMS task has been assigned to you entitled <a href='{$url}'>{$this->getTask()}</a> with a due date of {$this->getDueDate()}.</p>";
-                break;
-            case 'due_date':
-                $title = "{$config->getValue('networkName')} LIMS: {$this->getOpportunity()->getContact()->getTitle()}, {$this->getDueDate()} (changed)";
-                $message = "<p>The LIMS task <a href='{$url}'>{$this->getTask()}</a> now has a due date of {$this->getDueDate()}.</p>";
-                break;
-            case 'reminder':
-                $title = "{$config->getValue('networkName')} LIMS: {$this->getOpportunity()->getContact()->getTitle()}, {$this->getDueDate()} (reminder)";
-                $message = "<p>This is a reminder that the LIMS task <a href='{$url}'>{$this->getTask()}</a> is due tomorrow.</p>";
-                break;
-        }
-        if ($assignee->getEmail() != "" && $title != "" && $message != "") {
-            $headers = "Content-type: text/html\r\n";
-            $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-            mail($assignee->getEmail(), $title, $message, $headers, $wgAdditionalMailParams);
-        }
-    }
-
+    
     function toArray()
     {
         if ($this->isAllowedToView()) {
@@ -182,7 +144,9 @@ class LIMSTaskPmm extends BackboneModel
 
     function create()
     {
-        if (self::isAllowedToCreate()) {
+        $me = Person::newFromWgUser();
+        if (self::isAllowedToCreate()) 
+        {
             DBFunctions::insert(
                 'grand_pmm_task',
                 array(
@@ -197,7 +161,7 @@ class LIMSTaskPmm extends BackboneModel
             $this->id = DBFunctions::insertId();
             // Send mail to assignee
             $assignee = Person::newFromId($this->assignee);
-            $this->sendMail($assignee, 'new');
+            Notification::addNotification($me, $assignee, "Task Created", "The task <b>{$this->task}</b> has been created", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
         }
     }
 
@@ -233,7 +197,7 @@ class LIMSTaskPmm extends BackboneModel
                 array('id' => $this->id)
             );
             if ($assignee != null && $assignee->getId() != 0) {
-                if ($data[0]['status'] == 'Done' && $this->status == 'Closed') {
+                if ($data[0]['status'] != 'Closed' && $this->status == 'Closed') {
                     Notification::addNotification($me, $assignee, "Thank You for Completing <b>{$this->task}</b>!",
                     "Hello <b>{$assignee->getNameForForms()}</b>, thank you for completing <b>{$this->task}</b> on I-CONNECTS.
                     We truly appreciate your effort and timely contribution.

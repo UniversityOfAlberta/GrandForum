@@ -144,18 +144,25 @@ LIMSContactEditViewPmm = Backbone.View.extend({
                 task.saving = true;
                 if(!task.toDelete){
                     // Create or Update
-                    xhrs.push(task.save(null, {
-                        success: function(){
-                            _.defer(function(){
-                                task.saving = false;
-                            }.bind(this));
-                        },
-                        error: function(){
-                            _.defer(function(){
-                                task.saving = false;
-                            }.bind(this));
-                        }
-                    }));
+                    if(task.unsavedAttributes()!=false){
+                        xhrs.push(task.save(null, {
+                            success: function(){
+                                _.defer(function(){
+                                    task.saving = false;
+                                }.bind(this));
+                            },
+                            error: function(){
+                                _.defer(function(){
+                                    task.saving = false;
+                                }.bind(this));
+                            }
+                            
+                        }));
+
+                    } else {
+                        task.saving = false;
+                    }
+                    
                 }
                 else if(!task.isNew()){
                     // Delete as long as it isn't new (if it's new, and set for deletion, just do nothing)

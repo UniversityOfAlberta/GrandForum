@@ -10,6 +10,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
         this.selectTemplate();
+        this.model.startTracking();
 
     },
     
@@ -80,6 +81,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         //         e.remove();
         //     }
         // }
+        this.selectTemplate();
 
         if(!this.model.saving){
             this.$el.html(this.template(this.model.toJSON()));
@@ -89,6 +91,9 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         }
 
         this.renderTinyMCE();
+        // if(!this.model.get('isAllowedToEdit')){
+        //     this.$el.prepend('<td></td>');
+        // }
         return this.$el;
     }
 
