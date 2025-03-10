@@ -442,6 +442,39 @@
             <!-- Project Leader View -->
             <Static>
                 <![CDATA[
+                    <p>If there is an HQP without a supervisor, then they can be added by going to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople'>Manage People</a> (note you must be the HQPs supervisor in order to add them).</p>
+                    <table class='wikitable'>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Title</th>
+                            <th>Citizenship</th>
+                            <th>Gender</th>
+                            <th>Supervisor(s)</th>
+                        </tr>
+                ]]>
+            </Static>
+            <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$user_name}</td>
+                            <td>{$user_uni}</td>
+                            <td>{$user_level}</td>
+                            <td>{$user_nationality}</td>
+                            <td>{$user_gender}</td>
+                            <td>{$user_supervisors}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </table>
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
                     <div class='info'>HQP responses may be edited by the Project Leader, Network Investigators, and by the HQP themselves.</div>
                 ]]>
             </Static>

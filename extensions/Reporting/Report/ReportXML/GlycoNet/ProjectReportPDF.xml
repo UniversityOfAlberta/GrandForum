@@ -200,6 +200,38 @@
 
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="HQP" title="Development of Highly Qualified Personnel">
+        <Static>
+            <![CDATA[
+                <table class='wikitable small' style='width:100%;' frame='box' rules='all'>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Title</th>
+                        <th>Citizenship</th>
+                        <th>Gender</th>
+                        <th>Supervisor(s)</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td>{$user_uni}</td>
+                        <td>{$user_level}</td>
+                        <td>{$user_nationality}</td>
+                        <td>{$user_gender}</td>
+                        <td>{$user_supervisors}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
         <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}" rich="true" limit="200" recommended="true">
