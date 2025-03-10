@@ -1209,7 +1209,6 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $category = "";
         switch($case){
-            default:
             case "Any Journal":
                 $category = "Publication";
                 $type = "Journal Paper";
@@ -1269,6 +1268,11 @@ class ReportItemCallback {
                 break;
             case "Patent/Spin-Off":
                 $category = "Patent/Spin-Off";
+                $type = "*";
+                $histories = array();
+                break;
+            default:
+                $category = $case;
                 $type = "*";
                 $histories = array();
                 break;
@@ -2335,7 +2339,7 @@ class ReportItemCallback {
     
     function getATSYear(){
         $today = date('Y-m-d', time() + 86400*7*6); // 6 weeks into the future
-        $date = $this->getUserATSAnniversaryDate();
+        $date = date('Y-m-d', strtotime($this->getUserATSAnniversaryDate()) - 86400); // anniversary - 1 day
         $year  = substr($date, 0, 4);
         $month = substr($date, 5, 5);
         if(!is_numeric($year)){
