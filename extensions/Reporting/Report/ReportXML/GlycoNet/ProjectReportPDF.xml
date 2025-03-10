@@ -33,7 +33,7 @@
             <![CDATA[
                 </p><br />
                 <p><b>Investigators:</b>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
+                <table class='wikitable small' frame='box' rules='all' width='100%'>
                     <tr>
                         <th>Name</th>
                         <th>Location</th>
@@ -62,13 +62,13 @@
         </Static>
         <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" class="wikitable small" labels="Company/Organization Name|Cash|In-kind|Contact Full Name|Email|Other Details" multiple="true" addText="Add Partner">
             <![CDATA[
-                <p><b>Partners:</b>
+                <p><b>Partners:</b></p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" class="wikitable small" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
+        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" class="wikitable small" labels="Full Name|Email|Institution/Organization/Company|Department (if applicable)|Role in the Project" multiple="true" addText="Add Collaborator">
             <![CDATA[
-                <p><b>Collaborators:</b>
+                <p><b>Collaborators:</b></p>
                 {$item}
             ]]>
         </ReportItem>

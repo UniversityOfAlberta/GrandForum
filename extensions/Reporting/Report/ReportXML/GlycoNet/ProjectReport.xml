@@ -229,7 +229,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
+        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" labels="Full Name|Email|Institution/Organization/Company|Department (if applicable)|Role in the Project" sizes="||200||" multiple="true" addText="Add Collaborator">
             <![CDATA[
                 <p><b>Collaborators:</b><br />
                     List all Collaborators Involved (not funded)</b>
