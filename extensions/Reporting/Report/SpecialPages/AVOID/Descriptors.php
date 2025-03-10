@@ -1651,11 +1651,20 @@ class Descriptors extends SpecialPage {
                     </tbody>
                 </table>
                 
-                <b>Baseline: Mean (SD) EQ-5D-5L Utilities and EQ-VAS by Age Group</b>
+                <b>Mean (SD) EQ-5D-5L Utilities and EQ-VAS by Age Group</b>
                 <table class='wikitable' style='margin-top:0;'>
                     <thead>
                         <tr>
-                            <th>Variable</th>
+                            <th rowspan='2'>Variable</th>
+                            <th colspan='2'>Baseline</th>
+                            <th colspan='2'>6 Month</th>
+                            <th colspan='2'>12 Month</th>
+                        </tr>
+                        <tr>
+                            <th>Utilities</th>
+                            <th>EQ Vas</th>
+                            <th>Utilities</th>
+                            <th>EQ Vas</th>
                             <th>Utilities</th>
                             <th>EQ Vas</th>
                         </tr>
@@ -1663,6 +1672,10 @@ class Descriptors extends SpecialPage {
                             <th></th>
                             <th>RCHA Total (N=".count($eqByAge["All"]).")</th>
                             <th>RCHA Total (N=".count($selfHealthByAge["All"]).")</th>
+                            <th>RCHA Total (N=".count($eqByAge6["All"]).")</th>
+                            <th>RCHA Total (N=".count($selfHealthByAge6["All"]).")</th>
+                            <th>RCHA Total (N=".count($eqByAge12["All"]).")</th>
+                            <th>RCHA Total (N=".count($selfHealthByAge12["All"]).")</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1670,21 +1683,37 @@ class Descriptors extends SpecialPage {
                             <td>All</td>
                             <td>".number_format(array_sum($eqByAge['All'])/max(1,count($eqByAge['All'])), 3)." (".number_format(stdev($eqByAge['All']), 3).")</td>
                             <td>".number_format(array_sum($selfHealthByAge['All'])/max(1,count($selfHealthByAge['All'])), 2)." (".number_format(stdev($selfHealthByAge['All']), 2).")</td>
+                            <td>".number_format(array_sum($eqByAge6['All'])/max(1,count($eqByAge6['All'])), 3)." (".number_format(stdev($eqByAge6['All']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge6['All'])/max(1,count($selfHealthByAge6['All'])), 2)." (".number_format(stdev($selfHealthByAge6['All']), 2).")</td>
+                            <td>".number_format(array_sum($eqByAge12['All'])/max(1,count($eqByAge12['All'])), 3)." (".number_format(stdev($eqByAge12['All']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge12['All'])/max(1,count($selfHealthByAge12['All'])), 2)." (".number_format(stdev($selfHealthByAge12['All']), 2).")</td>
                         </tr>
                         <tr>
                             <td><60-64</td>
                             <td>".number_format(array_sum($eqByAge['<60-64'])/max(1,count($eqByAge['<60-64'])), 3)." (".number_format(stdev($eqByAge['<60-64']), 3).")</td>
                             <td>".number_format(array_sum($selfHealthByAge['<60-64'])/max(1,count($selfHealthByAge['<60-64'])), 2)." (".number_format(stdev($selfHealthByAge['<60-64']), 2).")</td>
+                            <td>".number_format(array_sum($eqByAge6['<60-64'])/max(1,count($eqByAge6['<60-64'])), 3)." (".number_format(stdev($eqByAge6['<60-64']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge6['<60-64'])/max(1,count($selfHealthByAge6['<60-64'])), 2)." (".number_format(stdev($selfHealthByAge6['<60-64']), 2).")</td>
+                            <td>".number_format(array_sum($eqByAge12['<60-64'])/max(1,count($eqByAge12['<60-64'])), 3)." (".number_format(stdev($eqByAge12['<60-64']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge12['<60-64'])/max(1,count($selfHealthByAge12['<60-64'])), 2)." (".number_format(stdev($selfHealthByAge12['<60-64']), 2).")</td>
                         </tr>
                         <tr>
                             <td>65-74</td>
                             <td>".number_format(array_sum($eqByAge['65-74'])/max(1,count($eqByAge['65-74'])), 3)." (".number_format(stdev($eqByAge['65-74']), 3).")</td>
                             <td>".number_format(array_sum($selfHealthByAge['65-74'])/max(1,count($selfHealthByAge['65-74'])), 2)." (".number_format(stdev($selfHealthByAge['65-74']), 2).")</td>
+                            <td>".number_format(array_sum($eqByAge6['65-74'])/max(1,count($eqByAge6['65-74'])), 3)." (".number_format(stdev($eqByAge6['65-74']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge6['65-74'])/max(1,count($selfHealthByAge6['65-74'])), 2)." (".number_format(stdev($selfHealthByAge6['65-74']), 2).")</td>
+                            <td>".number_format(array_sum($eqByAge12['65-74'])/max(1,count($eqByAge12['65-74'])), 3)." (".number_format(stdev($eqByAge12['65-74']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge12['65-74'])/max(1,count($selfHealthByAge12['65-74'])), 2)." (".number_format(stdev($selfHealthByAge12['65-74']), 2).")</td>
                         </tr>
                         <tr>
                             <td>75+</td>
                             <td>".number_format(array_sum($eqByAge['75+'])/max(1,count($eqByAge['75+'])), 3)." (".number_format(stdev($eqByAge['75+']), 3).")</td>
                             <td>".number_format(array_sum($selfHealthByAge['75+'])/max(1,count($selfHealthByAge['75+'])), 2)." (".number_format(stdev($selfHealthByAge['75+']), 2).")</td>
+                            <td>".number_format(array_sum($eqByAge6['75+'])/max(1,count($eqByAge6['75+'])), 3)." (".number_format(stdev($eqByAge6['75+']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge6['75+'])/max(1,count($selfHealthByAge6['75+'])), 2)." (".number_format(stdev($selfHealthByAge6['75+']), 2).")</td>
+                            <td>".number_format(array_sum($eqByAge12['75+'])/max(1,count($eqByAge12['75+'])), 3)." (".number_format(stdev($eqByAge12['75+']), 3).")</td>
+                            <td>".number_format(array_sum($selfHealthByAge12['75+'])/max(1,count($selfHealthByAge12['75+'])), 2)." (".number_format(stdev($selfHealthByAge12['75+']), 2).")</td>
                         </tr>
                     </tbody>
                 </table>
