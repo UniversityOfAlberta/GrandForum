@@ -301,7 +301,7 @@
             <!-- Project Leader View -->
             <ReportItem id="new" type="MultiText" blobItem="NEW" blobType="BLOB_ARRAY" labels="Type|Details" types="Select(Knowledge Product,Service,Process)|Textarea" sizes="|250" multiple="true">
                 <![CDATA[
-                    <h2>New or Improved Products</h2>
+                    <h2>New or Improved Products (knowledge product, service, process)</h2>
                     {$item}
                 ]]>
             </ReportItem>
@@ -343,16 +343,23 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="forums" type="MultiText" blobItem="FORUMS" blobType="BLOB_ARRAY" labels="Nationality|Event Name|Event Date|How the knowledge was presented" types="Select(National,International)|Text|Date|Text" sizes="|200|80|250" multiple="true">
+            <ReportItem id="forums" type="MultiText" blobItem="FORUMS" blobType="BLOB_ARRAY" labels="Forum Name|National or International|Event Date|Presentation Type|Other Details" types="Text|Select(National,International)|Date|ComboBox(Talk,Poster,Panel Discussion,Keynote Speech,Round Table)|Textarea" sizes="|125|80||" multiple="true">
                 <![CDATA[
                     <h2>Instances where Knowledge is Presented</h2>
                     <h3>National and International Forums where knowledge is presented</h3>
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="seminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Type|Event Name|Event Date|Details" types="Select(Seminar,Workshop)|Text|Date|Textarea" sizes="|200|80|250" multiple="true">
+            <ReportItem id="seminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Event Name|Seminar or Workshop|National or International|Event Date|Online, in-person or hybrid|Audience|Approximate number of attendants" types="Text|Select(Seminar,Workshop)|Select(National,International)|Date|Select(Online,In-Person,Hybrid)|Text|Text" sizes="|100|125|80|100||80" multiple="true">
                 <![CDATA[
                     <h3>Seminars and Workshops</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="jobs" type="MultiText" blobItem="JOBS" blobType="BLOB_ARRAY" labels="Company Name|Job/position|Date of position opened/started|Employee Full Name|Other Details" types="Text|Text|Date|Text|Textarea" sizes="||80||" multiple="true">
+                <![CDATA[
+                    <h2>Direct Jobs Created</h2>
+                    <small>Refers to jobs/positions that did not exist prior to the project activities, and which were created as a result of the project activities. They do not include previously existing jobs/positions.</small>
                     {$item}
                 ]]>
             </ReportItem>

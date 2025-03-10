@@ -60,13 +60,13 @@
                 </p><br />
             ]]>
         </Static>
-        <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" class="wikitable" labels="Company/Organization Name|Cash|In-kind|Contact Full Name|Email|Other Details" multiple="true" addText="Add Partner">
+        <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" class="wikitable small" labels="Company/Organization Name|Cash|In-kind|Contact Full Name|Email|Other Details" multiple="true" addText="Add Partner">
             <![CDATA[
                 <p><b>Partners:</b>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" class="wikitable" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
+        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" class="wikitable small" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
             <![CDATA[
                 <p><b>Collaborators:</b>
                 {$item}
@@ -120,63 +120,69 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="new" type="MultiText" blobItem="NEW" blobType="BLOB_ARRAY" labels="Type|Details" types="Select(Knowledge Product,Service,Process)|Textarea" sizes="25%|75%" multiple="true" class="wikitable">
+        <ReportItem id="new" type="MultiText" blobItem="NEW" blobType="BLOB_ARRAY" labels="Type|Details" types="Select(Knowledge Product,Service,Process)|Textarea" sizes="25%|75%" multiple="true" class="wikitable small">
             <![CDATA[
-                <h2>New or Improved Products</h2>
+                <h2>New or Improved Products (knowledge product, service, process)</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="new_ip_filed" type="MultiText" blobItem="NEW_IP_FILED" blobType="BLOB_ARRAY" labels="Title|Type of IP|Filing and Application Number|Filing Date|Status of the Application" types="Text|Select(Patent,Trademark,Copyright,Another type of Protection)|Text|Date|Text" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable">
+        <ReportItem id="new_ip_filed" type="MultiText" blobItem="NEW_IP_FILED" blobType="BLOB_ARRAY" labels="Title|Type of IP|Filing and Application Number|Filing Date|Status of the Application" types="Text|Select(Patent,Trademark,Copyright,Another type of Protection)|Text|Date|Text" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
             <![CDATA[
                 <h2>Intellectual Properties</h2>
                 <h3>New IP filed</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="new_ip_issued" type="MultiText" blobItem="NEW_IP_ISSUED" blobType="BLOB_ARRAY" labels="Title|Type of IP|Registration or Patent Number|Issue Date|Expiration Date" types="Text|Select(Patent,Trademark,Copyright,Another type of Protection)|Text|Date|Date" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable">
+        <ReportItem id="new_ip_issued" type="MultiText" blobItem="NEW_IP_ISSUED" blobType="BLOB_ARRAY" labels="Title|Type of IP|Registration or Patent Number|Issue Date|Expiration Date" types="Text|Select(Patent,Trademark,Copyright,Another type of Protection)|Text|Date|Date" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
             <![CDATA[
                 <h3>New IP Issued</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="new_licenses_granted" type="MultiText" blobItem="NEW_LICENSES_GRANTED" blobType="BLOB_ARRAY" labels="Description of the Deal|Partners Involved|Date of Agreement|Revenue Impact|Strategic Relevance" types="Textarea|Textarea|Date|Textarea|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable">
+        <ReportItem id="new_licenses_granted" type="MultiText" blobItem="NEW_LICENSES_GRANTED" blobType="BLOB_ARRAY" labels="Description of the Deal|Partners Involved|Date of Agreement|Revenue Impact|Strategic Relevance" types="Textarea|Textarea|Date|Textarea|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
             <![CDATA[
                 <h3>New Licenses Granted</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="new_licenses_negotiation" type="MultiText" blobItem="NEW_LICENSES_NEGOTIATION" blobType="BLOB_ARRAY" labels="Description of Potential Deal|Potential Partners Involved|Expected Date of Agreement|Projected Revenue Impact|Strategic Relevance" types="Textarea|Textarea|Date|Text|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable">
+        <ReportItem id="new_licenses_negotiation" type="MultiText" blobItem="NEW_LICENSES_NEGOTIATION" blobType="BLOB_ARRAY" labels="Description of Potential Deal|Potential Partners Involved|Expected Date of Agreement|Projected Revenue Impact|Strategic Relevance" types="Textarea|Textarea|Date|Text|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
             <![CDATA[
                 <h3>New Licenses Under Negotiation</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="new_companies" type="MultiText" blobItem="NEW_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Date of Incorporation|Industry/Sector|Number of Employees|Initial Investment" types="Text|Date|Text|Text|Text" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable">
+        <ReportItem id="new_companies" type="MultiText" blobItem="NEW_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Date of Incorporation|Industry/Sector|Number of Employees|Initial Investment" types="Text|Date|Text|Text|Text" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
             <![CDATA[
                 <h2>Companies</h2>
                 <h3>New Companies Created</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="enhanced_companies" type="MultiText" blobItem="ENHANCED_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Details about any new technologies adopted or developed|Upgrades or expansions in facilities that support growth|Revenue Growth|Other Details" types="Text|Textarea|Textarea|Text|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable">
+        <ReportItem id="enhanced_companies" type="MultiText" blobItem="ENHANCED_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Details about any new technologies adopted or developed|Upgrades or expansions in facilities that support growth|Revenue Growth|Other Details" types="Text|Textarea|Textarea|Text|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
             <![CDATA[
                 <h3>Companies Enhanced</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="forums" type="MultiText" blobItem="FORUMS" blobType="BLOB_ARRAY" labels="Nationality|Event Name|Event Date|How the knowledge was presented" types="Select(National,International)|Text|Date|Text" sizes="25%|25%|25%|25%" multiple="true" class="wikitable">
+        <ReportItem id="forums" type="MultiText" blobItem="FORUMS" blobType="BLOB_ARRAY" labels="Forum Name|National or International|Event Date|Presentation Type|Other Details" types="Text|Select(National,International)|Date|ComboBox(Talk,Poster,Panel Discussion,Keynote Speech,Round Table)|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
             <![CDATA[
                 <h2>Instances where Knowledge is Presented</h2>
                 <h3>National and International Forums where knowledge is presented</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="seminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Type|Event Name|Event Date|Details" types="Select(Seminar,Workshop)|Text|Date|Textarea" sizes="25%|25%|25%|25%" multiple="true" class="wikitable">
+        <ReportItem id="seminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Event Name|Seminar or Workshop|National or International|Event Date|Online, in-person or hybrid|Audience|Approximate number of attendants" types="Text|Select(Seminar,Workshop)|Select(National,International)|Date|Select(Online,In-Person,Hybrid)|Text|Text" sizes="20%|10%|10%|10%|10%|20%|10%" multiple="true" class="wikitable small">
             <![CDATA[
                 <h3>Seminars and Workshops</h3>
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="jobs" type="MultiText" blobItem="JOBS" blobType="BLOB_ARRAY" labels="Company Name|Job/position|Date of position opened/started|Employee Full Name|Other Details" types="Text|Text|Date|Text|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
+                <![CDATA[
+                    <h2>Direct Jobs Created</h2>
+                    {$item}
+                ]]>
+            </ReportItem>
     </ReportSection>
     <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships" delete="true">
         <ReportItem id="collaborations" type="TextareaReportItem" blobItem="COLLABORATIONS">
@@ -319,14 +325,14 @@
         </Static>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false" delete="true">
-        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
+        <ReportItem id="cash_contributions" class="wikitable small" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
             <![CDATA[
                 <h3>Cash Contributions</h3>
                 {$item}<br />
                 
             ]]>
         </ReportItem>
-        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of Funds|Description|University receiving contribution" types="Text|Integer|Select(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel,Other (specify))|Textarea|Text" multiple="true">
+        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable small" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of Funds|Description|University receiving contribution" types="Text|Integer|Select(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel,Other (specify))|Textarea|Text" multiple="true">
             <![CDATA[
                 <h3>In-Kind Contributions</h3>
                 {$item}<br />
@@ -338,7 +344,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="potentials" type="MultiText" class="wikitable" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet's Legacy" multiple="true">
+        <ReportItem id="potentials" type="MultiText" class="wikitable small" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet's Legacy" multiple="true">
             <![CDATA[
                 <h3>Potential GlycoNet Partners for Legacy</h3>
                 {$item}
