@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Interact" reportType="RP_INTERACT" ajax="true" disabled="false">
     <Permissions>
-        <Role role="INACTIVE+"></Role>
+        <Role role="LoggedOut+">
+            <SectionPermission id="q1" permissions="--" />
+            <SectionPermission id="q2" permissions="--" />
+            <SectionPermission id="q3" permissions="--" />
+            <SectionPermission id="a1" permissions="--" />
+            <SectionPermission id="a2" permissions="--" />
+            <SectionPermission id="a3" permissions="--" />
+        </Role>
     </Permissions>
     
     <Script>

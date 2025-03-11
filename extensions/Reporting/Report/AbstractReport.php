@@ -936,6 +936,11 @@ abstract class AbstractReport extends SpecialPage {
                 $roles[] = EVALUATOR."-{$row['type']}";
             }
         }
+        if(!$me->isLoggedIn()){
+            $roles[] = "LoggedOut";
+            $roles[] = "LoggedOut+";
+        }
+        
         $permissions = array();
         foreach($roles as $role){
             if(isset($this->sectionPermissions[$role][$section->id])){

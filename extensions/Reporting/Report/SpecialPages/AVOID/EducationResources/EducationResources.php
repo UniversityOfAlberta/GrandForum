@@ -18,7 +18,7 @@ class EducationResources extends SpecialPage {
 	function userCanExecute($user){
         global $config;
         $me = Person::newFromUser($user);
-        if(!$user->isLoggedIn()){
+        if(!$user->isLoggedIn() && $config->getValue("networkFullName") != "AVOID AB"){
 	        AVOIDDashboard::permissionError();
 	    }
         if($config->getValue('networkFullName') == "AVOID Australia" &&
@@ -77,7 +77,8 @@ class EducationResources extends SpecialPage {
     }
 	
 	function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath, $wgLang, $config;        
+        global $wgOut, $wgServer, $wgScriptPath, $wgLang, $config; 
+        $me = Person::newFromWgUser();       
         $dir = dirname(__FILE__) . '/';
         $wgOut->setPageTitle(showLanguage("AVOID Education", "PROACTIF pour éviter la fragilisation – Éducation"));
         $categories = self::JSON();
@@ -235,6 +236,14 @@ class EducationResources extends SpecialPage {
         );
             
         $wgOut->addHTML("</script>");
+        
+        if(!$me->isLoggedIn()){
+            $wgOut->addHTML("<style>
+                .module-progress {
+                    display:none;
+                }
+            </style>");
+        }
     }
 
     static function createTab(&$tabs){
