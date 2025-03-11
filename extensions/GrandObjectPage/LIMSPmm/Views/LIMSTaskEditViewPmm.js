@@ -6,7 +6,6 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
 
     initialize: function(options){
         this.project = options.project;
-        // console.log(this.project);
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
         this.selectTemplate();
@@ -20,7 +19,6 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         // Memebers can only change 'assigned' -> 'done'
         var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
 
-        console.log(userRole,isPLAllowed);
         
         var isMemberAllowed = !isPLAllowed && (this.model.get('status') == 'Assigned' || this.model.get('status') == 'Done');
         
