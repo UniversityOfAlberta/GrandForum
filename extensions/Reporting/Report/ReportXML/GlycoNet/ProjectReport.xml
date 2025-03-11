@@ -279,7 +279,7 @@
     <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KPI" title="Key Performance Indicators">
         <ReportItem id="publications" type="ManageProductsReportItem">
             <![CDATA[
-                <h2>Publications</h2>
+                <h2 style='font-weight:bold;'>Publications</h2>
                 Please add all relevant publications, including the following:
                 <ul>
                     <li><b>Peer-reviewed journal articles</b></li>
@@ -301,64 +301,64 @@
             <!-- Project Leader View -->
             <ReportItem id="new" type="MultiText" blobItem="NEW" blobType="BLOB_ARRAY" labels="Type|Details" types="Select(Knowledge Product,Service,Process)|Textarea" sizes="|250" multiple="true">
                 <![CDATA[
-                    <h2>New or Improved Products (knowledge product, service, process)</h2>
+                    <h2 style='font-weight:bold;'>New or Improved Products (knowledge product, service, process)</h2>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="new_ip_filed" type="MultiText" blobItem="NEW_IP_FILED" blobType="BLOB_ARRAY" labels="Title|Type of IP|Filing and Application Number|Filing Date|Status of the Application" types="Text|Select(Patent,Trademark,Copyright,Another type of Protection)|Text|Date|Text" sizes="|||80|" multiple="true">
                 <![CDATA[
-                    <h2>Intellectual Properties</h2>
-                    <h3>New IP filed</h3>
+                    <h2 style='font-weight:bold;'>Intellectual Properties</h2>
+                    <h3 style='font-weight:normal;'>New IP filed</h3>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="new_ip_issued" type="MultiText" blobItem="NEW_IP_ISSUED" blobType="BLOB_ARRAY" labels="Title|Type of IP|Registration or Patent Number|Issue Date|Expiration Date" types="Text|Select(Patent,Trademark,Copyright,Another type of Protection)|Text|Date|Date" sizes="|||80|80" multiple="true">
                 <![CDATA[
-                    <h3>New IP Issued</h3>
+                    <h3 style='font-weight:normal;'>New IP Issued</h3>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="new_licenses_granted" type="MultiText" blobItem="NEW_LICENSES_GRANTED" blobType="BLOB_ARRAY" labels="Description of the Deal|Partners Involved|Date of Agreement|Revenue Impact|Strategic Relevance" types="Textarea|Textarea|Date|Textarea|Textarea" sizes="||80|||" multiple="true">
                 <![CDATA[
-                    <h3>New Licenses Granted</h3>
+                    <h3 style='font-weight:normal;'>New Licenses Granted</h3>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="new_licenses_negotiation" type="MultiText" blobItem="NEW_LICENSES_NEGOTIATION" blobType="BLOB_ARRAY" labels="Description of Potential Deal|Potential Partners Involved|Expected Date of Agreement|Projected Revenue Impact|Strategic Relevance" types="Textarea|Textarea|Date|Text|Textarea" sizes="||80|||" multiple="true">
                 <![CDATA[
-                    <h3>New Licenses Under Negotiation</h3>
+                    <h3 style='font-weight:normal;'>New Licenses Under Negotiation</h3>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="new_companies" type="MultiText" blobItem="NEW_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Date of Incorporation|Industry/Sector|Number of Employees|Initial Investment" types="Text|Date|Text|Text|Text" sizes="|80||||" multiple="true">
                 <![CDATA[
-                    <h2>Companies</h2>
-                    <h3>New Companies Created</h3>
+                    <h2 style='font-weight:bold;'>Companies</h2>
+                    <h3 style='font-weight:normal;'>New Companies Created</h3>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="enhanced_companies" type="MultiText" blobItem="ENHANCED_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Details about any new technologies adopted or developed|Upgrades or expansions in facilities that support growth|Revenue Growth|Other Details" types="Text|Textarea|Textarea|Text|Textarea" sizes="|200|200||200" multiple="true">
                 <![CDATA[
-                    <h3>Companies Enhanced</h3>
+                    <h3 style='font-weight:normal;'>Companies Enhanced</h3>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="forums" type="MultiText" blobItem="FORUMS" blobType="BLOB_ARRAY" labels="Forum Name|National or International|Event Date|Presentation Type|Other Details" types="Text|Select(National,International)|Date|ComboBox(Talk,Poster,Panel Discussion,Keynote Speech,Round Table)|Textarea" sizes="|125|80||" multiple="true">
                 <![CDATA[
-                    <h2>Instances where Knowledge is Presented</h2>
-                    <h3>National and International Forums where knowledge is presented</h3>
+                    <h2 style='font-weight:bold;'>Instances where Knowledge is Presented</h2>
+                    <h3 style='font-weight:normal;'>National and International Forums where knowledge is presented</h3>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="seminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Event Name|Seminar or Workshop|National or International|Event Date|Online, in-person or hybrid|Audience|Approximate number of attendants" types="Text|Select(Seminar,Workshop)|Select(National,International)|Date|Select(Online,In-Person,Hybrid)|Text|Text" sizes="|100|125|80|100||80" multiple="true">
                 <![CDATA[
-                    <h3>Seminars and Workshops</h3>
+                    <h3 style='font-weight:normal;'>Seminars and Workshops</h3>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="jobs" type="MultiText" blobItem="JOBS" blobType="BLOB_ARRAY" labels="Company Name|Job/position|Date of position opened/started|Employee Full Name|Other Details" types="Text|Text|Date|Text|Textarea" sizes="||80||" multiple="true">
                 <![CDATA[
-                    <h2>Direct Jobs Created</h2>
+                    <h2 style='font-weight:bold;'>Direct Jobs Created</h2>
                     <small>Refers to jobs/positions that did not exist prior to the project activities, and which were created as a result of the project activities. They do not include previously existing jobs/positions.</small>
                     {$item}
                 ]]>
