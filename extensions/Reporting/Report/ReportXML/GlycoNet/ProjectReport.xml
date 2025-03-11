@@ -82,96 +82,34 @@
         </Role>
     </Permissions>
     <ReportSection id="instructions" type="ReportSection" name="Instructions">
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <!-- Project Leader View -->
+        <Static>
             <![CDATA[
-                <p><b>Deadline: May 10, 2024</b></p>
+                <p><b>Deadline: April 30, 2025</b></p>
                 <p><b>Before completing the report:</b></p>
                 <ul>
                     <li>Update the personal information on your Forum profile</li>
-                    <li>Update your products*, including publications, awards, presentations, patents, etc.; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Add top research outcomes (found in the “Dashboard” tab on your project page)</li>
+                    <li>Add any new members (trainees and collaborators on the project) who are not already in the Forum (refer to “<a href='https://canadianglycomics.ca/wp-content/uploads/Managing-People-NIs.pdf' target='_blank'>Managing People</a>” instructions)</li>
+                    <li>Edit the roles and relations of any trainees on the project that you supervise (refer to “<a href='https://canadianglycomics.ca/wp-content/uploads/Managing-People-NIs.pdf' target='_blank'>Managing People</a>” instructions)</li>
                 </ul>
                 <p><b>To complete your section of the report:</b></p>
                 <ul>
                     <li>Fill in all applicable sections of the Project Report:
                         <ul>
                             <li>Project Information</li>
-                            <li>Summary/Background</li>
-                            <li>Figures</li>
-                            <li>Milestones (all)</li>
-                            <li>Achievements</li>
-                            <li>KPI</li>
-                            <!--li>Networking</li-->
-                            <li>HQP</li>
-                            <li>Budget</li>
-                            <!--li>Partner Contributions</li-->
-                            <!--li>CCV</li-->
-                        </ul>
-                    </li>
-                    <li>Generate and preview project report PDF</li>
-                    <li>Submit project report to GlycoNet Administrative Centre</li>
-                </ul><br />
-                <p>*Managing numerous publications can be challenging for investigators.  Therefore, <b>it is highly recommended that this task be delegated to trainees as much as possible.</b></p>
-                <p><b>Need further assistance?</b></p>
-                <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact the GlycoNet Administrative Office (info@glyconet.ca).</p>
-            ]]>
-        </If>
-        <If id="not_pl1" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
-            <!-- Network Investigator View -->
-            <![CDATA[
-                <p><b>Deadline: April 15, 2023</b></p>
-                <p><b>Before completing the report:</b></p>
-                <ul>
-                    <li>Update the personal information on your Forum profile</li>
-                    <li>Update your products*, including publications, awards, presentations, patents, etc.; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Add top research outcomes (found in the “Dashboard” tab on your profile page)</li>
-                </ul>
-                <p><b>To complete your section of the report:</b></p>
-                <ul>
-                    <li>Fill in all applicable sections of the Project Report:
-                        <ul>
-                            <li>Project Information</li>
-                            <li>Figures</li>
+                            <li>Report</li>
                             <li>Milestones (assigned milestones only)</li>
-                            <li>Achievements</li>
                             <li>KPI</li>
-                            <!--li>Networking</li-->
                             <li>HQP</li>
                             <li>Budget</li>
-                            <!--li>Partner Contributions</li-->
-                            <!--li>CCV</li-->
                         </ul>
                     </li>
                 </ul><br />
-                <p>*Managing numerous publications can be challenging for investigators.  Therefore, <b>it is highly recommended that this task be delegated to trainees as much as possible.</b></p>
+                <p><b>Please ensure that you thoroughly fill in all sections. This information will be submitted to the GlycoNet Research Management Committee and Scientific Advisory Board for performance evaluation. Please note that future funding from GlycoNet is contingent on your ability to provide an accurate and comprehensive report.</b></p>
+                
                 <p><b>Need further assistance?</b></p>
-                <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact the GlycoNet Administrative Office (info@glyconet.ca).</p>
+                <p>For additional support, please visit the “<a href='https://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>Forum Help and FAQs</a>” page on the GlycoNet website or contact the GlycoNet Administrative Office via email at <a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> and cc Veronika Sharko at <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>.</p>
             ]]>
-        </If>
-        <If id="not_pl2" if="{and({contains({$my_full_roles},HQP)},{!contains({$my_full_roles},PL)})}">
-            <!-- HQP View -->
-            <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Deadline: March 17, 2021</b></p>
-                    <p><b>Before completing the report:</b></p>
-                    <ul>
-                        <li>Update the personal information on your Forum profile, including gender, nationality, and alumni status if you will be leaving the Network in the near future (see “Getting Started with the GlycoNet Forum” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                        <li>Update your products, including publications, awards, presentations, patents, etc.; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    </ul>
-                    <p><b>To complete your section of the report:</b></p>
-                    <ul>
-                        <li>Fill in the HQP section in the Project Report</li>
-                    </ul>
-                    <p><b>Need further assistance?</b></p>
-                    <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact the GlycoNet Administrative Office (info@glyconet.ca).</p>
-                ]]>
-            </ReportItem>
-        </If>
+        </Static>
     </ReportSection>
     <ReportSection id="information" type="EditableReportSection" name="Project Information" blobSection="INFORMATION">
         <Static>
