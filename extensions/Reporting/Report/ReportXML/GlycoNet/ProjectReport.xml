@@ -259,6 +259,15 @@
                 <br /><br /><br /><br /><br /><br /><br /><br />
             ]]>
         </ReportItem>
+        <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
+            <![CDATA[
+                <h3>Comments</h3>
+                <p>If any of the milestones have been delayed or abandoned, please comment on them below.<br />
+                    <b>Please Note:</b> If a new milestone is to be added, please provide a justification.
+                </p>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
         <ReportItemSet type="ToggleHeaderReportItemSet" title="Last Year's Milestones">
             <ReportItem id="table" type="ProjectMilestoneTable" date="{$this_year}-04-01 00:00:00">
                 <![CDATA[
@@ -267,15 +276,6 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
-            <![CDATA[
-                <h3>Comments</h3>
-                <p>If any of the milestones have been delayed or abandoned, please comment on them below.<br />
-                    <b>Please Note:</b> If a new milestone is to be added, please provide a justification.
-                </p>
-                {$item}
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KPI" title="Key Performance Indicators">
         <ReportItem id="publications" type="ManageProductsReportItem">
