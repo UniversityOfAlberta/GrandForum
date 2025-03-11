@@ -138,7 +138,7 @@ class LIMSOpportunityPmm extends BackboneModel {
                            'name' => $person->getNameForForms(),
                            'url' => $person->getUrl());
             $json = array('id' => $this->getId(),
-                          'requestId' => self::$requestIds[$this->getId()],
+                          'requestId' => @self::$requestIds[$this->getId()],
                           'contact' => $this->getContact()->getId(),
                           'owner' => $owner,
                           'description' => $this->getDescription(),
