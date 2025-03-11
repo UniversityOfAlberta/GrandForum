@@ -662,7 +662,6 @@
         <Static>
             <![CDATA[
                 <p><b>Provide a written justification for any significant (>20%) deviation of any line item from the original budget in your approved proposal.</b></p>
-                <p>In addition, please ensure the HQP Contribution table provides the names, position, and salary details for all HQP working on this project.</p>
             ]]>
         </Static>
         <If id="is_pl" if="{contains({$my_full_roles},PL)}">
