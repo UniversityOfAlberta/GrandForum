@@ -242,7 +242,7 @@
                 </ReportItem>
                 <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING" blobSubItem="{$user_id}">
                     <![CDATA[
-                        <p><b>Describe any training or professional development experiences undertaken during the funding period.</b></p>
+                        <p><b>Describe any training initiatives undertaken during the funding period. Highlighting specific skills or techniques acquired by the trainee.</b></p>
                         {$item}<br />
                     ]]>
                 </ReportItem>
