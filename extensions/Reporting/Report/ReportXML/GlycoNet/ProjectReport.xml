@@ -659,8 +659,27 @@
         </If>
     </ReportSection>
     <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Justification">
+        <ReportItem id='deviation' type="Radio" blobItem="DEVIATION" options="Yes|No">
+            <![CDATA[
+                <p>Is there any deviation (>20%) for any budget line item from the originally approved budget?</p>
+                <div id='deviation'>{$item}</div>
+                <script type='text/javascript'>
+                    $(document).ready(function(){
+                        $('#deviation input').change(function(){
+                            if($('#deviation input:checked').val() == "Yes"){
+                                $('#justification').show();
+                            }
+                            else{
+                                $('#justification').hide();
+                            }
+                        }).change();
+                    });
+                </script>
+            ]]>
+        </ReportItem>
         <Static>
             <![CDATA[
+                <div id='justification' style='display:none;'>
                 <p><b>Provide a written justification for any significant (>20%) deviation of any line item from the original budget in your approved proposal.</b></p>
             ]]>
         </Static>
@@ -690,6 +709,7 @@
         <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" blobSubItem="{$my_id}">
             <![CDATA[
                 {$item}
+                </div>
             ]]>
         </ReportItem>
     </ReportSection>

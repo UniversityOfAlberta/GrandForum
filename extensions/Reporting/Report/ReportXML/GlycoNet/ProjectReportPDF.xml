@@ -329,32 +329,40 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Justification" pagebreak="false">
-        <Static>
+        <ReportItem id='deviation' type="Radio" blobItem="DEVIATION" options="Yes|No">
             <![CDATA[
-                {set(just,)}
+                <p>Is there any deviation (>20%) for any budget line item from the originally approved budget?</p>
+                {$item}<br /><br />
             ]]>
-        </Static>
-        <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet">
+        </ReportItem>
+        <If if="{==({getText(RP_PROGRESS,BUDGET,DEVIATION,{$user_id},0,{$project_id})},Yes)}">
             <Static>
                 <![CDATA[
-                    {set(just,{concat({get(just)}, 
-                        {concat(<h3>{$user_name}</h3>,
-                            {getText(RP_PROGRESS,BUDGET,JUSTIFICATION,{$user_id},0,{$project_id})}
-                        )}
-                    )})}
+                    {set(just,)}
                 ]]>
             </Static>
-        </ReportItemSet>
-        <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(just)}">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" blobSubItem="{$my_id}">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet">
+                <Static>
+                    <![CDATA[
+                        {set(just,{concat({get(just)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,BUDGET,JUSTIFICATION,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(just)}">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p>{$item}</p>
+                ]]>
+            </ReportItem>
+        </If>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false" delete="true">
         <ReportItem id="cash_contributions" class="wikitable small" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
