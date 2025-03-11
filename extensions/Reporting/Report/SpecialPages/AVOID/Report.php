@@ -90,23 +90,41 @@ class Report extends AbstractReport{
         $me = Person::newFromWgUser();
         if($config->getValue("networkFullName") == "AVOID AB") {
             $wgOut->addScript("<style>
-            
-            .program-body {
-                max-width: initial;
-            }
-            
-            .program-button, .program-button:visited {
-                background: #0070c7 !important;
-                color: white !important;
-                text-shadow: none;
-                font-weight: 500 !important;
-          }
+                .program-body {
+                    max-width: initial;
+                }
+                
+                .program-button, .program-button:visited {
+                    background: #0070c7 !important;
+                    color: white !important;
+                    text-shadow: none;
+                    font-weight: 500 !important;
+                }
 
-          .program-button:hover{
-            background: #005699 !important;
-            color: white !important;
-          }
-        </style>");
+                .program-button:hover{
+                    background: #005699 !important;
+                    color: white !important;
+                }
+            </style>");
+            if(!$me->isLoggedIn()){
+                $wgOut->addHTML("<style>
+                    #side {
+                        display: none;
+                    }
+
+                    #bodyContent {
+                        left: 0;
+                    }
+
+                    #outerHeader {
+                        left: 0;
+                    }
+
+                    #sideToggle{
+                        display: none;
+                    }
+                </style>");
+            }
         }
         $wgOut->addScript("<style>
             #avoidButtons {
