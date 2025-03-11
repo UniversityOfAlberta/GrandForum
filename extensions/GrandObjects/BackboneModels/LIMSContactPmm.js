@@ -5,11 +5,11 @@ LIMSContactPmm = Backbone.Model.extend({
     initialize: function(){
         this.opportunities = new LIMSOpportunitiesPmm();
         this.opportunities.contact = this;
-        if(!this.isNew()){
+        //if(!this.isNew()){
             this.once("sync", function(){
                 this.opportunities.fetch();
             }.bind(this));
-        }
+        //}
         this.opportunities.on("add", function(model){
             model.contact = this;
         }.bind(this));
@@ -19,15 +19,18 @@ LIMSContactPmm = Backbone.Model.extend({
             }.bind(this));
         }.bind(this));
         this.on("change:details", function(){
-            var title = (this.get('details')['firstName'] || '').trim() + ' ' + (this.get('details')['lastName'] || '').trim();
+            /*var title = (this.get('details')['firstName'] || '').trim() + ' ' + (this.get('details')['lastName'] || '').trim();
             if(this.get('details')['institution'] != '' && this.get('details')['firstName'].trim() != ""){
                 title += " (" +  this.get('details')['institution'].trim() + ")";           
-            }
-            this.set('title', title);
+            }*/
+            this.set('title', '');
         }.bind(this));
     },
 
     urlRoot: function(){
+        if(this.get('id') == null){
+            return 'index.php?action=api.limscontactpmm/project/' + this.get('projectId');
+        }
         return 'index.php?action=api.limscontactpmm';
     },
 
@@ -37,10 +40,7 @@ LIMSContactPmm = Backbone.Model.extend({
             title: "",
             owner: "",
             projectId: "",
-            details: {firstName: "",
-                      lastName: "",
-                      email: "",
-                      institution: ""},
+            details: {},
             url: "",
             isAllowedToEdit: true
         };

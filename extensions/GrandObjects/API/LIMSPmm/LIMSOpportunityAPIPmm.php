@@ -52,7 +52,8 @@ class LIMSOpportunityAPIPmm extends RESTAPI {
             return $opportunity->toJSON();
         }
         else{
-            $this->throwError("You are not allowed to edit this Opportunity");
+            return $opportunity->toJSON();
+
         }
     }
     

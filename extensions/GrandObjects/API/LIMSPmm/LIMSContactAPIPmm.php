@@ -6,8 +6,10 @@ class LIMSContactAPIPmm extends RESTAPI {
         if($this->getParam('id') != ""){
             $contact = LIMSContactPmm::newFromId($this->getParam('id'));
             return $contact->toJSON();
-        }
-        else{
+        } else if ($this->getParam('project_id')){
+            $contact = LIMSContactPmm::newFromProjectId($this->getParam('project_id'));
+            return $contact->toJSON();
+        } else {
             $contacts = new Collection(LIMSContactPmm::getAllContacts());
             return $contacts->toJSON();
         }
@@ -59,7 +61,8 @@ class LIMSContactAPIPmm extends RESTAPI {
             return $contact->toJSON();
         }
         else{
-            $this->throwError("You are not allowed to edit this Contact");
+            return $contact->toJSON();
+
         }
     }
     

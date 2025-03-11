@@ -1,23 +1,32 @@
 LIMSTaskEditViewPmm = Backbone.View.extend({
 
     tagName: "tr",
-    
-    transactionTree: {
-        '': [''],
-        'Industry': ['', 'GN Funding', 'Licensing', 'Project Funding','Core Services','Others'],
-        'Government': ['', 'Networking/Lobbying','Project Funding','Legacy','Collaboration'],
-        'Not-for-Profit': ['', 'Training','Funding','Partnership','Licensing'], 
-        'NIs/Board/Committees': ['', 'Existing Partnership','New Project Opportunity','Company Creation','IP','Licensing'], 
-        'Media': ['', 'Publications','Social Media','News Media']
-    },
 
-    initialize: function(){
+    project: null,
+
+    initialize: function(options){
+        this.project = options.project;
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
         this.selectTemplate();
+        this.model.startTracking();
+
     },
     
     selectTemplate: function(){
+        // Get project role for current user
+        var userRole = _.pluck(_.filter(me.get('roles'), function(el){return el.title == this.project.get("name") ||  el.role !== PL}.bind(this)), 'role');
+        // Memebers can only change 'assigned' -> 'done'
+        var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
+
+        
+        var isMemberAllowed = !isPLAllowed && (this.model.get('status') == 'Assigned' || this.model.get('status') == 'Done');
+        
+
+        this.model.set('isLeaderAllowedToEdit', isPLAllowed);
+        this.model.set('isMemberAllowedToEdit', isMemberAllowed);
+
+
         if(!this.model.get('isAllowedToEdit')){
             // Not allowed to edit, use read-only version
             this.template = _.template($('#lims_task_template').html());
@@ -29,51 +38,60 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
     },
     
     events: {
-        "click #deleteTask": "deleteTask",
-        "click #addTransaction": "addTransaction",
-        "click #transactions .delete-icon": "deleteTransaction"
-    },
-    
-    addTransaction: function(){
-        var transactions = this.model.get('transactions');
-        transactions[this.model.get('transactions').length] = {type: '', date: ''};
-        
-        this.model.set('transactions', transactions);
-        this.renderTransactions();
+        "click #deleteTask": "deleteTask"
     },
     
     deleteTask: function(){
         this.model.toDelete = true;
         this.model.trigger("change:toDelete");
     },
-    
-    deleteTransaction: function(el){
-        var id = $(el.currentTarget).attr('data-id');
-        this.model.get('transactions').splice(id, 1);
-        this.renderTransactions();
-    },
-    
-    renderTransactions: function(){
-        this.$("#transactions").empty();
-        _.each(this.model.get('transactions'), function(transaction, i){
-            this.$("#transactions").append("<div>");
-            this.$("#transactions div").last().append("&nbsp;" + HTML.DatePicker(this, 'transactions.' + i + '.date', {format: 'yy-mm-dd', style: 'width:5em'}));
-            this.$("#transactions div").last().append("<span data-id='" + i + "' class='delete-icon' style='vertical-align: middle; margin-left:5px;' title='Delete Transaction'></span>");
+
+    renderTinyMCE: function(){
+        _.defer(function(){
+            this.$('textarea').tinymce({
+                theme: 'modern',
+                menubar: false,
+                statusbar: false,
+                relative_urls : false,
+                convert_urls: false,
+                plugins: 'link image charmap lists table paste',
+                toolbar: [
+                    'bold | link | bullist numlist'
+                ],
+                paste_data_images: true,
+                invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font',
+                imagemanager_insert_template : '<img src="{$url}" width="{$custom.width}" height="{$custom.height}" />',
+                setup: function(editor){
+                    editor.on('change', function(e){
+                        this.model.set('comments',editor.getContent());
+                    }.bind(this));
+                }.bind(this)
+
+            });
         }.bind(this));
-        this.delegateEvents();
-        this.afterRender();
     },
-    
+
     render: function(){
+        // for (edId in tinyMCE.editors){
+        //     var e = tinyMCE.editors[edId];
+        //     if(e != undefined){
+        //         e.destroy();
+        //         e.remove();
+        //     }
+        // }
+        this.selectTemplate();
+
         if(!this.model.saving){
             this.$el.html(this.template(this.model.toJSON()));
             _.defer(function(){
                 this.$('select[name=assignee_id]').chosen();
             }.bind(this));
-            if(this.model.get('isAllowedToEdit')){
-                this.renderTransactions();
-            }
         }
+
+        this.renderTinyMCE();
+        // if(!this.model.get('isAllowedToEdit')){
+        //     this.$el.prepend('<td></td>');
+        // }
         return this.$el;
     }
 

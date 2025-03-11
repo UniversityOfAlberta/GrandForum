@@ -1,9 +1,10 @@
-<a class="button backButton" href="#">Back to Contacts</a>
+<% if(!this.isDialog){ %>
+    <a class="button backButton" href="#">Back to Contacts</a>
+<% } %>
 <!-- <b>Owner:</b> <a href="<%= owner.url %>"><%= owner.name %></a> -->
-<h3>Opportunities</h3>
 <div id="opportunities"></div>
 
-<% if(isAllowedToEdit){ %>
+<% if(isAllowedToEdit && !this.isDialog){ %>
     <br />
     <button id='edit'>Edit Contact</button>
 <% } %>

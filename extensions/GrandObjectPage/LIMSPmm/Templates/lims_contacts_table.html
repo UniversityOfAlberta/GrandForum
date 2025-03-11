@@ -12,14 +12,13 @@
             <% if(isAllowedToCreateLIMSPmmContacts){ %>
                 <th width="1%">Edit</th>
             <% } %>
-            <th>Customer/User</th>
-            <th>Owner</th>
-            <th style="white-space:nowrap;">Request Id</th>
-            <th>Request</th>
+            <th>Project</th>
+            <th>Project Manager</th>
+            <th style="white-space:nowrap;">Activity ID</th>
+            <th>Activity description</th>
             <th>Assignee</th>
             <th>Task</th>
             <th width="1%">Status</th>
-            <th width="1%" style="white-space:nowrap;">Task Date</th>
             <th width="1%" style="white-space:nowrap;">Due Date</th>
         </tr>
     </thead>
@@ -66,9 +65,7 @@
                         <td style="white-space:nowrap;">
                             <%= task.status %><span style="display:none;"><%= task.id %></span>
                         </td>
-                        <td align="center" style="white-space:nowrap;">
-                            <%= task.date.substr(0,10) %><span style="display:none;"><%= task.id %></span>
-                        </td>
+                        
                         <td align="center" style="white-space:nowrap;">
                             <%= task.dueDate %><span style="display:none;"><%= task.id %></span>
                         </td>

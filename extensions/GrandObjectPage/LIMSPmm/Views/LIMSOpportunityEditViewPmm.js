@@ -2,11 +2,11 @@ LIMSOpportunityEditViewPmm = Backbone.View.extend({
 
     subViews: [],
     saving: false,
-    allProjects: null,
+    project: null,
 
     initialize: function(options){
-        this.model.saving = false;
-        this.allProjects = options.allProjects;
+        this.saving = false;
+        this.project = options.project;
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model.tasks, "add", this.renderTasks);
         this.listenTo(this.model.tasks, "change:toDelete", this.removeTasks);
@@ -88,13 +88,13 @@ LIMSOpportunityEditViewPmm = Backbone.View.extend({
     },
     
     renderTasks: function(model){
-        var view = new LIMSTaskEditViewPmm({model: model});
+        var view = new LIMSTaskEditViewPmm({model: model, project: this.project});
         this.$("#tasks > tbody").append(view.render());
         this.subViews.push(view);
     },
     
     render: function(){
-        if(!this.model.saving){
+        if(!this.saving){
             this.$el.html(this.template(this.model.toJSON()));
             this.$el.addClass("opportunity");
             this.$("#taskContainer").show();

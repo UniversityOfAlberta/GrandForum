@@ -105,19 +105,22 @@ class ProjectPage {
                 if($config->getValue('networkType') == "CFREF"){
                     $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
                 }
-                else if($config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false)){
+                else if($config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false) && $config->getValue('networkName') != "I-CONNECTS"){
                     $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET') && $config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false)){
+                if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET') && $config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false)&& $config->getValue('networkName') != "I-CONNECTS"){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 }
                 if(strstr($project->getName(), "GIS-") !== false){
                     $tabbedPage->addTab(new ProjectKPI2Tab($project, $visibility));
                     $tabbedPage->addTab(new ProjectKPITab($project, $visibility));
                     //$tabbedPage->addTab(new ProjectKPISummaryTab($project, $visibility));
+                }
+                if(isExtensionEnabled("PMM")){
+                    $tabbedPage->addTab(new ProjectLIMSPmmTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
