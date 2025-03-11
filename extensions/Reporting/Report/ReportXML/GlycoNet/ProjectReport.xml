@@ -224,7 +224,7 @@
         <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Company/Organization Name|Cash|In-kind|Contact Full Name|Email|Other Details" sizes="|100|100|||" types="Text|Text|Text|Text|Text|Textarea" multiple="true" addText="Add Partner">
             <![CDATA[
                 <p><b>Partners:</b><br />
-                    List all <b>Partners Involved</b> (those providing matching): company/organization name, committed cash/in-kind contributions, contact full name, email, other details.
+                    List all Partners involved, those providing matching in cash and in-kind.
                 </p>
                 {$item}
             ]]>
@@ -232,7 +232,7 @@
         <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" labels="Full Name|Email|Institution/Organization/Company|Department (if applicable)|Role in the Project" sizes="||200||" multiple="true" addText="Add Collaborator">
             <![CDATA[
                 <p><b>Collaborators:</b><br />
-                    List all Collaborators Involved (not funded)</b>
+                    List all Collaborators involved in the project who are not funded by GlycoNet.</b>
                 </p>
                 {$item}
             ]]>
