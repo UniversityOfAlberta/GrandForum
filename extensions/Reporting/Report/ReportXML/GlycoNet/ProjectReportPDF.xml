@@ -232,6 +232,79 @@
                 </table>
             ]]>
         </Static>
+        <Static>
+            <![CDATA[
+                <h3>HQP Contribution Table</h3>
+                <table class='wikitable small' rules="all" frame="box" width="100%">
+                    <tr>
+                        <th rowspan='2'>Name</th>
+                        <th rowspan='2'>Title</th>
+                        <th rowspan='2'># Months<br />working on<br />GlycoNet Project<br />(1-12)</th>
+                        <th colspan='5'>%Salary/time<br />devoted to project</th>
+                        <th colspan='2'>Person Years</th>
+                    </tr>
+                    <tr>
+                        <th>Paid from<br />SSF funds</th>
+                        <th>Paid from<br />other funds</th>
+                        <th>Source of<br />non-SSF Funds</th>
+                        <th>Category of<br />non-SSF Funds</th>
+                        <th>$ Value of<br />non-SSF Funds</th>
+                        <th>Paid from<br />SSF funds</th>
+                        <th>Paid from<br />other funds</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td align='left'>{$user_level}</td>
+                ]]>
+            </Static>
+            <ReportItem id="hqp_months" type="IntegerReportItem" blobItem="HQP_MONTHS" blobSubItem="{$user_id}" max="100" min="1" size="4">
+                <![CDATA[
+                        <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_nce" type="IntegerReportItem" blobItem="HQP_NCE" blobSubItem="{$user_id}" max="100" min="0" size="4">
+                <![CDATA[
+                        <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_other" type="IntegerReportItem" blobItem="HQP_OTHER" blobSubItem="{$user_id}" max="100" min="0" size="4">
+                <![CDATA[
+                        <td align='center' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_source" type="TextReportItem" blobItem="HQP_SOURCE" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td align='left' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_category" type="SelectReportItem" blobItem="HQP_CATEGORY" blobSubItem="{$user_id}" options="Federal|Provincial|Industry|Foundation|University|International|Other">
+                <![CDATA[
+                        <td align='left' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_value" type="IntegerReportItem" blobItem="HQP_VALUE" blobSubItem="{$user_id}" size="6">
+                <![CDATA[
+                        <td align='right' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                        <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,HQP,HQP_NCE,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,HQP,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
+                        <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,HQP,HQP_OTHER,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,HQP,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
         <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}" rich="true" limit="200" recommended="true">
@@ -282,79 +355,6 @@
                 {$item}
             ]]>
         </ReportItem>
-        <Static>
-            <![CDATA[
-                <h3>HQP Contribution Table</h3>
-                <table class='wikitable small' rules="all" frame="box" width="100%">
-                    <tr>
-                        <th rowspan='2'>Name</th>
-                        <th rowspan='2'>Title</th>
-                        <th rowspan='2'># Months<br />working on<br />GlycoNet Project<br />(1-12)</th>
-                        <th colspan='5'>%Salary/time<br />devoted to project</th>
-                        <th colspan='2'>Person Years</th>
-                    </tr>
-                    <tr>
-                        <th>Paid from<br />NCE funds</th>
-                        <th>Paid from<br />other funds</th>
-                        <th>Source of<br />non-NCE Funds</th>
-                        <th>Category of<br />non-NCE Funds</th>
-                        <th>$ Value of<br />non-NCE Funds</th>
-                        <th>Paid from<br />NCE funds</th>
-                        <th>Paid from<br />other funds</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
-            <Static>
-                <![CDATA[
-                    <tr>
-                        <td>{$user_name}</td>
-                        <td align='left'>{$user_level}</td>
-                ]]>
-            </Static>
-            <ReportItem id="hqp_months" type="IntegerReportItem" blobItem="HQP_MONTHS" blobSubItem="{$user_id}" max="100" min="1" size="4">
-                <![CDATA[
-                        <td align='center'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_nce" type="IntegerReportItem" blobItem="HQP_NCE" blobSubItem="{$user_id}" max="100" min="0" size="4">
-                <![CDATA[
-                        <td align='center'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_other" type="IntegerReportItem" blobItem="HQP_OTHER" blobSubItem="{$user_id}" max="100" min="0" size="4">
-                <![CDATA[
-                        <td align='center' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_source" type="TextReportItem" blobItem="HQP_SOURCE" blobSubItem="{$user_id}">
-                <![CDATA[
-                        <td align='left' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_category" type="SelectReportItem" blobItem="HQP_CATEGORY" blobSubItem="{$user_id}" options="Federal|Provincial|Industry|Foundation|University|International|Other">
-                <![CDATA[
-                        <td align='left' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_value" type="IntegerReportItem" blobItem="HQP_VALUE" blobSubItem="{$user_id}" size="6">
-                <![CDATA[
-                        <td align='right' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <Static>
-                <![CDATA[
-                        <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,BUDGET,HQP_NCE,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,BUDGET,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
-                        <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,BUDGET,HQP_OTHER,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,BUDGET,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
-                    </tr>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false" delete="true">
         <ReportItem id="cash_contributions" class="wikitable small" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">

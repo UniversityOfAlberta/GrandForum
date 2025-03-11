@@ -252,6 +252,7 @@
     <ReportSection id="milestones" type="EditableReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
         <ReportItem id="table" type="ProjectMilestoneTable">
             <![CDATA[
+                <p>In the text boxes below please expand on the information provided in the Milestones and Activities table. Please clearly indicate any changes, including the addition or modification of milestones/activities, course changes, project delays or abandoned activities. If a milestone and/or deliverable was abandoned, please describe why and the impact on the project. Please also describe any new deliverables and describe the impact on the project.</p>
                 {$item}<br />
                 <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a><br />
                 <small>(Opens in a new Tab)</small>
@@ -474,6 +475,104 @@
                 ]]>
             </Static>
             <Static>
+            <![CDATA[
+                <h3>HQP Contribution Table</h3>
+                <table class='wikitable hqp-budget'>
+                    <tr>
+                        <th rowspan='2'>Name</th>
+                        <th rowspan='2'>Title</th>
+                        <th rowspan='2'># Months<br />working on<br />GlycoNet Project<br />(1-12)</th>
+                        <th colspan='5'>%Salary/time<br />devoted to project*</th>
+                        <th colspan='2'>Person Years</th>
+                    </tr>
+                    <tr>
+                        <th>Paid from<br />SSF funds</th>
+                        <th>Paid from<br />other funds</th>
+                        <th>Source of<br />non-SSF Funds</th>
+                        <th>Category of<br />non-SSF Funds</th>
+                        <th>$ Value of<br />non-SSF Funds</th>
+                        <th>Paid from<br />SSF funds</th>
+                        <th>Paid from<br />other funds</th>
+                    </tr>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td align='center'>{$user_level}</td>
+                ]]>
+            </Static>
+            <ReportItem id="hqp_months" type="IntegerReportItem" blobItem="HQP_MONTHS" blobSubItem="{$user_id}" max="100" min="1" size="4">
+                <![CDATA[
+                        <td align='center' class='months'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_nce" type="IntegerReportItem" blobItem="HQP_NCE" blobSubItem="{$user_id}" max="100" min="0" size="4">
+                <![CDATA[
+                        <td align='center' class='nce'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_other" type="IntegerReportItem" blobItem="HQP_OTHER" blobSubItem="{$user_id}" max="100" min="0" size="4">
+                <![CDATA[
+                        <td align='center' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_source" type="TextReportItem" blobItem="HQP_SOURCE" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td align='center' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_category" type="SelectReportItem" blobItem="HQP_CATEGORY" blobSubItem="{$user_id}" options="Federal|Provincial|Industry|Foundation|University|International|Other">
+                <![CDATA[
+                        <td align='center' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_value" type="IntegerReportItem" blobItem="HQP_VALUE" blobSubItem="{$user_id}" size="6">
+                <![CDATA[
+                        <td align='center' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                        <td align='center' class='calc_nce'></td>
+                        <td align='center' class='calc_other'></td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <p>*For example, if a technician was devoting half of his/her salaried time to a GlycoNet project, and that time was paid for equally by NCE and external funds, then the "Paid from NCE funds" and "Paid from other funds" columns would each be 25%.</p>
+                <script type="text/javascript">
+                    var calcs = function(){
+                        var rows = $(".hqp-budget tbody tr");
+                        rows.each(function(i, el){
+                            var months = parseInt($(".months input", el).val());
+                            var nce = parseInt($(".nce input", el).val());
+                            var other = parseInt($(".other input", el).val());
+                            var nce_time = ((nce/12)/100*months);
+                            var other_time = ((other/12)/100*months);
+                            
+                            if(_.isNaN(nce_time)){ nce_time = ""; }
+                            if(_.isNaN(other_time)){ other_time = ""; }
+                            
+                            $(".calc_nce", el).html(nce_time.toLocaleString("en-CA", {minimumSignificantDigits: 3, maximumSignificantDigits: 3}));
+                            $(".calc_other", el).html(other_time.toLocaleString("en-CA", {minimumSignificantDigits: 3, maximumSignificantDigits: 3}));
+                        }); 
+                    };
+                    
+                    $(".hqp-budget input").change(calcs);
+                    $(".hqp-budget input").keyup(calcs);
+                    calcs();
+                </script>
+            ]]>
+        </Static>
+            <Static>
                 <![CDATA[
                     <div class='info'>HQP responses may be edited by the Project Leader, Network Investigators, and by the HQP themselves.</div>
                 ]]>
@@ -594,104 +693,6 @@
                 {$item}
             ]]>
         </ReportItem>
-        <Static>
-            <![CDATA[
-                <h3>HQP Contribution Table</h3>
-                <table class='wikitable hqp-budget'>
-                    <tr>
-                        <th rowspan='2'>Name</th>
-                        <th rowspan='2'>Title</th>
-                        <th rowspan='2'># Months<br />working on<br />GlycoNet Project<br />(1-12)</th>
-                        <th colspan='5'>%Salary/time<br />devoted to project*</th>
-                        <th colspan='2'>Person Years</th>
-                    </tr>
-                    <tr>
-                        <th>Paid from<br />NCE funds</th>
-                        <th>Paid from<br />other funds</th>
-                        <th>Source of<br />non-NCE Funds</th>
-                        <th>Category of<br />non-NCE Funds</th>
-                        <th>$ Value of<br />non-NCE Funds</th>
-                        <th>Paid from<br />NCE funds</th>
-                        <th>Paid from<br />other funds</th>
-                    </tr>
-                    <tbody>
-            ]]>
-        </Static>
-        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
-            <Static>
-                <![CDATA[
-                    <tr>
-                        <td>{$user_name}</td>
-                        <td align='center'>{$user_level}</td>
-                ]]>
-            </Static>
-            <ReportItem id="hqp_months" type="IntegerReportItem" blobItem="HQP_MONTHS" blobSubItem="{$user_id}" max="100" min="1" size="4">
-                <![CDATA[
-                        <td align='center' class='months'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_nce" type="IntegerReportItem" blobItem="HQP_NCE" blobSubItem="{$user_id}" max="100" min="0" size="4">
-                <![CDATA[
-                        <td align='center' class='nce'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_other" type="IntegerReportItem" blobItem="HQP_OTHER" blobSubItem="{$user_id}" max="100" min="0" size="4">
-                <![CDATA[
-                        <td align='center' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_source" type="TextReportItem" blobItem="HQP_SOURCE" blobSubItem="{$user_id}">
-                <![CDATA[
-                        <td align='center' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_category" type="SelectReportItem" blobItem="HQP_CATEGORY" blobSubItem="{$user_id}" options="Federal|Provincial|Industry|Foundation|University|International|Other">
-                <![CDATA[
-                        <td align='center' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_value" type="IntegerReportItem" blobItem="HQP_VALUE" blobSubItem="{$user_id}" size="6">
-                <![CDATA[
-                        <td align='center' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <Static>
-                <![CDATA[
-                        <td align='center' class='calc_nce'></td>
-                        <td align='center' class='calc_other'></td>
-                    </tr>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                    </tbody>
-                </table>
-                <p>*For example, if a technician was devoting half of his/her salaried time to a GlycoNet project, and that time was paid for equally by NCE and external funds, then the "Paid from NCE funds" and "Paid from other funds" columns would each be 25%.</p>
-                <script type="text/javascript">
-                    var calcs = function(){
-                        var rows = $(".hqp-budget tbody tr");
-                        rows.each(function(i, el){
-                            var months = parseInt($(".months input", el).val());
-                            var nce = parseInt($(".nce input", el).val());
-                            var other = parseInt($(".other input", el).val());
-                            var nce_time = ((nce/12)/100*months);
-                            var other_time = ((other/12)/100*months);
-                            
-                            if(_.isNaN(nce_time)){ nce_time = ""; }
-                            if(_.isNaN(other_time)){ other_time = ""; }
-                            
-                            $(".calc_nce", el).html(nce_time.toLocaleString("en-CA", {minimumSignificantDigits: 3, maximumSignificantDigits: 3}));
-                            $(".calc_other", el).html(other_time.toLocaleString("en-CA", {minimumSignificantDigits: 3, maximumSignificantDigits: 3}));
-                        }); 
-                    };
-                    
-                    $(".hqp-budget input").change(calcs);
-                    $(".hqp-budget input").keyup(calcs);
-                    calcs();
-                </script>
-            ]]>
-        </Static>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" delete="true">
         <ReportItem id="cash_contributions" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" sizes="|75|250||75|175" multiple="true" addText="Add Contribution">
