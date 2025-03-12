@@ -90,6 +90,11 @@ class UserCreate {
 	                            array('user_nationality' => $_POST['nationality']),
 	                            array('user_id' => EQ($wgUser->getId())));
 	    }
+	    if(isset($_POST['linkedin']) && $_POST['linkedin'] != ""){
+	        DBFunctions::update('mw_user',
+	                            array('user_linkedin' => $_POST['linkedin']),
+	                            array('user_id' => EQ($wgUser->getId())));
+	    }
         
         UserCreate::addNewUserPage($wgUser);
         DBFunctions::commit();
