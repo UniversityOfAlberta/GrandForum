@@ -162,7 +162,7 @@
         <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Company/Organization Name|Cash|In-kind|Contact Full Name|Email|Other Details" sizes="|100|100|||" types="Text|Text|Text|Text|Text|Textarea" multiple="true" addText="Add Partner">
             <![CDATA[
                 <p><b>Partners:</b><br />
-                    List all Partners involved, those providing matching in cash and in-kind.
+                    List all Partners involved, those providing matching in cash and in-kind.  For in-kind contributions, please provide the details for the nature of in-kind provided.
                 </p>
                 {$item}
             ]]>
@@ -485,7 +485,7 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <p>*For example, if a technician was devoting half of his/her salaried time to a GlycoNet project, and that time was paid for equally by NCE and external funds, then the "Paid from NCE funds" and "Paid from other funds" columns would each be 25%.</p>
+                <p>*For example, if a technician was devoting half of his/her salaried time to a GlycoNet project, and that time was paid for equally by SSF and external funds, then the "Paid from SSF funds" and "Paid from other funds" columns would each be 25%.</p>
                 <script type="text/javascript">
                     var calcs = function(){
                         var rows = $(".hqp-budget tbody tr");
@@ -665,7 +665,7 @@
                 <h3>In-Kind Contributions</h3>
                 {$item}
                 <small>*Add additional lines for different uses of funds from the same source</small>
-                <p>**Note: In addition to appearing in the tables above, <b>a Statement of Accounts for each non-NCE <u>cash</u> contribution should be emailed to Cécile McNeil (<a href='mailto:ccile@ualberta.ca'>ccile@ualberta.ca</a>)</b>. This document will be prepared by the financial admin office at each institution and will be sent to investigators for review.**</p>
+                <p>**Note: In addition to appearing in the tables above, <b>a Statement of Accounts for each non-SSF <u>cash</u> contribution should be emailed to Cécile McNeil (<a href='mailto:ccile@ualberta.ca'>ccile@ualberta.ca</a>)</b>. This document will be prepared by the financial admin office at each institution and will be sent to investigators for review.**</p>
             ]]>
         </ReportItem>
         <ReportItem id="eligible" type="Popup" title="What are eligible contributions?" text="
