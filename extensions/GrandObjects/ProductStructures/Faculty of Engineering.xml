@@ -816,24 +816,6 @@
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Dissemination>
-        <Dissemination type="Magazine article" status="">
-            <data>
-                <field label="Magazine Title" type="String">published_in</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-            <description>A popular interest periodical usually containing articles on a variety of topics, written by various authors in a non scholarly style or a trade publication, unlike a consumer publication, covers a specific topic for people who work in that particular field or industry.</description>
-            <authors label="Author"></authors>
-            <date label="Date"></date>
-        </Dissemination>
-        <Dissemination type="Newspaper article" status="">
-            <data>
-                <field label="Newspaper Title" type="String">published_in</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-            <description>Work consisting of a news item appearing in a general-interest newspaper or other general news periodical, containing information of current and timely interest in a field.</description>
-            <authors label="Author"></authors>
-            <date label="Date"></date>
-        </Dissemination>
         <Dissemination type="Report" status="">
             <data>
                 <field label="Institution" type="String">university</field>

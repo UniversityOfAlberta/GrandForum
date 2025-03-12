@@ -658,6 +658,139 @@
             ]]>
         </Static>
         
+        <!-- Data and Process -->
+        <Static>
+            <![CDATA[
+                <h2>Data and Process ({getUserPublicationCount(CYCLE_START, CYCLE_END, Data and Process)}) <a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Data and Process">Manage Data and Process</a></h2>
+                <table class='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="data" type="PersonProductsReportItemSet" category="Data and Process" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr><td>{$product_type}</td><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
+        
+        <!-- Review and Editing -->
+        <Static>
+            <![CDATA[
+                <h2>Review and Editing ({getUserPublicationCount(CYCLE_START, CYCLE_END, Review and Editing)}) <a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Review and Editing">Manage Review and Editing</a></h2>
+                <table class='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="reviewing" type="PersonProductsReportItemSet" category="Review and Editing" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr><td>{$product_type}</td><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
+        
+        <!-- Creative Work -->
+        <Static>
+            <![CDATA[
+                <h2>Creative Works ({getUserPublicationCount(CYCLE_START, CYCLE_END, Creative)}) <a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Creative">Manage Creative Works</a></h2>
+                <table class='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="creative" type="PersonProductsReportItemSet" category="Creative" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr><td>{$product_type}</td><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
+        
+        <!-- Dissemination -->
+        <Static>
+            <![CDATA[
+                <h2>Dissemination ({getUserPublicationCount(CYCLE_START, CYCLE_END, Dissemination)}) <a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Dissemination">Manage Dissemination</a></h2>
+                <table class='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="dissemination" type="PersonProductsReportItemSet" category="Dissemination" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr><td>{$product_type}</td><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
+        
+        <!-- Presentations -->
         <Static>
             <![CDATA[
                 <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)}) <span class='clicktooltip' title='The Presentations section lists any presentations given by the user during the reporting year.<br />
@@ -700,6 +833,8 @@
                 </tbody></table><br />
             ]]>
         </Static>
+        
+        <!-- Patents/Spin-Offs -->
         <Static>
             <![CDATA[
                 

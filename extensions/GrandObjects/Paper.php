@@ -35,6 +35,7 @@ class Paper extends BackboneModel{
     var $created_by = 0;
     var $ccv_id;
     var $bibtex_id;
+    var $orcid;
     var $reported = array();
     var $acceptance_date;
 
@@ -123,6 +124,39 @@ class Paper extends BackboneModel{
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
         self::$cache[$paper->bibtex_id] = &$paper;
+        return $paper;
+    }
+    
+    /**
+     * Returns a new Paper from the given orcid
+     * @param integer $orcid The id of the Paper
+     * @return Paper The Paper with the given orcid
+     */
+    static function newFromOrcid($orcid){
+        if(trim($orcid) == ""){
+            return new Paper(array()); 
+        }
+        if(isset(self::$cache[$orcid])){
+            return self::$cache[$orcid];
+        }
+        $me = Person::newFromWgUser();
+        $orcid = DBFunctions::escape($orcid);
+        $sql = "SELECT *
+                FROM grand_products
+                WHERE (orcid = '{$orcid}')
+                AND (access_id = '{$me->getId()}' OR access_id = 0)
+                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
+                LIMIT 1";
+        $data = DBFunctions::execSQL($sql);
+        $paper = new Paper($data);
+        
+        if(!$paper->canView()){
+            $paper = new Paper(array()); 
+        }
+        
+        self::$cache[$paper->id] = &$paper;
+        self::$cache[$paper->title] = &$paper;
+        self::$cache[$paper->orcid] = &$paper;
         return $paper;
     }
     
@@ -276,7 +310,7 @@ class Paper extends BackboneModel{
         else{
             $papers = array();
             $me = Person::newFromWgUser();
-            $sql = "SELECT id, category, type, title, date, status, authors, contributors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, date_created, acceptance_date
+            $sql = "SELECT id, category, type, title, date, status, authors, contributors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, orcid, date_created, acceptance_date
                     FROM `grand_products` p
                     WHERE 1";
             $sql .= "\nAND (access = '{$access}' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
@@ -598,6 +632,7 @@ class Paper extends BackboneModel{
             $this->access = $data[0]['access'];
             $this->ccv_id = $data[0]['ccv_id'];
             $this->bibtex_id = $data[0]['bibtex_id'];
+            $this->orcid = $data[0]['orcid'];
             $this->authors = $data[0]['authors'];
             $this->authorsWaiting = true;
             $this->contributors = $data[0]['contributors'];
@@ -636,6 +671,14 @@ class Paper extends BackboneModel{
      */
     function getBibTexId(){
         return $this->bibtex_id;
+    }
+    
+    /**
+     * Returns the orcid of this Paper
+     * @return string The orcid of this Paper
+     */
+    function getOrcid(){
+        return $this->orcid;
     }
     
     /**
@@ -1852,6 +1895,7 @@ class Paper extends BackboneModel{
                                                 'access' => $this->access,
                                                 'ccv_id' => $this->ccv_id,
                                                 'bibtex_id' => $this->bibtex_id,
+                                                'orcid' => $this->orcid,
                                                 'date_created' => EQ(COL('CURRENT_TIMESTAMP'))),
                                           true);
             
@@ -1947,7 +1991,8 @@ class Paper extends BackboneModel{
                                                 'deleted' => $this->deleted,
                                                 'access_id' => $this->access_id,
                                                 'access' => $this->access,
-                                                'bibtex_id' => $this->bibtex_id),
+                                                'bibtex_id' => $this->bibtex_id,
+                                                'orcid' => $this->orcid),
                                           array('id' => EQ($this->id)),
                                           array(),
                                           true);

@@ -455,6 +455,202 @@
             </If>
         </If>
         
+        <!-- Data and Process -->
+        <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Data and Process)},0)}">
+            <Static>
+                <![CDATA[
+                    <h2>Data and Process ({getUserPublicationCount(CYCLE_START, CYCLE_END, Data and Process)})</h2>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                ]]>
+            </Static>
+            <ReportItemSet id="data" type="PersonProductsReportItemSet" category="Data and Process" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <tr><td>
+                            {$item} 
+                    ]]>
+                </ReportItem>
+                <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                    <![CDATA[
+                            <b>({$product_type})</b> {$item}
+                        </td></tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </table>
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <ul>
+                ]]>
+            </Static>
+            <!-- Footnotes -->
+            <ReportItemSet id="data" type="PersonProductsReportItemSet" category="Data and Process" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Review and Editing -->
+        <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Review and Editing)},0)}">
+            <Static>
+                <![CDATA[
+                    <h2>Review and Editing ({getUserPublicationCount(CYCLE_START, CYCLE_END, Review and Editing)})</h2>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                ]]>
+            </Static>
+            <ReportItemSet id="reviewing" type="PersonProductsReportItemSet" category="Review and Editing" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <tr><td>
+                            {$item} 
+                    ]]>
+                </ReportItem>
+                <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                    <![CDATA[
+                            <b>({$product_type})</b> {$item}
+                        </td></tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </table>
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <ul>
+                ]]>
+            </Static>
+            <!-- Footnotes -->
+            <ReportItemSet id="reviewing" type="PersonProductsReportItemSet" category="Review and Editing" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Creative Work -->
+        <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Creative)},0)}">
+            <Static>
+                <![CDATA[
+                    <h2>Creative Works ({getUserPublicationCount(CYCLE_START, CYCLE_END, Creative)})</h2>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                ]]>
+            </Static>
+            <ReportItemSet id="creative" type="PersonProductsReportItemSet" category="Creative" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <tr><td>
+                            {$item} 
+                    ]]>
+                </ReportItem>
+                <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                    <![CDATA[
+                            <b>({$product_type})</b> {$item}
+                        </td></tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </table>
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <ul>
+                ]]>
+            </Static>
+            <!-- Footnotes -->
+            <ReportItemSet id="creative" type="PersonProductsReportItemSet" category="Creative" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Dissemination -->
+        <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Dissemination)},0)}">
+            <Static>
+                <![CDATA[
+                    <h2>Dissemination ({getUserPublicationCount(CYCLE_START, CYCLE_END, Dissemination)})</h2>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                ]]>
+            </Static>
+            <ReportItemSet id="dissemination" type="PersonProductsReportItemSet" category="Dissemination" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <tr><td>
+                            {$item} 
+                    ]]>
+                </ReportItem>
+                <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                    <![CDATA[
+                            <b>({$product_type})</b> {$item}
+                        </td></tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </table>
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <ul>
+                ]]>
+            </Static>
+            <!-- Footnotes -->
+            <ReportItemSet id="dissemination" type="PersonProductsReportItemSet" category="Dissemination" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+        </If>
+        
         <!-- Presentations -->
         <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="Presentations">
             <![CDATA[

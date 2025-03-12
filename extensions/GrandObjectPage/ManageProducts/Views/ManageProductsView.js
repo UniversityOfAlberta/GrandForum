@@ -907,7 +907,8 @@ ManageProductsView = Backbone.View.extend({
 	                
 	                var authorizeOrcid = function(){
 	                    if($.cookie('orcid') == undefined && $.cookie('access_token') == undefined){
-                            var url = "https://orcid.org/oauth/authorize?client_id=" + orcidId + "&response_type=code&scope=/read-limited&redirect_uri=" + document.location.origin + document.location.pathname;
+	                        var url = "https://orcid.org/oauth/authorize?client_id=" + orcidId + "&response_type=code&scope=/read-limited&redirect_uri=" + document.location.origin + document.location.pathname;
+                            //var url = "https://orcid.org/oauth/authorize?client_id=" + orcidId + "&response_type=code&scope=/read-limited&redirect_uri=" + document.location.origin + document.location.pathname;
                             var popup = window.open(url,'popUpWindow','height=600,width=500,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
                             var popupInterval = setInterval(function(){
                                 if(popup == null || popup.closed){
