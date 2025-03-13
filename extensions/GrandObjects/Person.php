@@ -4979,8 +4979,10 @@ class Person extends BackboneModel {
      * @return string This Person's pronouns
      */
     function getPronouns(){
+        global $config;
         $me = Person::newFromWgUser();
-        if($me->isAllowedToEditDemographics($this)){
+        if($me->isAllowedToEditDemographics($this) ||
+           ($config->getValue('networkName') != "FES" && $me->isLoggedIn())){
             return $this->pronouns;
         }
         return "";
