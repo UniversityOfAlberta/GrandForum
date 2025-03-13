@@ -173,12 +173,12 @@ function ShibUserLoadFromSession($user, $result)
 		    $wgUser = new User();
 	        return true;
 		}
+		$wgUser = $wgUserBefore; // Switch back to user
 		$user = $person->getUser();
 		$user->load();
 		//$wgAuth->existingUser = true;
 		//$wgAuth->updateUser($user); //Make sure password is nologin
-		//wfSetupSession();
-		$user->setCookies();
+		$wgRequest->getSession()->persist();
 		ShibAddGroups($user);
 		$wgUser = $user;
 		$request = RequestContext::getMain();

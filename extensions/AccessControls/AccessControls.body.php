@@ -3,6 +3,8 @@
 $publicPresent = false;
 $egAlwaysAllow = array();
 
+use MediaWiki\MediaWikiServices;
+
   /** 
    * Run any initialization code needed by the extension.
    */
@@ -520,6 +522,7 @@ function preventUnauthorizedTransclusionsOnSave( $editPage, $text, $section, &$e
 //Always returns true (to continue hook processing)
 //Adapted from PageSecurity extension (regex for transclusions)
 function performActionOnTransclusion(&$text, &$error, $isSave){
+    global $wgUser;
   $pattern = '@{{(.+?)(\|.*?)?}}@is';
   $offset = 0;
   while (preg_match($pattern, $text, $matches, PREG_OFFSET_CAPTURE, $offset)) {
@@ -527,7 +530,7 @@ function performActionOnTransclusion(&$text, &$error, $isSave){
     $transclusion_text = trim($matches[1][0]);
     $transclusion_title = Title::newFromDBkey($transclusion_text);
 
-    if ($transclusion_title !== null && !$transclusion_title->userCanRead()) {
+    if ($transclusion_title !== null && !MediaWikiServices::getInstance()->getPermissionManager()->userCan('read', $wgUser, $transclusion_title)) {
       if ($isSave){
 	$error = '<p class="error">You do not have permission to access transcluded article '.$transclusion_text.'.</p>';
 	return true;
