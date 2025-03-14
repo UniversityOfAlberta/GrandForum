@@ -492,7 +492,7 @@ class ReportItemCallback {
         }
         
         usort($evals, function($a, $b){
-            return ($a['id'] >= $b['id']);
+            return $a['id'] - $b['id'];
         });
         
         $ret = "";
@@ -542,7 +542,7 @@ class ReportItemCallback {
         }
         
         usort($evals, function($a, $b){
-            return ($a['id'] >= $b['id']);
+            return $a['id'] - $b['id'];
         });
         
         $groups = array('Design' => array(),
@@ -729,7 +729,7 @@ class ReportItemCallback {
         }
         
         usort($evals, function($a, $b){
-            return ($a['id'] >= $b['id']);
+            return $a['id'] - $b['id'];
         });
         
         $ret = "";

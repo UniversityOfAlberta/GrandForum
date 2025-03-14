@@ -3196,7 +3196,7 @@ class Person extends BackboneModel {
             $relations[] = $relation;
         }
         usort($relations, function($a, $b){
-            return (ZERO_DATE($a->getEndDate(), EOT) < ZERO_DATE($b->getEndDate(), EOT));
+            return strcmp(ZERO_DATE($a->getEndDate(), EOT), ZERO_DATE($b->getEndDate(), EOT));
         });
         return $relations;
     }

@@ -95,7 +95,7 @@ class ElsevierJournal extends Journal {
             }
         }
         usort($journals, function($a, $b){
-            return ($a->similarity < $b->similarity);
+            return ($b->similarity - $a->similarity);
         });
         return $journals;     
     }

@@ -116,10 +116,10 @@ class IncrementReportItem extends SelectReportItem {
             $floatA = floatval($a);
             $floatB = floatval($b);
             if($floatA == $floatB){
-                return ($a > $b);
+                return floatval($a) - floatval($b);
             }
             else{
-                return (floatval($a) > floatval($b));
+                return floatval($a) - floatval($b);
             }
         });
 	    return $options;
