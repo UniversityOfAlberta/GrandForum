@@ -84,7 +84,7 @@
     <ReportSection id="instructions" type="ReportSection" name="Instructions">
         <Static>
             <![CDATA[
-                <p><b>Deadline: April 30, 2025</b></p>
+                <p><b>Deadline: April 20, 2025</b></p>
                 <p><b>Before completing the report:</b></p>
                 <ul>
                     <li>Update the personal information on your Forum profile</li>
@@ -279,6 +279,7 @@
             <ReportItem id="enhanced_companies" type="MultiText" blobItem="ENHANCED_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Details about any new technologies adopted or developed|Upgrades or expansions in facilities that support growth|Revenue Growth|Other Details" types="Text|Textarea|Textarea|Text|Textarea" sizes="|200|200||200" multiple="true">
                 <![CDATA[
                     <h3 style='font-weight:normal;'>Companies Enhanced</h3>
+                    <small>Companies that recorded a growth in revenue and/or science & technology related jobs</small>
                     {$item}
                 ]]>
             </ReportItem>
