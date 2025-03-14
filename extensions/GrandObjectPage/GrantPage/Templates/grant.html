@@ -25,12 +25,6 @@
             <td id="copi"></td>
         </tr>
     <% } %>
-    <% if(this.model.grantAward.get('id') != 0){ %>
-    <tr>
-        <td class="label">Grant Award:</td>
-        <td><a href="<%= this.model.grantAward.get('url') %>"><%= this.model.grantAward.get('application_title') %></a></td>
-    </tr>
-    <% } %>
     <% if(sponsor != ""){ %>
     <tr>
         <td class="label">Sponsor:</td>

@@ -1,7 +1,6 @@
 GrantView = Backbone.View.extend({
 
     person: null,
-    allContributions: null,
 
     initialize: function(){
         this.model.fetch({
@@ -12,9 +11,6 @@ GrantView = Backbone.View.extend({
         
         this.listenTo(this.model, 'change', function(){
             this.person = new Person({id: this.model.get('user_id')});
-            
-            this.model.getGrantAward();
-            this.listenTo(this.model.grantAward, 'sync', this.render);
             if(this.person.get('id') != 0){
                 var xhr = this.person.fetch();
                 $.when(xhr).then(this.render);
@@ -23,11 +19,6 @@ GrantView = Backbone.View.extend({
                 this.render();
             }
         }.bind(this));
-        
-        $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", function(response){
-            this.allContributions = response;
-        }.bind(this));
-        
         this.template = _.template($('#grant_template').html());
     },
     
@@ -76,18 +67,6 @@ GrantView = Backbone.View.extend({
         "change [name=exclude]": "save"
     },
     
-    renderContributions: function(){
-        if(this.allContributions != null && 
-           this.allContributions.length != null && 
-           this.model.get('contributions').length > 0){
-            this.$("#contributions").empty();
-            _.each(this.model.get('contributions'), function(cId){
-                var contribution = _.findWhere(this.allContributions, {id: cId.toString()});
-                this.$("#contributions").append("<li><a href='" + wgServer + wgScriptPath + "/index.php/Contribution:" + contribution.id + "'>" + contribution.name + "</a></li>");
-            }.bind(this));
-        }
-    },
-    
     renderCoPI: function(){
         var xhrs = new Array();
         var people = new Array();
@@ -115,7 +94,6 @@ GrantView = Backbone.View.extend({
         main.set('title', this.model.get('title'));
         $("#pageTitle").html("<a href='#'>Grants</a> > " + this.model.get('scientific_title'));
         this.$el.html(this.template(this.model.toJSON()));
-        this.renderContributions();
         this.renderCoPI();
         if(this.model.get('deleted') == true){
             this.$el.find("#delete").prop('disabled', true);

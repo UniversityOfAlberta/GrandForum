@@ -2,7 +2,6 @@ EditGrantView = Backbone.View.extend({
 
     person: null,
     timeout: null,
-    allContributions: null,
 
     initialize: function(){
         if(!this.model.isNew()){
@@ -38,10 +37,6 @@ EditGrantView = Backbone.View.extend({
             }
         });
         this.listenTo(this.model, 'change:copi', this.renderPortions.bind(this));
-        
-        $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", function(response){
-            this.allContributions = response;
-        }.bind(this));
         
         this.template = _.template($('#edit_grant_template').html());
         if(this.model.isNew()){
@@ -148,89 +143,6 @@ EditGrantView = Backbone.View.extend({
         if(end_date != "" && end_date != "0000-00-00"){
             this.$("#start_date").datepicker("option", "maxDate", end_date);
         }
-    },
-    
-    renderContributionsWidget: function(){
-        var model = this.model;
-        if(headerColor != "#333333"){
-            // Headers were changed, use this color
-            this.$("#contributions .sortable-header").css("background", headerColor);
-        }
-        else{
-            // Otherwise use the highlight color
-            this.$("#contributions .sortable-header").css("background", highlightColor);
-        }
-
-        if(this.allContributions == null || this.allContributions.length == 0){
-            return;
-        }
-
-        var contributions = this.model.get('contributions');
-        this.$("#contributions .sortable-widget").show();
-        
-        // Left Side (Current)
-        _.each(contributions, function(cId){
-            var contribution = _.findWhere(this.allContributions, {id: cId.toString()});
-            if(contribution != null){
-                this.$("#contributions #sortable1").append("<li data-id='" + contribution.id + "'>" + contribution.name + "</li>");
-            }
-        }.bind(this));
-        
-        // Right Side (Available)
-        _.each(this.allContributions, function(contribution){
-            if(!_.contains(contributions, contribution.id)){
-                this.$("#contributions #sortable2").append("<li data-id='" + contribution.id + "'>" + contribution.name + "</li>");
-            }
-        }.bind(this));
-    
-        // Advanced groups
-	    [{
-		    name: 'contributions',
-		    pull: true,
-		    put: true
-	    },
-	    {
-		    name: 'contributions',
-		    pull: true,
-		    put: true
-	    }].forEach(function (groupOpts, i) {
-	        if($("#contributions #sortable" + (i + 1)).length > 0){
-		        Sortable.create($("#contributions #sortable" + (i + 1))[0], {
-			        sort: (i != 1),
-			        group: groupOpts,
-			        animation: 150,
-			        onSort: function (e) {
-                        if($(e.target).attr('id') == 'sortable1'){
-                            var ids = new Array();
-                            $("li:visible", $(e.target)).each(function(i, el){
-                                ids.push(parseInt($(el).attr('data-id')));
-                            });
-                            model.set('contributions', ids);
-                        }
-                    }
-		        });
-		    }
-	    });
-	    
-	    var changeFn = function(){
-	        var value = this.$("#contributions .sortable-search input").val().trim();
-	        var lower = value.toLowerCase();
-	        var showElements = new Array();
-	        var hideElements = new Array();
-	        $("#contributions #sortable2 li").each(function(i, el){
-	            if($(el).text().toLowerCase().indexOf(lower) !== -1 || value == ""){
-	                showElements.push(el);
-	            }
-	            else{
-	                hideElements.push(el);
-	            }
-	        });
-	        $(showElements).show();
-	        $(hideElements).hide();
-	    };
-	    
-	    this.$("#contributions .sortable-search input").change(changeFn.bind(this));
-	    this.$("#contributions .sortable-search input").keyup(changeFn.bind(this));
     },
     
     renderCoapplicantsWidget: function(){
@@ -352,7 +264,6 @@ EditGrantView = Backbone.View.extend({
 
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
-        this.renderContributionsWidget();
         this.renderCoapplicants();
         //this.renderPortions();
         this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 2});
