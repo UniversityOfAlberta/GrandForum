@@ -463,36 +463,3 @@ HTML.TagIt = function(view, attr, options){
     view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
     return el;
 }
-
-HTML.Switcheroo = function(view, attr, options){
-    var switcheroo = new Switcheroo(options);
-    var switcherooView = new SwitcherooView({model: switcheroo});
-    var el = switcherooView.render();
-    
-    var index = attr.indexOf('.');
-    var subName = attr.substr(index+1);
-
-    $(el).attr('name', HTML.Name(attr));
-    view.events['change input[name=' + options.name + ']'] = function(e){
-        var current = switcherooView.switcheroo().getValue();
-        var newItems = Array();
-        var index = attr.indexOf('.');
-        var subName = attr.substr(index+1);
-        for(cId in current){
-            var c = current[cId];
-            var tuple = {};
-            tuple[subName] = c;
-            if(options.objs != undefined && options.objs[c] != undefined){
-                newItems.push(options.objs[c]);
-            }
-            else{
-                newItems.push(tuple);
-            }
-        }
-        var field = attr.substr(0, index);
-        eval("view.model.set({" + field + ": newItems}, {silent:true});");
-    };
-    view.undelegate('change', 'input[name=' + options.name + ']');
-    view.delegate('change', 'input[name=' + options.name + ']', view.events['change input[name=' + options.name + ']']);
-    return el;
-}

@@ -218,24 +218,6 @@ EditGrantView = Backbone.View.extend({
         });
     },
     
-    /*renderCoapplicantsWidget: function(){
-        var left = _.pluck(this.model.get('coapplicants'), 'fullname');
-        var right = _.difference(this.allPeople.pluck('fullName'), left);
-        var objs = [];
-        this.allPeople.each(function(p){
-            objs[p.get('fullName')] = {id: p.get('id'),
-                                       name: p.get('name'),
-                                       fullname: p.get('fullName')};
-        });
-        var html = HTML.Switcheroo(this, 'coapplicants.fullname', {name: 'Co-Applicant',
-                                                                   left: left,
-                                                                   right: right,
-                                                                   objs: objs
-                                                                  });
-        this.$("#coapplicants").html(html);
-        createSwitcheroos();
-    },*/
-    
     renderCoapplicants: function(){
         if(this.allPeople != null && this.allPeople.length > 0){
             this.renderCoapplicantsWidget();

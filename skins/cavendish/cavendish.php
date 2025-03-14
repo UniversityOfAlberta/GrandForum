@@ -496,7 +496,7 @@ class CavendishTemplate extends QuickTemplate {
 		                $("#bodyContent").animate({
 		                    'left': '30px'
 		                }, 200, 'swing', function(){
-		                    jsPlumb.repaintEverything();
+		                    // Run re-render functions
 		                });
                         sideToggled = 'in';
                         $.cookie('sideToggled', 'in', {expires: 30});
@@ -512,7 +512,7 @@ class CavendishTemplate extends QuickTemplate {
 		                $("#bodyContent").animate({
 		                    'left': '230px'
 		                }, 200, 'swing', function(){
-		                    jsPlumb.repaintEverything();
+		                    // Run re-render functions
 		                });
                         sideToggled = 'out';
                         $.cookie('sideToggled', 'out', {expires: 30});
