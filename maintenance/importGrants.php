@@ -21,10 +21,10 @@ foreach($lines as $line){
         $requestedValue = trim($csv[16]); // Total Requested Value
         $initialValue = trim($csv[17]); // Initial Total Award Value
         $activatedDate = trim($csv[18]); //Award Activate Date
-        $proposalBegin = trim($csv[21]); // Proposal Begin Date
-        $proposalEnd = trim($csv[22]); // Proposal End Date
-        $awardBegin = trim($csv[23]); // Award_Begin_Date
-        $awardEnd = trim($csv[24]); // Award_End_Date
+        $proposalBegin = trim($csv[22]); // Proposal Begin Date
+        $proposalEnd = trim($csv[23]); // Proposal End Date
+        $awardBegin = trim($csv[24]); // Award_Begin_Date
+        $awardEnd = trim($csv[25]); // Award_End_Date
         
         if($status == "Awarded"){
             $person = Person::newFromEmployeeId($empid);

@@ -9,7 +9,7 @@
     <input id="deleteCheck" type="checkbox" /> I have read and understand the implications of the above statement.
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
-<div id="doiDialog" style="display:none;" title="Add From DOI">
+<div id="doiDialog" style="display:none;" title="Import from DOI">
     <p>You can import a single publication from a DOI (Digital Object Identifier). If the "overwrite" option is selected, previously uploaded publications with the same title and type will be updated.  Overwriting will typically only add information, and not change existing fields that already have data.</p>
     <p><b>Note:</b> After importing, double check that the publications contain the correct data, especially authors.  If the author is known to the system, they will have a green background when editing, if they don't appear green, then you will need to manually correct this.</p>
     <b>DOI:</b> <input type="text" width="20" name="doi" placeholder="10.1000/182" />
@@ -18,8 +18,9 @@
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="orcidDialog" style="display:none;" title="Import From ORCID">
-    <p>Importing Publications from ORCID will import all works with a valid BibTeX citation.  After clicking the "Import" button, you will be asked to login to your ORCID account and allow the FOS Forum access to your account.  Once this has been done, your works will automatically get imported as Publications in the Forum.  If the "overwrite" option is selected, previously uploaded publications with the same title and type will be updated.  Overwriting will typically only add information, and not change existing fields that already have data.</p>
-    <p><b>Note:</b> Please review carefully the data imported from ORCID, since there is a wide variance in the data quality across ORCID profiles.  After importing, double check that the publications contain the correct data, especially authors.  If the author is known to the system, they will have a green background when editing, if they don't appear green, then you will need to manually correct this.</p><br />
+    <p>Importing outputs from ORCID will first import all works with a valid BibTeX citation and will then import all other works which do not have a BiBTeX citation. After clicking the "Import" button, you will be asked to login to your ORCID account and allow AIMS access to your account.  Once this has been done, your works will automatically get imported as Outputs in AIMS.  If the "overwrite" option is selected, previously uploaded outputs with the same title and type will be updated.  Overwriting will typically only add information, and not change existing fields that already have data.</p>
+    <p><b>Note:</b> Please review carefully the data imported from ORCID, since there is a wide variance in the data quality across ORCID profiles.  After importing, double check that the outputs contain the correct data, especially authors.  If the author is known to the system, they will have a green background when editing, if they don't appear green, then you will need to manually correct this.</p>
+    <p><b>Note:</b> Any ORCID work with the "Other" type may not import correctly so double check that they are imported with the correct output category.</p>
     <p><small>ORCID is an independent non-profit organization that provides a persistent identifier – an ORCID iD – that distinguishes you from other researchers and a mechanism for linking your research outputs and activities to your iD. ORCID is integrated into many systems used by publishers, funders, institutions, and other research-related services. Learn more at <a href="https://orcid.org/" target="_blank">orcid.org</a>.</small></p>
     <br /><b>Overwrite existing <%= productsTerm.toLowerCase().pluralize() %>?</b><br />
     <input type="radio" id="orcid_overwrite" name="orcid_overwrite" value="yes" style="vertical-align:middle;" /> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" id="orcid_overwrite" name="orcid_overwrite" value="" style="vertical-align:middle;" checked="checked" /> No
@@ -100,13 +101,13 @@
     <% } else { %>
         <button id="addProductButton">Add <%= productsTerm %></button>
     <% } %>
-    <button id="addFromDOIButton">Add From DOI</button>
+    <button id="addFromDOIButton">Import from DOI</button>
     <!--button id="uploadCCVButton">Upload CCV</button-->
     <button id="importBibTexButton">Import BibTeX</button>
     &nbsp;
     &nbsp;
     <% if(orcidId != ""){ %>
-        <!--button id="importOrcidButton" style="height: 27px;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" />&nbsp;Import ORCID</button-->
+        <button id="importOrcidButton" style="height: 27px;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" />&nbsp;Import ORCID</button>
     <% } %>
     <% if(productStructure.categories['Activity'] != undefined && 
           productStructure.categories['Activity'].types['Meeting'] != undefined){ %>

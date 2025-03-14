@@ -204,35 +204,6 @@
             <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
         </Publication>
 
-        <Publication type="Magazine/Newspaper Article" ccv_id="0cc2796367394f13990bef926491ff02" ccv_name="Magazine Entries" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
-            <title ccv_id="2af09f337e40411190cfb577833fe747" ccv_name="Article Title"></title>
-            <statuses ccv_id="e3e576dacc494c8e867c0e57f4ddf292" ccv_name="Publishing Status">
-                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
-                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
-                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
-                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
-                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
-                <status>Rejected</status>
-            </statuses>
-            <data>
-                <field label="Acceptance Rate" type="String">acceptance_ratio</field>
-                <field ccv_id="86860b08d0c74c079c73a31d91e15da1" ccv_name="Magazine Name" label="Magazine Name" type="String">published_in</field>
-                <field ccv_id="c54799b5e36a415da615b4b637eb3ec8" ccv_name="Volume" label="Volume" type="String">volume</field>
-                <field ccv_id="5e0185b2646f49e18de6c00592774940" ccv_name="Issue" label="Issue" type="String">number</field>
-                <field label="Number of pages" type="String">ms_pages</field>
-                <field ccv_id="934cc966420041649511eb4232cdd36a" ccv_name="Page Range" label="Page Range" type="Pages">pages</field>
-                <field ccv_id="e85a3b334765402e900235548862df47" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
-                <field label="ISBN" type="String">isbn</field>
-                <field label="ISSN" type="String">issn</field>
-                <field label="DOI" type="String">doi</field>
-                <field ccv_id="56b229f58f6749c3902dfcc33854ed36" ccv_name="URL" label="URL" type="String">url</field>
-                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-            </data>
-            <acceptance_date label="Acceptance Date"></acceptance_date>
-            <date ccv_id="6b626ef9b271446e9338a21390f4d4fd" ccv_name="Year" label="Publication Date"></date>
-            <authors ccv_id="06b9551cd0e8452a80d9c3cc2540ab3c" ccv_name="Authors"></authors>
-        </Publication>
-
         <Publication type="Masters Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
             <statuses ccv_id="fa5c5a2edf324a05b3e572b240aa218a" ccv_name="Publishing Status">
@@ -845,24 +816,6 @@
             <authors label="Author"></authors>
             <date label="Date"></date>
         </Dissemination>
-        <Dissemination type="Magazine article" status="">
-            <data>
-                <field label="Magazine Title" type="String">published_in</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-            <description>A popular interest periodical usually containing articles on a variety of topics, written by various authors in a non scholarly style or a trade publication, unlike a consumer publication, covers a specific topic for people who work in that particular field or industry.</description>
-            <authors label="Author"></authors>
-            <date label="Date"></date>
-        </Dissemination>
-        <Dissemination type="Newspaper article" status="">
-            <data>
-                <field label="Newspaper Title" type="String">published_in</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-            <description>Work consisting of a news item appearing in a general-interest newspaper or other general news periodical, containing information of current and timely interest in a field.</description>
-            <authors label="Author"></authors>
-            <date label="Date"></date>
-        </Dissemination>
         <Dissemination type="Report" status="">
             <data>
                 <field label="Institution" type="String">university</field>
@@ -889,6 +842,34 @@
             <description>A collection of related web pages containing text, images, videos and/or other digital assets that are addressed relative to a common Uniform Resource Locator (URL). A website is hosted on at least one web server, accessible via a network such as the Internet or a private local area network.</description>
             <authors label="Author"></authors>
             <date label="Date"></date>
+        </Dissemination>
+        <Dissemination type="Magazine/Newspaper Article" ccv_id="0cc2796367394f13990bef926491ff02" ccv_name="Magazine Entries" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+            <title ccv_id="2af09f337e40411190cfb577833fe747" ccv_name="Article Title"></title>
+            <statuses ccv_id="e3e576dacc494c8e867c0e57f4ddf292" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field label="Acceptance Rate" type="String">acceptance_ratio</field>
+                <field ccv_id="86860b08d0c74c079c73a31d91e15da1" ccv_name="Magazine Name" label="Magazine Name" type="String">published_in</field>
+                <field ccv_id="c54799b5e36a415da615b4b637eb3ec8" ccv_name="Volume" label="Volume" type="String">volume</field>
+                <field ccv_id="5e0185b2646f49e18de6c00592774940" ccv_name="Issue" label="Issue" type="String">number</field>
+                <field label="Number of pages" type="String">ms_pages</field>
+                <field ccv_id="934cc966420041649511eb4232cdd36a" ccv_name="Page Range" label="Page Range" type="Pages">pages</field>
+                <field ccv_id="e85a3b334765402e900235548862df47" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
+                <field label="ISBN" type="String">isbn</field>
+                <field label="ISSN" type="String">issn</field>
+                <field label="DOI" type="String">doi</field>
+                <field ccv_id="56b229f58f6749c3902dfcc33854ed36" ccv_name="URL" label="URL" type="String">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+            <acceptance_date label="Acceptance Date"></acceptance_date>
+            <date ccv_id="6b626ef9b271446e9338a21390f4d4fd" ccv_name="Year" label="Publication Date"></date>
+            <authors ccv_id="06b9551cd0e8452a80d9c3cc2540ab3c" ccv_name="Authors"></authors>
         </Dissemination>
         <Dissemination type="Other" status="">
             <data>
