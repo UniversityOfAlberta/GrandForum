@@ -30,7 +30,6 @@ class GrantFloatToString extends AbstractMigration
         $table = $this->table('grand_grants');
         $table->changeColumn('total', 'string', array('limit' => 16))
               ->changeColumn('adjusted_amount', 'string', array('limit' => 16))
-              ->changeColumn('adjusted_amount', 'string', array('limit' => 16))
               ->changeColumn('funds_before', 'string', array('limit' => 16))
               ->changeColumn('funds_after', 'string', array('limit' => 16))
               ->update();
