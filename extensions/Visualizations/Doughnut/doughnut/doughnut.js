@@ -335,7 +335,7 @@ $.fn.doughnut = function(data, clickable, fn){
                     $("#" + id).width("100%");
                     var maxWidth = $("#" + id).width();
                     setInterval(function(){
-                        if($("#" + id).is(":visible") && maxWidth != $("#" + id).width()){
+                        if($("#" + id).is(":visible") && Math.round(maxWidth) != Math.round($("#" + id).width())){
                             response[0].width = $("#" + id).width();
                             response[0].height = response[0].width*0.50;
                             $("#" + id).empty();
@@ -361,7 +361,7 @@ $.fn.doughnut = function(data, clickable, fn){
         create(holder, data);
         var maxWidth = width;
         setInterval(function(){
-            if($("#" + id).is(":visible") && maxWidth != $("#" + id).width()){
+            if($("#" + id).is(":visible") && Math.round(maxWidth) != Math.round($("#" + id).width())){
                 maxWidth = $("#" + id).width();
                 $("#" + id).empty();
                 create(holder, data, clickable, fn);
