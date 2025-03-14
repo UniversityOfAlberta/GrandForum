@@ -1216,11 +1216,18 @@ class Paper extends BackboneModel{
         if($issn == "N/A" || $issn == ""){
             $issn = "-";
         }
-        $data = DBFunctions::execSQL("SELECT * FROM `grand_journals` 
-                                      WHERE (`issn` = '{$issn}' OR `eissn` = '{$issn}' OR `title` = '{$journal_title}')
-                                      AND `ranking_numerator` = '{$numerator}'
-                                      AND `ranking_denominator` = '{$denominator}'
-                                      LIMIT 1");
+        $cacheId = "journal_".md5("{$issn}_{$journal_title}_{$numerator}_{$denominator}");
+        if(!Cache::exists($cacheId)){
+            $data = DBFunctions::execSQL("SELECT * FROM `grand_journals` 
+                                          WHERE (`issn` = '{$issn}' OR `eissn` = '{$issn}' OR `title` = '{$journal_title}')
+                                          AND `ranking_numerator` = '{$numerator}'
+                                          AND `ranking_denominator` = '{$denominator}'
+                                          LIMIT 1");
+            Cache::store($cacheId, $data);
+        }
+        else{
+            $data = Cache::fetch($cacheId);
+        }
         if(count($data) > 0){
             return $data[0];
         }
