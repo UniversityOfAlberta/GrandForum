@@ -813,7 +813,7 @@ abstract class AbstractReport extends SpecialPage {
         if(!DBFunctions::DBWritable()){
             $writable = "false";
         }
-        $wgOut->addScript("<link rel='stylesheet' type='text/css' href='$wgServer$wgScriptPath/extensions/Reporting/Report/style/report.css?".filemtime(dirname(__FILE__)."/style/report.css")."'></style>");
+        $wgOut->addScript("<link rel='stylesheet' type='text/css' href='$wgServer$wgScriptPath/extensions/Reporting/Report/style/report.css?".filemtime(dirname(__FILE__)."/style/report.css")."' />");
         $wgOut->addScript("<script type='text/javascript'>
             var dbWritable = {$writable};
         </script>");
