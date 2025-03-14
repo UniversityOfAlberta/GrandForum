@@ -118,19 +118,16 @@
         'GrandObjectPage',
         'MailingList',
         'AddMember',
-        //'AddHqp',
+        'AddHqp',
         'EditMember',
         'ManagePeople',
         'IndexTables',
-        //'GradDB',
         'Reporting',
         'GlobalSearch',
         'Impersonation',
         'Visualizations',
-        'Duplicates',
         'ProjectEvolution',
         'CCVExport',
-        //'CrossForumExport',
         //'QASummary'
     ));
     
