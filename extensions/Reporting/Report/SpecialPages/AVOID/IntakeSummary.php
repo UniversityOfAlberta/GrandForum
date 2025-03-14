@@ -223,7 +223,11 @@ class IntakeSummary extends SpecialPage {
                            "Interact" => "Interact",
                            "DietAndNutrition" => "Diet And Nutrition",
                            "Sleep" => "Sleep",
-                           "FallsPrevention" => "Falls Prevention");
+                           "FallsPrevention" => "Falls Prevention",
+                           "ChronicDiseases" => "Chronic Diseases",
+                           "Memory" => "Memory",
+                           "Pain" => "Pain",
+                           "UrinaryIncontinence" => "Urinary Incontinence");
     
     function __construct() {
         global $config;
@@ -572,16 +576,18 @@ class IntakeSummary extends SpecialPage {
     
         $resource_data = DBFunctions::select(array('grand_data_collection'),
                                              array('*'),
-                                             array('user_id' => $person->getId()));
+                                             array('user_id' => $person->getId()),
+                                             array('page' => 'ASC'));
+
 
         // Topics
-        foreach(self::$topics as $key => $topic){
+        foreach(self::$topics as $key1 => $topic){
             $html .= "<td style='padding:0;' valign='top'>";
+            $html .= "<table class='wikitable' style='border-collapse: collapse; table-layout: auto; width: 100%; margin-top:0px; margin-bottom:0;'>";
             foreach($resource_data as $page){
                 $page_name = trim($page["page"]);
                 $page_data = json_decode($page["data"], true);
-                if($page_name == $key){
-                    $html .= "<table class='wikitable' style='border-collapse: collapse; table-layout: auto; width: 100%; margin-top:0px; margin-bottom:0;'>";
+                if($page_name == $key1){
                     $totalTime = 0;
                     foreach($page_data as $key => $value){
                         if(strlen($key) < 4){
@@ -605,10 +611,13 @@ class IntakeSummary extends SpecialPage {
                     $seconds = $totalTime % 60;
                     $value = str_pad($hours,2,"0", STR_PAD_LEFT).":".str_pad($minutes,2,"0", STR_PAD_LEFT).":".str_pad($seconds,2,"0", STR_PAD_LEFT);
                     $html .= "<tr><td>Time:</td> <td align='right'>{$value}</td></tr>\n";
-                    $html .= "</table>";
-                    break;
+                }
+                else if(strstr($page_name, "$key1-") !== false){
+                    $value = @$page_data['count'];
+                    $html .= "<tr><td>".str_replace("$key1-", "", $page_name).":</td> <td align='right'>{$value}</td></tr>\n";
                 }
             }
+            $html .= "</table>";
             $html .= "</td>";
         }
             
