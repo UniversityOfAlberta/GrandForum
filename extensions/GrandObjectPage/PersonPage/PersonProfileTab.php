@@ -532,13 +532,13 @@ EOF;
                             <td><input type='text' size='30' name='wos' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getWOS())."' /></td>
                         </tr>";
             $this->html .=  "<tr>
-                                    <td align='right'><b>Twitter Account:</b></td>
-                                    <td><input type='text' name='twitter' placeholder='@twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
-                                </tr>
-                                <tr>
-                                    <td align='right'><b>Phone Number:</b></td>
-                                    <td><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
-                                </tr>";
+                            <td align='right'><b>Twitter Account:</b></td>
+                            <td><input type='text' name='twitter' placeholder='@twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Phone Number:</b></td>
+                            <td><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
+                        </tr>";
         }
         $this->html .= "</table></td>";
     }
