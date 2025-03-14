@@ -40,7 +40,7 @@ class Bibliography // {{{
    * Constructs a Bibliiography object from data in a given filename
    * @param $filename The filename to read from
    */
-  public function Bibliography($filename="") // {{{
+  public function __construct($filename="") // {{{
   {
     if($filename != ""){
         if (!isset($filename))
