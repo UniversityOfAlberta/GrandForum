@@ -19,7 +19,6 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         // Memebers can only change 'assigned' -> 'done'
         var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
 
-        
         var isMemberAllowed = !isPLAllowed && (this.model.get('status') == 'Assigned' || this.model.get('status') == 'Done');
         
 
