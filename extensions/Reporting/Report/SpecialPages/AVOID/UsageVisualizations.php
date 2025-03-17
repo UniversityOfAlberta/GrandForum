@@ -101,6 +101,7 @@ class UsageVisualizations extends SpecialPage {
         // PageViews
         $pageViewsDC = DataCollection::newFromPage('EducationResources-Hit');
         foreach($pageViewsDC as $dc){
+            if($this->exclude($dc->userId)){ continue; }
             foreach(array_unique($dc->getData()['log']) as $date){
                 $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
                 if(isset($pageviews1[$date1])){
@@ -110,6 +111,7 @@ class UsageVisualizations extends SpecialPage {
         }
         $pageViewsDC = DataCollection::newFromPage('Programs-Hit');
         foreach($pageViewsDC as $dc){
+            if($this->exclude($dc->userId)){ continue; }
             foreach(array_unique($dc->getData()['log']) as $date){
                 $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
                 if(isset($pageviews2[$date1])){
@@ -119,6 +121,7 @@ class UsageVisualizations extends SpecialPage {
         }
         $pageViewsDC = DataCollection::newFromPage('CommunityPrograms-Hit');
         foreach($pageViewsDC as $dc){
+            if($this->exclude($dc->userId)){ continue; }
             foreach(array_unique($dc->getData()['log']) as $date){
                 $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
                 if(isset($pageviews3[$date1])){
@@ -128,6 +131,7 @@ class UsageVisualizations extends SpecialPage {
         }
         $pageViewsDC = DataCollection::newFromPage('AskAnExpert-Hit');
         foreach($pageViewsDC as $dc){
+            if($this->exclude($dc->userId)){ continue; }
             foreach(array_unique($dc->getData()['log']) as $date){
                 $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
                 if(isset($pageviews4[$date1])){
@@ -150,13 +154,13 @@ class UsageVisualizations extends SpecialPage {
                             <option $daySelected>Day</option>
                             <option $monthSelected>Month</option>
                          </select>
-                         <h1 style='text-align: center;'>Unique Logins per {$unit}</h1>
+                         <h1 id='logins_header' style='text-align: center;'>Unique Logins per {$unit}</h1>
                          <div id='logins'></div>
                          
-                         <h1 style='text-align: center;'>Registrations per {$unit}</h1>
+                         <h1 id='registrations_header' style='text-align: center;'>Registrations per {$unit}</h1>
                          <div id='registrations'></div>
                          
-                         <h1 style='text-align: center;'>Page Views per {$unit}</h1>
+                         <h1 id='pageviews_header' style='text-align: center;'>Page Views per {$unit}</h1>
                          <div id='pageviews'></div>
         <script type='text/javascript'>
             $('#groupBy').change(function(){
@@ -229,6 +233,11 @@ class UsageVisualizations extends SpecialPage {
             groups.add({id: '3', content: 'Ask an Expert'});
             
             pageViewsChart.setGroups(groups);
+            
+            if(networkFullName == 'AVOID Australia'){
+                $('#registrations_header').hide();
+                $('#registrations').hide();
+            }
 
         </script>");
     }
