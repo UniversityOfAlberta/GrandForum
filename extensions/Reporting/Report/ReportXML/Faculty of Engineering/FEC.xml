@@ -376,6 +376,7 @@
                     <table class='wikitable' width='100%'>
                         <tr>
                             <th style='width: 25%;'>Student</th>
+                            <th style='width: 1%; white-space:nowrap;'>FT / PT</th>
                             <th style='width: 5%;'>Year<br />Admitted</th>
                             <th style='width: 25%;'>Degree<br />Sought</th>
                             <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
@@ -391,8 +392,12 @@
                             <td rowspan='2'>{$user_name}</td>
                     ]]>
                 </Static>
-                
-                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}">
+                <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}_{$hqp_rel_position}" options="FT|PT" width="3.5em">
+                        <![CDATA[
+                            <td>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}_{$hqp_rel_position}">
                     <![CDATA[
                             <td align='center'>{substr({getExtra(start_date)},0,4)}</td>
                             <td>{getExtra(position)}</td>
@@ -406,7 +411,7 @@
                         </tr>
                     ]]>
                 </Static>
-                <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" height="48px">
+                <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}_{$hqp_rel_position}" height="48px">
                     <![CDATA[
                         <tr data-id='{$user_id}'><td colspan='4'>
                             Name of Scholarships, if any<br />
@@ -421,17 +426,6 @@
                 ]]>
             </Static>
         </ReportItemSet>
-        <Static>
-            <![CDATA[
-                <script type='text/javascript'>
-                    $('table textarea').on("keyup paste", function(){
-                        var id = $(this).closest('tr').attr('data-id');
-                        console.log($("tr[data-id=" + id + "]").not(this));
-                        $("tr[data-id=" + id + "] textarea").not(this).val($(this).val());
-                    });
-                </script>
-            ]]>
-        </Static>
         
         <!-- HQP Publications -->
         <Static>

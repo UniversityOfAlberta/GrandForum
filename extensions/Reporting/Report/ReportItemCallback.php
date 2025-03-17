@@ -1947,6 +1947,9 @@ class ReportItemCallback {
     
     function ifCond($condition, $result){
         $value = false;
+        if($condition == ""){
+            $condition = "false";
+        }
         @eval("\$value = ($condition);");
         if($value){
             return $result;
