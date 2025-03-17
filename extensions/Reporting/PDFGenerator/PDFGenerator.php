@@ -371,7 +371,7 @@ abstract class PDFGenerator {
 		    </script>";
         }
         else{
-            require_once(dirname(__FILE__) . '/../../../Classes/dompdf/dompdf_config.inc.php');
+            require_once(dirname(__FILE__) . '/../../../config/dompdf_config.inc.php');
             global $dompdfOptions;
             $dompdf = new Dompdf\Dompdf($dompdfOptions);
         }
