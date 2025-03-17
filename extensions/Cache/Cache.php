@@ -12,14 +12,14 @@ abstract class Cache {
 	
 	static function store($key, $data, $time=432000){
 	    global $wgSitename;
-	    if(function_exists('apcu_store')){
+	    if(function_exists('apcu_store') && PHP_SAPI != 'cli'){
             apcu_store($wgSitename.$key, $data, $time);
         }
 	}
 	
 	static function fetch($key){
 	    global $wgSitename;
-	    if(function_exists('apcu_fetch')){
+	    if(function_exists('apcu_fetch') && PHP_SAPI != 'cli'){
             return apcu_fetch($wgSitename.$key);
         }
         return "";
@@ -27,7 +27,7 @@ abstract class Cache {
 	
 	static function delete($key, $prefix=false){
 	    global $wgSitename;
-	    if(function_exists('apcu_delete') && class_exists('APCUIterator')){
+	    if(function_exists('apcu_delete') && class_exists('APCUIterator') && PHP_SAPI != 'cli'){
 	        if($prefix){
 	            $it = new APCUIterator('/^'.str_replace(")", '\)', str_replace("(", '\(', $wgSitename)).$key.'/', APC_ITER_KEY);
 	            foreach($it as $k){
@@ -42,7 +42,7 @@ abstract class Cache {
 	
 	static function exists($key){
 	    global $wgSitename;
-	    if(function_exists('apcu_exists')){
+	    if(function_exists('apcu_exists') && PHP_SAPI != 'cli'){
             return apcu_exists($wgSitename.$key);
         }
         return false;

@@ -1,12 +1,9 @@
 <?php
 
-use MediaWiki\MediaWikiServices;
-
 class CreateUserAPI extends API{
 
     function __construct(){
         $this->addPOST("wpName",true,"The User Name of the user to add","UserName");
-        $this->addPOST("wpPassword",false,"The Password of the user to add","Password");
         $this->addPOST("wpEmail",false,"The User's email address","me@email.com");
         $this->addPOST("wpRealName",false,"The User's real name","My Real Name");
         $this->addPOST("wpFirstName",false,"The User's first name","My First Name");
@@ -49,22 +46,10 @@ class CreateUserAPI extends API{
                                 array('actor_name' => EQ($_POST['wpName'])));
             $creator = self::getCreator($me);
             GrandAccess::$alreadyDone = array();
-            $passwd = (isset($_POST['wpPassword'])) ? $_POST['wpPassword'] : PasswordFactory::generateRandomPasswordString();
             $tmpUser = User::createNew($_POST['wpName'], array('real_name' => $_POST['wpRealName'], 
                                                                'email' => $_POST['wpEmail']));
             $lastHTML = $wgOut->getHTML();
             if($tmpUser != null){
-                if(isset($_POST['wpPassword'])){
-                    DBFunctions::update('mw_user',
-                                        array('user_password' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString()),
-                                        array('user_id' => EQ($tmpUser->getId())));
-                }
-                else{
-                    DBFunctions::update('mw_user',
-                                        array('user_newpassword' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString(),
-                                              'user_newpass_time' => date('YmdHis')),
-                                        array('user_id' => EQ($tmpUser->getId())));
-                }
                 UserCreate::afterCreateUser($tmpUser);
                 $wgOut->clearHTML();
                 $wgOut->addHTML($lastHTML);

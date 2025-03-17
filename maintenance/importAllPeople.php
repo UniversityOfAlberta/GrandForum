@@ -70,7 +70,6 @@
             if(count($data) == 0){
                 echo "Need to create: {$firstName} {$lastName} <{$ccid}@ualberta.ca>\n";
                 $user = User::createNew($username, array('real_name' => $realname, 
-                                                         'password' => User::crypt(mt_rand()), 
                                                          'email' => $ccid."@ualberta.ca"));
                 $row = DBFunctions::select(array('mw_user'),
                                            array('*'),
