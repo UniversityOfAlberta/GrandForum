@@ -9,7 +9,7 @@
                         <td valign='top'>
                             <table width="100%" class='wikitable nospacing' cellpadding='0' cellspacing='0'>
                                 <tr><td><span class='header'>Name:</span>&nbsp;<b>{$user_name}</b></td></tr>
-                                <tr><td><span class='header'>Rank:</span>&nbsp;<b>{$user_level}</b></td></tr>
+                                <tr><td><span class='header'>Rank:</span>&nbsp;<b>{$user_title}</b></td></tr>
                                 <tr><td><span class='header'>Department(s):</span>&nbsp;<b>{$user_depts}</b></td></tr>
                                 <tr><td><span class='header'>Graduate Students(Supervised or Co-supervised):</span>&nbsp;<b>{$user_grad_count}</td></b></tr>
                                 <tr><td><span class='header'>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</span>&nbsp;<b>{$user_fellow_count}</b></td></tr>

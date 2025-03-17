@@ -108,7 +108,7 @@
                     <tr data-fecid="{getExtra()}">
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
-                        <td>{$user_level}</td>
+                        <td style='white-space:nowrap;'>{$user_title}</td>
                 ]]>
             </Static>
             <ReportItem id="previous2_download" type="PDFReportItem" reportType="FECpdf" year="{$2_years_ago}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
@@ -688,7 +688,7 @@
                     <tr data-fecid="{getExtra()}">
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
-                        <td>{$user_level}</td>
+                        <td style='white-space:nowrap;'>{$user_title}</td>
                         <td>{$user_sub_roles}</td>
                 ]]>
             </Static>
@@ -1134,7 +1134,7 @@
                     <tr data-fecid="{getExtra()}">
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
-                        <td>{$user_level}</td>
+                        <td style='white-space:nowrap;'>{$user_title}</td>
                 ]]>
             </Static>
             <ReportItem id="previous2_download" type="PDFReportItem" reportType="FECpdf" year="{$2_years_ago}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
@@ -2190,7 +2190,7 @@
                     <tr data-fecid="{getExtra()}" {if("{get(pdf)}" == "", class='remove')}>
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
-                        <td>{$user_level}</td>
+                        <td style='white-space:nowrap;'>{$user_title}</td>
                 ]]>
             </Static>
             <ReportItem id="download" type="PDFReportItem" reportType="SabbaticalApplication" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">

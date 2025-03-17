@@ -24,7 +24,7 @@
                         </tr>
                         <tr>
                             <td><b>Rank:&nbsp;</b></td>
-                            <td>{$user_level}</td>
+                            <td>{$user_title}</td>
                         </tr>
                         <tr>
                             <td><b>Department:&nbsp;</b></td>

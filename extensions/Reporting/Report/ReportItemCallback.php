@@ -117,6 +117,7 @@ class ReportItemCallback {
             "user_uni_start" => "getUserUniStart",
             "user_uni_end" => "getUserUniEnd",
             "user_level" => "getUserLevel",
+            "user_title" => "getUserTitle",
             "user_dept" => "getUserDept",
             "user_uni" => "getUserUni",
             "user_depts" => "getUserDepts",
@@ -1117,6 +1118,42 @@ class ReportItemCallback {
             $university = $person->getUniversity();
             return $university['position'];
         }
+    }
+    
+    function getUserTitle($date=null){
+        if($date == null){
+            $date = CYCLE_END;
+        }
+        $person = Person::newFromId($this->reportItem->personId);
+        $person->getFecPersonalInfo();
+        if($person->isRoleOn("ATS", $date) && $person->isATSEC1($date)){
+            return "Assistant Lecturer";
+        }
+        else if($person->isRoleOn("ATS", $date) && $person->isATSEC2($date)){
+            return "Associate Lecturer";
+        }
+        else if($person->isRoleOn("ATS", $date) && $person->isATSEC3($date)){
+            return "Full Lecturer";
+        }
+        else if($person->isAssistantProfessor($date)){
+            return "Assistant Professor";
+        }
+        else if($person->isAssociateProfessor($date)){
+            return "Associate Professor";
+        }
+        else if($person->isProfessor($date)){
+            return "Full Professor";
+        }
+        else if($person->isFSO2($date)){
+            return "FSO II";
+        }
+        else if($person->isFSO3($date)){
+            return "FSO III";
+        }
+        else if($person->isFSO4($date)){
+            return "FSO IV";
+        }
+        return $this->getUserlevel();
     }
     
     function getUserDept(){

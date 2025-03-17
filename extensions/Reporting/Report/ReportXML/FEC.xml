@@ -129,7 +129,7 @@
                 <div style='display:inline-block;width:59%;'>
                     <table class='wikitable'>
                         <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
-                        <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
+                        <tr><td><b>Rank:</b></td><td>{$user_title}</td></tr>
                         <tr><td><b>Department(s):</b></td><td>{$user_depts}</td></tr>
                         <tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
                         <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</td></tr>

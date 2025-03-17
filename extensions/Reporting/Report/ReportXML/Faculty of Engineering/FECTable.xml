@@ -36,7 +36,7 @@
                     <tr data-id="{$user_id}">
                         <td class="casenumber" style='white-space:nowrap;'>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
-                        <td>{$user_level}</td>
+                        <td style='white-space:nowrap;'>{$user_title}</td>
                         <td>{$user_depts}</td>
                 ]]>
             </Static>
