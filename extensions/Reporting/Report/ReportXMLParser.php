@@ -722,14 +722,6 @@ class ReportXMLParser {
             if($this->report->project != null){
                 $item->setProjectId($this->report->project->getId());
             }
-            if(isset($attributes->id)){
-                $item->setId("{$attributes->id}");
-            }
-            else{
-                if($type != "StaticReportItem"){
-                    $this->errors[] = "{$type} does not contain an id";
-                }
-            }
             if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){
                 $section->deleteReportItem($item);
             }
@@ -757,6 +749,15 @@ class ReportXMLParser {
             if(isset($value['extra'])){
                 $item->setExtra($value['extra']);
             }
+            if(isset($attributes->id)){
+                $item->setId("{$attributes->id}");
+            }
+            else{
+                if($type != "StaticReportItem"){
+                    $this->errors[] = "{$type} does not contain an id";
+                }
+            }
+            
             if(isset($attributes->blobType)){
                 $t = AbstractReport::blobConstant($attributes->blobType);
                 $item->setBlobType($t);

@@ -20,6 +20,7 @@ abstract class AbstractReportItem {
     var $projectId;
     var $milestoneId;
     var $productId;
+    var $str; // Used in StringReportItemSets
     var $extra;
     var $extraIndex;
     var $private;
@@ -45,6 +46,7 @@ abstract class AbstractReportItem {
         $this->projectId = 0;
         $this->milestoneId = 0;
         $this->productId = 0;
+        $this->str = "";
         $this->extra = array();
         $this->private = false;
         $this->encrypt = false;

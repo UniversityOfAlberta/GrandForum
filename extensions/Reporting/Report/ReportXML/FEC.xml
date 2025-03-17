@@ -409,7 +409,7 @@
                 ]]>
             </Static>
             <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
-                <ReportItem id="cosupervisors" type="Text" default="{$user_cosupervisors}" blobType="BLOB_TEXT" blobItem="COSUPERVISORS" blobSubItem="{$user_id}" width="200px" placeholder="Co-supervisors...">
+                <ReportItem id="cosupervisors" type="Text" default="{$user_cosupervisors}" blobType="BLOB_TEXT" blobItem="COSUPERVISORS" blobSubItem="{$user_id}_{$hqp_rel_position}" width="200px" placeholder="Co-supervisors...">
                     <![CDATA[
                         <tr data-id='{$user_id}'>
                             <td rowspan='2' valign='top'>
@@ -429,7 +429,7 @@
                         )}
                     ]]>
                 </Static>
-                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}_{$hqp_rel_position}">
                     <![CDATA[
                             <td align='center' {get(style)}>
                                 {time2date({getExtra(start)}, M Y)}
@@ -450,7 +450,7 @@
                         </tr>
                     ]]>
                 </Static>
-                <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" height="48px">
+                <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}_{$hqp_rel_position}" height="48px">
                     <![CDATA[
                         <tr data-id='{$user_id}'><td colspan='3'>
                             Comments <span class='clicktooltip' title='Here you can provide information about awards/scholarships that the student has received, or their new postitions if they have comleted their studies, or other noteworthy accomplishments.'>&#9432;</span><br />
@@ -465,17 +465,6 @@
                 ]]>
             </Static>
         </ReportItemSet>
-        <Static>
-            <![CDATA[
-                <script type='text/javascript'>
-                    $('table textarea').on("keyup paste", function(){
-                        var id = $(this).closest('tr').attr('data-id');
-                        console.log($("tr[data-id=" + id + "]").not(this));
-                        $("tr[data-id=" + id + "] textarea").not(this).val($(this).val());
-                    });
-                </script>
-            ]]>
-        </Static>
         
         <!-- HQP Publications -->
         <Static>
