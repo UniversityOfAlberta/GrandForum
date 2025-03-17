@@ -192,7 +192,7 @@ class AdminDataCollectionAustralia extends SpecialPage{
             $wgOut->addHTML("<table id='data' class='wikitable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>
                                 <thead>
                                     <tr style='background:#EEEEEE;'>
-                                        <th colspan='9'>User Data</th>
+                                        <th colspan='10'>User Data</th>
                                         ".self::usageHeaderTop()."
                                     </tr>
                                     <tr>
@@ -205,6 +205,7 @@ class AdminDataCollectionAustralia extends SpecialPage{
                                         <th>Submitted 3Month Survey</th>
                                         <th>Intake Survey Date</th>
                                         <th>3Month Survey Date</th>
+                                        <th>Points</th>
                                         ".self::usageHeaderBottom()."
                                     </tr>
                                 </thead>
@@ -258,6 +259,7 @@ class AdminDataCollectionAustralia extends SpecialPage{
                 <td>{$submitted3}</td>
                 <td>{$date}</td>
                 <td>{$date3}</td>
+                <td>".Gamification::calculatePoints($person)."</td>
                 ".self::usageRow($person)."
                 </tr>");
             }
