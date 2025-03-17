@@ -81,6 +81,7 @@ class UsageVisualizations extends SpecialPage {
         // Logins
         $loggedinDC = DataCollection::newFromPage('loggedin');
         foreach($loggedinDC as $dc){
+            if($this->exclude($dc->userId)){ continue; }
             foreach($dc->getData()['log'] as $date){
                 $date1 = isset($_GET['groupByMonth']) ? substr($date,0,7)."-01" : $date;
                 if(isset($logins[$date1])){
