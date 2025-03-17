@@ -254,38 +254,10 @@ abstract class AbstractReportItem {
     // be overridden to do some proccessing before hand, or handle uploads etc.
     function save(){
         if(isset($_POST[$this->getPostId()])){
-            /*if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
-               $_POST[$this->getPostId().'_ignoreConflict'] != "true"){
-                $default = $this->getAttr('default', '');
-                if(isset($_POST['oldData'][$this->getPostId()]) && $default != '' && ($_POST['oldData'][$this->getPostId()] == $default){
-                    // Default value, save the changed version
-                    $this->setBlobValue($_POST[$this->getPostId()]);
-                    return array();
-                }
-                if(isset($_POST['oldData'][$this->getPostId()]) && is_array($_POST['oldData'][$this->getPostId()])){
-                    // Don't handle arrays, but save anyways
-                    $this->setBlobValue($_POST[$this->getPostId()]);
-                    return array();
-                }
-                if(isset($_POST['oldData'][$this->getPostId()]) &&
-                   $this->stripBlob($_POST['oldData'][$this->getPostId()]) == $this->stripBlob($_POST[$this->getPostId()])){
-                   // Don't save, but also don't display an error
-                   return array();
-                }
-                else if(isset($_POST['oldData'][$this->getPostId()]) && 
-                   $this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($this->getBlobValue()) &&
-                   $this->stripBlob($_POST[$this->getPostId()]) != $this->stripBlob($this->getBlobValue())){
-                    if($this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($_POST[$this->getPostId()])){
-                        // Conflict in blob values
-                        return array(array('postId' => $this->getPostId(), 
-                                           'value' => $this->stripBlob($this->getBlobValue()),
-                                           'postValue' => $this->stripBlob($_POST[$this->getPostId()]),
-                                           'oldValue' => $this->stripBlob($_POST['oldData'][$this->getPostId()]),
-                                           'diff' => @htmlDiffNL(str_replace("\n", "\n ", $this->getBlobValue()), str_replace("\n", "\n ", $_POST[$this->getPostId()]))));
-                    }
-                }
-            }*/
-            $this->setBlobValue($_POST[$this->getPostId()]);
+            if(md5(serialize($_POST[$this->getPostId()])) !== 
+               md5(serialize($this->getBlobValue()))){
+                $this->setBlobValue($_POST[$this->getPostId()]);
+            }
         }
         return array();
     }
