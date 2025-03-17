@@ -112,7 +112,7 @@ function WHERE_AND($value){
 define('zull', 'null'.rand(0,1000)); // zull (zero date null) Special value for NULL in the database, mostly for use with ZERO_DATE
 
 function ZERO_DATE($value, $return="0000-00-00 00:00:00"){
-    if($value == null || $value == "0000-00-00 00:00:00" || $value == "0000-00-00"){
+    if($value == null || $value == "0000-00-00 00:00:00" || $value == "0000-00-00" || strtotime($value) === false){
         return $return;
     }
     return $value;

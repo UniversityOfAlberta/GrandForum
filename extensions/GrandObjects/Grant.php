@@ -421,8 +421,8 @@ class Grant extends BackboneModel {
             'seq_no' => $this->seq_no,
             'prog_description' => $this->prog_description,
             'request' => $this->request,
-            'start_date' => time2date($this->getStartDate(), "Y-m-d"),
-            'end_date' => time2date($this->getEndDate(), "Y-m-d"),
+            'start_date' => substr($this->getStartDate(),0,10),
+            'end_date' => substr($this->getEndDate(),0,10),
             'deleted' => $this->deleted,
             'url' => $this->getUrl(),
             'exclude' => $this->exclude
