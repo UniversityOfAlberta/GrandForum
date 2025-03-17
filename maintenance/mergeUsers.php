@@ -3,13 +3,13 @@
 require_once('commandLine.inc');
 $wgUser = User::newFromId(1);
 
-if(count($argv) != 2){
+if(count($argv) != 3){
     echo "Must provide two ids: php mergeUsers.php <duplicateUser> <goodUser>\n";
     exit;
 }
 
-$hqp = Person::newFromId($argv[0]);
-$dupHQP = Person::newFromId($argv[1]);
+$hqp = Person::newFromId($argv[1]);
+$dupHQP = Person::newFromId($argv[2]);
 if($hqp != null && $dupHQP != null &&
    $hqp->getId() != 0 && $dupHQP->getId() != 0){
    echo "{$hqp->getName()} -> {$dupHQP->getName()}\n";
