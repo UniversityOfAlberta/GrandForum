@@ -1,4 +1,3 @@
-Classes/dompdf/lib/fonts/log.htm
 behat/behat.yml
 behat/bin/behat
 behat/bin/selenium.jar
@@ -11,9 +10,6 @@ behat/vendor
 Photos/*.jpg
 images/*
 /cache/
-Classes/dompdf/lib/fonts/log.htm
-Classes/dompdf/lib/fonts/*.afm.php
-Classes/dompdf/lib/fonts/*.ufm.php
 extensions/Cache/cache/
 Path.php
 Credentials.php
