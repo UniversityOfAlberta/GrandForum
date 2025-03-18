@@ -74,6 +74,7 @@ class AdminDataCollectionAustralia extends SpecialPage{
             $html .= "<table class='wikitable' style='border-collapse: collapse; table-layout: auto; width: 100%; margin-top:0px; margin-bottom:0;'>";
             $totalTime = 0;
             $hits = 0;
+            $files = array();
             foreach($resource_data as $page){
                 $page_name = trim($page["page"]);
                 $page_data = json_decode($page["data"], true);
@@ -97,6 +98,10 @@ class AdminDataCollectionAustralia extends SpecialPage{
                         }
                     }
                 }
+                else if(strstr($page_name, "$key-") !== false){
+                    $value = @$page_data['count'];
+                    $files[] = "<tr><td>".str_replace("$key-", "", $page_name)."</td> <td align='right'>{$value}</td></tr>\n";
+                }
             }
             $hours = floor($totalTime / 3600);
             $minutes = floor(($totalTime / 60) % 60);
@@ -109,6 +114,7 @@ class AdminDataCollectionAustralia extends SpecialPage{
             if($value != "00:00:00"){
                 $html .= "<tr><td>Time:</td> <td align='right'>{$value}</td></tr>\n";
             }
+            $html .= implode("\n", $files);
             $html .= "</table>";
             $html .= "</td>";
         }
