@@ -171,7 +171,9 @@ class AdminDataCollectionAustralia extends SpecialPage{
             if($person->isRoleAtLeast(STAFF)){
                 continue;
             }
-            $people[] = $person;
+            if($person->isRole("GroupA") || $person->isRole("GroupB") || $person->isRole("GroupC")){
+                $people[] = $person;
+            }
         }
         $wgOut->addHTML("<style>
             div#adminDataCollectionMessages {

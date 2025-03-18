@@ -15,10 +15,14 @@ class UsageVisualizations extends SpecialPage {
     }
     
     function exclude($userId){
+        global $config;
         $person = Person::newFromId($userId);
         if($person->getId() == 0){ return true; }
         $postal_code = AdminDataCollection::getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
         if($person->isRoleAtLeast(STAFF) || $postal_code == "CFN"){
+            return true;
+        }
+        if($config->getValue('networkFullName') == "AVOID Australia" && (!$person->isRole("GroupA") && !$person->isRole("GroupB") && !$person->isRole("GroupC"))){
             return true;
         }
         return false;
