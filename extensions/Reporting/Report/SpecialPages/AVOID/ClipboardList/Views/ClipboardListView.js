@@ -83,7 +83,6 @@ ClipboardListView = Backbone.View.extend({
         for(var i = 0; i < keys.length; i++){
             var object = data[keys[i]];
             var category = object.Category;
-            console.log(category);
             var category_key = $("<div>" + category + "</div>").text().replaceAll(" ", "");
             if(newJSON.hasOwnProperty(category_key)){
                 newJSON[category_key].push(object);
