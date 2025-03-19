@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="FEC" name="ATS" pdfFiles="ATSpdf" year="{$user_ats_year}" startMonth="{substr({$user_ats_start_date},5,5)}" endMonth="{substr({$user_ats_end_date},5,5)}">
-
+    <ReportSection id="teaching">
+        <ReportItem id="instructions">
+            <![CDATA[
+                <style>
+                    .teaching_methods th:first-child, .teaching_methods th:last-child {
+                        width: 49%;
+                    }
+                </style>
+                <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$user_url}?tab=teaching&edit">Manage Teaching</a>
+                <b>Note:</b> Please review all courses listed during your evaluation period for accuracy and correctness. Make sure all classes taught are included or contact support if any are not listed below.<br />
+                Core course data has been imported, including course title and number, calendar hours, and actual number of students.<br />
+                In addition, please provide
+                <ol type="i">
+                    <li>the names of all instructors involved and their corresponding  percentage of course instruction; and</li>
+                    <li>your actual weekly average hours of contact (indicate if a reading course).</li>
+                </ol>
+                For multi-section courses, please indicate the course coordinator with an asterisk (*).
+            ]]>
+        </ReportItem>
+    </ReportSection>
 </Report>
 

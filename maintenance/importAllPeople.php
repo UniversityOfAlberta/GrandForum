@@ -30,6 +30,9 @@
         $hrDeptId = $csv[8];
         $hrDept = trim($csv[9]);
         $program = $csv[10];
+        $orcid = $csv[11];
+        $scopus = $csv[12];
+        $alex = $csv[13];
         
         if(strstr(strtoupper($hrDept), "SCI ") === false &&
            strstr(strtoupper($hrDept), "SC ") === false &&
@@ -87,17 +90,25 @@
         }
         
         if($person != null && $person->getId() != 0){
-            DBFunctions::update('mw_user',
-                                array('employee_id' => $emplid),
-                                array('user_id' => $person->getId()));
-                                
-            if(strstr(strtoupper($hrDept), "REHAB ") !== false){
-                // From Arts department, so wipe any previous university entries
-                DBFunctions::delete('grand_roles',
-                                    array('user_id' => $person->getId(),
-                                          'role' => HQP));
-                DBFunctions::delete('grand_user_university',
+            if($person->getEmployeeId() == ""){
+                DBFunctions::update('mw_user',
+                                    array('employee_id' => $emplid),
                                     array('user_id' => $person->getId()));
+            }
+            if($orcid != ""){
+                DBFunctions::update('mw_user',
+                                array('orcid' => $orcid),
+                                array('user_id' => $person->getId()));
+            }
+            if($scopus != ""){
+                DBFunctions::update('mw_user',
+                                array('sciverse_id' => $scopus),
+                                array('user_id' => $person->getId()));
+            }
+            if($alex != ""){
+                DBFunctions::update('mw_user',
+                                array('alex_id' => $alex),
+                                array('user_id' => $person->getId()));
             }
             
             if(count($person->getRoles(true)) == 0){

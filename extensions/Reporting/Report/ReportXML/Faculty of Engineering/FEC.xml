@@ -252,7 +252,7 @@
         </ReportItem-->
     </ReportSection>
     <ReportSection id="teaching" tooltip="TEACHING" name="Teaching" title="1. TEACHING" blobSection="FEC_TEACHING" type="EditableReportSection">
-        <Static>
+        <Static id="instructions">
             <![CDATA[
                 <style>
                     .teaching_methods th:first-child, .teaching_methods th:last-child {

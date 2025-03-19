@@ -6,15 +6,15 @@ global $wgUser;
 function fixAuthors($pub, $authors){
     $pub->authors = array();
     foreach($authors as $author){
-        if($author->author->orcid != ""){
-            $p = Person::newFromOrcid($author->author->orcid);
+        if($author->author->id != ""){
+            $p = Person::newFromAlexId($author->author->id);
         }
-        else{
-            $p = new LimitedPerson(array());
+        if($p->getId() == 0 && $author->author->orcid != ""){
+            $p = Person::newFromOrcid($author->author->orcid);
         }
         
         if($p->getId() != 0){
-            // ORCID located
+            // ORCID/OpenAlex located
             $pub->authors[] = $p;
         }
         else{
@@ -56,9 +56,16 @@ $alreadyImported = array();
 
 foreach($people as $person){
     $orcid = $person->getOrcid();
-    if($orcid != ""){
+    $alex = $person->getAlexId();
+    if($orcid != "" || $alex != ""){
         echo $person->getName()." ... \n";
-        $alex = json_decode(file_get_contents("https://api.openalex.org/works?filter=author.orcid:{$orcid},from_publication_date:".REPORTING_CYCLE_START.
+        if($person->getAlexId() != ""){
+            $query = "id:{$alex}";
+        }
+        else {
+            $query = "orcid:{$orcid}";
+        }
+        $alex = json_decode(file_get_contents("https://api.openalex.org/works?filter=author.{$query},from_publication_date:".REPORTING_CYCLE_START.
                                               "&sort=publication_year:desc&per-page=100&mailto=dwt@ualberta.ca"));
         foreach($alex->results as $result){
             $doi = trim($result->doi);
