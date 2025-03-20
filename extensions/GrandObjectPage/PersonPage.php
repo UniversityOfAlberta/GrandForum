@@ -18,7 +18,7 @@ class PersonPage {
         $me = Person::newFromUser($user);
         $person = Person::newFromName($title->getText());
         if($name == "HQP"){
-            $result = $user->isLoggedIn();
+            $result = $user->isRegistered();
         }
         if($me->isRole(HQP) || $me->isRole(INACTIVE)){
             $result = false;

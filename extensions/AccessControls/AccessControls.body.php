@@ -167,7 +167,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
   }
   
   // Check public sections of wiki page
-  if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action == 'read'){
+  if(!$user->isRegistered() && $title->getNamespace() >= 0 && $action == 'read'){
       $article = WikiPage::factory($title);
       if($article != null){
           $text = $article->getText();
@@ -178,7 +178,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
       }
   }
 
-  if($user->isLoggedIn() && $title->getNamespace() == NS_MAIN && $action == 'read'){
+  if($user->isRegistered() && $title->getNamespace() == NS_MAIN && $action == 'read'){
     // A logged in user should be able to read any page in the main namespace
     
     $result = true;
