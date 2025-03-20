@@ -138,11 +138,6 @@
                                                'ReviewResults'          => false,
                                                'AdminVisualizations'    => false));
     
-    // What social links to have in the top header
-    // should be an associative array with the index as the type of social network, and the value is the url
-    // Options: twitter, linkedin, flickr, youtube
-    $config->setValue("socialLinks", array());
-    
     // Associative array of other Forum instances that this one can import from
     $config->setValue("crossForumUrls", array("AGE-WELL"   => "https://forum.agewell-nce.ca/index.php/Special:CrossForumExport",
                                               "AI4Society" => "https://ai4society.ca/index.php/Special:CrossForumExport",

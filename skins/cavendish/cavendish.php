@@ -630,45 +630,7 @@ class CavendishTemplate extends QuickTemplate {
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
-            echo "<div style='display:none;' id='share_template'>";
-            foreach($config->getValue("socialLinks") as $social => $link){
-                $img = "";
-                $text = "";
-                switch($social){
-                    case 'flickr':
-                        $img = "glyphicons_social_35_flickr";
-                        $text = "Flickr";
-                        break;
-                    case 'twitter':
-                        $img = "glyphicons_social_31_twitter";
-                        $text = "Twitter";
-                        break;
-                    case 'facebook':
-                        $img = "glyphicons_social_30_facebook";
-                        $text = "Facebook";
-                        break;
-                    case 'vimeo':
-                        $img = "glyphicons_social_34_vimeo";
-                        $text = "Vimeo";
-                        break;
-                    case 'linkedin':
-                        $img = "glyphicons_social_17_linked_in";
-                        $text = "LinkedIn";
-                        break;
-                    case 'youtube':
-                        $img = "glyphicons_social_22_youtube";
-                        $text = "YouTube";
-                        break;
-                }
-                echo "<a class='changeImg highlights-text-hover' name='$img' href='$link' target='_blank'>
-	                        <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
-	                  </a>";
-	        }
-	        echo "</div>";
             echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip changeImg highlights-text-hover' target='_blank' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}question_mark_8x16.png' /></a>";
-            if(count($config->getValue("socialLinks")) > 0){
-	            echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg highlights-text-hover'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}share_16x16.png' />&nbsp;▼</a>";
-	        }
 	        if($wgUser->isRegistered()){
 		        $p = Person::newFromId($wgUser->getId());
 		        
