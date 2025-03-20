@@ -257,13 +257,8 @@ class UploadCCVAPI extends API{
             }
             if(!$uniFound && $hqp['institution'] != ""){
                 // University not Found, so add it
-                $otherId = DBFunctions::select(array('grand_provinces'),
-                                               array('id'),
-                                               array('province' => EQ('Other')));
-                $otherId = (isset($otherId[0])) ? $otherId[0]['id'] : 0;
                 DBFunctions::insert('grand_universities',
                                     array('university_name' => $hqp['institution'],
-                                          'province_id'     => $otherId,
                                           '`order`'    => 10001));
                 $university = DBFunctions::insertId();
             }
@@ -471,14 +466,8 @@ class UploadCCVAPI extends API{
             }
             if(!$uniFound && ($uniName != "")){
                 // University not Found, so add it
-                
-                $otherId = DBFunctions::select(array('grand_provinces'),
-                                               array('id'),
-                                               array('province' => EQ('Other')));
-                $otherId = (isset($otherId[0])) ? $otherId[0]['id'] : 0;
                 DBFunctions::insert('grand_universities',
                                     array('university_name' => $uniName,
-                                          'province_id'     => $otherId,
                                           '`order`'    => 10001));
                 $university = DBFunctions::select(array('grand_universities'),
                                                   array('university_id'),
@@ -601,14 +590,8 @@ class UploadCCVAPI extends API{
             }
             if(!$uniFound && ($uniName != "")){
                 // University not Found, so add it
-                
-                $otherId = DBFunctions::select(array('grand_provinces'),
-                                               array('id'),
-                                               array('province' => EQ('Other')));
-                $otherId = (isset($otherId[0])) ? $otherId[0]['id'] : 0;
                 DBFunctions::insert('grand_universities',
                                     array('university_name' => $uniName,
-                                          'province_id'     => $otherId,
                                           '`order`'    => 10001));
                 $university = DBFunctions::select(array('grand_universities'),
                                                   array('university_id'),

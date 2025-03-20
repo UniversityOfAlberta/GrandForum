@@ -13,8 +13,6 @@ class University extends BackboneModel {
     var $shortName;
     var $latitude;
     var $longitude;
-    var $color;
-    var $province;
     var $order;
     var $isDefault;
     
@@ -22,19 +20,9 @@ class University extends BackboneModel {
         if(isset($cache[$id])){
             return $cache[$id];
         }
-        $data = DBFunctions::select(array('grand_universities' => 'u', 
-                                          'grand_provinces' => 'p'),
-                                    array('u.*', 'p.province', 'p.color' => 'col'),
-                                    array('university_id' => EQ($id),
-                                          'province_id' => EQ(COL('p.id'))));
-        if(empty($data)){
-            $data = DBFunctions::select(array('grand_universities' => 'u', 
-                                              'grand_provinces' => 'p'),
-                                        array('u.*', 'p.province', 'p.color' => 'col'),
-                                        array('university_id' => EQ($id),
-                                              'u.province_id' => EQ(0),
-                                              'province' => EQ('Other')));
-        }
+        $data = DBFunctions::select(array('grand_universities'),
+                                    array('*'),
+                                    array('university_id' => EQ($id)));
         $university = new University($data);
         $cache[$id] = $university;
         return $university;
@@ -44,19 +32,9 @@ class University extends BackboneModel {
         if(isset($cache[$name])){
             return $cache[$name];
         }
-        $data = DBFunctions::select(array('grand_universities' => 'u', 
-                                          'grand_provinces' => 'p'),
-                                    array('u.*', 'p.province', 'p.color' => 'col'),
-                                    array('university_name' => EQ($name),
-                                          'province_id' => EQ(COL('p.id'))));
-        if(empty($data)){
-            $data = DBFunctions::select(array('grand_universities' => 'u', 
-                                              'grand_provinces' => 'p'),
-                                        array('u.*', 'p.province', 'p.color' => 'col'),
-                                        array('university_name' => EQ($name),
-                                              'u.province_id' => EQ(0),
-                                              'province' => EQ('Other')));
-        }
+        $data = DBFunctions::select(array('grand_universities'),
+                                    array('*'),
+                                    array('university_name' => EQ($name)));
         $university = new University($data);
         $cache[$name] = $university;
         return $university;
@@ -86,8 +64,6 @@ class University extends BackboneModel {
             $this->shortName = $row['short_name'];
             $this->latitude = $row['latitude'];
             $this->longitude = $row['longitude'];
-            $this->province = $row['province'];
-            $this->color = $row['col'];
             $this->order = $row['order'];
             $this->isDefault = $row['default'];
         }
@@ -99,7 +75,6 @@ class University extends BackboneModel {
                       'name' => $this->getName(),
                       'latitude' => $this->getLatitude(),
                       'longitude' => $this->getLongitude(),
-                      'color' => $this->getColor(),
                       'order' => $this->getOrder(),
                       'default' => $this->isDefault());
         return $json;
@@ -146,14 +121,6 @@ class University extends BackboneModel {
     
     function getLongitude(){
         return $this->longitude;
-    }
-    
-    function getProvince(){
-        return $this->province;
-    }
-    
-    function getColor(){
-        return $this->color;
     }
     
     function getOrder(){
