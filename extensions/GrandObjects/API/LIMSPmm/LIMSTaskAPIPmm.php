@@ -19,7 +19,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
         if(LIMSTaskPmm::isAllowedToCreate()){
             $task = new LIMSTaskPmm(array());
             $task->opportunity = $this->POST('opportunity');
-            $task->assignee = $this->POST('assignee')->id;
+            $task->assignees = $this->POST('assignees');
             $task->task = $this->POST('task');
             $task->dueDate = $this->POST('dueDate');
             $task->comments = $this->POST('comments');
@@ -35,7 +35,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
     function doPUT(){
         $task = LIMSTaskPmm::newFromId($this->getParam('id'));
         if($task->isAllowedToEdit()){
-            $task->assignee = $this->POST('assignee')->id;
+            $task->assignees = $this->POST('assignees');
             $task->task = $this->POST('task');
             $task->dueDate = $this->POST('dueDate');
             $task->comments = $this->POST('comments');

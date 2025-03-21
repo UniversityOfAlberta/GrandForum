@@ -83,7 +83,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         if(!this.model.saving){
             this.$el.html(this.template(this.model.toJSON()));
             _.defer(function(){
-                this.$('select[name=assignee_id]').chosen();
+                this.$('select[name=assignees]').chosen();
             }.bind(this));
         }
 

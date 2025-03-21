@@ -9,7 +9,7 @@ class LIMSTaskPmm extends BackboneModel
 
     var $id;
     var $opportunity;
-    var $assignee;
+    var $assignees;
     var $task;
     var $dueDate;
     var $comments;
@@ -103,11 +103,6 @@ class LIMSTaskPmm extends BackboneModel
     //     return $this->assignee;
     // }
 
-    function getPerson()
-    {
-        return Person::newFromId($this->assignee);
-    }
-
     function getTask()
     {
         return $this->task;
@@ -194,6 +189,17 @@ class LIMSTaskPmm extends BackboneModel
                 )
             );
             $this->id = DBFunctions::insertId();
+            foreach($this->assignees as $assignee){
+                $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
+
+                DBFunctions::insert(
+                    'grand_pmm_task_assginees',
+                    array(
+                        'task_id' => $this->id,
+                        'assignee' => $assigneeId
+                    )
+                );
+            }
             // Send mail to assignee
             // $assignee = Person::newFromId($this->assignee);
             // Notification::addNotification($me, $assignee, "Task Created", "The task <b>{$this->task}</b> has been created", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
@@ -231,6 +237,22 @@ class LIMSTaskPmm extends BackboneModel
                 ),
                 array('id' => $this->id)
             );
+
+            DBFunctions::delete(
+                'grand_pmm_task_assginees',
+                array('task_id' => $this->id)
+            );
+            foreach($this->assignees as $assignee){
+                $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
+
+                DBFunctions::insert(
+                    'grand_pmm_task_assginees',
+                    array(
+                        'task_id' => $this->id,
+                        'assignee' => $assigneeId
+                    )
+                );
+            }
             // if ($assignee != null && $assignee->getId() != 0) {
             //     if ($data[0]['status'] != 'Closed' && $this->status == 'Closed') {
             //         Notification::addNotification($me, $assignee, "Thank You for Completing <b>{$this->task}</b>!",

@@ -543,18 +543,34 @@ HTML.Select = function(view, attr, options){
                     data[elems[depth]] = recurse(data[elems[depth]], depth+1);
                     return data;
                 } else {
-                    return $(e.target).val();
+                    if(options.multiple){
+                        var newItems = new Array();
+                        $(":selected", e.target).each(function(i, el){ newItems.push($(el).val()); });
+                        return newItems;
+                    }
+                    else {
+                        return $(e.target).val();
+                    }
                 }
             }
             
             var data = view.model.get(elems[0]);
             data = recurse(data, 1);
+            console.log(data);
             view.model.set(elems[0], _.clone(data));
             view.model.trigger('change', view.model);
             view.model.trigger('change:' + elems[0], view.model);
         }
         else{
-            view.model.set(attr, $(e.target).val());
+            if(options.multiple){
+                var newItems = new Array();
+                $(":selected", e.target).each(function(i, el){ newItems.push($(el).val()); });
+                console.log(newItems);
+                view.model.set(attr, newItems);
+            } else {
+                view.model.set(attr, $(e.target).val());
+            }
+            
         }
     };
     view.undelegate('change', 'select[name=' + HTML.Name(attr) + ']');

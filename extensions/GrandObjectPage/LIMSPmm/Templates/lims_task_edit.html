@@ -2,11 +2,19 @@
     <td valign="top"><span id="deleteTask" class="delete-icon" style="margin: 7px 5px 0 5px;" title="Delete Task"></span></td>
     <td valign="top"><%= HTML.TextBox(this, 'task', {placeholder: 'Enter Task...', style: "width:100%;box-sizing:border-box;margin:0;"}) %></td>
     <% if(isLeaderAllowedToEdit){ %>
-    <td valign="top"><%= HTML.Select(this, 'assignee.id', {style: 'width:200px;', options: _.union([{option: assignee.name, value: assignee.id}], _.filter(_.map(this.project.members.toJSON(), function(person){ return {option: person.fullName, value: person.id} }), function(val){ return val.value != assignee.id; }))}) %></td>
+        <td valign="top">
+            <%= HTML.Select(this, 'assignees', {
+                style: 'width:200px;',
+                multiple: true,
+                options: 
+                    _.map(this.project.members.toJSON(), function(person) {
+                        return {option: person.fullName, value: person.id};
+                    })
+                
+            }) %>
+        </td>
     <% } else { %>
         <td valign="top"><%= assignee.name %></td>
-
-    
     <% } %>
     <td valign="top" style="white-space:nowrap;"><%= HTML.DatePicker(this, 'dueDate', {format: 'yy-mm-dd', style: 'width:5em'}) %></td>
 <% } else { %>
