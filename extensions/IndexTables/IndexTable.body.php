@@ -30,30 +30,24 @@ class IndexTable {
         
         $roles = array_values($wgAllRoles);
         if(count($roles) == 1){
-              $role = $roles[0];
-              $dbRole = DBFunctions::execSQL("SELECT role FROM `grand_roles` r, mw_user u WHERE r.user_id = u.user_id AND role = '$role' AND u.deleted = 0 LIMIT 1");
-              if(($role != HQP || $me->isLoggedIn()) && count($dbRole) > 0){
-                    $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
-                    !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-                    $peopleSubTab = TabUtils::createSubTab('People', "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
-              }
+            $role = $roles[0];
+            $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
+            !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab = TabUtils::createSubTab('People', "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
         }
         elseif(count($roles)>1){
             sort($roles);
             $peopleSubTab = TabUtils::createSubTab('People', "", "");
             foreach($roles as $role){
-                $dbRole = DBFunctions::execSQL("SELECT role FROM `grand_roles` r, mw_user u WHERE r.user_id = u.user_id AND role = '$role' AND u.deleted = 0 LIMIT 1");
-                if(($role != HQP || $me->isLoggedIn()) && count($dbRole) > 0){
-                    $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
-                    !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-                    if($role == AR){
-                        $roleTitle = "Faculty";
-                    }
-                    else{
-                        $roleTitle = Inflect::pluralize($role);
-                    }
-                    $peopleSubTab['dropdown'][] = TabUtils::createSubTab($roleTitle, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+                $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
+                !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+                if($role == AR){
+                    $roleTitle = "Faculty";
                 }
+                else{
+                    $roleTitle = Inflect::pluralize($role);
+                }
+                $peopleSubTab['dropdown'][] = TabUtils::createSubTab($roleTitle, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }
         }
         
