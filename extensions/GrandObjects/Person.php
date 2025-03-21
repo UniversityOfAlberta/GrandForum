@@ -4010,9 +4010,6 @@ class FullPerson extends Person {
             self::$fecInfoCache[$this->getId()] = $data;
             if(count($data) >0){
                 $row = $data[0];
-                foreach($row as $key => $value){
-                    $row[$key] = ZERO_DATE($value, "");
-                }
                 $this->faculty = $row['faculty'];
                 $this->departments = json_decode($row['departments'], true);
                 if(is_array($this->departments)){
