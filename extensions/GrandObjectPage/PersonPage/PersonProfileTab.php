@@ -693,9 +693,7 @@ EOF;
                 if($config->getValue('networkName') != 'FES'){
                     $pronounsField = new ComboBox("pronouns", "Pronouns", $person->getPronouns(), array("", "she/her", "he/him", "they/them"));
                     $gender .= "<tr>
-                    <td class='label'>Pronouns:
-                        <small style='margin-top: -1em; display: block; font-weight:normal;'>Only visible to Staff</small>
-                    </td>
+                    <td class='label'>Pronouns:</td>
                     <td class='value'>{$pronounsField->render()}</td>
                 </tr>";
                 }
