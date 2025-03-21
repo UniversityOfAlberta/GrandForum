@@ -58,27 +58,6 @@ class IndexTable {
         }
         
         $tabs['Main']['subtabs'][] = $peopleSubTab;
-        /*
-        $selected = ($wgTitle->getText() == "Products") ? "selected" : "";
-        $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
-        $structure = Product::structure();
-        $categories = array_keys($structure['categories']);
-        foreach($categories as $category){
-            if(Product::countByCategory($category) > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
-            }
-        }
-        $selected = ($wgTitle->getText() == "ALL Grants" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
-        $grantSubTab = TabUtils::createSubTab("Grants", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Grants", "$selected");
-        if($wgUser->isRegistered()){
-            //$tabs['Main']['subtabs'][] = $grantSubTab;
-        }
-        $selected = ($wgTitle->getText() == "ALL Courses" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
-        $grantSubTab = TabUtils::createSubTab("Courses", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Courses", "$selected");
-        if($wgUser->isRegistered()){
-            //$tabs['Main']['subtabs'][] = $grantSubTab;
-        }
-        */
         return true;
     }
 
