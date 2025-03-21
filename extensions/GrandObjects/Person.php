@@ -4983,6 +4983,9 @@ class Person extends BackboneModel {
         $me = Person::newFromWgUser();
         if($me->isAllowedToEditDemographics($this) ||
            ($config->getValue('networkName') != "FES" && $me->isLoggedIn())){
+            if($this->pronouns == null){
+                return "";
+            }
             return $this->pronouns;
         }
         return "";

@@ -651,11 +651,21 @@ HTML.TagIt = function(view, attr, options){
     $("input", el).attr('id', 'tagit_' + attr);
     
     var index = attr.indexOf('.');
-    var subName = attr.substr(index+1);
-    var items = view.model.get(attr.substr(0, index));
-    for(id in items){
-        tagitView.tagit("createTag", items[id][subName]);
+    var subName = "";
+    if(index != -1){
+        subName = attr.substr(index+1);
+        var items = view.model.get(attr.substr(0, index));
+        for(id in items){
+            tagitView.tagit("createTag", items[id][subName]);
+        }
     }
+    else {
+        var items = view.model.get(attr);
+        for(id in items){
+            tagitView.tagit("createTag", items[id]);
+        }
+    }
+    
     $(el).attr('name', HTML.Name(attr));
     $(el).attr('value', HTML.Value(view, attr));
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
@@ -663,15 +673,31 @@ HTML.TagIt = function(view, attr, options){
         var newItems = new Array();
         for(cId in current){
             var c = current[cId];
-            newItems.push(c);
+            if(subName != ""){
+                var tuple = {};
+                tuple[subName] = c;
+            }
+            else{
+                tuple = c;
+            }
+            if(options.objs != undefined && options.objs[c] != undefined){
+                newItems.push(options.objs[c]);
+            }
+            else{
+                newItems.push(tuple);
+            }
         }
         var field = attr.substr(0, index);
         if(attr.indexOf('.') != -1){
-            view.model.set(attr.substr(0, index), _.clone(newItems), {silent: true});
+            var index = attr.indexOf('.');
+            var data = view.model.get(attr.substr(0, index));
+            data[attr.substr(index+1)] = newItems;
+            view.model.set(attr.substr(0, index), _.clone(newItems));
         }
         else{                
-            view.model.set(attr, _.clone(newItems), {silent: true});
+            view.model.set(attr, _.clone(newItems));
         }
+        
     };
     view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
     view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);

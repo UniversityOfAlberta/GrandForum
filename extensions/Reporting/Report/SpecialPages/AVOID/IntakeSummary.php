@@ -614,7 +614,7 @@ class IntakeSummary extends SpecialPage {
                 }
                 else if(strstr($page_name, "$key1-") !== false){
                     $value = @$page_data['count'];
-                    $html .= "<tr><td>".str_replace("$key1-", "", $page_name).":</td> <td align='right'>{$value}</td></tr>\n";
+                    $html .= "<tr><td>".str_replace("$key1-", "", $page_name)."</td> <td align='right'>{$value}</td></tr>\n";
                 }
             }
             $html .= "</table>";
