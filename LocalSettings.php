@@ -13,14 +13,14 @@
 
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
+
+require_once( "$IP/config/Config.php" );
+
 if(PHP_SAPI != 'cli'){
-    if(phpversion() < 5.4){
-        error_reporting(E_ALL);
+    error_reporting(E_ALL);
+    if(!DEMO){
+        ini_set("display_errors", 1);
     }
-    else{
-        error_reporting(E_ALL ^ E_STRICT);
-    }
-    ini_set("display_errors", 1);
 
     header('Cache-Control: no-cache, no-store, must-revalidate');
     header('Pragma: no-cache');
@@ -55,7 +55,6 @@ define("EOT", "9999-01-01"); // End of Time
 $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 
-require_once( "$IP/config/Config.php" );
 require_once( "$IP/Classes/Inflect/Inflect.php" );
 
 ## Path settings
@@ -136,9 +135,6 @@ $wgDBprefix         = "mw_";
 
 # MySQL table options to use during installation or update
 $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
-
-# Experimental charset support for MySQL 4.1/5.0.
-$wgDBmysql5 = true;
 
 ## Shared memory settings
 $wgMainCacheType = CACHE_ACCEL;
