@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC-AT Award 2024" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT2" pdfType="RPTP_EPIC_AT2" ajax="true" disabled="false" year="2024">
+<Report name="EPIC-AT Award 2025" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT2" pdfType="RPTP_EPIC_AT2" ajax="true" disabled="false" year="2025">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
         <Static>
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>EPIC-AT Award 2024</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>EPIC-AT Award 2025</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
