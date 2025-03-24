@@ -21,11 +21,11 @@
                     <li>Be accompanied by a commercialization plan provided by the Technology Transfer Office of the project leader’s institution or the project’s industrial partner</li>
                     <li>Must address partner’s research needs or challenges</li>
                     <li>Have an identified partner that could take over the outcomes of the research</li>
-                    <li>Partner matching of 1:1.5 is required, greater matching will be viewed more favorably by the committee.  50% of matching must be cash (for a $100,000 request, matching should be $150,000 with at least $75,000 cash and $75,000 in-kind – please see <a href='https://drive.google.com/file/d/17qTip8z0mogjsER4Kn9y2zFaSFeOShEF/view' target='_blank'><b>Appendix A</b></a>). Partner funding must be SSF eligible; in particular, other Canadian Federal funding is <b>ineligible</b> for matching. Industry partner is preferred.</li>
+                    <li>Partner matching of 1:1.5 is required, greater matching will be viewed more favorably by the committee. 50% of matching must be cash (for a $150,000 request, matching should be $225,000 with at least $112,500 cash and $112,500 in-kind – please see <a href='https://drive.google.com/file/d/17qTip8z0mogjsER4Kn9y2zFaSFeOShEF/view' target='_blank'><b>Appendix A</b></a>). Partner funding must be SSF eligible; in particular, other Canadian Federal funding is <b>ineligible</b> for matching. Industry partner is preferred.</li>
                 </ul>
                 
                 <h3>Funding Available</h3>
-                <p>Proposals may request up to $150,000 in funding. It is anticipated that projects will be completed within 12 months.  Continued funding for projects past the 12-month period will be considered on a case-by-case basis after review by the Commercialization Committee; however, all projects must be completed by March 31, 2026.</p>
+                <p>Proposals may request up to $150,000 in funding. It is anticipated that projects will be completed within 12 months.  Continued funding for projects past the 12-month period will be considered on a case-by-case basis after review by the Commercialization Committee; however, all projects must be completed by March 31, 2027.</p>
                 
                 <h3>Eligibility</h3>
                 <p>This opportunity is open only to individuals at post-secondary institutions and research hospitals who are eligible to hold research funds, including Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC).</p>
@@ -33,7 +33,7 @@
                 <h3>Application Form and Submission</h3>
                 <p>This is a rolling competition. Applicants can submit their proposals when they are ready. Competitions will be offered on a quarterly basis and will depend on funding availability.</p>
                 
-                <p>Potential applicants must register by email to info@glyconet.ca (cc vsharko@glyconet.ca) please provide the project title, anticipated budget request, a 500-word (maximum) summary of the project, and list of investigators involved in the project. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application.</p>
+                <p>Potential applicants must register by email to info@glyconet.ca (cc vsharko@glyconet.ca) please provide the project title, project leader, list of investigators involved in the project, anticipated budget request, along with the matching amount (cash/in-kind and sources), a summary of the project, and a short summary addressing the question: "How will your research project further glycobiology research?". Please note that the matching cannot come from federal sources. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application.</p>
                 
                 <h3>Additional Information</h3>
                 <p>Questions about this opportunity can be sent to <a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> (cc <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>).</p>
@@ -133,8 +133,8 @@
                     <li>The application must be uploaded as a single PDF file to the GlycoNet Forum (after completing the application template, convert it to PDF format).</li>
                     <li>Please ensure that each section of the document is filled out carefully. All sections are obligatory to complete. Partially filled proposals will not be considered.</li>
                     <li>Use Times Roman/Times New Roman 11 for the text format</li>
-                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Strategic Initiatives Application Template.docx"><b>Application Template</b></a></li>
-                    <li>Use <a href="{$wgServer}{$wgScriptPath}/data/2024-2025 Strategic Initiatives Application Instructions.pdf" target='_blank'><b>Application Instructions</b></a> to complete the application</li>
+                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2025 Strategic Initiatives Application Template.docx"><b>Application Template</b></a></li>
+                    <li>Use <a href="{$wgServer}{$wgScriptPath}/data/2025-2026 Strategic Initiatives Application Instructions.pdf" target='_blank'><b>Application Instructions</b></a> to complete the application</li>
                 </ul>
                 <h3>Application Upload</h3>
                 {$item}
@@ -176,7 +176,7 @@
                 </ul>
             ]]>
         </Static>
-        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="" template="GlycoNet Budget Template revised for year 1.xlsx">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="" template="GlycoNet Budget Template_SI 2025.xlsx">
             <![CDATA[
                 {$item}
             ]]>
@@ -196,7 +196,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template (for SI Grant).xls"><b>Milestone Template</b></a> and upload it below.
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template_SI 2025.xls"><b>Milestone Template</b></a> and upload it below.
                 </p>
                 <h3>Milestones Upload</h3>
                 {$item}
