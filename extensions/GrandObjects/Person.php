@@ -3367,7 +3367,7 @@ class Person extends BackboneModel {
     
     function getAlexId(){ return ""; }
 
-    function getProfile($private=false){ return ""; }
+    function getProfile(){ return ""; }
 
     function getProfileStartDate(){ return ""; }
 
@@ -3578,7 +3578,7 @@ class FullPerson extends Person {
      * @param boolean $private If tru, then it grabs the private version, otherwise it gets the public
      * @return string This Person's profile text
      */
-    function getProfile($private=false){
+    function getProfile(){
         return $this->publicProfile;
     }
     
@@ -4391,7 +4391,7 @@ class FullPerson extends Person {
                                           'orcid' => $this->getOrcId(),
                                           'wos' => $this->getWOS(),
                                           'alex_id' => $this->getAlexId(),
-                                          'user_public_profile' => $this->getProfile(false),
+                                          'user_public_profile' => $this->getProfile(),
                                           'profile_start_date' => ZERO_DATE($this->getProfileStartDate(), zull),
                                           'profile_end_date' => ZERO_DATE($this->getProfileEndDate(), zull),
                                           'full' => $this->full),
@@ -4422,7 +4422,7 @@ class FullPerson extends Person {
                                                 'orcid' => $this->getOrcId(),
                                                 'wos' => $this->getWOS(),
                                                 'alex_id' => $this->getAlexId(),
-                                                'user_public_profile' => $this->getProfile(false)),
+                                                'user_public_profile' => $this->getProfile()),
                                           array('user_id' => EQ($this->getId())));
             if(!$wgImpersonating && !$wgDelegating){
                 DBFunctions::update('mw_user',
@@ -4458,7 +4458,7 @@ class FullPerson extends Person {
         $json['alexId'] = $this->getAlexId();
         $json['profile_start_date'] = $this->getProfileStartDate();
         $json['profile_end_date'] = $this->getProfileEndDate();
-        $json['publicProfile'] = $this->getProfile(false);
+        $json['publicProfile'] = $this->getProfile();
         $json['ldap'] = $this->getLdap();
         return $json;
     }

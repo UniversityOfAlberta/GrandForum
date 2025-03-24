@@ -224,7 +224,6 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->wos = @$_POST['wos'];
             $this->person->alexId = @$_POST['alexId'];
             $this->person->publicProfile = @$_POST['public_profile'];
-            $this->person->privateProfile = @$_POST['private_profile'];
             $this->person->update();
             $this->person->setKeywords(explode(",", $_POST['keywords']));
             $this->person->setAliases(explode(";", $_POST['aliases']));
@@ -252,7 +251,7 @@ class PersonProfileTab extends AbstractEditableTab {
      */
     function showProfile($person, $visibility){
         global $wgUser;
-        $this->html .= "<p style='text-align:justify;'>".$person->getProfile(false)."</p>";
+        $this->html .= "<p style='text-align:justify;'>".$person->getProfile()."</p>";
     }
     
     /**
@@ -328,8 +327,7 @@ EOF;
                 <h3>Keywords:</h3>
                 <input class='keywords' type='text' name='keywords' value='' />";
         $this->html .= "<h3>Bio/Research Interests:</h3>
-                        <textarea style='height:300px;' name='public_profile'>{$person->getProfile(false)}</textarea>
-                        <textarea style='display: none; width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea>";
+                        <textarea style='height:300px;' name='public_profile'>{$person->getProfile()}</textarea>";
                         
         $this->html .= "<script type='text/javascript'>
             $('input.keywords').val('".addslashes($person->getKeywords(","))."');

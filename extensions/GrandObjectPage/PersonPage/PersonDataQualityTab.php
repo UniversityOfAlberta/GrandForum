@@ -219,7 +219,6 @@ EOF;
             $email = $person->getEmail();
             $email = ($email == "{$config->getValue('supportEmail')}")? "" : $email;
             $profile_pub = $person->getProfile();
-            $profile_pri = $person->getProfile(true);
             $ni_uni = $person->getUniversity();
             $ni_university = $ni_uni['university'];
             $ni_department = $ni_uni['department'];
@@ -230,7 +229,6 @@ EOF;
             if(empty($ni_department)){ $ni_errors['profile_errors'][] = "Missing department"; }
             if(empty($ni_position)){ $ni_errors['profile_errors'][] = "Missing title"; }
             if(empty($ni_position)){ $ni_errors['profile_pub'][] = "Missing public profile"; }
-            if(empty($ni_position)){ $ni_errors['profile_pri'][] = "Missing private profile"; }
 
             //Product completeness
             $papers = $person->getPapersAuthored("all", "2012-01-01 00:00:00", "2013-05-01 00:00:00", false);
