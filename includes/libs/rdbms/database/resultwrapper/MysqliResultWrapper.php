@@ -53,7 +53,7 @@ class MysqliResultWrapper extends ResultWrapper {
 	}
 
 	protected function doFetchRow() {
-		$array = $this->result->fetch_array();
+		$array = $this->result->fetch_array(MYSQLI_ASSOC); // Changed to MYSQLI_ASSOC
 		$this->checkFetchError();
 		if ( $array === null ) {
 			return false;
