@@ -866,10 +866,6 @@ class CavendishTemplate extends QuickTemplate {
 	            }
 	        }
 		}
-		else if(!isExtensionEnabled("Shibboleth")){
-		    $userLogin = new SpecialSideUserLogin();
-		    $userLogin->render();
-        }
 		Hooks::run( 'MonoBookTemplateToolboxEnd', array( &$this ) );
         Hooks::run( 'SkinTemplateToolboxEnd', array( &$this ) );
 ?>
