@@ -213,7 +213,7 @@ class UploadReportItem extends AbstractReportItem {
                 $finalExt = '';
             }
             if($this->getAttr('fileSize', 1)*1024*1024 >= $_FILES['file']['size']){
-                $magic = MimeMagic::singleton();
+                $magic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
                 $mime = $magic->guessMimeType($_FILES['file']['tmp_name'], false);
                 if(UploadBase::checkFileExtension($finalExt, $wgFileExtensions) &&
                    UploadBase::verifyExtension($mime, $finalExt)){

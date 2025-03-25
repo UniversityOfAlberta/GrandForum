@@ -16,7 +16,7 @@ class PersonNotesTab extends AbstractEditableTab {
         $this->person->getFecPersonalInfo();
         
         // Files
-        $magic = MimeMagic::singleton();
+        $magic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
         if(isset($_FILES)){
             foreach(@$_FILES as $key => $file){
                 foreach($file['tmp_name'] as $i => $name){
