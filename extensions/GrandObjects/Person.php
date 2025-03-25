@@ -471,6 +471,11 @@ class Person extends BackboneModel {
                     unset($row['profile_start_date']);
                     unset($row['profile_end_date']);
                 }
+                foreach($row as $key => $field){
+                    if($field == ""){
+                        unset($row[$key]);
+                    }
+                }
                 if($row['deleted'] == 1){
                     $row = array();
                 }
@@ -1060,14 +1065,14 @@ class Person extends BackboneModel {
         global $wgUser;
         if(!empty($data)){
             $this->id = @$data[0]['user_id'];
-            $this->name = @$data[0]['user_name'];
-            $this->realname = @$data[0]['user_real_name'];
-            $this->firstName = @$data[0]['first_name'];
-            $this->lastName = @$data[0]['last_name'];
-            $this->middleName = @$data[0]['middle_name'];
-            $this->employeeId = @$data[0]['employee_id'];
-            $this->email = @$data[0]['user_email'];
-            $this->full = @$data[0]['full'];
+            $this->name = @"{$data[0]['user_name']}";
+            $this->realname = @"{$data[0]['user_real_name']}";
+            $this->firstName = @"{$data[0]['first_name']}";
+            $this->lastName = @"{$data[0]['last_name']}";
+            $this->middleName = @"{$data[0]['middle_name']}";
+            $this->employeeId = @"{$data[0]['employee_id']}";
+            $this->email = @"{$data[0]['user_email']}";
+            $this->full = @"{$data[0]['full']}";
             $this->university = false;
         }
     }
@@ -3477,14 +3482,14 @@ class FullPerson extends Person {
     function __construct($data){
         parent::__construct($data);
         if(!empty($data)){
-            $this->twitter = @$data[0]['user_twitter'];
-            $this->website = @$data[0]['user_website'];
-            $this->googleScholar = @$data[0]['google_scholar_url'];
-            $this->sciverseId = @$data[0]['sciverse_id'];
-            $this->orcId = @$data[0]['orcid'];
-            $this->wos = @$data[0]['wos'];
-            $this->alexId = @$data[0]['alex_id'];
-            $this->publicProfile = @$data[0]['user_public_profile'];
+            $this->twitter = @"{$data[0]['user_twitter']}";
+            $this->website = @"{$data[0]['user_website']}";
+            $this->googleScholar = @"{$data[0]['google_scholar_url']}";
+            $this->sciverseId = @"{$data[0]['sciverse_id']}";
+            $this->orcId = @"{$data[0]['orcid']}";
+            $this->wos = @"{$data[0]['wos']}";
+            $this->alexId = @"{$data[0]['alex_id']}";
+            $this->publicProfile = @"{$data[0]['user_public_profile']}";
             $this->profileStartDate = @ZERO_DATE($data[0]['profile_start_date']);
             $this->profileEndDate = @ZERO_DATE($data[0]['profile_end_date']);
             $this->hqps = null;
