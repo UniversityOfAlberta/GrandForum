@@ -337,8 +337,9 @@ class AVOIDDashboard extends SpecialPage {
                                      <span>Earn points with a team, for using the program. Compete for prizes and bragging rights!</span>";
             }
             else {
+                $leaderPage = Wiki::newFromTitle("PointsLeader");
                 $gamificationText = "<b>Healthy Lifestyle Rewards</b><br />
-                    <a href='#' onClick=\"$('#gamificationDialog').dialog({width: 400});\">How to Earn Points</a><br />
+                    <a href='#' onClick=\"$('#gamificationDialog').dialog({width: 400});\">How to Earn Points</a><br />{$leaderPage->getText()}<br />
                     <div id='gamificationDialog' title='How to Earn Points' style='display: none; width: 400px;'>
                         <table style='width:100%;' class='wikitable'>
                             <tr>
