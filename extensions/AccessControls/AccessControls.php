@@ -2,7 +2,6 @@
 
 require_once("$IP/includes/specials/SpecialSearch.php");
 require "AnnokiNamespaces.php";
-require "UserNamespaces.php";
 require "AccessControls.body.php";
 require "GrandAccess.php";
 

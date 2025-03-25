@@ -123,16 +123,6 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 		}
 		
 	}
-
-	if ($action == 'protect' || $action == 'unprotect') {
-		$owner = UserNamespaces::getUserFromNamespace($title->getNsText());
-		if ($owner === null) {
-			$result = false;
-			return false;
-		}
-		$result = ($owner->getId() == $user->getId());
-		return $result;
-	}
 	
 	if ($title->isTalkPage()) {
 		$title = $title->getSubjectPage();
@@ -166,15 +156,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	      }
 	  }
 	}
-	
-	$userNS = UserNamespaces::getUserNamespace($user);
-	if($wgExtraNamespaces != null){
-	    if (array_key_exists($userNS, $wgExtraNamespaces)){
-	      $userNS = $wgExtraNamespaces[$userNS];
-	    }
-	}
 
-	$userGroups[] = $userNS;
 	$userName = $user->getName();
 	
 	$nsText = $title->getNsText(); 
@@ -209,7 +191,7 @@ function isPublicNS($nsId) {
 	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", "public", array("nsId" => $nsId) );
 
-	if (!($row = $result->fetchRow()) || ($row[0] == 0)) {
+	if (!($row = $result->fetchRow()) || ($row['public'] == 0)) {
 		return false;
 	}
 
@@ -245,7 +227,7 @@ function getExtraPermissions($title) {
 	$result = $dbr->select("${egAnnokiTablePrefix}pagepermissions", "group_id", array("page_id" => $title->getArticleID()) );
 	$extraPerm = array();
 	while ($row = $result->fetchRow()) {
-	  $extraPerm[] = $row[0];
+	  $extraPerm[] = $row['group_id'];
 	}
 	return $extraPerm;
 }
