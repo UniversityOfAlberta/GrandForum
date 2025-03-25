@@ -1824,16 +1824,23 @@ class ReportItemCallback {
         if($year == null){
             $year = $this->reportItem->getReport()->year;
         }
-        
-        $data = DBFunctions::execSQL("SELECT md5, encrypted 
-                                      FROM grand_report_blobs 
-                                      WHERE user_id = '{$personId}' 
-                                      AND year = '{$year}'
-                                      AND proj_id = '{$projectId}' 
-                                      AND rp_type = '{$rp}' 
-                                      AND rp_section = '{$section}' 
-                                      AND rp_item = '{$blobId}' 
-                                      AND rp_subitem = '{$subId}'");
+        $address = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $cacheId = "blob_md5_{$year}_{$personId}_{$projectId}_".implode("_", $address);
+        if(!Cache::exists($cacheId)){
+            $data = DBFunctions::execSQL("SELECT md5, encrypted 
+                                          FROM grand_report_blobs 
+                                          WHERE user_id = '{$personId}' 
+                                          AND year = '{$year}'
+                                          AND proj_id = '{$projectId}' 
+                                          AND rp_type = '{$rp}' 
+                                          AND rp_section = '{$section}' 
+                                          AND rp_item = '{$blobId}' 
+                                          AND rp_subitem = '{$subId}'");
+            Cache::store($cacheId, $data);
+        }
+        else{
+            $data = Cache::fetch($cacheId);
+        }
 		$md5 = (@$data[0]['encrypted']) ? encrypt(@$data[0]['md5']) : @$data[0]['md5'];
 		if(!isset($_GET['preview']) && isset($_GET['generatePDF'])){
 		    return urlencode(urlencode($md5));

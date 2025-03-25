@@ -236,6 +236,7 @@ class ReportBlob {
 	        }
 		}
 		DBFunctions::commit();
+		Cache::delete("blob_md5_".$this->getCacheId($address, true));
 		//Cache::store($this->getCacheId($address), $data);
 		return true;
 	}
@@ -243,6 +244,7 @@ class ReportBlob {
 	public function delete($address){
         $this->load($address, true);
         Cache::delete($this->getCacheId($address));
+        Cache::delete("blob_md5_".$this->getCacheId($address, true));
         DBFunctions::delete('grand_report_blobs',
                             array('blob_id' => $this->_blob_id));
         DBFunctions::commit();
@@ -363,8 +365,9 @@ class ReportBlob {
 		return $ret;
 	}
 
-    private function getCacheId($address){
-        $id = "{$this->_type}_{$this->_year}_{$this->_owner_id}_{$this->_proj_id}_";
+    private function getCacheId($address, $noType=false){
+        $id = (!$noType) ? "{$this->_type}_" : "";
+        $id .= "{$this->_year}_{$this->_owner_id}_{$this->_proj_id}_";
         if($address != null){
             $id .= implode("_", $address);
         }
