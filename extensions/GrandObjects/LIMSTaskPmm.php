@@ -98,10 +98,23 @@ class LIMSTaskPmm extends BackboneModel
         return LIMSOpportunityPmm::newFromId($this->opportunity);
     }
 
-    // function getAssignee()
-    // {
-    //     return $this->assignee;
-    // }
+    function getPerson(){
+        return $this->getOpportunity()->getPerson();
+    }
+
+    function isMember()
+    {
+        $me = Person::newFromWgUser();
+        $assignees = $this->getAssignees();
+        $personId = $me->getId();
+        foreach($assignees as $assignee) {
+            if ($assignee->getId() == $personId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     function getTask()
     {
@@ -125,7 +138,8 @@ class LIMSTaskPmm extends BackboneModel
 
     function isAllowedToEdit()
     {
-        return ($this->getOpportunity()->isAllowedToEdit() || $this->getPerson()->isMe());
+        
+        return ($this->getOpportunity()->isAllowedToEdit() || $this->isMember() );
     }
 
     function isAllowedToView()

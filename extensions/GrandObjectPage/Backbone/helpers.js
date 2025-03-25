@@ -478,6 +478,7 @@ HTML.Select = function(view, attr, options){
     el.setAttribute('name', HTML.Name(attr));
     var val = HTML.Value(view, attr);
     var foundSelected = false;
+    console.log(options.options);
     _.each(options.options, function(opt, i){
         if(_.isString(i)){
             $(el).append("<optgroup label='" + i + "' />");
@@ -506,7 +507,7 @@ HTML.Select = function(view, attr, options){
                 val = "";
             }
             if(_.isArray(val)){
-                if(val.indexOf(opt) != -1){
+                if(val.indexOf(opt) != -1 || (typeof opt == 'object' && _.where(val, {id: opt.value}).length > 0)){
                     selected = "selected='selected'";
                     foundSelected = true;
                 }

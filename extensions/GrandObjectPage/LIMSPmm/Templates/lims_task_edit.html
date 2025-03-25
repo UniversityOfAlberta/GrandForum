@@ -4,22 +4,30 @@
     <% if(isLeaderAllowedToEdit){ %>
         <td valign="top">
             <%= HTML.Select(this, 'assignees', {
-                style: 'width:200px;',
+                style: 'width:200px; display: none',
                 multiple: true,
                 options: 
                     _.map(this.project.members.toJSON(), function(person) {
                         return {option: person.fullName, value: person.id};
-                    })
-                
+                    }),
             }) %>
         </td>
     <% } else { %>
-        <td valign="top"><%= assignee.name %></td>
+        <td valign="top">
+            <%= HTML.Select(this, 'assignees', {
+                style: 'width:200px; display: none',
+                multiple: true,
+                options: 
+                    _.map(this.project.members.toJSON(), function(person) {
+                        return {option: person.fullName, value: person.id};
+                    }),
+            }) %>
+        </td>
     <% } %>
     <td valign="top" style="white-space:nowrap;"><%= HTML.DatePicker(this, 'dueDate', {format: 'yy-mm-dd', style: 'width:5em'}) %></td>
 <% } else { %>
     <td><%= task %></td>
-    <td><a href="<%= assignee.url %>"><%= assignee.name %></td>
+    <td><a href="<%= assignees.url %>"><%= assignees.name %></td>
     <td align="center"><%= dueDate %></td>
     
 <% } %>

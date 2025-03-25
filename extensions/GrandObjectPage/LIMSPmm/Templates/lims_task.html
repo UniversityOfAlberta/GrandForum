@@ -1,6 +1,21 @@
 <td><%= task %></td>
-<td><a href="<%= assignee.url %>"><%= assignee.name %></td>
-<td align="center"><%= dueDate %></td>
+<td>
+    <% 
+    var assigneesList = this.model.get('assignees'); // Assuming 'assignees' is an array of assignee objects
+    if (assigneesList && assigneesList.length > 0) {
+        assigneesList.forEach(function(assignee, index) {
+            %>
+            <div><a href="<%= assignee.url %>"><%= assignee.name %></a></div>
+            <% 
+        });
+    } else {
+        %>
+        <div>No Assignees</div>
+        <%
+    }
+    %>
+</td>
+</td><td align="center"><%= dueDate %></td>
 <td><%= status %></td>
 <td>
     <%= comments %>
