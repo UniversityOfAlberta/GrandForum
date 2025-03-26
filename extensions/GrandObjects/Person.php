@@ -3519,7 +3519,6 @@ class FullPerson extends Person {
      * @return string The phone number of this Person
      */
     function getPhoneNumber(){
-        return ""; // CCV isn't enabled so just don't bother getting this
         $me = Person::newFromWgUser();
         if($me->isAllowedToEdit($this)){
             $data = DBFunctions::select(array('grand_user_telephone'),

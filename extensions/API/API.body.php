@@ -116,9 +116,6 @@ class APIRequest{
         $this->addAction('Products', 'importBibTeX', 'ImportBibTeXAPI');
         $this->addAction('Products', 'importDOI', 'ImportDOIAPI');
         $this->addAction('Products', 'importORCID', 'ImportORCIDAPI');
-        $this->addAction('Products', 'uploadGrantXls', 'UploadGrantXlsAPI');
-        $this->addAction('Products', 'uploadEvals', 'UploadCourseEvalsAPI');
-        $this->addAction('Products', 'UploadCourses', 'UploadCoursesAPI');
         //POST
         $this->addAction('User Accounts', 'addUserAccount', 'CreateUserAPI');
         $this->addAction('User Accounts', 'addUserRequest', 'RequestUserAPI');
