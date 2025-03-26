@@ -117,90 +117,6 @@ class ReportXMLParser {
         $this->errors = array();
     }
     
-    // Saves an encrypted backup of the current state of the report to the user's filesystem
-    function saveBackup($download=true){
-        $dom = dom_import_simplexml($this->parser)->ownerDocument;
-        $dom->formatOutput = false;
-        $trimmedXML = trim($dom->saveXML());
-        $md5 = md5($trimmedXML);
-        $date = new DateTime();
-        $time = $date->format('Y-m-d H-i-s');
-        $serialized = serialize(array('md5' => $md5, 
-                                      'time' => $time,
-                                      'type' => $this->report->xmlName,
-                                      'xml' => $trimmedXML));
-        $key = $this->getKey();
-        $iv = $this->getIV();
-        $encrypted = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $serialized, MCRYPT_MODE_ECB, $iv);
-        //$encrypted = $serialized;
-        $encrypted = gzcompress($encrypted, 9);
-        DBFunctions::insert('grand_report_backup',
-                            array('report'    => $this->report->name,
-                                  'time'      => $time,
-                                  'person_id' => $this->report->person->getId(),
-                                  'backup'    => $encrypted));
-        if($download){
-            header("Content-type: application/force-download");
-            if($this->report->project == null){
-                header("Content-disposition: attachment; filename=\"{$this->report->name}_".str_replace(".", "", $this->report->person->getName())."_$time.report\"");
-            }
-            else{
-                header("Content-disposition: attachment; filename=\"{$this->report->name}_$time.report\"");
-            }
-            echo $encrypted;
-            close();
-        }
-    }
-    
-    // Loads an encrypted backup, then saves all the data to the DB
-    function loadBackup(){
-        global $wgMessage;
-        if(isset($_FILES['backup'])){
-            $file = $_FILES['backup'];
-            $str = @gzuncompress(file_get_contents($file['tmp_name']));
-            //$str = file_get_contents($file['tmp_name']);
-            $key = $this->getKey();
-            $iv = $this->getIV();
-            $decrypted = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $str, MCRYPT_MODE_ECB, $iv);
-            //$decrypted = $str;
-            $unserialized = @unserialize($decrypted);
-            if($unserialized === false || 
-               !isset($unserialized['md5']) || 
-               !isset($unserialized['xml']) ||
-               !isset($unserialized['time']) ||
-               !isset($unserialized['type'])){
-                $wgMessage->addError("The uploaded file is not in a report format, or is corrupt.");
-                return false;
-            }
-            if($unserialized['type'] != $_GET['report']){
-                $wgMessage->addError("The uploaded file is is not of the report type '{$_GET['report']}'.");
-                return false;
-            }
-            $md5 = md5($unserialized['xml']);
-            if($unserialized['md5'] == $md5){
-                $this->parse(); // Save a backup of the latest version just incase we need to revert to that version
-                $this->saveBackup(false);
-                $this->report->sections = array();
-                $this->xml = $unserialized['xml'];
-                return true;
-            }
-            else{
-                $wgMessage->addError("The uploaded file has been tampered with, or is corrupt.");
-                return false;
-            }
-        }
-    }
-    
-    private function getKey(){
-        return $key = hash("SHA256", "MUROF DNARG", true);
-    }
-    
-    private function getIV(){
-        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-        return $iv;
-    }
-    
     // Shows the errors to the javascript console
     function showErrors(){
         global $wgOut;
@@ -534,21 +450,8 @@ class ReportXMLParser {
                                                                                  'person_id'    => $this->report->person->getId(),
                                                                                  'milestone_id' => 0
                                                                                  ));
-                        if(!isset($c->attributes()->value)){
-                            if(isset($_GET['saveBackup'])){
-                                $data = $itemset->getBlobValue();
-                                $value = encode_binary_data(serialize($data));
-                                $c->addAttribute("value", $value);
-                                $c->addAttribute("binary", "true");
-                            }
-                        }
-                        else{
-                            if(isset($c->attributes()->binary) && strtolower($c->attributes()->binary) == "true"){
-                                $itemset->setBlobValue(unserialize(decode_binary_data($c->attributes()->value)));
-                            }
-                            else{
-                                $itemset->setBlobValue(unserialize($c->attributes()->value));
-                            }
+                        if(isset($c->attributes()->value)){
+                            $itemset->setBlobValue(unserialize($c->attributes()->value));
                         }
                     }
                 }
@@ -782,22 +685,8 @@ class ReportXMLParser {
                 }
             }
             $item->setValue("{$node}");
-            if(!isset($attributes->value) && !($section instanceof ReportItemSet)){
-                if(isset($_GET['saveBackup'])){
-                    $value = "";
-                    $data = $item->getBlobValue();
-                    $value = encode_binary_data($data);
-                    $node->addAttribute("value", $value);
-                    $node->addAttribute("binary", "true");
-                }
-            }
-            else if(!($section instanceof ReportItemSet)){
-                if(isset($attributes->binary) && strtolower($attributes->binary) == "true"){
-                    $item->setBlobValue(decode_binary_data($attributes->value));
-                }
-                else{
-                    $item->setBlobValue("{$attributes->value}");
-                }
+            if(isset($attributes->value) && !($section instanceof ReportItemSet)){
+                $item->setBlobValue("{$attributes->value}");
             }
         }
         return $item;

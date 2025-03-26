@@ -133,23 +133,8 @@ abstract class AbstractReport extends SpecialPage {
                 setcookie('showSuccess', 'true', time()-(60*60), '/');
                 $wgMessage->addSuccess("Report Loaded Successfully.");
             }
-            if(isset($_GET['saveBackup']) || isset($_GET['saveBackup'])){
-                ini_set("memory_limit","1024M");
-            }
-            if(isset($_POST['loadBackup']) && !$this->readOnly){
-                $status = $parser->loadBackup();
-                if($status){
-                    $parser->parse();
-                    setcookie('showSuccess', 'true', time()+(60), '/');
-                    redirect("{$wgServer}{$_SERVER["REQUEST_URI"]}");
-                }
-            }
             $parser->parse($quick);
             if(!$quick){
-                if(isset($_GET['saveBackup'])){
-                    $parser->saveBackup();
-                }
-                
                 $currentSection = @$_GET['section'];
                 foreach($this->sections as $section){
                     if($section->name == $currentSection && $currentSection != ""){
@@ -279,30 +264,6 @@ abstract class AbstractReport extends SpecialPage {
     
     function addScript($script){
         $this->scripts[] = $script;
-    }
-    
-    function notifySupervisors($tok){
-        global $wgServer, $wgScriptPath;
-        $alreadySeen = array();
-        $supervisors = $this->person->getSupervisors(true);
-        $realSupervisors = array();
-        foreach($supervisors as $supervisor){
-            if(isset($alreadySeen[$supervisor->getId()])){
-                continue;
-            }
-            $alreadySeen[$supervisor->getId()] = true;
-            $hqps = $supervisor->getHQPDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
-            foreach($hqps as $hqp){
-                if($hqp->getId() == $this->person->getId()){
-                    $realSupervisors[] = $supervisor;
-                    break;
-                }
-            }
-        }
-        foreach($realSupervisors as $supervisor){
-            $alreadySeen[$supervisor->getId()] = true;
-            Notification::addNotification($this->person, $supervisor, "HQP Report Complete", "{$this->person->getReversedName()} completed their HQP Report.", "$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=$tok");
-        }
     }
     
     function getLatestPDF(){
@@ -786,9 +747,6 @@ abstract class AbstractReport extends SpecialPage {
         $check = $this->getLatestPDF();
         if(count($check) > 0){
             $sto->mark_submitted_ns($check[0]['token']);
-            if(($this->xmlName == "HQPReport" || $this->xmlName == "HQPReportPDF") && $this->project == null){
-                $this->notifySupervisors($check[0]['token']);
-            }
         }
     }
     
@@ -835,9 +793,6 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("<div id='autosaveDiv'><span style='float:left;width:100%;text-align:left'><span style='float:right;' class='autosaveSpan'></span></span></div>
                             <div id='optionsDiv'>");
         $this->renderOptions();
-        if($this->extends == "" && !$this->hasSubReport()){
-            //$this->renderBackup();  
-        }
         $wgOut->addHTML("</div></div>
                             </div>");
         foreach($this->scripts as $script){
@@ -893,35 +848,6 @@ abstract class AbstractReport extends SpecialPage {
                                     <td width='50%' align='right' valign='top'>Autosave:</td><td width='50%' valign='middle'><input name='autosave' autosave='on' type='radio' checked>On<br /><input name='autosave' value='off' type='radio'>Off</td>
                                 </tr>
                             </table>");
-    }
-    
-    function renderBackup(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-        $getParams = "";
-        $i = 0;
-        foreach($_GET as $key => $get){
-            if($key == "title"){
-                continue;
-            }
-            $delim = "&";
-            if($i == 0) $delim = "?";
-            $getParams .= "{$delim}{$key}={$get}";
-            $i++;
-        }
-        $wgOut->addHTML("<hr />
-                            <h3><a id='backupLink' style='cursor:pointer;' onClick='toggleBackup();' title='A backup can be used to Save the current state of your report to your computer, and Load it later in case you wanted to revert to a previous version.  After Loading a file, the report will be saved using the data from the backup.'>Backup</a></h3>
-                            <div id='backupTable' style='display:none;'><table style='width:100%;'>
-                                <tr>
-                                    <td><a style='overflow: hidden;' href='javascript:saveBackup();' class='button' id='saveBackup'>Save</a></td>
-                                    <td><form id='backupForm' method='post' action='{$wgTitle->getFullUrl()}{$getParams}' enctype='multipart/form-data'><input type='hidden' name='loadBackup' value='true' /><a style='overflow: hidden; position: relative;' class='button' id='downloadBackup'>Load<input class='hiddenFile' name='backup' type='file' /></a><input id='resetBackup' type='reset' style='position:absolute; left:-1000px;' /></form>
-                                    <div style='display:none;' id='dialog-confirm' title='Load Report Confirmation'>
-    <p><span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>Are you sure you want to upload the file: <p nowrap='nowrap' style='font-style:italic;white-space:nowrap;' id='fileName'></p>Uploading this file will replace the current report data with the data from the backup.  The file you should be uploading should be using the file extension <b>'.report'</b>.</p>
-</div></td>
-                                </tr>
-                            </table></div>
-                            <script type='text/javascript'>
-                                $('#backupLink').qtip();
-                            </script>");
     }
     
     // Renders the Report for use in a PDF

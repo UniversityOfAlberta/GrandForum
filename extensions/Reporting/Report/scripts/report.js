@@ -136,24 +136,6 @@ function toggleFullscreen(){
     }
 }
 
-function saveBackup(){
-    findAutosaves(updateProgress);
-    saveAll(function(){
-        updateProgress();
-        var newUrl = $(location).attr('href') + '&saveBackup';
-        window.location = newUrl;
-    });
-}
-
-function toggleBackup(){
-    if (!$.browser.msie || $.browser.version > 7){
-        $("#backupTable").slideToggle(200);
-    }
-    else{
-        $("#backupTable").slideToggle(0);
-    }
-}
-
 function showConflictError(data){
     alert("Some of the fields could not save.  A change was made to at least one of the fields after this section was loaded.  This may have been caused by multiple browser sessions being opened at the same time.  Please go and close any other browser or tabs that you have open to the " + networkName + " reporting page.\n\nAfter clicking 'Ok', you will be returned to the conflicting section and the conflicting fields will be highlighted.  Any field which was not conflicting, has been saved already.");
     for(index in data){
@@ -269,13 +251,11 @@ $(document).ready(function(){
 				    $(this).dialog("close");
 				    findAutosaves(updateProgress);
                     saveAll(function(){
-                        $("#backupForm").submit();
                         updateProgress();
                     });
 				},
 				"No": function(){
 					$(this).dialog("close");
-					$('#resetBackup').click();
 				}
 			}
 		});
