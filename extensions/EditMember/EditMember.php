@@ -118,50 +118,6 @@ class EditMember extends SpecialPage{
         }
     }
     
-    // Generates a more human readable form for the string used to add/remove roles
-    function roleDiff($person, $current, $string, $type, $date=false){
-        $output = "";
-        //$date = "2013-11-28 10:24:25";
-        //echo $date."<br />";
-        if($type == "ROLE"){
-            $roles = explode(", ", $string);
-            if(!is_null($current)){
-                $current = explode(", ", $current);
-                foreach($current as $role){
-                    $id = array_search($role, $roles);
-                    if($id !== false){
-                        // No Change
-                        unset($roles[$id]);
-                    }
-                    else{
-                        $output .= "-{$role}<br />\n";
-                    }
-                }
-            }
-            else{
-                if(count($person->getRoles($date)) > 0){
-                    foreach($person->getRoles($date) as $role){
-                        $id = array_search($role->getRole(), $roles);
-                        if($id !== false){
-                            // No Change
-                            unset($roles[$id]);
-                        }
-                        else{
-                            $output .= "-{$role->getRole()}<br />\n";
-                        }
-                    }
-                }
-            }
-            
-            foreach($roles as $role){
-                if($role != ""){
-                    $output .= "+{$role}<br />\n";
-                }
-            }
-        }
-        return $output;
-    }
-    
     function generateMain(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
         $me = Person::newFromWgUser();
@@ -240,12 +196,6 @@ class EditMember extends SpecialPage{
         }
         $wgOut->addHTML($boxes);
         $wgOut->addHTML("</td></tr></table>\n");
-    }
-    
-    function parse($text){
-        $text = str_replace("'", "&#39;", $text);
-        $text = str_replace("\"", "&quot;", $text); 
-        return $text;
     }
     
     static function createToolboxLinks(&$toolbox){
