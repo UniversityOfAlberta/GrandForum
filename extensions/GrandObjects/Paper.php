@@ -1514,8 +1514,8 @@ class Paper extends BackboneModel{
                 
                 if($ranking != "" && ($snip == "" || $config->getValue('elsevierApi') == "")){
                     $fraction = explode("/", $ranking);
-                    $numerator = preg_replace("/[^0-9,.]/", "", @$fraction[0]);
-                    $denominator = preg_replace("/[^0-9,.]/", "", @$fraction[1]);
+                    $numerator = (float)preg_replace("/[^0-9,.]/", "", @$fraction[0]);
+                    $denominator = (float)preg_replace("/[^0-9,.]/", "", @$fraction[1]);
                     $percent = number_format(($numerator/max(1, $denominator))*100, 2);
                     $ranking = $ranking." = {$percent}%";
                     $journal = $this->getJournal();
