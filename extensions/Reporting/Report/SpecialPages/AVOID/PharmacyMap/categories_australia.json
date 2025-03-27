@@ -506,6 +506,15 @@
                 "descriptionFr": "",
                 "tags": [],
                 "note": ""
+            },
+            {
+                "text": "Health Coaching",
+                "value": 42,
+                "code": "CFN-CHRONIC-COACH",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
             }
         ]
     },
