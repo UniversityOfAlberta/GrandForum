@@ -2,6 +2,8 @@
 
 class VoteResultsReportItem extends SelectReportItem {
 
+    static $votes = array();
+
     function render(){
         global $wgOut;
         $me = Person::newFromWgUser();
@@ -96,21 +98,33 @@ class VoteResultsReportItem extends SelectReportItem {
         $report = $this->getReport();
         $section = $this->getSection();
         $year = $report->year;
-        
         $voteBlobItem = $this->getAttr("voteBlobItem");
-        $votes = DBFunctions::select(array('grand_report_blobs'),
-                                     array('user_id', 'data', 'encrypted'),
-                                     array('year' => $year,
-                                           'rp_type' => $report->reportType,
-                                           'rp_section' => $section->sec,
-                                           'rp_item' => $voteBlobItem,
-                                           'rp_subitem' => $this->blobSubItem));
+        
+        $id = "{$year}_{$report->reportType}_{$section->sec}_{$voteBlobItem}";
+        
+        if(!isset(self::$votes[$id])){
+            $votes = DBFunctions::select(array('grand_report_blobs'),
+                                         array('user_id', 'rp_subitem', 'data', 'encrypted'),
+                                         array('year' => $year,
+                                               'rp_type' => $report->reportType,
+                                               'rp_section' => $section->sec,
+                                               'rp_item' => $voteBlobItem));
+            
+            self::$votes[$id] = $votes;
+        }
+        
         // Decrypt if needed
-        foreach($votes as $key => $vote){
+        $votes = array();
+        foreach(self::$votes[$id] as $key => $vote){
+            if($vote['rp_subitem'] != $this->blobSubItem){
+                continue;
+            }
+            $votes[$key] = $vote;
             if($vote['encrypted']){
                 $votes[$key]['data'] = decrypt($vote['data']);
             }
         }
+        
         return $votes;
     }
     
@@ -148,6 +162,7 @@ class VoteResultsReportItem extends SelectReportItem {
             $nVotes++;
 	        $votesBlob->store($nVotes, $votesAddress);
         }
+        self::$votes = array();
         parent::setBlobValue($value);
     }
 
