@@ -18,6 +18,14 @@ class FixZeroDates extends AbstractMigration
                         WHERE `$col` = '0000-00-00 00:00:00'
                            OR `$col` = '0000-00-00 00:00:00'
                            OR `$col` = ''");
+                           
+        $this->execute("UPDATE `$table`
+                        SET `$col` = REPLACE(`$col`, '-00-00', '-01-01')
+                        WHERE `$col` LIKE '%-00-00%'");
+                        
+        $this->execute("UPDATE `$table`
+                        SET `$col` = REPLACE(`$col`, '-00', '-01')
+                        WHERE `$col` LIKE '%-00%'");
     }
 
     /**
@@ -99,5 +107,7 @@ class FixZeroDates extends AbstractMigration
         $this->fixTableCol('mw_user', 'profile_start_date');
         $this->fixTableCol('mw_user', 'profile_end_date');
         $this->fixTableCol('phinxlog', 'end_time');
+        $this->fixTableCol('grand_services', 'start');
+        $this->fixTableCol('grand_services', 'end');
     }
 }
