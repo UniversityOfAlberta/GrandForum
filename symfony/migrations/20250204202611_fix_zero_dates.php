@@ -48,7 +48,6 @@ class FixZeroDates extends AbstractMigration
         $this->execute('ALTER TABLE grand_gs_citations DROP PRIMARY KEY');
         $this->execute('ALTER TABLE `grand_gs_citations` ADD `id` INT NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`)');
         $this->fixTableCol('grand_gs_citations', 'year');
-        $this->execute('ALTER TABLE `grand_gs_citations` ADD PRIMARY KEY( `id` )');
         $this->fixTableCol('grand_keywords', 'start_date');
         $this->fixTableCol('grand_keywords', 'end_date');
         $this->fixTableCol('grand_movedOn', 'effective_date');
