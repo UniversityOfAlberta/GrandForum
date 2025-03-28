@@ -259,7 +259,7 @@ class Person extends BackboneModel {
      */
     static function newFromAlexId($alexId){
         $alexId = trim(str_replace("http://openalex.org/", "", 
-                      str_replace("https://openalex.org/", "", $alexId)));
+                       str_replace("https://openalex.org/", "", $alexId)));
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id'),
                                     array('LOWER(`alex_id`)' => strtolower($alexId)));

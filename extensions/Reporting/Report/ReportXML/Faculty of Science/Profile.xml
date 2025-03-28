@@ -182,8 +182,7 @@
                 <table cellpadding='0' cellspacing='0' style='margin-top: -1em;'>
                     <tr>
                         <td valign='top'>
-                            <div class='previewnodisplay'><img src='{replace({$wgServer}{$wgScriptPath}/,,{$user_photo})}' style='height: 9em;' /></div>
-                            <div class='generatenodisplay'><img src='{$user_photo}' style='height: 9em;' /></div>
+                            <img src='{$user_photo}' style='height: 9em;' />
                         </td>
                         <td valign='top' style='width: 100%; padding-left: 1em;'>
                             <b>{$user_name}</b><br />
