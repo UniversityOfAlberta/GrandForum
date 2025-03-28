@@ -9,7 +9,7 @@ global $wgDBname;
 $papers = Paper::getAllPapers('all', 'both', -1);
 $nPapers = count($papers);
 $insertSQL = "INSERT INTO `grand_product_authors`
-	          (`author`, `product_id`, `order`) VALUES\n";
+	          (`author`, `product_id`, `type`, `order`) VALUES\n";
 $inserts = array();
 foreach($papers as $paper){
     $sqls = $paper->syncAuthors(true);

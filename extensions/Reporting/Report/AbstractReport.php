@@ -844,7 +844,7 @@ abstract class AbstractReport extends SpecialPage {
                                 <tr id='fullScreenRow'>
                                     <td width='50%' align='right' valign='top' style='white-space:nowrap;'>Full-Window&nbsp;Mode:</td><td width='50%' valign='middle'><input type='checkbox' name='toggleFullscreen'></td>
                                 </tr>
-                                <tr id='autosaveRow'>
+                                <tr id='autosaveRow' style='display:none;'>
                                     <td width='50%' align='right' valign='top'>Autosave:</td><td width='50%' valign='middle'><input name='autosave' autosave='on' type='radio' checked>On<br /><input name='autosave' value='off' type='radio'>Off</td>
                                 </tr>
                             </table>");

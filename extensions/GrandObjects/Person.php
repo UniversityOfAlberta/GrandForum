@@ -654,8 +654,8 @@ class Person extends BackboneModel {
             self::$authorshipCache[$id] = array();
             $data = DBFunctions::select(array('grand_product_authors'),
                                         array('author', 'product_id'),
-                                        array('author' => COL("REGEXP '[0-9]+'"),
-                                              'author' => LIKE($id)));
+                                        array('type' => 'id',
+                                              'author' => $id));
             foreach($data as $row){
                 self::$authorshipCache[$row['author']][] = $row['product_id'];
             }

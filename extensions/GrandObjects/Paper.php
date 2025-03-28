@@ -1096,7 +1096,7 @@ class Paper extends BackboneModel{
                       WHERE `product_id` = '{$this->id}'";
         $order = 0;
         $insertSQL = "INSERT INTO `grand_product_authors`
-                      (`author`, `product_id`, `order`) VALUES\n";
+                      (`author`, `product_id`, `type`, `order`) VALUES\n";
         
         $authors = array();
         $authors = $this->getAuthors();
@@ -1164,7 +1164,7 @@ class Paper extends BackboneModel{
                     // Author has changed
                     $invalidate = true;
                 }
-                $inserts[] = "('{$author->getId()}','{$this->getId()}','{$order}')";
+                $inserts[] = "('{$author->getId()}','{$this->getId()}','id','{$order}')";
             }
             else{
                 if(isset($author->newName)){
@@ -1178,7 +1178,7 @@ class Paper extends BackboneModel{
                     $invalidate = true;
                 }
                 $name = DBFunctions::escape($name);
-                $inserts[] = "('{$name}','{$this->getId()}','{$order}')";
+                $inserts[] = "('{$name}','{$this->getId()}','name','{$order}')";
             }
             $order++;
         }
