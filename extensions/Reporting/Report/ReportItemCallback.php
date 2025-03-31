@@ -257,7 +257,7 @@ class ReportItemCallback {
     }
     
     function get2YearsAgo(){
-        return $this->reportItem->getReport()->year-2;
+        return intval($this->reportItem->getReport()->year)-2;
     }
     
     function getStartYear(){
@@ -265,7 +265,7 @@ class ReportItemCallback {
     }
     
     function getLastYear(){
-        return $this->reportItem->getReport()->year-1;
+        return intval($this->reportItem->getReport()->year)-1;
     }
     
     function getThisYear(){
@@ -273,11 +273,11 @@ class ReportItemCallback {
     }
     
     function getNextYear(){
-        return $this->reportItem->getReport()->year+1;
+        return intval($this->reportItem->getReport()->year)+1;
     }
     
     function getNextYear2(){
-        return $this->reportItem->getReport()->year+2;
+        return intval($this->reportItem->getReport()->year)+2;
     }
     
     function getStartDate(){

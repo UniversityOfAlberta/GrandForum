@@ -176,7 +176,7 @@ class ReportXMLParser {
                 else{
                     $this->report->year = "{$year}";
                 }
-                $this->report->startYear = $this->report->year - 1;
+                $this->report->startYear = intval($this->report->year) - 1;
             }
             if(isset($attributes->startYear)){
                 $startYear = $this->report->varSubstitute("{$attributes->startYear}");
