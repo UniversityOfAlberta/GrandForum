@@ -13,27 +13,49 @@
             }) %>
         </td>
     <% } else { %>
-        <td valign="top">
-            <%= HTML.Select(this, 'assignees', {
-                style: 'width:200px; display: none',
-                multiple: true,
-                options: 
-                    _.map(this.project.members.toJSON(), function(person) {
-                        return {option: person.fullName, value: person.id};
-                    }),
-            }) %>
+        <td>
+            <% 
+            var assigneesList = this.model.get('assignees'); // Assuming 'assignees' is an array of assignee objects
+            if (assigneesList && assigneesList.length > 0) {
+                assigneesList.forEach(function(assignee, index) {
+                    %>
+                    <div><a href="<%= assignee.url %>"><%= assignee.name %></a></div>
+                    <% 
+                });
+            } else {
+                %>
+                <div>No Assignees</div>
+                <%
+            }
+            %>
         </td>
     <% } %>
     <td valign="top" style="white-space:nowrap;"><%= HTML.DatePicker(this, 'dueDate', {format: 'yy-mm-dd', style: 'width:5em'}) %></td>
 <% } else { %>
     <td><%= task %></td>
-    <td><a href="<%= assignees.url %>"><%= assignees.name %></td>
+    <td>
+        <% 
+        var assigneesList = this.model.get('assignees'); // Assuming 'assignees' is an array of assignee objects
+        if (assigneesList && assigneesList.length > 0) {
+            assigneesList.forEach(function(assignee, index) {
+                %>
+                <div><a href="<%= assignee.url %>"><%= assignee.name %></a></div>
+                <% 
+            });
+        } else {
+            %>
+            <div>No Assignees</div>
+            <%
+        }
+        %>
+    </td>
     <td align="center"><%= dueDate %></td>
     
 <% } %>
 <% if(isLeaderAllowedToEdit){ %>
     <td valign="top" style="white-space:nowrap;">
-        <%= HTML.Select(this, 'status', {options: ['New', 'Assigned', 'Done', 'Closed']}) %>
+        <button id="changeStatusButton" type="button">Change Status</button>
+        <div id="changeStatusDialog"></div>
     </td>
 
     <td valign="top" style="white-space:nowrap; width:40%">
@@ -43,7 +65,7 @@
     
 <% } else if(isMemberAllowedToEdit) { %>
     <td valign="top" style="white-space:nowrap;">
-        <%= HTML.Select(this, 'status', {options: ['Assigned', 'Done']}) %>
+        <button id="changeStatusButton" type="button">Change Status</button>
     </td>
     <td align="center"><%= comments %></td>
 
@@ -53,7 +75,7 @@
    
 <% } else { %>
     <td valign="top" style="white-space:nowrap;">
-        <%= status %>
+        <button id="changeStatusButton" type="button">Change Status</button>
     </td>
 
     <td align="center"><%= comments %></td>

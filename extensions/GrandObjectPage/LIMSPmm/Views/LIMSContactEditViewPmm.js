@@ -144,6 +144,8 @@ LIMSContactEditViewPmm = Backbone.View.extend({
                 task.saving = true;
                 if(!task.toDelete){
                     // Create or Update
+                    console.log(task.get('statuses'),task.unsavedAttributes());
+
                     if(task.unsavedAttributes()!=false){
                         xhrs.push(task.save(null, {
                             success: function(){

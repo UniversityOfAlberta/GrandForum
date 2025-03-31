@@ -533,6 +533,7 @@ HTML.Select = function(view, attr, options){
     }
 
     view.events['change select[name=' + HTML.Name(attr) + ']'] = function(e){
+        console.log(attr);
         if(attr.indexOf('.') != -1){
             var elems = attr.split(".");
             var recurse = function(data, depth) {
@@ -557,8 +558,8 @@ HTML.Select = function(view, attr, options){
             
             var data = view.model.get(elems[0]);
             data = recurse(data, 1);
-            console.log(data);
             view.model.set(elems[0], _.clone(data));
+            console.log('line562',elems[0],view.model.unsavedAttributes());
             view.model.trigger('change', view.model);
             view.model.trigger('change:' + elems[0], view.model);
         }

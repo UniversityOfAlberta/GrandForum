@@ -13,7 +13,7 @@ class LIMSTaskPmm extends BackboneModel
     var $task;
     var $dueDate;
     var $comments;
-    var $status;
+    var $statuses;
 
     static function newFromId($id)
     {
@@ -58,22 +58,7 @@ class LIMSTaskPmm extends BackboneModel
         return $assignees;
     }
 
-    // static function getStatuses($opportunity_id)
-    // {
-    //     $data = DBFunctions::select(
-    //         array('grand_pmm_task'),
-    //         array('*'),
-    //         array('opportunity' => $opportunity_id)
-    //     );
-    //     $tasks = array();
-    //     foreach ($data as $row) {
-    //         $task = new LIMSTaskPmm(array($row));
-    //         if ($task->isAllowedToView()) {
-    //             $tasks[] = $task;
-    //         }
-    //     }
-    //     return $tasks;
-    // }
+   
 
     function __construct($data)
     {
@@ -131,9 +116,18 @@ class LIMSTaskPmm extends BackboneModel
         return $this->comments;
     }
 
-    function getStatus()
+    function getStatuses()
     {
-        return $this->status;
+        $data = DBFunctions::select(
+            array('grand_pmm_task_assginees'),
+            array('*'),
+            array('task_id' => $this->id)
+        );
+        $statuses = array();
+        foreach ($data as $row) {
+            $statuses[$row['assignee']] = $row['status'];
+        }
+        return $statuses;
     }
 
     function isAllowedToEdit()
@@ -178,7 +172,7 @@ class LIMSTaskPmm extends BackboneModel
                 'task' => $this->getTask(),
                 'dueDate' => $this->getDueDate(),
                 'comments' => $this->getComments(),
-                // 'status' => $this->getStatus(),
+                'statuses' => $this->getStatuses(),
                 'isAllowedToEdit' => $this->isAllowedToEdit()
             );
             return $json;
@@ -210,10 +204,13 @@ class LIMSTaskPmm extends BackboneModel
                     'grand_pmm_task_assginees',
                     array(
                         'task_id' => $this->id,
-                        'assignee' => $assigneeId
+                        'assignee' => $assigneeId,
+                        'status' => @$this->statuses[$assigneeId]
                     )
                 );
             }
+
+           
             // Send mail to assignee
             // $assignee = Person::newFromId($this->assignee);
             // Notification::addNotification($me, $assignee, "Task Created", "The task <b>{$this->task}</b> has been created", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
@@ -263,7 +260,8 @@ class LIMSTaskPmm extends BackboneModel
                     'grand_pmm_task_assginees',
                     array(
                         'task_id' => $this->id,
-                        'assignee' => $assigneeId
+                        'assignee' => $assigneeId,
+                        'status' => @$this->statuses[$assigneeId]
                     )
                 );
             }

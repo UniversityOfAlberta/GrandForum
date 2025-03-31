@@ -1,0 +1,18 @@
+<h3>Select New Status</h3>
+<% 
+if (assignees && assignees.length > 0) {
+    assignees.forEach(function(assignee, index) {
+    %>
+    <% console.log("line163",this) %>
+    <%= HTML.Select(this, 'statuses.' + assignee.id, {options: ['New']}) %>
+    <% 
+}.bind(this));
+} else {
+    %>
+    <div>No assignees</div>
+    <%
+};
+%>
+
+<button id="updateStatusButton">Update Status</button>
+<button id="cancelButton">Cancel</button>
