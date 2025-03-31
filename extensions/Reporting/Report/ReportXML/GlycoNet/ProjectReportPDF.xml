@@ -391,6 +391,60 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="security" name="Research Security" blobSection="SECURITY" tooltip="Research Security" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="new" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_NEW" options="Yes|No">
+            <![CDATA[
+                <h3>Were there any new partners or collaborators added to the projects other than those listed in your initial application?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROGRESS,SECURITY,SECURITY_NEW,0,0,{$project_id})},Yes)}">
+            <ReportItem id="attestation1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION1" mimeType="application/pdf" />
+            <ReportItem id="attestation2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION2" mimeType="application/pdf" />
+            <ReportItem id="attestation3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION3" mimeType="application/pdf" />
+            <ReportItem id="attestation4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION4" mimeType="application/pdf" />
+            <ReportItem id="attestation5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION5" mimeType="application/pdf" />
+            <ReportItem id="attestation6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION6" mimeType="application/pdf" />
+            
+            <ReportItem id="assessment1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT1" mimeType="application/pdf" />
+            <ReportItem id="assessment2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT2" mimeType="application/pdf" />
+            <ReportItem id="assessment3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT3" mimeType="application/pdf" />
+            <ReportItem id="assessment4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT4" mimeType="application/pdf" />
+            <ReportItem id="assessment5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT5" mimeType="application/pdf" />
+            <ReportItem id="assessment6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT6" mimeType="application/pdf" />
+        </If>
+        
+        <ReportItem id="risk" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_RISK" options="Yes|No">
+            <![CDATA[
+                <h3>Were there any changes to the project that could have an impact on national security risks?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROGRESS,SECURITY,SECURITY_RISK,0,0,{$project_id})},Yes)}">
+            <ReportItem id="risk_details" type="Textarea" blobType="BLOB_TEXT" blobItem="SECURITY_RISK_DETAILS">
+                <![CDATA[
+                    <br />
+                    <p><b>Details:</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
+        
+        <ReportItem id="hqp" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_HQP" options="Yes|No">
+            <![CDATA[
+                <h3>Were there any new partners or collaborators added to the projects other than those listed in your initial application?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROGRESS,SECURITY,SECURITY_HQP,0,0,{$project_id})},Yes)}">
+            <ReportItem id="hqp1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP1" mimeType="application/pdf" />
+            <ReportItem id="hqp2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP2" mimeType="application/pdf" />
+            <ReportItem id="hqp3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP3" mimeType="application/pdf" />
+            <ReportItem id="hqp4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP4" mimeType="application/pdf" />
+            <ReportItem id="hqp5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP5" mimeType="application/pdf" />
+            <ReportItem id="hqp6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP6" mimeType="application/pdf" />
+        </If>
+    </ReportSection>
     <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV" pagebreak="false" delete="true">
         <ReportItemSet id="people" type="ProjectAllPeopleReportItemSet">
             <If id="if_null" if="{!=({getBlobMD5(RP_PROGRESS,CCV,CCV,{$user_id},0,{$project_id})},)}">

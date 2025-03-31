@@ -13,6 +13,7 @@
             <SectionPermission id="ktee" permissions="r" />
             <SectionPermission id="budget" permissions="-" />
             <SectionPermission id="contributions" permissions="-" />
+            <SectionPermission id="security" permissions="-" />
             <SectionPermission id="ccv" permissions="-" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="r" />
@@ -30,6 +31,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="security" permissions="-" />
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="r" />
@@ -45,6 +47,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="security" permissions="-" />
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="r" />
@@ -60,6 +63,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="security" permissions="-" />
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="r" />
@@ -75,6 +79,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="security" permissions="rw" />
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="rw" />
@@ -814,6 +819,189 @@
                 </ul>
             ]]>
         </Static-->
+    </ReportSection>
+    <ReportSection id="security" name="Research Security" blobSection="SECURITY" tooltip="Research Security" type="EditableReportSection">
+        <ReportItem id="new" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_NEW" options="Yes|No">
+            <![CDATA[
+                <ol>
+                <li id='new'>
+                    Were there any new partners or collaborators added to the projects other than those listed in your initial application?
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION1" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div id='new_yes'>
+                    <p>New Collaborators should fill in the <a href='https://www.nserc-crsng.gc.ca/InterAgency-Interorganismes/RS-SR/_doc/Attestation_e.pdf' target='_blank'>Attestation Form</a>.</p>
+                    <div style='display:flex; width: 100%; margin-top: 1em;'>
+                        <div style='width: 50%; min-width: 500px;'>
+                            {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION3" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION4" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION5" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION6" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT1" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <p>In the case of a new private sector partner, the Project Leader must complete the <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'>Risk Assessment Form</a>.</p>
+                    <div style='display:flex; width: 100%; margin-top: 1em;'>
+                        <div style='width: 50%; min-width: 500px;'>
+                            {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT3" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT4" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT5" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT6" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+                </div></div></li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="risk" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_RISK" options="Yes|No">
+            <![CDATA[
+                <li id='risk'>
+                    Were there any changes to the project that could have an impact on national security risks?
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="risk_details" type="Textarea" blobType="BLOB_TEXT" blobItem="SECURITY_RISK_DETAILS">
+            <![CDATA[
+                    <div id='risk_yes'>
+                        Details:
+                        {$item}
+                    </div>
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_HQP" options="Yes|No">
+            <![CDATA[
+                <li id='hqp'>
+                    <p>Are there any HQPs assigned to the project who have not completed the <a href='https://www.nserc-crsng.gc.ca/InterAgency-Interorganismes/RS-SR/_doc/Attestation_e.pdf' target='_blank'>Attestation Form</a> (specifically those who were not on the project list at the time the application was submitted)?</p>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP1" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <div id='hqp_yes'>
+                    <p>Please upload the completed form (one per HQP)</p>
+                    <div style='display:flex; width: 100%; margin-top: 1em;'>
+                        <div style='width: 50%; min-width: 500px;'>
+                            {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP3" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP4" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP5" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP6" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+                </div></div></li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('#new input').change(function(){
+                        var privateValue = $('#new input:checked').val();
+                        if(privateValue == "Yes"){
+                            $('#new_yes').show();
+                        }
+                        else{
+                            $('#new_yes').hide();
+                        }
+                    }).change();
+                    
+                    $('#risk input').change(function(){
+                        var privateValue = $('#risk input:checked').val();
+                        if(privateValue == "Yes"){
+                            $('#risk_yes').show();
+                        }
+                        else{
+                            $('#risk_yes').hide();
+                        }
+                    }).change();
+                    
+                    $('#hqp input').change(function(){
+                        var privateValue = $('#hqp input:checked').val();
+                        if(privateValue == "Yes"){
+                            $('#hqp_yes').show();
+                        }
+                        else{
+                            $('#hqp_yes').hide();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
