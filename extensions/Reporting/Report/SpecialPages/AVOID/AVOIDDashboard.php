@@ -269,6 +269,10 @@ class AVOIDDashboard extends SpecialPage {
             }
         }*/
         
+        $wgOut->addHTML("<style>
+            #actionPlanTracker .trackerHeader { display: none; }
+        </style>");
+        
         if($wgLang->getCode() == 'en'){
             $wgOut->setPageTitle("My Profile");
         }
@@ -536,19 +540,23 @@ class AVOIDDashboard extends SpecialPage {
                             {$fitbitHTML}
                             <p>
                                 <div id='newPlan' style='display: none;'>
-                                    <a id='createActionPlan' href='#'>
-                                        <en>Create NEW Action Plan</en>
-                                        <fr>Créer un NOUVEAU plan d’action</fr>
-                                    </a>
+                                    <ul>
+                                        <li><en>To develop your weekly action plan, click on </en><a id='createActionPlan' href='#'>
+                                            <en>Create NEW Action Plan</en>
+                                            <fr>Créer un NOUVEAU plan d’action</fr></a>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <div id='currentPlan' style='display: none;'>
-                                    <en>Current Action Plan</en><fr>Mon plan d'action</fr>
-                                    (<a id='viewActionPlan' href='#'><en>View</en><fr>Voir</fr></a> / 
-                                     <a id='submitActionPlan' href='#'><en>Submit and Log Accomplishment</en><fr>Soumettre et enregistrer mes accomplissements</fr></a> / 
-                                     <a id='repeatActionPlan' href='#'><en>Repeat for another week</en><fr>Répéter le plan d'action une autre semaine</fr></a>)
+                                    <ul>
+                                        <li>Track your progress during the week by adding a tick to the days you have accomplished your plan in the Action Plan Daily Tracker<div id='actionPlanTracker' style='display:none;'></div></li>
+                                        <li><a id='viewActionPlan' href='#'>View Action Plan</a> during the week to view tracking your progress</li>
+                                        <li>Once the week is completed, <a id='submitActionPlan' href='#'><en>Submit and Log Accomplishment</en><fr>Soumettre et enregistrer mes accomplissements</fr></a>. You can view these accomplishments at any time</li>
+                                        <li>You can also <a id='repeatActionPlan' href='#'><en>Repeat your Action Plan</en><fr>Répéter le plan d'action</fr></a> for another week</li>
+                                    </ul>
                                 </div>
                             </p>
-                            <div id='actionPlanTracker' style='display:none;'></div>
+                            
                             <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog' class='actionPlanDialog'></div>
                             <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog' class='actionPlanDialog'></div>
                             <div title='Action Plan Overview' style='display:none;padding:0;' id='actionPlanOverview'></div>
