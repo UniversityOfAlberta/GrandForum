@@ -37,7 +37,7 @@ ClipboardListView = Backbone.View.extend({
         window.print();
     },
 
-    addRows: function (cat,rows) {
+    addRows: function (cat, rows) {
         this.$('#listTable').hide();
         if (this.table != undefined) {
             this.table.destroy();
@@ -83,7 +83,7 @@ ClipboardListView = Backbone.View.extend({
         for(var i = 0; i < keys.length; i++){
             var object = data[keys[i]];
             var category = object.Category;
-            var category_key = $("<div>" + category + "</div>").text().replaceAll(" ", "");
+            var category_key = $("<div>" + category + "</div>").text().replaceAll(" ", "").replaceAll("'", "").replaceAll("/", "");
             if(newJSON.hasOwnProperty(category_key)){
                 newJSON[category_key].push(object);
             }
