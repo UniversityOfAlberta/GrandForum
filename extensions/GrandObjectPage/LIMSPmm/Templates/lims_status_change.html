@@ -3,8 +3,8 @@
 if (assignees && assignees.length > 0) {
     assignees.forEach(function(assignee, index) {
     %>
-    <% console.log("line163",this) %>
-    <%= HTML.Select(this, 'statuses.' + assignee.id, {options: ['New']}) %>
+    <% var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; %>
+    <%= HTML.Select(this, 'statuses.' + assigneeId, {options: ['New']}) %>
     <% 
 }.bind(this));
 } else {

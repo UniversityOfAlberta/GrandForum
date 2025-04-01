@@ -144,8 +144,6 @@ LIMSContactEditViewPmm = Backbone.View.extend({
                 task.saving = true;
                 if(!task.toDelete){
                     // Create or Update
-                    console.log(task.get('statuses'),task.unsavedAttributes());
-
                     if(task.unsavedAttributes()!=false){
                         xhrs.push(task.save(null, {
                             success: function(){
@@ -158,13 +156,11 @@ LIMSContactEditViewPmm = Backbone.View.extend({
                                     task.saving = false;
                                 }.bind(this));
                             }
-                            
                         }));
 
                     } else {
                         task.saving = false;
                     }
-                    
                 }
                 else if(!task.isNew()){
                     // Delete as long as it isn't new (if it's new, and set for deletion, just do nothing)
