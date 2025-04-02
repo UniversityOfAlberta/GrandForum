@@ -1787,7 +1787,7 @@ class Person extends BackboneModel {
                     $data = Cache::fetch("user_universities_{$id}");
                 }
                 else{
-                    $sql = "SELECT id, user_id, university_name, department, position, research_area, SUBSTR(start_date,1,10) as start_date, SUBSTR(end_date,1,10) as end_date
+                    $sql = "SELECT id, user_id, university_name, department, position, research_area, SUBSTR(start_date,1,10) as start_date, SUBSTR(end_date,1,10) as end_date, `primary`
                             FROM grand_user_university uu, grand_universities u, grand_positions p
                             WHERE u.university_id = uu.university_id
                             AND uu.position_id = p.position_id
@@ -1802,7 +1802,7 @@ class Person extends BackboneModel {
                     $data = Cache::fetch("user_university");
                 }
                 else{
-                    $sql = "SELECT id, user_id, university_name, department, position, research_area, SUBSTR(start_date,1,10) as start_date, SUBSTR(end_date,1,10) as end_date
+                    $sql = "SELECT id, user_id, university_name, department, position, research_area, SUBSTR(start_date,1,10) as start_date, SUBSTR(end_date,1,10) as end_date, `primary`
                             FROM grand_user_university uu, grand_universities u, grand_positions p
                             WHERE u.university_id = uu.university_id
                             AND uu.position_id = p.position_id
@@ -1820,6 +1820,7 @@ class Person extends BackboneModel {
                                                                          "department" => $row['department'],
                                                                          "position" => $row['position'],
                                                                          "research_area" => $row['research_area'],
+                                                                         "primary" => $row['primary'],
                                                                          "start" => ZERO_DATE($row['start_date'], ZOT),
                                                                          "end" => ZERO_DATE($row['end_date'], ZOT));
                 }
@@ -1856,24 +1857,18 @@ class Person extends BackboneModel {
      * @return array All the Universities that this Person has been a part of
      */ 
     function getUniversities(){
-        $sql = "SELECT * 
-                FROM grand_user_university uu, grand_universities u, grand_positions p
-                WHERE uu.user_id = '{$this->id}'
-                AND u.university_id = uu.university_id
-                AND uu.position_id = p.position_id
-                ORDER BY COALESCE(end_date, '".EOT."') DESC, start_date DESC, id DESC";
-        $data = DBFunctions::execSQL($sql);
+        $data = $this->getUniversitiesDuring(SOT, EOT);
         $array = array();
         if(count($data) > 0){
             foreach($data as $row){
                 $array[] = array("id" => $row['id'],
-                                 "university" => $row['university_name'],
+                                 "university" => $row['university'],
                                  "department" => $row['department'],
                                  "position"   => $row['position'],
                                  "researchArea" => $row['research_area'],
                                  "primary" => $row['primary'],
-                                 "start" => ZERO_DATE($row['start_date']),
-                                 "end" => ZERO_DATE($row['end_date']));
+                                 "start" => ZERO_DATE($row['start']),
+                                 "end" => ZERO_DATE($row['end']));
             }
         }
         return $array;
