@@ -25,6 +25,7 @@ if(PHP_SAPI != 'cli'){
     header('Cache-Control: no-cache, no-store, must-revalidate');
     header('Pragma: no-cache');
     header('Expires: 0');
+    header('Strict-Transport-Security: max-age=300; includeSubDomains; preload');
     
     if(!isset($_GET['embed'])){
         header('X-Frame-Options: SAMEORIGIN');
