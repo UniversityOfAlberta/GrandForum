@@ -71,7 +71,7 @@ class ReportXMLParser {
                 }
             }
         }
-        if(isset(self::$fileMap[$rp])){
+        if(@isset(self::$fileMap[$rp])){
             return self::$fileMap[$rp];
         }
         return "";
