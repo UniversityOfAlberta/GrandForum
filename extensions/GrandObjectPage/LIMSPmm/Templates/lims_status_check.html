@@ -1,0 +1,34 @@
+<h3>Select New Status</h3>
+
+<% 
+if (assignees && assignees.length > 0) { 
+%>
+    <table>
+        <% assignees.forEach(function(assignee, index) { %>
+            <tr>
+                <td valign="top"><%= assignee.name %></td>
+                <td valign="top">
+                    <% 
+                    var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
+                    var currentStatus = statuses[assigneeId]; // Get current status for the assignee
+                    %>
+                    
+                   
+                        <!-- If not editable, display the current status as text -->
+                        <%= currentStatus %>
+                   
+                </td>
+
+                
+            </tr>
+        <% }.bind(this)); %>
+    </table>
+<% 
+} else { 
+%>
+    <div>No assignees</div>
+<% 
+}
+%>
+
+

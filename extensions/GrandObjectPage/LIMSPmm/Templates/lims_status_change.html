@@ -1,18 +1,46 @@
 <h3>Select New Status</h3>
+
 <% 
-if (assignees && assignees.length > 0) {
-    assignees.forEach(function(assignee, index) {
-    %>
-    <% var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; %>
-    <%= HTML.Select(this, 'statuses.' + assigneeId, {options: ['New']}) %>
-    <% 
-}.bind(this));
-} else {
-    %>
+if (assignees && assignees.length > 0) { 
+%>
+    <table>
+        <% assignees.forEach(function(assignee, index) { %>
+            <tr>
+                <td valign="top"><%= assignee.name %></td>
+                <td valign="top">
+                    <% 
+                    var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
+                    var currentStatus = statuses[assigneeId]; // Get current status for the assignee
+                    %>
+                    
+                    <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
+                        <!-- If editable, show the status as a select dropdown -->
+                        <%= HTML.Select(this, 'statuses.' + assigneeId, { 
+                            options: 
+                                isLeaderAllowedToEdit 
+                                    ? ['New', 'Assigned', 'Done', 'Closed']  // Project Leader can change between New, Assigned, Done, Closed
+                                    : ['Assigned', 'Done']  // Member can change between Assigned and Done
+                        }) %>
+                    <% } else { %> 
+                        <!-- If not editable, display the current status as text -->
+                        <%= currentStatus %>
+                    <% } %> 
+                   
+                </td>
+
+                
+            </tr>
+        <% }.bind(this)); %>
+    </table>
+<% 
+} else { 
+%>
     <div>No assignees</div>
-    <%
-};
+<% 
+}
 %>
 
-<button id="updateStatusButton">Update Status</button>
+<% if (isEditableStatus) { %>  <!-- Only show the update button if status is editable -->
+    <button id="updateStatusButton">Update Status</button>
+<% } %>
 <button id="cancelButton">Cancel</button>

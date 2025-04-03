@@ -51,7 +51,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
 
     changeStatus: function(){
         // Create a model for the status change dialog
-        var view = new LIMSStatusChangeViewPmm({el: this.editDialog, model: this.model, isDialog: true});
+        var view = new LIMSStatusChangeViewPmm({el: this.editDialog, model: this.model, isDialog: true, project: this.project});
         
         this.editDialog.view = view;
         $('body').append(this.editDialog);

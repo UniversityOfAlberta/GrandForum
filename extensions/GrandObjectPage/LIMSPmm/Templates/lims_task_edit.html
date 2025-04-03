@@ -66,20 +66,25 @@
 <% } else if(isMemberAllowedToEdit) { %>
     <td valign="top" style="white-space:nowrap;">
         <button id="changeStatusButton" type="button">Change Status</button>
+        <div id="changeStatusDialog"></div>
     </td>
-    <td align="center"><%= comments %></td>
 
+    <td valign="top" style="white-space:nowrap; width:40%">
+        <%= HTML.TextArea(this, 'comments', {style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"}) %>
 
-
+    </td>
     
-   
+
 <% } else { %>
     <td valign="top" style="white-space:nowrap;">
-        <button id="changeStatusButton" type="button">Change Status</button>
+        <button id="changeStatusButton" type="button">Check Status</button>
+        <div id="changeStatusDialog"></div>
     </td>
 
-    <td align="center"><%= comments %></td>
+    <td valign="top" style="white-space:nowrap; width:40%">
+        <%= HTML.TextArea(this, 'comments', {style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"}) %>
 
+    </td>
     
    
 <% } %>

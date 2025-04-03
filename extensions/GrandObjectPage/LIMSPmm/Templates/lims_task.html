@@ -16,7 +16,10 @@
     %>
 </td>
 </td><td align="center"><%= dueDate %></td>
-<td><%= status %></td>
+<td valign="top" style="white-space:nowrap;">
+    <button id="checkStatus" type="button">Check Status</button>
+    <div id="changeStatusDialog"></div>
+</td>
 <td>
     <%= comments %>
 </td>
