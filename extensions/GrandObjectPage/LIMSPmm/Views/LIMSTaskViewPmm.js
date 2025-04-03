@@ -16,7 +16,6 @@ LIMSTaskViewPmm = Backbone.View.extend({
     },
 
     checkStatus: function(){
-        console.log('hi');
         // Create a model for the status change dialog
         var view = new LIMSStatusCheckViewPmm({el: this.editDialog, model: this.model, isDialog: true});
         
@@ -33,7 +32,7 @@ LIMSTaskViewPmm = Backbone.View.extend({
         this.editDialog.dialog({
             height: $(window).height() * 0.75,
             width: 400,
-            title: "Change Task Status"
+            title: "Check Task Status"
         });
 
         // Open the dialog
