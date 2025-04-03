@@ -106,7 +106,7 @@ class ApplicationsTable extends SpecialPage{
     }
     
     function generateTheme(){
-        global $wgOut, $config;
+        global $wgOut, $config, $wgServer, $wgScriptPath;
         $tabbedPage = new InnerTabbedPage("reports");
         $max = Report::dateToThemeQuarter(date('Y-m-d'));
         for($y=date('Y');$y>=substr($config->getValue('projectPhaseDates')[1],0,4);$y--){
@@ -114,7 +114,30 @@ class ApplicationsTable extends SpecialPage{
             for($q=$nQ;$q>=1;$q--){
                 $quarter = "{$y}_Q{$q}";
                 if($quarter <= $max){
-                    $tabbedPage->addTab(new ApplicationTab("ThemeReport", $this->themes, 0, "{$y}: R{$q}", array(), false, null, array('id' => $quarter)));
+                    $tab = new ApplicationTab("ThemeReport", $this->themes, 0, "{$y}: R{$q}", array(), false, null, array('id' => $quarter));
+                    $extra = "<table class='wikitable'>
+                                <thead>
+                                    <tr><th>Theme</th><th>Merged Report</th></tr>
+                                </thead>
+                                <tbody>";
+                    foreach($this->themes as $theme){
+                        $tokens = array();
+                        foreach($theme->getProjects() as $project){
+                            $report = new DummyReport("ProjectReportPDF", Person::newFromId(1), $project, 0, true);
+                            $report->pdfType = "RP_PROJECT_REPORT_{$y}_Q{$q}";
+                            $check = $report->getPDF(false, $report->pdfType);
+                            if(count($check) > 0){
+                                $tokens[] = $check[0]['token'];
+                            }
+                        }
+                        if(count($tokens) > 0){
+                            $url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?merge=" . implode(",", $tokens) . "&cover&generatePDF&headerName={$theme->getName()}";
+                            $extra .= "<tr><td>{$theme->getName()}</td><td><a href='$url'><img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /></a></td></tr>";
+                        }
+                    }
+                    $extra .= "</tbody></table>";
+                    $tab->addExtra($extra);
+                    $tabbedPage->addTab($tab);
                 }
             }
         }
