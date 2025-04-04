@@ -272,26 +272,6 @@ class Paper extends BackboneModel{
     }
     
     /**
-     * Returns the number of Products there are of the specified type
-     * @param string $category The category of Product.  If 'all' then look at all products
-     * @return integer The number of Products there are of the specified type
-     */
-    static function countByCategory($category='all'){
-        if($category != 'all'){
-            $data = DBFunctions::select(array('grand_products'),
-                                        array('COUNT(id)' => 'count'),
-                                        array('category' => EQ($category),
-                                              'deleted' => EQ(0)));
-        }
-        else{
-            $data = DBFunctions::select(array('grand_products'),
-                                        array('COUNT(id)' => 'count'),
-                                        array('deleted' => EQ(0)));
-        }
-        return $data[0]['count'];
-    }
-    
-    /**
      * Returns all of the Products in the database
      * @param string $category Specifies which category the returned Products should be of('Publication', 'Artifact' etc.)
      * @param string $grand Whether to include grand-only, non-grand-only or both
@@ -806,37 +786,6 @@ class Paper extends BackboneModel{
             }
         }
         return true;
-    }
-    
-    /**
-     * Returns whether or not this Paper is published or not
-     * @return boolean Whether or not this Paper is published or not
-     */
-    function isPublished(){
-        $status = $this->getStatus();
-        switch ($this->getType()) {
-            case 'Journal Paper':
-            case 'Magazine/Newspaper Article':
-                if($status != "Published" && $status != "Submitted"){
-                    return false;
-                }
-                return true;
-                break;
-            case 'Masters Thesis':
-            case 'PhD Thesis':
-            case 'Tech Report':
-            case 'Misc':
-            case 'Poster':
-            case 'Book':
-            case 'Book Chapter':
-            case 'Collections Paper':
-            default:
-                if($status != "Published"){
-                    return false;
-                }
-                return true; 
-                break;
-        }
     }
     
     /**
@@ -1798,36 +1747,6 @@ class Paper extends BackboneModel{
         }
 
         return $completeness;
-    }
-    
-    static function getPublicationTypes(){
-        $pub_types = array();
-        
-        $sql = "SELECT DISTINCT type
-                FROM grand_products
-                WHERE category = 'Publication'";
-        $data = DBFunctions::execSQL($sql);
-        
-        foreach ($data as $row){
-            $pub_types[] = $row['type'];
-        }
-        
-        return $pub_types;
-    }
-
-    static function getCategoryTypes($category){
-        $types = array();
-        
-        $sql = "SELECT DISTINCT type
-                FROM grand_products
-                WHERE category = '{$category}'";
-        $data = DBFunctions::execSQL($sql);
-        
-        foreach ($data as $row){
-            $types[] = $row['type'];
-        }
-        
-        return $types;
     }
     
     // Returns an array of strings representing all the custom misc types
