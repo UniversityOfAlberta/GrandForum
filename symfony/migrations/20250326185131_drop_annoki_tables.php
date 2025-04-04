@@ -27,5 +27,6 @@ final class DropAnnokiTables extends AbstractMigration
         $this->table('mw_an_vtracker_diff_results')->drop()->update();
         $this->table('grand_report_backup')->drop()->update();
         $this->table('grand_activities')->drop()->update();
+        $this->table('grand_user_addresses')->drop()->update();
     }
 }

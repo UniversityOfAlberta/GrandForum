@@ -1400,22 +1400,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns an array of Address objects that this Person is from
-     * @return array The Address objects that this Person is from
-     */
-    function getAddresses(){
-        $data = DBFunctions::select(array('grand_user_addresses'),
-                                    array('id'),
-                                    array('user_id' => EQ($this->getId())));
-        $addresses = array();
-        foreach($data as $row){
-            $address = Address::newFromId($row['id']);
-            $addresses[$address->getId()] = $address;
-        }
-        return $addresses;
-    }
-    
-    /**
      * Returns a this Person's name in the form "Last, First"
      * @return string This Person's name in the form "Last, First"
      */
