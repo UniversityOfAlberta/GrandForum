@@ -7,10 +7,6 @@
  * @package Report
  * @abstract
  */
-
-// Other
-require_once("ReportItemCallback.php");
-
 abstract class AbstractReportItem {
     
     var $id;

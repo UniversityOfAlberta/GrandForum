@@ -28,10 +28,8 @@ initValidations();
  * on Special pages.  This class will allow for automatic cleanup of POST variables, 
  * as well as simple validation checks
  */
- 
-require_once("UIElementArray.php");
-require_once("UIValidation.php");
 
+autoload_register('UI');
 autoload_register('UI/Arrays');
 autoload_register('UI/Elements');
 autoload_register('UI/Validations');

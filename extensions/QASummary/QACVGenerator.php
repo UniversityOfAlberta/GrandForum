@@ -1,7 +1,5 @@
 <?php
 
-require_once("QACVDepartmentTab.php");
-
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['QACVGenerator'] = 'QACVGenerator'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['QACVGenerator'] = $dir . 'QACVGenerator.i18n.php';

@@ -1,6 +1,7 @@
 <?php
 
-require_once("DepartmentTab.php");
+autoload_register('QASummary');
+
 require_once("QACVGenerator.php");
 
 $dir = dirname(__FILE__) . '/';

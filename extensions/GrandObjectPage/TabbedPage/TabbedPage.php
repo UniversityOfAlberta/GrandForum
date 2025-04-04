@@ -1,10 +1,5 @@
 <?php
 
-require_once("TabbedAjaxPage.php");
-require_once('AbstractTab.php');
-require_once('InnerTabbedPage.php');
-require_once('AbstractEditableTab.php');
-
 class TabbedPage {
 
     var $id;

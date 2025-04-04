@@ -4,9 +4,6 @@ if(isset($_GET['generatePDF'])){
     require_once($dir . '/../../../Classes/SmartDomDocument/SmartDomDocument.php');
 }
 require_once('PDFParams.php');
-require_once('ReportIndex.php');
-require_once('ReportStorage.php');
-
 
 function calculateDPI(){
     if(isset($_GET['dpi'])){
