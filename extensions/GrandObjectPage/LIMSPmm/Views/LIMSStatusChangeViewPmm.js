@@ -28,7 +28,6 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     
         var isMemberAllowed = !isPLAllowed && (me.get);
     
-        console.log(isMemberAllowed);
         this.model.set('isLeaderAllowedToEdit', isPLAllowed);
         this.model.set('isMemberAllowedToEdit', isMemberAllowed);
         
