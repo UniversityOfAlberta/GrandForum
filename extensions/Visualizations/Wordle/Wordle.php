@@ -1,6 +1,6 @@
 <?php
 
-require_once("Classes/removeCommonWords/removeCommonWords.php");
+autoload_register("../Classes/removeCommonWords");
 
 class Wordle extends Visualization {
     
