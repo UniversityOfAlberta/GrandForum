@@ -312,23 +312,11 @@ class ReportStorage {
         close();
     }
 
-    function get_report_project_id(){
-        $report_id = $this->_cache['report_id'];
-        $sql = "SELECT sub_id FROM grand_pdf_index WHERE report_id={$report_id}";
-        $res = DBFunctions::execSQL($sql);
-        $sub_id = 0;
-        if (count($res) > 0) {
-            $sub_id = $res[0]['sub_id'];
-        }
-
-        return $sub_id;
-    }
-
     /// Returns an array of report entries for users #uarr with as many as #lim
     /// entries per user.  By default, submitted reports are considered, which
     /// can be changed with #subm.  #uarr is either an array of numeric user IDs
     /// or an integer (for the user ID).
-    static function list_reports($uarr, $subm = 1, $lim = 1, $special = 0, $type = 0, $year = "") {
+    static function list_reports($uarr, $lim = 1, $special = 0, $type = 0, $year = "") {
         $cacheId = "";
         if (is_array($uarr)) {
             $uarr = implode(', ', $uarr);
@@ -370,37 +358,6 @@ class ReportStorage {
         return $data;
     }
     
-    static function list_reports_past($uarr, $year, $subm = 1, $lim = 1, $special = 0, $type = 0) {
-        if (is_array($uarr)) {
-            $uarr = implode(', ', $uarr);
-        }
-
-        if (strlen($uarr) === 0)
-            return array();
-        if($lim == 0){
-            $lim = "";
-        }
-        else{
-            $lim = "LIMIT {$lim}";
-        }
-        $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, token, timestamp, year, encrypted
-                FROM grand_pdf_report 
-                WHERE user_id IN ({$uarr}) 
-                AND submitted = {$subm} 
-                AND type = '{$type}' 
-                AND year = {$year} 
-                AND report_id NOT IN (SELECT `report_id` FROM grand_pdf_index)
-                ORDER BY timestamp DESC
-                {$lim};";
-        $data = DBFunctions::execSQL($sql);
-        foreach($data as $key => $row){
-            if($row['encrypted']){
-                $data[$key]['token'] = urlencode(encrypt($row['token']));
-            }
-        }
-        return $data;
-    }
-    
     static function list_project_reports($sub_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year=REPORTING_YEAR) {
         if($lim == 0){
             $lim = "";
@@ -423,54 +380,6 @@ class ReportStorage {
             }
         }
         return $data;
-    }
-    
-    static function list_user_project_reports($sub_id, $user_id, $lim = 1, $special = 0, $type = RPTP_LEADER){
-        if($user_id == ""){
-            $user_id = 0;
-        }
-        if($lim == 0){
-            $lim = "";
-        }
-        else{
-            $lim = "LIMIT {$lim}";
-        }
-        $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.token, r.timestamp, r.year
-                FROM grand_pdf_report r, grand_pdf_index i 
-                WHERE r.report_id = i.report_id
-                AND i.sub_id = {$sub_id}
-                AND r.user_id = {$user_id}
-                AND r.type = '{$type}'
-                ORDER BY timestamp DESC
-                {$lim}";
-        $res = DBFunctions::execSQL($sql);
-        return $res;
-    }
-
-
-    /// Returns a resultset with the latest report for each user in #uarr.
-    /// The flags #subm (for submitted reports) and #special (for input
-    /// reports for project leaders) refine the search.
-    /// Columns: user_id, report_id, token, timestamp.
-    static function list_latest_reports($uarr, $subm = 1, $special = 0, $type = 0) {
-        if (is_array($uarr)) {
-            $uarr = implode(', ', $uarr);
-        }
-
-        if (strlen($uarr) === 0)
-            return array();
-
-        $sql = "SELECT p1.user_id, p1.report_id, p1.token, p1.timestamp, p1.year 
-                FROM grand_pdf_report p1 
-                WHERE p1.user_id IN ({$uarr}) 
-                AND p1.timestamp IN (SELECT MAX(p2.timestamp) 
-                                     FROM grand_pdf_report p2 
-                                     WHERE p1.user_id = p2.user_id 
-                                     AND p2.submitted = {$subm} 
-                                     AND p2.type = '{$type}' 
-                                     AND p2.timestamp < '2011-08-01') 
-                ORDER BY p1.user_id;";
-        return DBFunctions::execSQL($sql);
     }
 
 }

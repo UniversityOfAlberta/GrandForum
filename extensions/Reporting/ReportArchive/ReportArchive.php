@@ -167,10 +167,10 @@ class ReportArchive extends SpecialPage {
             $caUrl = "";
             $ddUrl = "";
             if(date('Y-m-d') >= "$y-10-29"){
-                $recc = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALRecommendations", $y);
-                $da = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALDean Advice", $y);
-                $ca = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALChair Advice", $y);
-                $dd = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALDean Decision", $y);
+                $recc = ReportStorage::list_reports(array($person->getId()), 1, 0, "CHAIR_EVALRecommendations", $y);
+                $da = ReportStorage::list_reports(array($person->getId()), 1, 0, "CHAIR_EVALDean Advice", $y);
+                $ca = ReportStorage::list_reports(array($person->getId()), 1, 0, "CHAIR_EVALChair Advice", $y);
+                $dd = ReportStorage::list_reports(array($person->getId()), 1, 0, "CHAIR_EVALDean Decision", $y);
                 
                 if(count($recc) > 0){
                     $pdf = PDF::newFromToken($recc[0]['token']);
@@ -192,7 +192,7 @@ class ReportArchive extends SpecialPage {
             
             // Sabbatical Decision
             $sab2Url = "";
-            $sab2 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_SABBATICAL_CHAIR", $y);
+            $sab2 = ReportStorage::list_reports(array($person->getId()), 1, 0, "RP_SABBATICAL_CHAIR", $y);
             if(count($sab2) > 0){
                 $pdf = PDF::newFromToken($sab2[0]['token']);
                 $sab2Url = "<a href='{$pdf->getUrl()}' target='_blank'>Sabbatical Decision</a><br />";
@@ -207,13 +207,13 @@ class ReportArchive extends SpecialPage {
             $letter4Url = "";
             $varianceUrl = "";
 
-            $dd = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALDean Decision", $y);
-            $letter = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER", $y); // Past Years
-            $letter1 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER1", $y);
-            $letter2 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER2", $y);
-            $letter3 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER3", $y);
-            $letter4 = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER4", $y);
-            $variance = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "RP_LETTER5", $y-1);
+            $dd = ReportStorage::list_reports(array($person->getId()), 1, 0, "CHAIR_EVALDean Decision", $y);
+            $letter = ReportStorage::list_reports(array($person->getId()), 1, 0, "RP_LETTER", $y); // Past Years
+            $letter1 = ReportStorage::list_reports(array($person->getId()), 1, 0, "RP_LETTER1", $y);
+            $letter2 = ReportStorage::list_reports(array($person->getId()), 1, 0, "RP_LETTER2", $y);
+            $letter3 = ReportStorage::list_reports(array($person->getId()), 1, 0, "RP_LETTER3", $y);
+            $letter4 = ReportStorage::list_reports(array($person->getId()), 1, 0, "RP_LETTER4", $y);
+            $variance = ReportStorage::list_reports(array($person->getId()), 1, 0, "RP_LETTER5", $y-1);
             if(count($dd) > 0){
                 $pdf = PDF::newFromToken($dd[0]['token']);
                 $ddUrl = "<a href='{$pdf->getUrl()}' target='_blank'>Dean's Decision</a><br />";

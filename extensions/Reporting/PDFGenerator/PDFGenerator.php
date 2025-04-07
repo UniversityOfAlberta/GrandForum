@@ -3,7 +3,6 @@ $dir = dirname(__FILE__);
 if(isset($_GET['generatePDF'])){
     require_once($dir . '/../../../Classes/SmartDomDocument/SmartDomDocument.php');
 }
-require_once('PDFParams.php');
 
 function calculateDPI(){
     if(isset($_GET['dpi'])){

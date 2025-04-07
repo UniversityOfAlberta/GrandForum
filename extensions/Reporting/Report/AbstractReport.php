@@ -277,8 +277,7 @@ abstract class AbstractReport extends SpecialPage {
             $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
         }
         else{
-            $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year), 
-                                 $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year));
+            $check = $sto->list_reports($this->person->getId(), 0, 0, $this->pdfType, $this->year);
         }
         $largestDate = ZOT;
         $return = array();
@@ -315,7 +314,7 @@ abstract class AbstractReport extends SpecialPage {
         }
         else{
             // First check submitted
-            $check = $sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType.$section, $this->year);
+            $check = $sto->list_reports($this->person->getId(), 0, 0, $this->pdfType.$section, $this->year);
             foreach($check as $c){
                 if($c['generation_user_id'] == $c['user_id']){
                    $foundSameUser = true;
