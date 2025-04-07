@@ -20,12 +20,6 @@ require_once("SpecialPages/GraduateStudents.php");
 require_once("SpecialPages/FECReflections.php");
 require_once("SpecialPages/SPOTGenerator.php");
 require_once("SpecialPages/{$config->getValue('networkName')}/DummyReport.php");
-if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php")){
-    require_once("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php");
-}
-if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php")){
-    require_once("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php");
-}
 
 autoload_register('Reporting/Report');
 autoload_register('Reporting/Report/ReportSections');
