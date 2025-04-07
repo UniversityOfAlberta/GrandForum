@@ -124,7 +124,6 @@ HTML.Value = function(model, attr){
     if(attr.indexOf('.') != -1){
         var elems = attr.split(".");
         var last = _.last(elems);
-        console.log('line 139', model);
         data = model.get(elems[0]);
         for (var i = 1; i < elems.length; ++i) {
             if (data[elems[i]] == undefined) {
@@ -479,7 +478,6 @@ HTML.Select = function(view, attr, options){
     el.setAttribute('name', HTML.Name(attr));
     var val = HTML.Value(view, attr);
     var foundSelected = false;
-    console.log(options.options);
     _.each(options.options, function(opt, i){
         if(_.isString(i)){
             $(el).append("<optgroup label='" + i + "' />");
