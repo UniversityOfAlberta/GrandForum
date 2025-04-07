@@ -1033,7 +1033,7 @@
                 </table>
                 <script type="text/javascript">
                     if($("table.hqps td").is(':empty')){
-                        addWarning('The <b>Project Information &gt; Trainees and role</b> table is not complete.', false, "#reportWarnings");
+                        addWarning('The <b>HQP &gt; Trainees and role</b> table is not complete.', false, "#reportWarnings");
                     }
                 </script>
             ]]>
