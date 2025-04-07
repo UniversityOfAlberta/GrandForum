@@ -1,5 +1,8 @@
 <?php
 
+use Google\Service\AccessContextManager\Status;
+use Google\Service\StreetViewPublish\Place;
+
 /**
  * @package GrandObjects
  */
@@ -171,7 +174,7 @@ class LIMSTaskPmm extends BackboneModel
                 'assignees' => $assignees,
                 'task' => $this->getTask(),
                 'dueDate' => $this->getDueDate(),
-                'comments' => $this->getComments(),
+                'details' => $this->getComments(),
                 'statuses' => $this->getStatuses(),
                 'isAllowedToEdit' => $this->isAllowedToEdit()
             );
@@ -214,6 +217,26 @@ class LIMSTaskPmm extends BackboneModel
             // Send mail to assignee
             // $assignee = Person::newFromId($this->assignee);
             // Notification::addNotification($me, $assignee, "Task Created", "The task <b>{$this->task}</b> has been created", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
+
+            // Assume $assignees is an array of assignee objects (or IDs, depending on how you store them)
+            $assignees = $this->getAssignees();
+            foreach ($assignees as $assignee) {
+                $comment = @$_POST['comments'][$assignee->id];
+
+                // If assignee is an object, you can get their email like this:
+                // (Note: Adjust this based on how you retrieve the email or other relevant information)
+                
+                // Create the notification for each assignee
+                Notification::addNotification(
+                    $me, 
+                    $assignee, 
+                    "Task Created", 
+                    "The task <b>{$this->task}</b> has been created. Comments: <b>{$comment}</b>", 
+                    $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", 
+                    false
+                );
+            }
+
         }
     }
 
@@ -221,11 +244,16 @@ class LIMSTaskPmm extends BackboneModel
     {
         $me = Person::newFromWgUser();
         if ($this->isAllowedToEdit()) {
-            $data = DBFunctions::select(
-                array('grand_pmm_task'),
+            $data = array();
+            foreach(DBFunctions::select(
+                array('grand_pmm_task'=>'t', 'grand_pmm_task_assginees'=>'a'),
                 array('*'),
-                array('id' => $this->id)
-            );
+                array('a.task_id' => $this->id, 't.id' => $this->id),
+            ) as $row) {
+                $data[$row['assignee']] = $row;
+            }
+
+            
             // $assignee = Person::newFromId($this->assignee);
 
             // if(@$data[0]['assignee'] != $this->assignee){
@@ -240,7 +268,7 @@ class LIMSTaskPmm extends BackboneModel
                 'grand_pmm_task',
                 array(
                     'opportunity' => $this->opportunity,
-                    // 'assignee' => $this->assignee,
+                      // 'assignee' => $this->assignee,
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
                     'comments' => $this->comments,
@@ -265,18 +293,45 @@ class LIMSTaskPmm extends BackboneModel
                     )
                 );
             }
-            // if ($assignee != null && $assignee->getId() != 0) {
-            //     if ($data[0]['status'] != 'Closed' && $this->status == 'Closed') {
-            //         Notification::addNotification($me, $assignee, "Thank You for Completing <b>{$this->task}</b>!",
-            //         "Hello <b>{$assignee->getNameForForms()}</b>, thank you for completing <b>{$this->task}</b> on I-CONNECTS.
-            //         We truly appreciate your effort and timely contribution.
-            //         Your Impact:
-            //         Your work helps us maintain momentum and reach our goals in collaborative, open team science.
-            //         The insights or data you provided will guide the next steps for our project and benefit fellow team members.", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
-            //     } else {
-            //         Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
-            //     }
-            // }
+            $assignees = $this->getAssignees();
+            foreach ($assignees as $assignee) {
+      
+                
+                $comment = @$_POST['comments'][$assignee->id];
+
+                // If assignee is an object, you can get their email like this:
+                // (Note: Adjust this based on how you retrieve the email or other relevant information)
+                // Create the notification for each assignee
+                if ( @$data[$assignee->id]['status'] != 'Closed' && $this->statuses[$assignee->id] == 'Closed') {
+                    Notification::addNotification($me, $assignee, "Thank You for Completing <b>{$this->task}</b>!",
+                    "Hello <b>{$assignee->getNameForForms()}</b>, thank you for completing <b>{$this->task}</b> on I-CONNECTS.
+                    We truly appreciate your effort and timely contribution.
+                    Your Impact:
+                    Your work helps us maintain momentum and reach our goals in collaborative, open team science.
+                    The insights or data you provided will guide the next steps for our project and benefit fellow team members.
+                    Comments: <b>{$comment}</b>", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
+                } else {
+                    Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated. Comments: <b>{$comment}</b>", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
+                }
+            }
+            // Send email to leader if an assignee left a comment
+            $leaders = $this->getOpportunity()->getContact()->getProject()->getLeaders();
+            $comment = @$_POST['comments'][$me->getId()];
+
+            foreach ($leaders as $leader) {
+                if ($leader->getId() != $me->getId()) {
+                    Notification::addNotification(
+                        $me,
+                        $leader,
+                        "New Comment on Task: <b>{$this->task}</b>",
+                        "Assignee <b>{$me->getNameForForms()}</b> left a comment on the task <b>{$this->task}</b>:<br><b>{$comment}</b>",
+                        $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management",
+                        false
+                    );
+                }
+            }
+            
+            
         }
     }
 

@@ -8,6 +8,7 @@ if (assignees && assignees.length > 0) {
             <tr>
                 <th>Assignee</th>
                 <th>Status</th>
+                <th>Comments</th>
             </tr>
         </thead>
         <tbody>
@@ -21,17 +22,20 @@ if (assignees && assignees.length > 0) {
                         %>
                         
                         <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
-                            <!-- If editable, show the status as a select dropdown -->
                             <%= HTML.Select(this, 'statuses.' + assigneeId, { 
                                 options: 
                                     isLeaderAllowedToEdit 
-                                        ? ['New', 'Assigned', 'Done', 'Closed']  // Project Leader can change between New, Assigned, Done, Closed
-                                        : ['Assigned', 'Done']  // Member can change between Assigned and Done
+                                        ? ['New', 'Assigned', 'Done', 'Closed'] 
+                                        : ['Assigned', 'Done'] 
                             }) %>
                         <% } else { %> 
-                            <!-- If not editable, display the current status as text -->
                             <%= currentStatus %>
                         <% } %> 
+                    </td>
+                    <td valign="top" height>
+                        <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
+                            <%= HTML.TextArea(this, 'comments.' + assigneeId, {placeholder: "Enter your comments here", style: "height: 75px;width:100%;box-sizing:border-box;margin:0;"}) %>                        <% } %> 
+                           
                     </td>
                 </tr>
             <% }.bind(this)); %>
@@ -45,7 +49,7 @@ if (assignees && assignees.length > 0) {
 }
 %>
 
-<% if (isEditableStatus) { %>  <!-- Only show the update button if status is editable -->
+<% if (isEditableStatus) { %>  
     <button id="updateStatusButton">Update Status</button>
 <% } %>
 <button id="cancelButton">Cancel</button>

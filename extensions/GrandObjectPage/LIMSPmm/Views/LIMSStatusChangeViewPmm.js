@@ -11,8 +11,6 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         this.project = options.project;
         this.isDialog = options.isDialog || false;
         this.selectTemplate();
-        
-        this.model.startTracking();
         this.render();
         
         
