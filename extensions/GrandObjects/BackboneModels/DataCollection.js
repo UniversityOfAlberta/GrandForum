@@ -25,7 +25,7 @@ DataCollection = Backbone.Model.extend({
             this.ready().always(function(){
                 this.once('change:data', function(){
                     this.on('change:data', _.throttle(function(){
-                        this.save();
+                        this.xhr = "XHR", this.save();
                     }.bind(this), 3000));
                     this.trigger("change:data");
                 }.bind(this));
@@ -84,7 +84,9 @@ DataCollection = Backbone.Model.extend({
     // Adds an event listener to the radio buttons specified by the selector
     radio: function(field, selector){
         $(selector).change(function(e){
-            this.setField(field, $(e.target).val());
+            this.ready().always(function(){
+                this.setField(field, $(e.target).val());
+            }.bind(this));
         }.bind(this));
     },
     

@@ -116,13 +116,14 @@ class EducationResources extends SpecialPage {
             <div class='modules module-3cols-outer'>
                 <div class='program-box program-body' style='width:100%;'><en>Education Module</en><fr>Module d'éducation</fr></div>");
             if($category->videos > 0){
-                $wgOut->addHTML("<a id='module{$category->id}' class='module' title='".showLanguage($category->title, $category->titleFr)."' href='{$url}'>
+                $wgOut->addHTML("<a id='module{$category->id}' class='module' style='text-decoration: none;' title='".showLanguage($category->title, $category->titleFr)."' href='{$url}'>
                     <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/thumbnail.png' alt='".showLanguage($category->title, $category->titleFr)."' />
                     <div class='module-progress'>
                         <div class='module-progress-bar' style='width:{$percent}%;'></div>
                         <div class='module-progress-text'>".number_format($percent)."% Complete</div>
                     </div>
-                </a>");
+                </a>
+                <div class='program-body'>To 100% complete <u>this Education Module</u>, watch every video to the end and complete the quiz.</div>");
             }
             else {
                 $wgOut->addHTML("<p class='program-body' style='margin-top: 0; width: 100%;'>

@@ -129,7 +129,7 @@
             foreach ($report->sections as $section) {
                 foreach ($section->items as $item) {
                     if ($item->blobItem != "" && $item->blobItem !== 0) {
-                        if (isset(self::$map[$item->blobItem])) {
+                        if (@isset(self::$map[$item->blobItem])) {
                             $section_number++;
                             $after = "";
                             if (isset(self::$special_after_map[$item->blobItem])) {

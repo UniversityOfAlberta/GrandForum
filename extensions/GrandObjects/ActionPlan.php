@@ -252,10 +252,10 @@ class ActionPlan extends BackboneModel {
         if($this->canUserRead()){
             $me = Person::newFromWgUser();
             $this->userId = $me->getId();
-            $date = date('Y-m-d', strtotime('last thursday +4 days'));
+            $this->date = date('Y-m-d', strtotime('last thursday +4 days'));
             DBFunctions::insert('grand_action_plan',
                                 array('user_id' => $this->userId,
-                                      'date' => $date,
+                                      'date' => $this->date,
                                       'type' => $this->type,
                                       'fitbit' => json_encode($this->fitbit),
                                       'goals' => $this->goals,

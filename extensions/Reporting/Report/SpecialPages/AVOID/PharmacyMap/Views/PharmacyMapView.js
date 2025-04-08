@@ -196,7 +196,7 @@ PharmacyMapView = Backbone.View.extend({
             this.renderMap = true;
             this.model.cat = null;
             this.model.key = $('#keywordsearch').val();
-            $("#searchbar_key").append('<img style="height:4em;" src='+wgServer+wgScriptPath+'/skins/throbber.gif>');
+            $("#searchbar_key").append('<img style="height:4em;" src='+wgServer+wgScriptPath+'/skins/throbber2.gif>');
             this.model.fetch(); 
         }
     },

@@ -58,6 +58,9 @@ class ProjectPage {
                 if($config->getValue('guestLockdown') && !$wgUser->isLoggedIn()){
                     permissionError();
                 }
+                if($project->getStatus() == 'Proposed' && !$me->isMemberOf($project) && !$me->isRoleAtLeast(STAFF)){
+                    permissionError();
+                }
                 $isLead = false;
                 if($project != null){
                     $isLead = $project->userCanEdit();

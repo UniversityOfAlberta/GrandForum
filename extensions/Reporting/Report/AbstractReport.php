@@ -1441,21 +1441,23 @@ abstract class AbstractReport extends SpecialPage {
     
     static function blobConstant($constant){
         $plus = (substr($constant, -1) == "+");
+        $candidate = (strstr($constant, "-Candidate") !== false);
         if($plus){
             $constant = str_replace("+", "", $constant);
             $plus = true;
+        }
+        if($candidate){
+            $constant = str_replace("-Candidate", "", $constant);
+            $candidate = true;
         }
         
         if(defined("{$constant}")){
             $constant = constant("{$constant}");
         }
         
-        if($plus){
-            return "{$constant}+";
-        }
-        else{
-            return "{$constant}";
-        }
+        $constant = ($candidate) ? "{$constant}-Candidate" : $constant;
+        $constant = ($plus)      ? "{$constant}+"          : $constant;
+        return $constant;
     }
     
     static function tinyMCEUpload($action){

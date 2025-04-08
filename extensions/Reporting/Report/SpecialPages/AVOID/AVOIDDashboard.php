@@ -269,6 +269,10 @@ class AVOIDDashboard extends SpecialPage {
             }
         }*/
         
+        $wgOut->addHTML("<style>
+            #actionPlanTracker .trackerHeader { display: none; }
+        </style>");
+        
         if($wgLang->getCode() == 'en'){
             $wgOut->setPageTitle("My Profile");
         }
@@ -337,8 +341,9 @@ class AVOIDDashboard extends SpecialPage {
                                      <span>Earn points with a team, for using the program. Compete for prizes and bragging rights!</span>";
             }
             else {
+                $leaderPage = Wiki::newFromTitle("PointsLeader");
                 $gamificationText = "<b>Healthy Lifestyle Rewards</b><br />
-                    <a href='#' onClick=\"$('#gamificationDialog').dialog({width: 400});\">How to Earn Points</a><br />
+                    <a href='#' onClick=\"$('#gamificationDialog').dialog({width: 400});\">How to Earn Points</a><br />{$leaderPage->getText()}<br />
                     <div id='gamificationDialog' title='How to Earn Points' style='display: none; width: 400px;'>
                         <table style='width:100%;' class='wikitable'>
                             <tr>
@@ -400,7 +405,7 @@ class AVOIDDashboard extends SpecialPage {
             $gamificationLink = ($config->getValue('gamificationEnabled')) 
                               ? "<img src='{$wgServer}{$wgScriptPath}/skins/goldstar.png' style='height:24px;' />
                                  <span style='display:inline-block; vertical-align: text-top; width: calc(100% - 32px);'>
-                                    <span style='float: right;border: 2px solid {$config->getValue("hyperlinkColor")};border-radius: 10px;padding: 5px;text-align: center;'>
+                                    <span style='float: right;border: 2px solid {$config->getValue("hyperlinkColor")};border-radius: 10px;padding: 5px;text-align: center; min-width:5.1em;'>
                                         <span style='font-weight: bold;'>My Points<br /></span>
                                         <span style='font-size: 3em; line-height: 1em;'>".Gamification::calculatePoints($me)."</span>
                                     </span>
@@ -535,19 +540,23 @@ class AVOIDDashboard extends SpecialPage {
                             {$fitbitHTML}
                             <p>
                                 <div id='newPlan' style='display: none;'>
-                                    <a id='createActionPlan' href='#'>
-                                        <en>Create NEW Action Plan</en>
-                                        <fr>Créer un NOUVEAU plan d’action</fr>
-                                    </a>
+                                    <ul>
+                                        <li><en>To develop your weekly action plan, click on </en><a id='createActionPlan' href='#'>
+                                            <en>Create NEW Action Plan</en>
+                                            <fr>Créer un NOUVEAU plan d’action</fr></a>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <div id='currentPlan' style='display: none;'>
-                                    <en>Current Action Plan</en><fr>Mon plan d'action</fr>
-                                    (<a id='viewActionPlan' href='#'><en>View</en><fr>Voir</fr></a> / 
-                                     <a id='submitActionPlan' href='#'><en>Submit and Log Accomplishment</en><fr>Soumettre et enregistrer mes accomplissements</fr></a> / 
-                                     <a id='repeatActionPlan' href='#'><en>Repeat for another week</en><fr>Répéter le plan d'action une autre semaine</fr></a>)
+                                    <ul>
+                                        <li>Track your progress during the week by adding a tick to the days you have accomplished your plan in the Action Plan Daily Tracker<div id='actionPlanTracker' style='display:none;'></div></li>
+                                        <li><a id='viewActionPlan' href='#'>View Action Plan</a> during the week to view tracking your progress</li>
+                                        <li>Once the week is completed, <a id='submitActionPlan' href='#'><en>Submit and Log Accomplishment</en><fr>Soumettre et enregistrer mes accomplissements</fr></a>. You can view these accomplishments at any time</li>
+                                        <li>You can also <a id='repeatActionPlan' href='#'><en>Repeat your Action Plan</en><fr>Répéter le plan d'action</fr></a> for another week</li>
+                                    </ul>
                                 </div>
                             </p>
-                            <div id='actionPlanTracker' style='display:none;'></div>
+                            
                             <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog' class='actionPlanDialog'></div>
                             <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog' class='actionPlanDialog'></div>
                             <div title='Action Plan Overview' style='display:none;padding:0;' id='actionPlanOverview'></div>

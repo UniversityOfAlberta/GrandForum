@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC-AT Award 2024" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT2" pdfType="RPTP_EPIC_AT2" pdfFiles="EPIC-ATPDF" ajax="true" disabled="true" year="2024">
+<Report name="EPIC-AT Award 2025" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT2" pdfType="RPTP_EPIC_AT2" pdfFiles="EPIC-ATPDF" ajax="true" disabled="false" year="2025">
     <Permissions>
         <Role role="INACTIVE+" />
         <Role role="INACTIVE-Candidate+" />
     </Permissions>
-    <ReportSection id="background" tooltip="Information" name="Information" title="EPIC-AT Health Research Training Platform Fellowships (2024)" type="ReportSection" renderpdf="false">
+    <ReportSection id="background" tooltip="Information" name="Information" title="EPIC-AT Health Research Training Platform Fellowships (2025)" type="ReportSection" renderpdf="false">
         <Static>
             <![CDATA[
                 <h2>Information Package</h2>
@@ -13,9 +13,9 @@
                     <li>The application is comprised of an online application form and supporting documents detailed below. Late or incomplete applications will not be reviewed. Please note that this includes letters of reference which must be uploaded by your referees into the Forum system.</li>
                     <li>Applicants are strongly recommended to complete the EPIC-AT HRTP Fellowship application (in either English or French) using preferred word processing software.</li>
                     <li>If you have not already done so, you must register with the AGE-WELL Forum Research Portal at https://forum.agewell-nce.ca/index.php/Special:HQPRegister (the form will ask for your name and email). After you submit the registration form, the system will create an account and send your credentials to the email address you provided. Once you login, you will have to reset your temporary password.</li>
-                    <li>The “My Applications” link is in the top right of the page you will reach after resetting your password. Please select “EPIC-AT Award 2024” navigate to the "Documents" section and enter your referee names and email addresses. Letters of support must be uploaded to the Forum Research Portal by you referees by 5pm ET May 3, 2024.</li>
-                    <li>Once you are ready to submit your application, copy your application material and upload supporting documents to the AGE-WELL Forum Research Portal website by 5pm ET May 3, 2024.</li>
-                    <li>Notice of Admissions will be received in August 2024. Expected start date of fellowship is 1 September, 2024.</li>
+                    <li>The “My Applications” link is in the top right of the page you will reach after resetting your password. Please select “EPIC-AT Award 2025” navigate to the "Documents" section and enter your referee names and email addresses. Letters of support must be uploaded to the Forum Research Portal by you referees by 5pm ET May 5, 2025.</li>
+                    <li>Once you are ready to submit your application, copy your application material and upload supporting documents to the AGE-WELL Forum Research Portal website by 5pm ET May 5, 2025.</li>
+                    <li>Notice of Admissions will be received in August 2025. Expected start date of fellowship is 1 September, 2025.</li>
                 </ol>
                 
                 Contact Information:<br />
@@ -36,7 +36,7 @@
                 
                 <p>Indigenous older adults are one of the most rapidly growing group of seniors in Canada. Due to the continued effects of colonization and systemic biases, Indigenous older adults face a higher and rising prevalence of complex health needs including multimorbidity. It is imperative to swiftly develop and implement culturally safe and appropriate solutions. As such, EPIC-AT welcomes applications from those who explicitly use Indigenous Ways of Knowing and will award a <u>minimum</u> of 2 Fellowships to self-identified Indigenous trainees or ECRs.</p>
                 
-                <i>We expect to offer the following 1 year fellowships in this 2024 call:</i>
+                <i>We expect to offer the following 1 year fellowships in this 2025 call:</i>
                 <ul>
                     <li>22 Master’s, PhD, and Postdoctoral Fellowships at minimum $8,000</li>
                     <li>3 Early Career Researcher Fellowships at minimum $10,000</li>
@@ -147,11 +147,11 @@
                 </ul>
                 
                 <p><b>Important Dates</b> 
-                Forum Application Opens: 1 April, 2024<br />
-                Completed Applications Due: 3 May, 2024<br />
-                Results Available: August 2024<br />
-                Fellowship Term: 1 September 2024 - 31 August 2025<br />
-                Funding Disbursement Schedule: September 2024 via CIHR subgrant</p>
+                Forum Application Opens: 31 March, 2025
+                Completed Applications Due: 5 May, 2025
+                Results Available: August 2025
+                Fellowship Term: 1 September 2025 – 31 August 2026
+                Funding Disbursement Schedule: September 2025 via CIHR subgrant</p>
             ]]>
         </Static>
     </ReportSection>
@@ -192,7 +192,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="memberships" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MEMBERSHIPS" orientation="vertical" options="AGE-WELL NCE|Bruyère Continuing Care|Centre for Aging + Brain Health Innovation (CABHI)|Centre de recherche Institut universitaire de gériatrie de Montréal (CRIUGM)|Faculty of Applied Science and Engineering, University of Toronto|Faculty of Health, Dalhousie University|Faculty of Medicine and Health Sciences, McGill University|Faculty of Social Sciences, University of Victoria|Institute for Healthy Living and Chronic Disease Prevention (IHLCDP), University of British Columbia Okanagan|McMaster Institute for Research on Aging (MIRA)|Reseau provincial de recherche en adaptation-réadaptation (REPAR)|Réseau Québécois de recherche sur le viellissement (RQRV)|Rotman Research Institute, Baycrest|Saskatchewan-based institution (Saskatchewan Health Research Foundation)|Temerty Faculty of Medicine, University of Toronto" optional="true">
+        <ReportItem id="memberships" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MEMBERSHIPS" orientation="vertical" options="AGE-WELL NCE|Bruyère Continuing Care|Centre for Aging + Brain Health Innovation (CABHI)|Centre de recherche Institut universitaire de gériatrie de Montréal (CRIUGM)|Faculty of Applied Science and Engineering, University of Toronto|Faculty of Health, Dalhousie University|Faculty of Medicine and Health Sciences, McGill University|Faculty of Social Sciences, University of Victoria|Institute for Healthy Living and Chronic Disease Prevention (IHLCDP), University of British Columbia Okanagan|McMaster Institute for Research on Aging (MIRA)|Réseau Québécois de recherche sur le viellissement (RQRV)|Rotman Research Institute, Baycrest|Saskatchewan-based institution (Saskatchewan Health Research Foundation)|Temerty Faculty of Medicine, University of Toronto" optional="true">
             <![CDATA[
                 <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Memberships and Affiliations:</b><br /><small>Please indicate all of your memberships and affiliations in order to be considered for institutional supplements and matching funds.</small></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>

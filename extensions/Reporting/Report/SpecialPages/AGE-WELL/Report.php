@@ -77,12 +77,12 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Edge")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Edge", "{$url}Edge", $selected);
         }*/
-        if(!$person->isCandidate() &&
+        /*if(!$person->isCandidate() &&
             ($person->isRole(HQP) ||
              $person->isEpic() || $person->isEpic2() || $person->isSubRole("EPIC AT") || $person->isSubRole("ECR Applicant"))){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPICConference")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC Conference", "{$url}EPICConference", $selected);
-        }
+        }*/
         /*if($person->isRoleAtLeast(HQP) || $person->isRoleAtLeast(HQP.'-Candidate') || 
            $person->isRoleAtLeast(HQP.'-Candidate') || $person->isRoleAtLeast(EXTERNAL.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ConferenceApplication")) ? "selected" : false;
@@ -140,15 +140,10 @@ class Report extends AbstractReport {
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("ECR", "{$url}ECR", $selected);
         }*/
         
-        /*if($person->isLoggedIn()){
+        if($person->isLoggedIn()){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPIC-AT")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC-AT Award 2024", "{$url}EPIC-AT", $selected);
-        }*/
-        
-        /*if($person->isLoggedIn()){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPIC-AT2023")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC-AT 2023", "{$url}EPIC-AT2023", $selected);
-        }*/
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC-AT Award 2025", "{$url}EPIC-AT", $selected);
+        }
         
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ConferenceApplicationSummary")) ? "selected" : false;

@@ -57,6 +57,7 @@ class ReportXMLParser {
     
     static function findReport($rp){
         global $config;
+        $rp = "{$rp}";
         if(count(self::$fileMap) == 0){
             $files = self::listReports();
             foreach($files as $file){

@@ -1226,6 +1226,9 @@ class CavendishTemplate extends QuickTemplate {
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Ecosystem Map", "$wgServer$wgScriptPath/index.php/Ecosystem_Map");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
+	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "BD"){
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Resources", "$wgServer$wgScriptPath/index.php/Resources");
+	        }
 	        if($config->getValue("showOtherTools") && !$me->isCandidate()){
 	            $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        }
