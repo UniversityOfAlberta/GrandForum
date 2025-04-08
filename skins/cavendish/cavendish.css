@@ -1796,7 +1796,7 @@ select span.noshow {
 .spinner {
     width: 249px;
     height: 249px;
-    background: url('../throbber.gif');
+    background: url('../throbber2.gif');
     background-size: 100%;
 }
 
