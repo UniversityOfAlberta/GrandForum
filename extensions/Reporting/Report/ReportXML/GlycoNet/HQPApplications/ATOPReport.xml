@@ -63,7 +63,15 @@
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="750" rich="true" recommended="true">
             <![CDATA[
                 <h3>Project Summary - <small>750 words, including references</small></h3>
-                <p>Describe the impact that this research experience has had on you, and what you took away from it. Also address the overall project goals, your role in the project during the exchange, successes and challenges you encountered, and the benefits this exchange provided to the groups involved. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
+                <p>Describe the objectives of the project, expected outcomes, and both the successes and challenges encountered. Discuss the impact this research experience has had on you and the key takeaways. Highlight the specific skills or techniques you acquired. Discuss the benefits this exchange provided to the groups involved.</p>
+                You might consider including:
+                <ul>
+                    <li>A brief description of how the project aligns with your career goals or academic interests.</li>
+                    <li>Reflections on teamwork and collaboration, particularly if your project was highly collaborative.</li>
+                    <li>Insights into how the diversity of the team contributed to the project's outcomes.</li>
+                    <li>Any future directions for the project or further research opportunities you're considering as a result of this experience.</li>
+                </ul>
+                For the style of references please use <i>Journal of Biological Chemistry</i>
                 {$item}
             ]]>
         </ReportItem>
