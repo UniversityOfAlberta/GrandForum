@@ -16,7 +16,7 @@ class PersonVisualizationsTab extends AbstractTab {
     }
 
     function generateBody(){
-        global $wgUser, $wgOut, $wgServer, $wgScriptPath;
+        global $wgUser, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         $this->html = "";
         if($wgUser->isRegistered()){
@@ -389,13 +389,18 @@ class PersonVisualizationsTab extends AbstractTab {
                 }
 	            
 	            foreach($authors as $author){
-	                $products = $author->getPapers("all", false, 'both', true, "Public");
+	                $products = $author->getPapersAuthored("all", SOT, EOT);
 	                foreach($products as $product){
-	                    $auths = $product->getAuthors();
+	                    //$auths = $product->getAuthors();
+	                    $auths = $product->authors;
+	                    if(!is_array($auths)){
+	                        $auths = unserialize($auths);
+	                    }
 	                    foreach($auths as $a){
-	                        if(isset($matrix[$author->getId()][$a->getId()]) && $author->getId() != $a->getId()){
-	                            $matrix[$author->getId()][$a->getId()] += 1;
-	                        }
+	                        $id = (is_object($a)) ? $a->id : $a;
+                            if($id > 0 && isset($matrix[$author->getId()][$id]) && $author->getId() != $id){
+                                $matrix[$author->getId()][$id] += 1;
+                            }
 	                    }
 	                }
 	            }
