@@ -63,7 +63,7 @@
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="750" rich="true" recommended="true">
             <![CDATA[
                 <h3>Project Summary - <small>750 words, including references</small></h3>
-                <p>Describe the objectives of the project, expected outcomes, and both the successes and challenges encountered. Discuss the impact this research experience has had on you and the key takeaways. Highlight the specific skills or techniques you acquired. Discuss the benefits this exchange provided to the groups involved.</p>
+                <p>Describe the objectives of the project, expected outcomes, and both the successes and challenges encountered. Discuss the impact this research experience has had on you and the key takeaways. Highlight the specific skills or techniques you acquired. Discuss the benefits this project provided to the groups involved.</p>
                 You might consider including:
                 <ul>
                     <li>A brief description of how the project aligns with your career goals or academic interests.</li>
