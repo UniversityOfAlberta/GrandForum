@@ -541,7 +541,7 @@ class AVOIDDashboard extends SpecialPage {
                             <p>
                                 <div id='newPlan' style='display: none;'>
                                     <ul>
-                                        <li>You can create only one Action Plan per week.</li>
+                                        <li> You can create only <b>one</b> Action Plan per week but list <b>more than one</b> goal within that one plan. It is <b>up to you</b> to decide if you want to tick as achieved if you complete some but not all goals.</li>
                                         <li><en>To develop your weekly action plan, click on </en><a id='createActionPlan' href='#'>
                                             <en>Create NEW Action Plan</en>
                                             <fr>Créer un NOUVEAU plan d’action</fr></a>
