@@ -541,6 +541,7 @@ class AVOIDDashboard extends SpecialPage {
                             <p>
                                 <div id='newPlan' style='display: none;'>
                                     <ul>
+                                        <li>You can create only one Action Plan per week.</li>
                                         <li><en>To develop your weekly action plan, click on </en><a id='createActionPlan' href='#'>
                                             <en>Create NEW Action Plan</en>
                                             <fr>Créer un NOUVEAU plan d’action</fr></a>
