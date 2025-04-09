@@ -93,8 +93,8 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="summary" type="EditableReportSection" name="Report" blobSection="REPORT">
-        <ReportItem id="report" type="UploadReportItem" blobItem="REPORT" fileSize="10" mimeType="application/pdf">
+    <ReportSection id="summary" type="HeaderReportSection" name="Report" blobSection="REPORT" pagebreak="false">
+        <ReportItem id="report" type="UploadPDFReportItem" blobItem="REPORT" fileSize="10" mimeType="application/pdf">
             <![CDATA[
                 {$item}
             ]]>
