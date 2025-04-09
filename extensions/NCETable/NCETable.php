@@ -54,7 +54,7 @@ class NCETable extends SpecialPage {
         $person = Person::newFromWgUser($wgUser);
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "NCETable") ? "selected" : false;
-            array_splice($tabs["Manager"]['subtabs'], 0, 0, array(TabUtils::createSubTab("NCE", "$wgServer$wgScriptPath/index.php/Special:NCETable", $selected)));
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("NCE", "$wgServer$wgScriptPath/index.php/Special:NCETable", $selected);
         }
         return true;
     }

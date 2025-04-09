@@ -67,7 +67,7 @@ class ReviewerAssignments extends SpecialPage {
         $person = Person::newFromWgUser();
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "ReviewerAssignments") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Reviewer Assignments", "$wgServer$wgScriptPath/index.php/Special:ReviewerAssignments", $selected);
+            array_splice($tabs["Manager"]['subtabs'], 0, 0, array(TabUtils::createSubTab("Reviewer Assignments", "$wgServer$wgScriptPath/index.php/Special:ReviewerAssignments", $selected)));
         }
         return true;
     }

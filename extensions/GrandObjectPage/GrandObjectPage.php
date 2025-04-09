@@ -5,6 +5,8 @@
     autoload_register('GrandObjectPage/ProjectPage');
     
     require_once("Backbone/BackbonePage.php");
+    require_once("ProductSummary.php");
+    
     if($config->getValue("profilesEnabled")){
         require_once("PersonPage.php");
         require_once("ProjectPage.php");
@@ -23,7 +25,7 @@
     
     require_once("ManagePeopleLog.php");
     require_once("Products/Products.php");
-    require_once("ProductSummary.php");
+    
     if($config->getValue("contributionsEnabled")){
         require_once("Contributions/Contributions.php");
     }

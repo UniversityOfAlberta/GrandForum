@@ -69,6 +69,9 @@ $egAnnokiExtensions['UI'] = array('name' => 'User Interface',
 $egAnnokiExtensions['Notification'] = array('name' => 'Notification',
                                             'path' => "$IP/extensions/Notification/Notification.body.php");
 
+$egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
+                                                'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
+
 $egAnnokiExtensions['GrandObjectPage'] = array('name' => 'GrandObjectPage',
                                                'path' => "$IP/extensions/GrandObjectPage/GrandObjectPage.php");
 
@@ -90,11 +93,11 @@ $egAnnokiExtensions['Poll'] = array('name' => 'Poll',
 $egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
                                               'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
 
-$egAnnokiExtensions['NCETable'] = array('name' => 'NCETable',
-                                        'path' => "$IP/extensions/NCETable/NCETable.php");
-
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");
+                                         
+$egAnnokiExtensions['NCETable'] = array('name' => 'NCETable',
+                                        'path' => "$IP/extensions/NCETable/NCETable.php");
                                          
 $egAnnokiExtensions['DiversitySurvey'] = array('name' => 'DiversitySurvey',
                                          'path' => "$IP/extensions/DiversitySurvey/DiversitySurvey.php");
@@ -113,9 +116,6 @@ $egAnnokiExtensions['PublicVisualizations'] = array('name' => 'Public Visualizat
 
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");
-
-$egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
-                                                'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
 
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
