@@ -77,9 +77,23 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="products" name="Products" type="EditableReportSection" blobSection="PRODUCTS">
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" start="{getText(RP_ATOP_REPORT,REPORT,START,0,{$user_id},0)}" end="{getText(RP_ATOP_REPORT,REPORT,END,0,{$user_id},0)}" table="false" details="true" totalOnly="true">
+        <ReportItem id="publications" type="ManageProductsReportItem" categories="Publication,Presentation,Artifact">
             <![CDATA[
-                <p>List publications, presentations, and intellectual property produced during the tenure of your exchange.  To add products go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</p>
+                <h2 style='font-weight:bold;'>Publications</h2>
+                Please add all relevant publications, presentations, artifacts, including the following:
+                <ul>
+                    <li><b>Peer-reviewed journal articles</b></li>
+                    <li><b>Other refereed contributions</b> (e.g. papers in refereed conference proceedings, books)</li>
+                    <li><b>Non-refereed contributions</b> (e.g. papers in non-refereed conference proceedings, letters)</li>
+                    <li><b>Other specialized publications</b> (e.g. reports, briefings, online publications or other forms of grey literature)</li>
+                </ul>
+                
+                <b>To add the publication:</b>
+                <ol>
+                    <li><b>Using DOI</b>: Click the <b>Add From DOI</b> button. This is the easiest way to import publication details. After the information has been exported, please verify its correctness.</li>
+                    <li><b>Using CCV Upload</b>: You can also upload an updated CCV if it includes publications related to the project. Please ensure that you only report publications that are directly associated with the project.</li>
+                    <li><b>Manually Adding Publications</b>: If necessary, click the <b>Add Product</b> button to manually enter publication details.</li>
+                </ol>
                 {$item}
             ]]>
         </ReportItem>

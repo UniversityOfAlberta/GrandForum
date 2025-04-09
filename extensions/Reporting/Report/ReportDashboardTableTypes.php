@@ -6,10 +6,32 @@ define('PROJECT_ROSTER_STRUCTURE', 105);
 define('PROJECT_CHAMP_ROSTER_STRUCTURE', 106);
 define('PROJECT_NI_ROSTER_STRUCTURE', 107);
 define('PROJECT_CONTRIBUTION_STRUCTURE', 108);
+define('ATOP_REPORT_STRUCTURE', 109);
    
 $dashboardStructures[HQP_REPORT_STRUCTURE] = function($start=REPORTING_CYCLE_START, $end=REPORTING_NCE_END){
     $productStructure = Product::structure();
     $categories = array_keys($productStructure['categories']);
+
+    $head = array();
+    $persRow = array();
+    $projRow = array();
+    foreach($categories as $category){
+        $head[] = HEAD."(".str_replace("and", "and<br />", str_replace("-", "<br />", Inflect::pluralize($category))).")";
+        $persRow[] = STRUCT(PERSON_PRODUCTS, $category, $start, $end);
+        $projRow[] = STRUCT(PROJECT_PRODUCTS, $category, $start, $end);
+    }
+    return array(array_merge(array(HEAD."(Projects)"), $head),
+          array_merge(array(HEAD.'(Total:)'), $persRow),
+          STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY, $start, $end) => array_merge(
+                                                            array(PERSON_PROJECTS),
+                                                            $persRow),
+          array_merge(array(HEAD.'(Total:)'), $persRow)
+    );  
+};
+
+$dashboardStructures[ATOP_REPORT_STRUCTURE] = function($start=REPORTING_CYCLE_START, $end=REPORTING_NCE_END){
+    $productStructure = Product::structure();
+    $categories = array("Publication", "Presentation", "Artifact");
 
     $head = array();
     $persRow = array();

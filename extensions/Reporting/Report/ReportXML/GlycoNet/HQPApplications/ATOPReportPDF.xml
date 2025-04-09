@@ -72,7 +72,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="products" name="Products" type="EditableReportSection" blobSection="PRODUCTS" pagebreak="false">
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" start="{getText(RP_ATOP_REPORT,REPORT,START,0,{$user_id},0)}" end="{getText(RP_ATOP_REPORT,REPORT,END,0,{$user_id},0)}" table="false" details="true" totalOnly="true">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="ATOP_REPORT_STRUCTURE" start="1900-01-01" end="9999-12-31" table="false" details="true" totalOnly="true">
             <![CDATA[
                 {$item}
             ]]>

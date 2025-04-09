@@ -6,6 +6,7 @@ ManageProductsView = Backbone.View.extend({
     products: null,
     project: null,
     projects: null,
+    categories: new Array(),
     table: null,
     nProjects: 0,
     subViews: new Array(),
@@ -24,16 +25,24 @@ ManageProductsView = Backbone.View.extend({
         this.allProjects.fetch();
         this.template = _.template($('#manage_products_template').html());
         me.getProjects();
+        
+        // Project
         if(options.project != undefined){
             this.project = options.project;
         }
         else{
             this.project = new Project();
         }
+        
+        // Categories
+        if(options.categories != undefined){
+            this.categories = options.categories;
+        }
+        
         this.listenTo(this.model, "sync", function(){
             this.products = this.model.getAll();
             this.listenToOnce(this.products, "sync", function(){
-                this.products = new Products(this.products.filter(function(p){ return (p.get('category') != "SOP"); })); // Don't show SOP category
+                this.products = new Products(this.products.filter(function(p){ return (p.get('category') != "SOP") && (this.categories.length == 0 || this.categories.indexOf(p.get('category')) != -1); }.bind(this))); // Don't show SOP category
                 this.listenTo(this.products, "add", this.addRows);
                 this.listenTo(this.products, "remove", this.addRows);
                 me.projects.ready().then(function(){

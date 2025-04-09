@@ -20,7 +20,11 @@ class ManageProductsReportItem extends StaticReportItem {
         $scripts = array_merge($manageProducts->loadTemplates(true),
                                $manageProducts->loadModels(true),
                                $manageProducts->loadViews(true));
-        $project = Project::newFromId($this->projectId);
+        $projectJSON = ($this->projectId != 0) ? ", project: new Project(".Project::newFromId($this->projectId)->toJSON().")" : "";
+        $projectId = ($this->projectId != 0) ? "{$this->projectId}" : "undefined";
+        
+        $categories = json_encode(explode(",", $this->getAttr('categories')));
+
         $view = "<style>
                     #manageProductsDescription { display: none; }
                  </style>
@@ -32,9 +36,9 @@ class ManageProductsReportItem extends StaticReportItem {
                      var students = ".json_encode($students).";
                      var studentNames = ".json_encode($studentNames).";
                      var studentFullNames = ".json_encode($studentFullNames).";
-                     var products = me.getManagedProducts({$this->projectId});
+                     var products = me.getManagedProducts($projectId);
                      products.all = false;
-                     view = new ManageProductsView({el: $('#manageProducts'), model: products, project: new Project({$project->toJSON()})});
+                     view = new ManageProductsView({el: $('#manageProducts'), model: products, categories: {$categories} {$projectJSON}});
                  </script>";
         
         $item = $this->processCData($view);
