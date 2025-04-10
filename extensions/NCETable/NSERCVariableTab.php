@@ -562,6 +562,9 @@ EOF;
 
         //Fill the table
         foreach($hqps as $hqp){
+            if($this->filterPhase($hqp->getProjects(true), $phase)){
+                continue;
+            }
             $pos = $hqp->getUniversityDuring($this->from, $this->to);
             if(!isset($positions[$pos['position']])){
                 $pos = $hqp->getUniversity();
@@ -826,6 +829,9 @@ EOF;
 
         //Fill the table for HQP
         foreach ($hqps as $hqp){
+            if($this->filterPhase($hqp->getProjects(true), $phase)){
+                continue;
+            }
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
             if(!isset($uniobj['university'])){
                 $uniobj = $hqp->getUniversity();
@@ -851,6 +857,9 @@ EOF;
         
         // Fill the table for NI
         foreach($nis as $ni){
+            if($this->filterPhase($ni->getProjects(true), $phase)){
+                continue;
+            }
             $uniobj = $ni->getUniversityDuring($this->from, $this->to);
             if(!isset($uniobj['university'])){
                 $uniobj = $ni->getUniversity();
@@ -1007,6 +1016,9 @@ EOF;
         $details_div_id = "movedon_details_".$type;
 
         foreach ($movedons as $m){
+            if($this->filterPhase($m->getProjects(true), $phase)){
+                continue;
+            }
             $movedon_data = $m->getMovedOn();
             $nationality = $m->getNationality();
             $nationality = (empty($nationality))? "Unknown" : $nationality;
