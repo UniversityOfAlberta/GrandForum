@@ -22,7 +22,7 @@ class TabbedPage {
                 display: none;
             }
         </style>");
-        $this->id = $id;
+        $this->id = str_replace(" ", "", $id);
         $this->singleHeader = true;
         $this->tabs = array();
     }

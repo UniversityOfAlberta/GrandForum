@@ -6,17 +6,19 @@ class NSERCVariableTab extends AbstractTab {
     var $to = "";
     var $label = "";
     var $year = "";
+    var $phase = "";
 
-    function NSERCVariableTab($label, $from, $to, $year){
+    function NSERCVariableTab($label, $from, $to, $year, $phase=""){
         global $wgOut;
         
         $this->label = $label;
         $this->from = $from;
         $this->to = $to;
         $this->year = $year;
+        $this->phase = $phase;
 
         parent::AbstractTab($label);
-        $wgOut->setPageTitle("Evaluation Tables: NCE");
+        $this->id = "{$this->id}_{$phase}";
     }
     
     function generateBody(){
@@ -25,28 +27,6 @@ class NSERCVariableTab extends AbstractTab {
 
         $foldscript = "
 <script type='text/javascript'>
-function mySelect(form){ form.select(); }
-function ShowOrHide(d1, d2) {
-    if (d1 != '') DoDiv(d1);
-    if (d2 != '') DoDiv(d2);
-}
-function DoDiv(id) {
-    var item = null;
-    if (document.getElementById) {
-        item = document.getElementById(id);
-    } else if (document.all) {
-        item = document.all[id];
-    } else if (document.layers) {
-        item = document.layers[id];
-    }
-    if (!item) {
-    }
-    else if (item.style) {
-        if (item.style.display == 'none') { item.style.display = ''; }
-        else { item.style.display = 'none'; }
-    }
-    else { item.visibility = 'show'; }
-}
 function showDiv(div_id, details_div_id){   
     details_div_id = '#' + details_div_id;
     $(details_div_id).html( $(div_id).html() );
@@ -65,24 +45,22 @@ function showDiv(div_id, details_div_id){
 </style>
 ";
         
-        $this->showContentsTable();
+        $this->showContentsTable($this->phase);
 
-        if(@$_GET['year'] == "tabs_{$this->year}_".$label){
+        if(@$_GET['year'] == "tabs_{$this->year}_{$label}_{$this->phase}"){
             switch (@$_GET['summary']) {
                 case 'grand':
                     $wgOut->addScript($foldscript);
                     $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
                     $this->html .= "<a id='Table1'></a><h3>Table 1: Organizations participating and contributing to the network and its projects</h3>";
-                    self::showContributions();
+                    self::showContributions($this->phase);
                     $this->html .= "<a id='Table1.1'></a><h3>Table 1.1: Contributions</h3>";
-                    self::showContributionsTable();
+                    self::showContributionsTable($this->phase);
                     $this->html .= "<a id='Table1.2'></a><h3>Table 1.2: Contributions by Project</h3>";
-                    self::showContributionsByProjectTable();
-                    self::showGrandTables();
-                    self::showDisseminations();
-                    //self::showArtDisseminations();
-                    //self::showActDisseminations();
-                    self::showPublicationList();
+                    self::showContributionsByProjectTable($this->phase);
+                    self::showGrandTables($this->phase);
+                    self::showDisseminations($this->phase);
+                    self::showPublicationList($this->phase);
                     break;
             }
         }
@@ -90,11 +68,11 @@ function showDiv(div_id, details_div_id){
         return $this->html;
     }
 
-    function showContentsTable(){
+    function showContentsTable($phase=""){
         global $wgServer, $wgScriptPath;
         $label = $this->label;
         $lastYear = $this->year - 1;
-        $url = "$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$lastYear}-{$this->year}&year=tabs_{$this->year}_{$label}&summary=grand";
+        $url = "$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$lastYear}-{$this->year}&year=tabs_{$this->year}_{$label}_{$phase}&summary=grand";
         $this->html .=<<<EOF
             <table class='toc' summary='Contents'>
             <tr><td>
@@ -169,7 +147,7 @@ EOF;
 
     }
     
-    function showContributions() {
+    function showContributions($phase="") {
         $contributions = Contribution::getContributionsDuring(null, $this->from, $this->to);
         $partners = array();
         foreach ($contributions as $contr) {
@@ -313,7 +291,7 @@ EOF;
         $this->html .= $html;
     }
 
-    function showContributionsTable() {
+    function showContributionsTable($phase="") {
         $html =<<<EOF
         <script type="text/javascript">
         $(document).ready(function(){
@@ -461,7 +439,7 @@ EOF;
         $this->html .= $html .  $dialog_js;   
     }
     
-    function showContributionsByProjectTable(){
+    function showContributionsByProjectTable($phase=""){
         $projects = Project::getAllProjectsEver();
         $projects[] = Project::newFromId(-1);
         $this-> html .= "<table class='wikitable' cellpadding='2' frame='box' rules='all' width='100%'>
@@ -530,7 +508,7 @@ EOF;
         $this->html .= "</tbody></table>";
     }
 
-    function showGrandTables() {
+    function showGrandTables($phase="") {
         global $wgOut, $_pdata, $_projects;
 
         $movedons = Person::getAllMovedOnDuring($this->from, $this->to);  
@@ -1230,7 +1208,7 @@ EOF;
         return $html;
     }
     
-    function showDisseminations(){
+    function showDisseminations($phase=""){
         $html = "<a id='Table4'></a><h3>Table 4: Dissemination of Network Research Results and Collaborations</h3>";
         
         $innovations = array();
@@ -1318,7 +1296,7 @@ EOF;
         return $html;
     }
 
-    function showPublicationList(){
+    function showPublicationList($phase=""){
         global $wgOut;
         $publications = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
         $pub_count = array("a1"=>array(), "a2"=>array(), "b"=>array(), "c"=>array());
@@ -1329,6 +1307,17 @@ EOF;
                 continue;
             }
             $alreadyDone[$pub->getId()] = true;
+            if($phase != ""){
+                $found = false;
+                foreach($pub->getProjects() as $proj){
+                    if($proj->getPhase() == $phase){
+                        $found = true;
+                    }
+                }
+                if(!$found){
+                    continue;
+                }
+            }
             $status = $pub->getStatus();
             if($status == "Rejected"){
                 continue;
