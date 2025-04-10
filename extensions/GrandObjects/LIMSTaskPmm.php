@@ -233,7 +233,7 @@ class LIMSTaskPmm extends BackboneModel
                     "Task Created", 
                     "The task <b>{$this->task}</b> has been created. Comments: <b>{$comment}</b>", 
                     $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", 
-                    false
+                    true
                 );
             }
 
@@ -309,9 +309,9 @@ class LIMSTaskPmm extends BackboneModel
                     Your Impact:
                     Your work helps us maintain momentum and reach our goals in collaborative, open team science.
                     The insights or data you provided will guide the next steps for our project and benefit fellow team members.
-                    Comments: <b>{$comment}</b>", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
+                    Comments: <b>{$comment}</b>", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", true);
                 } else {
-                    Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated. Comments: <b>{$comment}</b>", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
+                    Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated. Comments: <b>{$comment}</b>", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", true);
                 }
             }
             // Send email to leader if an assignee left a comment
@@ -326,7 +326,7 @@ class LIMSTaskPmm extends BackboneModel
                         "New Comment on Task: <b>{$this->task}</b>",
                         "Assignee <b>{$me->getNameForForms()}</b> left a comment on the task <b>{$this->task}</b>:<br><b>{$comment}</b>",
                         $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management",
-                        false
+                        true
                     );
                 }
             }
