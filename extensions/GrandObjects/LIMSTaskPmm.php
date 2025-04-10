@@ -161,7 +161,7 @@ class LIMSTaskPmm extends BackboneModel
             $this->id = DBFunctions::insertId();
             // Send mail to assignee
             $assignee = Person::newFromId($this->assignee);
-            Notification::addNotification($me, $assignee, "Task Created", "The task <b>{$this->task}</b> has been created", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
+            Notification::addNotification($me, $assignee, "Task Created", "The task <b>{$this->task}</b> has been created", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", true);
         }
     }
 
@@ -203,9 +203,9 @@ class LIMSTaskPmm extends BackboneModel
                     We truly appreciate your effort and timely contribution.
                     Your Impact:
                     Your work helps us maintain momentum and reach our goals in collaborative, open team science.
-                    The insights or data you provided will guide the next steps for our project and benefit fellow team members.", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
+                    The insights or data you provided will guide the next steps for our project and benefit fellow team members.", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", true);
                 } else {
-                    Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
+                    Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", true);
                 }
             }
         }
