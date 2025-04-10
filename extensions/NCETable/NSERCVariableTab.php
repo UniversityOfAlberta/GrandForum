@@ -147,12 +147,27 @@ EOF;
 
     }
     
+    function filterPhase($projects, $phase){
+        $found = true;
+        if($phase != ""){
+            $found = false;
+            foreach($projects as $proj){
+                if($proj->getPhase() == $phase){
+                    $found = true;
+                }
+            }
+        }
+        return !$found;
+    }
+    
     function showContributions($phase="") {
         $contributions = Contribution::getContributionsDuring(null, $this->from, $this->to);
         $partners = array();
         foreach ($contributions as $contr) {
             $people = $contr->getPeople();
-            $projects = $contr->getProjects();
+            if($this->filterPhase($contr->getProjects(), $phase)){
+                continue;
+            }
             if(count($people) > 0){
                 foreach($contr->getPartners() as $partner){
                     $partners[$partner->getOrganization()][] = array('partner' => $partner,
@@ -336,6 +351,9 @@ EOF;
         $totalKind = 0;
         $totalTotal = 0;
         foreach ($contributions as $contr) {
+            if($this->filterPhase($contr->getProjects(), $phase)){
+                continue;
+            }
             $con_id = $contr->getId();
             $name_plain = $contr->getName();
             $url = $contr->getUrl();
@@ -461,6 +479,9 @@ EOF;
                             </thead>
                             <tbody>";
         foreach($projects as $project){
+            if($this->filterPhase(array($project), $phase)){
+                continue;
+            }
             $contributions = $project->getContributionsDuring($this->from, $this->to);
             foreach($contributions as $contribution){
                 $partners = $contribution->getPartners();
@@ -513,13 +534,13 @@ EOF;
 
         $movedons = Person::getAllMovedOnDuring($this->from, $this->to);  
 
-        $this->html .= "<a id='Table2'></a><h3>Table 2:  Number of network Research Personnel providing time to network research projects with NCE funds or other funds</h3>" .self::getUniStats();
+        $this->html .= "<a id='Table2'></a><h3>Table 2:  Number of network Research Personnel providing time to network research projects with NCE funds or other funds</h3>" .self::getUniStats($phase);
         $this->html .= "<a id='Table3'></a><h3>Table 3: Number of HQP Involved in the Network (including KM activities) and Post-Network Employment</h3>";
-        $this->html .= "<a id='Table3.1'></a><h3>Table 3.1: Number of HQP Involved in the Network</h3>" . self::getHQPStats();
-        $this->html .= "<a id='Table3.2'></a><h3>Table 3.2: Post Network employment of HQP who left the network during the fiscal year</h3>" . self::getHQPEmployment($movedons, "all");
+        $this->html .= "<a id='Table3.1'></a><h3>Table 3.1: Number of HQP Involved in the Network</h3>" . self::getHQPStats($phase);
+        $this->html .= "<a id='Table3.2'></a><h3>Table 3.2: Post Network employment of HQP who left the network during the fiscal year</h3>" . self::getHQPEmployment($movedons, "all", $phase);
     }
 
-    function getHQPStats(){
+    function getHQPStats($phase=""){
         $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
 
         //Setup the table structure
@@ -778,7 +799,7 @@ EOF;
         return $html;
     }
 
-    function getUniStats(){
+    function getUniStats($phase=""){
         $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
         $nis  = Person::getAllPeopleDuring(NI,  $this->from, $this->to);
 
@@ -955,7 +976,7 @@ EOF;
         return $html;
     }
 
-    function getHQPEmployment($people, $type){
+    function getHQPEmployment($people, $type, $phase=""){
         $movedons = $people;
         
         $positions = array( "Undergraduate Student"=>"Ugrad",
@@ -1220,6 +1241,9 @@ EOF;
         
         $allProducts = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
         foreach($allProducts as $product){
+            if($this->filterPhase($product->getProjects(), $phase)){
+                continue;
+            }
             $category = strtolower($product->getCategory());
             $type = strtolower($product->getType());
             if(strstr($category, "product/innovation") !== false){
@@ -1307,16 +1331,8 @@ EOF;
                 continue;
             }
             $alreadyDone[$pub->getId()] = true;
-            if($phase != ""){
-                $found = false;
-                foreach($pub->getProjects() as $proj){
-                    if($proj->getPhase() == $phase){
-                        $found = true;
-                    }
-                }
-                if(!$found){
-                    continue;
-                }
+            if($this->filterPhase($pub->getProjects(), $phase)){
+                continue;
             }
             $status = $pub->getStatus();
             if($status == "Rejected"){
