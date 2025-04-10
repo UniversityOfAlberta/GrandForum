@@ -50,30 +50,30 @@ class ApplicationsTable extends SpecialPage{
             }
         </style>");
         
-        // Current Applications
+        // Ongoing Applications
         $links = array();
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
-        $wgOut->addHTML("<h1>Current Applications</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
+        $wgOut->addHTML("<h1>Ongoing Applications</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
         
-        // Past Applications
+        // Processed Applications
         $links = array();
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=rpg'>Research Pipeline</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
-        $wgOut->addHTML("<h1>Past Applications</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
+        $wgOut->addHTML("<h1>Processed Applications</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
+        
+        // Reports
+        $links = array();
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Proj Report</a>";
+        $wgOut->addHTML("<h1>Reports</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
         
         // Training
         $links = array();
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=atop'>ATOP</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>SAUS</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=bio'>BioTalent</a>";
-        $wgOut->addHTML("<h1>Past Applications</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
-        
-        // Reports
-        $links = array();
-        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Proj Report</a>";
-        $wgOut->addHTML("<h1>Reports</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
+        $wgOut->addHTML("<h1>Training (Applications and Reports)</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
         
         // Old/Other
         $links = array();
