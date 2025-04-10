@@ -123,7 +123,10 @@ class EducationResources extends SpecialPage {
                         <div class='module-progress-text'>".number_format($percent)."% Complete</div>
                     </div>
                 </a>
-                <div class='program-body'>To 100% complete <u>this Education Module</u>, watch every video to the end and complete the quiz.</div>");
+                <div class='program-body'>
+                    Click the above icon to start Module<br />
+                    To 100% complete <u>this Education Module</u>, watch every video to the end and complete the quiz.
+                </div>");
             }
             else {
                 $wgOut->addHTML("<p class='program-body' style='margin-top: 0; width: 100%;'>

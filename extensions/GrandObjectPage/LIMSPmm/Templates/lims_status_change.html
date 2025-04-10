@@ -1,0 +1,55 @@
+<h3>Select New Status</h3>
+
+<% 
+if (assignees && assignees.length > 0) { 
+%>
+    <table class="wikitable">
+        <thead>
+            <tr>
+                <th>Assignee</th>
+                <th>Status</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% assignees.forEach(function(assignee, index) { %>
+                <tr>
+                    <td valign="top"><%= assignee.name %></td>
+                    <td valign="top">
+                        <% 
+                        var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
+                        var currentStatus = statuses[assigneeId]; // Get current status for the assignee
+                        %>
+                        
+                        <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
+                            <%= HTML.Select(this, 'statuses.' + assigneeId, { 
+                                options: 
+                                    isLeaderAllowedToEdit 
+                                        ? ['New', 'Assigned', 'Done', 'Closed'] 
+                                        : ['Assigned', 'Done'] 
+                            }) %>
+                        <% } else { %> 
+                            <%= currentStatus %>
+                        <% } %> 
+                    </td>
+                    <td valign="top" height>
+                        <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
+                            <%= HTML.TextArea(this, 'comments.' + assigneeId, {placeholder: "Enter your comments here", style: "height: 75px;width:100%;box-sizing:border-box;margin:0;"}) %>                        <% } %> 
+                           
+                    </td>
+                </tr>
+            <% }.bind(this)); %>
+        </tbody>
+    </table>
+<% 
+} else { 
+%>
+    <div>No assignees</div>
+<% 
+}
+%>
+
+<% if (isEditableStatus) { %>  
+    <button id="updateStatusButton">Update Status</button>
+<% } %>
+<button id="cancelButton">Cancel</button>

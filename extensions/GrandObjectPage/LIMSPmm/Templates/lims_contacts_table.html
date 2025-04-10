@@ -31,7 +31,10 @@
                 if(opportunity.tasks == undefined || opportunity.tasks.length == 0){
                     opportunity.tasks = [new LIMSTaskPmm().toJSON()];
                 }
-                _.each(opportunity.tasks, function(task){ %>
+                _.each(opportunity.tasks, function(task){ 
+                    assigneesLinks = _.map(task.assignees, function(assignee){
+                        return '<a href="' + assignee.url + '">' + assignee.name + '</a>';
+                    }).join(', '); %>
                     <tr>
                         <% if(isAllowedToCreateLIMSPmmContacts){ %>
                             <td align="center" style="white-space:nowrap;">
@@ -57,7 +60,7 @@
                         </td>
 
                         <td>
-                            <a href="<%= task.assignee.url %>"><%= task.assignee.name %></a><span style="display:none;"><%= opportunity.id %></span>
+                            <%= assigneesLinks %><span style="display:none;"><%= opportunity.id %></span>
                         </td>
                         <td>
                             <%= task.task %><span style="display:none;"><%= task.id %></span>

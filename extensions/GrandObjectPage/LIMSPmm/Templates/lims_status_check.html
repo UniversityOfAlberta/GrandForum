@@ -1,0 +1,34 @@
+<h3>Check Current Status</h3>
+
+<% 
+if (assignees && assignees.length > 0) { 
+%>
+    <table class="wikitable" border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Assignee</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody> 
+            <% assignees.forEach(function(assignee, index) { %>
+                <tr>
+                    <td valign="top"><%= assignee.name %></td>
+                    <td valign="top">
+                        <% 
+                        var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
+                        var currentStatus = statuses[assigneeId]; // Get current status for the assignee
+                        %>
+                        <%= currentStatus %>
+                    </td>
+                </tr>
+            <% }.bind(this)); %>
+        </tbody>
+    </table>
+<% 
+} else { 
+%>
+    <div>No assignees</div>
+<% 
+}
+%>

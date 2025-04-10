@@ -4,6 +4,9 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
 
     project: null,
 
+    editDialog: null,
+
+
     initialize: function(options){
         this.project = options.project;
         this.model.saving = false;
@@ -19,7 +22,6 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         // Memebers can only change 'assigned' -> 'done'
         var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
 
-        
         var isMemberAllowed = !isPLAllowed && (this.model.get('status') == 'Assigned' || this.model.get('status') == 'Done');
         
 
@@ -38,12 +40,37 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
     },
     
     events: {
-        "click #deleteTask": "deleteTask"
+        "click #deleteTask": "deleteTask",
+        "click #changeStatusButton": "changeStatus"
     },
     
     deleteTask: function(){
         this.model.toDelete = true;
         this.model.trigger("change:toDelete");
+    },
+
+    changeStatus: function(){
+        // Create a model for the status change dialog
+        var view = new LIMSStatusChangeViewPmm({el: this.editDialog, model: this.model, isDialog: true, project: this.project});
+        
+        this.editDialog.view = view;
+        $('body').append(this.editDialog);
+
+        // Check if the dialog is already initialized
+        if (this.editDialog.dialog('instance')) {
+            this.editDialog.dialog('destroy');
+        }
+        
+        $('body').append(this.editDialog);
+        
+        this.editDialog.dialog({
+            height: $(window).height() * 0.75,
+            width: 400,
+            title: "Change Task Status"
+        });
+
+        // Open the dialog
+        this.editDialog.dialog('open');
     },
 
     renderTinyMCE: function(){
@@ -84,14 +111,20 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         if(!this.model.saving){
             this.$el.html(this.template(this.model.toJSON()));
             _.defer(function(){
-                this.$('select[name=assignee_id]').chosen();
+                this.$('select[name=assignees]').show().chosen();
+
             }.bind(this));
         }
+        this.editDialog = this.$('#changeStatusDialog');
+
 
         this.renderTinyMCE();
+
         // if(!this.model.get('isAllowedToEdit')){
         //     this.$el.prepend('<td></td>');
         // }
+
+
         return this.$el;
     }
 

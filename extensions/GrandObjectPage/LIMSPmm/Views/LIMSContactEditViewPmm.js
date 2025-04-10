@@ -156,13 +156,11 @@ LIMSContactEditViewPmm = Backbone.View.extend({
                                     task.saving = false;
                                 }.bind(this));
                             }
-                            
                         }));
 
                     } else {
                         task.saving = false;
                     }
-                    
                 }
                 else if(!task.isNew()){
                     // Delete as long as it isn't new (if it's new, and set for deletion, just do nothing)
