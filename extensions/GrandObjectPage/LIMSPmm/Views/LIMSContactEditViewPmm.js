@@ -15,7 +15,7 @@ LIMSContactEditViewPmm = Backbone.View.extend({
         this.saving = false;
         if(!this.model.isNew()){
             this.model.fetch();
-        }
+        } 
             
         this.listenTo(this.model, "sync", function(){
             this.selectTemplate();
@@ -34,6 +34,7 @@ LIMSContactEditViewPmm = Backbone.View.extend({
             this.isDialog = options.isDialog;
         }
         this.selectTemplate();
+        
     },
     
     changeDetails: function(){
@@ -66,7 +67,9 @@ LIMSContactEditViewPmm = Backbone.View.extend({
     },
     
     addOpportunity: function(event){
+        
         this.model.opportunities.add(new LIMSOpportunityPmm({contact: this.model.get('id')}));
+       
 
     },
     
@@ -216,6 +219,16 @@ LIMSContactEditViewPmm = Backbone.View.extend({
         }
         this.changeDetails();
         return this.$el;
+    },
+
+    afterRender: function(){
+        _.defer(function(){
+            if(this.model.get('opportunities').length == 0){
+                console.log(this.model.get('id'));
+                console.log("Adding opportunity");
+                this.addOpportunity();
+            }
+        }.bind(this));
     }
 
 });
