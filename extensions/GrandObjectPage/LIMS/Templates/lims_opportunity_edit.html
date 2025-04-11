@@ -20,7 +20,13 @@
         <td align="right"><b>User Type:</b></td>
         <td style="padding-right:30px;"><%= HTML.Select(this, 'userType', {style: 'width:140px;vertical-align:middle;', options: ['On site', 'Remote', 'Data']}) %></td>
         
-        <td colspan="2"><%= date %></td>
+        <td colspan="2">
+            <% if(!this.model.isNew()){ %>
+                <%= HTML.TextBox(this, 'date') %>
+            <% } else { %>
+                <%= date %>
+            <% } %>
+        </td>
     </tr>
     <tr>
         <td align="right"><b>Surveyed:</b></td>

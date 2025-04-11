@@ -50,9 +50,20 @@ class LIMSOpportunityAPI extends RESTAPI {
         }
     }
     
+    function validateDate($date, $format = 'Y-m-d') { 
+	
+	return $d && $d->format($format) === $date; 
+} 
+    
     function doPUT(){
         $opportunity = LIMSOpportunity::newFromId($this->getParam('id'));
         if($opportunity->isAllowedToEdit()){
+            // Validate date
+            $date = trim($this->POST('date'));
+            $format = 'Y-m-d H:i:s';
+            $d = DateTime::createFromFormat($format, $this->POST('date'));
+            $dateValid = ($d && $d->format($format) === $date);
+        
             $opportunity->owner = $this->POST('owner')->id;
             $opportunity->project = $this->POST('project')->id;
             $opportunity->userType = $this->POST('userType');
@@ -63,6 +74,9 @@ class LIMSOpportunityAPI extends RESTAPI {
             $opportunity->status = $this->POST('status');
             $opportunity->description = $this->POST('description');
             $opportunity->products = $this->POST('products');
+            if($dateValid){
+                $opportunity->date = $date;
+            }
             $opportunity->files = $this->POST('files');
             $opportunity->update();
             return $opportunity->toJSON();
