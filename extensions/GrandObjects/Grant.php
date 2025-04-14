@@ -157,7 +157,7 @@ class Grant extends BackboneModel {
     function getCoPI(){
         $copis = array();
         foreach($this->copi as $copi){
-            $person = Person::newFromId($copi);
+            $person = (is_numeric($copi)) ? Person::newFromId($copi) : null;
             if($person != null && $person->getId() != 0){
                 $copis[] = $person;
             }
@@ -384,6 +384,7 @@ class Grant extends BackboneModel {
         $me = Person::newFromWgUser();
         $copis = array();
         $copis_array = array();
+        
         foreach($this->getCoPI() as $copi){
             if($copi instanceof Person){
                 $copis[] = $copi->getNameForForms();
