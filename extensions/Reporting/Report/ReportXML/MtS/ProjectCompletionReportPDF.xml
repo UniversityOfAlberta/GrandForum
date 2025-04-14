@@ -379,7 +379,7 @@
         <ReportItem id="42_1a" type="Textarea" blobItem="42_1a" width="500px" height="80px">
             <![CDATA[
                 <tr>
-                    <td style="width:10%;"><span style='font-size: 1.25em;'>What is your research about?</b></td>
+                    <td valign='top' style="width:10%;"><span style='font-size: 1.25em;'>What is your research about?</b></td>
                     <td>
                         <b>In 2-3 plain language sentences, please describe what this project is about, why it’s important and the intended outcome.</b><br />
                         {$item}<br />
@@ -402,7 +402,7 @@
         <ReportItem id="42_2a" type="Textarea" blobItem="42_2a" width="500px" height="80px">
             <![CDATA[
                 <tr>
-                    <td><span style='font-size: 1.25em;'>What did you do?</span></td>
+                    <td valign='top'><span style='font-size: 1.25em;'>What did you do?</span></td>
                     <td valign='top'>
                         <b>In 2-3 plain language sentences, describe the research process.</b><br />
                         {$item}
@@ -413,7 +413,7 @@
         <ReportItem id="42_3a" type="Textarea" blobItem="42_3a" width="500px" height="80px">
             <![CDATA[
                 <tr>
-                    <td><span style='font-size: 1.25em;'>What did you find?</span></td>
+                    <td valign='top'><span style='font-size: 1.25em;'>What did you find?</span></td>
                     <td valign='top'>
                         <b>In 2-3 plain sentences, describe the results of your study.</b><br />
                         {$item}
@@ -424,7 +424,7 @@
         <ReportItem id="42_4a" type="Textarea" blobItem="42_4a" width="500px" height="80px">
             <![CDATA[
                 <tr>
-                    <td><span style='font-size: 1.25em;'>How can you use this research?</span></td>
+                    <td valign='top'><span style='font-size: 1.25em;'>How can you use this research?</span></td>
                     <td valign='top'>
                         <b>How should your audience use this information? Why do they care about this research? What impact could it have on their work?</b><br />
                         {$item}<br />
