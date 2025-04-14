@@ -80,13 +80,7 @@ class TextareaReportItem extends AbstractReportItem {
                                     $('#{$this->getPostId()}_chars_left').text(wordcount);
                                     if(wordcount > $limit && '$recommended' == 'false' && e.keyCode != 8 && e.keyCode != 46) {
                                         var status = tinymce.dom.Event.cancel(e);
-                                        if(detectIE() != false){
-                                            ed.execCommand('UNDO');
-                                            ed.selection.collapse();
-                                        }
-                                        else{
-                                            ed.execCommand('DELETE');
-                                        }
+                                        ed.execCommand('DELETE');
                                         return status;
                                     }
                                 };
