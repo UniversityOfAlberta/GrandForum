@@ -371,7 +371,7 @@
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </table>
+                </table><br />
                 <h3>4.2 MtS will create a two-page plain language research summary based on your project findings (this is part of your <a href='https://www.dropbox.com/s/8r76zbjgj76ioie/MtS_KMb-pkg_NOV2021.pdf?dl=0'>base Knowledge Mobilization package</a>). Fill out the following section to provide information for the research summary:</h3>
                 <table class="wikitable" frame="box" rules="all" width="100%">
             ]]>
