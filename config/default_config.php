@@ -131,13 +131,6 @@
         //'QASummary'
     ));
     
-    $config->setValue("reportingExtras", array('EvaluationTable'        => false,
-                                               'ReportStats'            => false,
-                                               'CreatePDF'              => false,
-                                               'ReportArchive'          => false,
-                                               'ReviewResults'          => false,
-                                               'AdminVisualizations'    => false));
-    
     // Associative array of other Forum instances that this one can import from
     $config->setValue("crossForumUrls", array("AGE-WELL"   => "https://forum.agewell-nce.ca/index.php/Special:CrossForumExport",
                                               "AI4Society" => "https://ai4society.ca/index.php/Special:CrossForumExport",
