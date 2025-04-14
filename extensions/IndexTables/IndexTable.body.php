@@ -1,7 +1,6 @@
 <?php
 
 $wgHooks['OutputPageParserOutput'][] = 'IndexTable::generateTable';
-$wgHooks['ongetUserPermissionsErrors'][] = 'IndexTable::userCanExecute';
 $wgHooks['SubLevelTabs'][] = 'IndexTable::createSubTabs';
 
 class IndexTable {
@@ -157,8 +156,8 @@ class IndexTable {
                 $wgOut->addHTML("<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>");
             }
             $university = $person->getUniversity();
-            $wgOut->addHTML("<td align='left'>{$university['department']}</td>");
-            $wgOut->addHTML("<td align='left'>{$university['position']}</td>");
+            @$wgOut->addHTML("<td align='left'>{$university['department']}</td>");
+            @$wgOut->addHTML("<td align='left'>{$university['position']}</td>");
             $wgOut->addHTML("<td align='left'>");
             if($person->getLdap() != ""){
                 $wgOut->addHTML("<a href='{$person->getLdap()}' target='_blank'>LDAP</a>");
