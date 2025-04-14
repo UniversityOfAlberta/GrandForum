@@ -29,6 +29,7 @@ class ReportArchive extends SpecialPage {
     
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        $this->getOutput()->setPageTitle("Report Archive");
         ReportArchive::generateReportArchivedReportsHTML();
     }
 
