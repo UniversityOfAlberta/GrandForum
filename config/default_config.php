@@ -116,7 +116,6 @@
         'UI',
         'Notification',
         'GrandObjectPage',
-        'MailingList',
         'AddMember',
         'AddHqp',
         'EditMember',
