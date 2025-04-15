@@ -111,7 +111,9 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->person->privateProfile = @$_POST['private_profile'];
         $this->person->pronouns = @$_POST['pronouns'];
         $this->person->update();
-        $this->person->setCRDC(@$_POST['crdc']);
+        if(isset($_POST['crdc'])){
+            $this->person->setCRDC($_POST['crdc']);
+        }
         $this->person->setKeywords(explode(",", $_POST['keywords']));
         $this->person->setAliases(explode(";", $_POST['aliases']));
         

@@ -714,7 +714,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             if($config->getValue('networkName') == "GlycoNet" && 
                $this->canEditMilestone() && 
                !$this->visibility['edit']){
-                $this->showMilestoneReport();
+                //$this->showMilestoneReport();
             }
         }
     }

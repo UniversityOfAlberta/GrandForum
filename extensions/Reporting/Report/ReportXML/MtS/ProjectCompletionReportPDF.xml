@@ -371,7 +371,7 @@
         </ReportItemSet>
         <Static>
             <![CDATA[
-                </table>
+                </table><br />
                 <h3>4.2 MtS will create a two-page plain language research summary based on your project findings (this is part of your <a href='https://www.dropbox.com/s/8r76zbjgj76ioie/MtS_KMb-pkg_NOV2021.pdf?dl=0'>base Knowledge Mobilization package</a>). Fill out the following section to provide information for the research summary:</h3>
                 <table class="wikitable" frame="box" rules="all" width="100%">
             ]]>
@@ -379,60 +379,62 @@
         <ReportItem id="42_1a" type="Textarea" blobItem="42_1a" width="500px" height="80px">
             <![CDATA[
                 <tr>
-                    <td rowspan='3' style="width:10%;"><span style='font-size: 1.25em;'>What is your research about?</b></td>
-                    <td valign='top' style="width:20%;">In 2-3 plain language sentences, please describe what this project is about, why it’s important and the intended outcome.</td>
-                    <td valign='top'>{$item}</td>
-                </tr>
+                    <td valign='top' style="width:10%;"><span style='font-size: 1.25em;'>What is your research about?</b></td>
+                    <td>
+                        <b>In 2-3 plain language sentences, please describe what this project is about, why it’s important and the intended outcome.</b><br />
+                        {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="42_1b" type="Textarea" blobItem="42_1b" width="500px" height="80px">
             <![CDATA[
-                <tr>
-                    <td valign='top'>Why was this project created?</td>
-                    <td valign='top'>{$item}</td>
-                </tr>
+                        <b>Why was this project created?</b><br />
+                        {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="42_1c" type="Textarea" blobItem="42_1c" width="500px" height="80px">
             <![CDATA[
-                <tr>
-                    <td valign='top'>Who was this project created for? Keep the audience in mind when writing.</td>
-                    <td valign='top'>{$item}</td>
+                        <b>Who was this project created for? Keep the audience in mind when writing.</b><br />
+                        {$item}
+                     </td>
                 </tr>
             ]]>
         </ReportItem>
         <ReportItem id="42_2a" type="Textarea" blobItem="42_2a" width="500px" height="80px">
             <![CDATA[
                 <tr>
-                    <td rowspan='1'><span style='font-size: 1.25em;'>What did you do?</span></td>
-                    <td valign='top'>In 2-3 plain language sentences, describe the research process.</td>
-                    <td valign='top'>{$item}</td>
+                    <td valign='top'><span style='font-size: 1.25em;'>What did you do?</span></td>
+                    <td valign='top'>
+                        <b>In 2-3 plain language sentences, describe the research process.</b><br />
+                        {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
         <ReportItem id="42_3a" type="Textarea" blobItem="42_3a" width="500px" height="80px">
             <![CDATA[
                 <tr>
-                    <td rowspan='1'><span style='font-size: 1.25em;'>What did you find?</span></td>
-                    <td valign='top'>In 2-3 plain sentences, describe the results of your study.</td>
-                    <td valign='top'>{$item}</td>
+                    <td valign='top'><span style='font-size: 1.25em;'>What did you find?</span></td>
+                    <td valign='top'>
+                        <b>In 2-3 plain sentences, describe the results of your study.</b><br />
+                        {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
         <ReportItem id="42_4a" type="Textarea" blobItem="42_4a" width="500px" height="80px">
             <![CDATA[
                 <tr>
-                    <td rowspan='2'><span style='font-size: 1.25em;'>How can you use this research?</span></td>
-                    <td valign='top'>How should your audience use this information? Why do they care about this research? What impact could it have on their work?</td>
-                    <td valign='top'>{$item}</td>
-                </tr>
+                    <td valign='top'><span style='font-size: 1.25em;'>How can you use this research?</span></td>
+                    <td valign='top'>
+                        <b>How should your audience use this information? Why do they care about this research? What impact could it have on their work?</b><br />
+                        {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="42_4b" type="Textarea" blobItem="42_4b" width="500px" height="80px">
             <![CDATA[
-                <tr>
-                    <td valign='top'>What, specifically, can the audience expect to learn after reading this summary?</td>
-                    <td valign='top'>{$item}</td>
+                        <b>What, specifically, can the audience expect to learn after reading this summary?</b><br />
+                        {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>

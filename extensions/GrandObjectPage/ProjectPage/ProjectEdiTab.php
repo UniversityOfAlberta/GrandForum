@@ -102,7 +102,7 @@ class ProjectEdiTab extends AbstractEditableTab {
                                                                              "Fyrefly Institute",
                                                                              "Race, Research & Policy Portal - IARA Project",
                                                                              "Equity, Diversity, Inclusion Toolkit - WISEST",
-                                                                             "Equity, Diversity and Inclusion Module – University of Alberta",
+                                                                             "Learnings in Access, Community, and Belonging - UofA",
                                                                              "Equity, Diversity, & Inclusivity: University Library Resources"));
             $checkboxes2 = new VerticalCheckBox("edi_q1[$y]", "", $q1, array("Harvard’s Implicit Association Test (IAT)",
                                                                              "NIH Scientific Workforce Diversity Toolkit",
@@ -110,6 +110,7 @@ class ProjectEdiTab extends AbstractEditableTab {
                                                                              "Positive Space Initiative: 2SLGBTQI+ Awareness (INC111)",
                                                                              "Anti-Racism Learning Series",
                                                                              "World Diversity in Leadership Conference",
+                                                                             "Tri-Agency Pool of Resources",
                                                                              "Future Energy Systems EDI Events"));
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";

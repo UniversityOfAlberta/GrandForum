@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Strategic Initiatives Review" reportType="RP_STRAT_REVIEW" ajax="true" disabled="false" year="2025">
+<Report name="SAB RPG Review" reportType="RP_SAB_RPG_REVIEW" ajax="true" disabled="false" year="2025">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SAB">
             <SectionPermission id="materials" permissions="rw" />
@@ -29,9 +29,9 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Strat">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="StrategicReport" project="false">
-                <![CDATA[<tr><td>{getText(RP_STRAT_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><!--td>{getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td--><td align='center'>{$item}</td>]]>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-RPG">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="RPGReport" project="false">
+                <![CDATA[<tr><td>{getText(RP_SAB_RPG_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><!--td>{getText(RP_RPG,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td--><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -44,18 +44,18 @@
         <ReportItem type="Upload" blobItem="CDA" blobType="BLOB_RAW" fileSize="5">
             <![CDATA[
                 <p><b>Please note: If you are an external reviewer (not a GlycoNet member), please sign the CDA document before reviewing the application and upload it to the Forum.</b></p>
-                <p><a href='{$wgServer}{$wgScriptPath}/data/GlycoNet CDA For 2025 Grant Applications.pdf' target='_blank'><b>Download CDA Template</b></a></p>
+                <p><a href='{$wgServer}{$wgScriptPath}/data/GlycoNet CDA For 2025 Grant Applications.pdf'><b>Download CDA Template</b></a></p>
                 
                 <h3>CDA Upload</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Strat">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_STRAT_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-RPG">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_RPG_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_RPG,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                 <ReportItem id="review" type="Upload" blobType="BLOB_RAW" blobItem="SAB_REVIEW" blobSubItem="{$user_id}" fileSize="5">
                     <![CDATA[
                         <p><b>Please complete your review using the provided template, ensuring all requested details are included, and upload it to the Forum in the WORD document format.</b></p>
-                        <p><a href='{$wgServer}{$wgScriptPath}/data/Scientific Review Template 2025.docx' target='_blank'><b>Download Scientific Review Template</b></a></p>
+                        <p><a href='{$wgServer}{$wgScriptPath}/data/Scientific Review Template 2025.docx'><b>Download Scientific Review Template</b></a></p>
                         
                         <h3>Scientific Review Upload</h3>
                         {$item}

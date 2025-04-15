@@ -9,8 +9,8 @@ class Milestone {
     static $cache = array();
     
     static $statuses = array("New" => "#BBBBBB",
-                             "Completed" => "#3399FF",
-                             "On Going" => "#55BB55",
+                             "Completed" => "#55BB55",
+                             "On Going" => "#3399FF",
                              "Late" => "#FFDD00",
                              "Problem" => "#FF8800",
                              "Abandoned" => "#FF6666");

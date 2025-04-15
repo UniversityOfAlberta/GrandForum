@@ -13,6 +13,7 @@
             <SectionPermission id="ktee" permissions="r" />
             <SectionPermission id="budget" permissions="-" />
             <SectionPermission id="contributions" permissions="-" />
+            <SectionPermission id="security" permissions="-" />
             <SectionPermission id="ccv" permissions="-" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="r" />
@@ -30,6 +31,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="security" permissions="" />
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="r" />
@@ -39,14 +41,13 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="" />
-            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="security" permissions="" />
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="r" />
@@ -56,14 +57,13 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="" />
-            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="security" permissions="" />
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="r" />
@@ -73,14 +73,13 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="rw" />
-            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="security" permissions="rw" />
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="rw" />
@@ -88,103 +87,41 @@
         </Role>
     </Permissions>
     <ReportSection id="instructions" type="ReportSection" name="Instructions">
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <!-- Project Leader View -->
+        <Static>
             <![CDATA[
-                <p><b>Deadline: May 10, 2024</b></p>
+                <p><b>Deadline: April 20, 2025</b></p>
                 <p><b>Before completing the report:</b></p>
                 <ul>
                     <li>Update the personal information on your Forum profile</li>
-                    <li>Update your products*, including publications, awards, presentations, patents, etc., either manually or by uploading your CCV; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Add top research outcomes (found in the “Dashboard” tab on your project page)</li>
+                    <li>Add any new members (trainees and collaborators on the project) who are not already in the Forum (refer to “<a href='https://canadianglycomics.ca/wp-content/uploads/Managing-People-NIs-1.pdf' target='_blank'>Managing People</a>” instructions)</li>
+                    <li>Edit the roles and relations of any trainees on the project that you supervise (refer to “<a href='https://canadianglycomics.ca/wp-content/uploads/Managing-People-NIs-1.pdf' target='_blank'>Managing People</a>” instructions)</li>
                 </ul>
                 <p><b>To complete your section of the report:</b></p>
                 <ul>
                     <li>Fill in all applicable sections of the Project Report:
                         <ul>
                             <li>Project Information</li>
-                            <li>Summary/Background</li>
-                            <li>Figures</li>
-                            <li>Milestones (all)</li>
-                            <li>Achievements</li>
-                            <li>KTEE</li>
-                            <li>Networking</li>
-                            <li>HQP</li>
-                            <li>Budget</li>
-                            <li>Partner Contributions</li>
-                            <li>CCV</li>
-                        </ul>
-                    </li>
-                    <li>Generate and preview project report PDF</li>
-                    <li>Submit project report to GlycoNet Administrative Centre</li>
-                </ul><br />
-                <p>*Managing numerous publications can be challenging for investigators.  Therefore, <b>it is highly recommended that this task be delegated to trainees as much as possible.</b></p>
-                <p><b>Need further assistance?</b></p>
-                <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact the GlycoNet Administrative Office (info@glyconet.ca).</p>
-            ]]>
-        </If>
-        <If id="not_pl1" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
-            <!-- Network Investigator View -->
-            <![CDATA[
-                <p><b>Deadline: April 15, 2023</b></p>
-                <p><b>Before completing the report:</b></p>
-                <ul>
-                    <li>Update the personal information on your Forum profile</li>
-                    <li>Update your products*, including publications, awards, presentations, patents, etc., either manually or by uploading your CCV; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    <li>Add top research outcomes (found in the “Dashboard” tab on your profile page)</li>
-                </ul>
-                <p><b>To complete your section of the report:</b></p>
-                <ul>
-                    <li>Fill in all applicable sections of the Project Report:
-                        <ul>
-                            <li>Project Information</li>
-                            <li>Figures</li>
+                            <li>Report</li>
                             <li>Milestones (assigned milestones only)</li>
-                            <li>Achievements</li>
-                            <li>KTEE</li>
-                            <li>Networking</li>
+                            <li>KPI</li>
                             <li>HQP</li>
                             <li>Budget</li>
-                            <li>Partner Contributions</li>
-                            <li>CCV</li>
                         </ul>
                     </li>
                 </ul><br />
-                <p>*Managing numerous publications can be challenging for investigators.  Therefore, <b>it is highly recommended that this task be delegated to trainees as much as possible.</b></p>
+                <p><b>Please ensure that you thoroughly fill in all sections. This information will be submitted to the GlycoNet Research Management Committee and Scientific Advisory Board for performance evaluation. Please note that future funding from GlycoNet is contingent on your ability to provide an accurate and comprehensive report.</b></p>
+                
                 <p><b>Need further assistance?</b></p>
-                <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact the GlycoNet Administrative Office (info@glyconet.ca).</p>
+                <p>For additional support, please visit the “<a href='https://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>Forum Help and FAQs</a>” page on the GlycoNet website or contact the GlycoNet Administrative Office via email at <a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> and cc Veronika Sharko at <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>.</p>
             ]]>
-        </If>
-        <If id="not_pl2" if="{and({contains({$my_full_roles},HQP)},{!contains({$my_full_roles},PL)})}">
-            <!-- HQP View -->
-            <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Deadline: March 17, 2021</b></p>
-                    <p><b>Before completing the report:</b></p>
-                    <ul>
-                        <li>Update the personal information on your Forum profile, including gender, nationality, and alumni status if you will be leaving the Network in the near future (see “Getting Started with the GlycoNet Forum” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                        <li>Update your products, including publications, awards, presentations, patents, etc.; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                    </ul>
-                    <p><b>To complete your section of the report:</b></p>
-                    <ul>
-                        <li>Fill in the HQP section in the Project Report</li>
-                    </ul>
-                    <p><b>Need further assistance?</b></p>
-                    <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact the GlycoNet Administrative Office (info@glyconet.ca).</p>
-                ]]>
-            </ReportItem>
-        </If>
+        </Static>
     </ReportSection>
     <ReportSection id="information" type="EditableReportSection" name="Project Information" blobSection="INFORMATION">
         <Static>
             <![CDATA[
-                <p><b>Theme:</b>           {$project_theme}</p>
-                <p><b>Project Title:</b>   {$project_name} - {$project_full_name}</p>
-                <p><b>Project Leader:</b>  {$project_leaders}<br />
+                <p><b>Research Area:</b>  {$project_theme}</p>
+                <p><b>Project Title:</b>  {$project_name} - {$project_full_name}</p>
+                <p><b>Project Leader:</b> {$project_leaders}<br />
             ]]>
         </Static>
         <ReportItemSet id="leaders" type="ProjectLeaders">
@@ -198,7 +135,9 @@
         <Static>
             <![CDATA[
                 </p>
-                <p><b>Investigators:</b>
+                <p><b>Investigators:</b><br />
+                    Add % Time Devoted to Project for each investigator (Please note that only funded investigators will be shown in this section).
+                </p>
                 <table class='wikitable'>
                     <tr>
                         <th>Name</th>
@@ -223,113 +162,53 @@
         <Static>
             <![CDATA[
                 </table>
-                </p>
-                <p><b>Trainees and role:</b><br />
-                    If there is an HQP without a supervisor, then they can be added by going to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople'>Manage People</a> (note you must be the HQPs supervisor in order to add them).
-                </p>
-                <table class='wikitable'>
-                    <tr>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Title</th>
-                        <th>Citizenship</th>
-                        <th>Gender</th>
-                        <th>Supervisor(s)</th>
-                    </tr>
             ]]>
         </Static>
-        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
-            <Static>
-                <![CDATA[
-                    <tr>
-                        <td>{$user_name}</td>
-                        <td>{$user_uni}</td>
-                        <td>{$user_level}</td>
-                        <td>{$user_nationality}</td>
-                        <td>{$user_gender}</td>
-                        <td>{$user_supervisors}</td>
-                    </tr>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        <Static>
+        <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Company/Organization Name|Cash|In-kind|Contact Full Name|Email|Other Details" sizes="|100|100|||" types="Text|Text|Text|Text|Text|Textarea" multiple="true" addText="Add Partner">
             <![CDATA[
-                </table>
+                <p><b>Partners:</b><br />
+                    List all Partners involved, those providing matching in cash and in-kind.  For in-kind contributions, please provide the details for the nature of in-kind provided.
+                </p>
+                {$item}
             ]]>
-        </Static>
-        <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
+        </ReportItem>
+        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" labels="Full Name|Email|Institution/Organization/Company|Department (if applicable)|Role in the Project" sizes="||200||" multiple="true" addText="Add Collaborator">
             <![CDATA[
-                <p><b>Partners and Collaborators:</b><br />
-                    List individuals (e.g. federal, provincial, industry and foreign academic partners, stakeholders and/or end-users) that were involved in the project (e.g. research, KTEE) over the last year but are not members of GlycoNet. <b>Additionally, a contact for each funding source listed in the Partner Contributions section should be entered into this table.</b>
+                <p><b>Collaborators:</b><br />
+                    List all Collaborators involved in the project who are not funded by GlycoNet.</b>
                 </p>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="summary" type="EditableReportSection" name="Summary/Background" blobSection="INFORMATION">
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <!-- Project Leader View -->
-            <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500" recommended="true">
-                <![CDATA[
-                    <p><b>Executive Summary</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="background" type="TextareaReportItem" blobItem="BACKGROUND" rich="true" limit="1000" recommended="true">
-                <![CDATA[
-                    <br /><br />
-                    <p><b>Background Information</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="references" type="TextareaReportItem" blobItem="REFERENCES" rich="true">
-                <![CDATA[
-                    <br /><br />
-                    <p><b>References</b><br />
-                    <small>Please use Journal of Biological Chemistry Style: MacDonald, G. M., Steenhuis, J. J., and Barry, B. A. (1995) A difference Fourier transform infrared spectroscopic study of chlorophyll oxidation in hydroxylamine-treated photosystem II. J. Biol. Chem. <b>270</b>, 8420–8428<br />
-                    These references only apply to the Background section</small></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-    </ReportSection>
-    <ReportSection id="figures" type="EditableReportSection" name="Figures" blobSection="INFORMATION">
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <!-- Project Leader View -->
-            <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
-                <![CDATA[
-                    <p><b>Figures Upload</b></p>
-                    {$item}
-                    If any NIs have uploaded figures, they will be listed below.  You can use them to compile a the figures for the above upload.
-                ]]>
-            </ReportItem>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
-                <If id="if_null" if="{!=({getBlobMD5(RP_PROGRESS,INFORMATION,FIGURES,{$user_id},0,{$project_id})},)}">
-                    <![CDATA[
-                        <p><b>{$user_name}</b><br />
-                        <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_PROGRESS,INFORMATION,FIGURES,{$user_id},0,{$project_id})}&mime=application/pdf'>Download Figures</a></p>
-                    ]]>
-                </If>
-            </ReportItemSet>
-        </If>
-        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
-            <!-- Network Investigator View -->
-            <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" blobSubItem="{$my_id}" fileSize="20" mimeType="application/pdf">
-                <![CDATA[
-                    <p><b>Figures Upload</b></p>
-                    Your upload will be forwarded to the project leader.
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
+    <ReportSection id="summary" type="EditableReportSection" name="Report" blobSection="REPORT">
+        <ReportItem id="report" type="UploadReportItem" blobItem="REPORT" fileSize="10" mimeType="application/pdf">
+            <![CDATA[
+                <p>Please ensure that all sections and questions in this report template are fully answered. If a particular section does not apply to your project, please indicate this by writing 'Not Applicable' or 'N/A' <b>and provide a brief explanation as to why</b>. Incomplete responses without adequate explanation may impact the assessment of your project’s progress.</p>
+                
+                <p>Please note that this information will be provided to the GlycoNet Research Management Committee and Scientific Advisory Board for evaluation of performance. Your thorough and accurate reporting is important for maintaining transparency and ensuring continued support from GlycoNet.</p>
+                <p>Download the <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Annual Report - Narrative Template.docx" target="_blank"><b>Report Template</b></a>, and then upload a <b>PDF</b> below.</p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" type="EditableReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
         <ReportItem id="table" type="ProjectMilestoneTable">
             <![CDATA[
+                <p>In the text boxes below please expand on the information provided in the Milestones and Activities table. Please clearly indicate any changes, including the addition or modification of milestones/activities, course changes, project delays or abandoned activities. If a milestone and/or deliverable was abandoned, please describe why and the impact on the project. Please also describe any new deliverables and describe the impact on the project.</p>
                 {$item}<br />
                 <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a><br />
                 <small>(Opens in a new Tab)</small>
                 <br /><br /><br /><br /><br /><br /><br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
+            <![CDATA[
+                <h3>Comments</h3>
+                <p>If any of the milestones have been delayed or abandoned, please comment on them below.<br />
+                    <b>Please Note:</b> If a new milestone is to be added, please provide a justification.
+                </p>
+                {$item}<br /><br />
             ]]>
         </ReportItem>
         <ReportItemSet type="ToggleHeaderReportItemSet" title="Last Year's Milestones">
@@ -340,237 +219,98 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
-                <![CDATA[
-                    <h3>Comments</h3>
-                    <p>If any of the milestones have been delayed or abandoned, please comment on them below.<br />
-                        <b>Please Note:</b> If a new milestone is to be added, please provide a justification.
-                    </p>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
     </ReportSection>
-    <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <!-- Project Leader View -->
-            <Static>
-                <![CDATA[
-                    {set(achievements,)}
-                    {set(deliverables,)}
-                    {set(edi,)}
-                    {set(lay_summary,)}
-                    {set(impact,)}
-                    {set(benefits,)}
-                ]]>
-            </Static>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
-                <Static id="setters">
-                    <![CDATA[
-                        {set(achievements,{concat({get(achievements)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,ACHIEVEMENTS,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(deliverables,{concat({get(deliverables)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,DELIVERABLES,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(edi,{concat({get(edi)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,EDI,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(lay_summary,{concat({get(lay_summary)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,LAY_SUMMARY,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(impact,{concat({get(impact)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,IMPACT,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                        
-                        {set(benefits,{concat({get(benefits)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,ACHIEVEMENTS,BENEFITS,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                    ]]>
-                </Static>
-            </ReportItemSet>
-            <ReportItem id="achievements_popup" type="PopupReportItem" title="NI Comments" text="{get(achievements)}">
-                <![CDATA[
-                    <p><b>Project Objectives and Past Achievements</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" rich="true" limit="500" recommended="true">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="deliverables_popup" type="PopupReportItem" title="NI Comments" text="{get(deliverables)}">
-                <![CDATA[
-                    <p><b>Research Achievements in the Current Funding Period</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" rich="true" limit="2000" recommended="true">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="edi_popup" type="PopupReportItem" title="NI Comments" text="{get(edi)}">
-                <![CDATA[
-                    <p><b>Implementation of EDI Activities</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="edi" type="TextareaReportItem" blobItem="EDI" rich="true" recommended="true">
-                <![CDATA[
-                    <small><br />Please provide an update on your EDI activities.</small>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="lay_popup" type="PopupReportItem" title="NI Comments" text="{get(lay_summary)}">
-                <![CDATA[
-                    <p><b>Lay Summary</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" rich="true">
-                <![CDATA[
-                    <small><br />Highlight the impact of the project over the past year in five sentences.  This summary may be included in the GlycoNet Annual Report.</small>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(impact)}">
-                <![CDATA[
-                    <p><b>Future Directions</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" rich="true" limit="500" recommended="true">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="benefits_popup" type="PopupReportItem" title="NI Comments" text="{get(benefits)}">
-                <![CDATA[
-                    <p><b>References</b><br />
-                    <small>Please use Journal of Biological Chemistry Style: MacDonald, G. M., Steenhuis, J. J., and Barry, B. A. (1995) A difference Fourier transform infrared spectroscopic study of chlorophyll oxidation in hydroxylamine-treated photosystem II. J. Biol. Chem. <b>270</b>, 8420–8428<br />
-                    These references only apply to the Achievements section</small></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" rich="true">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
-            <!-- Network Investigator View -->
-            <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Project Objectives and Past Achievements</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Research Achievements in the Current Funding Period</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="edi" type="Textarea" blobItem="EDI" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Implementation of EDI Activities</b></p>
-                    <small>Please provide an update on your EDI activities.</small>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Lay Summary</b></p>
-                    <small>Highlight the impact of the project over the past year in five sentences.  This summary may be included in the GlycoNet Annual Report.</small>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Future Directions</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>References</b><br />
-                    <small>Please use Journal of Biological Chemistry Style: MacDonald, G. M., Steenhuis, J. J., and Barry, B. A. (1995) A difference Fourier transform infrared spectroscopic study of chlorophyll oxidation in hydroxylamine-treated photosystem II. J. Biol. Chem. <b>270</b>, 8420–8428<br />
-                    These references only apply to the Achievements section</small></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-    </ReportSection>
-    <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KTEE" title="Knowledge exchange and technology exploitation">
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <!-- Project Leader View -->
-            <Static>
-                <![CDATA[
-                    {set(impact,)}
-                ]]>
-            </Static>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
-                <Static>
-                    <![CDATA[
-                        {set(impact,{concat({get(impact)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,KTEE,IMPACT,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                    ]]>
-                </Static>
-            </ReportItemSet>
-            <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(impact)}">
-                <![CDATA[
-                    <p><b>Describe the impact or research outcomes of this project over the funding period that may result in the creation of intellectual property, outlicensing efforts, licenses negotiated or granted to industry, start-up companies created and similar entrepreneurial ventures.</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
-            <!-- Network Investigator View -->
-            <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" blobSubItem="{$my_id}">
-                <![CDATA[
-                    <p><b>Describe the impact or research outcomes of this project over the funding period that may result in the creation of intellectual property, outlicensing efforts, licenses negotiated or granted to industry, start-up companies created and similar entrepreneurial ventures.</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
+    <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KPI" title="Key Performance Indicators">
+        <ReportItem id="publications" type="ManageProductsReportItem">
             <![CDATA[
-                <h2>Outcomes</h2>
-                <p><b>List abstracts and publications (peer-reviewed or not) that resulted from the outcomes of work during the funding period.</b></p>
-                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a> (Opens in a new Tab).  In order for the product to show up below, it must be associated with the project, and have been written between the reporting period (April 1, {$this_year} - March 31, {$next_year})</p>
+                <h2 style='font-weight:bold;'>Publications</h2>
+                Please add all relevant publications, including the following:
+                <ul>
+                    <li><b>Peer-reviewed journal articles</b></li>
+                    <li><b>Other refereed contributions</b> (e.g. papers in refereed conference proceedings, books)</li>
+                    <li><b>Non-refereed contributions</b> (e.g. papers in non-refereed conference proceedings, letters)</li>
+                    <li><b>Other specialized publications</b> (e.g. reports, briefings, online publications or other forms of grey literature)</li>
+                </ul>
+                
+                <b>To add the publication:</b>
+                <ol>
+                    <li><b>Using DOI</b>: Click the <b>Add From DOI</b> button. This is the easiest way to import publication details. After the information has been exported, please verify its correctness.</li>
+                    <li><b>Using CCV Upload</b>: You can also upload an updated CCV if it includes publications related to the project. Please ensure that you only report publications that are directly associated with the project.</li>
+                    <li><b>Manually Adding Publications</b>: If necessary, click the <b>Add Product</b> button to manually enter publication details.</li>
+                </ol>
                 {$item}
             ]]>
         </ReportItem>
+        <If if="{contains({$my_full_roles},PL)}">
+            <!-- Project Leader View -->
+            <ReportItem id="new" type="MultiText" blobItem="NEW" blobType="BLOB_ARRAY" labels="Type|Details" types="Select(Knowledge Product,Service,Process)|Textarea" sizes="|250" multiple="true">
+                <![CDATA[
+                    <h2 style='font-weight:bold;'>New or Improved Products (knowledge product, service, process)</h2>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="new_ip_filed" type="MultiText" blobItem="NEW_IP_FILED" blobType="BLOB_ARRAY" labels="Title|Type of IP|Filing and Application Number|Filing Date|Status of the Application" types="Text|Select(Patent,Trademark,Copyright,Another type of Protection)|Text|Date|Text" sizes="|||80|" multiple="true">
+                <![CDATA[
+                    <h2 style='font-weight:bold;'>Intellectual Properties</h2>
+                    <h3 style='font-weight:normal;'>New IP filed</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="new_ip_issued" type="MultiText" blobItem="NEW_IP_ISSUED" blobType="BLOB_ARRAY" labels="Title|Type of IP|Registration or Patent Number|Issue Date|Expiration Date" types="Text|Select(Patent,Trademark,Copyright,Another type of Protection)|Text|Date|Date" sizes="|||80|80" multiple="true">
+                <![CDATA[
+                    <h3 style='font-weight:normal;'>New IP Issued</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="new_licenses_granted" type="MultiText" blobItem="NEW_LICENSES_GRANTED" blobType="BLOB_ARRAY" labels="Description of the Deal|Partners Involved|Date of Agreement|Revenue Impact|Strategic Relevance" types="Textarea|Textarea|Date|Textarea|Textarea" sizes="||80|||" multiple="true">
+                <![CDATA[
+                    <h3 style='font-weight:normal;'>New Licenses Granted</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="new_licenses_negotiation" type="MultiText" blobItem="NEW_LICENSES_NEGOTIATION" blobType="BLOB_ARRAY" labels="Description of Potential Deal|Potential Partners Involved|Expected Date of Agreement|Projected Revenue Impact|Strategic Relevance" types="Textarea|Textarea|Date|Text|Textarea" sizes="||80|||" multiple="true">
+                <![CDATA[
+                    <h3 style='font-weight:normal;'>New Licenses Under Negotiation</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="new_companies" type="MultiText" blobItem="NEW_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Date of Incorporation|Industry/Sector|Number of Employees|Initial Investment" types="Text|Date|Text|Text|Text" sizes="|80||||" multiple="true">
+                <![CDATA[
+                    <h2 style='font-weight:bold;'>Companies</h2>
+                    <h3 style='font-weight:normal;'>New Companies Created</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="enhanced_companies" type="MultiText" blobItem="ENHANCED_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Details about any new technologies adopted or developed|Upgrades or expansions in facilities that support growth|Revenue Growth|Other Details" types="Text|Textarea|Textarea|Text|Textarea" sizes="|200|200||200" multiple="true">
+                <![CDATA[
+                    <h3 style='font-weight:normal;'>Companies Enhanced</h3>
+                    <small>Companies that recorded a growth in revenue and/or science & technology related jobs</small>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="forums" type="MultiText" blobItem="FORUMS" blobType="BLOB_ARRAY" labels="Forum Name|National or International|Event Date|Presentation Type|Other Details" types="Text|Select(National,International)|Date|ComboBox(Talk,Poster,Panel Discussion,Keynote Speech,Round Table)|Textarea" sizes="|125|80||" multiple="true">
+                <![CDATA[
+                    <h2 style='font-weight:bold;'>Instances where Knowledge is Presented</h2>
+                    <h3 style='font-weight:normal;'>National and International Forums where knowledge is presented</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="seminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Event Name|Seminar or Workshop|National or International|Event Date|Online, in-person or hybrid|Audience|Approximate number of attendants" types="Text|Select(Seminar,Workshop)|Select(National,International)|Date|Select(Online,In-Person,Hybrid)|Text|Text" sizes="|100|125|80|100||80" multiple="true">
+                <![CDATA[
+                    <h3 style='font-weight:normal;'>Seminars and Workshops</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="jobs" type="MultiText" blobItem="JOBS" blobType="BLOB_ARRAY" labels="Company Name|Job/position|Date of position opened/started|Employee Full Name|Other Details" types="Text|Text|Date|Text|Textarea" sizes="||80||" multiple="true">
+                <![CDATA[
+                    <h2 style='font-weight:bold;'>Direct Jobs Created</h2>
+                    <small>Refers to jobs/positions that did not exist prior to the project activities, and which were created as a result of the project activities. They do not include previously existing jobs/positions.</small>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
     </ReportSection>
-    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships">
+    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships" delete="true">
         <If id="is_pl" if="{contains({$my_full_roles},PL)}">
             <!-- Project Leader View -->
             <Static>
@@ -647,6 +387,137 @@
             <!-- Project Leader View -->
             <Static>
                 <![CDATA[
+                    <p>If there is an HQP without a supervisor, then they can be added by going to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople'>Manage People</a> (note you must be the HQPs supervisor in order to add them).</p>
+                    <table class='wikitable'>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Title</th>
+                            <th>Citizenship</th>
+                            <th>Gender</th>
+                            <th>Supervisor(s)</th>
+                        </tr>
+                ]]>
+            </Static>
+            <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$user_name}</td>
+                            <td>{$user_uni}</td>
+                            <td>{$user_level}</td>
+                            <td>{$user_nationality}</td>
+                            <td>{$user_gender}</td>
+                            <td>{$user_supervisors}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </table>
+                ]]>
+            </Static>
+            <Static>
+            <![CDATA[
+                <h3>HQP Contribution Table</h3>
+                <table class='wikitable hqp-budget'>
+                    <tr>
+                        <th rowspan='2'>Name</th>
+                        <th rowspan='2'>Title</th>
+                        <th rowspan='2'># Months<br />working on<br />GlycoNet Project<br />(1-12)</th>
+                        <th colspan='5'>%Salary/time<br />devoted to project*</th>
+                        <th colspan='2'>Person Years</th>
+                    </tr>
+                    <tr>
+                        <th>Paid from<br />SSF funds</th>
+                        <th>Paid from<br />other funds</th>
+                        <th>Source of<br />non-SSF Funds</th>
+                        <th>Category of<br />non-SSF Funds</th>
+                        <th>$ Value of<br />non-SSF Funds</th>
+                        <th>Paid from<br />SSF funds</th>
+                        <th>Paid from<br />other funds</th>
+                    </tr>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td align='center'>{$user_level}</td>
+                ]]>
+            </Static>
+            <ReportItem id="hqp_months" type="IntegerReportItem" blobItem="HQP_MONTHS" blobSubItem="{$user_id}" max="100" min="1" size="4">
+                <![CDATA[
+                        <td align='center' class='months'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_nce" type="IntegerReportItem" blobItem="HQP_NCE" blobSubItem="{$user_id}" max="100" min="0" size="4">
+                <![CDATA[
+                        <td align='center' class='nce'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_other" type="IntegerReportItem" blobItem="HQP_OTHER" blobSubItem="{$user_id}" max="100" min="0" size="4">
+                <![CDATA[
+                        <td align='center' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_source" type="TextReportItem" blobItem="HQP_SOURCE" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <td align='center' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_category" type="SelectReportItem" blobItem="HQP_CATEGORY" blobSubItem="{$user_id}" options="Federal|Provincial|Industry|Foundation|University|International|Other">
+                <![CDATA[
+                        <td align='center' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_value" type="IntegerReportItem" blobItem="HQP_VALUE" blobSubItem="{$user_id}" size="6">
+                <![CDATA[
+                        <td align='center' class='other'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                        <td align='center' class='calc_nce'></td>
+                        <td align='center' class='calc_other'></td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <p>*For example, if a technician was devoting half of his/her salaried time to a GlycoNet project, and that time was paid for equally by SSF and external funds, then the "Paid from SSF funds" and "Paid from other funds" columns would each be 25%.</p>
+                <script type="text/javascript">
+                    var calcs = function(){
+                        var rows = $(".hqp-budget tbody tr");
+                        rows.each(function(i, el){
+                            var months = parseInt($(".months input", el).val());
+                            var nce = parseInt($(".nce input", el).val());
+                            var other = parseInt($(".other input", el).val());
+                            var nce_time = ((nce/12)/100*months);
+                            var other_time = ((other/12)/100*months);
+                            
+                            if(_.isNaN(nce_time)){ nce_time = ""; }
+                            if(_.isNaN(other_time)){ other_time = ""; }
+                            
+                            $(".calc_nce", el).html(nce_time.toLocaleString("en-CA", {minimumSignificantDigits: 3, maximumSignificantDigits: 3}));
+                            $(".calc_other", el).html(other_time.toLocaleString("en-CA", {minimumSignificantDigits: 3, maximumSignificantDigits: 3}));
+                        }); 
+                    };
+                    
+                    $(".hqp-budget input").change(calcs);
+                    $(".hqp-budget input").keyup(calcs);
+                    calcs();
+                </script>
+            ]]>
+        </Static>
+            <Static>
+                <![CDATA[
                     <div class='info'>HQP responses may be edited by the Project Leader, Network Investigators, and by the HQP themselves.</div>
                 ]]>
             </Static>
@@ -665,7 +536,7 @@
                     </ReportItem>
                     <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING" blobSubItem="{$user_id}">
                         <![CDATA[
-                            <p><b>Describe any training initiatives undertaken during the funding period</b></p>
+                            <p><b>Describe any training initiatives undertaken during the funding period. Highlighting specific skills or techniques acquired by the trainee.</b></p>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -732,10 +603,28 @@
         </If>
     </ReportSection>
     <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Justification">
+        <ReportItem id='deviation' type="Radio" blobItem="DEVIATION" options="Yes|No">
+            <![CDATA[
+                <p>Is there any deviation (>20%) for any budget line item from the originally approved budget?</p>
+                <div id='deviation'>{$item}</div>
+                <script type='text/javascript'>
+                    $(document).ready(function(){
+                        $('#deviation input').change(function(){
+                            if($('#deviation input:checked').val() == "Yes"){
+                                $('#justification').show();
+                            }
+                            else{
+                                $('#justification').hide();
+                            }
+                        }).change();
+                    });
+                </script>
+            ]]>
+        </ReportItem>
         <Static>
             <![CDATA[
-                <p><b>Provide a written justification for any significant (>20%) deviation of any line item from the original budget in your approved proposal.</b></p>
-                <p>In addition, please ensure the HQP Contribution table provides the names, position, and salary details for all HQP working on this project.</p>
+                <div id='justification' style='display:none;'>
+                <p><b>Provide a written justification for each line item deviation below.</b></p>
             ]]>
         </Static>
         <If id="is_pl" if="{contains({$my_full_roles},PL)}">
@@ -764,108 +653,11 @@
         <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" blobSubItem="{$my_id}">
             <![CDATA[
                 {$item}
+                </div>
             ]]>
         </ReportItem>
-        <Static>
-            <![CDATA[
-                <h3>HQP Contribution Table</h3>
-                <table class='wikitable hqp-budget'>
-                    <tr>
-                        <th rowspan='2'>Name</th>
-                        <th rowspan='2'>Title</th>
-                        <th rowspan='2'># Months<br />working on<br />GlycoNet Project<br />(1-12)</th>
-                        <th colspan='5'>%Salary/time<br />devoted to project*</th>
-                        <th colspan='2'>Person Years</th>
-                    </tr>
-                    <tr>
-                        <th>Paid from<br />NCE funds</th>
-                        <th>Paid from<br />other funds</th>
-                        <th>Source of<br />non-NCE Funds</th>
-                        <th>Category of<br />non-NCE Funds</th>
-                        <th>$ Value of<br />non-NCE Funds</th>
-                        <th>Paid from<br />NCE funds</th>
-                        <th>Paid from<br />other funds</th>
-                    </tr>
-                    <tbody>
-            ]]>
-        </Static>
-        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
-            <Static>
-                <![CDATA[
-                    <tr>
-                        <td>{$user_name}</td>
-                        <td align='center'>{$user_level}</td>
-                ]]>
-            </Static>
-            <ReportItem id="hqp_months" type="IntegerReportItem" blobItem="HQP_MONTHS" blobSubItem="{$user_id}" max="100" min="1" size="4">
-                <![CDATA[
-                        <td align='center' class='months'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_nce" type="IntegerReportItem" blobItem="HQP_NCE" blobSubItem="{$user_id}" max="100" min="0" size="4">
-                <![CDATA[
-                        <td align='center' class='nce'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_other" type="IntegerReportItem" blobItem="HQP_OTHER" blobSubItem="{$user_id}" max="100" min="0" size="4">
-                <![CDATA[
-                        <td align='center' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_source" type="TextReportItem" blobItem="HQP_SOURCE" blobSubItem="{$user_id}">
-                <![CDATA[
-                        <td align='center' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_category" type="SelectReportItem" blobItem="HQP_CATEGORY" blobSubItem="{$user_id}" options="Federal|Provincial|Industry|Foundation|University|International|Other">
-                <![CDATA[
-                        <td align='center' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="hqp_value" type="IntegerReportItem" blobItem="HQP_VALUE" blobSubItem="{$user_id}" size="6">
-                <![CDATA[
-                        <td align='center' class='other'>{$item}</td>
-                ]]>
-            </ReportItem>
-            <Static>
-                <![CDATA[
-                        <td align='center' class='calc_nce'></td>
-                        <td align='center' class='calc_other'></td>
-                    </tr>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                    </tbody>
-                </table>
-                <p>*For example, if a technician was devoting half of his/her salaried time to a GlycoNet project, and that time was paid for equally by NCE and external funds, then the "Paid from NCE funds" and "Paid from other funds" columns would each be 25%.</p>
-                <script type="text/javascript">
-                    var calcs = function(){
-                        var rows = $(".hqp-budget tbody tr");
-                        rows.each(function(i, el){
-                            var months = parseInt($(".months input", el).val());
-                            var nce = parseInt($(".nce input", el).val());
-                            var other = parseInt($(".other input", el).val());
-                            var nce_time = ((nce/12)/100*months);
-                            var other_time = ((other/12)/100*months);
-                            
-                            if(_.isNaN(nce_time)){ nce_time = ""; }
-                            if(_.isNaN(other_time)){ other_time = ""; }
-                            
-                            $(".calc_nce", el).html(nce_time.toLocaleString("en-CA", {minimumSignificantDigits: 3, maximumSignificantDigits: 3}));
-                            $(".calc_other", el).html(other_time.toLocaleString("en-CA", {minimumSignificantDigits: 3, maximumSignificantDigits: 3}));
-                        }); 
-                    };
-                    
-                    $(".hqp-budget input").change(calcs);
-                    $(".hqp-budget input").keyup(calcs);
-                    calcs();
-                </script>
-            ]]>
-        </Static>
     </ReportSection>
-    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" delete="true">
         <ReportItem id="cash_contributions" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" sizes="|75|250||75|175" multiple="true" addText="Add Contribution">
             <![CDATA[
                 Contact information for each funding source described in the tables below should be entered into the "Partners and Collaborators" table in the Project Information tab.
@@ -879,7 +671,7 @@
                 <h3>In-Kind Contributions</h3>
                 {$item}
                 <small>*Add additional lines for different uses of funds from the same source</small>
-                <p>**Note: In addition to appearing in the tables above, <b>a Statement of Accounts for each non-NCE <u>cash</u> contribution should be emailed to Cécile McNeil (<a href='mailto:ccile@ualberta.ca'>ccile@ualberta.ca</a>)</b>. This document will be prepared by the financial admin office at each institution and will be sent to investigators for review.**</p>
+                <p>**Note: In addition to appearing in the tables above, <b>a Statement of Accounts for each non-SSF <u>cash</u> contribution should be emailed to Cécile McNeil (<a href='mailto:ccile@ualberta.ca'>ccile@ualberta.ca</a>)</b>. This document will be prepared by the financial admin office at each institution and will be sent to investigators for review.**</p>
             ]]>
         </ReportItem>
         <ReportItem id="eligible" type="Popup" title="What are eligible contributions?" text="
@@ -927,7 +719,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV">
+    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV" delete="true">
         <ReportItem id="ccv" type="UploadReportItem" blobItem="CCV" blobSubItem="{$my_id}" fileSize="5" mimeType="application/pdf">
             <![CDATA[
                 <p><b>CCV Upload (PDF)</b></p>
@@ -946,7 +738,7 @@
             </ReportItemSet>
         </If>
     </ReportSection>
-    <ReportSection id="extension" type="EditableReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2017/2018 Collaborative Team Grants">
+    <ReportSection id="extension" type="EditableReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2017/2018 Collaborative Team Grants" delete="true">
         <ReportItem id="check" type="Radio" blobType="BLOB_TEXT" blobItem="CHECK" options="a) Collaborative Team Grant|b) Translational Grant|c) Either a Collaborative Team Grant or a Translational Grant|d) We do not wish to extend this project">
             <![CDATA[
                 <p>Round 3 and 4 Collaborative Team Grants (e.g. projects ending June 2019 or December 2019) may apply for a project extension to March 31, 2020 by completing this section.</p>
@@ -1028,6 +820,189 @@
             ]]>
         </Static-->
     </ReportSection>
+    <ReportSection id="security" name="Research Security" blobSection="SECURITY" tooltip="Research Security" type="EditableReportSection">
+        <ReportItem id="new" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_NEW" options="Yes|No">
+            <![CDATA[
+                <ol>
+                <li id='new'>
+                    Were there any new partners or collaborators added to the projects other than those listed in your initial application?
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION1" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div id='new_yes'>
+                    <p>New Collaborators should fill in the <a href='https://www.nserc-crsng.gc.ca/InterAgency-Interorganismes/RS-SR/_doc/Attestation_e.pdf' target='_blank'>Attestation Form</a>.</p>
+                    <div style='display:flex; width: 100%; margin-top: 1em;'>
+                        <div style='width: 50%; min-width: 500px;'>
+                            {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION3" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION4" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION5" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION6" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT1" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <p>In the case of a new private sector partner, the Project Leader must complete the <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'>Risk Assessment Form</a>.</p>
+                    <div style='display:flex; width: 100%; margin-top: 1em;'>
+                        <div style='width: 50%; min-width: 500px;'>
+                            {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT3" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT4" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT5" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT6" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+                </div></div></li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="risk" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_RISK" options="Yes|No">
+            <![CDATA[
+                <li id='risk'>
+                    Were there any changes to the project that could have an impact on national security risks?
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="risk_details" type="Textarea" blobType="BLOB_TEXT" blobItem="SECURITY_RISK_DETAILS">
+            <![CDATA[
+                    <div id='risk_yes'>
+                        Details:
+                        {$item}
+                    </div>
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_HQP" options="Yes|No">
+            <![CDATA[
+                <li id='hqp'>
+                    <p>Are there any HQPs assigned to the project who have not completed the <a href='https://www.nserc-crsng.gc.ca/InterAgency-Interorganismes/RS-SR/_doc/Attestation_e.pdf' target='_blank'>Attestation Form</a> (specifically those who were not on the project list at the time the application was submitted)?</p>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP1" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <div id='hqp_yes'>
+                    <p>Please upload the completed form (one per HQP)</p>
+                    <div style='display:flex; width: 100%; margin-top: 1em;'>
+                        <div style='width: 50%; min-width: 500px;'>
+                            {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP3" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP4" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP5" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP6" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+                </div></div></li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('#new input').change(function(){
+                        var privateValue = $('#new input:checked').val();
+                        if(privateValue == "Yes"){
+                            $('#new_yes').show();
+                        }
+                        else{
+                            $('#new_yes').hide();
+                        }
+                    }).change();
+                    
+                    $('#risk input').change(function(){
+                        var privateValue = $('#risk input:checked').val();
+                        if(privateValue == "Yes"){
+                            $('#risk_yes').show();
+                        }
+                        else{
+                            $('#risk_yes').hide();
+                        }
+                    }).change();
+                    
+                    $('#hqp input').change(function(){
+                        var privateValue = $('#hqp input:checked').val();
+                        if(privateValue == "Yes"){
+                            $('#hqp_yes').show();
+                        }
+                        else{
+                            $('#hqp_yes').hide();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
@@ -1058,12 +1033,12 @@
                 </table>
                 <script type="text/javascript">
                     if($("table.hqps td").is(':empty')){
-                        addWarning('The <b>Project Information &gt; Trainees and role</b> table is not complete.', false, "#reportWarnings");
+                        addWarning('The <b>HQP &gt; Trainees and role</b> table is not complete.', false, "#reportWarnings");
                     }
                 </script>
             ]]>
         </Static>
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,enanak@ualberta.ca,vsharko@glyconet.ca" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,enanak@ualberta.ca,vsharko@glyconet.ca" text="" />
         <Static>
             <![CDATA[
                 <br />

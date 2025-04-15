@@ -3,7 +3,8 @@
 class PersonCertificatesTab extends AbstractEditableTab {
 
     static $files = array('BIAS' => "Introduction to Unconscious Bias",
-                          'FUNDAMENTALS' => "Inclusion, Diversity, Equity, and Accessibility (IDEA) Fundamentals");
+                          'FUNDAMENTALS' => "Inclusion, Diversity, Equity, and Accessibility (IDEA) Fundamentals",
+                          'SECURITY' => "Research Security Training Certificate");
 
     var $person;
     var $visibility;

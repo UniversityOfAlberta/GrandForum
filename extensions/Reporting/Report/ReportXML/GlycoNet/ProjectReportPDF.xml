@@ -16,9 +16,9 @@
     <ReportSection id="information" type="HeaderReportSection" name="Project Information" blobSection="INFORMATION">
         <Static>
             <![CDATA[
-                <p><b>Theme:</b>           {$project_theme}</p>
-                <p><b>Project Title:</b>   {$project_name}</p>
-                <p><b>Project Leader:</b>  {$project_leaders}<br />
+                <p><b>Research Area:</b>  {$project_theme}</p>
+                <p><b>Project Title:</b>  {$project_name}</p>
+                <p><b>Project Leader:</b> {$project_leaders}<br />
             ]]>
         </Static>
         <ReportItemSet id="leaders" type="ProjectLeaders">
@@ -33,7 +33,7 @@
             <![CDATA[
                 </p><br />
                 <p><b>Investigators:</b>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
+                <table class='wikitable small' frame='box' rules='all' width='100%'>
                     <tr>
                         <th>Name</th>
                         <th>Location</th>
@@ -58,8 +58,151 @@
             <![CDATA[
                 </table>
                 </p><br />
-                <p><b>Trainees and role:</b>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
+            ]]>
+        </Static>
+        <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" class="wikitable small" labels="Company/Organization Name|Cash|In-kind|Contact Full Name|Email|Other Details" multiple="true" addText="Add Partner">
+            <![CDATA[
+                <p><b>Partners:</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collaborators_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="COLLABORATORS" class="wikitable small" labels="Full Name|Email|Institution/Organization/Company|Department (if applicable)|Role in the Project" multiple="true" addText="Add Collaborator">
+            <![CDATA[
+                <p><b>Collaborators:</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="milestones" type="EditableReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
+        <ReportItem id="table" type="ProjectMilestoneTable">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
+            <![CDATA[
+                <h3>Comments</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="appendix" type="EditableReportSection" blobSection="MILESTONES" name="Last Year's Milestones" title="Last Year's Milestones">
+        <ReportItem id="table" type="ProjectMilestoneTable" date="{$this_year}-04-01 00:00:00">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="summary" type="HeaderReportSection" name="Report" blobSection="REPORT" pagebreak="false">
+        <ReportItem id="report" type="UploadPDFReportItem" blobItem="REPORT" fileSize="10" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="background" type="EditableReportSection" name="Background Information" blobSection="INFORMATION">
+        <ReportItem id="background" type="TextareaReportItem" blobItem="BACKGROUND" rich="true" limit="1000" recommended="true">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="references" type="TextareaReportItem" blobItem="REFERENCES" rich="true">
+            <![CDATA[
+                <p><b>References</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KPI" title="Key Performance Indicators">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" start="0000-00-00" end="2100-00-00">
+            <![CDATA[
+                <h2>Publications</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="new" type="MultiText" blobItem="NEW" blobType="BLOB_ARRAY" labels="Type|Details" types="Select(Knowledge Product,Service,Process)|Textarea" sizes="25%|75%" multiple="true" class="wikitable small">
+            <![CDATA[
+                <h2>New or Improved Products (knowledge product, service, process)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="new_ip_filed" type="MultiText" blobItem="NEW_IP_FILED" blobType="BLOB_ARRAY" labels="Title|Type of IP|Filing and Application Number|Filing Date|Status of the Application" types="Text|Select(Patent,Trademark,Copyright,Another type of Protection)|Text|Date|Text" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
+            <![CDATA[
+                <h2>Intellectual Properties</h2>
+                <h3>New IP filed</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="new_ip_issued" type="MultiText" blobItem="NEW_IP_ISSUED" blobType="BLOB_ARRAY" labels="Title|Type of IP|Registration or Patent Number|Issue Date|Expiration Date" types="Text|Select(Patent,Trademark,Copyright,Another type of Protection)|Text|Date|Date" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
+            <![CDATA[
+                <h3>New IP Issued</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="new_licenses_granted" type="MultiText" blobItem="NEW_LICENSES_GRANTED" blobType="BLOB_ARRAY" labels="Description of the Deal|Partners Involved|Date of Agreement|Revenue Impact|Strategic Relevance" types="Textarea|Textarea|Date|Textarea|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
+            <![CDATA[
+                <h3>New Licenses Granted</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="new_licenses_negotiation" type="MultiText" blobItem="NEW_LICENSES_NEGOTIATION" blobType="BLOB_ARRAY" labels="Description of Potential Deal|Potential Partners Involved|Expected Date of Agreement|Projected Revenue Impact|Strategic Relevance" types="Textarea|Textarea|Date|Text|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
+            <![CDATA[
+                <h3>New Licenses Under Negotiation</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="new_companies" type="MultiText" blobItem="NEW_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Date of Incorporation|Industry/Sector|Number of Employees|Initial Investment" types="Text|Date|Text|Text|Text" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
+            <![CDATA[
+                <h2>Companies</h2>
+                <h3>New Companies Created</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="enhanced_companies" type="MultiText" blobItem="ENHANCED_COMPANIES" blobType="BLOB_ARRAY" labels="Company name|Details about any new technologies adopted or developed|Upgrades or expansions in facilities that support growth|Revenue Growth|Other Details" types="Text|Textarea|Textarea|Text|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
+            <![CDATA[
+                <h3>Companies Enhanced</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="forums" type="MultiText" blobItem="FORUMS" blobType="BLOB_ARRAY" labels="Forum Name|National or International|Event Date|Presentation Type|Other Details" types="Text|Select(National,International)|Date|ComboBox(Talk,Poster,Panel Discussion,Keynote Speech,Round Table)|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
+            <![CDATA[
+                <h2>Instances where Knowledge is Presented</h2>
+                <h3>National and International Forums where knowledge is presented</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="seminars" type="MultiText" blobItem="SEMINARS" blobType="BLOB_ARRAY" labels="Event Name|Seminar or Workshop|National or International|Event Date|Online, in-person or hybrid|Audience|Approximate number of attendants" types="Text|Select(Seminar,Workshop)|Select(National,International)|Date|Select(Online,In-Person,Hybrid)|Text|Text" sizes="20%|10%|10%|10%|10%|20%|10%" multiple="true" class="wikitable small">
+            <![CDATA[
+                <h3>Seminars and Workshops</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="jobs" type="MultiText" blobItem="JOBS" blobType="BLOB_ARRAY" labels="Company Name|Job/position|Date of position opened/started|Employee Full Name|Other Details" types="Text|Text|Date|Text|Textarea" sizes="20%|20%|20%|20%|20%" multiple="true" class="wikitable small">
+                <![CDATA[
+                    <h2>Direct Jobs Created</h2>
+                    {$item}
+                ]]>
+            </ReportItem>
+    </ReportSection>
+    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships" delete="true">
+        <ReportItem id="collaborations" type="TextareaReportItem" blobItem="COLLABORATIONS">
+            <![CDATA[
+                <p><b>Describe all collaborations and partners related to the project</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="resources" type="TextareaReportItem" blobItem="RESOURCES">
+            <![CDATA[
+                <p><b>Describe how resources and facilities have been optimised through collaborations.</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+
+    </ReportSection>
+    <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="HQP" title="Development of Highly Qualified Personnel">
+        <Static>
+            <![CDATA[
+                <table class='wikitable small' style='width:100%;' frame='box' rules='all'>
                     <tr>
                         <th>Name</th>
                         <th>Location</th>
@@ -87,184 +230,8 @@
         <Static>
             <![CDATA[
                 </table>
-                </p><br />
             ]]>
         </Static>
-        <ReportItem id="partners_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" class="wikitable" labels="Full Name|Email|Title|Institution|Department" multiple="true" addText="Add Partner">
-            <![CDATA[
-                <p><b>Partners and Collaborators:</b>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="figures" type="UploadPDFReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
-            <![CDATA[
-                <p><b>Figures Upload</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="milestones" type="EditableReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
-        <ReportItem id="table" type="ProjectMilestoneTable">
-            <![CDATA[
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
-                <![CDATA[
-                    <h3>Comments</h3>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-    </ReportSection>
-    <ReportSection id="appendix" type="EditableReportSection" blobSection="MILESTONES" name="Last Year's Milestones" title="Last Year's Milestones">
-        <ReportItem id="table" type="ProjectMilestoneTable" date="{$this_year}-04-01 00:00:00">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="summary" type="EditableReportSection" name="Executive Summary" blobSection="INFORMATION">
-        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500" recommended="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="background" type="EditableReportSection" name="Background Information" blobSection="INFORMATION">
-        <ReportItem id="background" type="TextareaReportItem" blobItem="BACKGROUND" rich="true" limit="1000" recommended="true">
-            <![CDATA[
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="references" type="TextareaReportItem" blobItem="REFERENCES" rich="true">
-            <![CDATA[
-                <p><b>References</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
-        <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" rich="true" limit="500" recommended="true">
-            <![CDATA[
-                <p><b>Project Objectives and Past Achievements</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" rich="true" limit="2000" recommended="true">
-            <![CDATA[
-                <p><b>Research Achievements in the Current Funding Period</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="edi" type="TextareaReportItem" blobItem="EDI" rich="true">
-            <![CDATA[
-                <p><b>Implementation of EDI Activities</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="lay_summary" type="TextareaReportItem" blobItem="LAY_SUMMARY" rich="true">
-            <![CDATA[
-                <p><b>Lay Summary</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" rich="true" limit="500" recommended="true">
-            <![CDATA[
-                <p><b>Future Directions</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" rich="true">
-            <![CDATA[
-                <p><b>References</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KTEE" title="Knowledge exchange and technology exploitation">
-        <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT">
-            <![CDATA[
-                <p><b>Describe the impact or research outcomes of this project over the funding period that may result in the creation of intellectual property, outlicensing efforts, licenses negotiated or granted to industry, start-up companies created and similar entrepreneurial ventures.</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
-            <![CDATA[
-                <h2>Outcomes</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships">
-        <ReportItem id="collaborations" type="TextareaReportItem" blobItem="COLLABORATIONS">
-            <![CDATA[
-                <p><b>Describe all collaborations and partners related to the project</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="resources" type="TextareaReportItem" blobItem="RESOURCES">
-            <![CDATA[
-                <p><b>Describe how resources and facilities have been optimised through collaborations.</b></p>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-
-    </ReportSection>
-    <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="HQP" title="Development of Highly Qualified Personnel">
-        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
-            <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
-                <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}" rich="true" limit="200" recommended="true">
-                    <![CDATA[
-                        <p><b>Describe the role of the trainee within the project, highlighting progress made to date.</b></p>
-                        {$item}<br />
-                    ]]>
-                </ReportItem>
-                <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING" blobSubItem="{$user_id}">
-                    <![CDATA[
-                        <p><b>Describe any training or professional development experiences undertaken during the funding period.</b></p>
-                        {$item}<br />
-                    ]]>
-                </ReportItem>
-                <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE" blobSubItem="{$user_id}">
-                    <![CDATA[
-                        <p><b>If the trainee graduated or transitioned to the workforce, describe his/her new position and location. If a thesis was produced, please give its title.</b></p>
-                        {$item}<br />
-                    ]]>
-                </ReportItem>
-            </ReportItemSet>
-        </ReportItemSet>
-    </ReportSection>
-    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Justification">
-        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
-            <Static>
-                <![CDATA[
-                    {set(just,)}
-                ]]>
-            </Static>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet">
-                <Static>
-                    <![CDATA[
-                        {set(just,{concat({get(just)}, 
-                            {concat(<h3>{$user_name}</h3>,
-                                {getText(RP_PROGRESS,BUDGET,JUSTIFICATION,{$user_id},0,{$project_id})}
-                            )}
-                        )})}
-                    ]]>
-                </Static>
-            </ReportItemSet>
-            <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(just)}">
-                <![CDATA[
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-        <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" blobSubItem="{$my_id}">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <Static>
             <![CDATA[
                 <h3>HQP Contribution Table</h3>
@@ -277,12 +244,12 @@
                         <th colspan='2'>Person Years</th>
                     </tr>
                     <tr>
-                        <th>Paid from<br />NCE funds</th>
+                        <th>Paid from<br />SSF funds</th>
                         <th>Paid from<br />other funds</th>
-                        <th>Source of<br />non-NCE Funds</th>
-                        <th>Category of<br />non-NCE Funds</th>
-                        <th>$ Value of<br />non-NCE Funds</th>
-                        <th>Paid from<br />NCE funds</th>
+                        <th>Source of<br />non-SSF Funds</th>
+                        <th>Category of<br />non-SSF Funds</th>
+                        <th>$ Value of<br />non-SSF Funds</th>
+                        <th>Paid from<br />SSF funds</th>
                         <th>Paid from<br />other funds</th>
                     </tr>
             ]]>
@@ -327,8 +294,8 @@
             </ReportItem>
             <Static>
                 <![CDATA[
-                        <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,BUDGET,HQP_NCE,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,BUDGET,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
-                        <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,BUDGET,HQP_OTHER,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,BUDGET,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
+                        <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,HQP,HQP_NCE,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,HQP,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
+                        <td align='center'>{round({multiply({divide({divide({getNumber(RP_PROGRESS,HQP,HQP_OTHER,{$user_id},0,{$project_id}}),12)},100)}, {getNumber(RP_PROGRESS,HQP,HQP_MONTHS,{$user_id},0,{$project_id}})}, 3)}</td>
                     </tr>
                 ]]>
             </Static>
@@ -338,16 +305,74 @@
                 </table>
             ]]>
         </Static>
+        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
+            <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}" rich="true" limit="200" recommended="true">
+                    <![CDATA[
+                        <p><b>Describe the role of the trainee within the project, highlighting progress made to date.</b></p>
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <p><b>Describe any training initiatives undertaken during the funding period. Highlighting specific skills or techniques acquired by the trainee.</b></p>
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <p><b>If the trainee graduated or transitioned to the workforce, describe his/her new position and location. If a thesis was produced, please give its title.</b></p>
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
     </ReportSection>
-    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
-        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
+    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Justification" pagebreak="false">
+        <ReportItem id='deviation' type="Radio" blobItem="DEVIATION" options="Yes|No">
+            <![CDATA[
+                <p>Is there any deviation (>20%) for any budget line item from the originally approved budget?</p>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROGRESS,BUDGET,DEVIATION,{$user_id},0,{$project_id})},Yes)}">
+            <Static>
+                <![CDATA[
+                    {set(just,)}
+                ]]>
+            </Static>
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet">
+                <Static>
+                    <![CDATA[
+                        {set(just,{concat({get(just)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,BUDGET,JUSTIFICATION,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(just)}">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p>{$item}</p>
+                ]]>
+            </ReportItem>
+        </If>
+    </ReportSection>
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false" delete="true">
+        <ReportItem id="cash_contributions" class="wikitable small" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
             <![CDATA[
                 <h3>Cash Contributions</h3>
                 {$item}<br />
                 
             ]]>
         </ReportItem>
-        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of Funds|Description|University receiving contribution" types="Text|Integer|Select(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel,Other (specify))|Textarea|Text" multiple="true">
+        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable small" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of Funds|Description|University receiving contribution" types="Text|Integer|Select(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel,Other (specify))|Textarea|Text" multiple="true">
             <![CDATA[
                 <h3>In-Kind Contributions</h3>
                 {$item}<br />
@@ -359,14 +384,68 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="potentials" type="MultiText" class="wikitable" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet's Legacy" multiple="true">
+        <ReportItem id="potentials" type="MultiText" class="wikitable small" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet's Legacy" multiple="true">
             <![CDATA[
                 <h3>Potential GlycoNet Partners for Legacy</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV" pagebreak="false">
+    <ReportSection id="security" name="Research Security" blobSection="SECURITY" tooltip="Research Security" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="new" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_NEW" options="Yes|No">
+            <![CDATA[
+                <h3>Were there any new partners or collaborators added to the projects other than those listed in your initial application?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROGRESS,SECURITY,SECURITY_NEW,0,0,{$project_id})},Yes)}">
+            <ReportItem id="attestation1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION1" mimeType="application/pdf" />
+            <ReportItem id="attestation2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION2" mimeType="application/pdf" />
+            <ReportItem id="attestation3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION3" mimeType="application/pdf" />
+            <ReportItem id="attestation4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION4" mimeType="application/pdf" />
+            <ReportItem id="attestation5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION5" mimeType="application/pdf" />
+            <ReportItem id="attestation6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ATTESTATION6" mimeType="application/pdf" />
+            
+            <ReportItem id="assessment1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT1" mimeType="application/pdf" />
+            <ReportItem id="assessment2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT2" mimeType="application/pdf" />
+            <ReportItem id="assessment3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT3" mimeType="application/pdf" />
+            <ReportItem id="assessment4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT4" mimeType="application/pdf" />
+            <ReportItem id="assessment5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT5" mimeType="application/pdf" />
+            <ReportItem id="assessment6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_ASSESSMENT6" mimeType="application/pdf" />
+        </If>
+        
+        <ReportItem id="risk" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_RISK" options="Yes|No">
+            <![CDATA[
+                <h3>Were there any changes to the project that could have an impact on national security risks?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROGRESS,SECURITY,SECURITY_RISK,0,0,{$project_id})},Yes)}">
+            <ReportItem id="risk_details" type="Textarea" blobType="BLOB_TEXT" blobItem="SECURITY_RISK_DETAILS">
+                <![CDATA[
+                    <br />
+                    <p><b>Details:</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
+        
+        <ReportItem id="hqp" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="SECURITY_HQP" options="Yes|No">
+            <![CDATA[
+                <h3>Were there any new partners or collaborators added to the projects other than those listed in your initial application?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROGRESS,SECURITY,SECURITY_HQP,0,0,{$project_id})},Yes)}">
+            <ReportItem id="hqp1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP1" mimeType="application/pdf" />
+            <ReportItem id="hqp2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP2" mimeType="application/pdf" />
+            <ReportItem id="hqp3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP3" mimeType="application/pdf" />
+            <ReportItem id="hqp4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP4" mimeType="application/pdf" />
+            <ReportItem id="hqp5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP5" mimeType="application/pdf" />
+            <ReportItem id="hqp6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SECURITY_HQP6" mimeType="application/pdf" />
+        </If>
+    </ReportSection>
+    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV" pagebreak="false" delete="true">
         <ReportItemSet id="people" type="ProjectAllPeopleReportItemSet">
             <If id="if_null" if="{!=({getBlobMD5(RP_PROGRESS,CCV,CCV,{$user_id},0,{$project_id})},)}">
                 <ReportItem id="ccv" type="UploadReportItem" blobItem="CCV" blobSubItem="{$user_id}" fileSize="5" mimeType="application/pdf">

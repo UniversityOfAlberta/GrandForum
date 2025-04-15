@@ -17,6 +17,7 @@ class RequestUserAPI extends API{
         $this->addPOST("university",false, "", "");
         $this->addPOST("department",false, "", "");
         $this->addPOST("position",false, "", "");
+        $this->addPOST("linkedin",false, "", "");
         $this->addPOST("nationality",false, "", "");
         $this->addPOST("employment",false, "", "");
         $this->addPOST("recruitment",false, "", "");
@@ -119,6 +120,7 @@ class RequestUserAPI extends API{
 		$faculty = isset($_POST['faculty']) ? $_POST['faculty'] : "";
 		$department = isset($_POST['department']) ? $_POST['department'] : "";
 		$position = isset($_POST['position']) ? $_POST['position'] : "";
+		$linkedin = isset($_POST['linkedin']) ? $_POST['linkedin'] : "";
 		$nationality = isset($_POST['nationality']) ? $_POST['nationality'] : "";
 		$employment = isset($_POST['employment']) ? $_POST['employment'] : "";
 		$recruitment = isset($_POST['recruitment']) ? $_POST['recruitment'] : "";
@@ -149,6 +151,7 @@ class RequestUserAPI extends API{
 		                          'faculty' => $faculty,
 		                          'department' => $department,
 		                          'position' => $position,
+		                          'linkedin' => $linkedin,
 		                          'nationality' => $nationality,
 		                          'employment' => $employment,
 		                          'recruitment' => $recruitment,

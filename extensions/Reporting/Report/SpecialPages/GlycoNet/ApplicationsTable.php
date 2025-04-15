@@ -51,18 +51,34 @@ class ApplicationsTable extends SpecialPage{
             }
         </style>");
         
+        // Ongoing Applications
+        $links = array();
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
+        $wgOut->addHTML("<h1>Ongoing Applications</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
+        
+        // Processed Applications
         $links = array();
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=rpg'>Research Pipeline</a>";
-        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
-        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
-        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=glycotwinning'>GlycoTwinning Survey</a>";
-        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=atop'>ATOP</a>";
-        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer</a>";
-        $wgOut->addHTML("<h1>Recent</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
+        $wgOut->addHTML("<h1>Processed Applications</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
         
+        // Reports
         $links = array();
-        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Proj Report</a>";
+        $wgOut->addHTML("<h1>Reports</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
+        
+        // Training
+        $links = array();
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=atop'>ATOP</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>SAUS</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=bio'>BioTalent</a>";
+        $wgOut->addHTML("<h1>Training (Applications and Reports)</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
+        
+        // Old/Other
+        $links = array();
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=glycotwinning'>GlycoTwinning Survey</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=international'>Int'l Partnerships</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=clinical'>Clinical</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cycleiiloi'>CycleIILOI</a>";
@@ -72,23 +88,16 @@ class ApplicationsTable extends SpecialPage{
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=startup'>StartUp</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=exchange'>Exchange</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=hqpresearch'>Research & Travel</a>";
-        
-        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=bio'>BioTalent</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=tsf'>TSF Survey</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cspc'>CSPC</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=tech'>Tech</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=regional'>Regional</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=seminar'>Seminar</a>";
-        $wgOut->addHTML("<h1>Old</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
-        
-        $links = array();
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=candidates'>Candidates</a>";
-        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Proj Report</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=milestones'>Proj Milestones</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=proposals'>Proj Proposals</a>";
         $wgOut->addHTML("<h1>Other</h1><span style='font-size:1.25em;'>".implode("&nbsp;|&nbsp;", $links)."</span>");
-        
-        
+
         $wgOut->addHTML("<br /><br />");
         
         if(!isset($_GET['program'])){
@@ -511,6 +520,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2024, "2024"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2023, "2023"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2021, "2021"));
@@ -550,7 +560,7 @@ class ApplicationsTable extends SpecialPage{
         
         if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ApplicationsTable") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Applications/Reports", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected);
+            array_splice($tabs["Manager"]['subtabs'], 0, 0, array(TabUtils::createSubTab("Applications/Reports", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected)));
         }
         return true;
     }

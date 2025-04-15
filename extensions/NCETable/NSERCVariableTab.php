@@ -6,17 +6,20 @@ class NSERCVariableTab extends AbstractTab {
     var $to = "";
     var $label = "";
     var $year = "";
+    var $phase = "";
 
-    function __construct($label, $from, $to, $year){
+    function __construct($label, $from, $to, $year, $phase=""){
         global $wgOut;
         
         $this->label = $label;
         $this->from = $from;
         $this->to = $to;
         $this->year = $year;
+        $this->phase = $phase;
 
         parent::__construct($label);
         $wgOut->setPageTitle("Evaluation Tables: NCE");
+        $this->id = "{$this->id}_{$phase}";
     }
     
     function generateBody(){
@@ -25,28 +28,6 @@ class NSERCVariableTab extends AbstractTab {
 
         $foldscript = "
 <script type='text/javascript'>
-function mySelect(form){ form.select(); }
-function ShowOrHide(d1, d2) {
-    if (d1 != '') DoDiv(d1);
-    if (d2 != '') DoDiv(d2);
-}
-function DoDiv(id) {
-    var item = null;
-    if (document.getElementById) {
-        item = document.getElementById(id);
-    } else if (document.all) {
-        item = document.all[id];
-    } else if (document.layers) {
-        item = document.layers[id];
-    }
-    if (!item) {
-    }
-    else if (item.style) {
-        if (item.style.display == 'none') { item.style.display = ''; }
-        else { item.style.display = 'none'; }
-    }
-    else { item.visibility = 'show'; }
-}
 function showDiv(div_id, details_div_id){   
     details_div_id = '#' + details_div_id;
     $(details_div_id).html( $(div_id).html() );
@@ -65,24 +46,22 @@ function showDiv(div_id, details_div_id){
 </style>
 ";
         
-        $this->showContentsTable();
+        $this->showContentsTable($this->phase);
 
-        if(@$_GET['year'] == "tabs_{$this->year}_".$label){
+        if(@$_GET['year'] == "tabs_{$this->year}_{$label}_{$this->phase}"){
             switch (@$_GET['summary']) {
                 case 'grand':
                     $wgOut->addScript($foldscript);
                     $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
                     $this->html .= "<a id='Table1'></a><h3>Table 1: Organizations participating and contributing to the network and its projects</h3>";
-                    self::showContributions();
+                    self::showContributions($this->phase);
                     $this->html .= "<a id='Table1.1'></a><h3>Table 1.1: Contributions</h3>";
-                    self::showContributionsTable();
+                    self::showContributionsTable($this->phase);
                     $this->html .= "<a id='Table1.2'></a><h3>Table 1.2: Contributions by Project</h3>";
-                    self::showContributionsByProjectTable();
-                    self::showGrandTables();
-                    self::showDisseminations();
-                    //self::showArtDisseminations();
-                    //self::showActDisseminations();
-                    self::showPublicationList();
+                    self::showContributionsByProjectTable($this->phase);
+                    self::showGrandTables($this->phase);
+                    self::showDisseminations($this->phase);
+                    self::showPublicationList($this->phase);
                     break;
             }
         }
@@ -90,11 +69,11 @@ function showDiv(div_id, details_div_id){
         return $this->html;
     }
 
-    function showContentsTable(){
+    function showContentsTable($phase=""){
         global $wgServer, $wgScriptPath;
         $label = $this->label;
         $lastYear = $this->year - 1;
-        $url = "$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$lastYear}-{$this->year}&year=tabs_{$this->year}_{$label}&summary=grand";
+        $url = "$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$lastYear}-{$this->year}_{$phase}&year=tabs_{$this->year}_{$label}_{$phase}&summary=grand";
         $this->html .=<<<EOF
             <table class='toc' summary='Contents'>
             <tr><td>
@@ -169,12 +148,27 @@ EOF;
 
     }
     
-    function showContributions() {
+    function filterPhase($projects, $phase){
+        $found = true;
+        if($phase != ""){
+            $found = false;
+            foreach($projects as $proj){
+                if($proj->getPhase() == $phase){
+                    $found = true;
+                }
+            }
+        }
+        return !$found;
+    }
+    
+    function showContributions($phase="") {
         $contributions = Contribution::getContributionsDuring(null, $this->from, $this->to);
         $partners = array();
         foreach ($contributions as $contr) {
             $people = $contr->getPeople();
-            $projects = $contr->getProjects();
+            if($this->filterPhase($contr->getProjects(), $phase)){
+                continue;
+            }
             if(count($people) > 0){
                 foreach($contr->getPartners() as $partner){
                     $partners[$partner->getOrganization()][] = array('partner' => $partner,
@@ -313,7 +307,7 @@ EOF;
         $this->html .= $html;
     }
 
-    function showContributionsTable() {
+    function showContributionsTable($phase="") {
         $html =<<<EOF
         <script type="text/javascript">
         $(document).ready(function(){
@@ -358,6 +352,9 @@ EOF;
         $totalKind = 0;
         $totalTotal = 0;
         foreach ($contributions as $contr) {
+            if($this->filterPhase($contr->getProjects(), $phase)){
+                continue;
+            }
             $con_id = $contr->getId();
             $name_plain = $contr->getName();
             $url = $contr->getUrl();
@@ -461,7 +458,7 @@ EOF;
         $this->html .= $html .  $dialog_js;   
     }
     
-    function showContributionsByProjectTable(){
+    function showContributionsByProjectTable($phase=""){
         $projects = Project::getAllProjectsEver();
         $projects[] = Project::newFromId(-1);
         $this-> html .= "<table class='wikitable' cellpadding='2' frame='box' rules='all' width='100%'>
@@ -483,6 +480,9 @@ EOF;
                             </thead>
                             <tbody>";
         foreach($projects as $project){
+            if($this->filterPhase(array($project), $phase)){
+                continue;
+            }
             $contributions = $project->getContributionsDuring($this->from, $this->to);
             foreach($contributions as $contribution){
                 $partners = $contribution->getPartners();
@@ -530,18 +530,18 @@ EOF;
         $this->html .= "</tbody></table>";
     }
 
-    function showGrandTables() {
+    function showGrandTables($phase="") {
         global $wgOut, $_pdata, $_projects;
 
         $movedons = Person::getAllMovedOnDuring($this->from, $this->to);  
 
-        $this->html .= "<a id='Table2'></a><h3>Table 2:  Number of network Research Personnel providing time to network research projects with NCE funds or other funds</h3>" .self::getUniStats();
+        $this->html .= "<a id='Table2'></a><h3>Table 2:  Number of network Research Personnel providing time to network research projects with NCE funds or other funds</h3>" .self::getUniStats($phase);
         $this->html .= "<a id='Table3'></a><h3>Table 3: Number of HQP Involved in the Network (including KM activities) and Post-Network Employment</h3>";
-        $this->html .= "<a id='Table3.1'></a><h3>Table 3.1: Number of HQP Involved in the Network</h3>" . self::getHQPStats();
-        $this->html .= "<a id='Table3.2'></a><h3>Table 3.2: Post Network employment of HQP who left the network during the fiscal year</h3>" . self::getHQPEmployment($movedons, "all");
+        $this->html .= "<a id='Table3.1'></a><h3>Table 3.1: Number of HQP Involved in the Network</h3>" . self::getHQPStats($phase);
+        $this->html .= "<a id='Table3.2'></a><h3>Table 3.2: Post Network employment of HQP who left the network during the fiscal year</h3>" . self::getHQPEmployment($movedons, "all", $phase);
     }
 
-    function getHQPStats(){
+    function getHQPStats($phase=""){
         $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
 
         //Setup the table structure
@@ -565,6 +565,9 @@ EOF;
 
         //Fill the table
         foreach($hqps as $hqp){
+            if($this->filterPhase($hqp->getProjects(true), $phase)){
+                continue;
+            }
             $pos = $hqp->getUniversityDuring($this->from, $this->to);
             if(!isset($positions[$pos['position']])){
                 $pos = $hqp->getUniversity();
@@ -804,7 +807,7 @@ EOF;
         return $html;
     }
 
-    function getUniStats(){
+    function getUniStats($phase=""){
         $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
         $nis  = Person::getAllPeopleDuring(NI,  $this->from, $this->to);
 
@@ -831,6 +834,9 @@ EOF;
 
         //Fill the table for HQP
         foreach ($hqps as $hqp){
+            if($this->filterPhase($hqp->getProjects(true), $phase)){
+                continue;
+            }
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
             if(!isset($uniobj['university'])){
                 $uniobj = $hqp->getUniversity();
@@ -856,6 +862,9 @@ EOF;
         
         // Fill the table for NI
         foreach($nis as $ni){
+            if($this->filterPhase($ni->getProjects(true), $phase)){
+                continue;
+            }
             $uniobj = $ni->getUniversityDuring($this->from, $this->to);
             if(!isset($uniobj['university'])){
                 $uniobj = $ni->getUniversity();
@@ -981,7 +990,7 @@ EOF;
         return $html;
     }
 
-    function getHQPEmployment($people, $type){
+    function getHQPEmployment($people, $type, $phase=""){
         $movedons = $people;
         
         $positions = array( "Undergraduate Student"=>"Ugrad",
@@ -1012,6 +1021,9 @@ EOF;
         $details_div_id = "movedon_details_".$type;
 
         foreach ($movedons as $m){
+            if($this->filterPhase($m->getProjects(true), $phase)){
+                continue;
+            }
             $movedon_data = $m->getMovedOn();
             $nationality = $m->getNationality();
             $nationality = (empty($nationality))? "Unknown" : $nationality;
@@ -1234,7 +1246,7 @@ EOF;
         return $html;
     }
     
-    function showDisseminations(){
+    function showDisseminations($phase=""){
         $html = "<a id='Table4'></a><h3>Table 4: Dissemination of Network Research Results and Collaborations</h3>";
         
         $innovations = array();
@@ -1246,6 +1258,9 @@ EOF;
         
         $allProducts = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
         foreach($allProducts as $product){
+            if($this->filterPhase($product->getProjects(), $phase)){
+                continue;
+            }
             $category = strtolower($product->getCategory());
             $type = strtolower($product->getType());
             if(strstr($category, "product/innovation") !== false){
@@ -1322,7 +1337,7 @@ EOF;
         return $html;
     }
 
-    function showPublicationList(){
+    function showPublicationList($phase=""){
         global $wgOut;
         $publications = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
         $pub_count = array("a1"=>array(), "a2"=>array(), "b"=>array(), "c"=>array());
@@ -1333,6 +1348,9 @@ EOF;
                 continue;
             }
             $alreadyDone[$pub->getId()] = true;
+            if($this->filterPhase($pub->getProjects(), $phase)){
+                continue;
+            }
             $status = $pub->getStatus();
             if($status == "Rejected"){
                 continue;

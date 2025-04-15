@@ -2208,7 +2208,10 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $people = array();
         foreach($data as $row){
-            $people[$row['user_id']] = Person::newFromId($row['user_id']);
+            $person = Person::newFromId($row['user_id']);
+            if($person->getId() != null){
+                $people[$row['user_id']] = $person;
+            }
         }
         return $people;
     }

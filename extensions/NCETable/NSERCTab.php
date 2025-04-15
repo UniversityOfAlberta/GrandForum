@@ -3,12 +3,15 @@
 class NSERCTab extends AbstractTab {
 
     var $year = "";
+    var $phase = "";
     
-    function __construct($year){
+    function __construct($year, $phase=""){
         global $wgOut;
         $lastYear = $year - 1;
         parent::__construct("{$lastYear}/{$year}");
         $this->year = $year;
+        $this->phase = $phase;
+        $this->id = str_replace(" ", "", "{$this->id}_{$phase}");
     }
     
     function generateBody(){
@@ -27,29 +30,12 @@ class NSERCTab extends AbstractTab {
 	    	$init_tab = $init_tabs[$_GET['year']];
 	    }
     
-        $tabbedPage = new InnerTabbedPage("tabs_{$this->year}");
+        $tabbedPage = new InnerTabbedPage("tabs_{$this->year}_{$this->phase}");
 
 		$int_start = $last_year.NCE_START_MONTH.' 00:00:00';
 		$int_end =   $this_year.NCE_END_MONTH. ' 23:59:59';
-		$tabbedPage->addTab(new NSERCVariableTab("Apr{$last_year}-Mar{$this_year}", $int_start, $int_end, $this->year));
-        
-        /*
-        $int_start = $last_year.CYCLE_START_MONTH.' 00:00:00';
-		$int_end =   ($this_year-1).CYCLE_END_MONTH_ACTUAL. ' 23:59:59';
-		$tabbedPage->addTab(new NSERCVariableTab("Jan-Dec{$last_year}", $int_start, $int_end, $this->year));
-        
-    	$int_start = $last_year.CYCLE_START_MONTH.' 00:00:00';
-		$int_end =   $last_year.NCE_END_MONTH. ' 23:59:59';
-		$tabbedPage->addTab(new NSERCVariableTab("Jan-Mar{$last_year}", $int_start, $int_end, $this->year));
-		
-		$int_start = $last_year.NCE_START_MONTH.' 00:00:00';
-		$int_end =   ($this_year-1).CYCLE_END_MONTH_ACTUAL. ' 23:59:59';
-		$tabbedPage->addTab(new NSERCVariableTab("Apr-Dec{$last_year}", $int_start, $int_end, $this->year));
-		
-		$int_start = $this_year.CYCLE_START_MONTH.' 00:00:00';
-		$int_end =   $this_year.NCE_END_MONTH. ' 23:59:59';
-		$tabbedPage->addTab(new NSERCVariableTab("Jan-Mar{$this_year}", $int_start, $int_end, $this->year));
-    	*/
+		$tabbedPage->addTab(new NSERCVariableTab("Apr{$last_year}-Mar{$this_year}", $int_start, $int_end, $this->year, $this->phase));
+
         $this->html = $tabbedPage->showPage($init_tab);
     }
 }    

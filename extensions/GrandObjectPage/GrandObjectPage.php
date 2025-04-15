@@ -5,6 +5,8 @@
     autoload_register('GrandObjectPage/ProjectPage');
     
     require_once("Backbone/BackbonePage.php");
+    require_once("ProductSummary.php");
+    
     if($config->getValue("profilesEnabled")){
         require_once("PersonPage.php");
         if($config->getValue("projectsEnabled")){

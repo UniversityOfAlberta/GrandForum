@@ -61,6 +61,7 @@ class AddMember extends SpecialPage{
                     $form->getElementById('subrole_field')->setPOST('wpUserSubType');
                 }
                 $form->getElementById('project_field')->setPOST('wpNS');
+                $form->getElementById('linkedin_field')->setPOST('linkedin');
                 $form->getElementById('nationality_field')->setPOST('nationality');
                 $form->getElementById('employment_field')->setPOST('employment');
                 $form->getElementById('rec_field')->setPOST('recruitment');
@@ -237,6 +238,7 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
                             <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
                             <input type='hidden' name='relation' value='{$request->getRelation()}' />
+                            <input type='hidden' name='linkedin' value='".str_replace("'", "&#39;", $request->getLinkedIn())."' />
                             <input type='hidden' name='nationality' value='".str_replace("'", "&#39;", $request->getNationality())."' />
                             <input type='hidden' name='employment' value='".str_replace("'", "&#39;", $request->getEmployment())."' />
                             <input type='hidden' name='recruitment' value='".str_replace("'", "&#39;", $request->getRecruitment())."' />
@@ -310,6 +312,11 @@ class AddMember extends SpecialPage{
         $sendEmailField = new VerticalCheckBox("sendEmail_field", "Email", array("true"), array("Send Registration Email?" => "true"), VALIDATE_NOTHING);
         $sendEmailRow = new FormTableRow("sendEmail_row");
         $sendEmailRow->append($sendEmailLabel)->append($sendEmailField);
+        
+        $linkedInLabel = new Label("linkedin_label", "LinkedIn", "Please add this important information", VALIDATE_NOTHING);
+        $linkedInField = new TextField("linkedin_field", "LinkedIn", "", VALIDATE_NOTHING);
+        $linkedInRow = new FormTableRow("linkedin_row");
+        $linkedInRow->append($linkedInLabel)->append($linkedInField);
         
         $roleValidations = VALIDATE_NOT_NULL;
         if($me->isRoleAtLeast(STAFF)){
@@ -439,6 +446,7 @@ class AddMember extends SpecialPage{
                   ->append($lastNameRow)
                   ->append($emailRow)
                   ->append($sendEmailRow)
+                  ->append($linkedInRow)
                   ->append($rolesRow);
         if($me->isRoleAtLeast(STAFF) || $config->getValue('networkType') == "CFREF"){
             $formTable->append($subRolesRow);

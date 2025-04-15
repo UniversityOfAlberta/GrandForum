@@ -4,7 +4,9 @@ ManageProductsView = Backbone.View.extend({
     otherProjects: null,
     oldProjects: null,
     products: null,
+    project: null,
     projects: null,
+    categories: new Array(),
     table: null,
     nProjects: 0,
     subViews: new Array(),
@@ -17,20 +19,39 @@ ManageProductsView = Backbone.View.extend({
     crossForumExportDialog: null,
     duplicatesDialog: null,
 
-    initialize: function(){
+    initialize: function(options){
         this.subViews = new Array();
         this.allProjects = new Projects();
         this.allProjects.fetch();
         this.template = _.template($('#manage_products_template').html());
         me.getProjects();
+        
+        // Project
+        if(options.project != undefined){
+            this.project = options.project;
+        }
+        else{
+            this.project = new Project();
+        }
+        
+        // Categories
+        if(options.categories != undefined){
+            this.categories = options.categories;
+        }
+        
         this.listenTo(this.model, "sync", function(){
             this.products = this.model.getAll();
             this.listenToOnce(this.products, "sync", function(){
-                this.products = new Products(this.products.filter(function(p){ return (p.get('category') != "SOP"); })); // Don't show SOP category
+                this.products = new Products(this.products.filter(function(p){ return (p.get('category') != "SOP") && (this.categories.length == 0 || this.categories.indexOf(p.get('category')) != -1); }.bind(this))); // Don't show SOP category
                 this.listenTo(this.products, "add", this.addRows);
                 this.listenTo(this.products, "remove", this.addRows);
                 me.projects.ready().then(function(){
-                    this.projects = me.projects.getCurrent();
+                    if(options.project != undefined){
+                        this.projects = new Projects(options.project);
+                    }
+                    else{
+                        this.projects = me.projects.getCurrent();
+                    }
                     return this.projects.ready();
                 }.bind(this)).then(function(){
                     return this.allProjects.ready();
@@ -52,7 +73,11 @@ ManageProductsView = Backbone.View.extend({
     },
     
     addProduct: function(){
-        var model = new Product({authors: [me.toJSON()]});
+        var projects = [];
+        if(this.project.get('id') != null){
+            var projects = [this.project.toJSON()];
+        }
+        var model = new Product({authors: [me.toJSON()], projects: projects});
         var view = new ProductEditView({el: this.editDialog, model: model, isDialog: true});
         this.editDialog.view = view;
         this.editDialog.dialog({
@@ -723,7 +748,7 @@ ManageProductsView = Backbone.View.extend({
 	        buttons: {
 	            "Import": function(e){
 	                var importOrcidBibtex = function(){
-	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importORCID", {overwrite: overwrite}, function(response){
+	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importORCID", {overwrite: overwrite, project: this.project.get('id')}, function(response){
                             var data = response.data;
                             if(!_.isUndefined(data.created)){
                                 var ids = _.pluck(data.created, 'id');
@@ -823,7 +848,7 @@ ManageProductsView = Backbone.View.extend({
 	                var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
 	                var overwrite = $("input[name=overwrite]:checked", this.bibtexDialog).val();
 	                $("div.throbber", this.bibtexDialog).show();
-	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value, overwrite: overwrite}, function(response){
+	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value, overwrite: overwrite, project: this.project.get('id')}, function(response){
 	                    var data = response.data;
 	                    if(!_.isUndefined(data.created)){
 	                        var ids = _.pluck(data.created, 'id');
@@ -885,7 +910,7 @@ ManageProductsView = Backbone.View.extend({
 	                    var value = $("input[name=doi]", this.doiDialog).val();
 	                    var overwrite = $("input[name=overwrite]:checked", this.doiDialog).val();
 	                    $("div.throbber", this.doiDialog).show();
-	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importDOI", {doi: value, overwrite: overwrite}, function(response){
+	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importDOI", {doi: value, overwrite: overwrite, project: this.project.get('id')}, function(response){
 	                        var data = response.data;
 	                        if(!_.isUndefined(data.created)){
 	                            var ids = _.pluck(data.created, 'id');

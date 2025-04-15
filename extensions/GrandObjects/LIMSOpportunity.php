@@ -277,7 +277,8 @@ class LIMSOpportunity extends BackboneModel {
                                       'responded' => $this->responded,
                                       'satisfaction' => $this->satisfaction,
                                       'status' => $this->status,
-                                      'products' => json_encode($this->products)),
+                                      'products' => json_encode($this->products),
+                                      'date' => $this->date),
                                 array('id' => $this->id));
             $this->uploadFiles();
             self::$requestIds = null;

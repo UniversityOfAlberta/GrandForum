@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Strategic Report" reportType="RP_STRAT_REPORT" pdfType="RPTP_STRAT_REPORT" pdfFiles="SABStrategicReportPDF" personId="0" ajax="true" disabled="false" year="2025">
+<Report name="SAB RPG Report" reportType="RP_SAB_RPG_REPORT" pdfType="RPTP_SAB_RPG_REPORT" pdfFiles="SABRPGReportPDF" personId="0" ajax="true" disabled="false" year="2025">
     <Permissions>
         <Role role="SD">
             <SectionPermission id="materials" permissions="rw" />
@@ -37,14 +37,14 @@
                 <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Strat">
+        <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-RPG">
             <ReportItem id="code" type="Text" width="100px" blobItem="CODE" blobSubItem="{$user_id}_{$project_id}">
                 <![CDATA[
                     <tr><td align='center'><span style='display:none;'>{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="StrategicReport" project="false">
-                <![CDATA[<td>{$user_name}</td><td>{getText(RP_STRAT,STR_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td></tr>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="RPGReport" project="false">
+                <![CDATA[<td>{$user_name}</td><td>{getText(RP_RPG,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -63,17 +63,17 @@
         </Static>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Strat" sortBy="{getText(RP_STRAT_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-RPG" sortBy="{getText(RP_SAB_RPG_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}">
             <If id="if" if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_STRAT_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
-                    <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Strat" includeSelf="true">
+                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_RPG_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_RPG,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+                    <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-RPG" includeSelf="true">
                         <Static>
                             <![CDATA[
                                 <h2>Reviewer {$index}</h2>
                                 <div style='margin-left:15px;'>
-                                    {if("{getBlobMD5(RP_STRAT_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_STRAT_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}'>Download CDA</a></p>)}
+                                    {if("{getBlobMD5(RP_SAB_RPG_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_RPG_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}'>Download CDA</a></p>)}
 
-                                    {if("{getBlobMD5(RP_STRAT_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_STRAT_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}'>Download Review</a></p>)}
+                                    {if("{getBlobMD5(RP_SAB_RPG_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_RPG_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}'>Download Review</a></p>)}
                                 </div>
                             ]]>
                         </Static>

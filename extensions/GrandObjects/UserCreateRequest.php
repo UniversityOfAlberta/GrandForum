@@ -24,6 +24,7 @@ class UserCreateRequest {
     var $faculty;
     var $department;
     var $position;
+    var $linkedin;
     var $nationality;
     var $employment;
     var $recruitment;
@@ -85,6 +86,7 @@ class UserCreateRequest {
             $this->faculty = $data[0]['faculty'];
             $this->department = $data[0]['department'];
             $this->position = $data[0]['position'];
+            $this->linkedin = $data[0]['linkedin'];
             $this->nationality = $data[0]['nationality'];
             $this->employment = $data[0]['employment'];
             $this->recruitment = $data[0]['recruitment'];
@@ -168,6 +170,10 @@ class UserCreateRequest {
     
     function getPosition(){
         return $this->position;
+    }
+    
+    function getLinkedIn(){
+        return $this->linkedin;
     }
     
     function getNationality(){
