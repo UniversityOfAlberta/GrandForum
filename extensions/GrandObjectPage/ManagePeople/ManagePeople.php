@@ -26,12 +26,16 @@ class ManagePeople extends BackbonePage {
     }
     
     function getViews(){
-        global $wgOut;
+        global $wgOut, $facultyMapSimple;
         $universities = new Collection(University::getAllUniversities());
         $uniNames = json_encode($universities->pluck('name'));
         $positions = json_encode(array_values(Person::getAllPositions()));
 
-        $departments = json_encode(array_values(Person::getAllDepartments()));
+        $departments = array();
+        foreach($facultyMapSimple as $faculty => $depts){
+            $departments = array_merge($departments, $depts);
+        }
+        $departments = json_encode(array_values(array_unique($departments)));
         
         $wgOut->addScript("<script type='text/javascript'>
             var allUniversities = $uniNames;
