@@ -1943,7 +1943,7 @@ class ReportItemCallback {
         $sum = 0;
         foreach($args as $arg){
             $arg = str_replace("&#44;", "", $arg);
-            $sum += $arg;
+            $sum += (double)$arg;
         }
         return $sum;
     }
@@ -1951,19 +1951,19 @@ class ReportItemCallback {
     function subtract($val1, $val2){
         $val1 = str_replace("&#44;", "", $val1);
         $val2 = str_replace("&#44;", "", $val2);
-        return $val1 - $val2;
+        return (double)$val1 - (double)$val2;
     }
     
     function multiply($val1, $val2){
         $val1 = str_replace("&#44;", "", $val1);
         $val2 = str_replace("&#44;", "", $val2);
-        return $val1*$val2;
+        return (double)$val1*(double)$val2;
     }
     
     function divide($val1, $val2){
         $val1 = str_replace("&#44;", "", $val1);
         $val2 = str_replace("&#44;", "", $val2);
-        return $val1/max(1, $val2);
+        return (double)$val1/max(1, (double)$val2);
     }
     
     function round($val, $dec=0){
