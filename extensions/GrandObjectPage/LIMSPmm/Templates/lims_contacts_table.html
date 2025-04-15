@@ -11,7 +11,7 @@
                 <th width="1%">Edit</th>
             <% } %>
             <th>Project</th>
-            <th>Project Manager</th>
+            
            
             <th>Assignees & Status</th>
             <th>Task</th>
@@ -40,14 +40,12 @@
                             </td>
                         <% } %>
                         <td>
-                            <a href="<%= contact.get('url') %>"><%= contact.get('title') %></a><br />
+                            <a href="<%= contact.get('project').url %>"><%= contact.get('project').name %></a><br />
+                           
                             <%= contact.get('details').email %>
                             <span style="display:none;"><%= contact.id %></span>
                         </td>
-                        <td>
-                            <a href="<%= opportunity.owner.url %>"><%= opportunity.owner.name %></a><span style="display:none;"><%= contact.id %></span>
-                        </td>
-                        
+                     
                         <td>
                             <% if (task.assignees && task.assignees.length > 0) { %>
                                 <ul style="padding-left: 1em; margin: 0;">
