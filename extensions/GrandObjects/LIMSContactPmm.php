@@ -194,7 +194,6 @@ class LIMSContactPmm extends BackboneModel {
 	            $opp['tasks'] = $tasks;
 	            $opportunities[] = $opp;
 	        }
-	        
 	        $json = array('id' => $this->getId(),
 	                      'title' => $this->getTitle(),
 	                      'owner' => $owner,

@@ -17,6 +17,7 @@ class LIMSTaskPmm extends BackboneModel
     var $dueDate;
     var $comments;
     var $statuses;
+    var $files;
 
     static function newFromId($id)
     {
@@ -46,6 +47,7 @@ class LIMSTaskPmm extends BackboneModel
         return $tasks;
     }
 
+   
      function getAssignees()
     {
         $data = DBFunctions::select(
@@ -65,6 +67,7 @@ class LIMSTaskPmm extends BackboneModel
 
     function __construct($data)
     {
+        global $wgServer, $wgScriptPath;
         if (count($data) > 0) {
             $this->id = $data[0]['id'];
             $this->opportunity = $data[0]['opportunity'];
@@ -72,13 +75,35 @@ class LIMSTaskPmm extends BackboneModel
             $this->task = $data[0]['task'];
             $this->dueDate = $data[0]['due_date'];
             $this->comments = $data[0]['comments'];
-            // $this->status = $data[0]['status'];
+            $files = DBFunctions::select(array('grand_pmm_task_assginees'),
+                                         array('id', 'filename', 'type'),
+                                         array('task_id' => $this->id));
+            foreach($files as $file){
+                $file['data'] = '';
+                $file['url'] = "{$wgServer}{$wgScriptPath}/index.php?action=api.limstaskpmm/{$this->id}/files/{$file['id']}";
+                $this->files[] = $file;
+            }
+        // $this->status = $data[0]['status'];
         }
     }
 
     function getId()
     {
         return $this->id;
+    }
+
+    function getFiles(){
+        return $this->files;
+    }
+    function getFile($id){
+        if($this->isAllowedToView()){
+            $file = DBFunctions::select(array('grand_pmm_task_assginees'),
+                                        array('*'),
+                                        array('id' => $id,
+                                              'task_id' => $this->id));
+            return @$file[0];
+        }
+        return "";
     }
 
     function getOpportunity()
@@ -176,7 +201,8 @@ class LIMSTaskPmm extends BackboneModel
                 'dueDate' => $this->getDueDate(),
                 'details' => $this->getComments(),
                 'statuses' => $this->getStatuses(),
-                'isAllowedToEdit' => $this->isAllowedToEdit()
+                'isAllowedToEdit' => $this->isAllowedToEdit(),
+                'files' => $this->getFiles()
             );
             return $json;
         }
@@ -212,6 +238,7 @@ class LIMSTaskPmm extends BackboneModel
                     )
                 );
             }
+            $this->uploadFiles();
 
            
             // Send mail to assignee
@@ -237,6 +264,28 @@ class LIMSTaskPmm extends BackboneModel
                 );
             }
 
+        }
+    }
+
+    function uploadFiles(){
+        
+        foreach($this->files as $assigneeId => $file){
+            if(isset($file->data) && $file->data != ''){
+                DBFunctions::update('grand_pmm_task_assginees',
+                                    array('filename' => $file->filename,
+                                          'type' => $file->type,
+                                          'data' => $file->data),
+                                    array('task_id' => $this->id,
+                                        'assignee'=>$assigneeId));
+            }
+            else if(isset($file->delete) && $file->delete == true){
+                DBFunctions::update('grand_pmm_task_assginees',
+                                    array('filename' => NULL,
+                                          'type' => NULL,
+                                          'data' => NULL),
+                                    array('task_id' => $this->id,
+                                    'assignee'=>$assigneeId));
+            }
         }
     }
 
@@ -293,6 +342,7 @@ class LIMSTaskPmm extends BackboneModel
                     )
                 );
             }
+            $this->uploadFiles();
             $assignees = $this->getAssignees();
             foreach ($assignees as $assignee) {
       

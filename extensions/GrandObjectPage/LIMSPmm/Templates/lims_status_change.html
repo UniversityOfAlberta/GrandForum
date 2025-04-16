@@ -37,8 +37,8 @@ if (assignees && assignees.length > 0) {
                         <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
                     
                             <% if (currentStatus !== 'Closed') { %>
-                                <input type="file" name="file_<%= assigneeId %>" />
-                            <% } %>
+                                <%= HTML.File(this, 'files.' + assigneeId) %>   
+                                <% } %>
                     
                            
                     
