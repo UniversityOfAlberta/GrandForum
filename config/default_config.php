@@ -187,26 +187,6 @@
     $config->setConst("CYCLE_END_MONTH", '-01-15');
     $config->setConst("CYCLE_END", ($config->getConst('YEAR')+1).$config->getConst('CYCLE_END_MONTH'));
     
-    // Production of NI and Project reports
-    $config->setConst("PRODUCTION_MONTH", '-01-15');
-    $config->setConst("PRODUCTION", ($config->getConst('YEAR')+1).$config->getConst('PRODUCTION_MONTH'));
-    
-    // RMC when evaluator reports can be revised
-    $config->setConst("RMC_REVISED_MONTH", '-02-19');
-    $config->setConst("RMC_REVISED", ($config->getConst('YEAR')+1).$config->getConst('RMC_REVISED_MONTH'));
-    
-    // RMC meeting for fund allocation
-    $config->setConst("RMC_MEETING_MONTH", '-02-28');
-    $config->setConst("RMC_MEETING", ($config->getConst('YEAR')+1).$config->getConst('RMC_MEETING_MONTH'));
-    
-    // End of NCE reporting cycle
-    $config->setConst("NCE_END_MONTH", '-03-31');
-    $config->setConst("NCE_END", ($config->getConst('YEAR')+1).$config->getConst('NCE_END_MONTH'));
-    
-    // Production of NCE report
-    $config->setConst("NCE_PRODUCTION_MONTH", '-06-15');
-    $config->setConst("NCE_PRODUCTION", ($config->getConst('YEAR')+1).$config->getConst('NCE_PRODUCTION_MONTH')); 
-    
     /*
      * Roles
      * TODO: These should probably be moved into the DB at some point

@@ -7,7 +7,7 @@ class GrandAccess {
     static function setupGrandAccess($user, &$aRights){
         global $wgRoleValues, $config;
         $hash = spl_object_hash($user)."\n";
-        if(isset(self::$alreadyDone[$hash."_".$user->getId()])){
+        if($user->getId() == 0 && isset(self::$alreadyDone[$hash."_".$user->getId()])){
             return true;
         }
         self::$alreadyDone[$hash."_".$user->getId()] = true;
