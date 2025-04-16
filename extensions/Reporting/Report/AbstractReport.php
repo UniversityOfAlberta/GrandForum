@@ -5,8 +5,6 @@
  * @abstract
  */
 
-$wgHooks['CheckImpersonationPermissions'][] = 'AbstractReport::checkImpersonationPermissions';
-$wgHooks['ImpersonationMessage'][] = 'AbstractReport::impersonationMessage';
 UnknownAction::createAction('AbstractReport::downloadBlob');
 UnknownAction::createAction('AbstractReport::downloadReportZip');
 UnknownAction::createAction('AbstractReport::tinyMCEUpload');
@@ -919,36 +917,6 @@ abstract class AbstractReport extends SpecialPage {
     
         // The Roman numeral should be built, return it
         return $result;
-    }
-    
-    static function checkImpersonationPermissions($person, $realPerson, $ns, $title, $pageAllowed){
-        if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-            $hqps = $realPerson->getHQPDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
-            foreach($hqps as $hqp){
-                if($hqp->getId() == $person->getId()){
-                    if(("$ns:$title" == "Special:Report" &&
-                       @$_GET['report'] == "HQPReport") || ("$ns:$title" == "Special:ReportArchive" && checkSupervisesImpersonee())){
-                        $pageAllowed = true;
-                    }
-                    break;
-                }
-            }
-        }
-        return true;
-    }
-    
-    static function impersonationMessage($person, $realPerson, $ns, $title, $message){
-        $isSupervisor = false;
-        if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-            if(checkSupervisesImpersonee()){
-                $message = str_replace(" in read-only mode", "", $message);
-            }
-            $isSupervisor = false;
-        }
-        if($isSupervisor){
-            $message .= "<br />As a supervisor, you are able to edit, generate and submit the report of your HQP.  The user who edits, generates and submits the report is recorded.";
-        }
-        return true;
     }
     
     static function downloadBlob($action){

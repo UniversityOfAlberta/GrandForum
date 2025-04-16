@@ -3431,6 +3431,7 @@ class FullPerson extends Person {
     var $hqpCache = array();
     var $grants;
     
+    // FEC History
     var $faculty;
     var $departments = array();
     var $dateOfPhd;
