@@ -518,6 +518,13 @@
         "questions": 3,
         "tags": [],
         "resources": {
+            "Osteoporosis Prevention": [
+                {
+                    "file": "https://healthybonesaustralia.org.au/",
+                    "title": "<img style='margin-left: -2.5em;' src='http://localhost/forum/EducationModules/OsteoporosisPrevention.png' />",
+                    "tags": []
+                }
+            ],
             "Fact Sheets": [
                 {
                     "file": "Don't Fall For it booklet +Falls-Guide-2020 version.pdf",
