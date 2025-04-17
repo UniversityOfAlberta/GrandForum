@@ -82,10 +82,6 @@ $wgDBadminpassword       = $config->getValue("dbPassword");
 ##    for authentication that is resilient to spoofing."
 $wgSecretKey = "7b32642dd51dcddf7a65fa3bea2757256caebc0220154c52ec8aebea1b87d7bf";
 
-## Mailing List settings
-$wgListAdmins           = $config->getValue("listAdmins");
-$wgListAdminPassword    = $config->getValue("listAdminPassword");
-
 $wgFavicon          = "$wgServer$wgScriptPath/favicon.ico";
 
 if(TESTING && !defined('INIT_TESTING')){

@@ -49,12 +49,6 @@
     // The location of the encryption key
     $config->setValue("encryptionKey", "");
     
-    // Default Mailing List Admins
-    $config->setValue("listAdmins", array());
-    
-    // Default Mailing List Password
-    $config->setValue("listAdminPassword", "");
-    
     // Support Email Address
     $config->setValue("supportEmail", "");
     
