@@ -44,9 +44,19 @@ class PersonProductAPI extends RESTAPI {
                 }
                 foreach($projects as $project){
                     if($person->isRole(PL, $project) || $person->isRole(PA, $project)){
+                        // Leader should see all related publications
                         foreach($project->getPapers("all", "0000-00-00", EOT, $onlyPublic) as $p){
                             $products[$p->getId()] = $p;
                         }
+                    }
+                    else{
+                        // Non-leader should only see their own
+                        foreach($person->getPapers("all", true, 'both', $onlyPublic, 'Public') as $p){
+                            if($p->belongsToProject($project)){
+                                $products[$p->getId()] = $p;
+                            }
+                        }
+                        $projects = $person->getProjects();
                     }
                 }
             }
