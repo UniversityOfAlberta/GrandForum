@@ -145,7 +145,7 @@ class PeopleTableTab extends AbstractTab {
             $hqpHeader = "<th>Supervisors</th>";
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
-            $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
+            $projectsHeader = "<th style='white-space: nowrap;'>".Inflect::pluralize($config->getValue('projectTerm'))."</th>";
         }
         $statusHeader = "";
         if($me->isRoleAtLeast(STAFF)){

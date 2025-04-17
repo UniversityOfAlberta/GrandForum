@@ -470,7 +470,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $html = "";
         $projects = $person->getProjects(true);
         if(count($projects) > 0){
-            $html .= "<div id='funded_projects'><h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
+            $html .= "<div id='funded_projects'><h2>{$config->getValue('networkName')} Funded ".Inflect::pluralize($config->getValue('projectTerm'))."</h2><ul>";
             foreach($projects as $project){
                 $completed = ($project->getStatus() == "Ended") ? " (completed)" : "";
                 $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a>{$completed}</li>";

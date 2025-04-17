@@ -7,6 +7,7 @@ class InactivateProjectTab extends ProjectTab {
     }
     
     static function createForm(){
+        global $config;
         $projectNames = array();
         $projectNames[] = "NO PROJECT";
         foreach(Project::getAllProjects(true) as $project){
@@ -15,7 +16,7 @@ class InactivateProjectTab extends ProjectTab {
         $form = new FormContainer("delete_project_container");
         
         $projRow = new FormTableRow("delete_project_row");
-        $projRow->append(new Label("delete_project_label", "Project", "Which project to evolve", VALIDATE_NOT_NULL));
+        $projRow->append(new Label("delete_project_label", $config->getValue('projectTerm'), "Which project to evolve", VALIDATE_NOT_NULL));
         $projRow->append(new ComboBox("delete_project", "Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
         
         $create = CreateProjectTab::createForm('delete');

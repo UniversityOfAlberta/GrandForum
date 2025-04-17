@@ -90,8 +90,8 @@ EOF;
         asort($names);
         
         $plRow = new FormTableRow("{$pre}_pl_row");
-        $plRow->append(new Label("{$pre}_pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
-        $plRow->append(new ComboBox("{$pre}_pl", "Project Leader", "", $names, VALIDATE_NI));
+        $plRow->append(new Label("{$pre}_pl_label", $config->getValue('projectTerm')." Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
+        $plRow->append(new ComboBox("{$pre}_pl", $config->getValue('projectTerm')." Leader", "", $names, VALIDATE_NI));
         
         $descRow = new FormTableRow("{$pre}_description_row");
         $descRow->append(new Label("{$pre}_description_label", "Overview", "The overview of the project", VALIDATE_NOTHING));

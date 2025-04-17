@@ -136,7 +136,7 @@ class AddMember extends SpecialPage{
                             <th>Staff</th>
                             <th>Roles</th>
                             <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
-                            <th>Projects</th>
+                            <th>".Inflect::pluralize($config->getValue('projectTerm'))."</th>
                             <th>Relation</th>
                             <th>Institution</th>
                             <th>Candidate</th>
@@ -153,7 +153,7 @@ class AddMember extends SpecialPage{
                             <th>Timestamp</th>
                             <th>Roles</th>
                             <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
-                            <th>Projects</th>
+                            <th>".Inflect::pluralize($config->getValue('projectTerm'))."</th>
                             <th>Relation</th>
                             <th>Institution</th>
                             {$hqpType}
@@ -376,8 +376,8 @@ class AddMember extends SpecialPage{
             $candRow->attr('style', 'display:none;');
         }
                
-        $projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
-        $projectsField = new ProjectList("project_field", "Associated Projects", array(), $projects, VALIDATE_NOTHING);
+        $projectsLabel = new Label("project_label", "Associated ".Inflect::pluralize($config->getValue('projectTerm')), "The projects the user is a member of", VALIDATE_NOTHING);
+        $projectsField = new ProjectList("project_field", "Associated ".Inflect::pluralize($config->getValue('projectTerm')), array(), $projects, VALIDATE_NOTHING);
         $projectsRow = new FormTableRow("project_row");
         $projectsRow->append($projectsLabel)->append($projectsField);
         

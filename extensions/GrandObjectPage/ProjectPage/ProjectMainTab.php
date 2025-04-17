@@ -573,7 +573,7 @@ class ProjectMainTab extends AbstractEditableTab {
             $sectionMap = array('' => array('', true));
         }
         if($edit || !$edit && $description != ""){
-            $this->html .= "<h2><span class='mw-headline'>Project Overview</span></h2>";
+            $this->html .= "<h2><span class='mw-headline'>".$config->getValue('projectTerm')." Overview</span></h2>";
         }
         foreach($sectionMap as $key => $value){
             if($me->isLoggedIn() || $value[1]){
