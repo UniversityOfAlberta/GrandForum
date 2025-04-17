@@ -18,7 +18,7 @@ class GrandAccess {
 	        $aRights[$i++] = $right;
 	    }
 	    if($me->isRoleAtLeast(MANAGER)){
-	        $aRights[$i++] = RMC;
+	        $aRights[$i++] = FEC;
 	    }
 	    if($me->isRole(NI)){
 	        $aRights[$i++] = "NI";

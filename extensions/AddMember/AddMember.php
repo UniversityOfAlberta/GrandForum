@@ -223,7 +223,7 @@ class AddMember extends SpecialPage{
         foreach($wgRoles as $role){
             if($me->isRoleAtLeast($role) && $role != CHAIR && 
                                             $role != EA && 
-                                            $role != RMC){
+                                            $role != FEC){
                 $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
         }
@@ -234,8 +234,8 @@ class AddMember extends SpecialPage{
             if(in_array(EA, $wgRoles)){
                 $roleOptions[$config->getValue('roleDefs', EA)] = EA;
             }
-            if(in_array(RMC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', RMC)] = RMC;
+            if(in_array(FEC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', FEC)] = FEC;
             }
         }
         ksort($roleOptions);

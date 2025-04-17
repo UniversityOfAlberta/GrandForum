@@ -187,7 +187,7 @@
     $config->setConst("AR",         "AR");
     $config->setConst("CI",         "CI");
     $config->setConst("HR",         "HR");
-    $config->setConst("RMC",        "RMC");
+    $config->setConst("FEC",        "FEC");
     $config->setConst("STAFF",      "Staff");
     $config->setConst("MANAGER",    "Manager");
     $config->setConst("ADMIN",      "Admin");
@@ -204,7 +204,7 @@
         $config->getConst('AR')             => "Affiliated Researcher",
         $config->getConst('CI')             => "Co-Investigator",
         $config->getConst('HR')             => "Human Resources",
-        $config->getConst('RMC')            => "Research Management Comittee",
+        $config->getConst('FEC')            => "Faculty Evaluation Committee",
         $config->getConst('STAFF')          => "Staff",
         $config->getConst('MANAGER')        => "Manager",
         $config->getConst('ADMIN')          => "Admin"));

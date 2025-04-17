@@ -8,7 +8,7 @@ class CreateUserAPI extends API{
         $this->addPOST("wpRealName",false,"The User's real name","My Real Name");
         $this->addPOST("wpFirstName",false,"The User's first name","My First Name");
         $this->addPOST("wpLastName",false,"The User's last name","My Last Name");
-        $this->addPOST("wpUserType",true,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
+        $this->addPOST("wpUserType",true,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP");
         $this->addPOST("wpSendMail",false,"Whether or not to send an email to the user or not.  This value should be either 'true' or 'false'.  If this parameter is not included, it is assumed that not email should be sent","true");
         $this->addPOST("id",false,"The id of the creation request(You probably should not touch this parameter unless you know exactly what you are doing)", "15");
     }

@@ -72,11 +72,6 @@ class EditMember extends SpecialPage{
                     EditMember::generateMain();
                     return;
                 }
-                else if(!$me->isAllowedToEdit($person)){ // Handles RMC-GOV
-                    $wgMessage->addError("You do not have permissions to edit this user.");
-                    EditMember::generateMain();
-                    return;
-                }
                 EditMember::generateEditMemberFormHTML($wgOut);
             }
             else{

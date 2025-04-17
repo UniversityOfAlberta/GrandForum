@@ -6,7 +6,7 @@ class RequestUserAPI extends API{
         $this->addPOST("wpName", true, "The User Name of the user to add", "UserName");
         $this->addPOST("wpEmail", true, "The User's email address", "me@email.com");
         $this->addPOST("wpRealName", false, "The User's real name", "Real Name");
-        $this->addPOST("wpUserType", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
+        $this->addPOST("wpUserType", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP");
         $this->addPOST("wpNS", false, "The list of projects that the user is a part of.  Must be in the form\"Project1, Project2, ...\"", "MEOW, NAVEL");
         $this->addPOST("university",false, "", "");
         $this->addPOST("department",false, "", "");

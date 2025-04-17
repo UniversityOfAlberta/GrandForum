@@ -416,10 +416,6 @@ abstract class AbstractReportSection {
         }
         $hLevel = $this->getAttr('hLevel', '1');
         $wgOut->addHTML("<h{$hLevel}>{$number}{$this->varSubstitute($this->title)}</h{$hLevel}>");
-        if($this->previewOnly){
-            $wgOut->addHTML("<span style='color:#FF0000;'>(This section is not part of the document that will be reviewed by the Research Management Committee (RMC). If there is information here that you want to be considered as part of your evaluation, it should be included in a previous section. Provide the full details here. This section will be provided to your project leaders to assist with their project reporting.)</span>");
-        }
-        
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){
