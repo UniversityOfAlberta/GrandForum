@@ -1,6 +1,4 @@
 <?php
- 
-$egAlwaysAllow = array();
 
 use MediaWiki\MediaWikiServices;
 
@@ -41,7 +39,7 @@ function onUserCan(&$title, &$user, $action, &$result){
 }
 
 function onUserCan2(&$title, &$user, $action, &$result) {
-  global $wgExtraNamespaces, $egNamespaceAllowPagesInMainNS, $egAlwaysAllow, $wgWhitelistRead, $wgRoles, $wgGroupPermissions;
+  global $wgExtraNamespaces, $egNamespaceAllowPagesInMainNS, $wgWhitelistRead, $wgRoles, $wgGroupPermissions;
   $person = Person::newFromId($user->getId());
   // Is API set?
   if(isset($_GET['action'])){
@@ -155,18 +153,6 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	        $allowedGroups[$index] = $wgExtraNamespaces[$group];
 	      }
 	  }
-	}
-
-	$userName = $user->getName();
-	
-	$nsText = $title->getNsText(); 
-	
-	if (isset($egAlwaysAllow[$userName][$nsText])) {
-		$allowedAction = $egAlwaysAllow[$userName][$nsText];
-		
-		if ($allowedAction == 'all' || $allowedAction == $action) {
-			$userGroups[] = $nsText;	
-		}
 	}
 	
 	$result = (count(array_intersect($allowedGroups, $userGroups)) > 0);

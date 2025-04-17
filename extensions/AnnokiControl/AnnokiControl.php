@@ -140,13 +140,6 @@ $wgExtensionCredits['specialpage'][] = array(
                          //'url' => 'http://www.mediawiki.org/wiki/User:JDoe',
                          'description' => 'Manages installation and configuration of other Annoki extensions.'
                          );
-                         
-function getTableName($baseName) {
-    $dbr = wfGetDB(DB_REPLICA);
-    $tblName = $dbr->tableName("$baseName");
-    $tblName = str_replace("`", "", "$tblName");
-    return $tblName;
-}
 
 $wgHooks['SpecialPage_initList'][] = 'orderSpecialPages';
 function orderSpecialPages(&$aSpecialPages){
@@ -155,7 +148,6 @@ function orderSpecialPages(&$aSpecialPages){
     $array2 = array();
     $skip = false;
     foreach($aSpecialPages as $key => $page){
-        //echo "$key\n";
         if(!$me->isRoleAtLeast(STAFF) && 
             ($key == "Log" || $key == "Listusers" ||
              $key == "Listgrouprights" || $key == "Contributions" ||
@@ -179,12 +171,6 @@ function orderSpecialPages(&$aSpecialPages){
     }
     $aSpecialPages = array_merge($array1, $array2);
     return true;
-}
-
-function debug($message, $type=E_USER_NOTICE){
-    if(DEBUG){
-        trigger_error($message, $type);
-    }
 }
 
 ?>
