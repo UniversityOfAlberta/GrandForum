@@ -132,8 +132,8 @@
             <% if(!publicationsFrozen){ %>
                 <th width="40px"></th>
                 <% _.each(this.projects.models, function(p){ %>
-                    <th width="40px" class="checkboxCell"><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /></th>
-                <% }) %>
+                    <th width="40px" class="checkboxCell"><% if(this.project.get('id') == null){ %><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /><% } %></th>
+                <% }.bind(this)) %>
                 <th width="1%" style="border-left: 2px solid #C8C8C8;">Edit</th>
                 <th width="1%">Private</th>
             <% } %>
