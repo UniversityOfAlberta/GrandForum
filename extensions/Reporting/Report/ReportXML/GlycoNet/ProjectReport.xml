@@ -5,9 +5,7 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="r" />
             <SectionPermission id="summary" permissions="-" />
-            <SectionPermission id="figures" permissions="-" />
             <SectionPermission id="milestones" permissions="" />
-            <SectionPermission id="achievements" permissions="-" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="networking" permissions="-" />
             <SectionPermission id="ktee" permissions="r" />
@@ -23,9 +21,7 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="" />
-            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
