@@ -142,10 +142,6 @@
     $config->setConst("CYCLE_START_MONTH", '-01-01');
     $config->setConst("CYCLE_START", $config->getConst('YEAR').$config->getConst('CYCLE_START_MONTH'));
     
-    // Start of NCE reporting cycle
-    $config->setConst("NCE_START_MONTH", '-04-01');
-    $config->setConst("NCE_START", $config->getConst('YEAR').$config->getConst('NCE_START_MONTH'));
-    
     // Start of reporting period
     $config->setConst("START_MONTH", '-09-01');
     $config->setConst("START", $config->getConst('YEAR').$config->getConst('START_MONTH'));
