@@ -2839,7 +2839,7 @@ class Person extends BackboneModel {
      * @param string $useReported Whether to use reported years.  If false, it will not, if set to a year then it uses that year
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
-    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false, $exclude=true){
+    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_END, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false, $exclude=true){
         global $config;
         self::generateAuthorshipCache($this->id);
         $processed = array();

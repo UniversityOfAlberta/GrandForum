@@ -37,7 +37,7 @@ class ReportStorage {
     }
 
     /// Store a new report.
-    function store_report(&$data, &$html, &$pdf, $special = 0, $auto = 0, $type = 0, $year = REPORTING_YEAR, $encrypt = false) {
+    function store_report(&$data, &$html, &$pdf, $special = 0, $auto = 0, $type = 0, $year = YEAR, $encrypt = false) {
         global $wgImpersonating, $wgRealUser, $wgUser;
         $impersonateId = $this->_uid;
         if($wgImpersonating){
@@ -358,7 +358,7 @@ class ReportStorage {
         return $data;
     }
     
-    static function list_project_reports($sub_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year=REPORTING_YEAR) {
+    static function list_project_reports($sub_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year=YEAR) {
         if($lim == 0){
             $lim = "";
         }

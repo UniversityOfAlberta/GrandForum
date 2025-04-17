@@ -6,8 +6,8 @@ class PersonCVGrantsReportItemSet extends ReportItemSet {
         $phase = $this->getAttr("phase");
         $data = array();
         $person = Person::newFromId($this->personId);
-        $start = $this->getAttr('start', REPORTING_CYCLE_START);
-        $end = $this->getAttr('end', REPORTING_CYCLE_END);
+        $start = $this->getAttr('start', CYCLE_START);
+        $end = $this->getAttr('end', CYCLE_END);
         $grants = $person->getGrantsBetween($start, $end, true);
         $limit = $this->getAttr("limit", "");
         if(is_array($grants)){

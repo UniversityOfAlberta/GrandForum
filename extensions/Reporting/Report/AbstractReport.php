@@ -9,7 +9,6 @@ UnknownAction::createAction('AbstractReport::downloadBlob');
 UnknownAction::createAction('AbstractReport::downloadReportZip');
 UnknownAction::createAction('AbstractReport::tinyMCEUpload');
 
-require_once("ReportConstants.php");
 require_once("SpecialPages/Report.php");
 require_once("SpecialPages/{$config->getValue('networkName')}/Report.php");
 require_once("SpecialPages/AnnualReportTable.php");
@@ -81,7 +80,7 @@ abstract class AbstractReport extends SpecialPage {
     // $personId forces the report to use a specific user id as the owner of this Report
     // $projectName is the name of the Project this Report belongs to
     // $topProjectOnly means that the Report should override all ReportItemSets which use Projects as their data with the Project belonging to $projectName
-    function __construct($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR, $quick=false){
+    function __construct($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=YEAR, $quick=false){
         global $wgUser, $wgMessage, $config;
         $this->name = "";
         $this->extends = "";
@@ -573,7 +572,7 @@ abstract class AbstractReport extends SpecialPage {
         }
         $found = false;
         $roles = $me->getRights();
-        $roleObjs = $me->getRolesDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+        $roleObjs = $me->getRolesDuring(CYCLE_START, CYCLE_END);
         foreach($roleObjs as $role){
             $roles[] = $role->getRole();
         }

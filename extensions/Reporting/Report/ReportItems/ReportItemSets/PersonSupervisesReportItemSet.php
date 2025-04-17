@@ -6,8 +6,8 @@ class PersonSupervisesReportItemSet extends ReportItemSet {
         $data = array();
 
         $person = Person::newFromId($this->personId);
-        $startDate = $this->getAttr("start", REPORTING_CYCLE_START);
-        $endDate = $this->getAttr("end", REPORTING_CYCLE_END);
+        $startDate = $this->getAttr("start", CYCLE_START);
+        $endDate = $this->getAttr("end", CYCLE_END);
         
         $hqpType = explode("|", $this->getAttr('hqpType', 'grad'));
         $positions = array();

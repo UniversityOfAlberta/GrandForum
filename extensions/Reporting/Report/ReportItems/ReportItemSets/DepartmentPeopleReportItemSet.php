@@ -6,13 +6,13 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $data = array();
         $dept = $this->getAttr("department", "");
         $uni = $this->getAttr("university", "University of Alberta");
-        $start = $this->getAttr("start", REPORTING_CYCLE_START);
+        $start = $this->getAttr("start", CYCLE_START);
         $end = $this->getAttr("end", (YEAR)."-07-01");
         $includeDeansPeople = (strtolower($this->getAttr("includeDeansPeople", "false")) == "true");
         $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
         $me = Person::newFromWgUser();
 
-        if($me->getName() != "Christopher.Sturdy" && !$me->isRole(CHAIR) && !$me->isRole(EA) && !$me->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+        if($me->getName() != "Christopher.Sturdy" && !$me->isRole(CHAIR) && !$me->isRole(EA) && !$me->isRoleDuring(CHAIR, CYCLE_START, CYCLE_END)){
             // Person isn't a Chair/EA, so don't return anyone
             return $data;
         }
@@ -49,19 +49,19 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     // Should not see themselves in recommendations
                     continue;
                 }
-                if(($person->isRoleDuring(DEAN, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(DEAN)) && !$person->isSubRole("CR")){
+                if(($person->isRoleDuring(DEAN, CYCLE_START, CYCLE_END) || $person->isRole(DEAN)) && !$person->isSubRole("CR")){
                     // Dean should not be in recommendations, unless they have an explicit Chair's Recommendation
                     continue;
                 }
-                if($me->isRoleDuring(EA, REPORTING_CYCLE_START, REPORTING_CYCLE_END) && ($person->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(CHAIR))){
+                if($me->isRoleDuring(EA, CYCLE_START, CYCLE_END) && ($person->isRoleDuring(CHAIR, CYCLE_START, CYCLE_END) || $person->isRole(CHAIR))){
                     // EA should not get to see Chair's Information
                     continue;
                 }
-                if(($person->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(CHAIR)) && !$person->isSubRole("CR")){
+                if(($person->isRoleDuring(CHAIR, CYCLE_START, CYCLE_END) || $person->isRole(CHAIR)) && !$person->isSubRole("CR")){
                     // Chairs should not show up, unless they have an explicit Chair's Recommendation
                     continue;
                 }
-                if($me->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END) && !$me->isRole(CHAIR) && !$person->isSubRole("CR")){
+                if($me->isRoleDuring(CHAIR, CYCLE_START, CYCLE_END) && !$me->isRole(CHAIR) && !$person->isSubRole("CR")){
                     // Previous Chair should not see any people except for those who have an explicit Chair's Recommendation
                     continue;
                 }

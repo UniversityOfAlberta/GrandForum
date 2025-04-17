@@ -8,8 +8,8 @@ class AllPeopleReportItemSet extends ReportItemSet {
         $subRoles = explode(",", $this->getAttr("subRoles", ""));
         $sort_reversed = $this->getAttr("sort_reversed", "false");
         $dept = $this->getAttr("department", "false");
-        $start = $this->getAttr("start", REPORTING_CYCLE_START);
-        $end = $this->getAttr("end", REPORTING_CYCLE_END);
+        $start = $this->getAttr("start", CYCLE_START);
+        $end = $this->getAttr("end", CYCLE_END);
         $allPeople = Person::getAllPeople();
         if($sort_reversed == "true"){
             usort($allPeople, function($a, $b){

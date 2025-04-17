@@ -5,8 +5,8 @@ class PersonCoursesReportItemSet extends ReportItemSet {
     function getData(){
         $data = array();
         $person = Person::newFromId($this->personId);
-        $start = $this->getAttr('start', REPORTING_CYCLE_START);
-        $end = $this->getAttr('end', REPORTING_CYCLE_END);
+        $start = $this->getAttr('start', CYCLE_START);
+        $end = $this->getAttr('end', CYCLE_END);
         $term = $this->getAttr('term', '');
         $unique = (strtolower($this->getAttr('unique', 'false')) == "true");
         $exclude13Week = (strtolower($this->getAttr('exclude13Week', 'false')) == "true");

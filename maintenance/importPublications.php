@@ -65,7 +65,7 @@ foreach($people as $person){
         else {
             $query = "orcid:{$orcid}";
         }
-        $alex = json_decode(file_get_contents("https://api.openalex.org/works?filter=author.{$query},from_publication_date:".REPORTING_CYCLE_START.
+        $alex = json_decode(file_get_contents("https://api.openalex.org/works?filter=author.{$query},from_publication_date:".CYCLE_START.
                                               "&sort=publication_year:desc&per-page=100&mailto=dwt@ualberta.ca"));
         foreach($alex->results as $result){
             $doi = trim($result->doi);

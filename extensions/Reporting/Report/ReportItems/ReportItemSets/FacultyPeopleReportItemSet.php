@@ -6,7 +6,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         $data = array();
         $dept = $this->getAttr("department", "");
         $uni = $this->getAttr("university", "University of Alberta");
-        $start = $this->getAttr("start", REPORTING_CYCLE_START);
+        $start = $this->getAttr("start", CYCLE_START);
         $end = $this->getAttr("end", (YEAR)."-07-01");
         $atsec = (strtolower($this->getAttr("atsec", "false")) == "true");
         if($atsec){
@@ -65,7 +65,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 // Don't show self unless user is Dean, Vice Dean, HR
                 continue;
             }
-            if(($person->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(CHAIR)) && 
+            if(($person->isRoleDuring(CHAIR, CYCLE_START, CYCLE_END) || $person->isRole(CHAIR)) && 
                 !$me->isRole(DEAN) &&
                 !$me->isRole(DEANEA) &&
                 !$me->isRole(VDEAN) && 

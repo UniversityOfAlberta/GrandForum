@@ -10,8 +10,8 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $dir = dirname(__FILE__);
         require_once($dir . '/../../../../../Classes/SmartDomDocument/SmartDomDocument.php');
         $person = Person::newFromId($this->personId);
-        $start = $this->getAttr('start', REPORTING_CYCLE_START);
-        $end = $this->getAttr('end', REPORTING_CYCLE_END);
+        $start = $this->getAttr('start', CYCLE_START);
+        $end = $this->getAttr('end', CYCLE_END);
         $splitGrad = strtolower($this->getAttr('splitGrad', 'false'));
         $showOther = (strtolower($this->getAttr('showOther', 'true')) == "true");
         $showCommittees = (strtolower($this->getAttr('showCommittees', 'false')) == "true");

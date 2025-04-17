@@ -139,24 +139,20 @@
     $config->setConst("YEAR", date('Y'));
 
     // Start of internal reporting cycle (Used for range queries)
-    $config->setConst("CYCLE_START_MONTH", '-01-01');
-    $config->setConst("CYCLE_START", $config->getConst('YEAR').$config->getConst('CYCLE_START_MONTH'));
+    $config->setConst("CYCLE_START_MONTH", '-07-01');
+    $config->setConst("CYCLE_START", ($config->getConst('YEAR')-1).$config->getConst('CYCLE_START_MONTH'));
     
     // Start of reporting period
-    $config->setConst("START_MONTH", '-09-01');
-    $config->setConst("START", $config->getConst('YEAR').$config->getConst('START_MONTH'));
+    $config->setConst("START_MONTH", '-07-01');
+    $config->setConst("START", ($config->getConst('YEAR')-1).$config->getConst('START_MONTH'));
     
     // End of reporting period for HQP, NIs and Projects
-    $config->setConst("END_MONTH", '-12-31');
+    $config->setConst("END_MONTH", '-06-30');
     $config->setConst("END", $config->getConst('YEAR').$config->getConst('END_MONTH'));
     
     // End of internal reporting cycle (Used for range queries)
-    $config->setConst("CYCLE_END_MONTH_ACTUAL", '-12-31');
-    $config->setConst("CYCLE_END_ACTUAL", $config->getConst('YEAR').$config->getConst('CYCLE_END_MONTH_ACTUAL'));
-    
-    // End of internal reporting cycle (Used for range queries)
-    $config->setConst("CYCLE_END_MONTH", '-01-15');
-    $config->setConst("CYCLE_END", ($config->getConst('YEAR')+1).$config->getConst('CYCLE_END_MONTH'));
+    $config->setConst("CYCLE_END_MONTH", '-06-30');
+    $config->setConst("CYCLE_END", ($config->getConst('YEAR')).$config->getConst('CYCLE_END_MONTH'));
     
     /*
      * Roles

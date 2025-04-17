@@ -4,10 +4,10 @@ class DeansPeopleReportItemSet extends ReportItemSet {
     
     function getData(){
         $data = array();
-        $start = $this->getAttr("start", REPORTING_CYCLE_START);
-        $end = $this->getAttr("end", REPORTING_CYCLE_END);
+        $start = $this->getAttr("start", CYCLE_START);
+        $end = $this->getAttr("end", CYCLE_END);
         $me = Person::newFromWgUser();
-        if(!$me->isRole(DEAN) && !$me->isRole(DEANEA) && !$me->isRoleDuring(DEAN, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+        if(!$me->isRole(DEAN) && !$me->isRole(DEANEA) && !$me->isRoleDuring(DEAN, CYCLE_START, CYCLE_END)){
             // Person isn't a Dean/DeanEA, so don't return anyone
             return $data;
         }
@@ -29,7 +29,7 @@ class DeansPeopleReportItemSet extends ReportItemSet {
                       $person->isSubRole("DA") ||
                       $person->isSubRole("DR"));
             if($found){
-                if($me->isRoleDuring(DEAN, REPORTING_CYCLE_START, REPORTING_CYCLE_END) && !$me->isRole(DEAN) && !$person->isSubRole("DA")){
+                if($me->isRoleDuring(DEAN, CYCLE_START, CYCLE_END) && !$me->isRole(DEAN) && !$person->isSubRole("DA")){
                     // Previous Dean should not see any people except for those who have an explicit Dean's Advice
                     continue;
                 }

@@ -22,8 +22,8 @@ class GraduateStudents extends SpecialPage {
         global $wgOut;
         $me = Person::newFromWgUser();
         $dept = ($me->isRole(DEAN) || $me->isRole(DEANEA) || $me->isRole(VDEAN) || $me->isRoleAtLeast(STAFF)) ? "" : $me->getDepartment();
-        $start = REPORTING_CYCLE_START;
-        $end   = REPORTING_CYCLE_END;
+        $start = CYCLE_START;
+        $end   = CYCLE_END;
         $hqps = Person::getAllPeopleDuring(HQP, $start, $end);
         $table = (isset($_GET['table'])) ? $_GET['table'] : "grad";
         if($table == "ugrad"){

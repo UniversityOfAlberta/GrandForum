@@ -53,12 +53,12 @@ class TemplateReport extends AbstractReport{
                     //$tabs["CV"]['subtabs'][] = TabUtils::createSubTab("QA CV", "{$url}QACV", $selected);
                 }
                 
-                if($person->isRole(CHAIR) || $person->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(EA) || $person->isRole(ACHAIR)){
+                if($person->isRole(CHAIR) || $person->isRoleDuring(CHAIR, CYCLE_START, CYCLE_END) || $person->isRole(EA) || $person->isRole(ACHAIR)){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
                     $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
                 }
                 
-                if($person->isRole(DEAN) || $person->isRoleDuring(DEAN, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(DEANEA)){
+                if($person->isRole(DEAN) || $person->isRoleDuring(DEAN, CYCLE_START, CYCLE_END) || $person->isRole(DEANEA)){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
                     $tabs["Dean"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
                 }

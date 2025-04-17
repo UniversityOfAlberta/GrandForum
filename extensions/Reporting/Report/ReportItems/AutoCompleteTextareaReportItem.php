@@ -7,8 +7,8 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
         $rich = (strtolower($this->getAttr("rich", "false")) === "true");
         
         $set = $this->getAttr("set", "");
-        $start = $this->getAttr("startDate", REPORTING_CYCLE_START);
-        $end = $this->getAttr("endDate", REPORTING_CYCLE_END_ACTUAL);
+        $start = $this->getAttr("startDate", CYCLE_START);
+        $end = $this->getAttr("endDate", CYCLE_END);
         $index = $this->getAttr("index", "");
         $label = $this->getAttr("label", "");
         $name = $this->getAttr("name", "");

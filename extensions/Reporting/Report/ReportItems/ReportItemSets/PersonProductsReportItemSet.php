@@ -12,8 +12,8 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $submitProductYear = (strtolower($this->getAttr("submitProductYear", "false")) == "true");
         $useProductYear = (strtolower($this->getAttr("useProductYear", "false")) == "true");
         $onlyUseStartDate = (strtolower($this->getAttr("onlyUseStartDate", "false")) == "true");
-        $start_date = $this->getAttr("start", REPORTING_CYCLE_START);
-        $end_date = $this->getAttr("end", REPORTING_CYCLE_END_ACTUAL);
+        $start_date = $this->getAttr("start", CYCLE_START);
+        $end_date = $this->getAttr("end", CYCLE_END);
         $includeHQP = (strtolower($this->getAttr("includeHQP", "true")) == "true");
         $onlyHQP = (strtolower($this->getAttr("onlyHQP", "false")) == "true");
         $me = Person::newFromWgUser();

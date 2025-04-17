@@ -779,7 +779,7 @@ class Paper extends BackboneModel{
                                     array('product_id' => $this->getId()));
         foreach($data as $row){
             if(!($row['user_id'] == $me->getId() &&
-                 $row['year'] == REPORTING_YEAR-1)){
+                 $row['year'] == YEAR-1)){
                 // Prevent deletion if it has been reported by anyone else, 
                 // or in a past year by the current user
                 return false;

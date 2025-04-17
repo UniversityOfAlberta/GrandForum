@@ -7,8 +7,8 @@ class DepartmentStudentsReportItemSet extends ReportItemSet {
         $dept = $this->getAttr("department", "");
         $uni = $this->getAttr("university", "University of Alberta");
         $hqpType = $this->getAttr('hqpType', 'grad');
-        $start = $this->getAttr("start", REPORTING_CYCLE_START);
-        $end = $this->getAttr("end", REPORTING_CYCLE_END);
+        $start = $this->getAttr("start", CYCLE_START);
+        $end = $this->getAttr("end", CYCLE_END);
         $me = Person::newFromWgUser();
         
         $allPeople = Person::getAllPeopleInDepartment($dept, $start, $end);
