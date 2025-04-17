@@ -142,6 +142,9 @@
     // Global Message (ie. maintenance message)
     $config->setValue("globalMessage", "");
     
+    // The terminology for projects 
+    $config->setValue("projectTerm", "Project");
+    
     // The terminology for project themes 
     $config->setValue("projectThemes", "Theme");
     

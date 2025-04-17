@@ -6,7 +6,8 @@ class PersonProjectTab extends AbstractTab {
     var $visibility;
 
     function __construct($person, $visibility){
-        parent::__construct("Projects");
+        global $config;
+        parent::__construct(Inflect::pluralize($config->getValue('projectTerm')));
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -58,10 +59,10 @@ class PersonProjectTab extends AbstractTab {
 			if(count($projs) > 0){
 			    if($type == 'Research'){
 			        if($status == 'Active'){
-			            $this->html .= "<h3>Current Projects</h3>";
+			            $this->html .= "<h3>Current ".Inflect::pluralize($config->getValue('projectTerm'))."</h3>";
 			        }
 			        else if($status == 'Ended'){
-			            $this->html .= "<h3>Completed Projects</h3>";
+			            $this->html .= "<h3>Completed ".Inflect::pluralize($config->getValue('projectTerm'))."</h3>";
 			        }
 			    }
 			    else if($type == 'Administrative'){
@@ -71,7 +72,7 @@ class PersonProjectTab extends AbstractTab {
 			    }
 			    else {
 			        if($status == 'Active'){
-			            $this->html .= "<h3>{$type} Projects</h3>";
+			            $this->html .= "<h3>{$type} ".Inflect::pluralize($config->getValue('projectTerm'))."</h3>";
 			        }
 			    }
 			    $this->html .= "<ul>".implode("\n", $projs)."</ul>";
