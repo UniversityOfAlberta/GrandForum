@@ -8,6 +8,7 @@ if (assignees && assignees.length > 0) {
             <tr>
                 <th>Assignee</th>
                 <th>Status</th>
+                <th>Document</th>
             </tr>
         </thead>
         <tbody> 
@@ -18,10 +19,28 @@ if (assignees && assignees.length > 0) {
                         <% 
                         var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
                         var currentStatus = statuses[assigneeId]; // Get current status for the assignee
+                        var docUrl = null;
+                        var filename = null;
+                        files.forEach(function(file) {
+                            if (file.assignee == assigneeId) {
+                                filename = file.filename;
+                                docUrl = file.url;
+                            }
+                        });
+
                         %>
                         <%= currentStatus %>
                     </td>
+                    <td valign="top">
+                        <% if (filename) { %>
+                            <a href="<%= docUrl %>" target="_blank" download>Download</a>
+                        <% } else { %>
+                            No document
+                        <% } %>
+                    </td>
+                    
                 </tr>
+                
             <% }.bind(this)); %>
         </tbody>
     </table>

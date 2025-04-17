@@ -76,7 +76,7 @@ class LIMSTaskPmm extends BackboneModel
             $this->dueDate = $data[0]['due_date'];
             $this->comments = $data[0]['comments'];
             $files = DBFunctions::select(array('grand_pmm_task_assginees'),
-                                         array('id', 'filename', 'type'),
+                                         array('id', 'filename', 'type', 'assignee'),
                                          array('task_id' => $this->id));
             foreach($files as $file){
                 $file['data'] = '';
