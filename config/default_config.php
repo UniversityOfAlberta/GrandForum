@@ -79,28 +79,10 @@
     // Global Message (ie. maintenance message)
     $config->setValue("globalMessage", "");
     
-    // The terminology for project themes 
-    $config->setValue("projectThemes", "Theme");
-    
-    // The terminology for administrative projects 
-    $config->setValue("adminProjects", "Admin Project");
-    
     $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
     
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
-   
-    // Whether or not the forum only contains one university
-    $config->setValue("singleUniversity",false);
- 
-    // Whether or not to allow bigBetProjects
-    $config->setValue("bigBetProjects", false);
-    
-    // Whether or not to allow projectTypes
-    $config->setValue("projectTypes", false);
-    
-    // Whether or not to allow projectStatus
-    $config->setValue("projectStatus", true);
     
     // Whether to auto create a user from single sign on
     $config->setValue('shibCreateUser', false);
@@ -125,7 +107,6 @@
         'GlobalSearch',
         'Impersonation',
         'Visualizations',
-        'ProjectEvolution',
         'CCVExport',
         //'QASummary'
     ));
@@ -201,18 +182,12 @@
     $config->setConst("VDEAN",      "ViceDean");
     $config->setConst("DEAN",       "Dean");
     $config->setConst("DEANEA",     "DeanEA");
-    $config->setConst("SRC",        "SRC");
     $config->setConst("EA",         "EA");
     $config->setConst("NI",         "NI");
     $config->setConst("AR",         "AR");
     $config->setConst("CI",         "CI");
-    $config->setConst("PL",         "PL");
-    $config->setConst("APL",        "APL");
-    $config->setConst("TL",         "TL");
-    $config->setConst("TC",         "TC");
     $config->setConst("HR",         "HR");
     $config->setConst("RMC",        "RMC");
-    $config->setConst("EVALUATOR",  "Evaluator");
     $config->setConst("STAFF",      "Staff");
     $config->setConst("MANAGER",    "Manager");
     $config->setConst("ADMIN",      "Admin");
@@ -224,18 +199,12 @@
         $config->getConst('EXTERNAL')       => "External",
         $config->getConst('ACHAIR')         => "Associate Chair",
         $config->getConst('CHAIR')          => "Chair",
-        $config->getConst('SRC')            => "Scientific Research Committee",
         $config->getConst('EA')             => "Executive Assistant",
         $config->getConst('NI')             => "Network Investigator",
         $config->getConst('AR')             => "Affiliated Researcher",
         $config->getConst('CI')             => "Co-Investigator",
-        $config->getConst('PL')             => "Project Leader",
-        $config->getConst('APL')            => "Admin Project Leader",
-        $config->getConst('TL')             => "Theme Leader",
-        $config->getConst('TC')             => "Work Package Coordinator",
         $config->getConst('HR')             => "Human Resources",
         $config->getConst('RMC')            => "Research Management Comittee",
-        $config->getConst('EVALUATOR')      => "Evaluator",
         $config->getConst('STAFF')          => "Staff",
         $config->getConst('MANAGER')        => "Manager",
         $config->getConst('ADMIN')          => "Admin"));

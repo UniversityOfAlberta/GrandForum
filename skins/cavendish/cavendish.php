@@ -259,7 +259,6 @@ class CavendishTemplate extends QuickTemplate {
 		    ?>
 		    
 		    orcidId = "<?php echo $config->getValue('orcidId'); ?>";
-            singleUniversity = <?php var_export($config->getValue('singleUniversity')); ?>;		    
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
