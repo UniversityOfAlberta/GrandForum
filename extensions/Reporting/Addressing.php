@@ -6,8 +6,6 @@
  * These instruct the renderer to act accordingly.
  */
 define('BLOB_TEXT',		1);
-define('BLOB_HTML',		2);
-define('BLOB_WIKI',		3);
 
 /**
  * Structured blobs.
@@ -16,16 +14,6 @@ define('BLOB_WIKI',		3);
  * storage, automatically.
  */
 define('BLOB_ARRAY',    1024);
-define('BLOB_CSV',		1025);
-
-
-/**
- * Binary blobs.
- *
- * These blobs hold specialized data, such as PDFs or Excel spreadsheets.
- */
-define('BLOB_PDF',		16384);
-define('BLOB_EXCEL',		16385);
 
 
 /**

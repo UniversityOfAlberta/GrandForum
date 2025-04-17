@@ -282,8 +282,6 @@ abstract class AbstractReportItem {
         switch($this->blobType){
             default:
             case BLOB_TEXT:
-            case BLOB_WIKI:
-            case BLOB_HTML:
                 if($blob_data != null){
                     $blob_data = str_replace("\00", "", $blob_data);
                     $blob_data = str_replace("", "", $blob_data);
@@ -291,7 +289,6 @@ abstract class AbstractReportItem {
                     $blob_data = str_replace("", "", $blob_data);
                     $blob_data = str_replace("", "fi", $blob_data);
                 }
-            case BLOB_EXCEL:
             case BLOB_RAW:
                 $value = $blob_data;
                 break;
@@ -360,8 +357,6 @@ abstract class AbstractReportItem {
         switch($this->blobType){
             default:
             case BLOB_TEXT:
-            case BLOB_WIKI:
-            case BLOB_HTML:
                 $value = str_replace("\00", "", $value); // Fixes problem with the xml backup putting in random null escape sequences
                 if(is_string($value)){
                     $blob->store(trim($value), $blob_address, $this->encrypt);
@@ -390,13 +385,6 @@ abstract class AbstractReportItem {
                 }
                 eval("\$blob_data$accessStr = \$value;");
                 $blob->store($blob_data, $blob_address, $this->encrypt);
-                break;
-            case BLOB_EXCEL:
-                if(mb_check_encoding($value, 'UTF-8')){
-                    $value = utf8_decode($value);
-                }
-                $blob->store($value, $blob_address, $this->encrypt);
-                $blob->load($blob_address);
                 break;
             case BLOB_RAW:
                 $blob->store(utf8_decode($value), $blob_address, $this->encrypt);

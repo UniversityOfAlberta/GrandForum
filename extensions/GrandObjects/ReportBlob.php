@@ -152,16 +152,11 @@ class ReportBlob {
 		// Perform adjustments to the data: serialization (if needed), and escaping.
 		switch ($this->_type) {
 		case BLOB_TEXT:
-		case BLOB_HTML:
-		case BLOB_WIKI:
-		case BLOB_PDF:
-		case BLOB_EXCEL:
 		case BLOB_RAW:
 			// Don't transform the data.
 			$this->_data = $data;
 			break;
 		case BLOB_ARRAY:
-		case BLOB_CSV:
 			// Serialize.
 			$this->_data = serialize($data);
 			// Check serialization.
@@ -273,7 +268,6 @@ class ReportBlob {
 		// Undo data transformations, if necessary.
 		switch ($this->_type) {
             case BLOB_ARRAY:
-            case BLOB_CSV:
                 // Unserialize.
                 $this->_data = unserialize($this->_data);
                 if ($this->_data === false)
