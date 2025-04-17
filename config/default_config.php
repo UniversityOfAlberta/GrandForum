@@ -168,7 +168,6 @@
      */
     $config->setConst("INACTIVE",   "Inactive");
     $config->setConst("HQP",        "HQP");
-    $config->setConst("PS",         "PS");
     $config->setConst("EXTERNAL",   "External");
     $config->setConst("ACHAIR",     "AssocChair");
     $config->setConst("CHAIR",      "Chair");
@@ -189,7 +188,6 @@
     $config->setValue("roleDefs", array(
         $config->getConst('INACTIVE')       => "Inactive",
         $config->getConst('HQP')            => "Highly Qualified Person",
-        $config->getConst('PS')             => "Project Support",
         $config->getConst('EXTERNAL')       => "External",
         $config->getConst('ACHAIR')         => "Associate Chair",
         $config->getConst('CHAIR')          => "Chair",
