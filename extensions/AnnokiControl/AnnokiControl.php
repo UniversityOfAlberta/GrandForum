@@ -7,8 +7,6 @@ if (!defined('MEDIAWIKI')) {
   exit( 1 );
 }
 
-define('ANNOKI', true);
-
 require_once("UnknownAction.php");
 require_once("DBFunctions.php");
 require_once('AnnokiConfig.php');
