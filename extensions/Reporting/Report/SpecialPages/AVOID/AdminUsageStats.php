@@ -104,7 +104,7 @@ class AdminUsageStats extends SpecialPage {
         $submitted = array();
         foreach(Person::getAllPeople() as $person){
             if($this->exclude($person->getId())){ continue; }
-            if($person->isRole(CI)){
+            if($person->isRole(CI) || $person->isRole("GroupA") || $person->isRole("GroupB") || $person->isRole("GroupC")){
                 $members[] = $person;
             }
             if($person->isRole("Provider")){
@@ -116,7 +116,7 @@ class AdminUsageStats extends SpecialPage {
                     $partners[] = $person;
                 }
             }
-            if($person->isRole(CI)){
+            if($person->isRole(CI) || $person->isRole("GroupA") || $person->isRole("GroupB") || $person->isRole("GroupC")){
                 if(AVOIDDashboard::hasSubmittedSurvey($person->getId())){
                     $submitted[] = $person;
                 }
