@@ -1,5 +1,4 @@
 <?php
-require_once('AdminUsageStats.php');
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['AdminUsageStats'] = 'AdminUsageStats'; # Let MediaWiki know about the special page.

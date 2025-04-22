@@ -23,6 +23,9 @@ if($config->getValue('networkFullName') == 'AVOID Australia'){
     require_once("AdminDataCollectionAustralia.php");
 }
 require_once("AdminUsageStats.php");
+if($config->getValue('networkFullName') == 'AVOID Australia'){
+    require_once("AdminUsageStatsAustralia.php");
+}
 require_once("ConnectFitbit.php");
 require_once("FitbitStats.php");
 require_once("Descriptors.php");
