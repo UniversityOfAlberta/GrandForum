@@ -54,7 +54,8 @@ class AdminUsageStats extends SpecialPage {
                             'I' => 0, 
                             'D' => 0, 
                             'S' => 0, 
-                            'F' => 0);
+                            'F' => 0,
+                            'B' => 0);
         foreach($plans as $plan){
             $users[$plan->getUserId()] = $plan->getPerson();
             foreach($plan->getComponents() as $comp => $val){
