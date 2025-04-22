@@ -79,6 +79,8 @@ class ActionPlan extends BackboneModel {
                 return ($lang == 'en') ? "Sleep" : "Sommeil";
             case "F":
                 return ($lang == 'en') ? "Falls Prevention" : "Prévention des chutes";
+            case "B":
+                return ($lang == 'en') ? "Brain Health" : "Santé du cerveau";
         }
         return "Other";
     }

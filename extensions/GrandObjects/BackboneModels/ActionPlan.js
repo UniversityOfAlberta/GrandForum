@@ -56,7 +56,8 @@ ActionPlan = Backbone.Model.extend({
                 "I": "0",
                 "D": "0",
                 "S": "0",
-                "F": "0"
+                "F": "0",
+                "B": "0"
             },
             submitted: false,
             created: ""
@@ -84,6 +85,8 @@ ActionPlan.comp2Text = function(comp){
             return (wgLang == 'en') ? "Sleep" : "Sommeil";
         case "F":
             return (wgLang == 'en') ? "Falls Prevention" : "Prévention des chutes";
+        case "B":
+            return (wgLang == 'en') ? "Brain Health" : "Santé du cerveau";
     }
     return "Other";
 }
