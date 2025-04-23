@@ -14,25 +14,14 @@ class QACVGenerator extends SpecialPage{
     }
 
     function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $facultyMapSimple;
         $tabbedPage = new TabbedAjaxPage("qacv");
         $person = Person::newFromWgUser();
         
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_PHYS"))
-            $tabbedPage->addTab(new QACVDepartmentTab("Physics", array("PHYS")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_CHEM"))
-            $tabbedPage->addTab(new QACVDepartmentTab("Chemistry", array("CHEM")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_BIOL"))
-            $tabbedPage->addTab(new QACVDepartmentTab("Biological Sciences", array("BIOL")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_CMPUT"))
-            $tabbedPage->addTab(new QACVDepartmentTab("Computing Science", array("CMPUT")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_MATH"))
-            $tabbedPage->addTab(new QACVDepartmentTab("Mathematical And Statistical Sciences", array("MATH", "STAT")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_EAS"))
-            $tabbedPage->addTab(new QACVDepartmentTab("Earth And Atmospheric Sciences", array("EAS")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_EAS"))
-            $tabbedPage->addTab(new QACVDepartmentTab("Psychology", array("PSYCH")));
-        
+        $departments = $facultyMapSimple[getFaculty()];
+        foreach($departments as $key => $department){
+            $tabbedPage->addTab(new QACVDepartmentTab($department, array($key)));
+        }
         $tabbedPage->showPage();
         
         $wgOut->addHTML("<script type='text/javascript'>
@@ -42,13 +31,7 @@ class QACVGenerator extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF) || $person->isSubRole('QA_PHYS') ||
-                                                 $person->isSubRole('QA_CHEM') ||
-                                                 $person->isSubRole('QA_BIOL') ||
-                                                 $person->isSubRole('QA_CMPUT') ||
-                                                 $person->isSubRole('QA_MATH') ||
-                                                 $person->isSubRole('QA_EAS') ||
-                                                 $person->isSubRole('QA_PSYCH'));
+        return ($person->isRoleAtLeast(STAFF));
     }
     
     static function createSubTabs(&$tabs){
