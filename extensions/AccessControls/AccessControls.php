@@ -14,7 +14,6 @@ $wgUploadPath = "$wgScriptPath/AnnokiUploadAuth.php";
 
 $wgHooks['userCan'][] = 'onUserCan';
 $wgHooks['SpecialPageBeforeExecute'][] = 'onUserCanExecute';
-$wgHooks['AbortLogin'][] = 'onAbortLogin';
 $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';

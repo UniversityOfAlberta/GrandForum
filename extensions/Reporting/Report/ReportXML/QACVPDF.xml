@@ -36,7 +36,7 @@
         <!-- Employment/Education History -->
         <ReportItem id="educationbookmark" type="BookmarkReportItem" title="Education History">
             <![CDATA[
-                <h2>Education History</h2>
+                <h2>asdfEducation History</h2>
             ]]>
         </ReportItem>
         <ReportItem id="education" type="PersonEducationReportItem">
@@ -56,7 +56,7 @@
         </ReportItem>
         
         <!-- Honors and Awards -->
-        <If id="award_if" if="{>({getNProducts(1900-01-01, {$next_year}-12-31, Award, all,, false)}, 0)}">
+        <If id="award_if" if="{>({getNProducts(SOT, {$next_year}-12-31, Award, all,, false)}, 0)}">
             <ReportItem id="awardbookmark" type="BookmarkReportItem" title="Honors and Awards">
                 <![CDATA[
                     <h2>Honors and Awards</h2>
@@ -72,7 +72,7 @@
                         </thead>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="1900-01-01" end="{$next_year}-12-31">
+            <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="SOT" end="{$next_year}-12-31">
                 <Static>
                     <![CDATA[
                         <tr>

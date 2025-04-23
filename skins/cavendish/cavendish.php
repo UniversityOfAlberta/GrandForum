@@ -136,7 +136,7 @@ class CavendishTemplate extends QuickTemplate {
                           data: {embed: <?php if(isset($_GET['embed']) && $_GET['embed'] != "false"){ echo "true"; } else { echo "false"; } ?>},
                           headers : { "cache-control": "no-cache" } 
                         });
-        
+            
             Backbone.emulateHTTP = true;
             Backbone.emulateJSON = true;
             

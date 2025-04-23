@@ -185,22 +185,6 @@ function isPublicNS($nsId) {
 }
 
 /**
- * Abort login if user is deleted
- */
-function onAbortLogin($user, $password, &$retval, &$msg){
-    $data = DBFunctions::select(array('mw_user'),
-                                array('user_id'),
-                                array('user_id' => $user->getId(),
-                                      'deleted' => 0));
-    if(count($data) > 0){
-        // User exists
-        return true;
-    }
-    // User does not exist/is deleted
-    return false;
-}
-
-/**
  * Retrieves the per-page permissions for the given page (title). Those are in addition to the ones inherited from the namespace
  *
  * @param Title $title

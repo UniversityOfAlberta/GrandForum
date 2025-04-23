@@ -2337,7 +2337,7 @@ class Person extends BackboneModel {
                     $this->isRoleOn(CI, $date));
         }
         $roles = array();
-        $role_objs = $this->getRolesDuring("1900-01-01", "2100-01-01");
+        $role_objs = $this->getRolesDuring(SOT, EOT);
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
                 $startDate = substr($r->getStartDate(), 0, 10);

@@ -53,7 +53,7 @@ class FECReflections extends SpecialPage {
             $students = @$blob_data['students'];
         }
         else{
-            $people = Person::getAllPeopleDuring(NI, "2000-01-01", "2100-01-01");
+            $people = Person::getAllPeopleDuring(NI, SOT, EOT);
             $people = Person::filterFaculty($people);
             $publications = array('pr' => array('journals' => array(), 
                                                 'conference' => array(),

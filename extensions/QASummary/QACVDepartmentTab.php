@@ -147,9 +147,9 @@ class QACVDepartmentTab extends AbstractTab {
 	        close();
 	    }
 	    
-        foreach(array_merge(Person::getAllPeopleDuring(NI, ($year-6).CYCLE_START_MONTH, "2100-01-01"), 
-                            Person::getAllPeopleDuring("ATS", ($year-6).CYCLE_START_MONTH, "2100-01-01")) as $person){
-            foreach($person->getUniversitiesDuring(($year-6).CYCLE_START_MONTH, "2100-01-01") as $uni){
+        foreach(array_merge(Person::getAllPeopleDuring(NI, ($year-6).CYCLE_START_MONTH, EOT), 
+                            Person::getAllPeopleDuring("ATS", ($year-6).CYCLE_START_MONTH, EOT)) as $person){
+            foreach($person->getUniversitiesDuring(($year-6).CYCLE_START_MONTH, EOT) as $uni){
                 if($uni['department'] == $this->department && 
                    $uni['university'] == "University of Alberta"){
                     $people[$person->getId()] = $person;

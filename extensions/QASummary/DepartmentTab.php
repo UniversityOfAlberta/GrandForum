@@ -118,7 +118,7 @@ class DepartmentTab extends AbstractTab {
         
         $awards = array();
         foreach($people as $person){
-            foreach($person->getPapersAuthored("Award", "1900-01-01", ($year+1)."-12-31") as $award){
+            foreach($person->getPapersAuthored("Award", SOT, ($year+1)."-12-31") as $award){
                 if($award->getData('scope') != ''){
                     $awards[$award->getData('scope')][] = $award;
                 }
@@ -201,7 +201,7 @@ class DepartmentTab extends AbstractTab {
         $patents = array();
         $spinOffs = array();
         foreach($people as $person){
-            foreach($person->getPapersAuthored("Patent/Spin-Off", "1900-01-01", ($year+1)."-12-31") as $patent){
+            foreach($person->getPapersAuthored("Patent/Spin-Off", SOT, ($year+1)."-12-31") as $patent){
                 if($patent->getType() == "Patent"){
                     $patents[] = $patent;
                 }
