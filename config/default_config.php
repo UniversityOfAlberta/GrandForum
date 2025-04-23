@@ -160,17 +160,16 @@
      */
     $config->setConst("INACTIVE",   "Inactive");
     $config->setConst("HQP",        "HQP");
-    $config->setConst("EXTERNAL",   "External");
+    $config->setConst("EXTERNAL",   "Assistant");
     $config->setConst("ACHAIR",     "AssocChair");
     $config->setConst("CHAIR",      "Chair");
-    $config->setConst("ADEAN",      "AssocDean");
     $config->setConst("VDEAN",      "ViceDean");
     $config->setConst("DEAN",       "Dean");
     $config->setConst("DEANEA",     "DeanEA");
     $config->setConst("EA",         "EA");
-    $config->setConst("NI",         "NI");
-    $config->setConst("AR",         "AR");
-    $config->setConst("CI",         "CI");
+    $config->setConst("NI",         "FacultyNI");
+    $config->setConst("AR",         "Faculty");
+    $config->setConst("CI",         "Faculty");
     $config->setConst("HR",         "HR");
     $config->setConst("FEC",        "FEC");
     $config->setConst("STAFF",      "Staff");
@@ -179,23 +178,67 @@
     
     $config->setValue("roleDefs", array(
         $config->getConst('INACTIVE')       => "Inactive",
-        $config->getConst('HQP')            => "Highly Qualified Person",
-        $config->getConst('EXTERNAL')       => "External",
-        $config->getConst('ACHAIR')         => "Associate Chair",
+        $config->getConst('HQP')            => "Highly Qualified Personnel",
+        $config->getConst('EXTERNAL')       => "Assistant",
         $config->getConst('CHAIR')          => "Chair",
         $config->getConst('EA')             => "Executive Assistant",
-        $config->getConst('NI')             => "Network Investigator",
-        $config->getConst('AR')             => "Affiliated Researcher",
-        $config->getConst('CI')             => "Co-Investigator",
+        $config->getConst('VDEAN')          => "Vice Dean",
+        $config->getConst('DEAN')           => "Dean",
+        $config->getConst('DEANEA')         => "Executive Assistant to the Dean",
+        $config->getConst('NI')             => "Faculty",
+        $config->getConst('AR')             => "Faculty",
+        $config->getConst('CI')             => "Faculty",
         $config->getConst('HR')             => "Human Resources",
         $config->getConst('FEC')            => "Faculty Evaluation Committee",
         $config->getConst('STAFF')          => "Staff",
         $config->getConst('MANAGER')        => "Manager",
         $config->getConst('ADMIN')          => "Admin"));
-        
-    $config->setValue("subRoles", array());
     
-    $config->setValue("roleAliases", array());
+    $config->setValue("wgRoles", array(
+        $config->getConst('HQP'), 
+        $config->getConst('EXTERNAL'), 
+        $config->getConst('CI'),
+        $config->getConst('CHAIR'),
+        $config->getConst('EA'),
+        $config->getConst('VDEAN'),
+        $config->getConst('DEAN'),
+        $config->getConst('DEANEA'),
+        $config->getConst('HR'),
+        $config->getConst('FEC'),
+        $config->getConst('STAFF'),
+        $config->getConst('MANAGER'),
+        $config->getConst('ADMIN')
+    ));
+    $config->setValue("wgAllRoles", array(
+        $config->getConst('EXTERNAL'),
+        $config->getConst('CHAIR'),
+        $config->getConst('EA'),
+        $config->getConst('VDEAN'),
+        $config->getConst('DEAN'),
+        $config->getConst('DEANEA'),
+        $config->getConst('CI'),
+        $config->getConst('HR'),
+        $config->getConst('FEC')
+    ));
+    
+    $config->setValue("subRoles", array(
+        "DD" => "Dean's Decision",
+        "DR" => "Dean's Recommendation",
+        "DA" => "Dean's Advice",
+        "CA" => "Chair's Advice",
+        "CR" => "Chair's Recommendation",
+        "FEC" => "Faculty Evaluation Committee",
+        "ATSEC" => "Academic Teaching Staff Evaluation Committee",
+        //"SPECIAL2020" => "Special2020",
+        "ViewProfile" => "View Profile",
+        "NoAR" => "No Annual Report",
+        "NoPool" => "No Pool"
+    ));
+    
+    $config->setValue("roleAliases", array("ATS" => $config->getConst('CI'),
+                                           "ATSEC" => $config->getConst('FEC'),
+                                           "FEC Engineering" => $config->getConst('FEC'),
+                                           "FEC Science" => $config->getConst('FEC')));
         
     /* Other */
     $config->setValue("analyticsCode", "");

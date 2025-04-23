@@ -26,9 +26,9 @@ class DepartmentTab extends AbstractTab {
         $phds = array();
         $techs = array();
         $pdfs = array();
-        $faculty = array_merge(Person::getAllPeopleDuring(NI, ($year-6).CYCLE_START_MONTH, "2100-01-01"),
-                               Person::getAllPeopleDuring("ATS", ($year-6).CYCLE_START_MONTH, "2100-01-01"), 
-                               Person::getAllPeopleDuring("Faculty of Arts", ($year-6).CYCLE_START_MONTH, "2100-01-01"));
+        $faculty = array_merge(Person::getAllPeopleDuring(NI, ($year-6).CYCLE_START_MONTH, EOT),
+                               Person::getAllPeopleDuring("ATS", ($year-6).CYCLE_START_MONTH, EOT), 
+                               Person::getAllPeopleDuring("Faculty of Arts", ($year-6).CYCLE_START_MONTH, EOT));
         foreach($faculty as $person){
             $person->getFecPersonalInfo();
             $depts = array_keys($person->departments);
