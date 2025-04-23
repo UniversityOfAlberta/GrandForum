@@ -470,22 +470,26 @@ class AdminUsageStats extends SpecialPage {
         
         @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
             <tr>
-                <td class='label'>Top 3 Topics</td>
+                <td class='label'>Top 5 Topics</td>
                 <td align='right'>
                     <table>
                         <tr><td style='font-weight: bold;'>{$topTopicsKeys[0]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[0]]}</td></tr>
                         <tr><td style='font-weight: bold;'>{$topTopicsKeys[1]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[1]]}</td></tr>
                         <tr><td style='font-weight: bold;'>{$topTopicsKeys[2]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[2]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topTopicsKeys[3]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[3]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topTopicsKeys[4]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[4]]}</td></tr>
                     </table>
                 </td>
             </tr>
             <tr>
-                <td class='label'>Top 3 Modules<br />(time in minutes)</td>
+                <td class='label'>Top 5 Modules<br />(time in minutes)</td>
                 <td align='right'>
                     <table>
                         <tr><td style='font-weight: bold;'>{$topModulesKeys[0]}&nbsp;</td><td align='right'>".number_format($topModules[$topModulesKeys[0]])."</td></tr>
                         <tr><td style='font-weight: bold;'>{$topModulesKeys[1]}&nbsp;</td><td align='right'>".number_format($topModules[$topModulesKeys[1]])."</td></tr>
                         <tr><td style='font-weight: bold;'>{$topModulesKeys[2]}&nbsp;</td><td align='right'>".number_format($topModules[$topModulesKeys[2]])."</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topModulesKeys[3]}&nbsp;</td><td align='right'>".number_format($topModules[$topModulesKeys[3]])."</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topModulesKeys[4]}&nbsp;</td><td align='right'>".number_format($topModules[$topModulesKeys[4]])."</td></tr>
                     </table>
                 </td>
             </tr>
