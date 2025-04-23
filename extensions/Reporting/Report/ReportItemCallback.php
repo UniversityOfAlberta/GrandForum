@@ -2110,7 +2110,7 @@ class ReportItemCallback {
         return $this->reportItem->getReport()->xmlName;
     }
     
-    function getReportSection(){
+    function getSectionName(){
         return $this->reportItem->getSection()->name;
     }
     

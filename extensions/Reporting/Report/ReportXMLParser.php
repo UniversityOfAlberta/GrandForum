@@ -346,7 +346,9 @@ class ReportXMLParser {
     function parseReportSection($node){
         foreach($node as $key => $n){
             $attributes = $n->attributes();
+            $old = null;
             if(isset($attributes->copy)){
+                $old = $n;
                 $n = $this->parser->xpath("//ReportSection[@id='{$attributes->copy}']");
                 $n = $n[0];
                 $attrs = get_object_vars($n->attributes());
@@ -357,6 +359,10 @@ class ReportXMLParser {
                 }
             }
             $children = $n->children();
+            if($old != null){
+                // Still parse any children to override the copied values
+                $children = array_merge((array)$children, (array)$old->children());
+            }
             $section = $this->report->getSectionById("{$attributes->id}");
             if(isset($attributes->type) || $section != null){
                 if(isset($attributes->type)){
