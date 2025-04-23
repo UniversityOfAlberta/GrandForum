@@ -21,7 +21,6 @@ class AdminUsageStatsAustralia extends AdminUsageStats {
         $this->showCommunityProgramStats();
         $this->showEducationStats();
         $this->showResourcesStats();
-        $this->showIntakeStats();
         $this->showCompletionStats();
     }
     
