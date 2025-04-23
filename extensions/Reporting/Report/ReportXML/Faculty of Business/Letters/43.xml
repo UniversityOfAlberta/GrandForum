@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/43" extends="Letters/Base">
+    <ReportSection id="letter" title="Sabbatical Application - Approved">
+        <ReportItem id="body">
+            <![CDATA[
+                {set(length, {getText(RP_SABBATICAL, SABBATICAL, LENGTH, 0, {$user_id}, 0)})}
+                {set(start6, {getText(RP_SABBATICAL, SABBATICAL, START6, 0, {$user_id}, 0)})}
+                {set(start12, {getText(RP_SABBATICAL, SABBATICAL, START12, 0, {$user_id}, 0)})}
+                
+                {set(end6, {date_format({strtotime({get(start6)} + 6 months - 1 day)})})}
+                {set(end12, {date_format({strtotime({get(start12)} + 12 months - 1 day)})})}
+                <p>
+                    This is to inform you that your application for a {replace(months, month, {get(length)})} sabbatical from 
+                        {if("{get(length)}" == "6 months", {get(start6)})}
+                        {if("{get(length)}" == "12 months", {date_format({strtotime({get(start12)})})})} 
+                    to 
+                        {if("{get(length)}" == "6 months", {get(end6)})}
+                        {if("{get(length)}" == "12 months", {get(end12)})} 
+                    has been approved.
+                </p>
+            
+                <p>Further information concerning your sabbatical will be sent to you by the Staff Service Centre. Please ensure that you have read Article A4 and Appendix A.3 of Schedule A of the Academic Agreement for detailed information concerning sabbaticals.</p>
+                
+                <p>I hope your sabbatical is satisfying and rewarding, and look forward to receiving your report on the sabbatical program as it was approved by FEC in accordance with Article A4.03.8 of Schedule A.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
