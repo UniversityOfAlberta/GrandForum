@@ -63,12 +63,16 @@ class SurveyTab extends AbstractTab {
     
     static function getHTML($year="", $project=null, $theme=null){
         if($year != ""){
-            $start = "{$year}-04";
-            $end = ($year+1)."-03";
+            $start = ($year-1)."-04";
+            $end = "{$year}-03";
+            $start1 = "{$year}-04";
+            $end1 = ($year+1)."-03";
         }
         else{
             $start = "1900-01";
             $end = "9999-01";
+            $start1 = $start;
+            $end1 = $end;
             $year = date('Y');
         }
         
@@ -119,7 +123,7 @@ class SurveyTab extends AbstractTab {
                                           FROM grand_report_blobs
                                           WHERE rp_type = 'RP_SELF_IDENTIFICATION'
                                           AND rp_item = 'SNAPSHOT'
-                                          AND rp_subitem BETWEEN '{$start}' AND '{$end}'
+                                          AND rp_subitem BETWEEN '{$start1}' AND '{$end1}'
                                           AND user_id IN (".implode(",", $peopleIds).")
                                           ORDER BY rp_subitem DESC");
             $skipped = 0;
