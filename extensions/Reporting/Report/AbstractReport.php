@@ -665,12 +665,12 @@ abstract class AbstractReport extends SpecialPage {
         $permissions = str_split($permissions);
         if(count($permissions) > 0){
             foreach($permissions as $permission){
-                $this->sectionPermissions[$role][$sectionId][$permission] = true;
+                $this->sectionPermissions["$role"][$sectionId][$permission] = true;
             }
         }
         else{
             // No permissions were explicitly defined, so add 'empty' permission (signals that the user has no permissions)
-            $this->sectionPermissions[$role][$sectionId][""] = true;
+            $this->sectionPermissions["$role"][$sectionId][""] = true;
         }
     }
     
