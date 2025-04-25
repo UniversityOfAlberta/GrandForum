@@ -131,7 +131,7 @@
             $msg = "";
             $subj = "";
             $phone = (isset($_POST['phone'])) ? "({$_POST['phone']})" : "";
-            $topic = (isset($_POST['topic'])) ? "({$_POST['topic']})" : "";
+            $topic = (isset($_POST['topic'])) ? "{$_POST['topic']}" : "";
             if(isset($_POST['img'])){
                 $subj = "Report Issue";
                 $msg = "<p>{$comments}</p><br />
