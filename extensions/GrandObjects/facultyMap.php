@@ -45,7 +45,7 @@ $facultyMap = array(
     "Rehabilitation Medicine" => array(
         "Physical Therapy",
         "Occupational Therapy",
-        "Communication Sciences & Disorders"
+        "Communication Sciences & Disorders", "COMMNCTN SCNCS & DSRDRS"
     )
 );
 
