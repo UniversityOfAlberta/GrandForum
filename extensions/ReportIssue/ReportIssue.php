@@ -24,7 +24,19 @@
                         <td class='label'><en>Email</en><fr>Courriel</fr>:</td>
                         <td class='value'><input type='text' name='email' value='{$email}' /></td>
                      </tr>";
-        
+        if($config->getValue('networkFullName') == 'AVOID AB'){
+            $loggedIn .= "<tr>
+                        <td class='label'><en>Topic</en><fr>Topic</fr>:</td>
+                        <td class='value'>
+                            <select name='topic'>
+                                <option></option>
+                                <option>Virtual Gym</option>
+                                <option>Vibrant Minds</option>
+                                <option>Other</option>
+                            </select>
+                        </td>
+                     </tr>";
+        }
         $wgOut->addHTML("<div title='Report Issue' id='reportIssueDialog' style='display:none;'>
             <p>
                 <en>If you are experiencing an issue on the current page, you can report it here.  Explain what the issue is and a report will be sent to {$config->getValue('supportEmail')}.  The following information will automatically be sent:</en>
@@ -119,10 +131,12 @@
             $msg = "";
             $subj = "";
             $phone = (isset($_POST['phone'])) ? "({$_POST['phone']})" : "";
+            $topic = (isset($_POST['topic'])) ? "({$_POST['topic']})" : "";
             if(isset($_POST['img'])){
                 $subj = "Report Issue";
                 $msg = "<p>{$comments}</p><br />
                         <b>User:</b> {$_POST['first_name']} {$_POST['last_name']} ({$email}) {$phone}<br />
+                        <b>Topic:</b> {$topic}<br />
                         <b>Browser:</b> {$_POST['browser']}<br />
                         <b>Url:</b> <a href='{$_POST['url']}'>{$_POST['url']}</a>";
             }
