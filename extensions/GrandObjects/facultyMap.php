@@ -46,6 +46,12 @@ $facultyMap = array(
         "Physical Therapy",
         "Occupational Therapy",
         "Communication Sciences & Disorders", "COMMNCTN SCNCS & DSRDRS"
+    ),
+    "Business" => array(
+        "Accounting & Business Analytics",
+        "Finance",
+        "Marketing, Business Economics & Law",
+        "Strategy, Entrepreneurship & Management"
     )
 );
 
@@ -95,6 +101,12 @@ $facultyMapSimple = array(
         "Physical Therapy",
         "Occupational Therapy",
         "Communication Sciences & Disorders"
+    ),
+    "Business" => array(
+        "Accounting & Business Analytics",
+        "Finance",
+        "Marketing, Business Economics & Law",
+        "Strategy, Entrepreneurship & Management"
     )
 );
 ?>
