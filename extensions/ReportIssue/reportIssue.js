@@ -60,6 +60,7 @@ $(document).ready(function(){
                     dataToSend.last_name = $("div#reportIssueDialog input[name=last_name]").val();
                     dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
                     dataToSend.comments = $("div#reportIssueDialog textarea").val();
+                    dataToSend.topic = $("div#reportIssueDialog select[name=topic]").val();
                     $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
                         $(this).dialog('close');
                         clearSuccess();
