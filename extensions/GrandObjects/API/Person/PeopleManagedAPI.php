@@ -7,7 +7,15 @@ class PeopleManagedAPI extends RESTAPI {
         if($me->isLoggedIn()){
             $people = array();
             if($me->isRoleAtLeast(ADMIN)){
-                $people[$me->getReversedName()] = $me;
+                $people[$me->getReversedName().$me->getId()] = $me;
+            }
+            if($me->isRoleAtLeast(STAFF)){
+                $faculty = array_merge(Person::getAllPeople(NI),
+                                       Person::getAllPeople("ATS"));
+                $faculty = Person::filterFaculty($faculty);
+                foreach($faculty as $person){
+                    $people[$person->getReversedName().$person->getId()] = $person;
+                }
             }
             foreach($me->getRelations('all', true) as $type){
                 foreach($type as $rel){
