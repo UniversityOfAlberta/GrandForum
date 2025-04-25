@@ -1,4 +1,215 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="../ChairTable">
-    
+    <ReportSection id="recommendations">
+        <ReportItemSet id="header">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
+                <Static>
+                    <![CDATA[
+                        <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_name}<br /><i>Generated: {$timestamp}</i></div>
+                        <script type='text/javascript'>
+                            $('#generated').after("<div style='position:absolute;top:0;right:0;padding: 20px 20px 0 200px;background:white;'>{$user_name}</div>");
+                        </script>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        <h1 style="margin-top:0;padding-top:0;">{get(title)} for {$user_name}</h1>
+                        <script type="text/javascript">
+                            $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
+                        </script>
+                    ]]>
+                </Static>
+                <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
+                        <![CDATA[
+                            <div style='width:100%; display:flex; gap: 10px;'>
+                                <div style='width:50%;'>
+                                    <h3 style='margin-top:0;'>Instructions</h3>
+                                    <ul>
+                                        <li>Click on a word in the document below to annotate it with a "Sticky Note".  (Only words in headers can have a sticky note added)</li>
+                                        <li>To delete an annotation, delete any text in the annotation and press the 'X' icon.</li>
+                                        <li>Make sure to press the "Save" button at the bottom of the page after you have made changes.</li>
+                                    </ul>
+                                </div>
+                                <div style='width:50%;'>
+                                    <h3 style='margin-top:0;'>Historical Data</h3>
+                                    <small>Note: These numbers are not reviewed by the Faculty members, so they may not be 100% accurate.</small>
+                                    <table class='wikitable'>
+                                        <tr>
+                                            <th></th>
+                                            <th style='width:75px;'>Refereed</th>
+                                            <th style='width:75px;'>Books</th>
+                                            <th style='width:75px;'>Patents</th>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Publication)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Book)}</td>
+                                            <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30, Patent)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Lifetime</b></td>
+                                            <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
+                                            <td align='center'>{user_lifetime_pubs_count(Book)}</td>
+                                            <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="assessment" type="Textarea" blobType="BLOB_TEXT" blobItem="ASSESMENT" blobSubItem="{$user_id}" rich="true" encrypt="true">
+                    <![CDATA[
+                        <h3>Assessment (Teaching, Research, Professional and Other Activities)</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="rating" type="Radio" options="Exemplary|Proficient|Satisfactory|Marginal|Unsatisfactory" descriptions="Consistently exceeds expectations; demonstrates the highest level of performance relative to one’s peers.|Frequently exceeds expectations; demonstrates above-average performance relative to one’s peers.|Meets expectations; demonstrate average performance relative to one’s peers.|Occasionally fails to meet expectations; demonstrate below-average performance relative to one’s peers.|Consistently fails to meet expectations. Demonstrate performance below minimum standards. Development recommended." orientation="vertical">
+                    <![CDATA[
+                        <h3>Performance Rating</h3>
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+                <If if="{!contains({$user_case_number}, T)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                        <![CDATA[
+                            <h3>Recommendations</h3>
+                            <table id="chairTable" class="wikitable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Increment</th>
+                                    <th>Tenure</th>
+                                    <th>Promotion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </If>
+                <Else>
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                        <![CDATA[
+                            <h3>Recommendations</h3>
+                            <table id="chairTable" class="wikitable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Increment</th>
+                                    <th>Promotion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </Else>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%" encrypt="true">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <hr class="pdfnodisplay" />
+                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
+                <ReportItem id="submit" type="SimpleReviewSubmit" section="{$section_name}" userId="{$user_id}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else id="else">
+                <![CDATA[
+                    <p>You are not allowed to view the recommendations for this user.</p>
+                ]]>
+            </Else>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" blobSection="FEC_DEAN_ADVICE" copy="recommendations">
+        <ReportItem id="vars">
+            <![CDATA[
+                {set(title, Dean's Advice)}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" blobSection="FEC_DEAN_DECISION" copy="recommendations">
+        <ReportItem id="vars">
+            <![CDATA[
+                {set(title, Dean's Decision)}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="chairs_advice" tooltip="Chair's Advice for Academic Staff Member" name="Chair Advice" blobSection="FEC_CHAIR_ADVICE" copy="recommendations">
+        <ReportItem id="vars">
+            <![CDATA[
+                {set(title, Chair's Advice)}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="sabbatical" delete="true" />
 </Report>
