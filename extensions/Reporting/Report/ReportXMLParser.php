@@ -236,22 +236,6 @@ class ReportXMLParser {
         global $config;
         if($this->parser->getName() == "Report"){
             $attributes = $this->parser->attributes();
-            if(isset($attributes->extends)){
-                $xmlFileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/{$attributes->extends}.xml";
-                if(file_exists($xmlFileName) && $this->report->xmlName != $attributes->extends){
-                    $this->report->setExtends("{$attributes->extends}");
-                    $exploded = explode(".", $xmlFileName);
-                    $exploded = explode("/", $exploded[count($exploded)-2]);
-                    $xml = file_get_contents($xmlFileName);
-                    $parser = new ReportXMLParser($xml, $this->report);
-                    $parser->parse($quick);
-                }
-                else{
-                    if($this->report->xmlName == $attributes->extends){
-                        $this->errors[] = "A Report cannot inherit it's self (Infinite inheritance!)";
-                    }
-                }
-            }
             if(isset($attributes->year)){
                 $year = $this->report->varSubstitute("{$attributes->year}");
                 if(intval("{$attributes->year}") < 0){
@@ -279,6 +263,22 @@ class ReportXMLParser {
             if(isset($attributes->endMonth)){
                 $endMonth = $this->report->varSubstitute("{$attributes->endMonth}");
                 $this->report->endMonth = "{$endMonth}";
+            }
+            if(isset($attributes->extends)){
+                $xmlFileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/{$attributes->extends}.xml";
+                if(file_exists($xmlFileName) && $this->report->xmlName != $attributes->extends){
+                    $this->report->setExtends("{$attributes->extends}");
+                    $exploded = explode(".", $xmlFileName);
+                    $exploded = explode("/", $exploded[count($exploded)-2]);
+                    $xml = file_get_contents($xmlFileName);
+                    $parser = new ReportXMLParser($xml, $this->report);
+                    $parser->parse($quick);
+                }
+                else{
+                    if($this->report->xmlName == $attributes->extends){
+                        $this->errors[] = "A Report cannot inherit it's self (Infinite inheritance!)";
+                    }
+                }
             }
             if(isset($attributes->name)){
                 $this->report->setName("{$attributes->name}");
