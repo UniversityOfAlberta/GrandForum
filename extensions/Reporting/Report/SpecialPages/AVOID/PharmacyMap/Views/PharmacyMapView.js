@@ -594,17 +594,6 @@ PharmacyMapView = Backbone.View.extend({
             output: data,
             findCat: this.findCat.bind(this)
         }));
-        if(me.isLoggedIn()){
-            this.clipboard = new PersonClipboard();
-            this.clipboard.fetch({
-                success: function () {
-                    this.addRows(this.model);
-                }.bind(this)
-            });
-        }
-        else {
-            this.addRows(this.model);
-        }
 
         if(this.renderMap){
             this.initMap();
@@ -637,6 +626,17 @@ PharmacyMapView = Backbone.View.extend({
             .css("text-align", "left");
         $(".dataTables_filter input").css("margin-left", "15px");
         this.drawButtons();
+        if(me.isLoggedIn()){
+            this.clipboard = new PersonClipboard();
+            this.clipboard.fetch({
+                success: function () {
+                    this.addRows(this.model);
+                }.bind(this)
+            });
+        }
+        else {
+            this.addRows(this.model);
+        }
         $(document).on('click', '.paginate_button', function () {
             this.refreshMap();
         }.bind(this));
