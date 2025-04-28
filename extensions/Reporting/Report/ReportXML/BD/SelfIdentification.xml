@@ -37,6 +37,7 @@
                                  {!=({getText(RP_SELF_IDENTIFICATION,FORM,DISABILITIES,0,{$user_id},0)},)},
                                  {!=({getText(RP_SELF_IDENTIFICATION,FORM,LANGUAGE,0,{$user_id},0)},)},
                                  {!=({getText(RP_SELF_IDENTIFICATION,FORM,EDUCATION,0,{$user_id},0)},)},
+                                 {!=({getText(RP_SELF_IDENTIFICATION,FORM,FEEDBACK,0,{$user_id},0)},)},
                                  {>=({getText(RP_SELF_IDENTIFICATION,FORM,SUBMITTED,0,{$user_id},0)},{subtract({substr({timestamp(Y-m-d)},0,4)},1)}{timestamp(-m-d)})})}">
                     <![CDATA[
                         Thank you for submitting the self identification survey.
@@ -50,7 +51,7 @@
                 </ElseIf>
                 <Else>
                     <!-- Not Submitted -->
-                    <ReportItem id="skip" type="Hidden" blobItem="SKIP" personId="{$user_id}" optional="true" encrypt="true">
+                    <!--ReportItem id="skip" type="Hidden" blobItem="SKIP" personId="{$user_id}" optional="true" encrypt="true">
                         <![CDATA[
                             <div id='skip'>{$item}</div>
                             <button id='skipButton' type='button'>I don't want to submit this information</button>
@@ -64,74 +65,94 @@
                                 });
                             </script>
                         ]]>
-                    </ReportItem>
+                    </ReportItem-->
                     <Static>
                         <![CDATA[
                             <p>Please read each question carefully and check the response that you feel best applies to you. You have the option to select “Prefer not to answer” for each question. To protect your privacy, you will not be able to edit your responses using the unique link once you have completed the survey. If you need assistance, please contact <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.</p>
                         ]]>
                     </Static>
-                    <ReportItem id="age" type="Integer" blobItem="AGE" personId="{$user_id}" min="1900" max="YEAR" width="2.3em" optional="true" encrypt="true">
+                    <ReportItem id="age" type="Radio" blobItem="AGE" personId="{$user_id}" options="‭8-24|25-34|35-44|45-54|‭55-64|‭65+|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>1. Age</h3>
-                            <p>What is your year of birth?</p>
+                            <p>‭What is your age group?‬</p>
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="gender" type="Radio" blobItem="GENDER" personId="{$user_id}" options="Gender fluid|Non-binary|Two-spirit|Trans man|Trans woman|Man|Woman|I do not identify with any option|Prefer not to answer" encrypt="true">
+                    <ReportItem id="gender" type="Checkbox" blobItem="GENDER" blobType="BLOB_ARRAY" personId="{$user_id}" options="‭Cisgender man|Cisgender woman|Gender-fluid|Non-binary|Trans man|Trans woman|Two-spirit|Other|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>2. Gender</h3>
-                            <p>What gender best describes your current gender identity?</p>
-                            {$item}
+                            <p>‭Which gender best describes you?<br /><i>‭Note: cisgender means you identify as the same gender that you were assigned at birth.‬</i>‬</p>
+                            <div id='gender' style='position: relative;'>
+                                {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="sex" type="Radio" blobItem="SEX" personId="{$user_id}" options="Asexual|Bisexual|Pansexual|Heterosexual|Two-spirit|Gay|Lesbian|Queer|I do not identify with the options provided|Prefer not to answer" encrypt="true">
+                    <ReportItem id="gender_other" type="Text" blobItem="GENDER_OTHER" personId="{$user_id}" optional="true" encrypt="true">
+                        <![CDATA[
+                                <div id='gender_other' style='position: absolute; left: 4.5em; top: 11.4em;'>{$item}</div>
+                            </div>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="sex" type="Checkbox" blobItem="SEX" blobType="BLOB_ARRAY" personId="{$user_id}" options="‭Heterosexual/straight‬|Gay|Lesbian|Queer|Bisexual|Pansexual|Two-spirit|Unsure/questioning|Other|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>3. Sexual orientation</h3>
-                            <p>What sexual orientation best describes how you currently think of yourself?</p>
-                            {$item}
+                            <p>‭Which sexual orientation best describes how you currently think of yourself?‬</p>
+                            <div id='sex' style='position: relative;'>
+                                {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="sex_other" type="Text" blobItem="SEX_OTHER" personId="{$user_id}" optional="true" encrypt="true">
+                        <![CDATA[
+                                <div id='sex_other' style='position: absolute; left: 4.5em; top: 13em;'>{$item}</div>
+                            </div>
                         ]]>
                     </ReportItem>
                     <ReportItem id="identity" type="Radio" blobItem="IDENTITY" personId="{$user_id}" options="Yes|No|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>4. Indigenous identity</h3>
-                            <p>Do you self-identify as Indigenous, that is, First Nations (North American Indian), Métis, or Inuk (Inuit)?</p>
+                            <p>Do you self-identify as Indigenous, that is, First Nations (North American Indian), Métis,‬ ‭or Inuk (Inuit)?</p>
                             {$item}
                         ]]>
                     </ReportItem>
                     <ReportItem id="clan" type="Text" blobItem="CLAN" personId="{$user_id}" options="Yes|No|Prefer not to answer" optional="true" encrypt="true">
                         <![CDATA[
-                            <p>If yes, what is your family, clan, band, or nation?</p>
+                            <p>‭If yes, what is your family, clan, band, or nation?</p>
                             {$item}
                         ]]>
                     </ReportItem>
                     <ReportItem id="minority" type="Radio" blobItem="MINORITY" personId="{$user_id}" options="Yes|No|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>5. Visible minority/Racialized individual</h3>
-                            <p><i>The <a href='https://laws-lois.justice.gc.ca/eng/acts/E-5.401/?wbdisable=false' target='_blank'>Employment Equity Act</a> defines visible minorities as "persons, other than Aboriginal peoples, who are non-Caucasian in race or non-white in colour."</i><br /> 
-    Do you self-identify as a racialized individual (member of a visible minority) in Canada?</p>
+                            <p><i>‭Note: The <a href='https://laws-lois.justice.gc.ca/eng/acts/E-5.401/?wbdisable=false' target='_blank'>Employment Equity Act</a> defines visible minorities as "persons, other than Aboriginal peoples, who are non-Caucasian in race or non-white in colour."</i><br />Do you self-identify as a racialized individual (member of a visible minority) in Canada?</p>
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="race" type="Radio" blobItem="RACE" personId="{$user_id}" options="Black|East Asian|Indigenous|Latin American|South Asian|Southeast Asian|West Asian|White|Population group not listed/Other|Prefer not to answer" descriptions="African, Afro-Caribbean, African-Canadian, Afro-Latin American|Chinese, Korean, Japanese, Taiwanese|First Nations, Métis, Inuit|Latin American, Hispanic descent|Indian, Pakistani, Sri Lankan, Indo-Caribbean|Filipino, Vietnamese, Cambodian, Thai|Arab, Persian (e.g., Iranian), Afghan|European (English, Scottish, Irish, French, German, Dutch)&lt;br />American, Canadian&lt;br />Oceania (Australian, New Zealander)||" encrypt="true">
+                    <ReportItem id="race" type="Checkbox" blobItem="RACE" blobType="BLOB_ARRAY" personId="{$user_id}" options="‭Arabic/Middle Eastern/West Asian‬|‭African/Caribbean/Black‬|‭East Asian‬|‭Indigenous (outside North America)‬|‭Latinx‬|‭South Asian‬|‭Southeast Asian‬|‭White‬|‭Mixed race|‭Other|‭Prefer not to answer‬" descriptions="Afghan, Egyptian, Iranian/Persian, Iraqi, Israeli, ‬‭Kurdish, Lebanese, Palestinian, Saudi Arabian,‬‭Turkish|‬African, Afro-Caribbean, African-Canadian,‬‭Afro-Latin American‬|Chinese, Korean, Japanese, Taiwanese|Aboriginal (Australia), Ainu, Guarani, Hmong, Inuit‬ ‭(Greenland), Maori, Maya, Sami, San|Mexican, Central American, South American‬|‭Bangladeshi, Indian, Nepalese, Pakistani, Sri Lankan‬|Burmese, Cambodian, Filipino, Indonesian, Lao,‬‭ Malaysian, Singaporean, Thai, Vietnamese|European, North American, Oceanian (Australia,‬‭New Zealand)|‭Any combination of racial categories‬||‬" encrypt="true">
                         <![CDATA[
                             <h3>6. Race or population group</h3>
-                            <p>What race or population group do you identify with most?</p>
-                            <div id='race'>{$item}</div>
+                            <p>‭Which category(ies) best describes you?‬</p>
+                            <div id='race' style='position: relative;'>
+                                {$item}
                             <script type='text/javascript'>
-                                $('div#race table').prepend("<tr><th>Race or population group</th><th>Description and <u>select</u> examples</th></tr>");
+                                $('div#race table').prepend("<tr><th>Race or population group</th><th>Description and <u>select</u> examples</th></tr>").css('width', 800);;
                             </script>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="race_other" type="Text" blobItem="RACE_OTHER" personId="{$user_id}" optional="true" encrypt="true">
+                        <![CDATA[
+                                <div id='sex_other' style='position: absolute; left: 5em; bottom: 2em;'>{$item}</div>
+                            </div>
                         ]]>
                     </ReportItem>
                     <ReportItem id="immigrant" type="Radio" blobItem="IMMIGRANT" personId="{$user_id}" options="Yes|No|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>7. Citizenship status</h3>
-                            <p>Are you an immigrant?</p>
+                            <p>‭Are you an immigrant to Canada?‬</p>
                             {$item}
                         ]]>
                     </ReportItem>
                     <ReportItem id="country" type="Text" blobItem="COUNTRY" personId="{$user_id}" optional="true" encrypt="true">
                         <![CDATA[
-                            <p>If you are an immigrant, what is your country of origin?</p>
+                            <p>If yes, what is your country of origin?</p>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -139,8 +160,17 @@
                         <![CDATA[
                             <h3>8. Disabilities</h3>
                             <p><i>The <a href='https://laws-lois.justice.gc.ca/eng/acts/A-0.6/' target='_blank'>Accessible Canada Act</a> defines disability as “any impairment, including a physical, mental, intellectual, cognitive, learning, communication or sensory impairment—or a functional limitation—whether permanent, temporary or episodic in nature or evident or not, that, in interaction with a barrier, hinders a person’s full and equal participation in society.”</i><br />
-    Do you consider yourself to be a person with a disability as described in the Act?</p>
+    ‭Do you consider yourself to be a person with a disability as described in the Act?</p>
                             {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="disabilities_list" type="Checkbox" blobItem="DISABILITIES_LIST" blobType="BLOB_ARRAY" personId="{$user_id}" options="‭Behavioural and/or emotional‬|‭Sensory impaired disorders‬|‭‭Physical‬|‭Developmental‬|Prefer not to answer‬" descriptions="Anxiety disorders; depression; personality‬ ‭disorders; other mental health disorders‬|‭Deaf; vision impairment; other sensory issues‬|‭Amputation(s); brain injury; chronic illness;‬‭epilepsy; multiple sclerosis; respiratory‬‭disorders; spinal cord injuries; other‬ ‭disabilities that impact physical abilities,‬‭stamina, and mobility|‭Attention deficit hyperactivity disorder‬ ‭(ADHD); autistic spectrum disorder (ASD);‬ ‭cerebral palsy; intellectual disability; learning‬ ‭disability‬|" encrypt="true" optional="true">
+                        <![CDATA[
+                            <p>‭If yes, how would you categorize your disability?</p>
+                            <div id='disabilities_list'>{$item}</div>
+                            <script type='text/javascript'>
+                                $('div#disabilities_list table').prepend("<tr><th>‭Disability Category‬</th><th>‭Examples (not necessarily an exhaustive‬ ‭list due to scope limitations)</th></tr>").css('width', 800);
+                            </script>
                         ]]>
                     </ReportItem>
                     <ReportItem id="language" type="Radio" blobItem="LANGUAGE" personId="{$user_id}" options="English|French|Another language|Prefer not to answer" labels="English|French|Another language:|Prefer not to answer" encrypt="true">
@@ -159,8 +189,21 @@
                     </ReportItem>
                     <ReportItem id="education" type="Radio" blobItem="EDUCATION" personId="{$user_id}" options="Yes|No|Prefer not to answer" encrypt="true">
                         <![CDATA[
-                            <h3>10. University education</h3>
-                            <p>Are you the first person or first generation in your family to attend university and/or attain a university degree?</p>
+                            <h3>10. First generation Student</h3>
+                            <p>‭Are you the first person or first generation in your family to attend university and/or attain‬ ‭a university degree?</p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="feedback" type="Radio" blobItem="FEEDBACK" personId="{$user_id}" options="Yes|No|Unsure|Prefer not to answer" encrypt="true">
+                        <![CDATA[
+                            <h3>11. Feedback</h3>
+                            <p>Do you feel that this survey was able to collect information that accurately reflected your‬ ‭identities?</p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="feedback_text" type="Textarea" blobItem="FEEDBACK_TEXT" personId="{$user_id}" options="Yes|No|Unsure|Prefer not to answer" encrypt="true" optional="true">
+                        <![CDATA[
+                            <p>‭Do you have any input on how we can revise and/or improve this survey to help‬ collect data that accurately reflects the identities of our team?</p>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -184,7 +227,18 @@
                                     _.each($("#reportMain form").serializeArray(), function(el){
                                         var id = el.name.split('extra0_').at(-1);
                                         if(id != 'snapshot'){
-                                            data[el.name.split('extra0_').at(-1)] = el.value;
+                                            if(id.indexOf("[]") != -1){
+                                                id = id.replaceAll("[]", "");
+                                                if(!_.isArray(data[id])){
+                                                    data[id] = new Array();
+                                                }
+                                                if(el.value != ""){
+                                                    data[id].push(el.value);
+                                                }
+                                            }
+                                            else{
+                                                data[id] = el.value;
+                                            }
                                         }
                                     });
                                     $('#snapshot input').val(JSON.stringify(data));

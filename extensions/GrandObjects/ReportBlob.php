@@ -274,49 +274,53 @@ class ReportBlob {
         DBFunctions::commit();
     }
 
-	/// Populates internal state with a complete row from the database.
-	private function populate(&$dbdata) {
-		$this->_blob_id = $dbdata['blob_id'];
-		$this->_year = $dbdata['year'];
-		$this->_owner_id = $dbdata['user_id'];
-		$this->_proj_id = $dbdata['proj_id'];
-		$this->_address = self::create_address($dbdata['rp_type'], $dbdata['rp_section'],
-			                                   $dbdata['rp_item'], $dbdata['rp_subitem']);
-		$this->_changed = $dbdata['changed'];
-		$this->_type = $dbdata['blob_type'];
-		if($dbdata['encrypted']){
-		    $this->_md5 = encrypt($dbdata['md5']);
-		}
-		else{
-		    $this->_md5 = $dbdata['md5'];
-		}
-		$this->_encrypted = $dbdata['encrypted'];
-		
-		$this->_data = ($this->_encrypted) ? decrypt($dbdata['data']) : $dbdata['data'];
+    /// Populates internal state with a complete row from the database.
+    private function populate(&$dbdata) {
+        $this->_blob_id = $dbdata['blob_id'];
+        $this->_year = $dbdata['year'];
+        $this->_owner_id = $dbdata['user_id'];
+        $this->_proj_id = $dbdata['proj_id'];
+        $this->_address = self::create_address($dbdata['rp_type'], $dbdata['rp_section'],
+                                               $dbdata['rp_item'], $dbdata['rp_subitem']);
+        $this->_changed = $dbdata['changed'];
+        $type = $dbdata['blob_type'];
+        if($this->_type == null){
+            $this->_type = $type;
+        }
 
-		// Undo data transformations, if necessary.
-		switch ($this->_type) {
-		case BLOB_ARRAY:
-		case BLOB_CSV:
-		case BLOB_OPTIONANDTEXT:
-		case BLOB_TEXTANDAPPROVE:
-		case BLOB_ARTIFACT:
-		case BLOB_PUBLICATION:
-		case BLOB_NEWMILESTONE:
-		case BLOB_MILESTONESTATUS:
-		case BLOB_CURRENTMILESTONE:
-		case BLOB_CONTRIBUTION:
-			// Unserialize.
-			$this->_data = unserialize($this->_data);
-			if ($this->_data === false)
-				throw new RuntimeException("Unserialization of blob #{$this->_blob_id} failed.");
-			break;
-		default:
-			// Assume any other method does not need transforming.
-            break;
-		}
-		return true;
-	}
+        if($dbdata['encrypted']){
+            $this->_md5 = encrypt($dbdata['md5']);
+        }
+        else{
+            $this->_md5 = $dbdata['md5'];
+        }
+        $this->_encrypted = $dbdata['encrypted'];
+
+        $this->_data = ($this->_encrypted) ? decrypt($dbdata['data']) : $dbdata['data'];
+
+        // Undo data transformations, if necessary.
+        switch ($type) {
+            case BLOB_ARRAY:
+            case BLOB_CSV:
+            case BLOB_OPTIONANDTEXT:
+            case BLOB_TEXTANDAPPROVE:
+            case BLOB_ARTIFACT:
+            case BLOB_PUBLICATION:
+            case BLOB_NEWMILESTONE:
+            case BLOB_MILESTONESTATUS:
+            case BLOB_CURRENTMILESTONE:
+            case BLOB_CONTRIBUTION:
+                // Unserialize.
+                $this->_data = unserialize($this->_data);
+                if ($this->_data === false)
+                    throw new RuntimeException("Unserialization of blob #{$this->_blob_id} failed.");
+                break;
+            default:
+                // Assume any other method does not need transforming.
+                break;
+        }
+        return true;
+    }
 
 
 	/// Loads the complete record (data + metadata) for a given address.

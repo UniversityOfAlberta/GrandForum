@@ -459,6 +459,10 @@ abstract class AbstractReportItem extends Callbackable {
                         }
                     }
                 }
+                if(is_string($blob_data)){
+                    // Convert to array
+                    $blob_data = array();
+                }
                 eval("\$blob_data$accessStr = \$value;");
                 $blob->store($blob_data, $blob_address, $this->encrypt);
                 break;

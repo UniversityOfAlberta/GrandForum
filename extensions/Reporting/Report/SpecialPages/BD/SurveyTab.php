@@ -3,55 +3,76 @@
 class SurveyTab extends AbstractTab {
 
     static $fields = array("age"          => array("label"  => "Age", 
-                                                   "values" => array()), 
+                                                   "values" => array("8-24",
+                                                                     "25-34",
+                                                                     "35-44",
+                                                                     "45-54",
+                                                                     "‭55-64",
+                                                                     "‭65+",
+                                                                     "Prefer not to answer")), 
                            "gender"       => array("label"  => "Gender", 
-                                                   "values" => array("Gender fluid",
+                                                   "values" => array("Cisgender man",
+                                                                     "Cisgender woman",
+                                                                     "Gender-fluid",
                                                                      "Non-binary",
-                                                                     "Two-spirit",
                                                                      "Trans man",
                                                                      "Trans woman",
-                                                                     "Man",
-                                                                     "Woman",
-                                                                     "I do not identify with any option")), 
-                           "sex"          => array("label"  => "Sexual orientation", 
-                                                   "values" => array("Asexual",
-                                                                     "Bisexual",
-                                                                     "Pansexual",
-                                                                     "Heterosexual",
                                                                      "Two-spirit",
+                                                                     "Other",
+                                                                     "Prefer not to answer")), 
+                           "sex"          => array("label"  => "Sexual orientation", 
+                                                   "values" => array("Heterosexual/straight",
                                                                      "Gay",
                                                                      "Lesbian",
                                                                      "Queer",
-                                                                     "I do not identify with the options provided")), 
+                                                                     "Bisexual",
+                                                                     "Pansexual",
+                                                                     "Two-spirit",
+                                                                     "Unsure/questioning",
+                                                                     "Other",
+                                                                     "Prefer not to answer")), 
                            "identity"     => array("label"  => "Indigenous identity", 
                                                    "values" => array("Yes",
-                                                                     "No")), 
+                                                                     "No",
+                                                                     "Prefer not to answer")), 
                            "minority"     => array("label"  => "Visible minority/Racialized individual",
                                                    "values" => array("Yes",
-                                                                     "No")),
+                                                                     "No",
+                                                                     "Prefer not to answer")),
                            "race"         => array("label"  => "Race or population group",
-                                                   "values" => array("Black",
-                                                                     "East Asian",
-                                                                     "Indigenous",
-                                                                     "Latin American",
-                                                                     "South Asian",
-                                                                     "Southeast Asian",
-                                                                     "West Asian",
-                                                                     "White",
-                                                                     "Population group not listed/Other")), 
+                                                   "values" => array("Arabic/Middle Eastern/West Asian‬",
+                                                                     "‭African/Caribbean/Black",
+                                                                     "‭East Asian",
+                                                                     "‭Indigenous (outside North America)‬",
+                                                                     "‭Latinx‬",
+                                                                     "‭South Asian",
+                                                                     "‭Southeast Asian‬",
+                                                                     "‭White",
+                                                                     "‭Mixed race",
+                                                                     "‭Other",
+                                                                     "‭Prefer not to answer")), 
                            "immigrant"    => array("label"  => "Citizenship status",
                                                    "values" => array("Yes",
-                                                                     "No")),
+                                                                     "No",
+                                                                     "Prefer not to answer")),
                            "disabilities" => array("label"  => "Disabilities",
                                                    "values" => array("Yes",
-                                                                     "No")),
+                                                                     "No",
+                                                                     "Prefer not to answer")),
                            "language"     => array("label"  => "Language",
                                                    "values" => array("English",
                                                                      "French",
-                                                                     "Another language")),
+                                                                     "Another language",
+                                                                     "Prefer not to answer")),
                            "education"    => array("label" => "University education",
                                                    "values" => array("Yes",
-                                                                     "No"))
+                                                                     "No",
+                                                                     "Prefer not to answer")),
+                           "feedback"    => array("label" => "Feedback",
+                                                  "values" => array("Yes",
+                                                                    "No",
+                                                                    "Unsure",
+                                                                    "Prefer not to answer"))
     );
 
     var $year;
@@ -138,26 +159,47 @@ class SurveyTab extends AbstractTab {
                 if($snapshot == null){
                     continue;
                 }
-                if($snapshot['skip'] != ''){
+                if(isset($snapshot['skip']) && $snapshot['skip'] != ''){
                     $skipped++;
                     continue;
                 }
                 foreach($data as $i => $options){
                     $found = false;
-                    if($i == 'age' && $snapshot[$i] != '' && is_numeric($snapshot[$i])){
+                    /*if($i == 'age' && $snapshot[$i] != '' && is_numeric($snapshot[$i])){
                         $age = $year - $snapshot[$i];
                         @$data[$i]['counts'][$age]++;
                         $found = true;
-                    }
+                    }*/
                     foreach($options['values'] as $j => $value){
-                        if($snapshot[$i] == $value){
+                        if(!isset($snapshot[$i])){
+                            continue;
+                        }
+                        if(!is_array($snapshot[$i]) && $snapshot[$i] == $value){
                             @$data[$i]['counts'][$j]++;
                             $found = true;
                             break;
                         }
+                        else if(is_array($snapshot[$i])){
+                            foreach($snapshot[$i] as $val){
+                                if($val == $value){
+                                    $found = true;
+                                    @$data[$i]['counts'][$j]++;
+                                }
+                            }
+                        }
                     }
                     if(!$found){
-                        @$data[$i]['counts']['none']++;
+                        if(!isset($snapshot[$i])){
+                            continue;
+                        }
+                        if(!is_array($snapshot[$i])){
+                            @$data[$i]['counts'][$snapshot[$i]]++;
+                        }
+                        else{
+                            foreach($snapshot[$i] as $val){
+                                @$data[$i]['counts'][$val]++;
+                            }
+                        }
                     }
                 }
             }
@@ -175,18 +217,18 @@ class SurveyTab extends AbstractTab {
                 $html .= "<div style='width:24%;'>
                             <h3>{$options['label']}</h3>
                             <table class='wikitable'>";
-                if($key == 'age' && isset($data[$key]['counts']) && is_array($data[$key]['counts'])){
+                /*if($key == 'age' && isset($data[$key]['counts']) && is_array($data[$key]['counts'])){
                     ksort($data[$key]['counts']);
                     foreach($data[$key]['counts'] as $j => $count){
                         $html .= "<tr><td><b>{$j}</b></td><td align='right' style='min-width: 3em;'>{$count}</td></tr>";
                     }
                 }
-                else{
+                else{*/
                     foreach($options['values'] as $j => $value){
                         $val = isset($data[$key]['counts'][$j]) ? $data[$key]['counts'][$j] : 0;
                         $html .= "<tr><td><b>{$value}</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
                     }
-                }
+                //}
                 //$val = isset($data[$key]['counts']['none']) ? $data[$key]['counts']['none'] : 0;
                 //$html .= "<tr><td><b>No Answer</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
                 $html .= "</table></div>";

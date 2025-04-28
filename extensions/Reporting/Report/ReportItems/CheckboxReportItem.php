@@ -23,11 +23,26 @@ class CheckboxReportItem extends AbstractReportItem {
 
         $output = "";
         $orientation = $this->getAttr('orientation', 'vertical');
-        if($orientation == 'vertical'){
+        $descriptions = explode("|", $this->getAttr('descriptions', ''));
+        if($orientation == 'vertical' && count($descriptions) != count($items)){
             $output = implode("\n", $items);
         }
-        else if($orientation == 'horizontal'){
+        else if($orientation == 'horizontal' && count($descriptions) != count($items)){
             $output = implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $items);
+        }
+        else if($orientation == 'vertical' && count($descriptions) == count($items)){
+            $output = "<table class='wikitable'>";
+            foreach($items as $i => $item){
+                $output .= @"<tr><td style='white-space:nowrap;'><b>{$item}</b></td><td>{$descriptions[$i]}</td></tr>";
+            }
+            $output .= "</table>";
+        }
+        else if($orientation == 'horizontal' && count($descriptions) == count($items)){
+            $width = 1/count($descriptions)*100;
+            $output = "<table class='wikitable'>";
+            $output .= "<tr><th style='width:$width%'><center>".implode("</center></th><th style='width:$width%;'><center>", $items)."</center></th></tr>";
+            $output .= "<tr><td class='small' valign='top'>".implode("</td><td class='small' valign='top'>", $descriptions)."</td></tr>";
+            $output .= "</table>";
         }
         $output = "<input type='hidden' name='{$this->getPostId()}[]' value='' />".$output;
         if($limit > 0){
