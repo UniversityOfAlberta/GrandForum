@@ -193,11 +193,17 @@ class SurveyTab extends AbstractTab {
                             continue;
                         }
                         if(!is_array($snapshot[$i])){
-                            @$data[$i]['counts'][$snapshot[$i]]++;
+                            if($snapshot[$i] != ""){
+                                @$data[$i]['counts'][count($data[$i]['values'])]++;
+                                $data[$i]['values'][] = $snapshot[$i];
+                            }
                         }
                         else{
                             foreach($snapshot[$i] as $val){
-                                @$data[$i]['counts'][$val]++;
+                                if($snapshot[$i] != ""){
+                                    @$data[$i]['counts'][count($data[$i]['values'])]++;
+                                    $data[$i]['values'][] = $val;
+                                }
                             }
                         }
                     }
