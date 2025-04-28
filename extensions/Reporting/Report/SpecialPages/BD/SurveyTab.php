@@ -213,7 +213,7 @@ class SurveyTab extends AbstractTab {
                           <small>*Submitted includes those who have skipped the survey</small>";
             }
             $html .= "<div style='display: flex; flex-wrap: wrap; gap: 10px;'>";
-            foreach(self::$fields as $key => $options){
+            foreach($data as $key => $options){
                 $html .= "<div style='width:24%;'>
                             <h3>{$options['label']}</h3>
                             <table class='wikitable'>";
