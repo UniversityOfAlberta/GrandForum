@@ -100,19 +100,6 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="background" type="EditableReportSection" name="Background Information" blobSection="INFORMATION">
-        <ReportItem id="background" type="TextareaReportItem" blobItem="BACKGROUND" rich="true" limit="1000" recommended="true">
-            <![CDATA[
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="references" type="TextareaReportItem" blobItem="REFERENCES" rich="true">
-            <![CDATA[
-                <p><b>References</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
     <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KPI" title="Key Performance Indicators">
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" start="0000-00-00" end="2100-00-00">
             <![CDATA[
