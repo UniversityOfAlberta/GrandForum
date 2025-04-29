@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Bridging Divides Diversity Self-Identification Survey" reportType="RP_SELF_IDENTIFICATION" year="0" ajax="true" encrypt="true">
+<Report name="‭Bridging Divides Self-Identification Survey‬" reportType="RP_SELF_IDENTIFICATION" year="0" ajax="true" encrypt="true">
     <Permissions>
         <Role role="LoggedOut">
             <SectionPermission id="form" permissions="rw" />
         </Role>
     </Permissions>
     <!-- Personal Information -->
-    <ReportSection id="form" type="EditableReportSection" blobSection="FORM" name="Self-Identification" title="Bridging Divides HQP Self-Identification Survey" showProgress="true" saveText="Submit">
+    <ReportSection id="form" type="EditableReportSection" blobSection="FORM" name="Self-Identification" title="‭Bridging Divides Self-Identification Survey‬" showProgress="true" saveText="Submit">
         <If if="{or({==({GET(candidate)},)},{!({isValidUserId({GET(candidate)})})})}">
             <![CDATA[
                 You must specify a valid id

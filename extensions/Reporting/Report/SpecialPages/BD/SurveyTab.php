@@ -165,11 +165,6 @@ class SurveyTab extends AbstractTab {
                 }
                 foreach($data as $i => $options){
                     $found = false;
-                    /*if($i == 'age' && $snapshot[$i] != '' && is_numeric($snapshot[$i])){
-                        $age = $year - $snapshot[$i];
-                        @$data[$i]['counts'][$age]++;
-                        $found = true;
-                    }*/
                     foreach($options['values'] as $j => $value){
                         if(!isset($snapshot[$i])){
                             continue;
@@ -223,20 +218,10 @@ class SurveyTab extends AbstractTab {
                 $html .= "<div style='width:24%;'>
                             <h3>{$options['label']}</h3>
                             <table class='wikitable'>";
-                /*if($key == 'age' && isset($data[$key]['counts']) && is_array($data[$key]['counts'])){
-                    ksort($data[$key]['counts']);
-                    foreach($data[$key]['counts'] as $j => $count){
-                        $html .= "<tr><td><b>{$j}</b></td><td align='right' style='min-width: 3em;'>{$count}</td></tr>";
-                    }
+                foreach($options['values'] as $j => $value){
+                    $val = isset($data[$key]['counts'][$j]) ? $data[$key]['counts'][$j] : 0;
+                    $html .= "<tr><td><b>{$value}</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
                 }
-                else{*/
-                    foreach($options['values'] as $j => $value){
-                        $val = isset($data[$key]['counts'][$j]) ? $data[$key]['counts'][$j] : 0;
-                        $html .= "<tr><td><b>{$value}</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
-                    }
-                //}
-                //$val = isset($data[$key]['counts']['none']) ? $data[$key]['counts']['none'] : 0;
-                //$html .= "<tr><td><b>No Answer</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
                 $html .= "</table></div>";
             }
             $html .= "</div></div>";
