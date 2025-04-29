@@ -196,6 +196,14 @@
                         "description": "",
                         "descriptionFr": "",
                         "tags": []
+                    },
+                    {
+                        "text": "Dragon Boating",
+                        "value": 114,
+                        "code": "CFN-ACT-OUT-DRAGON",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
                     }
                 ]
             },
