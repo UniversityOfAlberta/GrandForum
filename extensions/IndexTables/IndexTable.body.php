@@ -131,8 +131,10 @@ class IndexTable {
         $roles = array_filter(array_unique($roles));
         foreach($roles as $role){
             if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && Person::peopleWithRoleExists($role)){
+                $def = $config->getValue('roleDefs')[$role];
+                $def = ($role != $def) ? " ($def)" : "";
                 $selected = ($lastRole === NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-                $peopleSubTab['dropdown'][] = TabUtils::createSubTab(str_replace("Member", "Members", $role), "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+                $peopleSubTab['dropdown'][] = TabUtils::createSubTab(str_replace("Member", "Members", "{$role}{$def}"), "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }
         }
         
