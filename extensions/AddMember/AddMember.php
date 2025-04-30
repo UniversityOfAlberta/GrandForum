@@ -344,13 +344,11 @@ class AddMember extends SpecialPage{
         }
         ksort($roleOptions);
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
-        $rolesLabel->attr('style', 'width:160px;');
         $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
         $rolesRow = new FormTableRow("role_row");
         $rolesRow->append($rolesLabel)->append($rolesField);
         
         $subRolesLabel = new Label("subrole_label", Inflect::pluralize($config->getValue('subRoleTerm')), "The ".strtolower(Inflect::pluralize($config->getValue('subRoleTerm')))." the new user should belong to", VALIDATE_NOTHING);
-        $subRolesLabel->attr('style', 'width:160px;');
         $subRolesField = new VerticalCheckBox("subrole_field", Inflect::pluralize($config->getValue('subRoleTerm')), array(), array_flip($config->getValue('subRoles')), VALIDATE_NOTHING);
         $subRolesRow = new FormTableRow("subrole_row");
         $subRolesRow->attr('id', "subrole_row");
