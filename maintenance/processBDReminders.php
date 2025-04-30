@@ -79,41 +79,38 @@ function getBlobValue($item, $person){
 }
 
 $people = Person::getAllPeople();
-
 foreach($people as $person){
-    $submitted = (getBlobValue("SUBMITTED", $person) >= (date('Y') - 1).date('-m-d'));
-    $skipped = (getBlobValue("SKIPPED", $person) == "SKIP");
-    if(($person->getRegistration() <= "2024-03-31" || count($person->getRolesDuring("2023-04-01", "2024-03-31")) > 0) && !$submitted && !$skipped){
+    $submitted = (getBlobValue("SUBMITTED", $person) >= "2025-05-01");
+    if(($person->getRegistration() <= "2025-03-31" || count($person->getRolesDuring("2024-04-01", "2025-03-31")) > 0) && !$submitted){
         $candidate = urlencode(encrypt($person->getId()));
         $url = "https://forum.bridgingdivides.ca/index.php/Special:Report?report=SelfIdentification&candidate={$candidate}";
         $message = "";
-        if(date('Y-m-d') == "2024-09-13"){
+        if(date('Y-m-d') == "2025-05-01"){
             // First Email
             $message = "Dear Bridging Divides Member,
             
-                As part of the annual Bridging Divides (BD) progress reporting requirements, the Tri-agency Institutional Programs Secretariat (TIPS) requires all students or HQP, researchers, staff and collaborators who joined the program in the fiscal year April 1, 2023 – March 31, 2024 to complete a Self-Identification survey. The survey is operated by Bridging Divides and can be accessed via the BD Forum platform. A “prefer not to answer” option is available for each question, as well as an option to opt-out of the survey altogether.
+                As part of the annual Bridging Divides (BD) progress reporting requirements, the Tri-agency Institutional Programs Secretariat (TIPS) requires all students or HQP, researchers, staff and collaborators who joined the program in the fiscal year April 1, 2024 – March 31, 2025 to complete a Self-Identification survey. The survey is operated by Bridging Divides and can be accessed via the BD Forum platform. A “prefer not to answer” option is available for each question.
                 
-                We kindly ask that you complete or opt out of the survey by <b>Monday, September 30, 2024</b>.
+                We kindly ask that you complete the survey by <b>Friday, May 30, 2025</b>.
 
                 To access the survey, please follow the unique link below. This link is available to you only and should not be shared. As an extra measure to protect your information, <b>you will not be able to open the link while logged in to the Forum</b>. If you have a Forum account, please log out or open the link in an incognito/private browsing window.
                 
                 <a href='{$url}'>Survey Link</a>
 
-                Your information is anonymized and used exclusively to produce aggregate data. If you have questions about the collection, use and disclosure of this information please contact <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>. 
+                Your information is anonymized and used exclusively to produce aggregate data. This aggregate data may then inform the development and implementation of equity-diversity, and inclusion related initiatives to ensure programming is tailored to our program needs. If you have questions about the collection, use and disclosure of this information please contact <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>. 
                 Thank you in advance for your collaboration.
 
                 Kind regards,
 
                 The Bridging Divides Team";
         }
-        else if(date('Y-m-d') == "2024-09-18" || 
-                date('Y-m-d') == "2024-09-25"){
-            // Second & Third Email
+        else if(date('Y-d') == "2025-01"){
+            // Reminder email on first of each month
             $message = "Dear Bridging Divides Member,
             
-                This is a kind reminder to either complete or opt out of the Self-Identification Survey conducted by Bridging Divides. As part of our annual progress reporting requirements, all team members who joined during the fiscal year April 1, 2023 – March 31, 2024, are invited to submit their responses. <b>The survey takes less than 3 minutes to complete.</b>
+                This is a kind reminder to either complete or opt out of the Self-Identification Survey conducted by Bridging Divides. As part of our annual progress reporting requirements, all team members who joined during the fiscal year April 1, 2024 – March 31, 2025, are invited to submit their responses. <b>The survey takes less than 3 minutes to complete.</b>
 
-                Please complete or opt out of the survey by <b>Monday, September 30, 2024</b>, using this unique <a href='{$url}'>link</a>. <b>The link will not work if you are logged in to the Forum</b>. If you have questions about the collection, use, or disclosure of this information, please contact <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
+                Please complete or opt out of the survey <b>within the next 30 days</b>, using this unique <a href='{$url}'>link</a>. <b>The link will not work if you are logged in to the Forum</b>. If you have questions about the collection, use, or disclosure of this information, please contact <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
 
                 Kind regards,
 
