@@ -27,6 +27,11 @@
         </Static>
     </ReportSection>
     <ReportSection id="atsec">
+        <Static id="extra">
+            <![CDATA[
+                If the ATS report is missing, you may need to use <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=NextChairTable'>this link</a> instead
+            ]]>
+        </Static>
         <Static>
             <![CDATA[
                 <script type='text/javascript'>

@@ -176,7 +176,13 @@ abstract class AbstractReport extends SpecialPage {
                 }
                 if($this->currentSection == null){
                     // If this gets run, it will probably result in a permissions error, but atleast it error out later
-                    $this->currentSection = @$this->sections[0];
+                    foreach($this->sections as $section){
+                        if($section != null){
+                            $this->currentSection = $section;
+                            break;
+                        }
+                    }
+                    
                 }
                 @$this->currentSection->selected = true;
             }
