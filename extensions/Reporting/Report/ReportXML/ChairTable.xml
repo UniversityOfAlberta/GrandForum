@@ -187,7 +187,7 @@
                 <ReportItem id="recommendation" type="PDFReportItem" class="recommendationPDF downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             <td align='center'>
-                            {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
+                            {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report={$report_xmlname}&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
                     ]]>
                 </ReportItem>
             </If>
@@ -195,7 +195,7 @@
                 <ReportItem id="ca" type="PDFReportItem" reportType="ChairTable" class="downloadButton{$user_id}" section="Chair Advice" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             <td align='center'>
-                            {$item} <a class="viewCA" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Chair+Advice&userId={$user_id}'>Chair's Advice</a><br />
+                            {$item} <a class="viewCA" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report={$report_xmlname}&section=Chair+Advice&userId={$user_id}'>Chair's Advice</a><br />
                     ]]>
                 </ReportItem>
             </If>
@@ -758,21 +758,21 @@
             <If id="if_dr" if="{contains({$user_sub_roles},Dean's Recommendation)}">
                 <ReportItem id="dr" type="PDFReportItem" reportType="ChairTable" section="Recommendations" class="downloadButton{$user_id}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
-                            {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Dean's Recommendation</a><br />
+                            {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report={$report_xmlname}&section=Recommendations&userId={$user_id}'>Dean's Recommendation</a><br />
                     ]]>
                 </ReportItem>
             </If>
             <If id="if_da" if="{contains({$user_sub_roles},Dean's Advice)}">
                 <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" class="downloadButton{$user_id}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
-                            {$item} <a class="viewDA" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Dean+Advice&userId={$user_id}'>Dean's Advice</a><br />
+                            {$item} <a class="viewDA" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report={$report_xmlname}&section=Dean+Advice&userId={$user_id}'>Dean's Advice</a><br />
                     ]]>
                 </ReportItem>
             </If>
             <If id="if_dd" if="{contains({$user_sub_roles},Dean's Decision)}">
                 <ReportItem id="dd" type="PDFReportItem" reportType="ChairTable" section="Dean Decision" class="downloadButton{$user_id}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
-                            {$item} <a class="viewDD" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Dean+Decision&userId={$user_id}'>Dean's Decision</a><br />
+                            {$item} <a class="viewDD" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report={$report_xmlname}&section=Dean+Decision&userId={$user_id}'>Dean's Decision</a><br />
                     ]]>
                 </ReportItem>
             </If>
@@ -1194,7 +1194,7 @@
             <ReportItem id="recommendation" type="PDFReportItem" class="recommendationPDF downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>
-                        {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
+                        {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report={$report_xmlname}&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
                 ]]>
             </ReportItem>
             <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}" onlyGenerate="true" specialDownload=".downloadButton{$user_id}">
