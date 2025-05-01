@@ -187,6 +187,11 @@ class SurveyTab extends AbstractTab {
                                     }
                                 }
                             }
+                            if(is_array($snapshot[$field]) && count($snapshot[$field]) > 1){
+                                $val = implode("; ", $snapshot[$field]);
+                                @$data[$field."_combined"]['counts'][$val]++;
+                                $data[$field."_combined"]['values'][$val] = $val;
+                            }
                         }
                         if(!$found){
                             if(!isset($snapshot[$field])){
@@ -229,6 +234,13 @@ class SurveyTab extends AbstractTab {
                 foreach($options['values'] as $j => $value){
                     $val = isset($data[$key]['counts'][$j]) ? $data[$key]['counts'][$j] : 0;
                     $html .= "<tr><td><b>{$value}</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
+                }
+                if(isset($data["{$key}_combined"])){
+                    $html .= "<tr><th colspan='2'>Combined</th></tr>";
+                    foreach($data["{$key}_combined"]['values'] as $j => $value){
+                        $val = isset($data["{$key}_combined"]['counts'][$j]) ? $data["{$key}_combined"]['counts'][$j] : 0;
+                        $html .= "<tr><td><b>{$value}</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
+                    }
                 }
                 if(isset($data["{$key}_other"])){
                     $html .= "<tr><th colspan='2'>Other</th></tr>";
