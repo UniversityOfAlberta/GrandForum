@@ -165,40 +165,43 @@ class SurveyTab extends AbstractTab {
                 }
                 
                 foreach($data as $i => $options){
-                    $found = false;
-                    foreach($options['values'] as $j => $value){
-                        if(!isset($snapshot[$i])){
-                            continue;
-                        }
-                        if(!is_array($snapshot[$i]) && str_replace("‭8-24", "‭18-24", $snapshot[$i]) == $value){
-                            @$data[$i]['counts'][$j]++;
-                            $found = true;
-                            break;
-                        }
-                        else if(is_array($snapshot[$i])){
-                            foreach($snapshot[$i] as $val){
-                                if(str_replace("‭8-24", "‭18-24", $val) == $value){
-                                    $found = true;
-                                    @$data[$i]['counts'][$j]++;
+                    $fields = array($i, "{$i}_other");
+                    foreach($fields as $field){
+                        $found = false;
+                        foreach($options['values'] as $j => $value){
+                            if(!isset($snapshot[$field])){
+                                continue;
+                            }
+                            if(!is_array($snapshot[$field]) && str_replace("‭8-24", "‭18-24", $snapshot[$field]) == $value){
+                                @$data[$field]['counts'][$j]++;
+                                $found = true;
+                                break;
+                            }
+                            else if(is_array($snapshot[$field])){
+                                foreach($snapshot[$field] as $val){
+                                    if(str_replace("‭8-24", "‭18-24", $val) == $value){
+                                        $found = true;
+                                        @$data[$field]['counts'][$j]++;
+                                    }
                                 }
                             }
                         }
-                    }
-                    if(!$found){
-                        if(!isset($snapshot[$i])){
-                            continue;
-                        }
-                        if(!is_array($snapshot[$i])){
-                            if($snapshot[$i] != ""){
-                                @$data[$i]['counts'][count($data[$i]['values'])]++;
-                                $data[$i]['values'][] = $snapshot[$i];
+                        if(!$found){
+                            if(!isset($snapshot[$field])){
+                                continue;
                             }
-                        }
-                        else{
-                            foreach($snapshot[$i] as $val){
-                                if($snapshot[$i] != ""){
-                                    @$data[$i]['counts'][count($data[$i]['values'])]++;
-                                    $data[$i]['values'][] = $val;
+                            if(!is_array($snapshot[$field])){
+                                if($snapshot[$field] != ""){
+                                    @$data[$field]['counts'][count($data[$field]['values'])]++;
+                                    $data[$field]['values'][] = $snapshot[$field];
+                                }
+                            }
+                            else{
+                                foreach($snapshot[$field] as $val){
+                                    if($snapshot[$field] != ""){
+                                        @$data[$field]['counts'][count($data[$field]['values'])]++;
+                                        $data[$field]['values'][] = $val;
+                                    }
                                 }
                             }
                         }
@@ -216,12 +219,20 @@ class SurveyTab extends AbstractTab {
             }
             $html .= "<div style='display: flex; flex-wrap: wrap; gap: 10px;'>";
             foreach($data as $key => $options){
+                if(!isset($options['label'])){ continue; }
                 $html .= "<div style='width:24%;'>
                             <h3>{$options['label']}</h3>
                             <table class='wikitable'>";
                 foreach($options['values'] as $j => $value){
                     $val = isset($data[$key]['counts'][$j]) ? $data[$key]['counts'][$j] : 0;
                     $html .= "<tr><td><b>{$value}</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
+                }
+                if(isset($data["{$key}_other"])){
+                    $html .= "<tr><th colspan='2'>Other</th></tr>";
+                    foreach($data["{$key}_other"]['values'] as $j => $value){
+                        $val = isset($data["{$key}_other"]['counts'][$j]) ? $data["{$key}_other"]['counts'][$j] : 0;
+                        $html .= "<tr><td><b>{$value}</b></td><td align='right' style='min-width: 3em;'>{$val}</td></tr>";
+                    }
                 }
                 $html .= "</table></div>";
             }
