@@ -148,6 +148,7 @@ class SurveyTab extends AbstractTab {
                                           AND user_id IN (".implode(",", $peopleIds).")
                                           ORDER BY rp_subitem DESC");
             $skipped = 0;
+            $rows1 = array_values($rows);
             $data = self::$fields;
             $alreadyDone = array();
             foreach($rows as $row){
@@ -192,15 +193,15 @@ class SurveyTab extends AbstractTab {
                             }
                             if(!is_array($snapshot[$field])){
                                 if($snapshot[$field] != ""){
-                                    @$data[$field]['counts'][count($data[$field]['values'])]++;
-                                    $data[$field]['values'][] = $snapshot[$field];
+                                    @$data[$field]['counts'][$snapshot[$field]]++;
+                                    $data[$field]['values'][$snapshot[$field]] = $snapshot[$field];
                                 }
                             }
                             else{
                                 foreach($snapshot[$field] as $val){
                                     if($snapshot[$field] != ""){
-                                        @$data[$field]['counts'][count($data[$field]['values'])]++;
-                                        $data[$field]['values'][] = $val;
+                                        @$data[$field]['counts'][$val]++;
+                                        $data[$field]['values'][$val] = $val;
                                     }
                                 }
                             }
