@@ -148,7 +148,6 @@ class SurveyTab extends AbstractTab {
                                           AND user_id IN (".implode(",", $peopleIds).")
                                           ORDER BY rp_subitem DESC");
             $skipped = 0;
-            $rows1 = array_values($rows);
             $data = self::$fields;
             $alreadyDone = array();
             foreach($rows as $row){
@@ -165,24 +164,26 @@ class SurveyTab extends AbstractTab {
                     continue;
                 }
                 
-                foreach($data as $i => $options){
+                foreach(self::$fields as $i => $options){
                     $fields = array($i, "{$i}_other");
                     foreach($fields as $field){
                         $found = false;
-                        foreach($options['values'] as $j => $value){
-                            if(!isset($snapshot[$field])){
-                                continue;
-                            }
-                            if(!is_array($snapshot[$field]) && str_replace("‭8-24", "‭18-24", $snapshot[$field]) == $value){
-                                @$data[$field]['counts'][$j]++;
-                                $found = true;
-                                break;
-                            }
-                            else if(is_array($snapshot[$field])){
-                                foreach($snapshot[$field] as $val){
-                                    if(str_replace("‭8-24", "‭18-24", $val) == $value){
-                                        $found = true;
-                                        @$data[$field]['counts'][$j]++;
+                        if(strstr($field, "_other") === false){
+                            foreach($options['values'] as $j => $value){
+                                if(!isset($snapshot[$field])){
+                                    continue;
+                                }
+                                if(!is_array($snapshot[$field]) && str_replace("‭8-24", "‭18-24", $snapshot[$field]) == $value){
+                                    @$data[$field]['counts'][$j]++;
+                                    $found = true;
+                                    break;
+                                }
+                                else if(is_array($snapshot[$field])){
+                                    foreach($snapshot[$field] as $val){
+                                        if(str_replace("‭8-24", "‭18-24", $val) == $value){
+                                            $found = true;
+                                            @$data[$field]['counts'][$j]++;
+                                        }
                                     }
                                 }
                             }
@@ -192,14 +193,15 @@ class SurveyTab extends AbstractTab {
                                 continue;
                             }
                             if(!is_array($snapshot[$field])){
-                                if($snapshot[$field] != ""){
-                                    @$data[$field]['counts'][$snapshot[$field]]++;
-                                    $data[$field]['values'][$snapshot[$field]] = $snapshot[$field];
+                                $val = $snapshot[$field];
+                                if($val != ""){
+                                    @$data[$field]['counts'][$val]++;
+                                    $data[$field]['values'][$val] = $val;
                                 }
                             }
                             else{
                                 foreach($snapshot[$field] as $val){
-                                    if($snapshot[$field] != ""){
+                                    if($val != ""){
                                         @$data[$field]['counts'][$val]++;
                                         $data[$field]['values'][$val] = $val;
                                     }
