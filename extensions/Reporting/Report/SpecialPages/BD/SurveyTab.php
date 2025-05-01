@@ -187,7 +187,7 @@ class SurveyTab extends AbstractTab {
                                     }
                                 }
                             }
-                            if(is_array($snapshot[$field]) && count($snapshot[$field]) > 1){
+                            if(isset($snapshot[$field]) && is_array($snapshot[$field]) && count($snapshot[$field]) > 1){
                                 $val = implode("; ", $snapshot[$field]);
                                 @$data[$field."_combined"]['counts'][$val]++;
                                 $data[$field."_combined"]['values'][$val] = $val;
