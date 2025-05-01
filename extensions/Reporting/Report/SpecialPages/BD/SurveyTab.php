@@ -3,7 +3,7 @@
 class SurveyTab extends AbstractTab {
 
     static $fields = array("age"          => array("label"  => "Age", 
-                                                   "values" => array("8-24",
+                                                   "values" => array("18-24",
                                                                      "25-34",
                                                                      "35-44",
                                                                      "45-54",
