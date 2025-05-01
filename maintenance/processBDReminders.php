@@ -80,6 +80,11 @@ function getBlobValue($item, $person){
 
 $people = Person::getAllPeople();
 foreach($people as $person){
+    if($person->getName() == "Kevin.Moonoosawmy" || 
+       $person->getName() == "Dayle.Levine"){
+        // Skip these people
+        continue;
+    }
     $submitted = (getBlobValue("SUBMITTED", $person) >= "2025-05-01");
     if(($person->getRegistration() <= "2025-03-31" || count($person->getRolesDuring("2024-04-01", "2025-03-31")) > 0) && !$submitted){
         $candidate = urlencode(encrypt($person->getId()));
