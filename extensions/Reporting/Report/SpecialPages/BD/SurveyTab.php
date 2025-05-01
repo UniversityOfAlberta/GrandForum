@@ -163,20 +163,21 @@ class SurveyTab extends AbstractTab {
                     $skipped++;
                     continue;
                 }
+                
                 foreach($data as $i => $options){
                     $found = false;
                     foreach($options['values'] as $j => $value){
                         if(!isset($snapshot[$i])){
                             continue;
                         }
-                        if(!is_array($snapshot[$i]) && $snapshot[$i] == $value){
+                        if(!is_array($snapshot[$i]) && str_replace("‭8-24", "‭18-24", $snapshot[$i]) == $value){
                             @$data[$i]['counts'][$j]++;
                             $found = true;
                             break;
                         }
                         else if(is_array($snapshot[$i])){
                             foreach($snapshot[$i] as $val){
-                                if($val == $value){
+                                if(str_replace("‭8-24", "‭18-24", $val) == $value){
                                     $found = true;
                                     @$data[$i]['counts'][$j]++;
                                 }
