@@ -239,6 +239,8 @@ $apiRequest->addAction('Hidden','limsopportunitypmm/:id/files/:file_id', 'LIMSOp
 $apiRequest->addAction('Hidden','limsopportunitypmm/:opportunity_id/tasks', 'LIMSTaskAPIPmm');
 $apiRequest->addAction('Hidden','limstaskpmm', 'LIMSTaskAPIPmm');
 $apiRequest->addAction('Hidden','limstaskpmm/:id', 'LIMSTaskAPIPmm');
+$apiRequest->addAction('Hidden','limstaskpmm/:id/files/:file_id', 'LIMSTaskAPIPmm');
+
 
 // DataCollection
 $apiRequest->addAction('Hidden','datacollection', 'DataCollectionAPI');

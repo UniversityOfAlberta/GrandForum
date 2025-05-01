@@ -65,7 +65,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         
         this.editDialog.dialog({
             height: $(window).height() * 0.75,
-            width: 400,
+            width: 600,
             title: "Change Task Status"
         });
 

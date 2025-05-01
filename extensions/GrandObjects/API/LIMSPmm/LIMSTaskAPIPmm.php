@@ -3,8 +3,20 @@
 class LIMSTaskAPIPmm extends RESTAPI {
     
     function doGET(){
+        $files = ($this->getParam('files') != "");
+        $file_id = $this->getParam('file_id');
         if($this->getParam('id') != ""){
             $task = LIMSTaskPmm::newFromId($this->getParam('id'));
+            if($files && $file_id != ""){
+                $file = $task->getFile($file_id);
+                if(isset($file['data']) && isset($file['type']) && isset($file['filename'])){
+                    header('Content-Type: '.$file['type']);
+                    header('Content-Disposition: attachment; filename="'.$file['filename'].'"');
+                    $exploded = explode("base64,", $file['data']);
+                    echo base64_decode(@$exploded[1]);
+                    exit;
+                }
+            }
             return $task->toJSON();
         }
         else{
@@ -25,6 +37,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
             $task->comments = $this->POST('details');
             $task->statuses = (array)$this->POST('statuses');
             $_POST['comments'] = (array)$this->POST('comments');
+            $task->files = $this->POST('files');
             $task->create();
             return $task->toJSON();
         }
@@ -42,6 +55,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
             $task->comments = $this->POST('details');
             $task->statuses = (array)$this->POST('statuses');
             $_POST['comments'] = (array)$this->POST('comments');
+            $task->files = $this->POST('files');
             $task->update();
             return $task->toJSON();
         }

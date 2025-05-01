@@ -3,9 +3,7 @@
     <p>Are you sure you want to delete this customer/user (this will also delete the related requests and tasks)?</p>
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
-<% if(isAllowedToCreateLIMSPmmContacts){ %>
-    <button id="addContact">Add Customer/User</button>
-<% } %>
+
 <table id="contacts" frame="box" rules="all">
     <thead>
         <tr>
@@ -13,12 +11,10 @@
                 <th width="1%">Edit</th>
             <% } %>
             <th>Project</th>
-            <th>Project Manager</th>
-            <th style="white-space:nowrap;">Activity ID</th>
-            <th>Activity description</th>
-            <th>Assignee</th>
+            
+           
+            <th>Assignees & Status</th>
             <th>Task</th>
-            <th width="1%">Status</th>
             <th width="1%" style="white-space:nowrap;">Due Date</th>
         </tr>
     </thead>
@@ -44,29 +40,29 @@
                             </td>
                         <% } %>
                         <td>
-                            <a href="<%= contact.get('url') %>"><%= contact.get('title') %></a><br />
+                            <a href="<%= contact.get('project').url %>"><%= contact.get('project').name %></a><br />
+                           
                             <%= contact.get('details').email %>
                             <span style="display:none;"><%= contact.id %></span>
                         </td>
+                     
                         <td>
-                            <a href="<%= opportunity.owner.url %>"><%= opportunity.owner.name %></a><span style="display:none;"><%= contact.id %></span>
-                        </td>
-                        <td>
-                            <%= opportunity.requestId %><span style="display:none;"><%= opportunity.id %></span>
-                        </td>
-                        
-                        <td>
-                            <%= opportunity.description %><span style="display:none;"><%= opportunity.id %></span>
-                        </td>
-
-                        <td>
-                            <%= assigneesLinks %><span style="display:none;"><%= opportunity.id %></span>
+                            <% if (task.assignees && task.assignees.length > 0) { %>
+                                <ul style="padding-left: 1em; margin: 0;">
+                                    <% task.assignees.forEach(function(assignee) { 
+                                        var assigneeStatus = task.statuses && task.statuses[assignee.id] ? task.statuses[assignee.id] : '—';
+                                    %>
+                                        <li>
+                                            <a href="<%= assignee.url %>"><%= assignee.name %></a> - <%= assigneeStatus %>
+                                        </li>
+                                    <% }) %>
+                                </ul>
+                            <% } else { %>
+                                <em>No assignees</em>
+                            <% } %>
                         </td>
                         <td>
                             <%= task.task %><span style="display:none;"><%= task.id %></span>
-                        </td>
-                        <td style="white-space:nowrap;">
-                            <%= task.status %><span style="display:none;"><%= task.id %></span>
                         </td>
                         
                         <td align="center" style="white-space:nowrap;">

@@ -7,6 +7,7 @@ LIMSOpportunityViewPmm = Backbone.View.extend({
     },
     
     renderTasks: function(){
+        console.log("line10:",this.model.tasks.length);
         if(this.model.tasks.length > 0){
             this.$("#taskContainer").show();
         }

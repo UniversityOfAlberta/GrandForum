@@ -8,6 +8,7 @@ if (assignees && assignees.length > 0) {
             <tr>
                 <th>Assignee</th>
                 <th>Status</th>
+                <th>Document</th>
                 <th>Comments</th>
             </tr>
         </thead>
@@ -32,6 +33,22 @@ if (assignees && assignees.length > 0) {
                             <%= currentStatus %>
                         <% } %> 
                     </td>
+                    <td valign="top" height>
+                        <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
+                    
+                            <% if (currentStatus !== 'Closed') { %>
+                                <%= HTML.File(this, 'files.' + assigneeId) %>   
+                                <% } %>
+                    
+                           
+                    
+                        <% } else { %>
+                            <% if (currentStatus !== 'Closed') { %>
+                                <span>No document allowed</span>
+                            <% } %>
+                        <% } %>
+                    </td>
+                    
                     <td valign="top" height>
                         <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
                             <%= HTML.TextArea(this, 'comments.' + assigneeId, {placeholder: "Enter your comments here", style: "height: 75px;width:100%;box-sizing:border-box;margin:0;"}) %>                        <% } %> 
