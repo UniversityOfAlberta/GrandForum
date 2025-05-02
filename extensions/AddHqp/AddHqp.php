@@ -4,7 +4,7 @@ $wgSpecialPages['AddHqp'] = 'AddHqp'; # Let MediaWiki know about the special pag
 $wgExtensionMessagesFiles['AddHqp'] = $dir . 'AddHqp.i18n.php';
 $wgSpecialPageGroups['AddHqp'] = 'network-tools';
 
-//$wgHooks['ToolboxLinks'][] = 'AddHqp::createToolboxLinks';
+$wgHooks['ToolboxLinks'][] = 'AddHqp::createToolboxLinks';
 $wgHooks['SpecialPage_initList'][] = 'AddHqp::redirect';
 autoload_register('AddHqp/Validations');
 require_once("$dir../AddMember/AddMember.body.php");
@@ -32,6 +32,9 @@ class AddHqp extends SpecialPage{
                 $form->getElementById('employee_field')->setPOST('employeeId');
                 $form->getElementById('start_field')->setPOST('startDate');
                 $form->getElementById('end_field')->setPOST('endDate');
+                if($form->getElementById('role_field') != null){
+                    $form->getElementById('role_field')->setPOST('roles');
+                }
 
                 $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
                 $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
@@ -46,7 +49,7 @@ class AddHqp extends SpecialPage{
                     $_POST['wpName'] = $tmpName.($i++);
                 }
                 $_POST['user_name'] = $user->getName();
-                $_POST['wpUserType'] = HQP;
+                $_POST['wpUserType'] = (isset($_POST['roles'])) ? implode(", ", $_POST['roles']) : HQP;
                 $sendEmail = "false";
                 $_POST['wpSendMail'] = "$sendEmail";
                 $result = APIRequest::doAction('CreateUser', false);
@@ -140,18 +143,23 @@ class AddHqp extends SpecialPage{
         $deptRow = new FormTableRow("dept_row");
         $deptRow->append($deptLabel)->append($deptField);
         
-        $positionLabel = new Label("position_label", "HQP Academic Status", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
-        $positionField = new SelectBox("position_field", "HQP Academic Status", "", $positions, VALIDATE_NOTHING);
+        $positionLabel = new Label("position_label", "Academic Status", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
+        if($me->isRoleAtLeast(STAFF)){
+            $positionField = new ComboBox("position_field", "Academic Status", "", array_merge(array("Assistant Professor", "Associate Professor", "Professor", "ATS Assistant Lecturer", "ATS Associate Lecturer", "ATS Full Lecturer"), $positions), VALIDATE_NOTHING);
+        }
+        else{
+            $positionField = new SelectBox("position_field", "Academic Status", "", $positions, VALIDATE_NOTHING);
+        }
         $positionField->attr("style", "width: 260px;");
         $positionRow = new FormTableRow("university_row");
         $positionRow->append($positionLabel)->append($positionField);
         
-        $startLabel = new Label("start_label", "HQP Start Date", "The HQP's start date", VALIDATE_NOTHING);
+        $startLabel = new Label("start_label", "Start Date", "The HQP's start date", VALIDATE_NOTHING);
         $startField = new CalendarField("start_field", "Start Date", "", VALIDATE_NOTHING);
         $startRow = new FormTableRow("start_row");
         $startRow->append($startLabel)->append($startField);
         
-        $endLabel = new Label("end_label", "HQP End Date", "The HQP's end date", VALIDATE_NOTHING);
+        $endLabel = new Label("end_label", "End Date", "The HQP's end date", VALIDATE_NOTHING);
         $endField = new CalendarField("end_field", "End Date", "", VALIDATE_NOTHING);
         $endRow = new FormTableRow("end_row");
         $endRow->append($endLabel)->append($endField);
@@ -161,10 +169,43 @@ class AddHqp extends SpecialPage{
         $submitRow = new FormTableRow("submit_row");
         $submitRow->append($submitCell)->append($submitField);
         
+        // Roles
+        $roleValidations = VALIDATE_NOT_NULL;
+        if($me->isRoleAtLeast(STAFF)){
+            $roleValidations = VALIDATE_NOTHING;
+        }
+        $roleOptions = array();
+        foreach($wgRoles as $role){
+            if($me->isRoleAtLeast($role) && $role != CHAIR && 
+                                            $role != EA && 
+                                            $role != RMC){
+                $roleOptions[$config->getValue('roleDefs', $role)] = $role;
+            }
+        }
+        if($me->isRoleAtLeast(STAFF)){
+            if(in_array(CHAIR, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', CHAIR)] = CHAIR;
+            }
+            if(in_array(EA, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', EA)] = EA;
+            }
+            if(in_array(RMC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', RMC)] = RMC;
+            }
+        }
+        ksort($roleOptions);
+        $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
+        $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
+        $rolesRow = new FormTableRow("role_row");
+        $rolesRow->append($rolesLabel)->append($rolesField);
+        
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
-                  ->append($emailRow)
-                  ->append($employeeRow)
+                  ->append($emailRow);
+        if($me->isRoleAtLeast(STAFF)){
+            $formTable->append($rolesRow);
+        }
+        $formTable->append($employeeRow)
                   ->append($relRow)
                   ->append($universityRow)
                   ->append($deptRow)
@@ -191,8 +232,8 @@ class AddHqp extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(NI)){
-            $toolbox['Tools']['links'][] = TabUtils::createToolboxLink("Add ".HQP, "$wgServer$wgScriptPath/index.php/Special:AddHqp");
+        if($me->isRoleAtLeast(STAFF)){
+            $toolbox['Tools']['links'][] = TabUtils::createToolboxLink("Add Member", "$wgServer$wgScriptPath/index.php/Special:AddHqp");
         }
         return true;
     }
@@ -200,7 +241,7 @@ class AddHqp extends SpecialPage{
     static function redirect($specialPages){
         global $wgTitle, $wgServer, $wgScriptPath;
         $person = Person::newFromWgUser();
-        if($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "AddMember" && !$person->isRoleAtLeast(ADMIN)){
+        if($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "AddMember"){
             redirect("$wgServer$wgScriptPath/index.php/Special:AddHqp");
         }
         return true;

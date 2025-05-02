@@ -118,7 +118,11 @@ class CreateUserAPI extends API{
                                               'last_name' => @$_POST['wpLastName'],
                                               'user_real_name' => @$_POST['wpRealName']),
                                         array('user_id' => $person->getId()));
-                    
+                    if(implode("", $roles) != HQP && implode("", $roles) != ""){
+                        DBFunctions::update('mw_user',
+                                        array('full' => 1),
+                                        array('user_id' => $person->getId()));
+                    }
                     // Clear cache again
                     Person::$cache = array();
                     Person::$aliasCache = array();
