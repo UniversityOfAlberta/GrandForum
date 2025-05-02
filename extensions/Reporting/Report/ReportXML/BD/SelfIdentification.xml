@@ -75,7 +75,7 @@
                             {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="clan" type="Text" blobItem="CLAN" personId="{$user_id}" options="Yes|No|Prefer not to answer" optional="true" encrypt="true">
+                    <ReportItem id="clan" type="Text" blobItem="CLAN" personId="{$user_id}" optional="true" encrypt="true">
                         <![CDATA[
                             <p>‭If yes, what is your family, clan, band, or nation?</p>
                             {$item}
