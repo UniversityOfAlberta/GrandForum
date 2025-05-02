@@ -135,7 +135,7 @@
                             </script>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="language" type="Radio" blobItem="LANGUAGE" personId="{$user_id}" options="English|French|Another language|Prefer not to answer" labels="English|French|Another language:|Prefer not to answer" encrypt="true">
+                    <ReportItem id="language" type="Checkbox" blobItem="LANGUAGE" blobType="BLOB_ARRAY" personId="{$user_id}" options="English|French|Another language|Prefer not to answer" labels="English|French|Another language:|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>9. Language</h3>
                             <p>What language(s) did you first learn at home in childhood and still understand?</p>
@@ -145,7 +145,7 @@
                     </ReportItem>
                     <ReportItem id="language_other" type="Text" blobItem="LANGUAGE_OTHER" personId="{$user_id}" optional="true" encrypt="true">
                         <![CDATA[
-                                <div id='language_other' style='position: absolute; left: 10.5em; top: 3.4em;'>{$item}</div>
+                                <div id='language_other' style='position: absolute; left: 10.5em; top: 3.2em;'>{$item}</div>
                             </div>
                         ]]>
                     </ReportItem>
