@@ -152,6 +152,7 @@ class ReportXMLParser {
         global $config;
         if($this->parser->getName() == "Report"){
             $attributes = $this->parser->attributes();
+            $this->parseYear($attributes);
             if(isset($attributes->extends)){
                 $xmlFileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/{$attributes->extends}.xml";
                 if(file_exists($xmlFileName) && $this->report->xmlName != $attributes->extends){
@@ -168,34 +169,7 @@ class ReportXMLParser {
                     }
                 }
             }
-            if(isset($attributes->year)){
-                $year = $this->report->varSubstitute("{$attributes->year}");
-                if(intval("{$attributes->year}") < 0){
-                    $this->report->year = YEAR + intval("{$year}");
-                }
-                else{
-                    $this->report->year = "{$year}";
-                }
-                $this->report->startYear = intval($this->report->year) - 1;
-            }
-            if(isset($attributes->startYear)){
-                $startYear = $this->report->varSubstitute("{$attributes->startYear}");
-                if(intval("{$startYear}") < 0){
-                    // A negative number was provided, subtract that from the year
-                    $this->report->startYear = intval($this->report->year) + intval("{$startYear}");
-                }
-                else{
-                    $this->report->startYear = "{$startYear}";
-                }
-            }
-            if(isset($attributes->startMonth)){
-                $startMonth = $this->report->varSubstitute("{$attributes->startMonth}");
-                $this->report->startMonth = "{$startMonth}";
-            }
-            if(isset($attributes->endMonth)){
-                $endMonth = $this->report->varSubstitute("{$attributes->endMonth}");
-                $this->report->endMonth = "{$endMonth}";
-            }
+            $this->parseYear($attributes);
             if(isset($attributes->name)){
                 $this->report->setName("{$attributes->name}");
             }
@@ -245,6 +219,37 @@ class ReportXMLParser {
                     $this->parseReportSection($children->ReportSection);
                 }
             }
+        }
+    }
+    
+    function parseYear($attributes){
+        if(isset($attributes->year)){
+            $year = $this->report->varSubstitute("{$attributes->year}");
+            if(intval("{$attributes->year}") < 0){
+                $this->report->year = YEAR + intval("{$year}");
+            }
+            else{
+                $this->report->year = "{$year}";
+            }
+            $this->report->startYear = intval($this->report->year) - 1;
+        }
+        if(isset($attributes->startYear)){
+            $startYear = $this->report->varSubstitute("{$attributes->startYear}");
+            if(intval("{$startYear}") < 0){
+                // A negative number was provided, subtract that from the year
+                $this->report->startYear = intval($this->report->year) + intval("{$startYear}");
+            }
+            else{
+                $this->report->startYear = "{$startYear}";
+            }
+        }
+        if(isset($attributes->startMonth)){
+            $startMonth = $this->report->varSubstitute("{$attributes->startMonth}");
+            $this->report->startMonth = "{$startMonth}";
+        }
+        if(isset($attributes->endMonth)){
+            $endMonth = $this->report->varSubstitute("{$attributes->endMonth}");
+            $this->report->endMonth = "{$endMonth}";
         }
     }
     

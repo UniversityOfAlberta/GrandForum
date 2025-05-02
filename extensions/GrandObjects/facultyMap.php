@@ -48,10 +48,10 @@ $facultyMap = array(
         "Communication Sciences & Disorders", "COMMNCTN SCNCS & DSRDRS"
     ),
     "Business" => array(
-        "Accounting & Business Analytics",
-        "Finance",
-        "Marketing, Business Economics & Law",
-        "Strategy, Entrepreneurship & Management"
+        "Accounting & Business Analytics", "Acct&BusAnalytics",
+        "Finance", "Finance Dept",
+        "Marketing, Business Economics & Law", "Marketg Bus Econ & Law",
+        "Strategy, Entrepreneurship & Management", "StrategyEntrepreneur&Mgmt"
     )
 );
 

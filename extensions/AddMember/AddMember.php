@@ -5,7 +5,7 @@ $wgSpecialPages['AddMember'] = 'AddMember'; # Let MediaWiki know about the speci
 $wgExtensionMessagesFiles['AddMember'] = $dir . 'AddMember.i18n.php';
 $wgSpecialPageGroups['AddMember'] = 'network-tools';
 
-$wgHooks['ToolboxLinks'][] = 'AddMember::createToolboxLinks';
+//$wgHooks['ToolboxLinks'][] = 'AddMember::createToolboxLinks';
 
 autoload_register('AddMember/Validations');
 

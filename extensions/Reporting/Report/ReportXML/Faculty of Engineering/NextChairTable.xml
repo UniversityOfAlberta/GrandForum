@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report extends="ChairTable" year="{add(YEAR,1)}">
+    <ReportSection id="evaluations" delete="true" />
+    <ReportSection id="dean_evaluations" delete="true" />
+    <ReportSection id="deans_advice" delete="true" />
+    <ReportSection id="deans_decision" delete="true" />
+    <ReportSection id="chairs_advice" delete="true" />
+    <ReportSection id="atsec">
+        <ReportItem id="extra">
+            <![CDATA[
+                Click here to go back to the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable'>normal table</a>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="dept_hqp" delete="true" />
+</Report>
