@@ -159,7 +159,7 @@
                     <ReportItem id="feedback" type="Radio" blobItem="FEEDBACK" personId="{$user_id}" options="Yes|No|Unsure|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>11. Feedback</h3>
-                            <p>Do you feel that this survey was able to collect information that accurately reflected your‬ ‭identities?</p>
+                            <p>Do you feel that this survey was able to collect information that accurately reflected your identities as perceived within the Canadian context?</p>
                             {$item}
                         ]]>
                     </ReportItem>
