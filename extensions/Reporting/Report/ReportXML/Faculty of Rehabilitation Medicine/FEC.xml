@@ -90,6 +90,52 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
+    <ReportSection id="additionalInfo">
+        <Static>
+            <![CDATA[
+                <h2>Attachments</h2>
+                <p>Uploaded documents will be appended at the end of the submitted annual report pdf</p>
+            ]]>
+        </Static>
+        <For from="1" to="4">
+            <ReportItem id="file{getExtra()}_label" type="Text" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" placeholder="Type in a label..." encrypt="true">
+                <![CDATA[
+                    <div class='files' id='file{getExtra()}'>
+                        <h3>Document {getExtra()}</h3>
+                        {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="file{getExtra()}" type="Upload" blobItem="FILE{getExtra()}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <![CDATA[
+                        {$item}
+                        <script type='text/javascript'>
+                            if({getExtra()} == 1 || '{getBlobMD5()}' != ''){
+                                $('#file{getExtra()}').show(); 
+                            } 
+                            else {
+                                $('#file{getExtra()}').hide(); 
+                            }
+                        </script>
+                        <hr />
+                    </div>
+                ]]>
+            </ReportItem>
+        </For>
+        <Static>
+            <![CDATA[
+                <button id='addFile' type='button' class='pdfnodisplay' style='margin-top:1em;'>Add another file</button>
+                <script type='text/javascript'>
+                    $('#addFile').click(function(){
+                        $('.files:not(:visible)').first().show();
+                        $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                        if($('.files:not(:visible)').length == 0){
+                            $('#addFile').prop('disabled', true);
+                        }
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
     <ReportSection id="review" />
     <ReportSection id="submit" />
 </Report>

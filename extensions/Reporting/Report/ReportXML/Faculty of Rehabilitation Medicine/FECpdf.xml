@@ -146,4 +146,33 @@
             </If>
         </ReportItemSet>
     </ReportSection>
+    <ReportSection id="spots" pagebreak="true" />
+    <ReportSection id="documents" title="APPENDIX B: Attachments" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection" pagebreak="false" hLevel="2">
+        <Static>
+            <![CDATA[
+                <ul>
+            ]]>
+        </Static>
+        <For from="1" to="4">
+            <Static>
+                <![CDATA[
+                    {set(md5, {getBlobMD5(RP_FEC,FEC_ADDITIONAL_INFO,FILE{getExtra()},0,{$user_id},0)})}
+                    {set(label, {getText(RP_FEC,FEC_ADDITIONAL_INFO,FILE{getExtra()}_LABEL,0,{$user_id},0)})}
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    {if("{get(md5)}" != "", 
+                        <li><a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}'>Document {getExtra()}: {get(label)}</a></li>
+                    )}
+                ]]>
+            </Static>
+            <ReportItem id="file{getExtra()}" type="UploadPDFReportItem" blobItem="FILE{getExtra()}" blobType="BLOB_RAW" />
+        </For>
+        <Static>
+            <![CDATA[
+                </ul>
+            ]]>
+        </Static>
+    </ReportSection>
 </Report>
