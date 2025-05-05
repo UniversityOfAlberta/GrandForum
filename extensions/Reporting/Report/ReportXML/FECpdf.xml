@@ -836,7 +836,7 @@
         </If>
         
         <!-- Grants -->
-        <If if="{or({contains({$my_roles},Faculty)},{>({$user_grant_count},0)})}">
+        <If id="grants" if="{or({contains({$my_roles},Faculty)},{>({$user_grant_count},0)})}">
             <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
                 <![CDATA[
                     <h2>Research Grants and Contracts ({$user_grant_count})</h2>

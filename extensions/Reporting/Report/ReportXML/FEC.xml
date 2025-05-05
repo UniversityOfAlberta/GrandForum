@@ -954,7 +954,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <Static>
+        <Static id="grantsbookmark2">
             <![CDATA[
                 </tbody></table>
                 <h3>Continuing Grants</h3>
@@ -974,7 +974,7 @@
                     <tbody>
             ]]>
         </Static> 
-        <ReportItemSet id="grants" type="PersonContinuingGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
+        <ReportItemSet id="grants2" type="PersonContinuingGrantsReportItemSet" start="CYCLE_START" end="CYCLE_END">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
                 <![CDATA[
                     <tr>

@@ -8,6 +8,88 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="grants">
+        <ReportItem id="grantsbookmark">
+            <![CDATA[
+                <a class="button" style="position:absolute; top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
+                <h3>New Grants</h3>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th style='width:30%;'>Title</th>
+                            <th style='width:20%;'>Sponsor</th>
+                            <th style='width:5%;'>Starts</th>
+                            <th style='width:5%;'>Ends</th>
+                            <th style='width:5%;'>$Total</th>
+                            <th style='width:5%;'>Average<br />Amount/Year</th>
+                            <th style='width:5%; white-space:nowrap;'>P.I.<br />(y/n)</th>
+                            <th style='width: 25%;'>Joint With</th>
+                            <th>Footnotes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem> 
+        <ReportItemSet id="grants">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
+                <![CDATA[
+                    <tr>
+                        <td align='left'>{$grant_project_id}<br />
+                            {$grant_scientific_title}
+                        </td>
+                        <td align='left'>{$grant_sponsor}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                        <td align='right'>${$grant_total}</td>
+                        <td align='right'>${$grant_average}</td>
+                        <td align='center'>{$grant_is_pi}</td>
+                        <td>{$grant_people}</td>
+                        <td align='center' style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="grantsbookmark2">
+            <![CDATA[
+                </tbody></table>
+                <h3>Continuing Grants</h3>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th style='width:30%;'>Title</th>
+                            <th style='width:20%;'>Sponsor</th>
+                            <th style='width:5%;'>Starts</th>
+                            <th style='width:5%;'>Ends</th>
+                            <th style='width:5%;'>$Total</th>
+                            <th style='width:5%;'>Average<br />Amount/Year</th>
+                            <th style='width:5%; white-space:nowrap;'>P.I.<br />(y/n)</th>
+                            <th style='width: 25%;'>Joint With</th>
+                            <th>Footnotes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem> 
+        <ReportItemSet id="grants2">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
+                <![CDATA[
+                    <tr>
+                        <td align='left'>{$grant_project_id}<br />
+                            {$grant_scientific_title}
+                        </td>
+                        <td align='left'>{$grant_sponsor}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                        <td align='right'>${$grant_total}</td>
+                        <td align='right'>${$grant_average}</td>
+                        <td align='center'>{$grant_is_pi}</td>
+                        <td>{$grant_people}</td>
+                        <td align='center' style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
     <ReportSection id="review" />
     <ReportSection id="submit" />
 </Report>
