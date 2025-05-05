@@ -317,6 +317,13 @@
                     "title": "Priceline Pharmacies",
                     "tags": [ ]
                 }
+            ],
+            "Medicine Wise Resources": [
+                {
+                    "file": "https://www.nps.org.au/medicinewiseapp",
+                    "title": "Medicine Wise App",
+                    "tags": [ ]
+                }
             ]
         }
     },
