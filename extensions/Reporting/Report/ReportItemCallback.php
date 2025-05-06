@@ -873,7 +873,7 @@ class ReportItemCallback {
         $grant = Grant::newFromId($this->reportItem->productId);
         $average = $grant->getAverage();
         $adjusted = $grant->getAdjustedAmount();
-        return ($adjusted > 0) ? @number_format($adjusted, 2) : number_format($grant->getAverage(), 2);
+        return ($adjusted > 0) ? @number_format($adjusted, 2) : number_format($grant->getAverage(), 0);
     }
     
     function isGrantPI(){

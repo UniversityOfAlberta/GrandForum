@@ -8,6 +8,134 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="grants">
+        <ReportItem id="grantsbookmark">
+            <![CDATA[
+                <a class="button" style="position:absolute; top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:GrantPage">Manage Funding</a>
+                <h3>New Grants</h3>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th style='width:30%;'>Title</th>
+                            <th style='width:20%;'>Sponsor</th>
+                            <th style='width:5%;'>Starts</th>
+                            <th style='width:5%;'>Ends</th>
+                            <th style='width:5%;'>$Total</th>
+                            <th style='width:5%;'>Average<br />Amount/Year</th>
+                            <th style='width:5%; white-space:nowrap;'>P.I.<br />(y/n)</th>
+                            <th style='width: 25%;'>Joint With</th>
+                            <th>Footnotes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem> 
+        <ReportItemSet id="grants">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
+                <![CDATA[
+                    <tr>
+                        <td align='left'>{$grant_project_id}<br />
+                            {$grant_scientific_title}
+                        </td>
+                        <td align='left'>{$grant_sponsor}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                        <td align='right'>${$grant_total}</td>
+                        <td align='right'>${$grant_average}</td>
+                        <td align='center'>{$grant_is_pi}</td>
+                        <td>{$grant_people}</td>
+                        <td align='center' style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="grantsbookmark2">
+            <![CDATA[
+                </tbody></table>
+                <h3>Continuing Grants</h3>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th style='width:30%;'>Title</th>
+                            <th style='width:20%;'>Sponsor</th>
+                            <th style='width:5%;'>Starts</th>
+                            <th style='width:5%;'>Ends</th>
+                            <th style='width:5%;'>$Total</th>
+                            <th style='width:5%;'>Average<br />Amount/Year</th>
+                            <th style='width:5%; white-space:nowrap;'>P.I.<br />(y/n)</th>
+                            <th style='width: 25%;'>Joint With</th>
+                            <th>Footnotes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem> 
+        <ReportItemSet id="grants2">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$grant_id}">
+                <![CDATA[
+                    <tr>
+                        <td align='left'>{$grant_project_id}<br />
+                            {$grant_scientific_title}
+                        </td>
+                        <td align='left'>{$grant_sponsor}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                        <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                        <td align='right'>${$grant_total}</td>
+                        <td align='right'>${$grant_average}</td>
+                        <td align='center'>{$grant_is_pi}</td>
+                        <td>{$grant_people}</td>
+                        <td align='center' style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="additionalInfo">
+        <Static>
+            <![CDATA[
+                <h2>Attachments</h2>
+                <p>Uploaded documents will be appended at the end of the submitted annual report pdf</p>
+            ]]>
+        </Static>
+        <For from="1" to="4">
+            <ReportItem id="file{getExtra()}_label" type="Text" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" placeholder="Type in a label..." encrypt="true">
+                <![CDATA[
+                    <div class='files' id='file{getExtra()}'>
+                        <h3>Document {getExtra()}</h3>
+                        {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="file{getExtra()}" type="Upload" blobItem="FILE{getExtra()}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+                <![CDATA[
+                        {$item}
+                        <script type='text/javascript'>
+                            if({getExtra()} == 1 || '{getBlobMD5()}' != ''){
+                                $('#file{getExtra()}').show(); 
+                            } 
+                            else {
+                                $('#file{getExtra()}').hide(); 
+                            }
+                        </script>
+                        <hr />
+                    </div>
+                ]]>
+            </ReportItem>
+        </For>
+        <Static>
+            <![CDATA[
+                <button id='addFile' type='button' class='pdfnodisplay' style='margin-top:1em;'>Add another file</button>
+                <script type='text/javascript'>
+                    $('#addFile').click(function(){
+                        $('.files:not(:visible)').first().show();
+                        $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                        if($('.files:not(:visible)').length == 0){
+                            $('#addFile').prop('disabled', true);
+                        }
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
     <ReportSection id="review" />
     <ReportSection id="submit" />
 </Report>

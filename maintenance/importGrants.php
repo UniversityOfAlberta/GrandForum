@@ -5,7 +5,9 @@ require_once( "commandLine.inc" );
 $wgUser = User::newFromId(1);
 
 $lines = explode("\n", file_get_contents("grants/grants.csv"));
+$copis = explode("\n", file_get_contents("grants/grants_copi.csv"));
 
+// Grants
 foreach($lines as $line){
     $csv = str_getcsv($line);
     if(count($csv) > 1){
@@ -21,10 +23,10 @@ foreach($lines as $line){
         $requestedValue = trim($csv[16]); // Total Requested Value
         $initialValue = trim($csv[17]); // Initial Total Award Value
         $activatedDate = trim($csv[18]); //Award Activate Date
-        $proposalBegin = trim($csv[22]); // Proposal Begin Date
-        $proposalEnd = trim($csv[23]); // Proposal End Date
-        $awardBegin = trim($csv[24]); // Award_Begin_Date
-        $awardEnd = trim($csv[25]); // Award_End_Date
+        $proposalBegin = trim($csv[21]); // Proposal Begin Date
+        $proposalEnd = trim($csv[22]); // Proposal End Date
+        $awardBegin = trim($csv[23]); // Award_Begin_Date
+        $awardEnd = trim($csv[24]); // Award_End_Date
         
         if($status == "Awarded"){
             $person = Person::newFromEmployeeId($empid);
@@ -49,6 +51,34 @@ foreach($lines as $line){
                 $api->doPOST();
                 
                 echo "{$id}: {$awardBegin} - {$awardEnd}\n";
+            }
+        }
+    }
+}
+
+// Grants Co-PI
+foreach($copis as $line){
+    $csv = str_getcsv($line);
+    if(count($csv) > 1){
+        $id = trim($csv[0]); // Proposal Id
+        $empid = trim($csv[1]); // Principal Investigator Employee Id
+        $role = trim($csv[3]); // Team Role
+        if($role == "Co - PI"){
+            $copi = Person::newFromEmployeeId($empid);
+            $grant = Grant::newFromProjectId($id);
+            if($grant->getId() != 0 && $copi->getId() != 0){
+                $found = false;
+                foreach($grant->getCoPI() as $person){
+                    if($person instanceof Person && $person->getId() == $copi->getId()){
+                        $found = true;
+                        break;
+                    }
+                }
+                if(!$found){
+                    $grant->copi[] = $copi;
+                    $grant->update();
+                    echo "Adding Co-PI: {$id} - {$copi->getNameForForms()}\n";
+                }
             }
         }
     }
