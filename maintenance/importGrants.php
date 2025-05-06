@@ -69,7 +69,7 @@ foreach($copis as $line){
             if($grant->getId() != 0 && $copi->getId() != 0){
                 $found = false;
                 foreach($grant->getCoPI() as $person){
-                    if($person->getId() == $copi->getId()){
+                    if($person instanceof Person && $person->getId() == $copi->getId()){
                         $found = true;
                         break;
                     }
