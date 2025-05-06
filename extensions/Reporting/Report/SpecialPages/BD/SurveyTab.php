@@ -132,6 +132,10 @@ class SurveyTab extends AbstractTab {
                 if($person->isRoleDuring(AR, $start."-01", $end."-31")){
                     $groups['Affiliated Researcher'][] = $person->getId();
                 }
+                if($person->isRoleDuring(CI, $start."-01", $end."-31") || 
+                   $person->isRoleDuring(AR, $start."-01", $end."-31")){
+                    $groups['Researcher'][] = $person->getId();
+                }
                 if($person->isRoleDuring(HQP, $start."-01", $end."-31")){
                     $groups['HQP'][] = $person->getId();
                 }
