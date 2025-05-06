@@ -56,7 +56,7 @@ class AnnokiNamespaces {
      */
     function retrieveAllExtraNamespaces() {
         global $egAnnokiTablePrefix;
-        if(!Cache::exists("namespaces")){
+        if(!DBCache::exists("namespaces")){
 	        $dbr = wfGetDB( DB_REPLICA );
 	        $extraNSTable = $dbr->tableName("${egAnnokiTablePrefix}extranamespaces");
 	        $userTable = $dbr->tableName("user");
@@ -66,10 +66,10 @@ class AnnokiNamespaces {
 	        foreach ( $result as $row ) {
 		        $extraNS[] = get_object_vars($row);
 	        }
-	        Cache::store("namespaces", $extraNS);
+	        DBCache::store("namespaces", $extraNS);
 	    }
 	    else{
-	        $extraNS = Cache::fetch("namespaces");
+	        $extraNS = DBCache::fetch("namespaces");
 	    }
 	    return $extraNS;
     }

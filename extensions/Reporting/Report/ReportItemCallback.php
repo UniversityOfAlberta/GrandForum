@@ -1826,7 +1826,7 @@ class ReportItemCallback {
         }
         $address = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $cacheId = "blob_md5_{$year}_{$personId}_{$projectId}_".implode("_", $address);
-        if(!Cache::exists($cacheId)){
+        if(!DBCache::exists($cacheId)){
             $data = DBFunctions::execSQL("SELECT md5, encrypted 
                                           FROM grand_report_blobs 
                                           WHERE user_id = '{$personId}' 
@@ -1836,10 +1836,10 @@ class ReportItemCallback {
                                           AND rp_section = '{$section}' 
                                           AND rp_item = '{$blobId}' 
                                           AND rp_subitem = '{$subId}'");
-            Cache::store($cacheId, $data);
+            DBCache::store($cacheId, $data);
         }
         else{
-            $data = Cache::fetch($cacheId);
+            $data = DBCache::fetch($cacheId);
         }
 		$md5 = (@$data[0]['encrypted']) ? encrypt(@$data[0]['md5']) : @$data[0]['md5'];
 		if(!isset($_GET['preview']) && isset($_GET['generatePDF'])){

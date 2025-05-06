@@ -24,14 +24,14 @@ class Relationship extends BackboneModel {
             return self::$cache[$id];
         }
         $cacheId = "rel_{$id}";
-        if(Cache::exists($cacheId)){
-            $data = Cache::fetch($cacheId);
+        if(DBCache::exists($cacheId)){
+            $data = DBCache::fetch($cacheId);
         }
         else{
             $data = DBFunctions::select(array('grand_relations'),
                                         array('*'),
                                         array('id' => $id));
-            Cache::store($cacheId, $data);
+            DBCache::store($cacheId, $data);
         }
         $relationship = new Relationship($data);
         self::$cache[$relationship->id] = &$relationship;
@@ -141,7 +141,7 @@ class Relationship extends BackboneModel {
                                                 'end_date' => ZERO_DATE($this->getEndDate(), zull),
                                                 'comment' => $this->getComment()),true);
             $this->id = DBFunctions::insertId();
-            Cache::delete($this->getCacheId());
+            DBCache::delete($this->getCacheId());
             if($this->endDate == ""){
                 $this->endDate = ZOTT;
             }
@@ -180,7 +180,7 @@ class Relationship extends BackboneModel {
                                           array('id' => EQ($this->id)));
             if($status){
                 Relationship::$cache = array();
-                Cache::delete($this->getCacheId());
+                DBCache::delete($this->getCacheId());
                 return true;
             }
         }
@@ -192,7 +192,7 @@ class Relationship extends BackboneModel {
         if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
             $status = DBFunctions::delete('grand_relations',
                                           array('id' => EQ($this->id)));
-            Cache::delete($this->getCacheId());
+            DBCache::delete($this->getCacheId());
             $this->id = "";
             if($status){
                 Notification::addNotification($me, $this->getUser1(), "Relation Deleted", "You and {$this->getUser2()->getNameForForms()} are no longer related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");

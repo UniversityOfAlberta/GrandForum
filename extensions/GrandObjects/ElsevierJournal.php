@@ -15,8 +15,8 @@ class ElsevierJournal extends Journal {
     static function newFromIssn($issn){
         global $config;
         $md5 = md5($issn);
-        if(Cache::exists("elsevier_{$md5}")){
-            $output = Cache::fetch("elsevier_{$md5}");
+        if(DBCache::exists("elsevier_{$md5}")){
+            $output = DBCache::fetch("elsevier_{$md5}");
         }
         else{
             $url = "https://api.elsevier.com/content/serial/title/?issn={$issn}&apiKey={$config->getValue('elsevierApi')}&count=25&httpAccept=application/json";
@@ -25,7 +25,7 @@ class ElsevierJournal extends Journal {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $output = json_decode(curl_exec($ch));
             curl_close($ch);
-            Cache::store("elsevier_{$md5}", $output, 60*60*24*7);
+            DBCache::store("elsevier_{$md5}", $output, 60*60*24*7);
         }
         $journals = array();
         if(isset($output->{'serial-metadata-response'}->entry)){
@@ -57,8 +57,8 @@ class ElsevierJournal extends Journal {
         global $config;
         $search = urlencode($string);
         $md5 = md5($search);
-        if(Cache::exists("elsevier_{$md5}")){
-            $output = Cache::fetch("elsevier_{$md5}");
+        if(DBCache::exists("elsevier_{$md5}")){
+            $output = DBCache::fetch("elsevier_{$md5}");
         }
         else{
             if(preg_match("/^(.{4}-.{4})$/m", $search)){
@@ -73,7 +73,7 @@ class ElsevierJournal extends Journal {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $output = json_decode(curl_exec($ch));
             curl_close($ch);
-            Cache::store("elsevier_{$md5}", $output, 60*60*24*7);
+            DBCache::store("elsevier_{$md5}", $output, 60*60*24*7);
         }
         $journals = array();
         if(isset($output->{'serial-metadata-response'}->entry)){

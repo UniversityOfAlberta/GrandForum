@@ -93,7 +93,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
                                                 array('product_id' => $prod->getId(),
                                                       'user_id' => $person->getId(),
                                                       'year' => $this->getReport()->year-1));
-                            Cache::delete("reported_year_{$person->getId()}_{$prod->getId()}");
+                            DBCache::delete("reported_year_{$person->getId()}_{$prod->getId()}");
                         }
                         $tuple = self::createTuple();
                         $tuple['product_id'] = $prod->id;

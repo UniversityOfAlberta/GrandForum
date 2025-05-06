@@ -97,10 +97,10 @@ class PersonUniversitiesAPI extends RESTAPI {
         $this->params['personUniversityId'] = DBFunctions::insertId();
         $person->universityDuring = array();
         Person::$allUniversityCache = array();
-        Cache::delete("user_university");
-        Cache::delete("user_university_{$person->id}");
-        Cache::delete("user_university_{$person->id}", true);
-        Cache::delete("user_universities_{$person->id}", true);
+        DBCache::delete("user_university");
+        DBCache::delete("user_university_{$person->id}");
+        DBCache::delete("user_university_{$person->id}", true);
+        DBCache::delete("user_universities_{$person->id}", true);
         return $this->doGET();
     }
     
@@ -172,10 +172,10 @@ class PersonUniversitiesAPI extends RESTAPI {
 
         $person->universityDuring = array();
         Person::$allUniversityCache = array();
-        Cache::delete("user_university");
-        Cache::delete("user_university_{$person->id}");
-        Cache::delete("user_university_{$person->id}", true);
-        Cache::delete("user_universities_{$person->id}", true);
+        DBCache::delete("user_university");
+        DBCache::delete("user_university_{$person->id}");
+        DBCache::delete("user_university_{$person->id}", true);
+        DBCache::delete("user_universities_{$person->id}", true);
         return $this->doGET();
     }
     
@@ -197,10 +197,10 @@ class PersonUniversitiesAPI extends RESTAPI {
                             array('id' => $personUniversityId));
         $person->universityDuring = array();
         Person::$allUniversityCache = array();
-        Cache::delete("user_university");
-        Cache::delete("user_university_{$person->id}");
-        Cache::delete("user_university_{$person->id}", true);
-        Cache::delete("user_universities_{$person->id}", true);
+        DBCache::delete("user_university");
+        DBCache::delete("user_university_{$person->id}");
+        DBCache::delete("user_university_{$person->id}", true);
+        DBCache::delete("user_universities_{$person->id}", true);
         return json_encode(array());
     }
 }

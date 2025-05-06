@@ -21,14 +21,14 @@ class Role extends BackboneModel {
 	        return self::$cache[$id];
 	    }
 	    $cacheId = "role_{$id}";
-	    if(Cache::exists($cacheId)){
-	        $data = Cache::fetch($cacheId);
+	    if(DBCache::exists($cacheId)){
+	        $data = DBCache::fetch($cacheId);
 	    }
 	    else{
 	        $data = DBFunctions::select(array('grand_roles'),
 	                                    array('*'),
 	                                    array('id' => $id));
-	        Cache::store($cacheId, $data);
+	        DBCache::store($cacheId, $data);
 	    }
 		$role = new Role($data);
         self::$cache[$role->id] = &$role;
@@ -68,14 +68,14 @@ class Role extends BackboneModel {
 	                                        'end_date'   => ZERO_DATE($this->getEndDate(), zull),
 	                                        'comment'    => $this->getComment()));
 	    $id = DBFunctions::insertId();
-	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
-	    Cache::delete("rolesCache");
+	    DBCache::delete("personRolesDuring".$this->getPerson()->getId(), true);
+	    DBCache::delete("rolesCache");
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
 	    if($status && php_sapi_name() != "cli"){
             $this->id = $id;
-            Cache::delete($this->getCacheId());
+            DBCache::delete($this->getCacheId());
             Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role '{$this->getRole()}'", "{$person->getUrl()}");
             $supervisors = $person->getSupervisors();
             if(count($supervisors) > 0){
@@ -94,9 +94,9 @@ class Role extends BackboneModel {
 	                                        'end_date'   => ZERO_DATE($this->getEndDate(), zull),
 	                                        'comment'    => $this->getComment()),
 	                                  array('id' => EQ($this->getId())));
-	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
-	    Cache::delete("rolesCache");
-	    Cache::delete($this->getCacheId());
+	    DBCache::delete("personRolesDuring".$this->getPerson()->getId(), true);
+	    DBCache::delete("rolesCache");
+	    DBCache::delete($this->getCacheId());
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
@@ -108,9 +108,9 @@ class Role extends BackboneModel {
 	    $person = $this->getPerson();
 	    $status = DBFunctions::delete('grand_roles',
 	                                  array('id' => EQ($this->getId())));
-	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
-	    Cache::delete("rolesCache");
-	    Cache::delete($this->getCacheId());
+	    DBCache::delete("personRolesDuring".$this->getPerson()->getId(), true);
+	    DBCache::delete("rolesCache");
+	    DBCache::delete($this->getCacheId());
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;

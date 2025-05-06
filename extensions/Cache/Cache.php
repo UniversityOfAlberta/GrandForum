@@ -17,22 +17,19 @@ abstract class Cache {
 	}
 	
 	static function store($key, $data, $time=432000){
-	    global $wgSitename;
 	    if(self::$useCache){
-            apcu_store($wgSitename.$key, $data, $time);
+            apcu_store(static::prefix().$key, $data, $time);
         }
 	}
 	
 	static function fetch($key){
-	    global $wgSitename;
 	    if(self::$useCache){
-            return apcu_fetch($wgSitename.$key);
+            return apcu_fetch(static::prefix().$key);
         }
         return "";
 	}
 	
 	static function delete($key, $prefix=false){
-	    global $wgSitename;
 	    if(self::$useCache){
 	        if($prefix){
 	            $it = new APCUIterator('/^'.str_replace(")", '\)', str_replace("(", '\(', $wgSitename)).$key.'/', APC_ITER_KEY);
@@ -41,20 +38,33 @@ abstract class Cache {
 	            }
 	        }
 	        else{
-                apcu_delete($wgSitename.$key);
+                apcu_delete(static::prefix().$key);
             }
         }
 	}
 	
 	static function exists($key){
-	    global $wgSitename;
 	    if(self::$useCache){
-            return apcu_exists($wgSitename.$key);
+            return apcu_exists(static::prefix().$key);
         }
         return false;
 	}
 	
+	static function prefix(){
+	    global $wgSitename;
+	    return $wgSitename.'_';
+	}
+	
 	abstract function run();
+}
+
+abstract class DBCache extends Cache {
+    
+    static function prefix(){
+        global $config;
+	    return $config->getValue('dbName').'_';
+	}
+    
 }
 
 Cache::init();

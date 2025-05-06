@@ -95,8 +95,8 @@ class CreateUserAPI extends API{
                     Person::$cache = array();
                     Person::$aliasCache = array();
                     Person::$employeeIdCache = array();
-                    Cache::delete("allPeopleCache");
-                    Cache::delete("mw_user_{$person->getId()}");
+                    DBCache::delete("allPeopleCache");
+                    DBCache::delete("mw_user_{$person->getId()}");
                     
                     // Adding Relationship
                     if(isset($_POST['relationship']) && $_POST['relationship'] != ""){

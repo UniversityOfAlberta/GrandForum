@@ -1160,16 +1160,16 @@ class Paper extends BackboneModel{
             $issn = "-";
         }
         $cacheId = "journal_".md5("{$issn}_{$journal_title}_{$numerator}_{$denominator}");
-        if(!Cache::exists($cacheId)){
+        if(!DBCache::exists($cacheId)){
             $data = DBFunctions::execSQL("SELECT * FROM `grand_journals` 
                                           WHERE (`issn` = '{$issn}' OR `eissn` = '{$issn}' OR `title` = '{$journal_title}')
                                           AND `ranking_numerator` = '{$numerator}'
                                           AND `ranking_denominator` = '{$denominator}'
                                           LIMIT 1");
-            Cache::store($cacheId, $data);
+            DBCache::store($cacheId, $data);
         }
         else{
-            $data = Cache::fetch($cacheId);
+            $data = DBCache::fetch($cacheId);
         }
         if(count($data) > 0){
             return $data[0];
@@ -1349,8 +1349,8 @@ class Paper extends BackboneModel{
      */
     function getReportedForPerson($user_id){
         $cacheId = "reported_year_".$user_id."_".$this->getId();
-        if(Cache::exists($cacheId)){
-            return Cache::fetch($cacheId);
+        if(DBCache::exists($cacheId)){
+            return DBCache::fetch($cacheId);
         }
         else{
             $data = DBFunctions::select(array('grand_products_reported'),
@@ -1358,11 +1358,11 @@ class Paper extends BackboneModel{
                                 array('user_id' => EQ($user_id),
                                       'product_id' => EQ($this->getId())));
             if(isset($data[0])){
-                Cache::store($cacheId, $data[0]['year']);
+                DBCache::store($cacheId, $data[0]['year']);
                 return $data[0]['year'];
             }
             else{
-                Cache::store($cacheId, "");
+                DBCache::store($cacheId, "");
                 return "";
             }
         }
@@ -1745,7 +1745,7 @@ class Paper extends BackboneModel{
     
     // Returns an array of strings representing all the custom misc types
     static function getAllMiscTypes($category="%"){
-        if(!Cache::exists("{$category}_misc_types")){
+        if(!DBCache::exists("{$category}_misc_types")){
             $sql = "SELECT DISTINCT SUBSTR(type, 7) as type
                     FROM grand_products
                     WHERE SUBSTR(type, 1, 6) = 'Misc: ' AND
@@ -1755,10 +1755,10 @@ class Paper extends BackboneModel{
             foreach($data as $row){
                 $return[] = $row['type'];
             }
-            Cache::store("{$category}_misc_types", $return);
+            DBCache::store("{$category}_misc_types", $return);
         }
         else{
-            $return = Cache::fetch("{$category}_misc_types");
+            $return = DBCache::fetch("{$category}_misc_types");
         }
         return $return;
     }

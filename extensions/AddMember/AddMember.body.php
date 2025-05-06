@@ -29,9 +29,9 @@ class UserCreate {
                 }
             }
         }
-        Cache::delete("rolesCache");
-	    Cache::delete("allPeopleCache");
-        Cache::delete("mw_user_{$wgUser->getId()}");
+        DBCache::delete("rolesCache");
+	    DBCache::delete("allPeopleCache");
+        DBCache::delete("mw_user_{$wgUser->getId()}");
         UserCreate::addNewUserPage($wgUser);
         DBFunctions::commit();
         Person::$cache = array();

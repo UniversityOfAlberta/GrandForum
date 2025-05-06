@@ -76,7 +76,7 @@ class ReportStorage {
         DBFunctions::commit();
         // Update metadata.
         $cacheId = "pdf_{$this->_uid}_{$type}_{$year}";
-        Cache::delete($cacheId);
+        DBCache::delete($cacheId);
         return $this->load_metadata($tok);
     }
 
@@ -325,8 +325,8 @@ class ReportStorage {
             $cacheId = "pdf_{$uarr}_{$type}_{$year}";
         }
         
-        if($cacheId != "" && Cache::exists($cacheId)){
-            $data = Cache::fetch($cacheId);
+        if($cacheId != "" && DBCache::exists($cacheId)){
+            $data = DBCache::fetch($cacheId);
         }
         else{
             if (strlen($uarr) === 0)
@@ -353,7 +353,7 @@ class ReportStorage {
                     $data[$key]['token'] = urlencode(encrypt($row['token']));
                 }
             }
-            Cache::store($cacheId, $data);
+            DBCache::store($cacheId, $data);
         }
         return $data;
     }

@@ -139,7 +139,7 @@ class ReportBlob {
 	public function store($data, $address = null, $encrypt=false) {
 		// Some checks before trying to actually store data.
 		global $wgImpersonating, $wgRealUser;
-		Cache::delete($this->getCacheId($address));
+		DBCache::delete($this->getCacheId($address));
 		if ($address === null && $this->_address === null)
 			return false;
 
@@ -231,15 +231,15 @@ class ReportBlob {
 	        }
 		}
 		DBFunctions::commit();
-		Cache::delete("blob_md5_".$this->getCacheId($address, true));
-		//Cache::store($this->getCacheId($address), $data);
+		DBCache::delete("blob_md5_".$this->getCacheId($address, true));
+		//DBCache::store($this->getCacheId($address), $data);
 		return true;
 	}
 	
 	public function delete($address){
         $this->load($address, true);
-        Cache::delete($this->getCacheId($address));
-        Cache::delete("blob_md5_".$this->getCacheId($address, true));
+        DBCache::delete($this->getCacheId($address));
+        DBCache::delete("blob_md5_".$this->getCacheId($address, true));
         DBFunctions::delete('grand_report_blobs',
                             array('blob_id' => $this->_blob_id));
         DBFunctions::commit();
@@ -290,8 +290,8 @@ class ReportBlob {
 	/// of the Blob instance is unchanged.
 	public function load($address = null, $skipCache=false) {
 	    $cacheId = $this->getCacheId($address);
-	    if(Cache::exists($cacheId) && !$skipCache && $this->_owner_id !== "%" && strstr($this->_owner_id, "|") === false){
-	        $this->_data = Cache::fetch($cacheId);
+	    if(DBCache::exists($cacheId) && !$skipCache && $this->_owner_id !== "%" && strstr($this->_owner_id, "|") === false){
+	        $this->_data = DBCache::fetch($cacheId);
 	        if(is_array($this->_data) && isset($this->_data['encrypted'])){
 	            $this->_encrypted = 1;
 	            $this->_data = unserialize(decrypt($this->_data['encrypted']));
@@ -350,10 +350,10 @@ class ReportBlob {
 		if($this->_type != BLOB_RAW && $this->_owner_id !== "%"){
 		    // Cache the data as long as it isn't a raw type since they can be quite large
 		    if($this->_encrypted){
-		        Cache::store($cacheId, array('encrypted' => encrypt(serialize($this->_data))));
+		        DBCache::store($cacheId, array('encrypted' => encrypt(serialize($this->_data))));
 		    }
 		    else{
-		        Cache::store($cacheId, $this->_data);
+		        DBCache::store($cacheId, $this->_data);
 		    }
 		}
 		return $ret;

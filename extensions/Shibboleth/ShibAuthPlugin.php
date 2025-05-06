@@ -260,7 +260,7 @@ function ShibUserLoadFromSession($user, $result)
                               //'employee_id' => $shib_employeeId
                               ),
                         array('user_id' => EQ($user->getId())));
-    Cache::delete("mw_user_{$user->getId()}");
+    DBCache::delete("mw_user_{$user->getId()}");
 	if($config->getValue('shibDefaultRole') != ""){
 	    $role = $config->getValue('shibDefaultRole');
 	    if(strstr($role, "-Candidate") !== false){

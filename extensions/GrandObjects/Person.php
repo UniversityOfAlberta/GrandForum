@@ -427,9 +427,9 @@ class Person extends BackboneModel {
         if(isset(self::$userRows[$id])){
             // In the static variable
         }
-        else if(Cache::exists("mw_user_{$id}")){
+        else if(DBCache::exists("mw_user_{$id}")){
             // In APC
-            self::$userRows[$id] = Cache::fetch("mw_user_{$id}");
+            self::$userRows[$id] = DBCache::fetch("mw_user_{$id}");
         }
         else {
             // Not loaded yet
@@ -474,7 +474,7 @@ class Person extends BackboneModel {
                 if($row['deleted'] == 1){
                     $row = array();
                 }
-                Cache::store("mw_user_{$userId}", $row);
+                DBCache::store("mw_user_{$userId}", $row);
                 if(!empty($row) && (php_sapi_name() === "cli" || $userId == $id)){
                     self::$userRows[$userId] = $row;
                 }
@@ -595,8 +595,8 @@ class Person extends BackboneModel {
      */
     static function generateRolesCache(){
         if(empty(self::$rolesCache)){
-            if(Cache::exists("rolesCache")){
-                self::$rolesCache = Cache::fetch("rolesCache");
+            if(DBCache::exists("rolesCache")){
+                self::$rolesCache = DBCache::fetch("rolesCache");
             }
             else{
                 $sql = "SELECT r.id, r.user_id, r.role
@@ -614,7 +614,7 @@ class Person extends BackboneModel {
                 foreach(self::$rolesCache as $id => $roles){
                     self::$rolesCache[$id] = json_encode($roles);
                 }
-                Cache::store("rolesCache", self::$rolesCache);
+                DBCache::store("rolesCache", self::$rolesCache);
             }
         }
     }
@@ -667,8 +667,8 @@ class Person extends BackboneModel {
      */
     static function generateAllPeopleCache(){
         if(empty(self::$allPeopleCache)){
-            if(Cache::exists("allPeopleCache")){
-                self::$allPeopleCache = Cache::fetch("allPeopleCache");
+            if(DBCache::exists("allPeopleCache")){
+                self::$allPeopleCache = DBCache::fetch("allPeopleCache");
             }
             else{
                 $data = DBFunctions::select(array('mw_user'),
@@ -678,7 +678,7 @@ class Person extends BackboneModel {
                 foreach($data as $row){
                     self::$allPeopleCache[] = $row['user_id'];
                 }
-                Cache::store("allPeopleCache", self::$allPeopleCache);
+                DBCache::store("allPeopleCache", self::$allPeopleCache);
             }
         }
     }
@@ -1049,9 +1049,9 @@ class Person extends BackboneModel {
         Person::$aliasCache = array();
         Person::$employeeIdCache = array();
         Person::$fecInfoCache = array();
-        Cache::delete("allPeopleCache");
-        Cache::delete("mw_user_{$personToKeep->getId()}");
-        Cache::delete("mw_user_{$personToDelete->getId()}");
+        DBCache::delete("allPeopleCache");
+        DBCache::delete("mw_user_{$personToKeep->getId()}");
+        DBCache::delete("mw_user_{$personToDelete->getId()}");
     }
 
     // Constructor
@@ -1131,9 +1131,9 @@ class Person extends BackboneModel {
             Person::$aliasCache = array();
             Person::$userRows = array();
             Person::$fecInfoCache = array();
-            Cache::delete("rolesCache");
-            Cache::delete("allPeopleCache");
-            Cache::delete("mw_user_{$this->getId()}");
+            DBCache::delete("rolesCache");
+            DBCache::delete("allPeopleCache");
+            DBCache::delete("mw_user_{$this->getId()}");
             return true;
         }
         return false;
@@ -1157,9 +1157,9 @@ class Person extends BackboneModel {
             Person::$aliasCache = array();
             Person::$userRows = array();
             Person::$fecInfoCache = array();
-            Cache::delete("rolesCache");
-            Cache::delete("allPeopleCache");
-            Cache::delete("mw_user_{$this->getId()}");
+            DBCache::delete("rolesCache");
+            DBCache::delete("allPeopleCache");
+            DBCache::delete("mw_user_{$this->getId()}");
             return $status;
         }
         return false;
@@ -1170,8 +1170,8 @@ class Person extends BackboneModel {
         if($me->isRoleAtLeast(MANAGER)){
             DBFunctions::delete('grand_names_cache',
                                 array('user_id' => EQ($this->getId())));
-            Cache::delete("allPeopleCache");
-            Cache::delete("mw_user_{$this->getId()}");
+            DBCache::delete("allPeopleCache");
+            DBCache::delete("mw_user_{$this->getId()}");
             return DBFunctions::update('mw_user',
                                  array('deleted' => 1),
                                  array('user_id' => EQ($this->getId())));
@@ -1655,13 +1655,13 @@ class Person extends BackboneModel {
         if($this->university !== false){
             return $this->university;
         }
-        if(!Cache::exists("user_university_{$this->id}")){
+        if(!DBCache::exists("user_university_{$this->id}")){
             self::generateUniversityCache();
             $this->university = @self::$universityCache[$this->id];
-            Cache::store("user_university_{$this->id}", $this->university);
+            DBCache::store("user_university_{$this->id}", $this->university);
         }
         else{
-            $this->university = Cache::fetch("user_university_{$this->id}");
+            $this->university = DBCache::fetch("user_university_{$this->id}");
         }
         return $this->university;
     }
@@ -1767,8 +1767,8 @@ class Person extends BackboneModel {
         if(!isset(self::$allUniversityCache[$id]) && !self::$allUniversityCacheDone){
             $data = array();
             if(count(self::$allUniversityCache) <= 500){
-                if(Cache::exists("user_universities_{$id}")){
-                    $data = Cache::fetch("user_universities_{$id}");
+                if(DBCache::exists("user_universities_{$id}")){
+                    $data = DBCache::fetch("user_universities_{$id}");
                 }
                 else{
                     $sql = "SELECT id, user_id, university_name, department, position, research_area, SUBSTR(start_date,1,10) as start_date, SUBSTR(end_date,1,10) as end_date, `primary`
@@ -1778,12 +1778,12 @@ class Person extends BackboneModel {
                             AND uu.user_id = '{$id}'
                             ORDER BY COALESCE(end_date, '".EOT."') DESC, start_date DESC, id DESC";
                     $data = DBFunctions::execSQL($sql);
-                    Cache::store("user_universities_{$id}", $data);
+                    DBCache::store("user_universities_{$id}", $data);
                 }
             }
             else{
-                if(Cache::exists("user_university")){
-                    $data = Cache::fetch("user_university");
+                if(DBCache::exists("user_university")){
+                    $data = DBCache::fetch("user_university");
                 }
                 else{
                     $sql = "SELECT id, user_id, university_name, department, position, research_area, SUBSTR(start_date,1,10) as start_date, SUBSTR(end_date,1,10) as end_date, `primary`
@@ -1792,7 +1792,7 @@ class Person extends BackboneModel {
                             AND uu.position_id = p.position_id
                             ORDER BY COALESCE(end_date, '".EOT."') DESC, start_date DESC, id DESC";
                     $data = DBFunctions::execSQL($sql);
-                    Cache::store("user_university", $data);
+                    DBCache::store("user_university", $data);
                 }
                 self::$allUniversityCache = array();
                 self::$allUniversityCacheDone = true;
@@ -1865,8 +1865,8 @@ class Person extends BackboneModel {
      */
     function getKeywords($delim=null){
         $cacheId = "keywords_{$this->getId()}";
-        if(Cache::exists($cacheId)){
-            $keywords = Cache::fetch($cacheId);
+        if(DBCache::exists($cacheId)){
+            $keywords = DBCache::fetch($cacheId);
         }
         else{
             $data = DBFunctions::select(array('grand_person_keywords'),
@@ -1876,7 +1876,7 @@ class Person extends BackboneModel {
             foreach($data as $row){
                 $keywords[] = $row['keyword'];
             }
-            Cache::store($cacheId, $keywords);
+            DBCache::store($cacheId, $keywords);
         }
         if($delim != null){
             return implode($delim, $keywords);
@@ -1901,7 +1901,7 @@ class Person extends BackboneModel {
                                 array('user_id' => $this->getId(),
                                       'keyword' => trim($keyword)));
         }
-        Cache::delete($cacheId);
+        DBCache::delete($cacheId);
     }
     
     /**
@@ -2128,8 +2128,8 @@ class Person extends BackboneModel {
             return array();
         }
         $cacheId = "personRolesDuring".$this->id."_".$startRange.$endRange;
-        if(Cache::exists($cacheId)){
-            $data = Cache::fetch($cacheId);
+        if(DBCache::exists($cacheId)){
+            $data = DBCache::fetch($cacheId);
         }
         else{
             $sql = "SELECT *
@@ -2143,7 +2143,7 @@ class Person extends BackboneModel {
                     ((start_date <= '$endRange')))
                     )";
             $data = DBFunctions::execSQL($sql);
-            Cache::store($cacheId, $data);
+            DBCache::store($cacheId, $data);
         }
         $roles = array();
         foreach($data as $row){
@@ -2162,8 +2162,8 @@ class Person extends BackboneModel {
             return array();
         }
         $cacheId = "personRolesDuring".$this->id."_".$date;
-        if(Cache::exists($cacheId)){
-            $data = Cache::fetch($cacheId);
+        if(DBCache::exists($cacheId)){
+            $data = DBCache::fetch($cacheId);
         }
         else{
             $sql = "SELECT *
@@ -2171,7 +2171,7 @@ class Person extends BackboneModel {
                     WHERE user_id = '{$this->id}'
                     AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date IS NULL))";
             $data = DBFunctions::execSQL($sql);
-            Cache::store($cacheId, $data);
+            DBCache::store($cacheId, $data);
         }
         $roles = array();
         foreach($data as $row){
@@ -3282,8 +3282,8 @@ class Person extends BackboneModel {
         $me = Person::newFromWgUser();
         if($this->isMe() || $me->isRoleAtLeast(ADMIN)){
             $cacheId = "course_percent_{$course_id}_{$this->getId()}";
-            if(Cache::exists($cacheId)){
-                return Cache::fetch($cacheId);
+            if(DBCache::exists($cacheId)){
+                return DBCache::fetch($cacheId);
             }
             else {
                 $data = DBFunctions::select(array('grand_user_courses'),
@@ -3296,7 +3296,7 @@ class Person extends BackboneModel {
                         $percent = $data[0]['percentage'];
                     }
                 }
-                Cache::store($cacheId, $percent);
+                DBCache::store($cacheId, $percent);
                 return $percent;
             }
         }
@@ -3957,8 +3957,8 @@ class FullPerson extends Person {
     
     function getFecPersonalInfo(){
         if(!isset(self::$fecInfoCache[$this->getId()])){
-            if(Cache::exists("fec_info_{$this->getId()}")){
-                $data = Cache::fetch("fec_info_{$this->getId()}");
+            if(DBCache::exists("fec_info_{$this->getId()}")){
+                $data = DBCache::fetch("fec_info_{$this->getId()}");
             }
             else{
                 $data = DBFunctions::select(array('grand_personal_fec_info'),
@@ -3985,7 +3985,7 @@ class FullPerson extends Person {
                                                   'date_atsec3',
                                                   'date_ats_anniversary'),
                                             array('user_id' => EQ($this->getId())));
-                Cache::store("fec_info_{$this->getId()}", $data);
+                DBCache::store("fec_info_{$this->getId()}", $data);
             }
             self::$fecInfoCache[$this->getId()] = $data;
             if(count($data) >0){
@@ -4058,7 +4058,7 @@ class FullPerson extends Person {
                                         array('user_id' => EQ($this->getId())));
                 if($status){
                     DBFunctions::commit();
-                    Cache::delete("fec_info_{$this->getId()}");
+                    DBCache::delete("fec_info_{$this->getId()}");
                 }
                 return $status;
             }
@@ -4089,7 +4089,7 @@ class FullPerson extends Person {
                                            true);
                 if($status){
                     DBFunctions::commit();
-                    Cache::delete("fec_info_{$this->getId()}");
+                    DBCache::delete("fec_info_{$this->getId()}");
                 }
                 return $status;
             }
@@ -4303,8 +4303,8 @@ class FullPerson extends Person {
      * Returns the precomputed case number for this Person
      */
     function getCaseNumber($year=YEAR){
-        if(Cache::exists("case_number{$this->getId()}_{$year}")){
-            return Cache::fetch("case_number{$this->getId()}_{$year}");
+        if(DBCache::exists("case_number{$this->getId()}_{$year}")){
+            return DBCache::fetch("case_number{$this->getId()}_{$year}");
         }
         else{
             $data = DBFunctions::select(array('grand_case_numbers'),
@@ -4312,34 +4312,34 @@ class FullPerson extends Person {
                                         array('user_id' => $this->getId(),
                                               'year' => $year));
             if(!empty($data)){
-                Cache::store("case_number{$this->getId()}_{$year}", $data[0]['number']);
+                DBCache::store("case_number{$this->getId()}_{$year}", $data[0]['number']);
                 return $data[0]['number'];
             }
-            Cache::store("case_number{$this->getId()}_{$year}", "");
+            DBCache::store("case_number{$this->getId()}_{$year}", "");
             return "";
         }
     }
     
     function getSalary($year){
-        if(!Cache::exists("salary_{$this->id}_{$year}")){
+        if(!DBCache::exists("salary_{$this->id}_{$year}")){
             $salary = DBFunctions::select(array('grand_user_salaries'),
                                           array('salary', 'increment'),
                                           array('user_id' => $this->getId(),
                                                 'year' => $year));
-            Cache::store("salary_{$this->id}_{$year}", @$salary[0]['salary']);
+            DBCache::store("salary_{$this->id}_{$year}", @$salary[0]['salary']);
         }
-        return Cache::fetch("salary_{$this->id}_{$year}");
+        return DBCache::fetch("salary_{$this->id}_{$year}");
     }
     
     function getIncrement($year){
-        if(!Cache::exists("increment_{$this->id}_{$year}")){
+        if(!DBCache::exists("increment_{$this->id}_{$year}")){
             $increment = DBFunctions::select(array('grand_user_salaries'),
                                           array('salary', 'increment'),
                                           array('user_id' => $this->getId(),
                                                 'year' => $year));
-            Cache::store("increment_{$this->id}_{$year}", @$increment[0]['increment']);
+            DBCache::store("increment_{$this->id}_{$year}", @$increment[0]['increment']);
         }
-        $increment = Cache::fetch("increment_{$this->id}_{$year}");
+        $increment = DBCache::fetch("increment_{$this->id}_{$year}");
         if($increment == ""){
             return "N/A";
         }
@@ -4347,14 +4347,14 @@ class FullPerson extends Person {
     }
     
     function getCNA($year){
-        if(!Cache::exists("cna_{$this->id}_{$year}")){
+        if(!DBCache::exists("cna_{$this->id}_{$year}")){
             $increment = DBFunctions::select(array('grand_cna'),
                                              array('increment'),
                                              array('user_id' => $this->getId(),
                                                     'year' => $year));
-            Cache::store("cna_{$this->id}_{$year}", @$increment[0]['increment']);
+            DBCache::store("cna_{$this->id}_{$year}", @$increment[0]['increment']);
         }
-        return Cache::fetch("cna_{$this->id}_{$year}");
+        return DBCache::fetch("cna_{$this->id}_{$year}");
     }
     
     function create(){
@@ -4380,9 +4380,9 @@ class FullPerson extends Person {
             Person::$aliasCache = array();
             Person::$userRows = array();
             Person::$fecInfoCache = array();
-            Cache::delete("rolesCache");
-            Cache::delete("allPeopleCache");
-            Cache::delete("mw_user_{$this->getId()}");
+            DBCache::delete("rolesCache");
+            DBCache::delete("allPeopleCache");
+            DBCache::delete("mw_user_{$this->getId()}");
             return true;
         }
         return false;
@@ -4413,9 +4413,9 @@ class FullPerson extends Person {
             Person::$aliasCache = array();
             Person::$userRows = array();
             Person::$fecInfoCache = array();
-            Cache::delete("rolesCache");
-            Cache::delete("allPeopleCache");
-            Cache::delete("mw_user_{$this->getId()}");
+            DBCache::delete("rolesCache");
+            DBCache::delete("allPeopleCache");
+            DBCache::delete("mw_user_{$this->getId()}");
             $newPerson = Person::newFromId($this->getId());
             $newPerson->getFecPersonalInfo();
             return $status;

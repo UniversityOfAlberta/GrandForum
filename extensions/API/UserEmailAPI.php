@@ -25,7 +25,7 @@ class UserEmailAPI extends API{
                             array('user_email' => $_POST['email']),
                             array('user_id' => EQ($person->getId())));
         $person->email = $_POST['email'];
-        Cache::delete("mw_user_{$person->getId()}");
+        DBCache::delete("mw_user_{$person->getId()}");
         if(!$noEcho){
             echo "Account email updated\n";
         }
