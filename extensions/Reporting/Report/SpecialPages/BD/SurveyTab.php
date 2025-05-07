@@ -119,13 +119,12 @@ class SurveyTab extends AbstractTab {
         }
         
         $groups = array('All' => array(),
-                        'Principal Researcher' => array(),
-                        'Affiliated Researcher' => array(),
+                        'Researcher' => array(),
                         'HQP' => array(),
                         'Admin' => array());
         
         foreach($people as $person){
-            if($person->isRole(ADMIN)){ continue; } // Skip Admin
+            if($person->isRole(ADMIN) || count($person->getRolesDuring($start."-01", $end."-31")) == 0){ continue; } // Skip Admin and people with no role
             $groups['All'][] = $person->getId();
             if($project == null && $theme == null){
                 if($person->isRoleDuring(CI, $start."-01", $end."-31") || 
