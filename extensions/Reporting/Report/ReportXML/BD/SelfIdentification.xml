@@ -54,7 +54,7 @@
                             </div>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="sex" type="Checkbox" blobItem="SEX" blobType="BLOB_ARRAY" personId="{$user_id}" options="‭Heterosexual/straight‬|Gay|Lesbian|Queer|Bisexual|Pansexual|Two-spirit|Unsure/questioning|Other|Prefer not to answer" encrypt="true">
+                    <ReportItem id="sex" type="Checkbox" blobItem="SEX" blobType="BLOB_ARRAY" personId="{$user_id}" options="‭Heterosexual/straight‬|Gay|Lesbian|Queer|Bisexual|Pansexual|Two-spirit|Unsure/questioning|Asexual|Other|Prefer not to answer" encrypt="true">
                         <![CDATA[
                             <h3>3. Sexual orientation</h3>
                             <p>‭Which sexual orientation best describes how you currently think of yourself?‬</p>

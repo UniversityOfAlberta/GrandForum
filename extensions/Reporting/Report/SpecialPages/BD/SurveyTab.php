@@ -29,6 +29,7 @@ class SurveyTab extends AbstractTab {
                                                                      "Pansexual",
                                                                      "Two-spirit",
                                                                      "Unsure/questioning",
+                                                                     "Asexual",
                                                                      "Other",
                                                                      "Prefer not to answer")), 
                            "identity"     => array("label"  => "Indigenous identity", 
@@ -126,14 +127,16 @@ class SurveyTab extends AbstractTab {
         foreach($people as $person){
             $groups['All'][] = $person->getId();
             if($project == null && $theme == null){
-                if($person->isRoleDuring(CI, $start."-01", $end."-31")){
+                if($person->isRoleDuring(CI, $start."-01", $end."-31") || 
+                   $person->isRoleDuring(PL, $start."-01", $end."-31")){
                     $groups['Principal Researcher'][] = $person->getId();
                 }
                 if($person->isRoleDuring(AR, $start."-01", $end."-31")){
                     $groups['Affiliated Researcher'][] = $person->getId();
                 }
                 if($person->isRoleDuring(CI, $start."-01", $end."-31") || 
-                   $person->isRoleDuring(AR, $start."-01", $end."-31")){
+                   $person->isRoleDuring(AR, $start."-01", $end."-31") ||
+                   $person->isRoleDuring(PL, $start."-01", $end."-31")){
                     $groups['Researcher'][] = $person->getId();
                 }
                 if($person->isRoleDuring(HQP, $start."-01", $end."-31")){
