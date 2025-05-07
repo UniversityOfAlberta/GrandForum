@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" pdfFiles="TranslationalReportPDF" ajax="true" year="2024" allowIdProjects="true" disabled="false">
+<Report name="Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" pdfFiles="TranslationalReportPDF" ajax="true" year="2025" allowIdProjects="true" disabled="false">
     <Permissions>
-        <Role role="" subRole="Trans2024">
+        <Role role="" subRole="Trans2025">
 
         </Role>
         <Role role="Staff">
@@ -11,61 +11,34 @@
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Translational" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
-                <p>This Request for Proposals seeks to fund more <b>mature projects</b> needing Network support to <b>de-risk</b> and <b>advance</b> them to a state at which translation is possible. Eligible activities could include pre-clinical studies, synthesis scale-up, etc.</p>
+                <p>The Canadian Glycomics Network (GlycoNet) is a pan-Canadian research, development and innovation network that focuses on the role of glycans (carbohydrates) in health. GlycoNet brings together 193 funded and affiliated research groups from 36 universities and institutions across Canada. The Network collaborates with industry, government, and non-profit partners on developing innovative, made-in-Canada solutions to global challenges in health and sustainable agri-food systems. Additional information about Network research can be found at <a href='https://canadianglycomics.ca/' target='_blank'>glyconet.ca</a>.</p>
+                
+                <p>A key goal of GlycoNet is the translation and commercialization of research advances. Accordingly, this Request for Proposals seeks to fund more <b>mature projects</b> needing Network support to <b>de-risk and advance</b> them to a state at which translation is possible. Eligible activities could include pre-clinical studies, synthesis scale-up, etc.</p>
                 
                 <h3>Requirements</h3>
                 
                 Projects should:
                 <ul>
-                    <li>Be aligned with GlycoNet’s research mandate (see <a href='https://canadianglycomics.ca/research/' target='_blank'>glyconet.ca</a>)</li>
+                    <li>Be aligned with <b>GlycoNet’s research mandate</b> (see <a href='https://canadianglycomics.ca/research/' target='_blank'>glyconet.ca</a>)</li>
                     <li>Be multidisciplinary and preferably involve at least two research groups</li>
                     <li>Must have an articulated IP and patentability strategy</li>
                     <li>Be accompanied by a commercialization plan provided by the Technology Transfer Office of the Project Leader’s Institution</li>
                     <li>Have a clear endpoint, successful completion of which would attract a potential partner</li>
-                    <li>Partner matching of 1:1.5 is required, greater matching will be viewed more favorably by the committee.  50% of matching must be cash (for a $100,000 request, matching should be $150,000 with at least $75,000 cash and $75,000 in-kind – please see <a href='https://drive.google.com/file/d/1OB9KVpl5-tDXurJ5xMaULYyyNNjImYpA/view' target='_blank'><b>Appendix A</b></a>). Partner funding must be SSF eligible; in particular, other Canadian Federal funding is <b>ineligible</b> for matching</li>
+                    <li>Partner matching of 1:1.5 is required, greater matching will be viewed more favorably by the committee.  50% of matching must be cash (for a $150,000 request, matching should be $225,000 with at least $112,500 cash and $112,500 in-kind – please see <a href='https://drive.google.com/file/d/1OB9KVpl5-tDXurJ5xMaULYyyNNjImYpA/view' target='_blank'><b>Appendix A</b></a>). Partner funding must be SSF eligible; in particular, other Canadian Federal funding is <b>ineligible</b> for matching.</li>
                 </ul>
                 
                 <h3>Funding Available</h3>
-                <p>Proposals may request up to $150,000 in funding. It is anticipated that projects will be completed within 12 months.  Continued funding for projects past the 12-month period will be considered on a case-by-case basis after review by the Commercialization Committee; however, all projects must be completed by March 31, 2026.</p>
+                <p>Proposals may request up to $150,000 in funding. It is anticipated that projects will be completed within 12 months. Continued funding for projects past the 12-month period will be considered on a case-by-case basis after review by the Commercialization Committee; however, all projects must be completed by March 31, 2027.</p>
                 
                 <h3>Eligibility</h3>
-                <p>This opportunity is open only to individuals at post-secondary institutions and research hospitals who are eligible to hold research funds, including Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC).</p>
+                <p>This opportunity is open only to individuals at post-secondary institutions and research hospitals who are eligible to hold research funds, including Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC). An individual may serve as the Project Leader on only one Translational Funding application and may not be involved in more than two Translational Funding applications.</p>
                 
-                <p>An individual may serve as the Project Leader on only one Translational Funding application and may not be involved in more than two Translational Funding applications.</p>
-
-                <p><b><i>Note: Protected Intellectual Property related to the project or a patentability strategy is required.</i></b></p>
+                <h3>Application Form and Submission</h3>
+                <p>This is a rolling competition. Applicants can submit their proposals when they are ready. Competitions will be offered on a quarterly basis and will depend on funding availability.</p>
+                <p>Potential applicants must submit a letter of intent by email to <a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> (cc <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>) please provide the project title, project leader, list of investigators involved in the project, anticipated budget request, along with the matching amount (cash/in-kind and sources), a summary of the project, and a short summary addressing the question: "How will your research project further glycobiology research?". Please note that the matching cannot come from federal sources. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application.</p>
                 
-                <h3>General Instructions and Deadline</h3>
-                <p>All applications will be completed in the GlycoNet Forum, https://forum.glyconet.ca. Please read the following instructions carefully. A complete application consists of:</p>
-                <ol>
-                    <li><b>Application/Proposal</b> (single PDF file, use <b>Application Template</b>)
-                        <ul>
-                            <li>Project Title</li>
-                            <li>Project Leader / Lead Investigator</li>
-                            <li>Other Investigators</li>
-                            <li>Key Words</li>
-                            <li>List of Partners and Matching Funds (Companies, Agencies, etc.)</li>
-                            <li>Suggested Reviewers</li>
-                            <li>Environmental Impact</li>
-                            <li>Conflict of Interest</li>
-                            <li>Response to Reviewer's Comments (if applicable)</li>
-                            <li>Outcomes from previous GlycoNet funding (on the same subject/topic/project) (if applicable)</li>
-                            <li>Project Summary</li>
-                            <li>Project Proposal</li>
-                            <li>References</li>
-                            <li>Relevance and Impact</li>
-                            <li>Training Environment, including Equity, Diversity and Inclusion Considerations</li>
-                        </ul>
-                    </li>
-                    <li><b>Budget</b> (a single Excel file in the correct format and with a budget for the project)</li>
-                    <li><b>Budget Justification</b></li>
-                    <li><b>Milestones</b> (a single Excel file)</li>
-                    <li><b>Commercialization Plan</b> (as a separate PDF file)</li>
-                    <li><b>Partner Letters of Support</b> (as separate PDF files)</li>
-                    <li><b>CCV</b> (CIHR/NSERC Academic Format) for each Network Investigator (as separate PDF files)</li>
-                </ol>
-                
-                <p><b><i>Deadline: Rolling Call.</i></b> Competitions will be offered on a quarterly basis.</p>
+                <h3>Additional Information</h3>
+                <p>Questions about this opportunity can be sent to <a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> (cc: <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>).</p>
             ]]>
         </Static>
     </ReportSection>
@@ -251,6 +224,118 @@
         <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
             <![CDATA[
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload7" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD7" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload8" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD8" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload9" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD9" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload10" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD10" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="security" name="Research Security" blobSection="CAT_SECURITY" tooltip="Research Security" type="EditableReportSection">
+        <ReportItem id="attestation1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION1" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <ol>
+                <li>
+                    <b>Fill in and upload the <a href='https://www.nserc-crsng.gc.ca/InterAgency-Interorganismes/RS-SR/_doc/Attestation_e.pdf' target='_blank'>Attestation Form</a> for each project member</b> (The research team includes researchers with named roles in the grant applications, as well as any other researchers involved in activities supported by the grant, such as highly qualified personnel (HQP), co-authors, or informal collaborators who may or may not be identified in the grant application. HQP can include undergraduate and graduate students, post-doctoral researchers, as well as research staff).
+                    <div style='display:flex; width: 100%; margin-top: 1em;'>
+                        <div style='width: 50%; min-width: 500px;'>
+                            {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION2" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION3" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION4" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION5" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                    <div style='width: 50%; min-width: 500px;'>
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION6" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation7" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION7" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attestation8" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_ATTESTATION8" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                        {$item}
+                    </div>
+                </div></li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="private" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SECURITY_PRIVATE" options="Yes|No">
+            <![CDATA[
+                <li id='private'>
+                    Will the research involve a private sector partner organization?  (Partner organizations from a private sector (those that are not owned or operated by any order of government and include all for-profit organizations), including industrial associations and producer groups (since their member organizations are principally from the private sector)
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="risk" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" fileSize="20">
+            <![CDATA[
+                    <li id='risk' style='display:none;'>
+                        In case of involvement of a private sector partner in the project, fill in the <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'><b>Risk Assessment Form</b></a> and upload it to the Forum. <br />
+                        In case risks are identified in the Risk Assessment Form, develop a risk mitigation plan with the institution and must be submitted to GlycoNet.  One Risk Assessment Form is needed per project, developed with the Project Leader’s institution. It is also recommended to utilize existing government resources, such as <a href='https://science.gc.ca/site/science/en/safeguarding-your-research' target='_blank'>Safeguarding Your Research</a> portal and particularly <a href='https://science.gc.ca/site/science/en/safeguarding-your-research/guidelines-and-tools-implement-research-security/mitigating-your-research-security-risks/what-steps-can-you-take-protect-your-research' target='_blank'>Mitigating Your Research Security Risks</a> page.
+                    {$item}
+                    </li>
+                </ol>
+                <div id='risk_no' style='display:none; margin-top: 1em;'>No further requirements</div>
+                <script type='text/javascript'>
+                    $('#private input').change(function(){
+                        var privateValue = $('#private input:checked').val();
+                        if(privateValue == "Yes"){
+                            $('#risk').show();
+                            $('#risk_no').hide();
+                        }
+                        else if(privateValue == "No"){
+                            $('#risk').hide();
+                            $('#risk_no').show();
+                        }
+                        else{
+                            $('#risk').hide();
+                            $('#risk_no').hide();
+                        }
+                    }).change();
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
