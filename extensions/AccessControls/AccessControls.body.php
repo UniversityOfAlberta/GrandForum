@@ -32,11 +32,11 @@ function createRoleNamespaces(){
             $nsId += 2;
             DBFunctions::insert('mw_an_extranamespaces',
                                 array('nsId' => $nsId,
-                                      'nsName' => $role,
+                                      'nsName' => str_replace(" ", "_", $role),
                                       'public' => 1));
             DBFunctions::insert('mw_an_extranamespaces',
                                 array('nsId' => $nsId+1,
-                                      'nsName' => $role.'_Talk',
+                                      'nsName' => str_replace(" ", "_", $role).'_Talk',
                                       'public' => 1));
             
         }
@@ -44,11 +44,11 @@ function createRoleNamespaces(){
             $nsId += 2;
             DBFunctions::insert('mw_an_extranamespaces',
                                 array('nsId' => $nsId,
-                                      'nsName' => $role."_Wiki",
+                                      'nsName' => str_replace(" ", "_", $role)."_Wiki",
                                       'public' => 0));
             DBFunctions::insert('mw_an_extranamespaces',
                                 array('nsId' => $nsId+1,
-                                      'nsName' => $role.'_Wiki_Talk',
+                                      'nsName' => str_replace(" ", "_", $role).'_Wiki_Talk',
                                       'public' => 0));
         }
     }
