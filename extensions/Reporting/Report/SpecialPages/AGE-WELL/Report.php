@@ -290,7 +290,7 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HQP Award", "{$url}HQPReview", $selected);
         }
-        if(count($person->getEvaluates("EPIC-2024", 2024)) > 0){
+        if(count($person->getEvaluates("EPIC-2025", 2025)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPICATReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EPIC-AT", "{$url}EPICATReview", $selected);
         }
