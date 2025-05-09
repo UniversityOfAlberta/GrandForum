@@ -547,6 +547,10 @@ EOF;
                     var personProducts = $('#personProducts').dataTable({
                         order: [[ 2, 'desc' ]],
                         autoWidth: false,
+                       'dom': 'Blfrtip',
+                       'buttons': [
+                            'excel', 'pdf'
+                        ],
                         drawCallback: renderProductLinks
                     });
                 </script>";
