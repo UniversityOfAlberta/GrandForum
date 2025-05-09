@@ -507,7 +507,8 @@ EOF;
         $string = "";
         if(count($products) > 0){
             $string = "<h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
-            $string .= "<table id='personProducts' rules='all' frame='box'>
+            $string .= "<button id='showOnlyAuthor' type='button' style='margin-bottom: 0.25em;'>Show only Author</button>
+            <table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -559,6 +560,19 @@ EOF;
                             'excel', 'pdf'
                         ],
                         drawCallback: renderProductLinks
+                    });
+                    
+                    $('#showOnlyAuthor').click(function(el){
+                        var search = '';
+                        if($(this).text() == 'Show only Author'){
+                            search = ".json_encode("\"{$person->getNameForProduct()}\"").";
+                            $(this).text('Show all');
+                        }
+                        else{
+                            $(this).text('Show only Author');
+                        }
+                        $('#personProducts_wrapper input').val(search); 
+                        $('#personProducts_wrapper input').trigger('keyup');
                     });
                 </script>";
         }
