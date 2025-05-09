@@ -34,7 +34,7 @@ class PoolEstimator extends SpecialPage {
         $this->getOutput()->setPageTitle("Pool Estimator");
         $me = Person::newFromWgUser();
         $wgOut->addHTML("
-                <p>This table is a work in progress.</p>
+                <p><b>NOTE:</b> This table is a work in progress.</p>
                 <table id='table' class='wikitable'>
                     <thead>
                         <th>Case#</th>
