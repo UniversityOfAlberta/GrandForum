@@ -105,7 +105,7 @@ class PoolEstimator extends SpecialPage {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
-        if(self::userCanExecute($wgUser)){
+        if((new PoolEstimator)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "PoolEstimator") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Pool Estimator", "$wgServer$wgScriptPath/index.php/Special:PoolEstimator", $selected);
         }
