@@ -13,6 +13,7 @@ require_once("SpecialPages/Report.php");
 require_once("SpecialPages/{$config->getValue('networkName')}/Report.php");
 require_once("SpecialPages/AnnualReportTable.php");
 require_once("SpecialPages/ServiceRoles.php");
+require_once("SpecialPages/PoolEstimator.php");
 require_once("SpecialPages/GraduateStudents.php");
 require_once("SpecialPages/FECReflections.php");
 require_once("SpecialPages/SPOTGenerator.php");

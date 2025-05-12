@@ -6,7 +6,8 @@
     $wgUser = User::newFromId(1);
     
     $start = (YEAR-1)."-07-01";
-    $end = (YEAR)."-07-01";
+    $end = (YEAR)."-06-30";
+    $end1 = (YEAR)."-07-01";
     
     $allPeople = Person::filterFaculty(Person::getAllPeople());
     foreach($allPeople as $person){
@@ -15,8 +16,8 @@
                                   'user_id' => $person->getId()));
     }
     
-    $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end),
-                             Person::getAllPeopleDuring("ATS", $start, $end));
+    $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end1),
+                             Person::getAllPeopleDuring("ATS", $start, $end1));
                              
     $allPeople = Person::filterFaculty($allPeople);
     
@@ -24,8 +25,8 @@
     $fec = array();
     
     function isValid($person){
-        global $start, $end;
-        return !($person == null || $person->getId() == 0 || $person->isSubRole("NoAR") || (!$person->isRoleDuring(NI, $start, $end) && !$person->isRoleDuring("ATS", $start, $end)));
+        global $start, $end, $end1;
+        return !($person == null || $person->getId() == 0 || $person->isSubRole("NoAR") || (!$person->isRoleDuring(NI, $start, $end1) && !$person->isRoleDuring("ATS", $start, $end1)));
     }
     
     if(getFaculty() == "Engineering"){
