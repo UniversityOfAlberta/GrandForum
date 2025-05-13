@@ -162,6 +162,7 @@ class EducationResources extends SpecialPage {
                                     }
                                     else{
                                         $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
+                                        $url = str_replace("'", "&#39;", $url);
                                         $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
                                     }
                                 }
@@ -182,6 +183,7 @@ class EducationResources extends SpecialPage {
                             }
                             else{
                                 $url = (strstr($resource->file, "http") !== false) ? $resource->file : "{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}{$lang}/Resources/{$resource->file}";
+                                $url = str_replace("'", "&#39;", $url);
                                 $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$url}'>{$resource->title}</a></li>");
                             }
                         }
