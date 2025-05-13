@@ -1430,6 +1430,7 @@
     <Activities category="Activity" citationFormat="{%Authors} {(%YYYY).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
         <Activity type="Scientific">
              <data>
+                  <field label="Position" type="Select" options="Chair|Member">position</field>
                   <field label="Scope" type="Select" options="International|National|Provincial">scope</field>
                   <field label="Organization" type="String">organization</field>
              </data>
@@ -1440,6 +1441,7 @@
          
          <Activity type="University">
              <data>
+                <field label="Position" type="Select" options="Chair|Member">position</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
@@ -1448,6 +1450,7 @@
          
          <Activity type="Faculty">
              <data>
+                <field label="Position" type="Select" options="Chair|Member">position</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
@@ -1456,6 +1459,7 @@
          
          <Activity type="Departmental">
              <data>
+                <field label="Position" type="Select" options="Chair|Member">position</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
@@ -1464,6 +1468,7 @@
          
          <Activity type="Community Outreach">
              <data>
+                <field label="Position" type="Select" options="Chair|Member">position</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
@@ -1472,6 +1477,7 @@
          
          <Activity type="Other">
              <data>
+                <field label="Position" type="Select" options="Chair|Member">position</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
