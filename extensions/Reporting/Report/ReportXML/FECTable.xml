@@ -4,22 +4,27 @@
         <Role role="FEC" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
             <SectionPermission id="fec_votes" permissions="" />
+            <SectionPermission id="summary" permissions="" />
         </Role>
         <Role role="DEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
             <SectionPermission id="fec_votes" permissions="rw" />
+            <SectionPermission id="summary" permissions="rw" />
         </Role>
         <Role role="VDEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
             <SectionPermission id="fec_votes" permissions="rw" />
+            <SectionPermission id="summary" permissions="rw" />
         </Role>
         <Role role="HR" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
             <SectionPermission id="fec_votes" permissions="rw" />
+            <SectionPermission id="summary" permissions="rw" />
         </Role>
         <Role role="MANAGER+" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
-            <SectionPermission id="fec_votes" permissions="" />
+            <SectionPermission id="fec_votes" permissions="rw" />
+            <SectionPermission id="summary" permissions="rw" />
         </Role>
     </Permissions>
     <Script>
@@ -302,7 +307,7 @@
                             <th>Recommended Increment</th>
                             <th>Revised Increment</th>
                             <th>Increment Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
-                            <th>Continuing Appointment Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
+                            <th>Tenure Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
                             <th>Promotion Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
                             <th>Comments <span class='tooltip' title='Comments will be visible to the FEC Chair'>&#9432;</span></th>
                         </tr>
@@ -637,7 +642,7 @@
                             <th rowspan='2'>Recommended Increment</th>
                             <th rowspan='2'>Revised Increment</th>
                             <th colspan='4'>Increment Votes</th>
-                            <th colspan='4'>Continuing Appointment Votes</th>
+                            <th colspan='4'>Tenure Votes</th>
                             <th colspan='4'>Promotion Votes</th>
                             <th rowspan='2'>HR Comments</th>
                         </tr>
@@ -766,6 +771,176 @@
                         dbWritable = false;
                         $(".selectedReportTab").click();
                         dbWritable = true;
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="summary" tooltip="Summary Table" name="Summary Table" title="Summary Table" blobSection="SUMMARY" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <table id='summary' class='wikitable' frame=box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th colspan='4'>Person</th>
+                            <th colspan='4'>Variance</th>
+                            <th colspan='3'>Summary of Teaching</th>
+                            <th colspan='3'>Thesis Based - MSc</th>
+                            <th colspan='3'>Thesis Based - PhD</th>
+                            <th colspan='1'>Post Doc</th>
+                            <th colspan='7'>Research</th>
+                            <th colspan='12'>Grants</th>
+                            <th colspan='2'>Dept</th>
+                            <th colspan='2'>Faculty</th>
+                            <th colspan='2'>University</th>
+                            <th colspan='2'>External to the University</th>
+                            <th colspan='1'>Other Services</th>
+                        </tr>
+                        <tr>
+                            <th>Case#</th>
+                            <th>Name</th>
+                            <th>Title</th>
+                            <th>Department</th>
+                            
+                            <th>Teaching</th>
+                            <th>Research/scholarly activities</th>
+                            <th>Service</th>
+                            <th>Admin</th>
+                            
+                            <th># Courses Taught</th>
+                            <th>No of Students (average)</th>
+                            <th>SPOT Survey</th>
+                            
+                            <th>Supervise</th>
+                            <th>Committee Mbr</th>
+                            <th>Examiner</th>
+                            
+                            <th>Supervise</th>
+                            <th>Committee Mbr</th>
+                            <th>Examiner</th>
+                            
+                            <th></th>
+                            
+                            <th>First or Senior Refereed</th>
+                            <th>Co-Authored Refereed </th>
+                            <th>Non-Peer Reviewed Scholarly Article</th>
+                            <th>Conference Presentations - Invited</th>
+                            <th>Conference Presentations - Oral/Poster</th>
+                            <th>Presentation Conference - Panel/Workshop</th>
+                            <th>Book or Book Chapters</th>
+
+                            <th style='white-space:nowrap;'># Total New<br />Grants</th>
+                            <th style='white-space:nowrap;'># New PI<br />Grants</th>
+                            <th style='white-space:nowrap;'># New Grants as<br />Co-Investigator</th>
+                            <th style='white-space:nowrap;'># On-going<br />grants</th>
+                            <th style='white-space:nowrap;'>New PI<br />Yearly Funds</th>
+                            <th style='white-space:nowrap;'>New<br />Grants as<br />Co-I Yearly Funds</th>
+                            <th style='white-space:nowrap;'>Ongoing<br />Grant<br />Yearly Funds</th>
+                            <th style='white-space:nowrap;'>Total<br />Yearly Funds</th>
+                            <th style='white-space:nowrap;'>New PI<br />Funds</th>
+                            <th style='white-space:nowrap;'>New<br />Grants as<br />Co-I Funds</th>
+                            <th style='white-space:nowrap;'>Ongoing<br />Grant<br />Funds</th>
+                            <th style='white-space:nowrap;'>Total<br />Funds</th>
+
+                            <th>Chair</th>
+                            <th>Member</th>
+                            
+                            <th>Chair</th>
+                            <th>Member</th>
+                            
+                            <th>Chair</th>
+                            <th>Member</th>
+                            
+                            <th>Chair</th>
+                            <th>Member</th>
+                            
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
+            <Static>
+                <![CDATA[
+                    <tr>
+
+                        <td style='white-space:nowrap;'>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                        <td>{$user_dept}</td>
+                        
+                        <td align='center'>{getText(RP_LETTER5, TABLE, TEACHING, {$user_id}, 1, 0, {$last_year})}</td>
+                        <td align='center'>{getText(RP_LETTER5, TABLE, RESEARCH, {$user_id}, 1, 0, {$last_year})}</td>
+                        <td align='center'>{getText(RP_LETTER5, TABLE, SERVICE, {$user_id}, 1, 0, {$last_year})}</td>
+                        <td align='center'>{getText(RP_LETTER5, TABLE, ADMIN, {$user_id}, 1, 0, {$last_year})}</td>
+                        
+                        <td align='center'>{$user_courses_count}</td>
+                        <td align='center'>{round({divide({$user_student_count}, {$user_courses_count})})}</td>
+                        <td></td>
+                        
+                        <td align='center'>{add({user_msc_count(all,Supervisor)},{user_msc_count(all,Co-Supervisor)})}</td>
+                        <td align='center'>{user_msc_count(all,Supervisory-Committee member)}</td>
+                        <td align='center'>{add({user_msc_count(all,Examining-Committee member)},{user_msc_count(all,Examining-Committee chair)})}</td>
+                        
+                        <td align='center'>{add({user_phd_count(all,Supervisor)},{user_phd_count(all,Co-Supervisor)})}</td>
+                        <td align='center'>{user_phd_count(all,Supervisory-Committee member)}</td>
+                        <td align='center'>{add({user_phd_count(all,Examining-Committee member)},{user_phd_count(all,Examining-Committee chair)})}</td>
+                        
+                        <td align='center'>{$user_fellow_count}</td>
+                        
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, First Author)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Co-Author)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Not Refereed)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Conference Presentation)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Poster Presentation)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Workshop Presentation)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Books)}</td>
+
+                        <td align='center'>{$user_new_grant}</td>
+                        <td align='center'>{user_new_grant(count, pi)}</td>
+                        <td align='center'>{user_new_grant(count, copi)}</td>
+                        <td align='center'>{$user_continuing_grant}</td>
+                        <td align='right'>{number_format({user_new_grant(average, pi)})}</td>
+                        <td align='right'>{number_format({user_new_grant(average, copi)})}</td>
+                        <td align='right'>{number_format({user_continuing_grant(average, both)})}</td>
+                        <td align='right'>{number_format({add({user_new_grant(average, both)},{user_continuing_grant(average, both)})})}</td>
+                        <td align='right'>{number_format({user_new_grant(total, pi)})}</td>
+                        <td align='right'>{number_format({user_new_grant(total, copi)})}</td>
+                        <td align='right'>{number_format({user_continuing_grant(total, both)})}</td>
+                        <td align='right'>{number_format({add({user_new_grant(total, both)},{user_continuing_grant(total, both)})})}</td>
+
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Departmental, Chair)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Departmental, Member)}</td>
+                        
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Faculty, Chair)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Faculty, Member)}</td>
+                        
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, University, Chair)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, University, Member)}</td>
+                        
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Community Outreach, Chair)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Community Outreach, Member)}</td>
+                        
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Other)}</td>
+
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#summary').DataTable({
+                        scrollX: true,
+                        'aLengthMenu': [[100,-1], [100,'All']], 
+                        'iDisplayLength': -1, 
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            'excel'
+                        ]
                     });
                 </script>
             ]]>
