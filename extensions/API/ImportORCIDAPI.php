@@ -161,6 +161,7 @@ class ImportORCIDAPI extends API{
         }
 
         if(!$product->exists()){
+            $product->orcid = $orcid;
             $status = $product->create(false);
         }
         else{
