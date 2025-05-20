@@ -1,20 +1,5 @@
 <?php
 
-    /*
-        USRIS
-        [{"id": "5022", "votes": [2,0,2,4,5]},
-         {"id": "23", "votes": [1,1,4,4,3]},
-         {"id": "24", "votes": [1,0,4,4,4]},
-         {"id": "25", "votes": [2,0,0,8,3]},
-         {"id": "221", "votes": [1,1,4,5,2]},
-         {"id": "21", "votes": [1,1,4,5,2]},
-         {"id": "5674", "votes": [1,0,5,4,3]},
-         {"id": "26", "votes": [1,1,4,6,1]},
-         {"id": "9", "votes": [1,0,2,5,5]},
-         {"id": "51", "votes": [1,0,4,5,3]}
-        ]
-    */
-
     // necessary code for commandline use
     require_once('commandLine.inc');
     global $wgUser;
@@ -76,20 +61,23 @@
         
         else if ($term == "Fall2021"){ $startEndDate["start"] = 44439; $startEndDate["end"]  = 44536;}   //Fall2021:   Sep 1, 2021 - Dec 7, 2021
         else if ($term == "Winter2022"){ $startEndDate["start"] = 44565; $startEndDate["end"]  = 44658;} //Winter2022: Jan 5, 2022 - Apr 8, 2022
-        else if ($term == "Spring2022"){ $startEndDate["start"] = 44689; $startEndDate["end"]  = 44726;} //Spring2022: May 9, 2022 - June 15, 2022
+        else if ($term == "Spring2022"){ $startEndDate["start"] = 44689; $startEndDate["end"]  = 44726;} //Spring2022: May 9, 2022 - Jun 15, 2022
         else if ($term == "Summer2022"){ $startEndDate["start"] = 44745; $startEndDate["end"]  = 44782;} //Summer2022: Jul 4, 2022 - Aug 10, 2022
         
         else if ($term == "Fall2022"){ $startEndDate["start"] = 44804; $startEndDate["end"]  = 44902;}   //Fall2022:   Sep 1, 2022 - Dec 8, 2022
         else if ($term == "Winter2023"){ $startEndDate["start"] = 44930; $startEndDate["end"]  = 45027;} //Winter2023: Jan 5, 2023 - Apr 12, 2023
-        else if ($term == "Spring2023"){ $startEndDate["start"] = 45053; $startEndDate["end"]  = 45090;} //Spring2023: May 8, 2023 - June 14, 2023
+        else if ($term == "Spring2023"){ $startEndDate["start"] = 45053; $startEndDate["end"]  = 45090;} //Spring2023: May 8, 2023 - Jun 14, 2023
         else if ($term == "Summer2023"){ $startEndDate["start"] = 45116; $startEndDate["end"]  = 45146;} //Summer2023: Jul 10, 2023 - Aug 9, 2023
         
         else if ($term == "Fall2023"){ $startEndDate["start"] = 45173; $startEndDate["end"]  = 45267;}   //Fall2023:   Sep 5, 2023 - Dec 8, 2023
         else if ($term == "Winter2024"){ $startEndDate["start"] = 45298; $startEndDate["end"]  = 45393;} //Winter2024: Jan 8, 2024 - Apr 12, 2024
-        else if ($term == "Spring2024"){ $startEndDate["start"] = 45417; $startEndDate["end"]  = 45454;} //Spring2024: May 6, 2024 - June 12, 2024
+        else if ($term == "Spring2024"){ $startEndDate["start"] = 45417; $startEndDate["end"]  = 45454;} //Spring2024: May 6, 2024 - Jun 12, 2024
         else if ($term == "Summer2024"){ $startEndDate["start"] = 45480; $startEndDate["end"]  = 45517;} //Summer2024: Jul 8, 2024 - Aug 14, 2024
         
         else if ($term == "Fall2024"){ $startEndDate["start"] = 45537; $startEndDate["end"]  = 45634;}   //Fall2024:   Sep 3, 2024 - Dec 9, 2024
+        else if ($term == "Winter2025"){ $startEndDate["start"] = 45662; $startEndDate["end"]  = 45755;} //Winter2025: Jan 6, 2025 - Apr 9, 2025
+        else if ($term == "Spring2025"){ $startEndDate["start"] = 45782; $startEndDate["end"]  = 45818;} //Spring2025: May 6, 2025 - Jun 11, 2025
+        else if ($term == "Summer2025"){ $startEndDate["start"] = 45844; $startEndDate["end"]  = 45881;} //Summer2025: Jul 7, 2025 - Aug 13, 2025
                     
         return $startEndDate; 
     }
@@ -97,13 +85,8 @@
     //Start Timer
     $start = microtime(true);
     
-    // clean DB
-    //DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 68709", true);
-    //DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 46542", true);  
-    
     $dataDir = "csv/";
     $courseDescrFile = "allCoursesDescription.csv";
-    //$dataDir = dirname(__FILE__).'/csv_test/'; // if csv in maintanence
     
     $dir = new DirectoryIterator($dataDir);
     
@@ -147,14 +130,14 @@
         $filename = $file->getFilename();
         
         if ($dir->isDot()){ continue;} // skip "." and ".." directories.
+        if (strstr($filename, "lock.") !== false){ continue; } // skip lock files
         if ($filename == $courseDescrFile){ continue; } // skip coursesDescr file
         
-        $termString = rtrim($filename, ".csv"); // filename is the term (ex. Fall2011)
-        $date = getStartEndDate($termString);
         $array = array_map("str_getcsv", file($dataDir.$file));
         
         $grandUserCourses = array();
         $grandCourses = array();
+        $percents = array();
         $courseIds = array();
         
         
@@ -163,41 +146,44 @@
         $rowsParsed = 0;
         foreach ($array as $rowIndex => $rowValues){
             if ($rowIndex > 0) {
-                
                 $rowsParsed++;
 
-                $acadOrg = DBFunctions::escape(trim($rowValues[1]));
-                $term = DBFunctions::escape(trim($rowValues[0]));
-                $role = DBFunctions::escape(trim($rowValues[3]));
-                $classNbr = DBFunctions::escape(trim(ltrim($rowValues[11], '0')));
-                $subject = DBFunctions::escape(trim($rowValues[9]));
-                $catalog = DBFunctions::escape(trim($rowValues[10]));
-                $component = DBFunctions::escape(trim($rowValues[12]));
-                $sect = DBFunctions::escape(trim($rowValues[8]));
-                $crsStatus = DBFunctions::escape(trim($rowValues[13]));
-                $facilID = DBFunctions::escape(trim(ltrim($rowValues[15], '0')));
+                $termString = DBFunctions::escape(trim(str_replace(" Term ", "", $rowValues[14])));
+                $date = getStartEndDate($termString);
+                
+                $term = DBFunctions::escape(trim($rowValues[13]));
+                $role = DBFunctions::escape(trim($rowValues[56]));
+                $classNbr = DBFunctions::escape(trim(ltrim($rowValues[2], '0')));
+                $subject = DBFunctions::escape(trim($rowValues[18]));
+                $catalog = DBFunctions::escape(trim($rowValues[20]));
+                $component = DBFunctions::escape(trim($rowValues[24]));
+                $sect = DBFunctions::escape(trim($rowValues[26]));
+                $crsStatus = DBFunctions::escape(trim($rowValues[45]));
                 $startDate = DBFunctions::escape(trim($date["start"]));
                 $endDate = DBFunctions::escape(trim($date["end"]));
-                $hrsFrom = DBFunctions::escape(trim($rowValues[16]));
-                $hrsTo = DBFunctions::escape(trim($rowValues[17]));
-                $totEnrl = DBFunctions::escape(trim($rowValues[14]));
-                $campus = DBFunctions::escape(trim($rowValues[19]));
-                $note = DBFunctions::escape(trim($rowValues[18]));   
-                $employeeID = DBFunctions::escape(trim(ltrim($rowValues[2], '0')));
+                $totEnrl = DBFunctions::escape(trim($rowValues[50]));
+                $campus = DBFunctions::escape(trim($rowValues[43]));
+                $employeeID = DBFunctions::escape(trim(ltrim($rowValues[54], '0')));
+                
                 $userID = Person::newFromEmployeeId($employeeID)->getId();
                 $person = Person::newFromEmployeeId($employeeID);
                 
-                if($person == null){
+                if($person == null || !($person instanceof FullPerson)){
                     continue;
                 }
- 
+                
+                $person->getFecPersonalInfo();
+                
                 // key: Term + Class Nbr + Component + Sect + Employee Id
                 $key = $term . $classNbr . $component . $sect . $employeeID;
                 
-                // skip if key exists OR user is not a Faculty of Science Member
-                if (isset($grandCourses[$key]) || 
-                    //$userID == 0 || 
-                    ($role != "PI" && $role != "CO")){
+                // Skip
+                if (isset($grandCourses[$key])){
+                    continue;
+                }
+                if(!($role == "PI" || // Primary Instructor
+                     $role == "CO" || // Co-Instructor
+                     ($role == "TA" && $person->faculty == "Rehabilitation Medicine"))){ // Teaching Assistant (Rehab Medicine only)
                     continue;
                 }
 
@@ -217,13 +203,16 @@
                     $courseIds[$key] = $courseID;
                     
                     // set the key to values string
-                    $grandCourses[$key] = "('{$courseIds[$key]}',
-                                            '{$acadOrg}','{$term}','{$termString}',
+                    $grandCourses[$key] = "('{$courseIds[$key]}','{$term}','{$termString}',
                                             '{$classNbr}','{$subject}','{$catalog}',
                                             '{$component}','{$sect}','{$crsStatus}',
-                                            '{$facilID}','{$startDate}','{$endDate}',
-                                            '{$hrsFrom}','{$hrsTo}','{$totEnrl}',
-                                            '{$campus}','{$note}', '{$title}', '{$descr}')";
+                                            '{$startDate}','{$endDate}', '{$totEnrl}',
+                                            '{$campus}', '{$title}', '{$descr}')";
+                }
+                
+                // Co-Instructor percentage
+                if($role == "CO"){
+                    @$percents[$courseIds[$key]]++;
                 }
                 
                 // set grandUserCourses 
@@ -237,46 +226,34 @@
         
         if(count($grandCourses) > 0){
             $insertSQLGC = "INSERT INTO `grand_courses` 
-                                   (`id`,
-                                    `Acad Org`, `Term`, `term_string`,
+                                   (`id`, `Term`, `term_string`,
                                     `Class Nbr`, `Subject`, `Catalog`, 
                                     `Component`, `Sect`, `Crs Status`,
-                                    `Facil ID`, `Start Date`, `End Date`,
-                                    `Hrs From`, `Hrs To`, `Tot Enrl`,
-                                    `Campus`, `Note`, `Descr`, `Course Descr`) VALUES ";
+                                    `Start Date`, `End Date`, `Tot Enrl`,
+                                    `Campus`, `Descr`, `Course Descr`) VALUES ";
             DBFunctions::execSQL($insertSQLGC . implode(", ", $grandCourses), true);
         }
         if(count($grandUserCourses) > 0){
             $insertSQLGUC = "INSERT INTO `grand_user_courses` (`user_id`, `course_id`) VALUES "; 
             DBFunctions::execSQL($insertSQLGUC . implode(", ", $grandUserCourses), true);
         }
+        foreach($percents as $key => $count){
+            $percent = round((1/$count)*100);
+            if($percent != 100){
+                DBFunctions::execSQL("UPDATE `grand_user_courses`
+                                      SET percentage = '$percent'
+                                      WHERE course_id = '$key'
+                                      AND percentage = ''", true);
+            }
+        }
                
-        echo "Number of Rows parsed (not necessarily inserted) for " . $termString . " is " . $rowsParsed . "\n\n";    
+        echo "Number of Rows parsed (not necessarily inserted) for " . $filename . " is " . $rowsParsed . "\n\n";    
     }
     
     //End Timer
     $time_elapsed_secs = microtime(true) - $start;
     
     echo "\n\n\nProcess Successfully Completed in " . $time_elapsed_secs . " seconds.\n\n\n";
-    
-    /*
-    ksort($notFound);
-    if(count($notFound) > 0){
-        echo "Missing Course descriptions:\n";
-        foreach($notFound as $key => $values){
-            echo trim($values[9])."\t".trim($values[10])."\n";
-        }
-    }*/
-
-
-//ROW: 0 Term , 1 Acad Group, 2 ID, 3 Role, 4 Access, 5 Name, 6 Last, 7 First Name, 
-//     8 Section, 9 Subject, 10 Catalog, 11 CLass Nbr, 12 Component, 13 Class Stat
-//     14 Tot Enrl, 15 Facil ID, 16 Mtg Start, 17 Mtg End, 18 Pat, 19 Campus
-
-// http://php.net/manual/en/function.in-array.php
-// https://stackoverflow.com/questions/779986/insert-multiple-rows-via-a-php-array-into-mysql
-// Paper.php    => true : write  , rollback
-// DBFunctions.php
 
 ?>
 
