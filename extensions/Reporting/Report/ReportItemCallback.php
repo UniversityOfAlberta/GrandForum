@@ -460,7 +460,7 @@ class ReportItemCallback {
                                       AND c.term_string = '{$course->term_string}'
                                       AND c.subject = '{$course->subject}'
                                       AND c.catalog = '{$course->catalog}'
-                                      AND (c.component = 'LEC'
+                                      AND c.component = 'LEC'
                                       AND uc.percentage != '0'");
         if(@$data[0]['total'] == 0){
             $data = DBFunctions::execSQL("SELECT SUM(c.`Tot Enrl`) as total
