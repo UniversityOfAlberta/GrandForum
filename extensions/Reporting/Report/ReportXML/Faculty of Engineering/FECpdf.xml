@@ -298,7 +298,7 @@
                                 <td class='admitted' align='center'>{substr({getExtra(start_date)},0,4)}</td>
                                 <td class='degree'>{getExtra(position)}</td>
                                 <td class='completed' align='center'>{substr({getExtra(finish)},0,4)}</td>
-                                <td class='cosupervisors'>{$user_cosupervisors}</td>
+                                <td class='cosupervisors'>{getText(RP_FEC, FEC_SUPERVISION, COSUPERVISORS, {$user_id}_{$hqp_rel_position}, {$my_id}, 0)}</td>
                         ]]>
                     </Static>
                     <Static>

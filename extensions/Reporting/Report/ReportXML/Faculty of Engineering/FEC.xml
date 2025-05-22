@@ -397,13 +397,17 @@
                         <td class='program' align='center'>{$item}</td>
                     ]]>
                 </ReportItem>
+                <ReportItem id="cosupervisors" type="Text" default="{$user_cosupervisors}" blobType="BLOB_TEXT" blobItem="COSUPERVISORS" blobSubItem="{$user_id}_{$hqp_rel_position}" width="200px" placeholder="Co-supervisors...">
+                    <![CDATA[
+                        <td class='admitted' align='center'>{substr({getExtra(start_date)},0,4)}</td>
+                        <td class='degree'>{getExtra(position)}</td>
+                        <td class='completed' align='center'>{substr({getExtra(finish)},0,4)}</td>
+                        <td class='cosupervisors'>{$item}</td>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}_{$hqp_rel_position}">
                     <![CDATA[
-                            <td class='admitted' align='center'>{substr({getExtra(start_date)},0,4)}</td>
-                            <td class='degree'>{getExtra(position)}</td>
-                            <td class='completed' align='center'>{substr({getExtra(finish)},0,4)}</td>
-                            <td class='cosupervisors'>{$user_cosupervisors}</td>
-                            <td class='footnote' align="center" rowspan='{get(rowspan)}'>{$item}</td>
+                        <td class='footnote' align="center" rowspan='{get(rowspan)}'>{$item}</td>
                     ]]>
                 </ReportItem>
                 <Static>

@@ -256,7 +256,7 @@
                             <tr>
                                 <td valign='top'>
                                     {$item}{$user_name}<br />
-                                    <i>{replace(Co-Supervisor, Co-Supervised with, {getExtra(role)})} <span style='{if("{getExtra(role)}" != "Co-Supervisor", display:none;)}'>{getText(RP_FEC, FEC_STUDENTS, COSUPERVISORS, {$user_id}, {$my_id}, 0)}</span></i>
+                                    <i>{replace(Co-Supervisor, Co-Supervised with, {getExtra(role)})} <span style='{if("{getExtra(role)}" != "Co-Supervisor", display:none;)}'>{getText(RP_FEC, FEC_STUDENTS, COSUPERVISORS, {$user_id}_{$hqp_rel_position}, {$my_id}, 0)}</span></i>
                                 </td>
                         ]]>
                     </ReportItem>

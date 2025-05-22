@@ -409,7 +409,7 @@
                 ]]>
             </Static>
             <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
-                <ReportItem id="cosupervisors" type="Text" default="{$user_cosupervisors}" blobType="BLOB_TEXT" blobItem="COSUPERVISORS" blobSubItem="{$user_id}" width="200px" placeholder="Co-supervisors...">
+                <ReportItem id="cosupervisors" type="Text" default="{$user_cosupervisors}" blobType="BLOB_TEXT" blobItem="COSUPERVISORS" blobSubItem="{$user_id}_{$hqp_rel_position}" width="200px" placeholder="Co-supervisors...">
                     <![CDATA[
                         <tr data-id='{$user_id}'>
                             <td rowspan='2' valign='top'>
