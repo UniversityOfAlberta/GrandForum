@@ -290,22 +290,88 @@
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople">Manage HQP</a>
                 If you wish to provide additional information on a trainee, such as %supervision for example, please add a footnote.
+                
+                <style>
+                    .phd .program               { display: none; }
+                    .msc .program               { display: none; }
+                    .pdf .program               { display: none; }
+                    .visiting .program          { display: none; }
+                    
+                    .ugrad .admitted            { display: none; }
+                    .ugrad .degree              { display: none; }
+                    .ugrad .completed           { display: none; }
+                    
+                    .tech .program              { display: none; }
+                    .tech .degree               { display: none; }
+                    .tech .completed            { display: none; }
+                    .tech .scholarships         { display: none; }
+                    
+                    .other .program             { display: none; }
+                    .other .degree              { display: none; }
+                    .other .completed           { display: none; }
+
+                    .committee .program         { display: none; }
+                    .committee .scholarships    { display: none; }
+                </style>
             ]]>
         </Static>
         <ReportItemSet id="hqps" type="String" array="phd|msc|pdf|ugrad|tech|visiting|other|committee" labels="(a) Doctoral Students|(b) Master's Students|(c) Postdoctoral Fellows|(d) Undergraduate Students|(e) Research/Technical Assistants and Associates|(f) Visiting Students|(g) Other Trainees|(h) Student Supervisory Committee Membership">
             <Static>
                 <![CDATA[
+                    {set(desc,)}
+                    {set(text,Name of Scholarships&#44; if any)}
+                ]]>
+            </Static>
+            <If if="{or({==({getExtra(value)},phd)},
+                        {==({getExtra(value)},msc)},
+                        {==({getExtra(value)},pdf)},
+                        {==({getExtra(value)},visiting)})}">
+                <![CDATA[
+                    {set(colspan,6)}
+                    {set(rowspan,2)}
+                ]]>
+            </If>
+            <ElseIf if="{==({getExtra(value)},ugrad)}">
+                <![CDATA[
+                    {set(colspan,4)}
+                    {set(rowspan,2)}
+                ]]>
+            </ElseIf>
+            <ElseIf if="{==({getExtra(value)},tech)}">
+                <![CDATA[
+                    {set(colspan,4)}
+                    {set(rowspan,1)}
+                ]]>
+            </ElseIf>
+            <ElseIf if="{==({getExtra(value)},other)}">
+                <![CDATA[
+                    {set(colspan,4)}
+                    {set(rowspan,2)}
+                    {set(text,Training Details)}
+                ]]>
+            </ElseIf>
+            <ElseIf if="{==({getExtra(value)},committee)}">
+                <![CDATA[
+                    {set(desc,Only include students for whom you were a member of their supervisory committee. <u>Do not</u> include students where you acted only as an examiner or where you acted as a supervisor or co-supervisor.)}
+                    {set(colspan,6)}
+                    {set(rowspan,1)}
+                ]]>
+            </ElseIf>
+            <Static>
+                <![CDATA[
                     <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>
-                    <table class='wikitable' width='100%'>
+                    {get(desc)}
+                    <table class='wikitable {getExtra(value)}' width='100%'>
                         <tr>
-                            <th style='width: 25%;'>Student Name</th>
-                            <th style='width: 1%; white-space:nowrap;'>FT / PT</th>
-                            <th style='width: 1%; white-space:nowrap;'>%<br />Supervision</th>
-                            <th style='width: 5%;'>Year<br />Admitted</th>
-                            <th style='width: 25%;'>Degree<br />Sought</th>
-                            <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
-                            <th style='width: 20%;'>Co-Supervisors</th>
-                            <th style='width: 5%;'>Footnote</th>
+                            <th class='student_name' style='width: 25%;'>Student Name</th>
+                            <th class='time' style='width: 1%; white-space:nowrap;'>FT / PT</th>
+                            <th class='percent' style='width: 1%; white-space:nowrap;'>%<br />Supervision</th>
+                            <th class='program' style='width: 5%; white-space:nowrap;'>Trainee Program</th>
+                            <th class='admitted' style='width: 5%;'>Year<br />Admitted</th>
+                            <th class='degree' style='width: 25%;'>Degree<br />Sought</th>
+                            <th class='completed' style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
+                            <th class='cosupervisors' style='width: 20%;'>Co-Supervisors</th>
+                            <th class='footnote' style='width: 5%;'>Footnote</th>
                         </tr>
                 ]]>
             </Static>
@@ -313,26 +379,31 @@
                 <Static>
                     <![CDATA[
                         <tr data-id='{$user_id}'>
-                            <td rowspan='2'>{$user_name}</td>
+                            <td class='student_name' rowspan='{get(rowspan)}'>{$user_name}</td>
                     ]]>
                 </Static>
                 <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}_{$hqp_rel_position}" options="FT|PT" width="3.5em">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td class='time'>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="percent" type="Text" blobItem="PERCENT" blobSubItem="{$user_id}_{$hqp_rel_position}" width="3.5em">
                     <![CDATA[
-                        <td align='center'>{$item}</td>
+                        <td class='percent' align='center'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="program" type="Text" blobItem="PROGRAM" blobSubItem="{$user_id}_{$hqp_rel_position}" width="12em">
+                    <![CDATA[
+                        <td class='program' align='center'>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}_{$hqp_rel_position}">
                     <![CDATA[
-                            <td align='center'>{substr({getExtra(start_date)},0,4)}</td>
-                            <td>{getExtra(position)}</td>
-                            <td align='center'>{substr({getExtra(finish)},0,4)}</td>
-                            <td>{$user_cosupervisors}</td>
-                            <td align="center" rowspan='2'>{$item}</td>
+                            <td class='admitted' align='center'>{substr({getExtra(start_date)},0,4)}</td>
+                            <td class='degree'>{getExtra(position)}</td>
+                            <td class='completed' align='center'>{substr({getExtra(finish)},0,4)}</td>
+                            <td class='cosupervisors'>{$user_cosupervisors}</td>
+                            <td class='footnote' align="center" rowspan='{get(rowspan)}'>{$item}</td>
                     ]]>
                 </ReportItem>
                 <Static>
@@ -342,8 +413,8 @@
                 </Static>
                 <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}_{$hqp_rel_position}" height="48px">
                     <![CDATA[
-                        <tr data-id='{$user_id}'><td colspan='6'>
-                            Name of Scholarships, if any<br />
+                        <tr class='scholarships' data-id='{$user_id}'><td class='scholarships' colspan='{get(colspan)}'>
+                            {get(text)}:<br />
                             {$item}
                         </td></tr>
                     ]]>
