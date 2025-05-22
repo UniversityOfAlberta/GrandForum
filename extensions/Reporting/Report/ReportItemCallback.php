@@ -51,6 +51,7 @@ class ReportItemCallback {
             // Student Relation
             "hqp_name" => "getHqpName",
             "hqp_reversed_name" => "getHqpReversedName",
+            "hqp_rel_position" => "getHqpRelPosition",
             "hqp_position" => "getHqpPosition",
             "hqp_awards" => "getHqpAwards",
             "user_hqp_role" => "getUserHqpRole",
@@ -226,6 +227,7 @@ class ReportItemCallback {
             "strip_html" => "strip_html",
             "occurrences" => "occurrences",
             "count" => "count",
+            "md5" => "md5",
             "add" => "add",
             "subtract" => "subtract",
             "multiply" => "multiply",
@@ -300,6 +302,10 @@ class ReportItemCallback {
         $relation = Relationship::newFromId($this->reportItem->projectId);
         $hqp = $relation->getUser2();
         return $hqp->getReversedName();
+    }
+    
+    function getHqpRelPosition(){
+        return $this->reportItem->milestoneId;
     }
 
     function getHqpPosition(){
@@ -1914,6 +1920,10 @@ class ReportItemCallback {
     
     function nl2br($str){
         return nl2br($str);
+    }
+    
+    function md5($text){
+        return md5($text);
     }
     
     function add(){

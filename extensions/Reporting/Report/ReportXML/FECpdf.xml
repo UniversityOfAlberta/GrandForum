@@ -251,7 +251,7 @@
                     ]]>
                 </Static>
                 <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
-                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS">
+                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}_{$hqp_rel_position}" blobSection="FEC_STUDENTS">
                         <![CDATA[
                             <tr>
                                 <td valign='top'>
@@ -280,7 +280,7 @@
                                         <tr>
                         ]]>
                     </Static>
-                    <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}" blobSection="FEC_STUDENTS" height="48px">
+                    <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}_{$hqp_rel_position}" blobSection="FEC_STUDENTS" height="48px">
                         <![CDATA[
                                 
                                             <td colspan='3' style='background: transparent;'>{$item}</td>
@@ -303,7 +303,7 @@
                     ]]>
                 </Static>
                 <ReportItemSet type="PersonSupervises" hqpType="{getExtra(value)}">
-                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}" isTopAnchor="false" blobSection="FEC_STUDENTS">
+                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}_{$hqp_rel_position}" isTopAnchor="false" blobSection="FEC_STUDENTS">
                         <![CDATA[
                             <li style="page-break-inside: avoid;">
                                 {$item}
