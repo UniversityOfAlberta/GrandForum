@@ -86,6 +86,14 @@
                         "description": "",
                         "descriptionFr": "",
                         "note": ""
+                    },
+                    {
+                        "text": "Pickleball",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-PICKLE",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
                     }
                 ]
             },
@@ -334,6 +342,22 @@
                 "text": "Men's Shed",
                 "value": 88,
                 "code": "CFN-INT-MEN",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Wookworking",
+                "value": 88,
+                "code": "CFN-INT-WOOD",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Ukelele",
+                "value": 88,
+                "code": "CFN-INT-UKELELE",
                 "description": "",
                 "descriptionFr": "",
                 "note": ""
