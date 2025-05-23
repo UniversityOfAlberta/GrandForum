@@ -145,6 +145,8 @@ class ReportItemCallback {
             "user_lectures_count" => "getUserLecCount",
             "user_lectures_student_count" => "getUserLecStudentCount",
             "user_grant_count" => "getUserGrantCount",
+            "user_new_grant" => "getUserNewGrant",
+            "user_continuing_grant" => "getUserContinuingGrant",
             "user_cv_grant_count" => "getUserCVGrantCount",
             "user_grant_total" => "getUserGrantTotal",
             "user_phd_year" => "getUserPhdYear",
@@ -227,11 +229,13 @@ class ReportItemCallback {
             "strip_html" => "strip_html",
             "occurrences" => "occurrences",
             "count" => "count",
+            "md5" => "md5",
             "add" => "add",
             "subtract" => "subtract",
             "multiply" => "multiply",
             "divide" => "divide",
             "round" => "round",
+            "number_format" => "number_format",
             "max" => "max",
             "min" => "min",
             "set" => "set",
@@ -474,7 +478,7 @@ class ReportItemCallback {
                                           AND c.term_string = '{$course->term_string}'
                                           AND c.subject = '{$course->subject}'
                                           AND c.catalog = '{$course->catalog}'
-                                          AND (c.component = 'LAB' OR c.component = 'SEM')
+                                          AND (c.component = 'LAB' OR c.component = 'SEM' OR c.component = 'IND')
                                           AND uc.percentage != '0'");
         }
         return @$data[0]['total'];
@@ -1248,12 +1252,13 @@ class ReportItemCallback {
         return "";
     }
     
-    function getUserServiceCount($start_date, $end_date, $type){
+    function getUserServiceCount($start_date, $end_date, $type, $position=""){
         $person = Person::newFromId($this->reportItem->personId);
         $products = $person->getPapersAuthored("Activity", $start_date, $end_date, false, true, true);
         $count = 0;
         foreach($products as $product){
-            if($product->getType() == $type || $type == ""){
+            if(($product->getType() == $type || $type == "") && 
+               ($product->getData('position') == $position || $position == "")){
                 $count++;
             }
         }
@@ -1265,6 +1270,8 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $category = "";
         switch($case){
+            case "First Author":
+            case "Co-Author";
             case "Any Journal":
                 $category = "Publication";
                 $type = "Journal Paper";
@@ -1297,6 +1304,11 @@ class ReportItemCallback {
                 $type = "Book";
                 $histories = $person->getProductHistories($year, "Book");
                 break;
+            case "Books":
+                $category = "Publication";
+                $type = "Book|Book Chapter";
+                $histories = array();
+                break;
             case "Patent":
                 $category = "Patent/Spin-Off";
                 $type = "Patent";
@@ -1320,6 +1332,21 @@ class ReportItemCallback {
             case "Presentation":
                 $category = "Presentation";
                 $type = "*";
+                $histories = array();
+                break;
+            case "Conference Presentation":
+                $category = "Presentation";
+                $type = "Conference Presentation";
+                $histories = array();
+                break;
+            case "Poster Presentation":
+                $category = "Presentation";
+                $type = "Poster Presentation";
+                $histories = array();
+                break;
+            case "Workshop Presentation":
+                $category = "Presentation";
+                $type = "Panel Member|Workshop Presentation";
                 $histories = array();
                 break;
             case "Patent/Spin-Off":
@@ -1356,8 +1383,23 @@ class ReportItemCallback {
                             $count++;
                         }
                     }
+                    else if($case == "First Author"){
+                        if($product->getData('peer_reviewed') == "Yes" && $person->isPrimaryAuthorOf($product)){
+                            $count++;
+                        }
+                    }
+                    else if($case == "Co-Author"){
+                        if($product->getData('peer_reviewed') == "Yes" && !$person->isPrimaryAuthorOf($product)){
+                            $count++;
+                        }
+                    }
                     else if($case == "Not Refereed"){
                         if($product->getData('peer_reviewed') == "No" || $product->getData('peer_reviewed') == ""){
+                            $count++;
+                        }
+                    }
+                    else if($case == "Conference Presentation"){
+                        if($product->getStatus() == "Invited"){
                             $count++;
                         }
                     }
@@ -1938,6 +1980,10 @@ class ReportItemCallback {
         return nl2br($str);
     }
     
+    function md5($text){
+        return md5($text);
+    }
+    
     function add(){
         $args = func_get_args();
         $sum = 0;
@@ -1969,6 +2015,10 @@ class ReportItemCallback {
     function round($val, $dec=0){
         $val = str_replace("&#44;", "", $val);
         return number_format(round($val, $dec), $dec, ".", "");
+    }
+    
+    function number_format($val, $decimals=0, $decimal_separator='.', $thousands_separator=','){
+        return number_format($val, $decimals, $decimal_separator, $thousands_separator);
     }
     
     function max(){
@@ -2160,39 +2210,39 @@ class ReportItemCallback {
         return count($hqps);
     }
 
-    function getUserGradCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
-        return $this->getHQPCount('grad', $status);
+    function getUserGradCount($status="all", $role=""){ // Status should be 'all' or 'current' or 'completed'
+        return $this->getHQPCount('grad', $status, $role);
     }
     
-    function getUserMscCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
-        return $this->getHQPCount('msc', $status);
+    function getUserMscCount($status="all", $role=""){ // Status should be 'all' or 'current' or 'completed'
+        return $this->getHQPCount('msc', $status, $role);
     }
     
-    function getUserPhDCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
-        return $this->getHQPCount('phd', $status);
+    function getUserPhDCount($status="all", $role=""){ // Status should be 'all' or 'current' or 'completed'
+        return $this->getHQPCount('phd', $status, $role);
     }
 
-    function getUserFellowCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
-        return $this->getHQPCount('pdf', $status);
+    function getUserFellowCount($status="all", $role=""){ // Status should be 'all' or 'current' or 'completed'
+        return $this->getHQPCount('pdf', $status, $role);
     }
     
-    function getUserTechCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
-        return $this->getHQPCount('tech', $status);
+    function getUserTechCount($status="all", $role=""){ // Status should be 'all' or 'current' or 'completed'
+        return $this->getHQPCount('tech', $status, $role);
     }
     
-    function getUserUgradCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
-        return $this->getHQPCount('ugrad', $status);
+    function getUserUgradCount($status="all", $role=""){ // Status should be 'all' or 'current' or 'completed'
+        return $this->getHQPCount('ugrad', $status, $role);
     }
     
-    function getUserOtherCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
-        return $this->getHQPCount('other', $status);
+    function getUserOtherCount($status="all", $role=""){ // Status should be 'all' or 'current' or 'completed'
+        return $this->getHQPCount('other', $status, $role);
     }
     
     function getUserCommitteeCount(){
         return $this->getHQPCount('committee');
     }
     
-    function getHQPCount($type, $status="all"){
+    function getHQPCount($type, $status="all", $role=""){
         $status = strtolower($status);
         $person = Person::newFromId($this->reportItem->personId);
         $startDate = ($this->reportItem->getReport()->startYear).CYCLE_START_MONTH;
@@ -2200,9 +2250,12 @@ class ReportItemCallback {
         
         $type = (isset(Person::$studentPositions[$type])) ? Person::$studentPositions[$type] : $type;
         
-        $data = $person->getStudentInfo($type, $startDate, $endDate);
+        $data = $person->getStudentInfo($type, $startDate, $endDate, $role);
         $hqps = array();
         foreach($data as $row){
+            if($role != "" && $row['role'] != $role){
+                continue;
+            }
             if($status == "all" || ($row['end_date'] == "Current" && $status == "current") || 
                                    ($row['end_date'] != "Current" && $status == "completed")){
                 $hqps[$row['hqp'].$row['position']] = $row;
@@ -2338,6 +2391,66 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $grants = $person->getGrantsBetween(($this->reportItem->getReport()->startYear).CYCLE_START_MONTH, ($this->reportItem->getReport()->year).CYCLE_END_MONTH);
         return count($grants);
+    }
+    
+    function getUserNewGrant($value='count', $pi='both'){
+        $grants = new PersonNewGrantsReportItemSet();
+        $grants->personId = $this->reportItem->personId;
+        $grants->setAttribute('start', CYCLE_START);
+        $grants->setAttribute('end', CYCLE_END);
+        $count = 0;
+        $average = 0;
+        $total = 0;
+        foreach($grants->getGrants() as $grant){
+            if($pi == 'both' ||
+               ($pi == 'pi' && $grant->getPI()->getId() == $this->reportItem->personId) ||
+               ($pi == 'copi' && $grant->getPI()->getId() != $this->reportItem->personId)){
+                $adjusted = $grant->getAdjustedAmount();
+                
+                $count++;
+                $average += ($adjusted > 0) ? $adjusted : $grant->getAverage();
+                $total += $grant->getTotal();
+            }
+        }
+        switch($value){
+            case 'count':
+                return $count;
+            case 'average':
+                return $average;
+            case 'total':
+                return $total;
+        }
+        return 0;
+    }
+    
+    function getUserContinuingGrant($value='count', $pi='both'){
+        $grants = new PersonContinuingGrantsReportItemSet();
+        $grants->personId = $this->reportItem->personId;
+        $grants->setAttribute('start', CYCLE_START);
+        $grants->setAttribute('end', CYCLE_END);
+        $count = 0;
+        $average = 0;
+        $total = 0;
+        foreach($grants->getGrants() as $grant){
+            if($pi == 'both' ||
+               ($pi == 'pi' && $grant->getPI()->getId() == $this->reportItem->personId) ||
+               ($pi == 'copi' && $grant->getPI()->getId() != $this->reportItem->personId)){
+                $adjusted = $grant->getAdjustedAmount();
+                
+                $count++;
+                $average += ($adjusted > 0) ? $adjusted : $grant->getAverage();
+                $total += $grant->getTotal();
+            }
+        }
+        switch($value){
+            case 'count':
+                return $count;
+            case 'average':
+                return $average;
+            case 'total':
+                return $total;
+        }
+        return 0;
     }
     
     function getUserCVGrantCount(){

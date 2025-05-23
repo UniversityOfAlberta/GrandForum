@@ -2,20 +2,18 @@
 
 class PersonNewGrantsReportItemSet extends PersonGrantsReportItemSet {
     
-    function getData(){
-        $data = array();
-        $grants = $this->getGrants();
+    function getGrants(){
+        $grants = parent::getGrants();
         $start = $this->getAttr('start', CYCLE_START);
+        $ret = array();
         if(is_array($grants)){
-            foreach($grants as $grant){
+            foreach($grants as $key => $grant){
                 if($grant->getStartDate() >= $start){
-                    $tuple = self::createTuple();
-                    $tuple['product_id'] = $grant->id;
-                    $data[] = $tuple;
+                    $ret[$key] = $grant;
                 }
             }
         }
-        return $data;
+        return $ret;
     }
 
 }

@@ -148,108 +148,6 @@
                 </div>
             ]]>
         </Static>
-        
-        <!-- Supplementary Professional Activities -->
-        <!--ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA" encrypt="true">
-            <![CDATA[
-                <script type="text/javascript">
-                    $(document).ready(function(){
-                        $("[name=AnnualReport_spa_level]").change(function(){
-                            var value = $(this).val();
-                            if(value == "Minor SPA" ||
-                               value == "Major SPA"){
-                                $("#outer_disclosure").slideDown();
-                            }
-                            else{
-                                $("#outer_disclosure").slideUp();
-                            }
-                            if(value == "Major SPA"){
-                                $("#outer_major").slideDown();
-                            }
-                            else{
-                                $("#outer_major").slideUp();
-                            }
-                        }).change();
-                    });
-                </script>
-                <h2>Supplementary Professional Activities</h2>
-                <h3>If you have SPA to report, select "Minor SPA" or "Major SPA"</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="spa_disclosure" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
-            <![CDATA[
-                <div id="outer_disclosure" style="display:none;">
-                <h3>I confirm that I have an up to date Disclosure Report on file</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="spa_major" type="RadioReportItem" blobItem="FEC_SPA_MAJOR" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
-            <![CDATA[
-                <div id="outer_major" style="display:none;">
-                <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
-                {$item}
-                </div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="spa_description" type="TextareaReportItem" blobItem="FEC_SPA_DESC" blobType="BLOB_TEXT" encrypt="true">
-            <![CDATA[
-                <h3>Describe the SPA below</h3>
-                {$item}
-                </div>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="spa_level2" type="SelectReportItem" blobItem="FEC_SPA_LEVEL2" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA" encrypt="true">
-            <![CDATA[
-                <script type="text/javascript">
-                    $(document).ready(function(){
-                        $("[name=AnnualReport_spa_level2]").change(function(){
-                            var value = $(this).val();
-                            if(value == "Minor SPA" ||
-                               value == "Major SPA"){
-                                $("#outer_disclosure2").slideDown();
-                            }
-                            else{
-                                $("#outer_disclosure2").slideUp();
-                            }
-                            if(value == "Major SPA"){
-                                $("#outer_major2").slideDown();
-                            }
-                            else{
-                                $("#outer_major2").slideUp();
-                            }
-                        }).change();
-                    });
-                </script>
-                <br /><br />
-                <hr />
-                <h3>Additional SPA</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="spa_disclosure2" type="RadioReportItem" blobItem="FEC_SPA_DISCLOSURE2" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
-            <![CDATA[
-                <div id="outer_disclosure2" style="display:none;">
-                <h3>I confirm that I have an up to date Disclosure Report on file</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="spa_major2" type="RadioReportItem" blobItem="FEC_SPA_MAJOR2" blobType="BLOB_TEXT" options="Yes|No" encrypt="true">
-            <![CDATA[
-                <div id="outer_major2" style="display:none;">
-                <h3>I confirm that I have discussed my Major SPA with my Department Chair and obtained written permission prior to engaging in the SPA</h3>
-                {$item}
-                </div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="spa_description2" type="TextareaReportItem" blobItem="FEC_SPA_DESC2" blobType="BLOB_TEXT" encrypt="true">
-            <![CDATA[
-                <h3>Describe the SPA below</h3>
-                {$item}
-                </div>
-            ]]>
-        </ReportItem-->
     </ReportSection>
     <ReportSection id="teaching" tooltip="TEACHING" name="Teaching" title="1. TEACHING" blobSection="FEC_TEACHING" type="EditableReportSection">
         <Static id="instructions">
@@ -270,10 +168,15 @@
                 For multi-section courses, please indicate the course coordinator with an asterisk (*).
             ]]>
         </Static>
+        <Static>
+            <![CDATA[
+                <h3>(a) Courses Taught:</h3>
+            ]]>
+        </Static>
         <ReportItemSet type="String" array="{getTermsArray({$start_date},{$end_date})}">
             <Static>
                 <![CDATA[
-                    <h3>{getExtra()}</h3>
+                    <h4>{getExtra()}</h4>
                 ]]>
             </Static>
             <ReportItemSet type="PersonCourses" term="{removeSpaces({getExtra()})}" unique="true" exclude13Week="true">
@@ -328,60 +231,147 @@
                 <Static>
                     <![CDATA[
                         </table>
-                    ]]>
-                </Static>
-                <ReportItem id="teaching_methods" type="MultiText" blobItem="TEACHING_METHODS" blobType="BLOB_ARRAY" labels="Short Description and Educational Objective|Number of hours invested|Method used to evaluate initiative" types="Textarea|Number|Textarea" sizes="|100|" width="100%" class="wikitable teaching_methods">
-                    <![CDATA[
-                            Please reflect on your Initiatives to improve your teaching, including any new teaching methods you may have implemented or any activities toward course/laboratory development.
-                            {$item}
                         </div>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="projectCourses" type="MultiTextReportItem" blobItem="FEC_PROJECT_COURSES" blobType="BLOB_ARRAY" labels="Class Prefix|Number|Title|Description|Type|Term|Enrolment" types="Text|Text|Text|Textarea|Select(LEC,SEM,LAB)|Checkbox(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" sizes="100|50|200|200|||50" multiple="true" addText="Add New" optional="true" encrypt="true">
             <![CDATA[
-                <h3>Project Courses</h3>
+                <h4>Project Courses</h4>
                 Please describe your involvement in any research or design courses, where you were the primary supervisor of students or student groups.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="accredidation" type="MultiText" blobItem="ACCREDIDATION" blobType="BLOB_ARRAY" labels="Contributions Toward Accreditation Efforts|Hours Invested" types="Textarea|Number" sizes="|100" multiple="true">
+            <![CDATA[
+                <h3>(c) Accreditation:</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="initiatives" tooltip="EDUCATIONAL INITIATIVES" name="Educational Initiatives" title="2. EDUCATIONAL INITIATIVES" blobSection="FEC_INITIATIVES" type="EditableReportSection">
+        <ReportItem id="teaching_methods1" type="MultiText" blobItem="TEACHING_METHODS1" blobType="BLOB_ARRAY" labels="Course Number|Description and Educational Objective|Hours Invested|Method Used to Evaluate Initiative" types="Text|Textarea|Number|Textarea" sizes="100||100|" width="100%" multiple="true">
+            <![CDATA[
+                <h3>(a) Please briefly describe initiatives taken to improve your own teaching:</h3>
+                <b>New teaching methods implemented:</b>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="teaching_methods2" type="MultiText" blobItem="TEACHING_METHODS2" blobType="BLOB_ARRAY" labels="Course Number|Description and Educational Objective|Hours Invested|Method Used to Evaluate Initiative" types="Text|Textarea|Number|Textarea" sizes="100||100|" width="100%" multiple="true">
+            <![CDATA[
+                <b>Course or laboratory development:</b>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="improve" type="Textarea" blobItem="IMPROVE">
             <![CDATA[
-                <h3>(a) Please briefly describe initiatives taken to improve teaching within the Faculty, at the University of Alberta, and externally.</h3>
+                <h3>(b) Please briefly describe initiatives taken to improve teaching (beyond your own) within the Faculty, at the University of Alberta, and externally:</h3>
                 <p>This may include informal peer mentoring, formal peer consultations (as the consultant), participation in teaching triads, leadership of education related workshops, and participation as a discussant in panel discussions.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="enhance" type="Textarea" blobItem="ENHANCE">
             <![CDATA[
-                <h3>(b) Describe any activities and initiatives taken to enhance graduate student supervision and mentoring:</h3>
+                <h3>(c) Describe any activities and initiatives taken to enhance graduate student supervision and mentoring:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="activities" type="Textarea" blobItem="ACTIVITIES">
+            <![CDATA[
+                <h3>(d) List any engineering education-related scholarship activities:</h3>
+                <i>Outputs (e.g., publications, presentations) should be reported in Section 5(g).</i>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="supervision" tooltip="SUPERVISION OF RESEARCH TRAINEES" name="Supervision" title="3. SUPERVISION OF RESEARCH TRAINEES" blobSection="FEC_SUPERVISION" type="EditableReportSection">
+    <ReportSection id="supervision" tooltip="SUPERVISION OF TRAINEES" name="Supervision" title="3. SUPERVISION OF TRAINEES" blobSection="FEC_SUPERVISION" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople">Manage HQP</a>
                 If you wish to provide additional information on a trainee, such as %supervision for example, please add a footnote.
+                
+                <style>
+                    .phd .program               { display: none; }
+                    .msc .program               { display: none; }
+                    .pdf .program               { display: none; }
+                    .visiting .program          { display: none; }
+                    
+                    .ugrad .admitted            { display: none; }
+                    .ugrad .degree              { display: none; }
+                    .ugrad .completed           { display: none; }
+                    
+                    .tech .program              { display: none; }
+                    .tech .degree               { display: none; }
+                    .tech .completed            { display: none; }
+                    .tech .scholarships         { display: none; }
+                    
+                    .other .program             { display: none; }
+                    .other .degree              { display: none; }
+                    .other .completed           { display: none; }
+
+                    .committee .program         { display: none; }
+                    .committee .scholarships    { display: none; }
+                </style>
             ]]>
         </Static>
-        <ReportItemSet id="hqps" type="String" array="phd|msc|ugrad|pdf|visiting|tech|other|committee" labels="Doctoral Students|Master's Students|Undergraduates|Post-doctoral Fellows and Research Associates|Visiting Students|Research/Technical Assistants|Other|Student Committee Responsibilities">
+        <ReportItemSet id="hqps" type="String" array="phd|msc|pdf|ugrad|tech|visiting|other|committee" labels="(a) Doctoral Students|(b) Master's Students|(c) Postdoctoral Fellows|(d) Undergraduate Students|(e) Research/Technical Assistants and Associates|(f) Visiting Students|(g) Other Trainees|(h) Student Supervisory Committee Membership">
+            <Static>
+                <![CDATA[
+                    {set(desc,)}
+                    {set(text,Name of Scholarships&#44; if any)}
+                ]]>
+            </Static>
+            <If if="{or({==({getExtra(value)},phd)},
+                        {==({getExtra(value)},msc)},
+                        {==({getExtra(value)},pdf)},
+                        {==({getExtra(value)},visiting)})}">
+                <![CDATA[
+                    {set(colspan,6)}
+                    {set(rowspan,2)}
+                ]]>
+            </If>
+            <ElseIf if="{==({getExtra(value)},ugrad)}">
+                <![CDATA[
+                    {set(colspan,4)}
+                    {set(rowspan,2)}
+                ]]>
+            </ElseIf>
+            <ElseIf if="{==({getExtra(value)},tech)}">
+                <![CDATA[
+                    {set(colspan,4)}
+                    {set(rowspan,1)}
+                ]]>
+            </ElseIf>
+            <ElseIf if="{==({getExtra(value)},other)}">
+                <![CDATA[
+                    {set(colspan,4)}
+                    {set(rowspan,2)}
+                    {set(text,Training Details)}
+                ]]>
+            </ElseIf>
+            <ElseIf if="{==({getExtra(value)},committee)}">
+                <![CDATA[
+                    {set(desc,Only include students for whom you were a member of their supervisory committee. <u>Do not</u> include students where you acted only as an examiner or where you acted as a supervisor or co-supervisor.)}
+                    {set(colspan,6)}
+                    {set(rowspan,1)}
+                ]]>
+            </ElseIf>
             <Static>
                 <![CDATA[
                     <h3>{getExtra(label)} ({getHQPCount({getExtra(value)})})</h3>
-                    <table class='wikitable' width='100%'>
+                    {get(desc)}
+                    <table class='wikitable {getExtra(value)}' width='100%'>
                         <tr>
-                            <th style='width: 25%;'>Student</th>
-                            <th style='width: 1%; white-space:nowrap;'>FT / PT</th>
-                            <th style='width: 5%;'>Year<br />Admitted</th>
-                            <th style='width: 25%;'>Degree<br />Sought</th>
-                            <th style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
-                            <th style='width: 20%;'>Co-Supervisors</th>
-                            <th style='width: 5%;'>Footnote</th>
+                            <th class='student_name' style='width: 25%;'>Student Name</th>
+                            <th class='time' style='width: 1%; white-space:nowrap;'>FT / PT</th>
+                            <th class='percent' style='width: 1%; white-space:nowrap;'>%<br />Supervision</th>
+                            <th class='program' style='width: 5%; white-space:nowrap;'>Trainee Program</th>
+                            <th class='admitted' style='width: 5%;'>Year<br />Admitted</th>
+                            <th class='degree' style='width: 25%;'>Degree<br />Sought</th>
+                            <th class='completed' style='width: 10%;'>Year Degree<br />Expected or<br />Completed</th>
+                            <th class='cosupervisors' style='width: 20%;'>Co-Supervisors</th>
+                            <th class='footnote' style='width: 5%;'>Footnote</th>
                         </tr>
                 ]]>
             </Static>
@@ -389,21 +379,40 @@
                 <Static>
                     <![CDATA[
                         <tr data-id='{$user_id}'>
-                            <td rowspan='2'>{$user_name}</td>
+                            <td class='student_name' rowspan='{get(rowspan)}'>{$user_name}</td>
                     ]]>
                 </Static>
                 <ReportItem id="time" type="Select" blobItem="TIME" blobSubItem="{$user_id}_{$hqp_rel_position}" options="FT|PT" width="3.5em">
-                        <![CDATA[
-                            <td>{$item}</td>
-                        ]]>
-                    </ReportItem>
+                    <![CDATA[
+                        <td>{$item}</td>
+                    ]]>
+                </ReportItem>
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}_{$hqp_rel_position}">
                     <![CDATA[
-                            <td align='center'>{substr({getExtra(start_date)},0,4)}</td>
-                            <td>{getExtra(position)}</td>
-                            <td align='center'>{substr({getExtra(finish)},0,4)}</td>
-                            <td>{$user_cosupervisors}</td>
-                            <td align="center" rowspan='2'>{$item}</td>
+                        <td class='time'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="percent" type="Text" blobItem="PERCENT" blobSubItem="{$user_id}_{$hqp_rel_position}" width="3.5em">
+                    <![CDATA[
+                        <td class='percent' align='center'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="program" type="Text" blobItem="PROGRAM" blobSubItem="{$user_id}_{$hqp_rel_position}" width="12em">
+                    <![CDATA[
+                        <td class='program' align='center'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="cosupervisors" type="Text" default="{$user_cosupervisors}" blobType="BLOB_TEXT" blobItem="COSUPERVISORS" blobSubItem="{$user_id}_{$hqp_rel_position}" width="200px" placeholder="Co-supervisors...">
+                    <![CDATA[
+                        <td class='admitted' align='center'>{substr({getExtra(start_date)},0,4)}</td>
+                        <td class='degree'>{getExtra(position)}</td>
+                        <td class='completed' align='center'>{substr({getExtra(finish)},0,4)}</td>
+                        <td class='cosupervisors'>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$user_id}_{$hqp_rel_position}">
+                    <![CDATA[
+                        <td class='footnote' align="center" rowspan='{get(rowspan)}'>{$item}</td>
                     ]]>
                 </ReportItem>
                 <Static>
@@ -413,8 +422,8 @@
                 </Static>
                 <ReportItem id="scholarships" type="Textarea" blobItem="SCHOLARSHIPS" blobSubItem="{$user_id}_{$hqp_rel_position}" height="48px">
                     <![CDATA[
-                        <tr data-id='{$user_id}'><td colspan='4'>
-                            Name of Scholarships, if any<br />
+                        <tr class='scholarships' data-id='{$user_id}'><td class='scholarships' colspan='{get(colspan)}'>
+                            {get(text)}:<br />
                             {$item}
                         </td></tr>
                     ]]>
@@ -426,84 +435,6 @@
                 ]]>
             </Static>
         </ReportItemSet>
-        
-        <!-- HQP Publications -->
-        <Static>
-            <![CDATA[
-                <h2>HQP Publications <span class='clicktooltip' title='The publications should have your HQP listed as an author, but cannot include yourself as an author.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
-                <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
-                <table class='wikitable' style='width:100%'>
-                    <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Title</th>
-                        <th>Footnote</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </Static>
-        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="{$start_date}" end="{$end_date}">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
-                <![CDATA[
-                    <tr><td>{$product_type}</td><td>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <td width="30px" align="center">{$item}</td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </tbody></table><br />
-            ]]>
-        </Static>
-        <Static>
-            <![CDATA[
-                <h2>HQP Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
-                <small></small>
-                <table class ='wikitable' style='width:100%'>
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Type</th>
-                        <th>HQP/Contributors</th>
-                        <th>Invited</th>
-                        <th>Event Title</th>
-                        <th>Organization</th>
-                        <th>Location</th>
-                        <th>Date</th>
-                        <th>Length (minutes)</th>
-                        <th>Footnote</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </Static>
-        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="{$start_date}" end="{$end_date}">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <tr><td align='center'>{$presentation_title}</td>
-                        <td align='center'>{$presentation_type}</td>
-                        <td>{$product_authors}{if("{$product_contributors}" != "", <hr />{$product_contributors})}</td>
-                        <td align='center'>{$presentation_invited}</td>
-                        <td>{getProductData(event_title)}</td>
-                        <td>{$presentation_organization}</td>
-                        <td align='center'>{$presentation_country}</td>
-                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
-                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
-                        <td align='center'>{$item}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </tbody></table><br />
-            ]]>
-        </Static>
     </ReportSection>
     <ReportSection id="research" tooltip="RESEARCH" name="Research" title="4. RESEARCH" blobSection="FEC_RESEARCH" type="EditableReportSection">
         <Static>
@@ -514,7 +445,7 @@
                 <p><b>(i) Major Area:</b> {getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA,0,{$user_id},0,0)}{if({contains({getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA,0,{$user_id},0,0,true)}, Other)}, : {getText(RP_FEC,RESEARCH_AREA,RESEARCH_AREA_OTHER,0,{$user_id},0,0)})}</p>
                 <p><b>(ii) Keywords:</b> {$user_keywords}</p>
                 
-                <h3>(b) Grants:</h3>
+                <h3>(b) Grants Awarded:</h3>
                 <p>(Individual, operating, equipment, and share of other grants. For shared grants, indicate if you are the Principal Investigator (The Principal Investigator is the holder and signing authority of the grant account). Indicate if a grant is not being administered through the Faculty of Engineering, and, if not, state where it is being administered by adding a footnote. Do not list internal university startup funds, AIF or other graduate scholarships listed in section 3. Also, do not list unsuccessful applications and/or grants applied for but not yet awarded. List start and finish date (e.g., NSERC (Discovery), April 2008 - March 2012).</p>
                 <table class='wikitable'>
                     <tr>
@@ -522,6 +453,7 @@
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Average<br />Amount/Year</th>
+                        <th>Total Award</th>
                         <th>Title of Project</th>
                         <th>P.I.<br />(y/n)</th>
                         <th>Joint With</th>
@@ -537,6 +469,7 @@
                         <td>{$grant_start_date}</td>
                         <td>{$grant_end_date}</td>
                         <td align='right'>${$grant_average}</td>
+                        <td align='right'>${$grant_total}</td>
                         <td>{$grant_title_both}</td>
                         <td align='center'>{$grant_is_pi}</td>
                         <td>{$grant_people}</td>
@@ -558,7 +491,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="publications" tooltip="SCHOLARLY PUBLICATIONS" name="Scholarly Publications" title="5. SCHOLARLY PUBLICATIONS" blobSection="FEC_PUBLICATIONS" type="EditableReportSection">
+    <ReportSection id="publications" tooltip="SCHOLARLY PUBLICATIONS AND CONTRIBUTIONS" name="Scholarly Publications" title="5. SCHOLARLY PUBLICATIONS AND CONTRIBUTIONS" blobSection="FEC_PUBLICATIONS" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Outputs</a>
@@ -583,13 +516,13 @@
                                              Journal Paper\|Journal Abstract\|White Paper\|Tech Report\|Manual|
                                              |
                                              Poster\|Workshop Paper\|Edited Book\|Misc"
-                                     array3="Refereed journals|
-                                             Conference proceedings|
-                                             Books; chapters in books|
-                                             Reports of invention, patents filed or patents awarded|
-                                             Unrefereed papers and technical reports published|
-                                             Presentations, indicating by an asterisk which author made the presentation|
-                                             Other publications"
+                                     array3="Refereed Journals|
+                                             Conference Proceedings|
+                                             Books; Chapters in Books|
+                                             Reports of Invention, Patents Filed, or Patents Awarded|
+                                             Unrefereed Papers and Technical Reports Published|
+                                             Presentations (indicate by an asterisk which author made the presentation)|
+                                             Other Contributions"
                                      array4="(For those accepted, give acceptance date and number of manuscript pages)|
                                              (specify number of ms)|
                                              (specify number of pages)|
@@ -611,7 +544,7 @@
                     <table class='wikitable' style='width: 100%;'>
                         <tr>
                             <th style='width: 100%;'>Publication</th>
-                            <th style='white-space: nowrap;'>First year<br />listed in<br />this category</th>
+                            <th style='white-space: nowrap;'>First Year Listed</th>
                             <th>Footnote</th>
                         </tr>
                 ]]>
@@ -669,7 +602,7 @@
         
         <Static>
             <![CDATA[
-                <h3>(e) Number of graduate student oral and examining committees you have served on in the past year, excluding your own students listed in this section:</h3>
+                <h3>(e) Number of graduate student oral and examining committees you have served on in the past year:</h3>
                 <table class='wikitable'>
                     <tr>
                         <th>Committee Role</th>
@@ -781,6 +714,19 @@
                 </table>
             ]]>
         </Static>
+        
+        <ReportItem id="interest" type="Textarea" blobItem="INTEREST">
+            <![CDATA[
+                <h3>(f) Committees where you have expressed interest (e.g., put your name forward for nomination) that are not listed in Section 6(a):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="impact" type="Textarea" blobItem="IMPACT">
+            <![CDATA[
+                <h3>(g) Describe the impact of your service on the university:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="professional_activities" tooltip="PROFESSIONAL LEADERSHIP ACTIVITIES" name="Professional Activities" title="7. PROFESSIONAL LEADERSHIP ACTIVITIES" blobSection="FEC_PROFESSIONAL_ACTIVITIES" type="EditableReportSection">
         <ReportItem id="committees" type="MultiText" blobItem="COMMITTEES" blobType="BLOB_ARRAY" labels="Committee|Office Held|Total Hours/Year" types="Text|Text|Number" sizes="300|75|75" multiple="true">
@@ -800,6 +746,12 @@
         <ReportItem id="names" type="Textarea" blobItem="NAMES">
             <![CDATA[
                 <p>(ii) Names and nature of any continuing contractual arrangements with outside organizations.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="impact" type="Textarea" blobItem="IMPACT">
+            <![CDATA[
+                <h3>(c) Describe the impact of your service on the profession:</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -839,10 +791,22 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="misc" tooltip="MISCELLANEOUS" name="Miscellaneous" title="9. MISCELLANEOUS" blobSection="FEC_MISCELLANEOUS" type="EditableReportSection">
-        <ReportItem id="misc" type="Textarea" blobItem="MISC">
+    <ReportSection id="misc" tooltip="ACCEPTED INVITATIONS TO SERVE" name="Accepted Invitations" title="9. ACCEPTED INVITATIONS TO SERVE" blobSection="FEC_MISCELLANEOUS" type="EditableReportSection">
+        <ReportItem id="session_chairs" type="Textarea" blobItem="SESSION_CHAIRS">
             <![CDATA[
-                <p>(e.g. reviewing of grants and papers)</p>
+                <h3>(a) Session Chairs</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="peer_reviews" type="Textarea" blobItem="PEER_REVIEWS">
+            <![CDATA[
+                <h3>(b) Peer Reviews</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="Textarea" blobItem="OTHER">
+            <![CDATA[
+                <h3>(c) Other</h3>
                 {$item}
             ]]>
         </ReportItem>

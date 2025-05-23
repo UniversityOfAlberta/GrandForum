@@ -2606,7 +2606,7 @@ class Person extends BackboneModel {
         }
     }
     
-    function getStudentInfo($hqpTypes=array(), $startDate=null, $endDate=null){
+    function getStudentInfo($hqpTypes=array(), $startDate=null, $endDate=null, $desiredRole=""){
         if($startDate == null || $endDate == null){
             $relations = $this->getRelationsAll();
         }
@@ -2634,6 +2634,9 @@ class Person extends BackboneModel {
                 }
                 else if($role == CO_SUPERVISES){
                     $role = "Co-Supervisor";
+                }
+                else if($role == $desiredRole){
+                    $role = $desiredRole;
                 }
                 else{
                     continue;
@@ -3067,6 +3070,24 @@ class Person extends BackboneModel {
             $im_author = false;    
             foreach ($paper_authors as $auth){
                 if($auth->getName() == $this->name){
+                    $im_author = true;
+                    break;
+                }
+            }
+            return $im_author;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    function isPrimaryAuthorOf($paper){
+        if($paper instanceof Paper){
+            $paper_authors = $paper->getAuthors();
+            $im_author = false;  
+            $lead = $paper->getData('lead');
+            foreach ($paper_authors as $key => $auth){
+                if($auth->getName() == $this->name && ($key == 0 || $auth->getId() == @$lead->id)){
                     $im_author = true;
                     break;
                 }
