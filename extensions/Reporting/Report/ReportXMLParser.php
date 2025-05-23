@@ -438,6 +438,7 @@ class ReportXMLParser {
                 }
                 
                 foreach($children as $c){
+                    if(gettype($c) == "array"){ $c = $c[0]; }
                     if($c->getName() == "Instructions"){
                         $section->setInstructions("{$children->Instructions}");
                     }
