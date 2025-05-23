@@ -27,18 +27,20 @@
     $uniqueQs = array();
     
     foreach($spots as $spot){
-        $emplid = $spot[9];
-        $termId = DBFunctions::escape($spot[3]);
-        $classNum = DBFunctions::escape($spot[5]);
-        $enrolled = $spot[11];
-        $responses = $spot[12];
-        $qId = $spot[13];
-        $qText = $spot[14];
-        $rsp1 = (int)$spot[15];
-        $rsp2 = (int)$spot[16];
-        $rsp3 = (int)$spot[17];
-        $rsp4 = (int)$spot[18];
-        $rsp5 = (int)$spot[19];
+        $terms = explode(" - ", $spot[3]);
+        
+        $emplid = $spot[8];
+        $termId = DBFunctions::escape($terms[0]);
+        $classNum = DBFunctions::escape($spot[4]);
+        $enrolled = $spot[10];
+        $responses = $spot[11];
+        $qId = $spot[12];
+        $qText = $spot[13];
+        $rsp1 = (int)$spot[14];
+        $rsp2 = (int)$spot[15];
+        $rsp3 = (int)$spot[16];
+        $rsp4 = (int)$spot[17];
+        $rsp5 = (int)$spot[18];
         
         $uniqueQs[$qId] = $qText;
         
