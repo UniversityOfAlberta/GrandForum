@@ -228,6 +228,26 @@
                         ]]>
                     </Static>
                 </ReportItemSet>
+                <ReportItem id="syllabus" type="Upload" blobItem="SYLLABUS" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5" encrypt="true">
+                    <![CDATA[
+                        <tr>
+                            <td valign='top' colspan='5'>
+                                <b>Course Syllabus:</b><br />
+                                {$item}
+                            </td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="reflection" type="TextareaReportItem" blobItem="FEC_COURSE_REFLECTION" blobType="BLOB_TEXT" encrypt="true" height="65px">
+                    <![CDATA[
+                        <tr>
+                            <td valign='top' colspan='5'>
+                                <b>Reflection:</b><br />
+                                {$item}
+                            </td>
+                        </tr>
+                    ]]>
+                </ReportItem>
                 <Static>
                     <![CDATA[
                         </table>
@@ -240,6 +260,25 @@
             <![CDATA[
                 <h4>Project Courses</h4>
                 Please describe your involvement in any research or design courses, where you were the primary supervisor of students or student groups.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="eval1" type="Upload" blobItem="EVAL1" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5" encrypt="true">
+            <![CDATA[
+                <h3>(b) Instructional Performance Reviews:</h3>
+                <h4>Classroom Performance Evaluation: Peer Review (Optional)</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="eval2" type="Upload" blobItem="EVAL2" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5" encrypt="true">
+            <![CDATA[
+                <h4>Classroom Performance Evaluation: Administration Review (Optional)</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="eval3" type="Upload" blobItem="EVAL3" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5" encrypt="true">
+            <![CDATA[
+                <h4>Classroom Performance Evaluation: Other Review (Optional)</h4>
                 {$item}
             ]]>
         </ReportItem>

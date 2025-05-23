@@ -28,6 +28,7 @@ class ReportItemCallback {
             "end_date" => "getEndDate",
             // Courses
             "getCourseCount" => "getCourseCount",
+            "course_id" => "getCourseId",
             "course_term" => "getCourseTerm",
             "course_start" => "getCourseStart",
             "course_end" => "getCourseEnd",
@@ -406,6 +407,10 @@ class ReportItemCallback {
             }
         }
         return $count;
+    }
+    
+    function getCourseId(){
+        return $this->reportItem->projectId;
     }
 
     function getCourseTerm(){
