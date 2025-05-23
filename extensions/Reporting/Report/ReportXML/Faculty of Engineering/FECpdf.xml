@@ -108,6 +108,25 @@
                         ]]>
                     </Static>
                 </ReportItemSet>
+                <If if="{!=({getBlobMD5(RP_FEC,FEC_TEACHING,SYLLABUS,0,{$user_id},{$course_id})},)}">
+                    <![CDATA[
+                        <tr>
+                            <td valign='top' colspan='5'>
+                                <a class="externalLink" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_FEC,FEC_TEACHING,SYLLABUS,0,{$user_id},{$course_id})}">Course Syllabus</a>
+                            </td>
+                        </tr>
+                    ]]>
+                </If>
+                <ReportItem id="reflection" type="TextareaReportItem" blobItem="FEC_COURSE_REFLECTION" blobType="BLOB_TEXT" encrypt="true">
+                    <![CDATA[
+                        <tr>
+                            <td valign='top' colspan='5'>
+                                <b>Reflection:</b><br />
+                                {$item}
+                            </td>
+                        </tr>
+                    ]]>
+                </ReportItem>
                 <Static>
                     <![CDATA[
                         </table></div>
@@ -142,6 +161,32 @@
                 ]]>
             </Static>
         </If>
+        <Static>
+            <![CDATA[
+                <h3>(b) Instructional Performance Reviews:</h3>
+                <ul>
+            ]]>
+        </Static>
+        <If if="{!=({getBlobMD5(RP_FEC,FEC_TEACHING,EVAL1,0,{$user_id},0)},)}">
+            <![CDATA[
+                <li><a class="externalLink" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_FEC,FEC_TEACHING,EVAL1,0,{$user_id},0)}">Classroom Performance Evaluation: Peer Review</a></li>
+            ]]>
+        </If>
+        <If if="{!=({getBlobMD5(RP_FEC,FEC_TEACHING,EVAL2,0,{$user_id},0)},)}">
+            <![CDATA[
+                <li><a class="externalLink" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_FEC,FEC_TEACHING,EVAL2,0,{$user_id},0)}">Classroom Performance Evaluation: Administration Review</a></li>
+            ]]>
+        </If>
+        <If if="{!=({getBlobMD5(RP_FEC,FEC_TEACHING,EVAL3,0,{$user_id},0)},)}">
+            <![CDATA[
+                <li><a class="externalLink" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_FEC,FEC_TEACHING,EVAL3,0,{$user_id},0)}">Classroom Performance Evaluation: Other Review</a></li>
+            ]]>
+        </If>
+        <Static>
+            <![CDATA[
+                </ul>
+            ]]>
+        </Static>
         <ReportItem id="accredidation" type="MultiText" blobItem="ACCREDIDATION" blobType="BLOB_ARRAY" labels="Contributions Toward Accreditation Efforts|Hours Invested" types="Textarea|Number" multiple="true" sizes="90%|10%" class="wikitable">
             <![CDATA[
                 <h3>(c) Accreditation:</h3>
