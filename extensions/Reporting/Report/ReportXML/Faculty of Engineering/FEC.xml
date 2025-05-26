@@ -14,7 +14,9 @@
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical1" permissions="rw" />
+            <SectionPermission id="sabbatical2" permissions="rw" />
+            <SectionPermission id="attachments" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -32,7 +34,9 @@
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical1" permissions="rw" />
+            <SectionPermission id="sabbatical2" permissions="rw" />
+            <SectionPermission id="attachments" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -50,7 +54,9 @@
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical1" permissions="rw" />
+            <SectionPermission id="sabbatical2" permissions="rw" />
+            <SectionPermission id="attachments" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -68,7 +74,9 @@
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical1" permissions="rw" />
+            <SectionPermission id="sabbatical2" permissions="rw" />
+            <SectionPermission id="attachments" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -86,7 +94,9 @@
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical1" permissions="rw" />
+            <SectionPermission id="sabbatical2" permissions="rw" />
+            <SectionPermission id="attachments" permissions="rw" />
             <SectionPermission id="chair" permissions="-" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -104,7 +114,9 @@
             <SectionPermission id="misc" permissions="-" />
             <SectionPermission id="additional_information" permissions="-" />
             <SectionPermission id="spots" permissions="-" />
-            <SectionPermission id="sabbatical" permissions="-" />
+            <SectionPermission id="sabbatical1" permissions="-" />
+            <SectionPermission id="sabbatical2" permissions="-" />
+            <SectionPermission id="attachments" permissions="-" />
             <SectionPermission id="chair" permissions="rw" />
             <SectionPermission id="review" permissions="-" />
             <SectionPermission id="submit" permissions="-" />
@@ -902,14 +914,28 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="sabbatical" tooltip="Documents Upload" name="Attachments" title="APPENDIX B: Attachments" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
+    <ReportSection id="sabbatical1" tooltip="Documents Upload" name="Sabbatical Report" title="APPENDIX C.2: SABBATICAL REPORT" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
+        <ReportItem id="report" type="Upload" blobItem="SABBATICAL_REPORT" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="sabbatical2" tooltip="Documents Upload" name="Sabbatical Application" title="APPENDIX C.1: SABBATICAL APPLICATION (PREVIOUSLY APPROVED)" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
+        <ReportItem id="report" type="Upload" blobItem="SABBATICAL_APPLICATION" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="attachments" tooltip="Documents Upload" name="Attachments" title="APPENDIX D: OTHER ATTACHMENTS" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <p>Uploaded documents will be appended at the end of the submitted annual report pdf</p>
             ]]>
         </Static>
         <For from="1" to="4">
-            <ReportItem id="file{getExtra()}_label" type="SelectReportItem" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" options="|Sabbatical Report (for the year ending)|Sabbatical Application (for the next year)" encrypt="true">
+            <ReportItem id="file{getExtra()}_label" type="Text" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" placeholder="Type a label..." encrypt="true">
                 <![CDATA[
                     <div class='files' id='file{getExtra()}'>
                         <h3>Document {getExtra()}</h3>
@@ -926,8 +952,6 @@
                             else {
                                 $('#file{getExtra()}').hide(); 
                             }
-                            $('#file{getExtra()} select').combobox(); 
-                            $('#file{getExtra()} input.custom-combobox-input').attr('placeholder', "Type or select a label...");
                         </script>
                         <hr />
                     </div>

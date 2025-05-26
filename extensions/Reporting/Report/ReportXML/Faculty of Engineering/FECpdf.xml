@@ -817,7 +817,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="spots" type="EditableReportSection" name="SPOTs" title="APPENDIX A: SPOTs" pagebreak="true" hLevel="2">
+    <ReportSection id="spots" type="EditableReportSection" name="SPOTs" title="APPENDIX A: SPOTs" pagebreak="false" hLevel="2">
         <Static>
             <![CDATA[
                 <div id="spots">
@@ -857,15 +857,51 @@
         <Static>
             <![CDATA[
                 </div>
-                <style>
-                    #spots div.pagebreak:last-child {
-                        display: none;
-                    }
-                </style>
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="sabbatical" tooltip="Documents" name="Documents" title="APPENDIX B: Attachments" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
+    <ReportSection id="teaching_attachments" tooltip="Documents Upload" name="Attachments" title="APPENDIX B: TEACHING ATTACHMENTS" blobSection="FEC_TEACHING" type="EditableReportSection" pagebreak="false" hLevel="2">
+        <Static>
+            <![CDATA[
+                <ul>
+            ]]>
+        </Static>
+        <If if="{!=({getBlobMD5(RP_FEC,FEC_TEACHING,EVAL1,0,{$user_id},0)},)}">
+            <![CDATA[
+                <li><a class="externalLink" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_FEC,FEC_TEACHING,EVAL1,0,{$user_id},0)}">Classroom Performance Evaluation: Peer Review</a></li>
+            ]]>
+        </If>
+        <If if="{!=({getBlobMD5(RP_FEC,FEC_TEACHING,EVAL2,0,{$user_id},0)},)}">
+            <![CDATA[
+                <li><a class="externalLink" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_FEC,FEC_TEACHING,EVAL2,0,{$user_id},0)}">Classroom Performance Evaluation: Administration Review</a></li>
+            ]]>
+        </If>
+        <If if="{!=({getBlobMD5(RP_FEC,FEC_TEACHING,EVAL3,0,{$user_id},0)},)}">
+            <![CDATA[
+                <li><a class="externalLink" href="{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_FEC,FEC_TEACHING,EVAL3,0,{$user_id},0)}">Classroom Performance Evaluation: Other Review</a></li>
+            ]]>
+        </If>
+        <Static>
+            <![CDATA[
+                </ul>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="sabbatical1" tooltip="Documents Upload" name="Sabbatical Report" title="APPENDIX C.2: SABBATICAL REPORT" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
+        <ReportItem id="report" type="Upload" blobItem="SABBATICAL_REPORT" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="sabbatical2" tooltip="Documents Upload" name="Sabbatical Application" title="APPENDIX C.1: SABBATICAL APPLICATION (PREVIOUSLY APPROVED)" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
+        <ReportItem id="report" type="Upload" blobItem="SABBATICAL_APPLICATION" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="attachments" tooltip="Documents" name="Documents" title="APPENDIX D: OTHER ATTACHMENTS" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
         <Static>
             <![CDATA[
                 <ul>
@@ -878,14 +914,13 @@
                     {set(label, {getText(RP_FEC,FEC_ADDITIONAL_INFORMATION,FILE{getExtra()}_LABEL,0,{$user_id},0)})}
                 ]]>
             </Static>
-            <If if="{!=({get(md5)},)}">
+            <If if="{!=({getBlobMD5(RP_FEC,FEC_ADDITIONAL_INFORMATION,FILE{getExtra()},0,{$user_id},0)},)}">
                 <Static>
                     <![CDATA[
                         <li><a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}'>Document {getExtra()}: {get(label)}</a></li>
                     ]]>
                 </Static>
             </If>
-            <ReportItem id="file{getExtra()}" type="UploadPDFReportItem" blobItem="FILE{getExtra()}" blobType="BLOB_RAW" />
         </For>
         <Static>
             <![CDATA[
