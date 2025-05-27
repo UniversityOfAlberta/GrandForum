@@ -207,6 +207,8 @@ class ReportItemCallback {
             "strtotime" => "strtotime",
             "date_format" => "date_format",
             "time2date" => "time2date",
+            "pluralize" => "pluralize",
+            "urlencode" => "urlencode",
             "name" => "getName",
             "i" => "getI",
             "index" => "getIndex",
@@ -1754,6 +1756,14 @@ class ReportItemCallback {
     function time2date($time, $format='F j, Y'){
         $format = str_replace("#COMMA", ",", $format);
         return time2date($time, $format);
+    }
+    
+    function pluralize($string){
+        return Inflect::pluralize($string);
+    }
+    
+    function urlencode($string){
+        return urlencode($string);
     }
     
     function getName(){

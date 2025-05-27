@@ -14,7 +14,9 @@
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical1" permissions="rw" />
+            <SectionPermission id="sabbatical2" permissions="rw" />
+            <SectionPermission id="attachments" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -32,7 +34,9 @@
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical1" permissions="rw" />
+            <SectionPermission id="sabbatical2" permissions="rw" />
+            <SectionPermission id="attachments" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -50,7 +54,9 @@
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical1" permissions="rw" />
+            <SectionPermission id="sabbatical2" permissions="rw" />
+            <SectionPermission id="attachments" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -68,7 +74,9 @@
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical1" permissions="rw" />
+            <SectionPermission id="sabbatical2" permissions="rw" />
+            <SectionPermission id="attachments" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -86,7 +94,9 @@
             <SectionPermission id="misc" permissions="rw" />
             <SectionPermission id="additional_information" permissions="rw" />
             <SectionPermission id="spots" permissions="rw" />
-            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="sabbatical1" permissions="rw" />
+            <SectionPermission id="sabbatical2" permissions="rw" />
+            <SectionPermission id="attachments" permissions="rw" />
             <SectionPermission id="chair" permissions="-" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -104,7 +114,9 @@
             <SectionPermission id="misc" permissions="-" />
             <SectionPermission id="additional_information" permissions="-" />
             <SectionPermission id="spots" permissions="-" />
-            <SectionPermission id="sabbatical" permissions="-" />
+            <SectionPermission id="sabbatical1" permissions="-" />
+            <SectionPermission id="sabbatical2" permissions="-" />
+            <SectionPermission id="attachments" permissions="-" />
             <SectionPermission id="chair" permissions="rw" />
             <SectionPermission id="review" permissions="-" />
             <SectionPermission id="submit" permissions="-" />
@@ -547,6 +559,9 @@
                                             Patent/Spin-Off|
                                             Publication|
                                             Presentation|
+                                            Contribution|
+                                            Contribution|
+                                            Contribution|
                                             Publication" 
                                      array2="Journal Paper|
                                              Conference Paper|
@@ -554,6 +569,9 @@
                                              |
                                              Journal Paper\|Journal Abstract\|White Paper\|Tech Report\|Manual|
                                              |
+                                             Teaching|
+                                             Research|
+                                             Technical Committee/Board|
                                              Poster\|Workshop Paper\|Edited Book\|Misc"
                                      array3="Refereed Journals|
                                              Conference Proceedings|
@@ -561,37 +579,70 @@
                                              Reports of Invention, Patents Filed, or Patents Awarded|
                                              Unrefereed Papers and Technical Reports Published|
                                              Presentations (indicate by an asterisk which author made the presentation)|
+                                             Contributions to teaching and/or pedagogy|
+                                             Contributions to research and/or professional practice|
+                                             Research-based contributions to technical committees and boards|
                                              Other Contributions"
-                                     array4="(For those accepted, give acceptance date and number of manuscript pages)|
-                                             (specify number of ms)|
-                                             (specify number of pages)|
+                                     array4="|
                                              |
-                                             (specify number of pages)|
-                                             (do not include presentations of papers listed in section 5(b) or elsewhere)|
-                                             (specify number of pages)"
+                                             |
+                                             |
+                                             |
+                                             |
+                                             |
+                                             |
+                                             |
+                                             "
                                      array5="Yes|
                                              |
                                              |
                                              |
                                              No|
                                              |
-                                             ">
+                                             |
+                                             |
+                                             |
+                                             "
+                                     array6="Publication|
+                                             Publication|
+                                             Publication|
+                                             Publication|
+                                             Publication|
+                                             Publication|
+                                             Contribution|
+                                             Contribution|
+                                             Contribution|
+                                             Contributions">
             <Static>
                 <![CDATA[
+                    <div style='position:relative; margin-bottom: 3em;'>
+                    <a class="button" style="position:absolute;top:4px;right:0;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/{urlencode({getExtra(value)})}">Manage {pluralize({getExtra(value)})}</a>
                     <h3>({alpha({$index})}) {getExtra(value3)}</h3>
+                    
                     {getExtra(value4)}
                     <table class='wikitable' style='width: 100%;'>
                         <tr>
-                            <th style='width: 100%;'>Publication</th>
+                            {if("{getExtra(value2)}" == "Technical Committee/Board", <th style='width: 1%;white-space:nowrap;'>Technical Committee/Board</th>)}
+                            <th style='width: 100%;'>{getExtra(value6)}</th>
                             <th style='white-space: nowrap;'>First Year Listed</th>
                             <th>Footnote</th>
                         </tr>
                 ]]>
             </Static>
             <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                    ]]>
+                </Static>
+                <If if="{==({getExtra(value2)},Technical Committee/Board)}">
+                    <![CDATA[
+                        <td>{getProductData(committee)}</td>
+                    ]]>
+                </If>
                 <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                     <![CDATA[
-                        <tr><td>{$item}</td>
+                        <td>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
@@ -601,13 +652,19 @@
                 </ReportItem>
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                     <![CDATA[
-                        <td width="30px" align="center">{$item}</td></tr>
+                        <td width="30px" align="center">{$item}</td>
                     ]]>
                 </ReportItem>
+                <Static>
+                    <![CDATA[
+                        </tr>
+                    ]]>
+                </Static>
             </ReportItemSet>
             <Static>
                 <![CDATA[
                     </table>
+                    </div>
                 ]]>
             </Static>
         </ReportItemSet>
@@ -907,14 +964,28 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="sabbatical" tooltip="Documents Upload" name="Attachments" title="APPENDIX B: Attachments" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
+    <ReportSection id="sabbatical1" tooltip="Documents Upload" name="Sabbatical Report" title="APPENDIX C.2: SABBATICAL REPORT" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
+        <ReportItem id="report" type="Upload" blobItem="SABBATICAL_REPORT" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="sabbatical2" tooltip="Documents Upload" name="Sabbatical Application" title="APPENDIX C.1: SABBATICAL APPLICATION (PREVIOUSLY APPROVED)" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
+        <ReportItem id="report" type="Upload" blobItem="SABBATICAL_APPLICATION" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="attachments" tooltip="Documents Upload" name="Attachments" title="APPENDIX D: OTHER ATTACHMENTS" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <p>Uploaded documents will be appended at the end of the submitted annual report pdf</p>
             ]]>
         </Static>
         <For from="1" to="4">
-            <ReportItem id="file{getExtra()}_label" type="SelectReportItem" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" options="|Sabbatical Report (for the year ending)|Sabbatical Application (for the next year)" encrypt="true">
+            <ReportItem id="file{getExtra()}_label" type="Text" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" placeholder="Type a label..." encrypt="true">
                 <![CDATA[
                     <div class='files' id='file{getExtra()}'>
                         <h3>Document {getExtra()}</h3>
@@ -931,8 +1002,6 @@
                             else {
                                 $('#file{getExtra()}').hide(); 
                             }
-                            $('#file{getExtra()} select').combobox(); 
-                            $('#file{getExtra()} input.custom-combobox-input').attr('placeholder', "Type or select a label...");
                         </script>
                         <hr />
                     </div>

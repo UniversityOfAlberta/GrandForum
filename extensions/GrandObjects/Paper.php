@@ -463,7 +463,7 @@ class Paper extends BackboneModel{
             foreach($parser->children() as $category){
                 $cattrs = $category->attributes();
                 $cname = "{$cattrs->category}";
-                foreach($category->children() as $type){static $topProductsCache = array();
+                foreach($category->children() as $type){
                     $tattrs = $type->attributes();
                     $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
                     $tname = "{$tattrs->type}";
@@ -580,6 +580,7 @@ class Paper extends BackboneModel{
                         }
                         $categories['categories'][$cname]['misc'] = $misc_types;
                     }
+                    $categories['categories'][$cname]['visible'] = @(strtolower("{$cattrs->visible}") != "false");
                 }
             }
             Cache::store("product_structure", $categories);

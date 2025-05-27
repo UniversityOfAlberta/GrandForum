@@ -54,7 +54,7 @@ class UploadReportItem extends AbstractReportItem {
         $html = "";
         if($data !== null && $data != ""){
             $json = json_decode($data);
-            $name = $json->name;
+            $name = $this->getAttr("text", $json->name);
             $deleteHTML = "";
             if(!isset($_GET['generatePDF'])){
                 $projectGet = "";

@@ -62,7 +62,13 @@ Product = Backbone.Model.extend({
     },
     
     getPossibleCategories: function(){
-        return productStructure.categories;
+        var ret = {};
+        _.each(productStructure.categories, function(category, i){
+            if(category['visible']){
+                ret[i] = category;
+            }
+        });
+        return ret;
     },
     
     getPossibleTypes: function(){
