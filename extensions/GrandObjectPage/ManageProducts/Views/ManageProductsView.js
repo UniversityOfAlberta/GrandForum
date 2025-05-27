@@ -253,11 +253,13 @@ ManageProductsView = Backbone.View.extend({
 	    this.$("#listTable_length").append('<span style="display:none;" class="throbber"></span>');
 	    this.$("#listTable_length").append('<span id="showOnly">Show Only: <select><option value="">All</option></select></span>');
 	    _.each(productStructure.categories, function(cat, key){
-	        var el = $("<option value='" + key + "'>" + key.pluralize() + "</option>");
-	        if(this.category == key){
-	            el.prop('selected', true);
+	        if(cat.visible){
+	            var el = $("<option value='" + key + "'>" + key.pluralize() + "</option>");
+	            if(this.category == key){
+	                el.prop('selected', true);
+	            }
+	            this.$("#showOnly select").append(el);
 	        }
-	        this.$("#showOnly select").append(el);
 	    }.bind(this));
 	    this.createColVis();
     },

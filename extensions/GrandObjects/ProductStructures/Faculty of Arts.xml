@@ -1484,5 +1484,32 @@
              <date label="End Date"></date>
          </Activity>
     </Activities>
+    
+    <Contributions category="Contribution" citationFormat="{%Authors} {(%YYYY).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}" visible="false">
+        <Contribution type="Teaching">
+             <data>
+             </data>
+             <authors label="Individual Involved"></authors>
+             <acceptance_date label="Start Date"></acceptance_date>
+             <date label="End Date"></date>
+        </Contribution>
+        
+        <Contribution type="Research">
+             <data>
+             </data>
+             <authors label="Individual Involved"></authors>
+             <acceptance_date label="Start Date"></acceptance_date>
+             <date label="End Date"></date>
+        </Contribution>
+        
+        <Contribution type="Technical Committee/Board">
+             <data>
+                <field label="Technical Committee/Board">committee</field>
+             </data>
+             <authors label="Individual Involved"></authors>
+             <acceptance_date label="Start Date"></acceptance_date>
+             <date label="End Date"></date>
+        </Contribution>
+    </Contributions>
 
 </Products>
