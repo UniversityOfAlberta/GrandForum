@@ -1123,7 +1123,7 @@
     
     <!-- Patents and Spin Offs -->
     <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
-        <Product type="Invention" status="">
+        <Product type="Report of Invention" status="">
             <data>
                 <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
@@ -1192,6 +1192,71 @@
         </Product>
         
         <Product type="Patent" status="Filed|Awarded" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}">
+            <data>
+                <field bibtex="number" label="Number" type="String">number</field>
+                <field label="Country" type="String">country</field>
+                <field label="Tech Department" type="String">tech_department</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+            </data>
+            <description>A patent or patent application.</description>
+            <authors label="Inventor"></authors>
+            <acceptance_date label="Date Filed"></acceptance_date>
+            <date label="Date Awarded"></date>
+        </Product>
+        
+        <Product type="Provisional Patent Filed" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}" visible="false">
+            <data>
+                <field bibtex="number" label="Number" type="String">number</field>
+                <field label="Country" type="String">country</field>
+                <field label="Tech Department" type="String">tech_department</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+            </data>
+            <description>A patent or patent application.</description>
+            <authors label="Inventor"></authors>
+            <acceptance_date label="Date Filed"></acceptance_date>
+            <date label="Date Awarded"></date>
+        </Product>
+        
+        <Product type="Non-Provisional Patent Filed" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}" visible="false">
+            <data>
+                <field bibtex="number" label="Number" type="String">number</field>
+                <field label="Country" type="String">country</field>
+                <field label="Tech Department" type="String">tech_department</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+            </data>
+            <description>A patent or patent application.</description>
+            <authors label="Inventor"></authors>
+            <acceptance_date label="Date Filed"></acceptance_date>
+            <date label="Date Awarded"></date>
+        </Product>
+        
+        <Product type="Patent Allowed" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}" visible="false">
+            <data>
+                <field bibtex="number" label="Number" type="String">number</field>
+                <field label="Country" type="String">country</field>
+                <field label="Tech Department" type="String">tech_department</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+            </data>
+            <description>A patent or patent application.</description>
+            <authors label="Inventor"></authors>
+            <acceptance_date label="Date Filed"></acceptance_date>
+            <date label="Date Awarded"></date>
+        </Product>
+        
+        <Product type="Patent Issued" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}" visible="false">
+            <data>
+                <field bibtex="number" label="Number" type="String">number</field>
+                <field label="Country" type="String">country</field>
+                <field label="Tech Department" type="String">tech_department</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+            </data>
+            <description>A patent or patent application.</description>
+            <authors label="Inventor"></authors>
+            <acceptance_date label="Date Filed"></acceptance_date>
+            <date label="Date Awarded"></date>
+        </Product>
+        
+        <Product type="Patent Licenced" citationFormat="&lt;b>{%Status}&lt;/b> - {%Authors} {(%YYYY %Mon).} {%Title.} {#%Issue.} {Place: %Venue}" visible="false">
             <data>
                 <field bibtex="number" label="Number" type="String">number</field>
                 <field label="Country" type="String">country</field>
