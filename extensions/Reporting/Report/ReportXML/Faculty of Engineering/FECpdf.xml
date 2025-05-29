@@ -460,7 +460,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="publications" tooltip="SCHOLARLY PUBLICATIONS AND CONTRIBUTIONS" name="Scholarly Publications" title="5. SCHOLARLY PUBLICATIONS AND CONTRIBUTIONS" blobSection="FEC_PUBLICATIONS" type="EditableReportSection" pagebreak="false" hLevel="2">
-        
         <ReportItemSet type="String" array="Publication|
                                             Publication|
                                             Publication|
