@@ -3090,11 +3090,6 @@ class Person extends BackboneModel {
         }
         return $during;
     }
-
-    function getMetric(){
-        $metric = Metric::getUserMetric($this->id);
-        return $metric;
-    }
     
     function getGsMetric(){
         $gsMetric = GsMetric::getUserMetric($this->id);
