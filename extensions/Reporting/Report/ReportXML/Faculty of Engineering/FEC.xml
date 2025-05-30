@@ -366,7 +366,10 @@
                 </style>
             ]]>
         </Static>
-        <ReportItemSet id="hqps" type="String" array="phd|msc|pdf|ugrad|tech|visiting|other|committee" labels="(a) Doctoral Students|(b) Master's Students|(c) Postdoctoral Fellows|(d) Undergraduate Students|(e) Research/Technical Assistants and Associates|(f) Visiting Students|(g) Other Trainees|(h) Student Supervisory Committee Membership">
+        <ReportItemSet id="hqps" type="String" 
+                                 array="phd|msc|pdf|ugrad|tech|visiting|other|committee"
+                                 array2="Trainee Name|Student Name|Student Name|Student Name|Trainee Name|Student Name|Student Name|Student Name"
+                                 labels="(a) Doctoral Students|(b) Master's Students|(c) Postdoctoral Fellows|(d) Undergraduate Students|(e) Research/Technical Assistants and Associates|(f) Visiting Students|(g) Other Trainees|(h) Student Supervisory Committee Membership">
             <Static>
                 <![CDATA[
                     {set(desc,)}
@@ -414,7 +417,7 @@
                     {get(desc)}
                     <table class='wikitable {getExtra(value)}' width='100%'>
                         <tr>
-                            <th class='student_name' style='width: 25%;'>Student Name</th>
+                            <th class='student_name' style='width: 25%;'>{getExtra(value2)}</th>
                             <th class='time' style='width: 1%; white-space:nowrap;'>FT / PT</th>
                             <th class='percent' style='width: 1%; white-space:nowrap;'>%<br />Supervision</th>
                             <th class='program' style='width: 5%; white-space:nowrap;'>Trainee Program</th>
@@ -500,7 +503,7 @@
                         <th>End Date</th>
                         <th>Average<br />Amount/Year</th>
                         <th>Total Award</th>
-                        <th>Title of Project</th>
+                        <th>Title</th>
                         <th>P.I.<br />(y/n)</th>
                         <th>Joint With</th>
                         <th>Footnotes</th>
@@ -557,17 +560,17 @@
                                             Contribution|
                                             Contribution|
                                             Contribution|
-                                            Publication" 
+                                            Contribution" 
                                      array2="Journal Paper|
                                              Conference Paper|
                                              Book\|Book Chapter|
                                              |
                                              Journal Paper\|Journal Abstract\|White Paper\|Tech Report\|Manual|
                                              |
-                                             Teaching|
-                                             Research|
+                                             Teaching/Pedagogy|
+                                             Research/Professional Practice|
                                              Technical Committee/Board|
-                                             Poster\|Workshop Paper\|Edited Book\|Misc"
+                                             Other"
                                      array3="Refereed Journals|
                                              Conference Proceedings|
                                              Books; Chapters in Books|
@@ -703,7 +706,7 @@
                     </tr>
                     <tr>
                         <td valign='top' style='line-height: 2.5em;'>
-                            Committee Chair<br />
+                            Chair<br />
                             Examiner:<br />
                             &nbsp;&nbsp;&nbsp;&nbsp;PhD Candidacy<br />
                             &nbsp;&nbsp;&nbsp;&nbsp;PhD Thesis<br />
@@ -854,8 +857,8 @@
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
-                            <th>Award</th>
-                            <th>Award Category</th>
+                            <th>Honour / Award</th>
+                            <th>Category</th>
                             <th>Scope</th>
                             <th>Year</th>
                             <th>Footnotes</th>
