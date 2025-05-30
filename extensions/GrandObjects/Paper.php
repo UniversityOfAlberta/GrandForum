@@ -972,28 +972,6 @@ class Paper extends BackboneModel{
         return $authors;
     }
     
-    function getAuthorNames(){
-        $authors = array();
-        $unserialized = unserialize($this->authors);
-        foreach($unserialized as &$author){
-            if($author == ""){
-                unset($author);
-                continue;
-            }
-            if(is_numeric($author)){
-                $person = Person::newFromId($author);
-                if($person == null) { continue; }
-                $authors[] = (strlen($person->getRealName()) > 0) ? $person->getRealName() : $person->getName();
-                continue;
-            } 
-            else {
-                $authors[] = $author;
-            }
-        }
-        unset($author);
-        return $authors;
-    }
-    
     /**
      * Returns a list of People who want this Product to be exluded from them
      * @return array the list of People who want this Product to be excluded from them
