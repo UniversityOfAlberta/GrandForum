@@ -100,9 +100,6 @@ $egAnnokiExtensions['Visualizations'] = array('name' => 'Visualizations',
 
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");
-
-$egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
-                                         'path' => "$IP/extensions/CCVExport/CCVExport.php");
                                                                        
 $egAnnokiExtensions['QASummary'] = array('name' => 'QASummary', 
                                          'path' => "$IP/extensions/QASummary/QASummary.php");

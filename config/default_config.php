@@ -101,7 +101,6 @@
         'GlobalSearch',
         'Impersonation',
         'Visualizations',
-        'CCVExport',
         //'QASummary'
     ));
     

@@ -1703,34 +1703,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Used by CCVExport to determine the current position of active/inactive HQP
-     */
-    function getPresentPosition(){
-        $pos = array();
-        $hqp_pos = $this->getMovedOn();
-        if(!empty($hqp_pos)){
-            if($hqp_pos['studies'] !== '')
-                $pos[] = $hqp_pos['studies'];
-            if($hqp_pos['employer'] !== '')
-                $pos[] = $hqp_pos['employer'];
-            if($hqp_pos['city'] !== '')
-                $pos[] = $hqp_pos['city'];
-            if($hqp_pos['country'] !== '')
-                $pos[] = $hqp_pos['country'];
-        }
-        if(count($pos) == 0){
-            $hqp_pos = $this->getUniversity();
-            if($hqp_pos['position'] !== '')
-                $pos[] = $hqp_pos['position'];
-            if($hqp_pos['department'] !== '')
-                $pos[] = $hqp_pos['department'];
-            if($hqp_pos['university'] !== '')
-                $pos[] = $hqp_pos['university'];
-        }
-        return str_replace("&#39;", "'", implode(", ", $pos));
-    }
-    
-    /**
      * Returns the last University that this Person was at between the given range
      * @param string $startRange The start date to look at
      * @param string $endRange The end date to look at
