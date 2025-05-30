@@ -3158,49 +3158,6 @@ class Person extends BackboneModel {
         }
         return $data;
     }
-
-    /**
-     * Returns this Person's Supervisors
-     * @param mixed $history Whether or not to include all Supervisors in history (can also be a specific date)
-     * @return array This Person's Supervisors
-     */
-    function getCommittee($history=false){
-        if($this->id != null){
-            if($history === false){
-                $sql = "SELECT *
-                        FROM grand_relations
-                        WHERE user2 = '{$this->id}'
-                        AND type LIKE '%Committee%'";
-            }
-            else{
-                $sql = "SELECT *
-                        FROM grand_relations
-                        WHERE user2 = '{$this->id}'
-                        AND type LIKE '%Committee%'
-                        AND start_date <= '{$history}'
-                        AND (end_date >= '{$history}' OR end_date IS NULL)";
-            }
-            $data = DBFunctions::execSQL($sql);
-            $people = array();
-            foreach($data as $row){
-                $person = Person::newFromId($row['user1']);
-                $people[$person->getId()] = $person;
-            }
-            return array_values($people);
-        }
-        $sql = "SELECT *
-                FROM grand_relations
-                WHERE user2 = '{$this->id}'
-                AND type LIKE '%Committee%'
-                AND start_date > end_date";
-        $data = DBFunctions::execSQL($sql);
-        $people = array();
-        foreach($data as $row){
-            $person = Person::newFromId($row['user1']);
-            $people[$person->getId()] = $person;
-        }
-        return array_values($people);
-    }
      
     function getRelationsAll(){
         $data = DBFunctions::execSQL("SELECT r.*
