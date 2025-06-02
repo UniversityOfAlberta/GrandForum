@@ -249,14 +249,11 @@ class Keyword extends Grant {
                                        'fullname' => $copi);
             }
         }
-        $grantAward = $this->getGrantAward();
-        $grantAwardId = ($grantAward != null) ? $grantAward->getId() : 0;
         $json = array(
             'id' => $this->id,
             'user_id' => $this->user_id,
             'pi' => $this->getPI()->toArray(),
             'project_id' => $this->project_id,
-            'grant_award_id' => $grantAwardId,
             'sponsor' => $this->sponsor,
             'external_pi' => $this->external_pi,
             'copi' => $copis_array,

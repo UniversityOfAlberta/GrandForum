@@ -168,16 +168,6 @@ class Grant extends BackboneModel {
         return $copis;
     }
     
-    function getGrantAward(){
-        $data = DBFunctions::select(array('grand_new_grants'),
-                                    array('id'),
-                                    array('grant_id' => EQ($this->getId())));
-        if(count($data) > 0){
-            return GrantAward::newFromId($data[0]['id']);
-        }
-        return null;
-    }
-    
     function getTotal(){
         return $this->total;
     }
@@ -404,7 +394,6 @@ class Grant extends BackboneModel {
             'user_id' => $this->user_id,
             'pi' => $this->getPI()->toArray(),
             'project_id' => $this->project_id,
-            'grant_award_id' => 0, //$grantAwardId,
             'sponsor' => $this->sponsor,
             'external_pi' => $this->external_pi,
             'copi' => $copis_array,

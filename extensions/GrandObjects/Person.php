@@ -3311,10 +3311,6 @@ class Person extends BackboneModel {
     
     function getGrantsBetween($start, $end, $filter=false, $exclude=true){ return array(); }
     
-    function getGrantAwards(){ return array(); }
-    
-    function getGrantAwardsBetween($start, $end){ return array();}
-    
     function getFecPersonalInfo(){ return $this; }
 
     function updateFecInfo(){ return true; }
@@ -3879,24 +3875,6 @@ class FullPerson extends Person {
         }
         ksort($grants);
         $grants = array_reverse($grants);
-        return $grants;
-    }
-    
-    function getGrantAwards(){
-        return GrantAward::getAllGrantAwards(0, 999999999, $this);
-    }
-    
-    function getGrantAwardsBetween($start, $end){
-        $grants = array();
-        foreach($this->getGrantAwards() as $grant){
-            $grantStart = $grant->start_year;
-            $grantEnd = $grant->end_year;
-            if(($grantStart >= $start && $grantStart <= $end) ||
-               ($grantEnd >= $start && $grantEnd <= $end) ||
-               ($grantStart <= $start && $grantEnd >= $end)){
-                $grants[] = $grant;
-            }
-        }
         return $grants;
     }
     

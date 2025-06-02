@@ -13,7 +13,7 @@ class PersonGrantsTab extends AbstractTab {
         $this->visibility = $visibility;
         $this->startRange = $startRange;
         $this->endRange = $endRange;
-        $this->tooltip = "Contains two tables listing the faculty member's Grants, as shown in the UoA's Peoplesoft system, and the corresponding Awarded NSERC Applications between the specified start and end dates.";
+        $this->tooltip = "Contains two tables listing the faculty member's Grants, as shown in the UoA's Peoplesoft system.";
     }
 
     function generateBody(){
@@ -79,47 +79,11 @@ class PersonGrantsTab extends AbstractTab {
                 {$this->generateUofAGrantTable()}
                 </div>
             </div>";
-        /*$this->html .= "
-            <div class='grantAccordion'>
-                <h3><a href='#'>Awarded NSERC Applications</a></h3>
-                <div>
-                {$this->generateGrantTable()}
-                </div>
-            </div>";*/
         if($me->isAllowedToEdit($this->person)){
             $this->html .= "<br /><a id='manage{$this->id}' href='$wgServer$wgScriptPath/index.php/Special:GrantPage' class='button'>Manage Funding</a>";
         }
         return $this->html;
      }
-
-    function generateGrantTable(){
-        if(!$this->visibility['isMe']){
-            return "";
-        }
-
-        $grantAwards = $this->person->getGrantAwardsBetween($this->startRange, $this->endRange);
-        $string = "<table id='grants_table' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th style='white-space:nowrap;' width='50%'>Name</th>
-                            <th style='white-space:nowrap;'>Program</th>
-                            <th style='white-space:nowrap;'>Timeframe</th>
-                            <th style='white-space:nowrap;'>Competition Year</th>
-                            <th style='white-space:nowrap;'>Amount</th>
-                        </tr>
-                    </thead><tbody>";
-        foreach($grantAwards as $grantAward){
-            $partners = $grantAward->getPartners();
-            $string .= "<tr><td><a href='{$grantAward->getUrl()}'>{$grantAward->application_title}</a></td>
-                            <td>{$grantAward->program_name}</td>
-                            <td style='white-space:nowrap;'>{$grantAward->start_year} - {$grantAward->end_year}</td>
-                            <td style='white-space:nowrap;'>{$grantAward->competition_year}</td>
-                            <td align=right>$".number_format($grantAward->amount)."</td></tr>";}
-            $string .= "</table></tbody><script type='text/javascript'>
-                $('#grants_table').dataTable({'iDisplayLength': 25});
-            </script>";
-        return $string;
-    }
     
     function generateUofAGrantTable(){
         if(!$this->visibility['isMe']){
@@ -134,12 +98,7 @@ class PersonGrantsTab extends AbstractTab {
                     <th style='white-space:nowrap;'>End Date</th>
                     <th style='white-space:nowrap;'>Total</th></tr></thead><tbody>";
         foreach($grants as $grant){
-            $grantAwardText = "";
-            /*$grantAward = $grant->getGrantAward();
-            if($grantAward != null){
-                $grantAwardText = "<br />Grant Award: <a href='{$grantAward->getUrl()}'>{$grantAward->application_title}</a>";
-            }*/
-            $string .= "<tr><td><a href='{$grant->getUrl()}'>{$grant->getTitle()}</a><br />{$grant->getDescription()}{$grantAwardText}</td>
+            $string .= "<tr><td><a href='{$grant->getUrl()}'>{$grant->getTitle()}</a><br />{$grant->getDescription()}</td>
                                 <td>{$grant->getSponsor()}</td>
                                 <td style='white-space:nowrap;'>".time2date($grant->getStartDate(), "Y-m-d")."</td>
                                 <td style='white-space:nowrap;'>".time2date($grant->getEndDate(), "Y-m-d")."</td>

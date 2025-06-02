@@ -6,13 +6,6 @@ Keyword = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.keyword',
     
-    getGrantAward: function(){
-        this.grantAward = new GrantAward();
-        this.grantAward.set('id', this.get('grant_award_id'));
-        this.grantAward.fetch();
-        return this.grantAward;
-    },
-    
     defaults: function(){ return {
             id: null,
             user_id: 0,
@@ -22,7 +15,6 @@ Keyword = Backbone.Model.extend({
             copi: new Array(),
             copi_string: '',
             project_id: '',
-            grant_award_id: 0,
             sponsor: '',
             external_pi: '',
             total: 0,

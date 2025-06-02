@@ -11,9 +11,6 @@ GrantView = Backbone.View.extend({
         
         this.listenTo(this.model, 'change', function(){
             this.person = new Person({id: this.model.get('user_id')});
-            
-            this.model.getGrantAward();
-            this.listenTo(this.model.grantAward, 'sync', this.render);
             if(this.person.get('id') != 0){
                 var xhr = this.person.fetch();
                 $.when(xhr).then(this.render);
