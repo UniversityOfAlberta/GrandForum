@@ -363,10 +363,14 @@
 
                     .committee .program         { display: none; }
                     .committee .scholarships    { display: none; }
+                    .committee .percent         { display: none; }
                 </style>
             ]]>
         </Static>
-        <ReportItemSet id="hqps" type="String" array="phd|msc|pdf|ugrad|tech|visiting|other|committee" labels="(a) Doctoral Students|(b) Master's Students|(c) Postdoctoral Fellows|(d) Undergraduate Students|(e) Research/Technical Assistants and Associates|(f) Visiting Students|(g) Other Trainees|(h) Student Supervisory Committee Membership">
+        <ReportItemSet id="hqps" type="String" 
+                                 array="phd|msc|pdf|ugrad|tech|visiting|other|committee"
+                                 array2="Trainee Name|Student Name|Student Name|Student Name|Trainee Name|Student Name|Student Name|Student Name"
+                                 labels="(a) Doctoral Students|(b) Master's Students|(c) Postdoctoral Fellows|(d) Undergraduate Students|(e) Research/Technical Assistants and Associates|(f) Visiting Students|(g) Other Trainees|(h) Student Supervisory Committee Membership">
             <Static>
                 <![CDATA[
                     {set(desc,)}
@@ -404,7 +408,7 @@
             <ElseIf if="{==({getExtra(value)},committee)}">
                 <![CDATA[
                     {set(desc,Only include students for whom you were a member of their supervisory committee. <u>Do not</u> include students where you acted only as an examiner or where you acted as a supervisor or co-supervisor.)}
-                    {set(colspan,6)}
+                    {set(colspan,5)}
                     {set(rowspan,1)}
                 ]]>
             </ElseIf>
@@ -414,7 +418,7 @@
                     {get(desc)}
                     <table class='wikitable {getExtra(value)}' width='100%'>
                         <tr>
-                            <th class='student_name' style='width: 25%;'>Student Name</th>
+                            <th class='student_name' style='width: 25%;'>{getExtra(value2)}</th>
                             <th class='time' style='width: 1%; white-space:nowrap;'>FT / PT</th>
                             <th class='percent' style='width: 1%; white-space:nowrap;'>%<br />Supervision</th>
                             <th class='program' style='width: 5%; white-space:nowrap;'>Trainee Program</th>
@@ -505,7 +509,7 @@
                         <th>End Date</th>
                         <th>Average<br />Amount/Year</th>
                         <th>Total Award</th>
-                        <th>Title of Project</th>
+                        <th>Title</th>
                         <th>P.I.<br />(y/n)</th>
                         <th>Joint With</th>
                         <th>Footnotes</th>
@@ -547,7 +551,7 @@
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Outputs</a>
                 <p>
-                    Do <b>not</b> include articles submitted but not yet accepted. One copy of each publication or manuscript is to be deposited with the Department Chair, including letter of acceptance for articles in press.
+                    Do <b>not</b> include articles submitted but not yet accepted. Copies of publications or manuscript may be requested by the Department Chair, including letter of acceptance for articles in press.
                 </p>
                 <p><small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small></p>
             ]]>
@@ -562,17 +566,17 @@
                                             Contribution|
                                             Contribution|
                                             Contribution|
-                                            Publication" 
+                                            Contribution" 
                                      array2="Journal Paper|
                                              Conference Paper|
                                              Book\|Book Chapter|
                                              |
                                              Journal Paper\|Journal Abstract\|White Paper\|Tech Report\|Manual|
                                              |
-                                             Teaching|
-                                             Research|
+                                             Teaching/Pedagogy|
+                                             Research/Professional Practice|
                                              Technical Committee/Board|
-                                             Poster\|Workshop Paper\|Edited Book\|Misc"
+                                             Other"
                                      array3="Refereed Journals|
                                              Conference Proceedings|
                                              Books; Chapters in Books|
@@ -708,7 +712,7 @@
                     </tr>
                     <tr>
                         <td valign='top' style='line-height: 2.5em;'>
-                            Committee Chair<br />
+                            Chair<br />
                             Examiner:<br />
                             &nbsp;&nbsp;&nbsp;&nbsp;PhD Candidacy<br />
                             &nbsp;&nbsp;&nbsp;&nbsp;PhD Thesis<br />
@@ -827,7 +831,7 @@
     <ReportSection id="professional_activities" tooltip="PROFESSIONAL LEADERSHIP ACTIVITIES" name="Professional Activities" title="7. PROFESSIONAL LEADERSHIP ACTIVITIES" blobSection="FEC_PROFESSIONAL_ACTIVITIES" type="EditableReportSection">
         <ReportItem id="committees" type="MultiText" blobItem="COMMITTEES" blobType="BLOB_ARRAY" labels="Committee|Office Held|Total Hours/Year" types="Text|Text|Number" sizes="300|75|75" multiple="true">
             <![CDATA[
-                <h3>(a) National and regional committees including technical and professional societies:</h3>
+                <h3>(a) International, national and regional committees, including technical and professional societies:</h3>
                 <p>(List only those organizations in which you held a committee position or other office. Do not list organizations in which you had no role other than membership. Note office held and approximate hours/year.)</p>
                 {$item}
             ]]>
@@ -859,8 +863,8 @@
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
-                            <th>Award</th>
-                            <th>Award Category</th>
+                            <th>Honour / Award</th>
+                            <th>Category</th>
                             <th>Scope</th>
                             <th>Year</th>
                             <th>Footnotes</th>
@@ -918,7 +922,7 @@
     <ReportSection id="spots" type="EditableReportSection" name="SPOTs" title="APPENDIX A: SPOTs" pagebreak="false" hLevel="2">
         <Static>
             <![CDATA[
-                <p>SPOT data for the Spring 2024 term will be imported and included in your Annual Report as soon as it becomes available, potentially as late as the latter half of June. If you are teaching during the Spring 2024 term, you should revisit and update your reflections on teaching after this data has been imported and only "submit and lock" your Annual Report after you have done so.  If you are currently teaching 13-week Spring/Summer courses, these courses and their associated SPOT data will be reported in your Annual Report next year. If you are not teaching during Spring 2024, you can "submit and lock" your Annual Report as soon as you are done.</p>
+                <p>SPOT data for the Spring {$this_year} term will be imported and included in your Annual Report as soon as it becomes available, potentially as late as the latter half of June. If you are teaching during the Spring {$this_year} term, you should revisit and update your reflections on teaching after this data has been imported and only "submit and lock" your Annual Report after you have done so.  If you are currently teaching 13-week Spring/Summer courses, these courses and their associated SPOT data will be reported in your Annual Report next year. If you are not teaching during Spring {$this_year}, you can "submit and lock" your Annual Report as soon as you are done.</p>
                 <div id="spots">
             ]]>
         </Static>
