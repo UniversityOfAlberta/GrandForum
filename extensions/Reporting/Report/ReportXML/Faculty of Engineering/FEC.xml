@@ -363,6 +363,7 @@
 
                     .committee .program         { display: none; }
                     .committee .scholarships    { display: none; }
+                    .committee .percent         { display: none; }
                 </style>
             ]]>
         </Static>
@@ -407,7 +408,7 @@
             <ElseIf if="{==({getExtra(value)},committee)}">
                 <![CDATA[
                     {set(desc,Only include students for whom you were a member of their supervisory committee. <u>Do not</u> include students where you acted only as an examiner or where you acted as a supervisor or co-supervisor.)}
-                    {set(colspan,6)}
+                    {set(colspan,5)}
                     {set(rowspan,1)}
                 ]]>
             </ElseIf>
@@ -545,7 +546,7 @@
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Outputs</a>
                 <p>
-                    Do <b>not</b> include articles submitted but not yet accepted. One copy of each publication or manuscript is to be deposited with the Department Chair, including letter of acceptance for articles in press.
+                    Do <b>not</b> include articles submitted but not yet accepted. Copies of publications or manuscript may be requested by the Department Chair, including letter of acceptance for articles in press.
                 </p>
                 <p><small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small></p>
             ]]>
@@ -825,7 +826,7 @@
     <ReportSection id="professional_activities" tooltip="PROFESSIONAL LEADERSHIP ACTIVITIES" name="Professional Activities" title="7. PROFESSIONAL LEADERSHIP ACTIVITIES" blobSection="FEC_PROFESSIONAL_ACTIVITIES" type="EditableReportSection">
         <ReportItem id="committees" type="MultiText" blobItem="COMMITTEES" blobType="BLOB_ARRAY" labels="Committee|Office Held|Total Hours/Year" types="Text|Text|Number" sizes="300|75|75" multiple="true">
             <![CDATA[
-                <h3>(a) National and regional committees including technical and professional societies:</h3>
+                <h3>(a) International, national and regional committees, including technical and professional societies:</h3>
                 <p>(List only those organizations in which you held a committee position or other office. Do not list organizations in which you had no role other than membership. Note office held and approximate hours/year.)</p>
                 {$item}
             ]]>

@@ -251,6 +251,7 @@
 
                     .committee .program         { display: none; }
                     .committee .scholarships    { display: none; }
+                    .committee .percent         { display: none; }
                 </style>
             ]]>
         </Static>
@@ -293,7 +294,7 @@
             </ElseIf>
             <ElseIf if="{==({getExtra(value)},committee)}">
                 <![CDATA[
-                    {set(colspan,6)}
+                    {set(colspan,5)}
                     {set(rowspan,1)}
                 ]]>
             </ElseIf>
@@ -751,7 +752,7 @@
     <ReportSection id="professional_activities" tooltip="PROFESSIONAL LEADERSHIP ACTIVITIES" name="Professional Activities" title="7. PROFESSIONAL LEADERSHIP ACTIVITIES" blobSection="FEC_PROFESSIONAL_ACTIVITIES" type="EditableReportSection" pagebreak="false" hLevel="2">
         <ReportItem id="committees" type="MultiText" blobItem="COMMITTEES" blobType="BLOB_ARRAY" labels="Committee|Office Held|Total Hours/Year" types="Text|Text|Text" multiple="true" class="wikitable">
             <![CDATA[
-                <h3>(a) National and regional committees including technical and professional societies:</h3>
+                <h3>(a) International, national and regional committees, including technical and professional societies:</h3>
                 {$item}
             ]]>
         </ReportItem>
