@@ -106,8 +106,6 @@ class Person extends BackboneModel {
     var $university;
     var $universityDuring;
     var $roles;
-    var $rolesDuring;
-    var $aliases = false;
     var $roleHistory;
     var $splitName = array();
     var $full;
@@ -1606,35 +1604,6 @@ class Person extends BackboneModel {
         }
         return $paper;
     }
-
-    /**
-     * Returns when this Person's degree started (NOTE: This is a guesstimate)
-     * @return string The date that this Person's degree started
-     */
-    function getDegreeStartDate($guess = true){
-        $data = DBFunctions::select(array('grand_relations'),
-                                    array('start_date'),
-                                    array('user2' => EQ($this->getId())),
-                                    array('start_date' => 'ASC'));
-        if(DBFunctions::getNRows() > 0)
-          return $data[0]['start_date'];
-        return NULL;
-    }
-
-    /**
-     * Returns when this Person's degree ended (NOTE: This is a guesstimate)
-     * @return string The date that this Person's degree ended
-     */
-    function getDegreeReceivedDate($guess = true){
-        $data = DBFunctions::select(array('grand_relations'),
-                                    array('end_date'),
-                                    array('user2' => EQ($this->getId()),
-                                          'type' => LIKE('%Supervises%'),),
-                                    array('end_date' => 'ASC'));
-        if(DBFunctions::getNRows() > 0)
-            return $data[0]['end_date'];
-        return null;
-    }
     
     function getStories(){
         $data = DBFunctions::select(array('grand_stories'),
@@ -1796,16 +1765,6 @@ class Person extends BackboneModel {
             }
         }
         return $unis;
-    }
-    
-    function isInDepartment($department, $university, $startRange, $endRange){
-        $unis = $this->getUniversitiesDuring($startRange, $endRange);
-        foreach($unis as $uni){
-            if($uni['department'] == $department && $uni['university'] == $university){
-                return true;
-            }
-        }
-        return false;
     }
     
     /**
