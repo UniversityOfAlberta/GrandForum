@@ -14,20 +14,19 @@ foreach($lines as $line){
         $id = trim($csv[0]); // Proposal Id	
         $short = trim($csv[1]); // Proposal Short Description
         $long = trim($csv[2]); // Proposal Long Description
-        $empid = trim($csv[3]); // Principal Investigator Employee Id
-        $pi = trim($csv[4]); // Principal Investigator Name
-        $fiscalYear = trim($csv[8]); // Proposal Fiscal Year
-        $createDate = trim($csv[9]); // Proposal Create Date
-        $sponsor = trim($csv[10]); // Proposal Sponsor
-        $status = trim($csv[14]); // Proposal Status
-        $requestedValue = trim($csv[16]); // Total Requested Value
-        $initialValue = trim($csv[17]); // Initial Total Award Value
-        $activatedDate = trim($csv[18]); //Award Activate Date
-        $proposalBegin = trim($csv[21]); // Proposal Begin Date
-        $proposalEnd = trim($csv[22]); // Proposal End Date
-        $awardBegin = trim($csv[23]); // Award_Begin_Date
-        $awardEnd = trim($csv[24]); // Award_End_Date
-        
+        $status = trim($csv[4]); // Proposal Status
+        $proposalBegin = trim($csv[5]); // Proposal Begin Date
+        $proposalEnd = trim($csv[6]); // Proposal End Date
+        $sponsor = trim($csv[8]); // Proposal Sponsor
+        $createDate = trim($csv[14]); // Proposal Create Date
+        $fiscalYear = trim($csv[15]); // Proposal Fiscal Year
+        $empid = trim($csv[22]); // Principal Investigator Employee Id
+        $pi = trim($csv[23]); // Principal Investigator Name
+        $activatedDate = trim($csv[25]); //Award Activate Date
+        $awardBegin = trim($csv[27]); // Award_Begin_Date
+        $awardEnd = trim($csv[28]); // Award_End_Date
+        $requestedValue = trim($csv[29]); // Total Requested Value
+        $initialValue = trim($csv[30]); // Initial Total Award Value
         if($status == "Awarded"){
             $person = Person::newFromEmployeeId($empid);
             $grantByTitle = Grant::newFromTitle($short);
