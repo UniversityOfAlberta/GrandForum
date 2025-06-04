@@ -571,7 +571,7 @@ class ApplicationsTable extends SpecialPage{
             $tab = new ApplicationTab(array(RP_PROGRESS), null, $year, "$year");
             
             $publications = array();
-            foreach(Project::getAllProjectsDuring($year."-04-01", $year."-03-31") as $project){
+            foreach(Project::getAllProjectsDuring($year."-04-01", ($year+1)."-03-31") as $project){
                 foreach($project->getPapers("Publication", "1900-01-01", "2100-01-01") as $paper){
                     $publications[$paper->getId()] = $paper;
                 }
