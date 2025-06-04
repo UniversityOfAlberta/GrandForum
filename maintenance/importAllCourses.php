@@ -148,22 +148,21 @@
             if ($rowIndex > 0) {
                 $rowsParsed++;
 
-                $termString = DBFunctions::escape(trim(str_replace(" Term ", "", $rowValues[14])));
+                $termString = DBFunctions::escape(trim(str_replace(" Term ", "", $rowValues[10])));
                 $date = getStartEndDate($termString);
                 
-                $term = DBFunctions::escape(trim($rowValues[13]));
-                $role = DBFunctions::escape(trim($rowValues[56]));
+                $term = DBFunctions::escape(trim($rowValues[9]));
+                $role = DBFunctions::escape(trim($rowValues[36]));
                 $classNbr = DBFunctions::escape(trim(ltrim($rowValues[2], '0')));
-                $subject = DBFunctions::escape(trim($rowValues[18]));
-                $catalog = DBFunctions::escape(trim($rowValues[20]));
-                $component = DBFunctions::escape(trim($rowValues[24]));
-                $sect = DBFunctions::escape(trim($rowValues[26]));
-                $crsStatus = DBFunctions::escape(trim($rowValues[45]));
+                $subject = DBFunctions::escape(trim($rowValues[14]));
+                $catalog = DBFunctions::escape(trim($rowValues[16]));
+                $component = DBFunctions::escape(trim($rowValues[20]));
+                $sect = DBFunctions::escape(trim($rowValues[22]));
+                $crsStatus = DBFunctions::escape(trim($rowValues[33]));
                 $startDate = DBFunctions::escape(trim($date["start"]));
                 $endDate = DBFunctions::escape(trim($date["end"]));
-                $totEnrl = DBFunctions::escape(trim($rowValues[50]));
-                $campus = DBFunctions::escape(trim($rowValues[43]));
-                $employeeID = DBFunctions::escape(trim(ltrim($rowValues[54], '0')));
+                $totEnrl = DBFunctions::escape(trim($rowValues[31]));
+                $employeeID = DBFunctions::escape(trim(ltrim($rowValues[35], '0')));
                 
                 $userID = Person::newFromEmployeeId($employeeID)->getId();
                 $person = Person::newFromEmployeeId($employeeID);
@@ -207,7 +206,7 @@
                                             '{$classNbr}','{$subject}','{$catalog}',
                                             '{$component}','{$sect}','{$crsStatus}',
                                             '{$startDate}','{$endDate}', '{$totEnrl}',
-                                            '{$campus}', '{$title}', '{$descr}')";
+                                            '{$title}', '{$descr}')";
                 }
                 
                 // Co-Instructor percentage
@@ -230,7 +229,7 @@
                                     `Class Nbr`, `Subject`, `Catalog`, 
                                     `Component`, `Sect`, `Crs Status`,
                                     `Start Date`, `End Date`, `Tot Enrl`,
-                                    `Campus`, `Descr`, `Course Descr`) VALUES ";
+                                    `Descr`, `Course Descr`) VALUES ";
             DBFunctions::execSQL($insertSQLGC . implode(", ", $grandCourses), true);
         }
         if(count($grandUserCourses) > 0){
