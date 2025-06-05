@@ -43,7 +43,7 @@
             ]]>
         </Static>
         
-        <If if="{contains({$my_roles},Faculty)}">
+        <If id="if_faculty" if="{contains({$my_roles},Faculty)}">
             <!-- Keywords -->
             <Static>
                 <![CDATA[
@@ -989,7 +989,10 @@
                         <Static>
                             <![CDATA[
                                 <p style='margin-left:2em;'>{$product_date_range}: {$product_title}</p>
-                                <p style='margin-left:4em;'>{$product_description}</p>
+                                <p style='margin-left:4em;'>
+                                    {if("{getProductData(hours)}" != "", Hours/year total commitment: {getProductData(hours)}<br />)}
+                                    {$product_description}
+                                </p>
                             ]]>
                         </Static>
                     </ReportItemSet>

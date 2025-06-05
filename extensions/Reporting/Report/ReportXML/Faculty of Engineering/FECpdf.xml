@@ -924,6 +924,9 @@
                 </ul>
             ]]>
         </Static>
+        <ReportItem id="report" type="UploadPDF" blobItem="EVAL1" blobType="BLOB_RAW" />
+        <ReportItem id="report" type="UploadPDF" blobItem="EVAL2" blobType="BLOB_RAW" />
+        <ReportItem id="report" type="UploadPDF" blobItem="EVAL3" blobType="BLOB_RAW" />
     </ReportSection>
     <ReportSection id="sabbatical1" tooltip="Documents Upload" name="Sabbatical Report" title="APPENDIX C.2: SABBATICAL REPORT" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
         <ReportItem id="report" type="Upload" blobItem="SABBATICAL_REPORT" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true" text="Sabbatical Report">
@@ -931,6 +934,7 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="report" type="UploadPDF" blobItem="SABBATICAL_REPORT" blobType="BLOB_RAW" />
     </ReportSection>
     <ReportSection id="sabbatical2" tooltip="Documents Upload" name="Sabbatical Application" title="APPENDIX C.1: SABBATICAL APPLICATION (PREVIOUSLY APPROVED)" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
         <ReportItem id="report" type="Upload" blobItem="SABBATICAL_APPLICATION" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20" encrypt="true" text="Sabbatical Application">
@@ -938,6 +942,7 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="report" type="UploadPDF" blobItem="SABBATICAL_APPLICATION" blobType="BLOB_RAW" />
     </ReportSection>
     <ReportSection id="attachments" tooltip="Documents" name="Documents" title="APPENDIX D: OTHER ATTACHMENTS" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection" pagebreak="false" hLevel="2">
         <Static>
@@ -958,6 +963,7 @@
                         <li><a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}'>Document {getExtra()}: {get(label)}</a></li>
                     ]]>
                 </Static>
+                <ReportItem id="file{getExtra()}" type="UploadPDF" blobItem="FILE{getExtra()}" blobType="BLOB_RAW" />
             </If>
         </For>
         <Static>
