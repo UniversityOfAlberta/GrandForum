@@ -162,7 +162,7 @@
             ]]>
         </Static>
         
-        <If if="{contains({$my_roles},Faculty)}">
+        <If id="if_faculty" if="{contains({$my_roles},Faculty)}">
             <!-- Keywords -->
             <Static>
                 <![CDATA[
