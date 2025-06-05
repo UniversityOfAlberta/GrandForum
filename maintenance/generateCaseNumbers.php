@@ -5,14 +5,16 @@
     
     $wgUser = User::newFromId(1);
     
-    $start = (YEAR-1)."-07-01";
-    $end = (YEAR)."-06-30";
-    $end1 = (YEAR)."-07-01";
+    $year = YEAR;
+    
+    $start = ($year-1)."-07-01";
+    $end = ($year)."-06-30";
+    $end1 = ($year)."-07-01";
     
     $allPeople = Person::filterFaculty(Person::getAllPeople());
     foreach($allPeople as $person){
         DBFunctions::delete("grand_case_numbers", 
-                            array('year' => YEAR,
+                            array('year' => $year,
                                   'user_id' => $person->getId()));
     }
     
@@ -33,7 +35,7 @@
         // Sort by Salary
         $data = DBFunctions::execSQL("SELECT `user_id`
                                       FROM `grand_user_salaries`
-                                      WHERE `year` = '".YEAR."'
+                                      WHERE `year` = '$year'
                                       ORDER BY salary ASC");
         foreach($data as $row){
             $person = Person::newFromId($row['user_id']);
@@ -136,7 +138,7 @@
         echo strip_tags($row['case']).": {$row['person']->getNameForForms()}\n"; // ({$row['person']->getId()})\n";
         DBFunctions::insert('grand_case_numbers',
                             array('user_id' => $row['person']->getId(),
-                                  'year' => YEAR,
+                                  'year' => $year,
                                   'number' => $row['case']));
     }
 

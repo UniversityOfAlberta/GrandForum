@@ -52,7 +52,6 @@
                 <table id='letterTable' width='100%' class='wikitable' frame='box' rules='all'>
                     <thead>
                         <tr>
-                            <th>Case#</th>
                             <th>Name</th>
                             <th>Department</th>
                             <th>PDF</th>
@@ -84,7 +83,6 @@
                 <Static>
                     <![CDATA[
                         <tr data-fecid="{getExtra()}" data-userid="{$user_id}">
-                            <td>{getExtra()}</td>
                             <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                             <td>{$user_dept}</td>
                     ]]>
