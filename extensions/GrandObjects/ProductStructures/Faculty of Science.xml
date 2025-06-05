@@ -1498,6 +1498,7 @@
                   <field label="Position" type="Select" options="Chair|Member">position</field>
                   <field label="Scope" type="Select" options="International|National|Provincial">scope</field>
                   <field label="Organization" type="String">organization</field>
+                  <field label="Hours/year total commitment" type="String">hours</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
@@ -1507,6 +1508,7 @@
          <Activity type="University">
              <data>
                 <field label="Position" type="Select" options="Chair|Member">position</field>
+                <field label="Hours/year total commitment" type="String">hours</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
@@ -1516,6 +1518,7 @@
          <Activity type="Faculty">
              <data>
                 <field label="Position" type="Select" options="Chair|Member">position</field>
+                <field label="Hours/year total commitment" type="String">hours</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
@@ -1525,6 +1528,7 @@
          <Activity type="Departmental">
              <data>
                 <field label="Position" type="Select" options="Chair|Member">position</field>
+                <field label="Hours/year total commitment" type="String">hours</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
@@ -1534,6 +1538,7 @@
          <Activity type="Community Outreach">
              <data>
                 <field label="Position" type="Select" options="Chair|Member">position</field>
+                <field label="Hours/year total commitment" type="String">hours</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
@@ -1543,6 +1548,7 @@
          <Activity type="Other">
              <data>
                 <field label="Position" type="Select" options="Chair|Member">position</field>
+                <field label="Hours/year total commitment" type="String">hours</field>
              </data>
              <authors label="Individual Involved"></authors>
              <acceptance_date label="Start Date"></acceptance_date>
