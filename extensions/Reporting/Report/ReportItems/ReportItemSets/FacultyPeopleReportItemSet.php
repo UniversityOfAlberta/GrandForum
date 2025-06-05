@@ -9,7 +9,12 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", (YEAR)."-07-01");
         $atsec = (strtolower($this->getAttr("atsec", "false")) == "true");
-        if($atsec){
+        $both = (strtolower($this->getAttr("both", "false")) == "true");
+        if($both){
+            $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end),
+                                     Person::getAllPeopleDuring("ATS", $start, $end));
+        }
+        else if($atsec){
             $allPeople = Person::getAllPeopleDuring("ATS", $start, $end);
         }
         else {
