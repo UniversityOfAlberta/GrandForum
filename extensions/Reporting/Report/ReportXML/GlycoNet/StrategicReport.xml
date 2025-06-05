@@ -123,6 +123,9 @@
                     <tr><td style='padding-left:18px;'>Is the technology easily transferable for use by partners or is the plan to access the technology well laid out (ex. service option)?</td></tr>
                     <tr><td style='padding-left:18px;'>The project is well aligned with goals of the research partners</td></tr>
                 </table>
+                
+                <h3>Technology Scorecard</h3>
+                <img src='{$wgServer}{$wgScriptPath}/data/scorecard.png' style='width:100%;' />
             ]]>
         </Static>
     </ReportSection>
