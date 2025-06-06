@@ -1207,12 +1207,6 @@ class Person extends BackboneModel {
             // User has supervised the Person
             return true;
         }
-        foreach($person->getCreators() as $creator){
-            if($creator->getId() == $this->getId()){
-                // User created the Person
-                return true;
-            }
-        }
         return false;
     }
     
@@ -1532,24 +1526,6 @@ class Person extends BackboneModel {
             return $newData;
         }
         return array();
-    }
-
-    /**
-     * Returns the people who moved on between the given dates
-     * @param string $startRange The start date
-     * @param string $endRange The end date
-     * @return array An array of People
-     */
-    static function getAllMovedOnDuring($startRange, $endRange){
-        $sql = "SELECT `user_id`
-                FROM `grand_movedOn`
-                WHERE date_created BETWEEN '$startRange' AND '$endRange'";
-        $data = DBFunctions::execSQL($sql);
-        $people = array();
-        foreach($data as $row){
-            $people[] = Person::newFromId($row['user_id']);
-        }
-        return $people;
     }
     
     /**
@@ -2352,23 +2328,6 @@ class Person extends BackboneModel {
             }
         }
         return false;
-    }
-    
-    /**
-     * Returns the People who requested this Person, or an empty array if no one Requested
-     * @return array The People who requested this Person
-     */
-    function getCreators(){
-        $data = DBFunctions::select(array('grand_user_request'),
-                                    array('DISTINCT requesting_user'),
-                                    array('wpName' => EQ($this->name)));
-        $creators = array();
-        foreach($data as $row){
-            if($row['requesting_user'] != 0){
-                $creators[] = Person::newFromId($row['requesting_user']);
-            }
-        }
-        return $creators;
     }
     
     /**

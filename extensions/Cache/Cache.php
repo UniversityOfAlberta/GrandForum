@@ -32,7 +32,7 @@ abstract class Cache {
 	static function delete($key, $prefix=false){
 	    if(self::$useCache){
 	        if($prefix){
-	            $it = new APCUIterator('/^'.str_replace(")", '\)', str_replace("(", '\(', $wgSitename)).$key.'/', APC_ITER_KEY);
+	            $it = new APCUIterator('/^'.str_replace(")", '\)', str_replace("(", '\(', static::prefix())).$key.'/', APC_ITER_KEY);
 	            foreach($it as $k){
 	                apcu_delete($k['key']);
 	            }

@@ -118,7 +118,6 @@ class APIRequest{
         $this->addAction('Products', 'importORCID', 'ImportORCIDAPI');
         //POST
         $this->addAction('User Accounts', 'addUserAccount', 'CreateUserAPI');
-        $this->addAction('User Accounts', 'addUserRequest', 'RequestUserAPI');
         $this->addAction('User Accounts', 'addHQPThesis', 'AddHQPThesisAPI');
         $this->addAction('User Accounts', 'addHQPMovedOn', 'AddHQPMovedOnAPI');
         $this->addAction('User Accounts', 'updateUserPhone', 'UserPhoneAPI');

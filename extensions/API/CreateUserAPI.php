@@ -44,7 +44,6 @@ class CreateUserAPI extends API{
             // Actually create a new user
             DBFunctions::delete('mw_actor',
                                 array('actor_name' => EQ($_POST['wpName'])));
-            $creator = self::getCreator($me);
             GrandAccess::$alreadyDone = array();
             $tmpUser = User::createNew($_POST['wpName'], array('real_name' => $_POST['wpRealName'], 
                                                                'email' => $_POST['wpEmail']));
@@ -102,7 +101,7 @@ class CreateUserAPI extends API{
                     if(isset($_POST['relationship']) && $_POST['relationship'] != ""){
                         $university = $person->getUniversity();
                         $relation = new Relationship(array());
-                        $relation->user1 = $creator->getId();
+                        $relation->user1 = $me->getId();
                         $relation->user2 = $person->getId();
                         $relation->type = $_POST['relationship'];
                         $relation->startDate = @$_POST['startDate'];
@@ -120,17 +119,17 @@ class CreateUserAPI extends API{
                                                       'sub_role' => $subtype));
                         }
                     }
-                    Notification::addNotification("", $creator, "User Created", "A new user has been added to the {$config->getValue('siteName')}: {$person->getReversedName()}", "{$person->getUrl()}");
+                    Notification::addNotification("", $me, "User Created", "A new user has been added to the {$config->getValue('siteName')}: {$person->getReversedName()}", "{$person->getUrl()}");
                     $data = DBFunctions::select(array('grand_notifications'),
                                                 array('id'),
-                                                array('user_id' => EQ($creator->getId()),
+                                                array('user_id' => EQ($me->getId()),
                                                       'message' => LIKE("%{$person->getName()}%"),
                                                       'url' => EQ(''),
                                                       'creator' => EQ(''),
                                                       'active' => EQ(1)));
                     // Add as a managed user
                     DBFunctions::insert('grand_managed_people',
-                                        array('user_id' => $creator->getId(),
+                                        array('user_id' => $me->getId(),
                                               'managed_id' => $person->getId()));
                     if(count($data) > 0){
                         // Remove the Notification that the user was sent after the request
@@ -169,20 +168,6 @@ class CreateUserAPI extends API{
                 return $message;
             }
         }
-    }
-    
-    // Returns the creator of the role request.  
-    // If the creator cannot be determined, then 'me' is returned
-    function getCreator($me){
-        if(isset($_POST['id'])){
-            $data = DBFunctions::select(array('grand_user_request'),
-                                        array('requesting_user'),
-                                        array('id' => EQ($_POST['id'])));
-            if(count($data) > 0){
-                return Person::newFromId($data[0]['requesting_user']);
-            }
-        }   
-        return $me;
     }
     
     function isLoginRequired(){
