@@ -529,7 +529,7 @@ class ApplicationsTable extends SpecialPage{
                     <tbody>";
         $projects = Project::getAllProjects();
         foreach($projects as $project){
-            if($project->getPhase() == 3){
+            if($project->getPhase() == 3 && $project->getType() == "Research"){
                 $addr = ReportBlob::create_address(RP_PROGRESS, "KTEE", $blobItem, 0);
                 $blob = new ReportBlob(BLOB_ARRAY, $year, 0, $project->getId());
                 $blob->load($addr);
@@ -576,7 +576,7 @@ class ApplicationsTable extends SpecialPage{
             
             $publications = array();
             foreach(Project::getAllProjectsDuring($year."-04-01", ($year+1)."-03-31") as $project){
-                if($project->getPhase() == 3){
+                if($project->getPhase() == 3 && $project->getType() == "Research"){
                     foreach($project->getPapers("Publication", "1900-01-01", "2100-01-01") as $paper){
                         $publications[$paper->getId()] = $paper;
                     }
