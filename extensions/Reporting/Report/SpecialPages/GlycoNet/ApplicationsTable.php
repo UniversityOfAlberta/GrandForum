@@ -529,19 +529,21 @@ class ApplicationsTable extends SpecialPage{
                     <tbody>";
         $projects = Project::getAllProjects();
         foreach($projects as $project){
-            $addr = ReportBlob::create_address(RP_PROGRESS, "KTEE", $blobItem, 0);
-            $blob = new ReportBlob(BLOB_ARRAY, $year, 0, $project->getId());
-            $blob->load($addr);
-            $data = $blob->getData();
-            if(count($data) > 0){
-                $rows = $data[strtolower($blobItem)];
-                foreach($rows as $row){
-                    $html .= "<tr>
-                                <td>{$project->getName()}</td>";
-                    foreach(MultiTextReportItem::getIndices($labels) as $id){
-                        $html .= "<td>{$row[$id]}</td>";
+            if($project->getPhase() == 3){
+                $addr = ReportBlob::create_address(RP_PROGRESS, "KTEE", $blobItem, 0);
+                $blob = new ReportBlob(BLOB_ARRAY, $year, 0, $project->getId());
+                $blob->load($addr);
+                $data = $blob->getData();
+                if(count($data) > 0){
+                    $rows = $data[strtolower($blobItem)];
+                    foreach($rows as $row){
+                        $html .= "<tr>
+                                    <td>{$project->getName()}</td>";
+                        foreach(MultiTextReportItem::getIndices($labels) as $id){
+                            $html .= "<td>{$row[$id]}</td>";
+                        }
+                        $html .= "</tr>";
                     }
-                    $html .= "</tr>";
                 }
             }
         }
@@ -570,14 +572,18 @@ class ApplicationsTable extends SpecialPage{
         for($year = YEAR; $year >= 2024; $year--){
             $tab = new ApplicationTab(array(RP_PROGRESS), null, $year, "$year");
             
+            $extra = "<h1>SSF Tables</h1>";
+            
             $publications = array();
             foreach(Project::getAllProjectsDuring($year."-04-01", ($year+1)."-03-31") as $project){
-                foreach($project->getPapers("Publication", "1900-01-01", "2100-01-01") as $paper){
-                    $publications[$paper->getId()] = $paper;
+                if($project->getPhase() == 3){
+                    foreach($project->getPapers("Publication", "1900-01-01", "2100-01-01") as $paper){
+                        $publications[$paper->getId()] = $paper;
+                    }
                 }
             }
             
-            $extra = "<h2>Publications</h2>";
+            $extra .= "<h2>Publications</h2>";
             $extra .= "<table id='{$year}_publications' class='wikitable' frame='box' rules='all'>
                         <thead>
                             <tr>
