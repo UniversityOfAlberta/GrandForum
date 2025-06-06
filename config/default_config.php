@@ -92,7 +92,6 @@
         'UI',
         'Notification',
         'GrandObjectPage',
-        'AddMember',
         'AddHqp',
         'EditMember',
         'ManagePeople',

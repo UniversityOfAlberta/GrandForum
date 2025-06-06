@@ -6,7 +6,7 @@ $wgSpecialPageGroups['AddHqp'] = 'network-tools';
 
 $wgHooks['ToolboxLinks'][] = 'AddHqp::createToolboxLinks';
 autoload_register('AddHqp/Validations');
-require_once("$dir../AddMember/AddMember.body.php");
+require_once("AddMember.body.php");
 
 class AddHqp extends SpecialPage{
 
