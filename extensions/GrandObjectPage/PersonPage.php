@@ -155,11 +155,9 @@ class PersonPage {
                 if($wgUser->isRegistered() && ($person->isRole(NI) || $person->isRole("ATS"))){
                     $tabbedPage->addTab(new PersonServicesTab($person, $visibility));
                 }
-                //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
                 if($me->isRoleAtLeast(STAFF) || $me->isRole(DEAN) || $me->isRole(VDEAN)){
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 }
-                //$tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 
                 self::showTitle($person, $visibility);

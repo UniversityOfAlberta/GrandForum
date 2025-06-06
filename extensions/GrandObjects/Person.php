@@ -1504,29 +1504,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the moved on row for when this HQP was inactivated
-     * @return array An array of key/value pairs representing the DB row
-     */
-    function getMovedOn(){
-        $sql = "SELECT *
-                FROM `grand_movedOn`
-                WHERE `user_id` = '{$this->getId()}'";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            return $data[0];
-        }
-        else{
-            return array("where" => "",
-                         "studies" => "",
-                         "employer" => "",
-                         "city" => "",
-                         "country" => "",
-                         "position" => "",
-                         "effective_date" => "");
-        }
-    }
-    
-    /**
      * Returns all of the moved on rows for when this HQP was inactivated
      * @return array An array of moved on rows
      */
