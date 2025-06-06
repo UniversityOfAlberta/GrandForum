@@ -539,7 +539,9 @@ class ApplicationsTable extends SpecialPage{
         foreach($publications as $pub){
             $projects = array();
             foreach($pub->getProjects() as $proj){
-                $projects[] = $proj->getName();
+                if($project->getPhase() == 3 && $project->getType() == "Research"){
+                    $projects[] = $proj->getName();
+                }
             }
             $html .= "<tr>
                 <td>".implode(", ", $projects)."</td>
@@ -589,7 +591,9 @@ class ApplicationsTable extends SpecialPage{
         foreach($hqps as $hqp){
             $projects = array();
             foreach($hqp->getProjectsDuring($year."-04-01", ($year+1)."-03-31") as $proj){
-                $projects[] = $proj->getName();
+                if($project->getPhase() == 3 && $project->getType() == "Research"){
+                    $projects[] = $proj->getName();
+                }
             }
             $html .= "<tr>
                         <td>".implode(", ", $projects)."</td>
