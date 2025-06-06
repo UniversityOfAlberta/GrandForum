@@ -2,7 +2,7 @@
 
 class MultiTextReportItem extends AbstractReportItem {
     
-    function getIndices($labels){
+    static function getIndices($labels){
         $indices = array();
         foreach($labels as $label){
             $index = strtolower($label);
@@ -55,7 +55,7 @@ class MultiTextReportItem extends AbstractReportItem {
         $labels = explode("|", $this->getAttr('labels', ''));
         $types = explode("|", $this->getAttr('types', ''));
         $indices = $this->getAttr('indices', '');
-        $indices = ($indices == "") ? $this->getIndices($labels) : explode("|", $indices);
+        $indices = ($indices == "") ? self::getIndices($labels) : explode("|", $indices);
         $sizes = explode("|", $this->getAttr('sizes', ''));
         $class = $this->getAttr('class', 'wikitable');
         $orientation = $this->getAttr('orientation', 'horizontal');
@@ -491,7 +491,7 @@ EOF;
             $frame = "box";
         }
         $indices = $this->getAttr('indices', '');
-        $indices = ($indices == "") ? $this->getIndices($labels) : explode("|", $indices);
+        $indices = ($indices == "") ? self::getIndices($labels) : explode("|", $indices);
         $values = $this->getBlobValue();
         if($values == null){
             $values = array();

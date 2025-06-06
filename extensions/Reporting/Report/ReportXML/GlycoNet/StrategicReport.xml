@@ -123,6 +123,9 @@
                     <tr><td style='padding-left:18px;'>Is the technology easily transferable for use by partners or is the plan to access the technology well laid out (ex. service option)?</td></tr>
                     <tr><td style='padding-left:18px;'>The project is well aligned with goals of the research partners</td></tr>
                 </table>
+                
+                <h3>Technology Scorecard</h3>
+                <img src='{$wgServer}{$wgScriptPath}/data/scorecard.png' style='width:100%;' />
             ]]>
         </Static>
     </ReportSection>
@@ -338,7 +341,7 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="risk" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" fileSize="2">
+        <ReportItem id="risk" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SECURITY_RISK" mimeType="application/pdf" fileSize="20">
             <![CDATA[
                     <li id='risk' style='display:none;'>
                         In case of involvement of a private sector partner in the project, fill in the <a href='https://science.gc.ca/site/science/sites/default/files/attachments/2023/risk_assessment_form_ISED-ISDE3832E.pdf' target='_blank'><b>Risk Assessment Form</b></a> and upload it to the Forum. <br />

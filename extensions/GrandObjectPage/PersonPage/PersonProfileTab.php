@@ -491,13 +491,15 @@ class PersonProfileTab extends AbstractEditableTab {
         $string = "";
         if(count($products) > 0){
             $string = "<div id='person_products'><h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
-            $string .= "<table id='personProducts' rules='all' frame='box'>
+            $string .= "<button id='showOnlyAuthor' type='button' style='margin-bottom: 0.25em;'>Show only Author</button>
+            <table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
                         <th>Title</th>
                         <th>Category</th>
                         <th>Date</th>
                         <th>Authors</th>
+                        <th style='display:none;'>Projects</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -517,11 +519,17 @@ class PersonProfileTab extends AbstractEditableTab {
                     }
                 }
                 
+                $projects = array();
+                foreach($paper->getProjects() as $project){
+                    $projects[] = $project->getName();
+                }
+                
                 $string .= "<tr>";
                 $string .= "<td><span class='productTitle' data-id='{$paper->getId()}' data-href='{$paper->getUrl()}'>{$paper->getTitle()}</span><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)." ".implode(", ", $paper->getUniversities())."</span></td>";
                 $string .= "<td>{$paper->getCategory()}</td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
                 $string .= "<td><div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>".implode(", ", $names)."</div></td>";
+                $string .= "<td style='display:none;'>".implode(", ", $projects)."</td>";
                 
                 $string .= "</tr>";
             }
@@ -531,7 +539,24 @@ class PersonProfileTab extends AbstractEditableTab {
                     var personProducts = $('#personProducts').dataTable({
                         order: [[ 2, 'desc' ]],
                         autoWidth: false,
+                       'dom': 'Blfrtip',
+                       'buttons': [
+                            'excel', 'pdf'
+                        ],
                         drawCallback: renderProductLinks
+                    });
+                    
+                    $('#showOnlyAuthor').click(function(el){
+                        var search = '';
+                        if($(this).text() == 'Show only Author'){
+                            search = ".json_encode("\"{$person->getNameForProduct()}\"").";
+                            $(this).text('Show all');
+                        }
+                        else{
+                            $(this).text('Show only Author');
+                        }
+                        $('#personProducts_wrapper input').val(search); 
+                        $('#personProducts_wrapper input').trigger('keyup');
                     });
                 </script>";
         }

@@ -23,7 +23,7 @@ class ManageProductsReportItem extends StaticReportItem {
         $projectJSON = ($this->projectId != 0) ? ", project: new Project(".Project::newFromId($this->projectId)->toJSON().")" : "";
         $projectId = ($this->projectId != 0) ? "{$this->projectId}" : "undefined";
         
-        $categories = json_encode(explode(",", $this->getAttr('categories')));
+        $categories = json_encode(array_filter(explode(",", $this->getAttr('categories'))));
 
         $view = "<style>
                     #manageProductsDescription { display: none; }

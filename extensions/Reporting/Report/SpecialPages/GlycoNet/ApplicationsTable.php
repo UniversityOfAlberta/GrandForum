@@ -517,10 +517,209 @@ class ApplicationsTable extends SpecialPage{
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
+    private function drawKPIPublications($year){
+        $publications = array();
+        foreach(Project::getAllProjectsDuring($year."-04-01", ($year+1)."-03-31") as $project){
+            if($project->getPhase() == 3 && $project->getType() == "Research"){
+                foreach($project->getPapers("Publication", "1900-01-01", "2100-01-01") as $paper){
+                    $publications[$paper->getId()] = $paper;
+                }
+            }
+        }
+        
+        $html = "<table id='{$year}_publications' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Projects</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                            <th>Publication</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+        foreach($publications as $pub){
+            $projects = array();
+            foreach($pub->getProjects() as $proj){
+                if($proj->getPhase() == 3 && $proj->getType() == "Research"){
+                    $projects[] = $proj->getName();
+                }
+            }
+            $html .= "<tr>
+                <td>".implode(", ", $projects)."</td>
+                <td>{$pub->getType()}</td>
+                <td>{$pub->getDate()}</td>
+                <td>{$pub->getCitation(false, false, false)}</td>
+            </tr>";
+        }
+        $html .= " </tbody>
+                   </table>";
+        $html .= "<script type='text/javascript'>
+                $('#{$year}_publications').dataTable({
+                    aLengthMenu: [
+                        [25, 50, 100, -1],
+                        [25, 50, 100, 'All']
+                    ],
+                    iDisplayLength: -1,
+                    'autoWidth': false,
+                    'dom': 'Blfrtip',
+                    'buttons': [
+                        'excel', 'pdf'
+                    ]
+                 });</script>";
+        return $html;
+    }
+    
+    private function drawKPIHQPTable($year){
+        $hqps = array();
+        $projects = Project::getAllProjects();
+        $html = "<table id='{$year}_hqp' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Projects</th>
+                            <th>HQP</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+        
+        foreach($projects as $project){
+            if($project->getPhase() == 3 && $project->getType() == "Research"){
+                foreach($project->getAllPeopleDuring(HQP, $year."-04-01", ($year+1)."-03-31") as $hqp){
+                    $hqps[$hqp->getId()] = $hqp;
+                }
+            }
+        }
+        
+        foreach($hqps as $hqp){
+            $projects = array();
+            foreach($hqp->getProjectsDuring($year."-04-01", ($year+1)."-03-31") as $proj){
+                if($proj->getPhase() == 3 && $proj->getType() == "Research"){
+                    $projects[] = $proj->getName();
+                }
+            }
+            $html .= "<tr>
+                        <td>".implode(", ", $projects)."</td>
+                        <td>{$hqp->getName()}</td>
+                      </tr>";
+        }
+        
+        $html .= " </tbody>
+                   </table>";
+        $html .= "<script type='text/javascript'>
+                $('#{$year}_hqp').dataTable({
+                    aLengthMenu: [
+                        [25, 50, 100, -1],
+                        [25, 50, 100, 'All']
+                    ],
+                    iDisplayLength: -1,
+                    'autoWidth': false,
+                    'dom': 'Blfrtip',
+                    'buttons': [
+                        'excel', 'pdf'
+                    ]
+                 });</script>";
+        return $html;
+    }
+    
+    private function drawKPITable($year, $blobItem, $header){
+        $labels = explode("|", $header);
+    
+        $html = "<table id='{$year}_{$blobItem}' class='wikitable'>
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>".implode("</th><th>", $labels)."</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+        $projects = Project::getAllProjects();
+        foreach($projects as $project){
+            if($project->getPhase() == 3 && $project->getType() == "Research"){
+                $addr = ReportBlob::create_address(RP_PROGRESS, "KTEE", $blobItem, 0);
+                $blob = new ReportBlob(BLOB_ARRAY, $year, 0, $project->getId());
+                $blob->load($addr);
+                $data = $blob->getData();
+                if(count($data) > 0){
+                    $rows = $data[strtolower($blobItem)];
+                    foreach($rows as $row){
+                        $html .= "<tr>
+                                    <td>{$project->getName()}</td>";
+                        foreach(MultiTextReportItem::getIndices($labels) as $id){
+                            $html .= "<td>{$row[$id]}</td>";
+                        }
+                        $html .= "</tr>";
+                    }
+                }
+            }
+        }
+        
+        $html .= "  </tbody>
+                  </table>";
+        $html .= "<script type='text/javascript'>
+                    $('#{$year}_{$blobItem}').dataTable({
+                        aLengthMenu: [
+                            [25, 50, 100, -1],
+                            [25, 50, 100, 'All']
+                        ],
+                        iDisplayLength: -1,
+                        'autoWidth': false,
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            'excel', 'pdf'
+                        ]
+                     });</script>";
+        return $html;
+    }
+    
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2024, "2024"));
+        for($year = YEAR; $year >= 2024; $year--){
+            $tab = new ApplicationTab(array(RP_PROGRESS), null, $year, "$year");
+            
+            $extra = "<h1>SSF Tables</h1>";
+            
+            $extra .= "<h2>Publications</h2>";
+            $extra .= $this->drawKPIPublications($year);
+            
+            $extra .= "<h2>HQP</h2>";
+            $extra .= $this->drawKPIHQPTable($year);
+            
+            $extra .= "<h2 style='font-weight:bold;'>New or Improved Products (knowledge product, service, process)</h2>";
+            $extra .= $this->drawKPITable($year, "NEW", "Type|Details");
+            
+            $extra .= "<h2 style='font-weight:bold;'>Intellectual Properties</h2>";
+            $extra .= "<h3 style='font-weight:normal;'>New IP filed</h3>";
+            $extra .= $this->drawKPITable($year, "NEW_IP_FILED", "Title|Type of IP|Filing and Application Number|Filing Date|Status of the Application");
+            
+            $extra .= "<h3 style='font-weight:normal;'>New IP Issued</h3>";
+            $extra .= $this->drawKPITable($year, "NEW_IP_ISSUED", "Title|Type of IP|Registration or Patent Number|Issue Date|Expiration Date");
+            
+            $extra .= "<h3 style='font-weight:normal;'>New Licenses Granted</h3>";
+            $extra .= $this->drawKPITable($year, "NEW_LICENSES_GRANTED", "Description of the Deal|Partners Involved|Date of Agreement|Revenue Impact|Strategic Relevance");
+            
+            $extra .= "<h3 style='font-weight:normal;'>New Licenses Under Negotiation</h3>";
+            $extra .= $this->drawKPITable($year, "NEW_LICENSES_NEGOTIATION", "Description of Potential Deal|Potential Partners Involved|Expected Date of Agreement|Projected Revenue Impact|Strategic Relevance");
+            
+            $extra .= "<h2 style='font-weight:bold;'>Companies</h2>";
+            $extra .= "<h3 style='font-weight:normal;'>New Companies Created</h3>";
+            $extra .= $this->drawKPITable($year, "NEW_COMPANIES", "Company name|Date of Incorporation|Industry/Sector|Number of Employees|Initial Investment");
+            
+            $extra .= "<h3 style='font-weight:normal;'>Companies Enhanced</h3>";
+            $extra .= $this->drawKPITable($year, "ENHANCED_COMPANIES", "Company name|Details about any new technologies adopted or developed|Upgrades or expansions in facilities that support growth|Revenue Growth|Other Details");
+            
+            $extra .= "<h2 style='font-weight:bold;'>Instances where Knowledge is Presented</h2>";
+            $extra .= "<h3 style='font-weight:normal;'>National and International Forums where knowledge is presented</h3>";
+            $extra .= $this->drawKPITable($year, "FORUMS", "Forum Name|National or International|Event Date|Presentation Type|Other Details");
+            
+            $extra .= "<h3 style='font-weight:normal;'>Seminars and Workshops</h3>";
+            $extra .= $this->drawKPITable($year, "SEMINARS", "Event Name|Seminar or Workshop|National or International|Event Date|Online, in-person or hybrid|Audience|Approximate number of attendants");
+            
+            $extra .= "<h2 style='font-weight:bold;'>Direct Jobs Created</h2>";
+            $extra .= $this->drawKPITable($year, "JOBS", "Company Name|Job/position|Date of position opened/started|Employee Full Name|Other Details");
+            
+            $tab->addExtra($extra);
+            $tabbedPage->addTab($tab);
+        }
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2023, "2023"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), null, 2021, "2021"));
