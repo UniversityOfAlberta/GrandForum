@@ -163,6 +163,7 @@ class ReportItemCallback {
             "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
             "isAllowedToViewRecommendation" => "isAllowedToViewRecommendation",
             "getPersonVar" => "getPersonVar",
+            "isImpersonating" => "isImpersonating",
             // Chair
             "chair_id" => "getChairId",
             // Products
@@ -1433,6 +1434,11 @@ class ReportItemCallback {
             return $user->{$var};
         }
         return "";
+    }
+    
+    function isImpersonating(){
+        global $wgDelegating, $wgImpersonating;
+        return ($wgDelegating || $wgImpersonating);
     }
 
     function getChairId(){
