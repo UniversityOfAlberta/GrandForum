@@ -4278,9 +4278,9 @@ class LimitedPerson extends Person {
 
 if(isset($facultyMap)){
     Person::$facultyMap = array_flip(array_flatten($facultyMap));
-    foreach(Person::$facultyMap as $key => $val){
-        $exploded = explode(".", $val);
-        Person::$facultyMap[$key] = $exploded[0];
+    foreach(Person::$facultyMap as $dept => $fac){
+        $exploded = explode(".", $fac);
+        Person::$facultyMap[$dept] = $exploded[0];
     }
 }
 

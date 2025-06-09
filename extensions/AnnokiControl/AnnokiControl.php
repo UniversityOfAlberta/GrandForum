@@ -94,9 +94,6 @@ $egAnnokiExtensions['Impersonation'] = array('name' => 'Impersonation',
 
 $egAnnokiExtensions['Visualizations'] = array('name' => 'Visualizations',
                                               'path' => "$IP/extensions/Visualizations/Visualization.php");
-
-$egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
-                                          'path' => "$IP/extensions/Duplicates/Duplicates.php");
                                                                        
 $egAnnokiExtensions['QASummary'] = array('name' => 'QASummary', 
                                          'path' => "$IP/extensions/QASummary/QASummary.php");
