@@ -2915,20 +2915,6 @@ class Person extends BackboneModel {
         }
         return $newProducts;
     }
-       
-    /**
-     * Returns the CCV XML that belongs to this Person
-     * @return string The CCV XML that belongs to this Person
-     */
-    function getCCV(){
-        $data = DBFunctions::select(array('grand_ccv'),
-                                    array('ccv'),
-                                    array('user_id' => $this->getId()));
-        if(count($data) > 0){
-            return $data[0]['ccv'];
-        }
-        return "";
-    }
     
     /**
      * Returns whether or not this Person is the author of the given Product

@@ -26,18 +26,6 @@
     <input type="radio" id="orcid_overwrite" name="orcid_overwrite" value="yes" style="vertical-align:middle;" /> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" id="orcid_overwrite" name="orcid_overwrite" value="" style="vertical-align:middle;" checked="checked" /> No
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
-<div id="ccvDialog" style="display:none;" title="Upload Canadian CCV">
-    <p>You can upload your Canadian CCV (in XML format) using the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the <%= siteName %> will automatically imported, but will not be visible to anyone else on the <%= siteName %> except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the <%= siteName %> by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the <%= siteName %>, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> before releasing it.  A <%= productsTerm.toLowerCase() %> will not get added twice into the <%= siteName %>, so uploading the CCV a second time will generally not result in duplicate entries.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.  Overwriting will typically only add information, and not change existing fields that already have data.</p>
-    <p><b>Note:</b> After importing, double check that the publications contain the correct data, especially authors.  If the author is known to the system, they will have a green background when editing, if they don't appear green, then you will need to manually correct this.</p>
-    <iframe name="fileUpload" style="display:none;"></iframe>
-    <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.uploadCCV" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="publications" value="true" />
-        <input type="file" name="ccv" accept="application/xml" />
-        <br /><br /><b>Overwrite existing <%= productsTerm.toLowerCase().pluralize() %>?</b><br />
-    <input type="radio" id="ccv_overwrite" name="ccv_overwrite" value="yes" style="vertical-align:middle;" /> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" id="ccv_overwrite" name="ccv_overwrite" value="" style="vertical-align:middle;" checked="checked" /> No
-    </form>
-    <div class="throbber" style="float:right;display:none;"></div>
-</div>
 <div id="calendarDialog" style="display:none;" title="Upload ICS Calendar">
     <p>You can upload a Calendar (in ICS format) using the form below.  Any events that can be read into the <%= siteName %> will automatically imported, but will not be visible to anyone else on the <%= siteName %> except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the <%= siteName %> by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted events will not get added to the <%= siteName %>, and also gives you a chance to make changes to the event before releasing it.</p>
     <iframe name="icsUpload" style="display:none;"></iframe>
@@ -102,7 +90,6 @@
         <button id="addProductButton">Add <%= productsTerm %></button>
     <% } %>
     <button id="addFromDOIButton">Import from DOI</button>
-    <!--button id="uploadCCVButton">Upload CCV</button-->
     <button id="importBibTexButton">Import BibTeX</button>
     &nbsp;
     &nbsp;

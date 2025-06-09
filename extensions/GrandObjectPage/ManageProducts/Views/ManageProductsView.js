@@ -55,10 +55,6 @@ ManageProductsView = Backbone.View.extend({
         this.doiDialog.dialog('open');
     },
     
-    uploadCCV: function(){
-        this.ccvDialog.dialog('open');
-    },
-    
     importBibTeX: function(){
         $("textarea[name=bibtex]", this.bibtexDialog).val('');
         this.bibtexDialog.dialog('open');
@@ -497,7 +493,6 @@ ManageProductsView = Backbone.View.extend({
         "click #releasePrivate": "releasePrivate",
         "click #addProductButton": "addProduct",
         "click #addFromDOIButton": "addFromDOI",
-        "click #uploadCCVButton": "uploadCCV",
         "click #importBibTexButton": "importBibTeX",
         "click #uploadCalendarButton": "uploadCalendar",
         "click #importOrcidButton": "importOrcid",
@@ -767,75 +762,6 @@ ManageProductsView = Backbone.View.extend({
 	            }.bind(this),
 	            "No": function(){
 	                this.deletePrivateDialog.dialog('close');
-	            }.bind(this)
-	        }
-	    });
-	    this.ccvDialog = this.$("#ccvDialog").dialog({
-	        autoOpen: false,
-	        modal: true,
-	        show: 'fade',
-	        resizable: false,
-	        draggable: false,
-	        width: "800px",
-	        open: function(){
-	            $("html").css("overflow", "hidden");
-	        },
-	        beforeClose: function(){
-	            $("html").css("overflow", "auto");
-	        },
-	        buttons: {
-	            "Upload": function(e){
-	                var button = $(e.currentTarget);
-	                button.prop("disabled", true);
-	                $("div.throbber", this.ccvDialog).show();
-	                ccvUploaded = function(response, error){
-	                    // Purposefully global so that iframe can access
-	                    if(error == undefined || error == ""){
-	                        if(!_.isUndefined(response.created)){
-	                            var ids = _.pluck(response.created, 'id');
-	                            this.products.remove(ids, {silent: true});
-	                            this.products.trigger("remove");
-                                this.products.add(response.created, {silent: true});
-                                this.products.trigger("add");
-                            }
-	                        //this.products.add(response.created, {silent: true});
-	                        //this.addRows();
-	                        clearAllMessages();
-                            var nCreated = response.created.length;
-                            var nError = response.error.length;
-                            if(nCreated > 0){
-                                var info = "<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated<br />" +
-                                           "<a style='cursor:pointer;' onClick='$(\"#createdOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
-                                           "<div id='createdOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
-                                           "<li>" + _.pluck(response.created, 'title').join("</li><li>") + 
-                                           "</li></ul></div>";
-                                addSuccess(info);
-	                        }
-	                        if(nError > 0){
-	                            var info = "<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)<br />" +
-                                           "<a style='cursor:pointer;' onClick='$(\"#duplicateOutputs\").slideDown();$(this).hide();'>Show " + productsTerm.pluralize().toLowerCase() + "<br /></a>" +
-                                           "<div id='duplicateOutputs' style='max-height:200px; overflow-y:auto; display:none;'><ul>" + 
-                                           "<li>" + _.pluck(response.error, 'title').join("</li><li>") + 
-                                           "</li></ul></div>";
-                                addInfo(info);
-	                        }
-	                        button.prop("disabled", false);
-	                        $("div.throbber", this.ccvDialog).hide();
-	                        this.ccvDialog.dialog('close');
-	                    }
-	                    else{
-	                        button.prop("disabled", false);
-	                        $("div.throbber", this.ccvDialog).hide();
-	                        clearAllMessages();
-	                        addError(error);
-	                        this.ccvDialog.dialog('close');
-	                    }
-	                }.bind(this);
-	                var form = $("form", this.ccvDialog);
-	                form.submit();
-	            }.bind(this),
-	            "Cancel": function(){
-	                this.ccvDialog.dialog('close');
 	            }.bind(this)
 	        }
 	    });
