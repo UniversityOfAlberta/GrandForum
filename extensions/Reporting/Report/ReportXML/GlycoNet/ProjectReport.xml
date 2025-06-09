@@ -532,7 +532,7 @@
                     </ReportItem>
                     <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING" blobSubItem="{$user_id}">
                         <![CDATA[
-                            <p><b>Which new skills, knowledge and/or experience has the trainnee developed during the project? Please provide details, examples and how this will help the trainee in their future path/career.</b></p>
+                            <p><b>Which new skills, knowledge and/or experience has the trainee developed during the project? Please provide details, examples and how this will help the trainee in their future path/career.</b></p>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -562,7 +562,7 @@
                     </ReportItem>
                     <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING" blobSubItem="{$user_id}">
                         <![CDATA[
-                            <p><b>Which new skills, knowledge and/or experience has the trainnee developed during the project? Please provide details, examples and how this will help the trainee in their future path/career.</b></p>
+                            <p><b>Which new skills, knowledge and/or experience has the trainee developed during the project? Please provide details, examples and how this will help the trainee in their future path/career.</b></p>
                             {$item}
                         ]]>
                     </ReportItem>
