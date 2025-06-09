@@ -103,7 +103,7 @@
                     </ReportItem>
                     <Static>
                         <![CDATA[
-                            <td>{$course_enroll}</td>
+                            <td align='center'>{$course_enroll}</td>
                             </tr>
                         ]]>
                     </Static>
@@ -187,7 +187,7 @@
                 </ul>
             ]]>
         </Static>
-        <ReportItem id="accredidation" type="MultiText" blobItem="ACCREDIDATION" blobType="BLOB_ARRAY" labels="Contributions Toward Accreditation Efforts|Hours Invested" types="Textarea|Number" multiple="true" sizes="90%|10%" class="wikitable">
+        <ReportItem id="accredidation" type="MultiText" blobItem="ACCREDIDATION" blobType="BLOB_ARRAY" labels="Contributions Toward Accreditation Efforts|Hours Invested" types="Textarea|CenterNumber" multiple="true" sizes="90%|10%" class="wikitable">
             <![CDATA[
                 <h3>(c) Accreditation:</h3>
                 {$item}
@@ -195,14 +195,14 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="initiatives" tooltip="EDUCATIONAL INITIATIVES" name="Educational Initiatives" title="2. EDUCATIONAL INITIATIVES" blobSection="FEC_INITIATIVES" type="EditableReportSection" pagebreak="false" hLevel="2">
-        <ReportItem id="teaching_methods1" type="MultiText" blobItem="TEACHING_METHODS1" blobType="BLOB_ARRAY" labels="Course Number|Description and Educational Objective|Hours Invested|Method Used to Evaluate Initiative" types="Text|Textarea|Number|Textarea" class="wikitable" width="100%" multiple="true">
+        <ReportItem id="teaching_methods1" type="MultiText" blobItem="TEACHING_METHODS1" blobType="BLOB_ARRAY" labels="Course Number|Description and Educational Objective|Hours Invested|Method Used to Evaluate Initiative" types="Text|Textarea|CenterNumber|Textarea" class="wikitable" width="100%" multiple="true">
             <![CDATA[
                 <h3>(a) Please briefly describe initiatives taken to improve your own teaching:</h3>
                 <b>New teaching methods implemented:</b>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="teaching_methods2" type="MultiText" blobItem="TEACHING_METHODS2" blobType="BLOB_ARRAY" labels="Course Number|Description and Educational Objective|Hours Invested|Method Used to Evaluate Initiative" types="Text|Textarea|Number|Textarea" class="wikitable" width="100%" multiple="true">
+        <ReportItem id="teaching_methods2" type="MultiText" blobItem="TEACHING_METHODS2" blobType="BLOB_ARRAY" labels="Course Number|Description and Educational Objective|Hours Invested|Method Used to Evaluate Initiative" types="Text|Textarea|CenterNumber|Textarea" class="wikitable" width="100%" multiple="true">
             <![CDATA[
                 <b>Course or laboratory development:</b>
                 {$item}
