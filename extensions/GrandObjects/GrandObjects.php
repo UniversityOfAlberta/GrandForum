@@ -22,7 +22,6 @@ autoload_register('GrandObjects/API/University');
 autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Grant');
 autoload_register('GrandObjects/API/Keyword');
-autoload_register('GrandObjects/API/PDF');
 autoload_register('GrandObjects/API/Journal');
 
 global $apiRequest;
@@ -61,8 +60,6 @@ $apiRequest->addAction('Hidden','productHistories/person/:personId', 'ProductHis
 // University
 $apiRequest->addAction('Hidden','university', 'UniversityAPI');
 $apiRequest->addAction('Hidden','university/:id', 'UniversityAPI');
-// PDF
-$apiRequest->addAction('Hidden','pdf/:id', 'PDFAPI');
 // Grants
 $apiRequest->addAction('Hidden','grant', 'GrantAPI');
 $apiRequest->addAction('Hidden','grant/:id', 'GrantAPI');
@@ -90,7 +87,6 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Grant.js?".filemtime("extensions/GrandObjects/BackboneModels/Grant.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Keyword.js?".filemtime("extensions/GrandObjects/BackboneModels/Keyword.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/University.js?".filemtime("extensions/GrandObjects/BackboneModels/University.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js?".filemtime("extensions/GrandObjects/BackboneModels/PDF.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Journal.js?".filemtime("extensions/GrandObjects/BackboneModels/Journal.js")."'></script>\n";
     return true;
 }
