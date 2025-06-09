@@ -294,10 +294,10 @@ EOF;
                     else if(strtolower(@$types[$j]) == "random"){
                         $item .= @"<td align='$align' style='display:none;'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
                     }
-                    else if(strtolower(@$types[$j]) == "integer"){
+                    else if(strtolower(@$types[$j]) == "integer" || strtolower(@$types[$j]) == "centerinteger"){
                         $item .= @"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
                     }
-                    else if(strtolower(@$types[$j]) == "number"){
+                    else if(strtolower(@$types[$j]) == "number" || strtolower(@$types[$j]) == "centernumber"){
                         $item .= @"<td align='$align'><input type='text' class='numeric decimals' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
                     }
                     else if(strtolower(@$types[$j]) == "checkbox"){
@@ -552,8 +552,10 @@ EOF;
                         else if(strtolower(@$types[$j]) == "random"){
                             //$item .= "<td align='right' valign='top' style='display:none; {$size}'>{$value[$index]}</td>";
                         }
-                        else if(strtolower(@$types[$j]) == "integer" || strtolower(@$types[$j]) == "number"){
-                            $item .= @"<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        else if(strtolower(@$types[$j]) == "integer" || strtolower(@$types[$j]) == "centerinteger" || 
+                                strtolower(@$types[$j]) == "number"  || strtolower(@$types[$j]) == "centernumber"){
+                            $align = (strtolower(@$types[$j]) == "centerinteger" || strtolower(@$types[$j]) == "centernumber") ? "center" : "right";
+                            $item .= @"<td align='{$align}' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "checkbox"){
                             $check = "";
