@@ -34,7 +34,7 @@ class ReportArchive extends SpecialPage {
 
     // Gives a listing of all the ReportArchived pdfs
     static function generateReportArchivedReportsHTML(){
-        global $wgUser, $wgOut, $wgTitle, $wgServer, $wgScriptPath;
+        global $wgUser, $wgOut, $wgTitle, $wgServer, $wgScriptPath, $facultyMapSimple;
         $person = Person::newFromWgUser();
         if($person->isRoleAtLeast(STAFF) && isset($_GET['person'])){
             $person = Person::newFromName($_GET['person']);
@@ -88,19 +88,22 @@ class ReportArchive extends SpecialPage {
                             $minute = substr($tst, 11, 2);
                             $date = "{$year}-{$month}-{$day}_{$hour}-{$minute}";
                             $reportName = str_replace(" ", "-", trim(str_replace(":", "", str_replace("Report", "", $report->name))));
+                            $report->person->getFecPersonalInfo();
                             if($report->name == ""){
                                 $caseNumber = strip_tags($report->person->getCaseNumber($report->year));
                                 $caseNumber = ($caseNumber != "") ? "{$caseNumber}-" : "";
                                 $firstName = $report->person->getFirstName();
                                 $lastName = $report->person->getLastName();
-                                $name = str_replace(" ", "-", $caseNumber."{$lastName}".substr($firstName, 0, 1)."-".trim(str_replace(":", "", $type)))."_$date.$ext";
+                                $dept = explode(".", @array_search(array_keys($report->person->departments)[0], array_flatten($facultyMapSimple)))[1];
+                                $name = str_replace(" ", "-", $caseNumber."{$lastName}".substr($firstName, 0, 1)."-{$dept}-".trim(str_replace(":", "", $type)))."_{$date}.$ext";
                             }
                             else{
                                 // Individual Reports
                                 $firstName = $report->person->getFirstName();
                                 $lastName = $report->person->getLastName();
+                                $dept = @array_search(array_keys($report->person->departments)[0], array_flatten($facultyMapSimple));
                                 $caseNumber = $report->person->getCaseNumber();
-                                $name = "{$caseNumber}-{$lastName}".substr($firstName, 0, 1)."-{$reportName}_{$date}.{$ext}";
+                                $name = "{$caseNumber}-{$lastName}".substr($firstName, 0, 1)."-{$dept}-{$reportName}_{$date}.{$ext}";
                             }
                         }
                     }

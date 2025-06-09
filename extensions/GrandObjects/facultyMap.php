@@ -58,55 +58,55 @@ $facultyMap = array(
 // Simplified map of faculty/departments
 $facultyMapSimple = array(
     "ALES" => array(
-        "Resource Economics & Environmental Sociology",
-        "Renewable Resources",
-        "Human Ecology",
-        "Ag, Food & Nutri Sci"
+        "REES" => "Resource Economics & Environmental Sociology",
+        "RR" => "Renewable Resources",
+        "HE" => "Human Ecology",
+        "AFNS" => "Ag, Food & Nutri Sci"
     ),
     "Science" => array(
-        "Computing Science",
-        "Mathematical And Statistical Sciences",
-        "Chemistry",
-        "Psychology",
-        "Biological Sciences",
-        "Physics",
-        "Earth And Atmospheric Sciences"
+        "CMPUT" => "Computing Science",
+        "MATH" => "Mathematical And Statistical Sciences",
+        "CHEM" => "Chemistry",
+        "PSYCH" => "Psychology",
+        "BIOL" => "Biological Sciences",
+        "PHYS" => "Physics",
+        "EAS" => "Earth And Atmospheric Sciences"
     ),
     "Engineering" => array(
-        "Mechanical Engineering",
-        "Biomedical Engineering",
-        "Chemical and Materials Engineering",
-        "Civil and Environmental Engineering",
-        "Electrical & Computer Engineering"
+        "MECE" => "Mechanical Engineering",
+        "BIOE" => "Biomedical Engineering",
+        "CHEME" => "Chemical and Materials Engineering",
+        "CIVE" => "Civil and Environmental Engineering",
+        "ECE" => "Electrical & Computer Engineering"
     ),
     "Arts" => array(
-        "Art and Design",
-        "Drama",
-        "Music",
-        "East Asian Studies",
-        "English and Film Studies",
-        "History, Classics, and Religion",
-        "Modern Languages and Cultural Studies",
-        "Philosophy",
-        "Media and Technology Studies",
-        "Anthropology",
-        "Economics",
-        "Linguistics",
-        "Political Science",
-        "Psychology",
-        "Sociology",
-        "Women's and Gender Studies"
+        "ART" => "Art and Design",
+        "DRAMA" => "Drama",
+        "MUSIC" => "Music",
+        "EAS" => "East Asian Studies",
+        "EFS" => "English and Film Studies",
+        "HISTORY" => "History, Classics, and Religion",
+        "LANG" => "Modern Languages and Cultural Studies",
+        "PHIL" => "Philosophy",
+        "MEDIA" => "Media and Technology Studies",
+        "ANTRO" => "Anthropology",
+        "ECON" => "Economics",
+        "LING" => "Linguistics",
+        "POL" => "Political Science",
+        "PSYCH" => "Psychology",
+        "SOC" => "Sociology",
+        "GENDER" => "Women's and Gender Studies"
     ),
     "Rehabilitation Medicine" => array(
-        "Physical Therapy",
-        "Occupational Therapy",
-        "Communication Sciences & Disorders"
+        "PT" => "Physical Therapy",
+        "OT" => "Occupational Therapy",
+        "CSD" => "Communication Sciences & Disorders"
     ),
     "Business" => array(
-        "Accounting & Business Analytics",
-        "Finance",
-        "Marketing, Business Economics & Law",
-        "Strategy, Entrepreneurship & Management"
+        "ABA" => "Accounting & Business Analytics",
+        "FIN" => "Finance",
+        "MBEL" => "Marketing, Business Economics & Law",
+        "SEM" => "Strategy, Entrepreneurship & Management"
     )
 );
 ?>
