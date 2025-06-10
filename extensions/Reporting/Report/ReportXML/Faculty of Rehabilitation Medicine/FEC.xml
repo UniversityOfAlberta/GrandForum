@@ -8,6 +8,7 @@
             ]]>
         </ReportItem>
         <ReportItem id="if_faculty" if="{==(1,1)}" />
+        <ReportItem id="showReducedTeaching" if="{==(1,0)}" />
     </ReportSection>
     <ReportSection id="grants">
         <ReportItem id="grantsbookmark">

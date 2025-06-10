@@ -249,38 +249,40 @@
         </ReportItem>
         
         <!-- Reduced Teaching -->
-        <If if="{contains({$my_roles},Faculty)}">
-            <!-- Faculty -->
-            <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" sizes="200|200|350" multiple="true" addText="Add New" optional="true" encrypt="true">
-                <![CDATA[
-                    <h2>Reasons For Reduced Teaching<small> (if applicable)</small> <span class='clicktooltip' title='The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.'>&#9432;</span></h2>
-                    {$item}
-                    <script type='text/javascript'>
-                        $("#table_Intro_reasons tr.obj select").change(function(e){
-                            var td = $($(e.target).closest("tr").children()[1]);
-                            var text = $("input", td);
-                            if($(e.target).val() == "Other"){
-                                text.prop('disabled', false);
-                            }
-                            else{
-                               text.prop('disabled', true);
-                                text.val('');
-                            }
-                        }).change();
-                    </script>
-                ]]>
-            </ReportItem>
+        <If id="showReducedTeaching" if="{==(1,1)}">
+            <If if="{contains({$my_roles},Faculty)}">
+                <!-- Faculty -->
+                <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Reason(if other)|Comments" types="Select(Leave,Associate Chair/Dean,Cross Appointment,Departmental Chair,Fellow/Scholar/Award,New Faculty,Research/Teaching Chair,Secondment,Other)|Text|Textarea" sizes="200|200|350" multiple="true" addText="Add New" optional="true" encrypt="true">
+                    <![CDATA[
+                        <h2>Reasons For Reduced Teaching<small> (if applicable)</small> <span class='clicktooltip' title='The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.'>&#9432;</span></h2>
+                        {$item}
+                        <script type='text/javascript'>
+                            $("#table_Intro_reasons tr.obj select").change(function(e){
+                                var td = $($(e.target).closest("tr").children()[1]);
+                                var text = $("input", td);
+                                if($(e.target).val() == "Other"){
+                                    text.prop('disabled', false);
+                                }
+                                else{
+                                   text.prop('disabled', true);
+                                    text.val('');
+                                }
+                            }).change();
+                        </script>
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else>
+                <!-- ATS -->
+                <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Comments" types="Select(Teaching a very large number of students,Managing a large number of TAs,Teaching a relatively large number of different courses,Coordinating with other instructors of multi-section courses,New course development,Redesign of an existing course,Redesign of an existing course,Scaling of an existing course amid growing enrollment,Authoring textbooks or chapters,Filming instructional videosCreating innovative course assignments,Serving in teaching-related administrative positions,Driving teaching-related initiatives on Department level,Mentoring current and onboarding new ATS members,Pedagogical research and innovation,Research that ensures currency within the discipline,Supervision and dissemination of original research with undergraduate students,Supervision and dissemination of original research with graduate students,Other Service)|Textarea" sizes="200|350" multiple="true" addText="Add New" optional="true" encrypt="true">
+                    <![CDATA[
+                        <h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
+                        The teaching load of full-time ATS members (except for Max Wyman professors) is 7 courses per year (3-3-1-0 or 3-3-0-1).  If in the past year, you were not teaching 7 courses, please describe the additional responsibilities that justify your reduced teaching load.
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </Else>
         </If>
-        <Else>
-            <!-- ATS -->
-            <ReportItem id="reasons" type="MultiTextReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_ARRAY" labels="Reason|Comments" types="Select(Teaching a very large number of students,Managing a large number of TAs,Teaching a relatively large number of different courses,Coordinating with other instructors of multi-section courses,New course development,Redesign of an existing course,Redesign of an existing course,Scaling of an existing course amid growing enrollment,Authoring textbooks or chapters,Filming instructional videosCreating innovative course assignments,Serving in teaching-related administrative positions,Driving teaching-related initiatives on Department level,Mentoring current and onboarding new ATS members,Pedagogical research and innovation,Research that ensures currency within the discipline,Supervision and dissemination of original research with undergraduate students,Supervision and dissemination of original research with graduate students,Other Service)|Textarea" sizes="200|350" multiple="true" addText="Add New" optional="true" encrypt="true">
-                <![CDATA[
-                    <h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
-                    The teaching load of full-time ATS members (except for Max Wyman professors) is 7 courses per year (3-3-1-0 or 3-3-0-1).  If in the past year, you were not teaching 7 courses, please describe the additional responsibilities that justify your reduced teaching load.
-                    {$item}
-                ]]>
-            </ReportItem>
-        </Else>
     </ReportSection>
     <ReportSection id="courses" tooltip="TEACHING" name="Teaching" title="TEACHING" blobSection="FEC_COURSES" type="EditableReportSection">
         <Static>
