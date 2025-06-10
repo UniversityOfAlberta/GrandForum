@@ -5,7 +5,6 @@
  * @abstract
  */
 
-$wgHooks['CheckImpersonationPermissions'][] = 'AbstractReport::checkImpersonationPermissions';
 $wgHooks['ImpersonationMessage'][] = 'AbstractReport::impersonationMessage';
 $wgHooks['UnknownAction'][] = 'AbstractReport::downloadBlob';
 $wgHooks['UnknownAction'][] = 'AbstractReport::downloadReportZip';
@@ -1007,22 +1006,6 @@ abstract class AbstractReport extends SpecialPage {
     
         // The Roman numeral should be built, return it
         return $result;
-    }
-    
-    static function checkImpersonationPermissions($person, $realPerson, $ns, $title, $pageAllowed){
-        if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-            $hqps = $realPerson->getHQPDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
-            foreach($hqps as $hqp){
-                if($hqp->getId() == $person->getId()){
-                    if(("$ns:$title" == "Special:Report" &&
-                       @$_GET['report'] == "HQPReport") || ("$ns:$title" == "Special:ReportArchive" && checkSupervisesImpersonee())){
-                        $pageAllowed = true;
-                    }
-                    break;
-                }
-            }
-        }
-        return true;
     }
     
     static function impersonationMessage($person, $realPerson, $ns, $title, $message){
