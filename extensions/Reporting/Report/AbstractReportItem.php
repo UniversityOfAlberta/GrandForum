@@ -247,6 +247,7 @@ abstract class AbstractReportItem {
         }
         $postId = str_replace("-", "", $postId);
         $postId = str_replace(" ", "", $postId);
+        $postId = str_replace("'", "", $postId);
         return $postId;
     }
     
