@@ -176,7 +176,7 @@ class RequestUserAPI extends API{
 		        $staffEmail = "vsharko@glyconet.ca";
 		        break;
 		    case "BD":
-		        $staffEmail = "skornicer@torontomu.ca";
+		        $staffEmail = "";
 		        break;
 		}
 		
