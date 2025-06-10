@@ -422,9 +422,6 @@ class Paper extends BackboneModel{
             return self::$structure;
         }
         $fileName = "$IP/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml";
-        if(!file_exists($fileName)){
-            $fileName = "$IP/extensions/GrandObjects/ProductStructures/NETWORK.xml";
-        }
         $fileTime = filemtime($fileName);
         if(!Cache::exists("product_structure")){
             $file = file_get_contents($fileName);
