@@ -2460,11 +2460,11 @@ class Person extends BackboneModel {
                     $this->isRoleAtMost(CI));
         }
         foreach($this->getRoles() as $r){
-            if($r->getRole() != "" && $wgRoleValues[$r->getRole()] <= $wgRoleValues[$role]){
-                return true;
+            if($r->getRole() != "" && $wgRoleValues[$r->getRole()] > $wgRoleValues[$role]){
+                return false;
             }
         }
-        return false;
+        return true;
     }
     
     /**

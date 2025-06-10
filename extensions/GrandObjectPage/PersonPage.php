@@ -21,7 +21,7 @@ class PersonPage {
         if($name == "HQP"){
             $result = $user->isLoggedIn();
         }
-        if($me->isRole(HQP) || $me->isRole(INACTIVE)){
+        if($me->isRoleAtMost(HQP) || $me->isRole(INACTIVE)){
             $result = false;
         }
         $person->getFecPersonalInfo();
