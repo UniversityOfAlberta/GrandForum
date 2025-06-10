@@ -168,7 +168,7 @@ function ShibUserLoadFromSession($user, $result)
 	    $person = Person::newFromName($shib_UN);
 	}
 	if($person != null && $person->getId() != 0){
-	    if($person->isRole(HQP) || $person->isRole(INACTIVE)){
+	    if($person->isRoleAtMost(HQP) || $person->isRole(INACTIVE)){
 		    $wgMessage->addError("You do not have permission to view the {$config->getValue('networkName')} Forum");
 		    $wgUser = new User();
 	        return true;

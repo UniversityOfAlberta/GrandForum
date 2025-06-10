@@ -924,7 +924,7 @@ abstract class AbstractReport extends SpecialPage {
         // The Roman numeral should be built, return it
         return $result;
     }
-    
+
     static function downloadBlob($action){
         $me = Person::newFromWgUser();
         if($action == "downloadBlob" && isset($_GET['id'])){
