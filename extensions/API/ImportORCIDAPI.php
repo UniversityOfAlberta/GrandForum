@@ -259,7 +259,7 @@ class ImportORCIDAPI extends API{
                 if(count($syncInserts) > 0){
                     DBFunctions::begin();
                     DBFunctions::execSQL("DELETE FROM `grand_product_authors` WHERE product_id IN (".implode(",", $syncDeletes).")", true, true);
-                    DBFunctions::execSQL("INSERT INTO `grand_product_authors` (`author`, `product_id`, `order`)
+                    DBFunctions::execSQL("INSERT INTO `grand_product_authors` (`author`, `product_id`, `type`, `order`)
                                           VALUES\n".implode(",\n",$syncInserts), true, true);
                     DBFunctions::commit();
                 }

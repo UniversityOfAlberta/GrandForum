@@ -15,13 +15,6 @@
                 $url = @file_get_contents($person_google_scholar);
                 if($url === false){
                     $wgMessage->addError("There was a problem retrieving your Google Scholar Profile");
-                    echo "<html>
-                        <head>
-                            <script type='text/javascript'>
-                                parent.ccvUploaded([], 'Updated');
-                            </script>
-                        </head>
-                    </html>";
                     close();
                 }
                 $gs_metric = new GsMetric(array());

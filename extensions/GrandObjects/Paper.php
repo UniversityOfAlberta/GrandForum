@@ -33,7 +33,6 @@ class Paper extends BackboneModel{
     var $exclude = false; // This is sort of a weird one since it relates to the current logged in user
     var $access = "Forum"; // Either 'Public' or 'Forum'
     var $created_by = 0;
-    var $ccv_id;
     var $bibtex_id;
     var $orcid;
     var $reported = array();
@@ -63,34 +62,6 @@ class Paper extends BackboneModel{
         
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
-        return $paper;
-    }
-    
-    /**
-     * Returns a new Paper from the given ccv_id
-     * @param integer $ccv_id The id of the Paper
-     * @return Paper The Paper with the given ccv_id
-     */
-    static function newFromCCVId($ccv_id){
-        if(isset(self::$cache[$ccv_id])){
-            return self::$cache[$ccv_id];
-        }
-        $me = Person::newFromWgUser();
-        $sql = "SELECT *
-                FROM grand_products
-                WHERE ccv_id = '$ccv_id'
-                AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
-        $data = DBFunctions::execSQL($sql);
-        $paper = new Paper($data);
-        
-        if(!$paper->canView()){
-            $paper = new Paper(array()); 
-        }
-        
-        self::$cache[$paper->id] = &$paper;
-        self::$cache[$paper->title] = &$paper;
-        self::$cache[$paper->ccv_id] = &$paper;
         return $paper;
     }
     
@@ -290,7 +261,7 @@ class Paper extends BackboneModel{
         else{
             $papers = array();
             $me = Person::newFromWgUser();
-            $sql = "SELECT id, category, type, title, date, status, authors, contributors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, orcid, date_created, acceptance_date
+            $sql = "SELECT id, category, type, title, date, status, authors, contributors, date_changed, deleted, access_id, created_by, access, bibtex_id, orcid, date_created, acceptance_date
                     FROM `grand_products` p
                     WHERE 1";
             $sql .= "\nAND (access = '{$access}' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
@@ -468,8 +439,6 @@ class Paper extends BackboneModel{
                     $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
                     $tname = "{$tattrs->type}";
                     $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
-                    $ccvType = "{$tattrs->ccv_name}";
-                    $ccvType = ($ccvType == "") ? $tname : $ccvType;
                     $visible = @(strtolower("{$tattrs->visible}") != "false");
                     if(trim("{$tattrs->status}") != ""){
                         $tstatus = explode("|", "{$tattrs->status}");
@@ -486,13 +455,11 @@ class Paper extends BackboneModel{
                     }
                     $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
                                                                                'status' => $tstatus,
-                                                                               'type' => $ccvType,
                                                                                'tname' => $tname,
                                                                                'titles' => $titles,
                                                                                'visible' => $visible,
                                                                                'description' => '',
                                                                                'citationFormat' => $citationFormat,
-                                                                               'ccv_status' => array(),
                                                                                'authors_label' => "Author",
                                                                                'authors_text' => "");
                     foreach($type->children() as $child){
@@ -502,7 +469,6 @@ class Paper extends BackboneModel{
                                 $fid = "$field";
                                 $flabel = "{$fattrs->label}";
                                 $ftype = str_replace('{$networkName}', $config->getValue('networkName'), "{$fattrs->type}");
-                                $fccvtk = "{$fattrs->ccvtk}";
                                 $fbibtex = "{$fattrs->bibtex}";
                                 $fhidden = (strtolower("{$fattrs->hidden}") == "true");
                                 $foptions = explode("|", "{$fattrs->options}");
@@ -530,8 +496,7 @@ class Paper extends BackboneModel{
                                     }
                                 }
                                 
-                                $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
-                                                                                                         'bibtex' => $fbibtex,
+                                $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('bibtex' => $fbibtex,
                                                                                                          'label' => $flabel,
                                                                                                          'type' => $ftype,
                                                                                                          'options' => $foptions,
@@ -540,16 +505,6 @@ class Paper extends BackboneModel{
                         }
                         else if($child->getName() == "description"){
                             $categories['categories'][$cname]['types'][$tname]['description'] = "$child";
-                        }
-                        else if($child->getName() == "statuses"){
-                            foreach($child->children() as $status){
-                                $sattrs = $status->attributes();
-                                $sid = "{$sattrs->lov_id}";
-                                $sname = "$status";
-                                if($sid != ""){
-                                    $categories['categories'][$cname]['types'][$tname]['ccv_status'][$sid] = $sname;
-                                }
-                            }
                         }
                         else if($child->getName() == "date"){
                             $attrs = $child->attributes();
@@ -611,7 +566,6 @@ class Paper extends BackboneModel{
             $this->access_id = $data[0]['access_id'];
             $this->created_by = $data[0]['created_by'];
             $this->access = $data[0]['access'];
-            $this->ccv_id = $data[0]['ccv_id'];
             $this->bibtex_id = $data[0]['bibtex_id'];
             $this->orcid = $data[0]['orcid'];
             $this->authors = $data[0]['authors'];
@@ -636,14 +590,6 @@ class Paper extends BackboneModel{
      */
     function getId(){
         return $this->id;
-    }
-    
-    /**
-     * Returns the ccv id of this Paper
-     * @return string The ccv id of this Paper
-     */
-    function getCCVId(){
-        return $this->ccv_id;
     }
     
     /**
@@ -1226,18 +1172,6 @@ class Paper extends BackboneModel{
         return $this->type;
     }
     
-    /**
-     * Returns the 'CCV' type of this Paper
-     * @return string The 'CCV' type of this Paper
-     */
-    function getCCVType(){
-        $structure = $this->structure();
-        if(isset($structure['categories'][$this->getCategory()]['types'][$this->getType()])){
-            return $structure['categories'][$this->getCategory()]['types'][$this->getType()]['type'];
-        }
-        return $this->getType();
-    }
-    
     function getStructure(){
         $structure = $this->structure();
         $category = $this->getCategory();
@@ -1792,7 +1726,6 @@ class Paper extends BackboneModel{
                                                 'access_id' => $this->access_id,
                                                 'created_by' => $created_by,
                                                 'access' => $this->access,
-                                                'ccv_id' => $this->ccv_id,
                                                 'bibtex_id' => $this->bibtex_id,
                                                 'orcid' => $this->orcid,
                                                 'date_created' => EQ(COL('CURRENT_TIMESTAMP'))),

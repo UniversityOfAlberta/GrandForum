@@ -9,7 +9,6 @@ ManageProductsView = Backbone.View.extend({
     editDialog: null,
     deleteDialog: null,
     deletePrivateDialog: null,
-    ccvDialog: null,
     bibtexDialog: null,
     orcidDialog: null,
     crossForumExportDialog: null,
