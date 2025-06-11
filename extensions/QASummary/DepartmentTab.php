@@ -385,22 +385,7 @@ class DepartmentTab extends AbstractTab {
             $report->generatePDF();
         }
         else if(isset($_GET['downloadCSV']) && isset($_GET['showTab']) && $_GET['showTab'] == $this->id){
-            $ids = array();
-            foreach($people as $person){
-                $ids[] = $person->getId();
-            }
-            $data = DBFunctions::execSQL("SELECT u.user_real_name, ccv.hqp, ccv.date, ccv.present_position, ccv.present_organization, ccv.institution, ccv.status, ccv.degree
-                                          FROM mw_user u, grand_ccv_employment_outcome ccv
-                                          WHERE u.user_id = ccv.supervisor_id
-                                          AND supervisor_id IN('".implode("','", $ids)."')
-                                          AND (status = 'Completed' OR status = 'Withdrawn')
-                                          AND date BETWEEN '".(($year-6).CYCLE_START_MONTH)."' AND '".($year.CYCLE_END_MONTH)."'");
             $strings = array();
-            $strings[] = '"'.implode('","', array("Supervisor", "HQP", "Date", "Present Position", "Present Organization", "Institution", "Status", "Degree", "Reason")).'"';;
-            foreach($data as $row){
-                $strings[] = '"'.implode('","', $row).'",""';
-            }
-            $strings[] = ""; // Separate CCV Entries from MovedOn entries
             foreach($hqps as $hqp){
                 $movedOn = $hqp->getAllMovedOn();
                 foreach($movedOn as $mo){
