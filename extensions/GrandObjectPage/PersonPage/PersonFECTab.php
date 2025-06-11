@@ -178,8 +178,14 @@ class PersonFECTab extends AbstractEditableTab {
             $percents = array_values($this->person->departments);
             
             $facultySelect = new SelectBox('faculty', 'faculty', $this->person->faculty, array_merge(array('', 'All'), array_keys($facultyMap)));
-            $department1Select = new SelectBox('department1', 'department1', @$departments[0], array_merge(array(''), $facultyMapSimple));
-            $department2Select = new SelectBox('department2', 'department2', @$departments[1], array_merge(array(''), $facultyMapSimple));
+            
+            $facultyMapCopy = array();
+            foreach($facultyMapSimple as $faculty => $depts){
+                $facultyMapCopy[$faculty] = array_values($depts);
+            }
+            
+            $department1Select = new SelectBox('department1', 'department1', @$departments[0], array_merge(array(''), $facultyMapCopy));
+            $department2Select = new SelectBox('department2', 'department2', @$departments[1], array_merge(array(''), $facultyMapCopy));
             
             $this->html .= "<tr><td align='right'><b>Faculty:</b></td><td>{$facultySelect->render()}</td></tr>";
             $this->html .= @"<tr><td align='right'><b>Department:</b></td><td>{$department1Select->render()} <input type='text' name='department1_percent' value='{$percents[0]}' style='width:3em;' />%</td></tr>";
