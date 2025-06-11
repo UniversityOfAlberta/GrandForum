@@ -21,41 +21,6 @@ class EditMember extends SpecialPage{
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
         $this->getOutput()->setPageTitle("Edit Roles");
         $me = Person::newFromWgUser();
-        $date = date("Y-m-d");
-        $wgOut->addScript("<script type='text/javascript'>
-                                $(document).ready(function(){
-                                $('.datepicker').datepicker({showOn: 'both',
-                                                            buttonImage: '../skins/calendar.gif',
-                                                            buttonText: 'Date',
-                                                            buttonImageOnly: true,
-                                                            onChangeMonthYear: function (year, month, inst) {
-                                                                var curDate = $(this).datepicker('getDate');
-                                                                if (curDate == null)
-                                                                    return;
-                                                                if (curDate.getYear() != year || curDate.getMonth() != month - 1) {
-                                                                    curDate.setYear(year);
-                                                                    curDate.setMonth(month - 1);
-                                                                    while(curDate.getMonth() != month -1){
-                                                                        curDate.setDate(curDate.getDate() - 1);
-                                                                    }
-                                                                    $(this).datepicker('setDate', curDate);
-                                                                    $(this).trigger('change');
-                                                                }
-                                                            }
-                                                        });
-                                $('.datepicker').datepicker('option','dateFormat', 'yy-mm-dd');
-                                $('.datepicker').datepicker('option','showAnim', 'blind');
-                                $('.datepicker').keydown(function(){
-                                    return false;
-                                });
-                                $('.datepicker').attr('value', '$date');
-                                $('#tabs').tabs({
-                                                    cookie: {
-                                                        expires: 1
-                                                    }
-                                                });
-                            });
-                           </script>");
         if(!isset($_POST['submit'])){
             // Form not entered yet
             if(isset($_GET['next']) || isset($_POST['next']) || isset($_GET['name'])){
