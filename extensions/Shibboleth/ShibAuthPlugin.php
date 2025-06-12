@@ -263,12 +263,6 @@ function ShibUserLoadFromSession($user, $result)
     DBCache::delete("mw_user_{$user->getId()}");
 	if($config->getValue('shibDefaultRole') != ""){
 	    $role = $config->getValue('shibDefaultRole');
-	    if(strstr($role, "-Candidate") !== false){
-	        $role = str_replace("-Candidate", "", $role);
-	        DBFunctions::update('mw_user',
-                        array('candidate' => 1),
-                        array('user_id' => EQ($user->getId())));
-	    }
 	    DBFunctions::insert('grand_roles',
 	                        array('user_id'    => $user->getId(),
 	                              'role'       => $role,
