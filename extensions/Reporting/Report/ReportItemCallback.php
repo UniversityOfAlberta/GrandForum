@@ -1283,95 +1283,75 @@ class ReportItemCallback {
             case "Any Journal":
                 $category = "Publication";
                 $type = "Journal Paper";
-                $histories = array();
                 break;
             case "Not Refereed":
                 $category = "Publication";
                 $type = "*";
-                $histories = array();
                 break;
             case "Journal":
                 $case = "Publication";
                 $category = "Publication";
                 $type = "Journal Paper";
-                $histories = $person->getProductHistories($year, "Refereed");
                 break;
             case "Conference":
                 $case = "Publication";
                 $category = "Publication";
                 $type = "Conference Paper";
-                $histories = $person->getProductHistories($year, "Refereed");
                 break;
             case "Publication":
                 $category = "Publication";
                 $type = "*";
-                $histories = $person->getProductHistories($year, "Refereed");
                 break;
             case "Book":
                 $category = "Publication";
                 $type = "Book";
-                $histories = $person->getProductHistories($year, "Book");
                 break;
             case "Books":
                 $category = "Publication";
                 $type = "Book|Book Chapter";
-                $histories = array();
                 break;
             case "Patent":
                 $category = "Patent/Spin-Off";
                 $type = "Patent";
-                $histories = $person->getProductHistories($year, "Patent");
                 break;
             case "Report of Invention":
                 $category = "Patent/Spin-Off";
                 $type = "Report of Invention";
-                $histories = $person->getProductHistories($year, "Report of Invention");
                 break;
             case "AllPublication":
                 $category = "Publication";
                 $type = "*";
-                $histories = array();
                 break;
             case "Award":
                 $category = "Award";
                 $type = "*";
-                $histories = array();
                 break;
             case "Presentation":
                 $category = "Presentation";
                 $type = "*";
-                $histories = array();
                 break;
             case "Conference Presentation":
                 $category = "Presentation";
                 $type = "Conference Presentation";
-                $histories = array();
                 break;
             case "Poster Presentation":
                 $category = "Presentation";
                 $type = "Poster Presentation";
-                $histories = array();
                 break;
             case "Workshop Presentation":
                 $category = "Presentation";
                 $type = "Panel Member|Workshop Presentation";
-                $histories = array();
                 break;
             case "Patent/Spin-Off":
                 $category = "Patent/Spin-Off";
                 $type = "*";
-                $histories = array();
                 break;
             default:
                 $category = $case;
                 $type = "*";
-                $histories = array();
                 break;
         }
-        
-        if(count($histories) > 0){
-            return $histories[0]->getValue();
-        }
+
         $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, true);
         $count = 0;
         $types = explode("|", $type);
@@ -1422,26 +1402,10 @@ class ReportItemCallback {
 
     function getUserLifetimePublicationCount($type='all'){
         $person = Person::newFromId($this->reportItem->personId);
-        $phdYear = min(2006, max($person->getProductHistoryEarliestYear(), $this->getUserPhdYear()-10)); // Start at the phd year -10 so there is some flexibility, but also no later than 2006
+        $phdYear = min(2006, $this->getUserPhdYear()-10); // Start at the phd year -10 so there is some flexibility, but also no later than 2006
         $year = $this->reportItem->getReport()->year;
         $count = 0;
         for($y=$phdYear; $y <= $year; $y++){
-            switch($type){
-                default:
-                case "Publication":
-                    $previousCounts = $person->getProductHistories($y-1, "Previous Refereed");
-                    break;
-                case "Book":
-                    $previousCounts = $person->getProductHistories($y-1, "Previous Book");
-                    break;
-                case "Patent":
-                    $previousCounts = $person->getProductHistories($y-1, "Previous Patent");
-                    break;
-            }
-            if(count($previousCounts) > 0){
-                // Reset the count
-                $count = $previousCounts[0]->getValue();
-            }
             $count += $this->getUserPublicationCount(($y-1).CYCLE_START_MONTH,($y).CYCLE_END_MONTH,$type);
         }
         return $count;

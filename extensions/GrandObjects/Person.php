@@ -2828,46 +2828,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the ProductHistory entries for the optionally given year and type
-     * @param string $year The year of the ProductHistory
-     * @param string $type The type of ProductHistory
-     * @return array Returns the ProductHistory entries
-     */
-    function getProductHistories($year="%", $type="%"){
-        $histories = array();
-        $data = DBFunctions::select(array('grand_product_histories'),
-                                    array('id'),
-                                    array('user_id' => $this->getId(),
-                                          'year' => LIKE($year),
-                                          'type' => LIKE($type)));
-        foreach($data as $row){
-            $productHistory = ProductHistory::newFromId($row['id']);
-            if($productHistory != null && $productHistory->getId() != 0){
-                $histories[] = $productHistory;
-            }
-        }
-        return $histories;
-    }
-    
-    function getProductHistoryLastYear(){
-        $histories = $this->getProductHistories();
-        $year = "";
-        foreach($histories as $history){
-            $year = max($year, $history->getYear());
-        }
-        return $year;
-    }
-    
-    function getProductHistoryEarliestYear(){
-        $histories = $this->getProductHistories();
-        $year = 9999;
-        foreach($histories as $history){
-            $year = min($year, $history->getYear());
-        }
-        return $year;
-    }
-    
-    /**
      * Returns when this Person's top products were last updated
      * @return string When this Person's to products were last updated
      */

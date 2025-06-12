@@ -55,8 +55,6 @@ $apiRequest->addAction('Hidden','product/:id', 'ProductAPI');
 $apiRequest->addAction('Hidden','product/:id/authors', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','product/:id/authors/:personId', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','productDuplicates/:category/:title/:id', 'ProductDuplicatesAPI');
-$apiRequest->addAction('Hidden','productHistories/:id', 'ProductHistoriesAPI');
-$apiRequest->addAction('Hidden','productHistories/person/:personId', 'ProductHistoriesAPI');
 // University
 $apiRequest->addAction('Hidden','university', 'UniversityAPI');
 $apiRequest->addAction('Hidden','university/:id', 'UniversityAPI');

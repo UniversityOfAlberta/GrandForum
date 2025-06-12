@@ -371,39 +371,3 @@ ProductAuthors = RangeCollection.extend({
         return new People();
     },
 });
-
-/**
- * ProductHistory Model
- */
-ProductHistory = Backbone.Model.extend({
-    
-    initialize: function(){
-    
-    },
-    
-    urlRoot: 'index.php?action=api.productHistories',
-    
-    defaults: {
-        id: null,
-        user_id: null,
-        type: "",
-        year: "",
-        value: ""
-    }
-    
-});
-
-/**
- * ProductHistories Collection
- */
-ProductHistories = Backbone.Collection.extend({
-    
-    model: ProductHistory,
-    
-    personId: null,
-    
-    url: function(){
-        return 'index.php?action=api.productHistories/person/' + this.personId;
-    },
-    
-});
