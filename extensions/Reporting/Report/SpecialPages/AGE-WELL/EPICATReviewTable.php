@@ -62,7 +62,7 @@ class EPICATReviewTable extends SpecialPage{
         $html .= "<table style='min-width: 1000px;' class='wikitable' id='EPICATReviewTable' frame='box' rules='all'>
             <thead>
                 <tr>
-                    <th colspan='7' style='background: #FFFFFF;'></th>";
+                    <th colspan='9' style='background: #FFFFFF;'></th>";
         if($evalKey == "EPIC-2023-Special"){
             $html .= "<th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Objectives & Rationale</th>
                       <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Deliverables & Feasibility</th>
@@ -80,6 +80,8 @@ class EPICATReviewTable extends SpecialPage{
                     <th>University</th>
                     <th>Level</th>
                     <th>Fellowship</th>
+                    <th>Title</th>
+                    <th>Summary</th>
                     <th>Application&nbsp;PDF</th>
                     <th>Reviewer</th>
                     <th>Overall Comments</th>";
@@ -132,6 +134,8 @@ class EPICATReviewTable extends SpecialPage{
                 $button = "<a class='button' href='{$pdf->getUrl()}'>Download PDF</a>";
             }
             
+            $title = $this->getBlobValue($year, $candidate->getId(), 0, 'PROJECT_TITLE', BLOB_TEXT, $rpType, HQP_APPLICATION_FORM);
+            $summary = $this->getBlobValue($year, $candidate->getId(), 0, 'LAY_SUMMARY', BLOB_TEXT, $rpType, HQP_APPLICATION_FORM);
             $level = $this->getBlobValue($year, $candidate->getId(), 0, 'HQP_APPLICATION_STAT', BLOB_TEXT, $rpType, HQP_APPLICATION_FORM);
             $uni = $this->getBlobValue($year, $candidate->getId(), 0, HQP_APPLICATION_UNI, BLOB_TEXT, $rpType, HQP_APPLICATION_FORM);
             $lvl = $this->getBlobValue($year, $candidate->getId(), 0, HQP_APPLICATION_LVL, BLOB_ARRAY, $rpType, HQP_APPLICATION_FORM);
@@ -157,6 +161,8 @@ class EPICATReviewTable extends SpecialPage{
                 $html .= "<td>{$uni}</td>";
                 $html .= "<td>{$level}</td>";
                 $html .= "<td style='white-space:nowrap;'>{$lvl}</td>";
+                $html .= "<td>{$title}</td>";
+                $html .= "<td>{$summary}</td>";
                 $html .= "<td align='center'>{$button}</td>";
                 $html .= "<td>{$eval->getNameForForms()}</td>";
                 $html .= "<td valign='top'>{$overall}</td>";
