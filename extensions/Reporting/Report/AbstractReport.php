@@ -456,16 +456,6 @@ abstract class AbstractReport extends SpecialPage {
         return null;
     }
     
-    // Returns whether or not this AbstractReport has a section of type SubReportSection
-    function hasSubReport(){
-        foreach($this->sections as $section){
-            if(get_class($section) == "SubReportSection"){
-                return true;
-            }
-        }
-        return false;
-    }
-    
     // Adds a new Permission to this Report
     function addPermission($type, $permission, $start=null, $end=null){
         if($start == null){
