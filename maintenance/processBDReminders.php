@@ -109,6 +109,18 @@ foreach($people as $person){
 
                 The Bridging Divides Team";
         }
+        else if(date('Y-m-d') == "2025-06-16"){
+            // Reminder email on June 16, 2025
+            $message = "Dear Bridging Divides Member,
+            
+                This is a kind reminder to complete the Self-Identification Survey conducted by Bridging Divides. You may opt-out of any number of survey questions as you see fit. As part of our annual progress reporting requirements, all team members are invited to submit their responses.
+                
+                As per reporting requirements, please submit your response by <b>Thursday, July 31, 2025</b>, using this unique link: <a href='{$url}'>link</a>. <b>The link will not work if you are logged in to the Forum</b>. If you have questions about the collection, use, or disclosure of this information, please contact krubini@torontomu.ca or <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
+
+                Kind regards,
+
+                The Bridging Divides Team";
+        }
         else if(date('Y-d') == "2025-01"){
             // Reminder email on first of each month
             $message = "Dear Bridging Divides Member,
