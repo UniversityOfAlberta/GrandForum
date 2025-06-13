@@ -40,6 +40,21 @@
             </ReportItem>
         </If>
     </ReportSection>
+    <ReportSection id="courses">
+        <ReportItem id="reflection2" type="Textarea" blobItem="FEC_COURSES_REFLECTION2" rich="true" height="150px">
+            <![CDATA[
+                <h3>Reflection</h3>
+                Regardless of the type of teaching in an assignment, describe at least one aspect of course development, course design, instructional design, course assessment and/or innovation, along with instructor reflection on the activities and evidence of effectiveness. The description shall include: 
+                <ul>
+                    <li>Description of the activity</li>
+                    <li>Time spent on planning, delivery and evaluation</li>
+                    <li>Teaching and learning objectives of the activity</li>
+                    <li>Reflection on results and evidence of results</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="grants">
         <ReportItem id="grantsbookmark">
             <![CDATA[

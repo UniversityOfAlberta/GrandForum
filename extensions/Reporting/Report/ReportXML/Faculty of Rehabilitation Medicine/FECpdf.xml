@@ -40,6 +40,15 @@
             </ReportItem>
         </If>
         
+        <ReportItem id="reflection">
+            <![CDATA[
+                <h3>Additional Information on Teaching</h3>
+                {$item}<br />
+                <h3>Reflection</h3>
+                {getHTML(RP_FEC,FEC_COURSES,FEC_COURSES_REFLECTION2,0,{$user_id},0)}<br />
+            ]]>
+        </ReportItem>
+        
         <!-- Grants -->
         <ReportItemSet id="grants">
             <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
