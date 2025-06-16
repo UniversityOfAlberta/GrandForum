@@ -182,7 +182,8 @@
                 }
                 if(!($role == "PI" || // Primary Instructor
                      $role == "CO" || // Co-Instructor
-                     ($role == "TA" && $person->faculty == "Rehabilitation Medicine"))){ // Teaching Assistant (Rehab Medicine only)
+                     ($role == "TA" && $person->faculty == "Rehabilitation Medicine") || // Teaching Assistant (Rehab Medicine only)
+                     ($role == "LA" && $person->faculty == "Rehabilitation Medicine"))){ // Lab Coordinator (Rehab Medicine only)
                     continue;
                 }
 
