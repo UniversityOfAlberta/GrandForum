@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="FEC" reportType="RP_FEC" pdfType="RPTP_FEC" headerName="{$user_name}" ajax="true" encrypt="true">
     <ReportSection id="information" tooltip="Information" name="Information" title="Annual Report of Faculty Member - {$networkName}" blobSection="FEC_INFORMATION" type="EditableReportSection" pagebreak="true">
-        <Static>
+        <Static id="top">
             <![CDATA[
                 <h3 style='margin-top: -0.5em;'>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</h3>
                 <table class="nospacing" style="line-height:1.75em; width: 100%;" cellpadding='0' cellspacing='0'>

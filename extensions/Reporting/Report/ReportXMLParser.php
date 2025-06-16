@@ -381,10 +381,11 @@ class ReportXMLParser {
                     }
                     $section = new $type();
                     $position = isset($attributes->position) ? "{$attributes->position}" : null;
+                    $after = isset($attributes->after) ? "{$attributes->after}" : null;
                     foreach($attributes as $key => $value){
 		            	$section->setAttribute("{$key}", "{$value}");
 		            }
-                    $this->report->addSection($section, $position);
+                    $this->report->addSection($section, $position, $after);
                 }
                 else{
                     $type = get_class($section);
@@ -504,7 +505,8 @@ class ReportXMLParser {
                     return;
                 }
                 $position = isset($attributes->position) ? "{$attributes->position}" : null;
-                $section->addReportItem($itemset, $position);
+                $after = isset($attributes->after) ? "{$attributes->after}" : null;
+                $section->addReportItem($itemset, $position, $after);
             }
             else if($itemset != null){
                 // DO nothing
@@ -629,7 +631,8 @@ class ReportXMLParser {
                 }
                 $item = new $type();
                 $position = isset($attributes->position) ? "{$attributes->position}" : null;
-                $section->addReportItem($item, $position);
+                $after = isset($attributes->after) ? "{$attributes->after}" : null;
+                $section->addReportItem($item, $position, $after);
             }
             else{
                 $type = get_class($item);
