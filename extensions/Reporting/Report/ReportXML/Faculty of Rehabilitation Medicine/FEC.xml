@@ -41,6 +41,12 @@
         </If>
     </ReportSection>
     <ReportSection id="courses">
+        <ReportItem id="projectCourses" types="Text|Text|Text|Textarea|Select(LEC,SEM,LAB,Project Final,Clinical Placement)|Checkbox(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" sizes="100|50|200|200|||50" multiple="true" addText="Add New" optional="true" encrypt="true">
+            <![CDATA[
+                <h3>Project Courses <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='This section should be used for project courses, not individually recorded in Beartracks.<br />If you have taught such a course, and it does not appear above, please enter it below. <br />Click &#39;Add New&#39; to add a line for each such course.'>&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="reflection2" type="Textarea" blobItem="FEC_COURSES_REFLECTION2" rich="true" height="150px">
             <![CDATA[
                 <h3>Reflection</h3>
