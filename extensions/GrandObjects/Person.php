@@ -16,6 +16,7 @@ class Person extends BackboneModel {
     static $allUniversityCacheDone = false;
     static $aliasCache = array();
     static $authorshipCache = array();
+    static $contributorCache = array();
     static $employeeIdCache = array();
     static $allPeopleCache = array();
     static $subRoleCache = array();
@@ -648,11 +649,16 @@ class Person extends BackboneModel {
         if(!isset(self::$authorshipCache[$id])){
             self::$authorshipCache[$id] = array();
             $data = DBFunctions::select(array('grand_product_authors'),
-                                        array('author', 'product_id'),
+                                        array('author', 'product_id', '`order`'),
                                         array('author' => COL("REGEXP '[0-9]+'"),
                                               'author' => LIKE($id)));
             foreach($data as $row){
-                self::$authorshipCache[$row['author']][] = $row['product_id'];
+                if($row['order'] != -1){
+                    self::$contributorCache[$row['author']][] = $row['product_id'];
+                }
+                else{
+                    self::$authorshipCache[$row['author']][] = $row['product_id'];
+                }
             }
         }
     }
@@ -2786,7 +2792,7 @@ class Person extends BackboneModel {
      * @param boolean $nested Whether this was called recursively (so as not to keep checking HQP of HQP etc.
      * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      */ 
-    function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum', $exclude=true, $nested=false){
+    function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum', $exclude=true, $nested=false, $includeContributors=false){
         $me = Person::newFromWgUser();
         self::generateAuthorshipCache($this->id);
         $processed = array();
@@ -2794,7 +2800,7 @@ class Person extends BackboneModel {
         $papers = array();
         if(!$nested){
             foreach($this->getHQP($history, true) as $hqp){
-                $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic, $access, true, true);
+                $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic, $access, true, true, $includeContributors);
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){
                         if(!$hqp->isRoleOn(NI, $p->getAcceptanceDate()) && 
@@ -2810,6 +2816,14 @@ class Person extends BackboneModel {
         
         if(isset(self::$authorshipCache[$this->id])){
             foreach(self::$authorshipCache[$this->id] as $id){
+                if(!isset($processed[$id])){
+                    $processed[$id] = true;
+                    $papers[] = $id;
+                }
+            }
+        }
+        if($includeContributors && isset(self::$contributorCache[$this->id])){
+            foreach(self::$contributorCache[$this->id] as $id){
                 if(!isset($processed[$id])){
                     $processed[$id] = true;
                     $papers[] = $id;
@@ -2863,7 +2877,7 @@ class Person extends BackboneModel {
      * @param string $useReported Whether to use reported years.  If false, it will not, if set to a year then it uses that year
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
-    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false, $exclude=true){
+    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false, $exclude=true, $includeContributors=false){
         global $config;
         self::generateAuthorshipCache($this->id);
         $processed = array();
@@ -2873,7 +2887,7 @@ class Person extends BackboneModel {
             $yearAgo = strtotime("{$startRange} -2 year"); // Extend the year to 2 years ago so that publications after graduation are still counted
             $yearAgo = date('Y-m-d', $yearAgo);
             foreach($this->getHQPDuring($yearAgo, $endRange) as $hqp){
-                $ps = $hqp->getPapersAuthored($category, $startRange, $endRange, false, $networkRelated, $useReported, $onlyUseStartDate);
+                $ps = $hqp->getPapersAuthored($category, $startRange, $endRange, false, $networkRelated, $useReported, $onlyUseStartDate, true, $includeContributors);
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){
                         if(!$hqp->isRoleOn(NI, $p->getAcceptanceDate()) && 
@@ -2890,11 +2904,19 @@ class Person extends BackboneModel {
         if(isset(self::$authorshipCache[$this->id])){
             foreach(self::$authorshipCache[$this->id] as $id){
                 if(!isset($processed[$id])){
+                    $processed[$id] = true;
                     $papers[] = $id;
                 }
             }
         }
-        
+        if($includeContributors && isset(self::$contributorCache[$this->id])){
+            foreach(self::$contributorCache[$this->id] as $id){
+                if(!isset($processed[$id])){
+                    $processed[$id] = true;
+                    $papers[] = $id;
+                }
+            }
+        }
         $papers = Product::getByIds($papers);
         $structure = Product::structure();
         foreach($papers as $paper){

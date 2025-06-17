@@ -656,7 +656,7 @@
         </If>
         
         <!-- Presentations -->
-        <If if="{or({contains({$my_roles},Faculty)},{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)},0)})}">
+        <If id="if_presentations" if="{or({contains({$my_roles},Faculty)},{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)},0)})}">
             <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="Presentations">
                 <![CDATA[
                     <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)})</h2>

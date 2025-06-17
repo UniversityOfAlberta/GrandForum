@@ -49,6 +49,77 @@
             ]]>
         </ReportItem>
         
+        <!-- Presentations -->
+        <ReportItemSet id="if_presentations" if="{or({contains({$my_roles},Faculty)},{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation, true)},0)})}">
+            <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="Presentations">
+                <![CDATA[
+                    <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation, true)})</h2>
+                ]]>
+            </ReportItem>
+            <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation, true)}, 0)}">
+                <Static>
+                    <![CDATA[
+                        <table class='wikitable' frame='box' rules='all' width='100%'>
+                            <thead>
+                                <tr>
+                                    <th style='width:30%;'>Title</th>
+                                    <th>Type</th>
+                                    <th style='width:1%;'>Invited</th>
+                                    <th>Event/Organization</th>
+                                    <th>Location</th>
+                                    <th style='width:1%;'>Date</th>
+                                    <th style='width:1%;'>Length (minutes)</th>
+                                </tr>
+                            </thead>
+                    ]]>
+                </Static>
+                <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" includeContributors="true">
+                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS" >
+                        <![CDATA[
+                            <tr><td align='left'>
+                                    {$presentation_title} <sup>{$item}</sup><br />
+                                    Presenters: {$product_authors}<br />
+                                    Contributors: {$product_contributors}
+                                </td>
+                                <td align='center'>{$presentation_type}</td>
+                                <td align='center'>{$presentation_invited}</td>
+                                <td>{if("{getProductData(event_title)}" != "", {getProductData(event_title)}<br />)}{$presentation_organization}</td>
+                                <td align='center'>{$presentation_country}</td>
+                                <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                                <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </table>
+                    ]]>
+                </Static>
+                
+                <!-- Presentations Footnotes -->
+                <Static>
+                    <![CDATA[
+                        <ul>
+                    ]]>
+                </Static>
+                <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                    <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false"  blobSection="FEC_PRODUCTS">
+                        <![CDATA[
+                            <li style="page-break-inside: avoid;">
+                                {$item}
+                            </li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul>
+                    ]]>
+                </Static>
+            </If>
+        </ReportItemSet>
+        
         <!-- Grants -->
         <ReportItemSet id="grants">
             <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">

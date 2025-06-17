@@ -782,7 +782,7 @@
         </Static>
         
         <!-- Presentations -->
-        <Static>
+        <Static id="presentation_header">
             <![CDATA[
                 <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)}) <span class='clicktooltip' title='The Presentations section lists any presentations given by the user during the reporting year.<br />
 <br />

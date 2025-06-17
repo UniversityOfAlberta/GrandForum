@@ -1184,6 +1184,12 @@ class Paper extends BackboneModel{
             $order++;
         }
         
+        foreach($this->getContributors() as $contributor){
+            if($contributor->getId() != 0){
+                $inserts[] = "('{$contributor->getId()}','{$this->getId()}',-1)";
+            }
+        }
+        
         if($invalidate){
             // The Author data has changed, so invalidate the cache
             Cache::delete($this->getCacheId());

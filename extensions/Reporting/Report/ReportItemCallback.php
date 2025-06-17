@@ -1222,7 +1222,7 @@ class ReportItemCallback {
         return $count;
     }
 
-    function getUserPublicationCount($start_date, $end_date, $case='Publication'){
+    function getUserPublicationCount($start_date, $end_date, $case='Publication', $includeContributors=false){
         $year = substr($start_date, 0, 4);
         $person = Person::newFromId($this->reportItem->personId);
         $category = "";
@@ -1321,7 +1321,7 @@ class ReportItemCallback {
         if(count($histories) > 0){
             return $histories[0]->getValue();
         }
-        $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, true);
+        $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, true, false, true, $includeContributors);
         $count = 0;
         $types = explode("|", $type);
         foreach($products as $product){
