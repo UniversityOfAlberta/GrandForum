@@ -655,6 +655,10 @@ EOF;
 		        display:none;
 		    }
 		    
+		    .noshow {
+		        display: none;
+		    }
+		    
 		    #pdfBody p {
 		        margin: 0;
 		    }
