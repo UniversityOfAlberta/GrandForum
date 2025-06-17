@@ -57,7 +57,6 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                             $('#generate_success{$this->getPostId()}').html('PDF Generated Successfully.');
                                                             $('#generate_success{$this->getPostId()}').css('display', 'block');
                                                             $('#download_button_' + index).attr('name', tok);
-                                                            $('#download_button_' + index).html(name + ' PDF');
                                                             
                                                             $('$specialDownload').attr('href', '$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=' + tok);
                                                             $('$specialDownload').show();
@@ -141,10 +140,13 @@ EOF;
 		    }
 
             $file = str_replace("/", "", $file);
+            
+            $downloadButtonText = $this->getAttr("downloadButtonText", "{$report->name} PDF");
+            
 		    $subm_table_row =<<<EOF
 		    <tr>
             <td>
-            	<button id='download_button_{$file}' type='button' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
+            	<button id='download_button_{$file}' type='button' name='{$tok}' onClick='clickButton(this)' {$style1}>{$downloadButtonText}</button>
             </td>
 EOF;
 
