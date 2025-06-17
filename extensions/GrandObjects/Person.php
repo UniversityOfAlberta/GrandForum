@@ -653,7 +653,7 @@ class Person extends BackboneModel {
                                         array('author' => COL("REGEXP '[0-9]+'"),
                                               'author' => LIKE($id)));
             foreach($data as $row){
-                if($row['order'] != -1){
+                if($row['order'] == -1){
                     self::$contributorCache[$row['author']][] = $row['product_id'];
                 }
                 else{
