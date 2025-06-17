@@ -1165,7 +1165,7 @@ class Paper extends BackboneModel{
                     // Author has changed
                     $invalidate = true;
                 }
-                $inserts[] = "('{$author->getId()}','{$this->getId()}','{$order}')";
+                $inserts["{$author->getId()}_{$this->getId()}"] = "('{$author->getId()}','{$this->getId()}','{$order}')";
             }
             else{
                 if(isset($author->newName)){
@@ -1185,8 +1185,8 @@ class Paper extends BackboneModel{
         }
         
         foreach($this->getContributors() as $contributor){
-            if($contributor->getId() != 0){
-                $inserts[] = "('{$contributor->getId()}','{$this->getId()}',-1)";
+            if($contributor->getId() != 0 && !isset($inserts["{$contributor->getId()}_{$this->getId()}"])){
+                $inserts["{$contributor->getId()}_{$this->getId()}"] = "('{$contributor->getId()}','{$this->getId()}',-1)";
             }
         }
         
