@@ -186,6 +186,16 @@
                 </Static>
             </If>
         </ReportItemSet>
+        
+        <If id="professional" if="{contains({$my_roles},ATS)}" after="services">
+            <ReportItem id="professional" type="Textarea" blobSection="FEC_PROFESSIONAL" blobItem="FEC_PROFESSIONAL" blobType="BLOB_TEXT" rich="true" encrypt="true">
+                <![CDATA[
+                    <h2>Professional Development</h2>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
+        
     </ReportSection>
     <ReportSection id="spots" pagebreak="true" />
     <ReportSection id="documents" title="APPENDIX B: Attachments" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection" pagebreak="false" hLevel="2">

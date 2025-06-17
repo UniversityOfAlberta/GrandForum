@@ -974,7 +974,7 @@
         </If>
         
         <!-- Services -->
-        <If if="{or({contains({$my_roles},Faculty)},{>({getUserServiceCount(CYCLE_START, CYCLE_END,)},0)})}">
+        <If id="services" if="{or({contains({$my_roles},Faculty)},{>({getUserServiceCount(CYCLE_START, CYCLE_END,)},0)})}">
             <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service/Committees/Outreach">
                 <![CDATA[
                     <h2>Service Activities</h2>

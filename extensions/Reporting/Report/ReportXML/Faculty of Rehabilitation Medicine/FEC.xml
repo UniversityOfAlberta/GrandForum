@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="FECpdf" extends="../FEC">
+    <Permissions>
+        <Role role="Faculty">
+            <SectionPermission id="professional" permissions="-" />
+        </Role>
+        <Role role="ATS">
+            <SectionPermission id="professional" permissions="rw" />
+        </Role>
+    </Permissions>
     <ReportSection id="information">
         <Instructions>
             <![CDATA[
@@ -151,6 +159,13 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="professional" type="EditableReportSection" blobSection="FEC_PROFESSIONAL" after="services" name="Professional Development" title="Professional Development">
+        <ReportItem id="professional" type="Textarea" blobItem="FEC_PROFESSIONAL" blobType="BLOB_TEXT" rich="true" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="additionalInfo">
         <Static>
