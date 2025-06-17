@@ -46,7 +46,7 @@ class Impersonate extends SpecialPage {
 	    foreach($allPeople as $id){
 	        $id = ($id instanceof Person) ? $id->getId() : $id;
 	        $row = Person::getUserRow($id);
-	        if($row['full'] == 1){
+	        if(isset($row['full']) && $row['full'] == 1){
 	            $person->id = $id;
 	            $person->splitName = array();
 	            $person->name = $row['user_name'];
