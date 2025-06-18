@@ -1186,7 +1186,7 @@ class Paper extends BackboneModel{
         
         foreach($this->getContributors() as $contributor){
             $cId = (isset($contributor->id)) ? $contributor->id : 0;
-            if($cId && !isset($inserts["{$cId}_{$this->getId()}"])){
+            if($cId != 0 && $cId != "" && !isset($inserts["{$cId}_{$this->getId()}"])){
                 $inserts["{$cId}_{$this->getId()}"] = "('{$cId}','{$this->getId()}',-1)";
             }
         }
@@ -1198,7 +1198,7 @@ class Paper extends BackboneModel{
         if(!$massSync){
             DBFunctions::begin();
             DBFunctions::execSQL($deleteSQL, true, true);
-            if(count($authors) > 0){
+            if(count($inserts) > 0){
                 DBFunctions::execSQL($insertSQL.implode(",\n", $inserts), true, true);
             }
             DBFunctions::commit();
