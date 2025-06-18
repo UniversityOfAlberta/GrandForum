@@ -1185,8 +1185,9 @@ class Paper extends BackboneModel{
         }
         
         foreach($this->getContributors() as $contributor){
-            if($contributor->getId() != 0 && !isset($inserts["{$contributor->getId()}_{$this->getId()}"])){
-                $inserts["{$contributor->getId()}_{$this->getId()}"] = "('{$contributor->getId()}','{$this->getId()}',-1)";
+            $cId = (isset($contributor->id)) ? $contributor->id : 0;
+            if($cId && !isset($inserts["{$cId}_{$this->getId()}"])){
+                $inserts["{$cId}_{$this->getId()}"] = "('{$cId}','{$this->getId()}',-1)";
             }
         }
         
