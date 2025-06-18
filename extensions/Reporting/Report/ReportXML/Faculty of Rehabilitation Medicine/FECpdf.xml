@@ -267,6 +267,8 @@
             </ReportItem>
         </If>
         
+        <ReportItem id="admin" after="sabbatical" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="ADMIN" blobSection="FEC_ADDITIONAL_INFO" />
+        
     </ReportSection>
     <ReportSection id="spots" pagebreak="true" />
     <ReportSection id="documents" title="APPENDIX B: Attachments" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection" pagebreak="false" hLevel="2">

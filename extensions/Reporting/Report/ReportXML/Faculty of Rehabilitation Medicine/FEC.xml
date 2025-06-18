@@ -3,10 +3,20 @@
     <Permissions>
         <Role role="Faculty">
             <SectionPermission id="professional" permissions="-" />
+            <SectionPermission id="admin" permissions="rw" />
         </Role>
         <Role role="ATS">
             <SectionPermission id="professional" permissions="rw" />
+            <SectionPermission id="admin" permissions="rw" />
         </Role>
+        <If if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
+            <SectionPermission id="professional" permissions="" />
+            <SectionPermission id="admin" permissions="" />
+        </If>
+        <If if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
+            <SectionPermission id="professional" permissions="-" />
+            <SectionPermission id="admin" permissions="-" />
+        </If>
     </Permissions>
     <ReportSection id="information">
         <Instructions>
@@ -257,6 +267,14 @@
                 </script>
             ]]>
         </Static>
+    </ReportSection>
+    <ReportSection id="admin" tooltip="Administrative Leave Report" name="Admin Leave Report" title="Administrative Leave Report" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection" after="sabbatical">
+        <ReportItem id="admin" type="Upload" blobType="BLOB_RAW" blobItem="ADMIN" mimeType=".pdf" fileSize="5" optional="true" encrypt="true">
+            <![CDATA[
+                <p>Attach a <b>PDF</b> of your administrative leave report here if applicable.  It will be appended at the bottom of the generated Annual Report PDF.</p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="review" />
     <ReportSection id="submit" />
