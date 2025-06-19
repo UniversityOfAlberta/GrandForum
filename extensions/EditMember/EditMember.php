@@ -164,11 +164,11 @@ class EditMember extends SpecialPage{
     function generateMain(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
         $me = Person::newFromWgUser();
-        $allPeople = Person::getAllPeople('all');
+        $allPeople = Person::getAllFullPeople();
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
-            if(!$me->isAllowedToEdit($person)){ 
+            if(!$me->isAllowedToEdit($person)){
                 // User does not have permission for this person
                 continue;
             }
@@ -192,6 +192,21 @@ class EditMember extends SpecialPage{
                 <tr><td>
             <input id='button' type='submit' name='next' value='Next' disabled='disabled' />
         </form></td></tr></table>
+        
+        <table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <th>User</th><th>Sub-Roles</th>
+            </tr>");
+        foreach($allPeople as $person){
+            $subRoles = implode(", ", $person->getSubRoles());
+            if($subRoles != "" && $person->inFaculty()){
+                $wgOut->addHTML("<tr>
+                    <td>{$person->getNameForForms()}</td>
+                    <td>{$subRoles}</td>
+                </tr>");
+            }
+        }
+        $wgOut->addHTML("</table>
         <script type='text/javascript'>
             $('#names').chosen();
             $(document).ready(function(){
