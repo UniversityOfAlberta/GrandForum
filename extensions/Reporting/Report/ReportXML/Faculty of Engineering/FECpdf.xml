@@ -535,7 +535,7 @@
                             <th style='white-space: nowrap;'>First Year Listed</th>
                 ]]>
             </Static>
-            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}">
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}" includeContributors="true">
                 <Static>
                     <![CDATA[
                         {set(products, 1)}
@@ -556,6 +556,7 @@
                 <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true">
                     <![CDATA[
                                 <b>({$product_type})</b> {$item}
+                                {if("{$product_contributors}" != "", Contributors: {$product_contributors})}
                             </td>
                     ]]>
                 </ReportItem>
@@ -975,7 +976,7 @@
     <ReportSection id="submit" type="EditableReportSection" pagebreak="false">
         <!-- Only Used to Mark Products as Submitted -->
         <ReportItemSet id="submit1" type="PersonProductsReportItemSet" category="Publication" submitProductYear="true" useProductYear="true" includeHQP="true" start="{$start_date}" end="{$end_date}" />
-        <ReportItemSet id="submit2" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="true" start="{$start_date}" end="{$end_date}" />
+        <ReportItemSet id="submit2" type="PersonProductsReportItemSet" category="Presentation" submitProductYear="true" useProductYear="true" includeHQP="true" start="{$start_date}" end="{$end_date}" includeContributors="true" />
         <ReportItemSet id="submit3" type="PersonProductsReportItemSet" category="Award" submitProductYear="true" useProductYear="true" includeHQP="false" start="{$start_date}" end="{$end_date}" />
     </ReportSection>
 </Report>

@@ -633,7 +633,7 @@
                         </tr>
                 ]]>
             </Static>
-            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}">
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}" includeContributors="true">
                 <Static>
                     <![CDATA[
                         <tr>
@@ -646,7 +646,10 @@
                 </If>
                 <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" showIF="false" optional="true" encrypt="true">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td>
+                            {$item}
+                            {if("{$product_contributors}" != "", Contributors: {$product_contributors})}
+                        </td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="first_time" type="SingleCheckbox" blobItem="FIRST_TIME" blobSubItem="{$product_id}" blobType="BLOB_TEXT" options="&#x2713;" labels="" encrypt="true">
