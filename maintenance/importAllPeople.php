@@ -130,10 +130,10 @@
                 $pos = str_replace("PhD", "Graduate Student - Doctoral", $pos);
                 
                 if($pos == "Graduate Student - Master's"){
-                    if(strstr("(Crse)", $program) !== false){
+                    if(strstr($program, "(Crse)") !== false){
                         $pos = "$pos Course";
                     }
-                    else if(strstr("(Thes)", $program) !== false){
+                    else if(strstr($program, "(Thes)") !== false){
                         $pos = "$pos Thesis";
                     }
                 }
