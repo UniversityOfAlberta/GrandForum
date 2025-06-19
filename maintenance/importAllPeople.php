@@ -130,6 +130,15 @@
                 $pos = str_replace("Masters", "Graduate Student - Master's", $pos);
                 $pos = str_replace("PhD", "Graduate Student - Doctoral", $pos);
                 
+                if($pos == "Graduate Student - Master's"){
+                    if(strstr($program, "(Crse)") !== false){
+                        $pos = "$pos Course";
+                    }
+                    else if(strstr($program, "(Thes)") !== false){
+                        $pos = "$pos Thesis";
+                    }
+                }
+                
                 $uni = "University of Alberta";
                 $dept = (isset($deptCodes[$hrDeptId])) ? $deptCodes[$hrDeptId] : "Unknown";
                 if($dept == "Unknown" && $hrDept != ""){
