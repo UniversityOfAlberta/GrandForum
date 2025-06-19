@@ -30,16 +30,6 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         
         $data = array();
         foreach($allPeople as $person){
-            /*if(!$person->isSubRole("SPECIAL2020") &&
-               !$me->isRole(DEAN) &&
-               !$me->isRole(DEANEA) &&
-               !$me->isRole(VDEAN) && 
-               !$me->isRole(HR) &&
-               !$me->isRole(ADMIN)){
-                // Special rule for covid. Only certain people will be evaluated
-                continue;
-            }
-            */
             if(!$includeDD && $person->isSubRole('DD')){
                 continue;
             }

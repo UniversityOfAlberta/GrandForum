@@ -193,6 +193,7 @@ class EditMember extends SpecialPage{
             <input id='button' type='submit' name='next' value='Next' disabled='disabled' />
         </form></td></tr></table>
         
+        <h3>Current Sub-Roles</h3>
         <table class='wikitable' frame='box' rules='all'>
             <tr>
                 <th>User</th><th>Sub-Roles</th>
