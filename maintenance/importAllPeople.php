@@ -29,17 +29,18 @@
         $academicDeptCode = $csv[7];
         $hrDeptId = $csv[8];
         $hrDept = trim($csv[9]);
-        $program = $csv[10];
-        $orcid = $csv[11];
-        $scopus = $csv[12];
-        $alex = $csv[13];
+        $program = @$csv[10];
+        $orcid = @$csv[11];
+        $scopus = @$csv[12];
+        $alex = @$csv[13];
         
         if(strstr(strtoupper($hrDept), "SCI ") === false &&
            strstr(strtoupper($hrDept), "SC ") === false &&
            strstr(strtoupper($hrDept), "ENG ") === false &&
            strstr(strtoupper($hrDept), "ALES ") === false &&
            strstr(strtoupper($hrDept), "ART ") === false &&
-           strstr(strtoupper($hrDept), "REHAB ") === false){
+           strstr(strtoupper($hrDept), "REHAB ") === false &&
+           strstr(strtoupper($hrDept), "BUS ") === false){
             continue;
         }
         
