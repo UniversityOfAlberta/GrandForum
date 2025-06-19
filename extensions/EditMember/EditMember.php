@@ -14,7 +14,7 @@ function runEditMember($par) {
 class EditMember extends SpecialPage{
 
     function EditMember() {
-        SpecialPage::__construct("EditMember", MANAGER.'+', true, 'runEditMember');
+        SpecialPage::__construct("EditMember", STAFF.'+', true, 'runEditMember');
     }
 
     function execute($par){
@@ -266,7 +266,7 @@ class EditMember extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(MANAGER)){
+        if($me->isRoleAtLeast(STAFF)){
             $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Edit Roles", "$wgServer$wgScriptPath/index.php/Special:EditMember");
         }
         return true;
