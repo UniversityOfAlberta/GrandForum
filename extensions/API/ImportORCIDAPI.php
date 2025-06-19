@@ -133,7 +133,10 @@ class ImportORCIDAPI extends API{
         if(empty($product->authors)){
             $authors = $work->contributors->contributor;
             foreach($authors as $author){
-                $obj = Person::newFromOrcid(@$author->{'contributor-orcid'}->path);
+                $obj = null;
+                if(@$author->{'contributor-orcid'}->path != null){
+                    $obj = Person::newFromOrcid(@$author->{'contributor-orcid'}->path);
+                }
                 if($obj == null || $obj->getId() == 0){
                     $obj = new stdClass;
                     $obj->name = $author->{'credit-name'}->value;

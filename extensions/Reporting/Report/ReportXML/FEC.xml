@@ -366,7 +366,7 @@
         
         <ReportItem id="projectCourses" type="MultiTextReportItem" blobItem="FEC_PROJECT_COURSES" blobType="BLOB_ARRAY" labels="Class Prefix|Number|Title|Description|Type|Term|Enrolment" types="Text|Text|Text|Textarea|Select(LEC,SEM,LAB)|Checkbox(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" sizes="100|50|200|200|||50" multiple="true" addText="Add New" optional="true" encrypt="true">
             <![CDATA[
-                <h3>Project Courses <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='This section should be used for project courses, not individually recorded in Beartracks.<br />If you have taught such a course, and it does not appear above, please enter it below. <br />Click &#39;Add New&#39; to add a line for each such course.'>&#9432;</span></h3>
+                <h3>Additional / Project Courses <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='This section should be used for project courses, not individually recorded in Beartracks.<br />If you have taught such a course, and it does not appear above, please enter it below. <br />Click &#39;Add New&#39; to add a line for each such course.'>&#9432;</span></h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -782,7 +782,7 @@
         </Static>
         
         <!-- Presentations -->
-        <Static>
+        <Static id="presentation_header">
             <![CDATA[
                 <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)}) <span class='clicktooltip' title='The Presentations section lists any presentations given by the user during the reporting year.<br />
 <br />
@@ -1241,7 +1241,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" downloadButtonText="Download PDF" />
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[
                 <!--p>PDF Generation is not enabled right now, it will be enabled at a later date.</p-->

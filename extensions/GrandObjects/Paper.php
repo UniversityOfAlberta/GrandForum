@@ -1029,7 +1029,7 @@ class Paper extends BackboneModel{
                     // Author has changed
                     $invalidate = true;
                 }
-                $inserts[] = "('{$author->getId()}','{$this->getId()}','id','{$order}')";
+                $inserts["{$author->getId()}_{$this->getId()}"] = "('{$author->getId()}','{$this->getId()}','id','{$order}')";
             }
             else{
                 if(isset($author->newName)){
@@ -1048,6 +1048,13 @@ class Paper extends BackboneModel{
             $order++;
         }
         
+        foreach($this->getContributors() as $contributor){
+            $cId = (isset($contributor->id)) ? $contributor->id : 0;
+            if($cId != 0 && $cId != "" && !isset($inserts["{$cId}_{$this->getId()}"])){
+                $inserts["{$cId}_{$this->getId()}"] = "('{$cId}','{$this->getId()}',-1)";
+            }
+        }
+        
         if($invalidate){
             // The Author data has changed, so invalidate the cache
             Cache::delete($this->getCacheId());
@@ -1055,7 +1062,7 @@ class Paper extends BackboneModel{
         if(!$massSync){
             DBFunctions::begin();
             DBFunctions::execSQL($deleteSQL, true, true);
-            if(count($authors) > 0){
+            if(count($inserts) > 0){
                 DBFunctions::execSQL($insertSQL.implode(",\n", $inserts), true, true);
             }
             DBFunctions::commit();

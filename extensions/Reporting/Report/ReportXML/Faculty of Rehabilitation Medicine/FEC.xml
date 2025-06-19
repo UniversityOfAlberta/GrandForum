@@ -1,7 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="FECpdf" extends="../FEC">
+    <Permissions>
+        <Role role="Faculty">
+            <SectionPermission id="professional" permissions="-" />
+            <SectionPermission id="admin" permissions="rw" />
+        </Role>
+        <Role role="ATS">
+            <SectionPermission id="professional" permissions="rw" />
+            <SectionPermission id="admin" permissions="rw" />
+        </Role>
+        <If if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
+            <SectionPermission id="professional" permissions="" />
+            <SectionPermission id="admin" permissions="" />
+        </If>
+        <If if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
+            <SectionPermission id="professional" permissions="-" />
+            <SectionPermission id="admin" permissions="-" />
+        </If>
+    </Permissions>
     <ReportSection id="information">
-        <ReportItem id="executive_summary" type="Textarea" blobItem="EXECUTIVE_SUMMARY" rich="true" after="top">
+        <Instructions>
+            <![CDATA[
+                    <h3>Variance of Responsibilities</h3>
+                    <p>Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.</p>
+                    
+                    <h3>Reasons For Reduced Teaching</h3>
+                    <p>The Reasons for reduced teaching section lists any reasons (e.g., Sabbatical Leave, Medical Leave, Other) explaining your reduced teaching during the reporting year. If you select “Other”, you should enter an appropriate description. You may add a footnote to provide more information for any leave.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="executive_summary" type="Textarea" blobItem="EXECUTIVE_SUMMARY" rich="true" limit="500" after="top">
             <![CDATA[
                 <h2>Executive Summary</h2>
                 {$item}
@@ -41,6 +68,12 @@
         </If>
     </ReportSection>
     <ReportSection id="courses">
+        <ReportItem id="projectCourses" types="Text|Text|Text|Textarea|Select(LEC,SEM,LAB,Project Final,Clinical Placement)|Checkbox(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" sizes="100|50|200|200|||50" multiple="true" addText="Add New" optional="true" encrypt="true">
+            <![CDATA[
+                <h3>Additional / Project Courses <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='This section should be used for project courses, not individually recorded in Beartracks.<br />If you have taught such a course, and it does not appear above, please enter it below. <br />Click &#39;Add New&#39; to add a line for each such course.'>&#9432;</span></h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="reflection2" type="Textarea" blobItem="FEC_COURSES_REFLECTION2" rich="true" height="150px">
             <![CDATA[
                 <h3>Reflection</h3>
@@ -54,6 +87,51 @@
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="publications">
+        
+        <!-- Presentations -->
+        <ReportItem id="presentation_header">
+            <![CDATA[
+                <h2>Presentations ({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation, true)}) <span class='clicktooltip' title='The Presentations section lists any presentations given by the user during the reporting year.<br />
+<br />
+(Do not include presentations given by your students or by others.  HQP presentations are included on the Additional Info section.)'>&#9432;</span><a class="button" target="_blank" style="float:right;margin-top:-10px;" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
+                <small></small>
+                <table class ='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th style='width:1%;'>Invited</th>
+                        <th>Event/Organization</th>
+                        <th>Location</th>
+                        <th style='width:1%;'>Date</th>
+                        <th style='width:1%;'>Length (minutes)</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="presentations" includeContributors="true">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <tr><td align='left'>
+                            {$presentation_title}<br />
+                            Presenters: {$product_authors}<br />
+                            Contributors: {$product_contributors}
+                        </td>
+                        <td align='center'>{$presentation_type}</td>
+                        <td align='center'>{$presentation_invited}</td>
+                        <td>{if("{getProductData(event_title)}" != "", {getProductData(event_title)}<br />)}{$presentation_organization}</td>
+                        <td align='center'>{$presentation_country}</td>
+                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                        <td align='center'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="grants">
         <ReportItem id="grantsbookmark">
@@ -137,6 +215,13 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
+    <ReportSection id="professional" type="EditableReportSection" blobSection="FEC_PROFESSIONAL" after="services" name="Professional Development" title="Professional Development">
+        <ReportItem id="professional" type="Textarea" blobItem="FEC_PROFESSIONAL" blobType="BLOB_TEXT" rich="true" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="additionalInfo">
         <Static>
             <![CDATA[
@@ -182,6 +267,14 @@
                 </script>
             ]]>
         </Static>
+    </ReportSection>
+    <ReportSection id="admin" tooltip="Administrative Leave Report" name="Admin Leave Report" title="Administrative Leave Report" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection" after="sabbatical">
+        <ReportItem id="admin" type="Upload" blobType="BLOB_RAW" blobItem="ADMIN" mimeType=".pdf" fileSize="5" optional="true" encrypt="true">
+            <![CDATA[
+                <p>Attach a <b>PDF</b> of your administrative leave report here if applicable.  It will be appended at the bottom of the generated Annual Report PDF.</p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="review" />
     <ReportSection id="submit" />
