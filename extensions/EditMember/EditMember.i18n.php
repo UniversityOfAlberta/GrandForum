@@ -2,8 +2,8 @@
 
 $messages = array();
 $messages['en'] = array( 
-			   'EditMember' => 'Edit Roles',
-			   'Editmember' => 'Edit Roles',
-			   'editmember' => 'Edit Roles',
+			   'EditMember' => 'Edit Special Cases',
+			   'Editmember' => 'Edit Special Cases',
+			   'editmember' => 'Edit Special Cases',
 			   );
 ?>

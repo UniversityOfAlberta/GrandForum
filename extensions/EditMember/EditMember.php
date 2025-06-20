@@ -19,7 +19,7 @@ class EditMember extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
-        $this->getOutput()->setPageTitle("Edit Roles");
+        $this->getOutput()->setPageTitle("Edit Special Cases");
         $me = Person::newFromWgUser();
         if(!isset($_POST['submit'])){
             // Form not entered yet
@@ -92,7 +92,7 @@ class EditMember extends SpecialPage{
             $names[] = $person->getName();
         }
         
-        $wgOut->addHTML("This page can be used to edit the sub-roles of members on the {$config->getValue('siteName')}.<br />
+        $wgOut->addHTML("This page can be used to edit the special cases of members on the {$config->getValue('siteName')}.<br />
                          Select a user from the list below, and then click the 'Next' button.<table>
                             <tr><td>
                             <form action='$wgServer$wgScriptPath/index.php/Special:EditMember' method='post'>
@@ -110,11 +110,14 @@ class EditMember extends SpecialPage{
             <input id='button' type='submit' name='next' value='Next' disabled='disabled' />
         </form></td></tr></table>
         
-        <h3>Current Sub-Roles</h3>
-        <table class='wikitable' frame='box' rules='all'>
-            <tr>
-                <th>User</th><th>Sub-Roles</th>
-            </tr>");
+        <h3>Current Special Cases</h3>
+        <table id='current' class='wikitable' frame='box' rules='all'>
+            <thead>
+                <tr>
+                    <th>User</th><th>Special Cases</th>
+                </tr>
+            </thead>
+            <tbody>");
         foreach($allPeople as $person){
             $subRoles = implode(", ", $person->getSubRoles());
             if($subRoles != "" && $person->inFaculty()){
@@ -124,7 +127,7 @@ class EditMember extends SpecialPage{
                 </tr>");
             }
         }
-        $wgOut->addHTML("</table>
+        $wgOut->addHTML("</tbody></table>
         <script type='text/javascript'>
             $('#names').chosen();
             $(document).ready(function(){
@@ -134,6 +137,11 @@ class EditMember extends SpecialPage{
                         $('#button').prop('disabled', false);
                     }
                 });
+            });
+            
+            $('#current').dataTable({
+                'aLengthMenu': [[100,-1], [100,'All']], 
+                'iDisplayLength': -1, 
             });
         </script>");
     }
@@ -178,7 +186,7 @@ class EditMember extends SpecialPage{
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(STAFF)){
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Edit Roles", "$wgServer$wgScriptPath/index.php/Special:EditMember");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Edit Special Cases", "$wgServer$wgScriptPath/index.php/Special:EditMember");
         }
         return true;
     }
