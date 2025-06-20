@@ -155,7 +155,7 @@ class EditMember extends SpecialPage{
         EditMember::generateSubRoleFormHTML($wgOut);
         $wgOut->addHTML("<br />
                          <input type='hidden' name='name' value='{$_GET['name']}' />
-                         <input type='submit' name='submit' value='Submit Request' onSubmit />
+                         <input type='submit' name='submit' value='Submit Request' />
                          </form>");
     }
     
