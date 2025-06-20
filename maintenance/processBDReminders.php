@@ -34,7 +34,7 @@ if($future == "02-15" ||
 
                 This is a kind reminder to submit your <b>".str_replace("Q", "R", str_replace("_", ":", $projectQ))." project report(s) by {$futureDate}</b> via the <a href='https://forum.bridgingdivides.ca/index.php/Main_Page'>Bridging Divides Forum</a>. Instructions on how to navigate the Forum and submit reports can be found <a href='https://www.torontomu.ca/bridging-divides/documents/manuals/bd-forum-instructions.pdf'>here</a>. Please note that questions regarding Knowledge mobilization and community engagement and Changes in the research teams have been added to the reporting form.
                 
-                If you need further assistance, please contact <a href='skornicer@torontomu.ca'>Sanja Kornicer</a> or <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
+                If you need further assistance, please contact <a href='j10jung@torontomu.ca'>Jessica Jung</a> or <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
 
                 Warm regards,
 
@@ -50,7 +50,7 @@ if($future2 == "02-15" ||
 
                 This is a kind reminder to submit your <b>".str_replace("Q", "R", str_replace("_", ":", $projectQ))." project report(s) by {$future2Date}</b> via the <a href='https://forum.bridgingdivides.ca/index.php/Main_Page'>Bridging Divides Forum</a>. Instructions on how to navigate the Forum and submit reports can be found <a href='https://www.torontomu.ca/bridging-divides/documents/manuals/bd-forum-instructions.pdf'>here</a>. Please note that questions regarding Knowledge mobilization and community engagement and Changes in the research teams have been added to the reporting form.
                 
-                If you need further assistance, please contact <a href='skornicer@torontomu.ca'>Sanja Kornicer</a> or <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
+                If you need further assistance, please contact <a href='j10jung@torontomu.ca'>Jessica Jung</a> or <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
 
                 Warm regards,
 
@@ -67,7 +67,7 @@ if($future3 == "02-15" ||
 
                 This is a kind reminder to submit your <b>".str_replace("Q", "R", str_replace("_", ":", $projectQ))." project report(s) by {$future3Date}</b> via the <a href='https://forum.bridgingdivides.ca/index.php/Main_Page'>Bridging Divides Forum</a>. Instructions on how to navigate the Forum and submit reports can be found <a href='https://www.torontomu.ca/bridging-divides/documents/manuals/bd-forum-instructions.pdf'>here</a>. Please note that questions regarding Knowledge mobilization and community engagement and Changes in the research teams have been added to the reporting form.
                 
-                If you need further assistance, please contact <a href='skornicer@torontomu.ca'>Sanja Kornicer</a> or <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
+                If you need further assistance, please contact <a href='j10jung@torontomu.ca'>Jessica Jung</a> or <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
 
                 Warm regards,
 
@@ -83,7 +83,7 @@ if($future == "03-15" ||
 
                 This is a kind reminder to submit your <b>".str_replace("Q", "R", str_replace("_", ":", $themeQ))." theme reports by {$futureDate}</b> via the <a href='https://forum.bridgingdivides.ca/index.php/Main_Page'>Bridging Divides Forum</a>. Instructions on how to navigate the Forum and submit reports can be found <a href='https://www.torontomu.ca/bridging-divides/documents/manuals/bd-forum-instructions.pdf'>here</a>.  Please note that questions regarding Knowledge mobilization and community engagement and Changes in the research teams have been added to the reporting form.
                 
-                If you need further assistance, please contact <a href='skornicer@torontomu.ca'>Sanja Kornicer</a> or <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
+                If you need further assistance, please contact <a href='j10jung@torontomu.ca'>Jessica Jung</a> or <a href='mailto:bridging.divides@torontomu.ca'>bridging.divides@torontomu.ca</a>.
 
                 Warm regards,
 
