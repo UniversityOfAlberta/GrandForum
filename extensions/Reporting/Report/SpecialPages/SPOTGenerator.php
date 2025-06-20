@@ -115,7 +115,7 @@ class SPOTGenerator extends SpecialPage{
                 return false;
             }
         </script>";
-        }
+    }
 
     function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;

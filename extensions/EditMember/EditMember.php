@@ -112,6 +112,7 @@ class EditMember extends SpecialPage{
                         $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a {$subRole}");
                     }
                 }
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:EditMember");
             }
             EditMember::generateMain();
         }
