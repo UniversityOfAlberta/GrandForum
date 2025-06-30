@@ -886,7 +886,8 @@
                                     <th>Chart</th>
                                 </tr>
                                 {course_eval(false)}
-                            </table>
+                            </table><br /><br />
+                            {course_eval_summary(false)}
                             <div class='pagebreak'></div>
                         ]]>
                     </If>
