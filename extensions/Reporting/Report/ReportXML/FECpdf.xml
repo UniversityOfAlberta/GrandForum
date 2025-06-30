@@ -1002,6 +1002,21 @@
             </ReportItemSet>
         </If>
         
+        <!-- Professional Development -->
+        <If id="professional" if="{!contains({$my_roles},Faculty)}">
+            <ReportItem id="profbookmark" type="BookmarkReportItem" title="Professional Development">
+                <![CDATA[
+                    <h2>Professional Development</h2>
+                ]]>
+            </ReportItem>
+            <ReportItem id="professional" type="Textarea" blobSection="FEC_PROFESSIONAL" blobItem="FEC_PROFESSIONAL" blobType="BLOB_TEXT" rich="true" encrypt="true">
+                <![CDATA[
+                    
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
+        
         <!-- Additional Info -->
         <ReportItem id="spabookmark" type="BookmarkReportItem" title="Supplementary Professional Activities">
             <![CDATA[

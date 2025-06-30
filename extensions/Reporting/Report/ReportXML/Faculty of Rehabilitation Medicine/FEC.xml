@@ -2,19 +2,15 @@
 <Report pdfFiles="FECpdf" extends="../FEC">
     <Permissions>
         <Role role="Faculty">
-            <SectionPermission id="professional" permissions="-" />
             <SectionPermission id="admin" permissions="rw" />
         </Role>
         <Role role="ATS">
-            <SectionPermission id="professional" permissions="rw" />
             <SectionPermission id="admin" permissions="rw" />
         </Role>
         <If if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
-            <SectionPermission id="professional" permissions="" />
             <SectionPermission id="admin" permissions="" />
         </If>
         <If if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
-            <SectionPermission id="professional" permissions="-" />
             <SectionPermission id="admin" permissions="-" />
         </If>
     </Permissions>
@@ -214,13 +210,6 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-    </ReportSection>
-    <ReportSection id="professional" type="EditableReportSection" blobSection="FEC_PROFESSIONAL" after="services" name="Professional Development" title="Professional Development">
-        <ReportItem id="professional" type="Textarea" blobItem="FEC_PROFESSIONAL" blobType="BLOB_TEXT" rich="true" encrypt="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="additionalInfo">
         <Static>
