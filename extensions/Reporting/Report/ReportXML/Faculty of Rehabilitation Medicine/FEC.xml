@@ -229,7 +229,7 @@
                 <p>Uploaded documents will be appended at the end of the submitted annual report pdf</p>
             ]]>
         </Static>
-        <For from="1" to="4">
+        <For from="1" to="10">
             <ReportItem id="file{getExtra()}_label" type="Text" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" placeholder="Type in a label..." encrypt="true">
                 <![CDATA[
                     <div class='files' id='file{getExtra()}'>

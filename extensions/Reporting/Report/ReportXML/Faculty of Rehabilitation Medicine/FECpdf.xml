@@ -279,7 +279,7 @@
                 <ul>
             ]]>
         </Static>
-        <For from="1" to="4">
+        <For from="1" to="10">
             <Static>
                 <![CDATA[
                     {set(md5, {getBlobMD5(RP_FEC,FEC_ADDITIONAL_INFO,FILE{getExtra()},0,{$user_id},0)})}
