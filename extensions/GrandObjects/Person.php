@@ -38,6 +38,7 @@ class Person extends BackboneModel {
                                                       "graduate student - master&#39;s thesis",
                                                       "graduate student - master&#39;s",
                                                       "meng",
+                                                      "mscpt",
                                                       "graduate student - master of engineering"),
                                      'msc-thesis' => array("msc",
                                                            "m.sc.",
