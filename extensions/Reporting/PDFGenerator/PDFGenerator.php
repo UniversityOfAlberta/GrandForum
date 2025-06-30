@@ -978,7 +978,7 @@ EOF;
         file_put_contents("/tmp/{$name}{$rand}pdf", $dompdf->output());
         exec("pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
 
-        exec("$IP/extensions/Reporting/PDFGenerator/gs \\
+        exec("gs \\
                 -q \\
                 -dBATCH \\
                 -dNOPAUSE \\
