@@ -200,7 +200,7 @@
         <If if="{!=({getArray(RP_FEC,FEC_COURSES,FEC_PROJECT_COURSES,0,{$user_id},0,projectCourses)},)}">
             <Static>
                 <![CDATA[
-                    <h3>Project Courses</h3>
+                    <h3>Additional / Project Courses</h3>
                     <table class="wikitable" frame="box" rules="all" width="100%">
                 ]]>
             </Static>
