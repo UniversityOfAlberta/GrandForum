@@ -773,15 +773,10 @@ class Project extends BackboneModel {
             $id = $row['user_id'];
             $person = Person::newFromId($id);
             if($person->getId() != 0){
-                if($filter == PL){
-                    if($person->isRole(PL, $this)){
-                        $people[$person->getId()] = $person;
-                    }
-                }
-                else if(($filter == null || 
-                         ($person->isRole($filter, $this) && !$person->isRole(PL, $this)) || 
-                         ($person->isRole($filter."-Candidate", $this) && !$person->isRole(PL, $this) && $this->getStatus() == "Proposed")) && 
-                        !$person->isRole(ADMIN)){
+                if(($filter == null || 
+                    $person->isRole($filter, $this) || 
+                    ($person->isRole($filter."-Candidate", $this) && $this->getStatus() == "Proposed")) && 
+                   !$person->isRole(ADMIN)){
                     $people[$person->getId()] = $person;
                 }
             }
