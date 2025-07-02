@@ -260,6 +260,27 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns a new Person from the given orcid (null if not found)
+     * In the event of a collision, the first user is returned
+     * NOTE: this might be slow since orcid is not a table index
+     * @param string $email The email address of the Person
+     * @return Person The Person from the given email
+     */
+    static function newFromOrcid($orcid){
+        $orcid = trim(str_replace("http://orcid.org/", "", 
+                      str_replace("https://orcid.org/", "", $orcid)));
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id'),
+                                    array('user_orcid' => $orcid));
+        if(count($data) > 0){
+            return Person::newFromId($data[0]['user_id']);
+        }
+        else{
+            return new Person(array());
+        }
+    }
+    
+    /**
      * Removes certain characters from a person's name to help matching
      * @param string $name The name to clean
      * @return string The cleaned up name

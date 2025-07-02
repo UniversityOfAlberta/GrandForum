@@ -28,6 +28,7 @@ class Paper extends BackboneModel{
     var $authors;
     var $data = array();
     var $lastModified;
+    var $dateCreated;
     var $authorsWaiting;
     var $projectsWaiting;
     var $deleted;
@@ -665,6 +666,7 @@ class Paper extends BackboneModel{
             $this->authorsWaiting = true;
             $this->tags = null;
             $this->data = unserialize($data[0]['data']);
+            $this->dateCreated = $data[0]['date_created'];
             $this->lastModified = $data[0]['date_changed'];
         }
     }
