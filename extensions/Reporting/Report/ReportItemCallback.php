@@ -1214,7 +1214,7 @@ class ReportItemCallback {
         $products = $person->getPapersAuthored("Activity", $start_date, $end_date, false, true, true);
         $count = 0;
         foreach($products as $product){
-            if(($product->getType() == $type || $type == "") && 
+            if(($product->getType() == $type || strstr($product->getType(), $type) !== false || $type == "") && 
                ($product->getData('position') == $position || $position == "")){
                 $count++;
             }
