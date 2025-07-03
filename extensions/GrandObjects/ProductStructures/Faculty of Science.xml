@@ -432,6 +432,7 @@
             <data>
                 <field label="Journal Title" type="String">published_in</field>
                 <field label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
@@ -441,6 +442,7 @@
             <data>
                 <field label="Institution" type="String">institution</field>
                 <field label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
             <acceptance_date label="Acceptance Date"></acceptance_date>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Year" label="Publication Date"></date>
